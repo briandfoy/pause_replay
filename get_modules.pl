@@ -18,7 +18,7 @@ mkdir $dir, 0755 unless -d $dir;
 
 foreach my $i ( $first .. $last ) {
 	my $file = catfile( $dir, "$i.txt" );
-	next if -e $file;
+	next if -s $file;
 	open my $fh, '>', $file;
 	my $article = $nntp->article( $i, $fh );
 	close $fh;
