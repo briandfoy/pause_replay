@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:52124
+Return-Path: <jpeacock@rowman.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 8796 invoked from network); 6 Dec 2006 21:50:44 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 6 Dec 2006 21:50:44 -0000
+Received: (qmail 21074 invoked by uid 225); 6 Dec 2006 21:50:44 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 21050 invoked by alias); 6 Dec 2006 21:50:42 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME,DK_POLICY_TESTING,DK_SIGNED,DK_VERIFIED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of jpeacock@rowman.com designates 12.38.22.130 as permitted sender)
+Received: from ranger1.rlpgbooks.com (HELO ranger1.rlpgbooks.com) (12.38.22.130)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Wed, 06 Dec 2006 13:50:39 -0800
+Received: (qmail 24726 invoked from network); 6 Dec 2006 16:51:00 -0500
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=default; d=rowman.com;
+  b=Tsa3ZqB80WME+4bBGnuKPHyMFWb+gt0f4ui6vUSgWFW8yHEG2AQAHKnoMKkDZlhqcDr9EOxj40dobIP3ZGiwNXBEzRpPBP5qwz+kH9Tdi+rdXIr2guRJ1nIlBBzAdOPi0HG/Rde4HzJxXj1MGpLuGuRhe2mmYHj7qij+dtLgmYk=  ;
+Received: from jpeacock2.internal (HELO [192.168.0.12]) (192.168.0.12)
+  (smtp-auth username jpeacock@rowman.com, mechanism cram-md5)
+  by ranger1.rlpgbooks.com (qpsmtpd/0.33-dev) with (AES256-SHA encrypted) ESMTP; Wed, 06 Dec 2006 16:51:00 -0500
+Message-ID: <45773B38.6050001@rowman.com>
+Date: Wed, 06 Dec 2006 16:50:48 -0500
+Organization: Rowman & Littlefield Publishing Group
+User-Agent: Thunderbird 1.5.0.8 (Windows/20061025)
+MIME-Version: 1.0
+To:  modules@perl.org
+CC: Kevin Ruscoe <kevin@sapphireoflondon.org>
+Subject: Re: Tie::DxHash: upload caused failing version number
+References: <45753233.1000600@sapphireoflondon.org>	<051220061321239705%brian.d.foy@gmail.com>	<4575F996.5050504@sapphireoflondon.org>	<061220061150498558%brian.d.foy@gmail.com> <87psawlopm.fsf@k75.linux.bogus>
+In-Reply-To: <87psawlopm.fsf@k75.linux.bogus>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: jpeacock@rowman.com (John Peacock)
+
+(Andreas J. Koenig) wrote:
+> What is new to me is not the qv notation but the META.yml file that
+> contains the following:
+> 
+> provides:
+>   Tie::DxHash:
+>     file: lib/Tie/DxHash.pm
+>     version: !!perl/hash:version
+>       qv: 1
+>       version:
+>         - 1
+>         - 0
+>         - 0
+> 
+> So here we have it spelled out: version is a blessed perl hash.
+
+And so it should be; I just confirmed this by creating a test distro 
+(using Module::Starter::PBP).
+
+> I'm not sure what PAUSE is missing or if your software did the right
+> thing. Most probably PAUSE needs an upgrade of YAML.pm or needs
+> YAML::Syck installed.
+
+Upgrading YAML or switching to YAML::Syck won't change the behavior 
+(which would have to happen in Module::Build or EU::MM), since the 
+$VERSION is explicitly created as a version object.
+
+> Paging "blessed" John "Version" Peacock.... What would you diagnose?
+
+The PAUSE indexer should really be using version objects to perform the 
+$VERSION comparisons.  What we did in Module::Build was to create a 
+subclass of version that uses the original string representation when 
+stringifying, but uses the default version object handling for 
+comparison purposes (this prevents the "trailing zeros" problem in 
+floating point versions).
+
+My machine at home has gone AWOL (I better not have lost another HD!), 
+so I can't do much from here (besides, I'm technically at $WORK).  I'll 
+download the PAUSE indexer source tonight and propose a patch...
+
+John

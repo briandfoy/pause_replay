@@ -1,0 +1,255 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1040
+Return-Path: <sisk@mojotoad.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 8249 invoked from network); 3 Feb 2000 08:11:42 -0000
+Received: from vpop.hypercon.com (198.64.248.249)
+  by tmtowtdi.perl.org with SMTP; 3 Feb 2000 08:11:42 -0000
+Received: from mojotoad.com (31.244.nas1.ippool.hypercon.com [198.64.244.31])
+	by vpop.hypercon.com (8.9.3/8.8.7) with ESMTP id CAA29490
+	for <modules@perl.org>; Thu, 3 Feb 2000 02:11:19 -0600
+Sender: sisk@vpop.hypercon.com
+Message-ID: <3898E436.A62FDEB0@mojotoad.com>
+Date: Thu, 03 Feb 2000 02:13:10 +0000
+Organization: The Toadstool
+X-Mailer: Mozilla 4.5 [en] (X11; U; Linux 2.1.132 i586)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: new module: HTML::TableExtract
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: sisk@mojotoad.com (Matt Sisk)
+
+I'd like to register a new module name, please:
+
+Name           DSLI  Description                                  Info
+-------------  ----  -------------------------------------------- -----
+HTML::
+TableExtract   adpf  Flexible HTML table extraction               MSISK
+
+
+This is a subclass of HTML::Parser, and does just what it says. Perhaps
+the most powerful feature is that you can specify tables of interest
+using a list of headers you expect to see in the table. Using this
+method, the module will return vertical slices of the table, ordered in
+the same order as you specified with the headers, even though in the
+actual table the columns might be in a different order. In this way you
+can extract information based on what the document is communicating
+rather than some particular HTML layout.
+
+You can also extract tables based on depth and count information, or
+just extract all tables.
+
+I've included the documentation below. If you would like to experiment
+with the module, you can find it in one of the following locations:
+
+   http://www.cpan.org/authors/id/M/MS/MSISK/
+   http://www.mojotoad.com/sisk/projects/HTML-TableExtract/
+
+Thanks,
+Matt Sisk
+sisk@mojotoad.com
+
+
+----
+
+NAME
+    HTML::TableExtract - Perl extension for extracting the text
+    contained in tables within an HTML document.
+
+SYNOPSIS
+     # Using column header information.  Assume an HTML document
+     # with a table which has "Date", "Price", and "Cost"
+     # somewhere in a  row. The columns beneath those headings are
+     # what you are interested in.
+
+     use HTML::TableExtract;
+     $te = new HTML::TableExtract( headers => [qw(Date Price Cost)] );
+     $te->parse($html_string);
+
+     # rows() assumes the first table found in the document if no
+     # table is provided. Since automap is enabled by default,
+     # each row is returned in the same column order as we
+     # specified for our headers. Otherwise, we would have to rely
+     # on $te->column_order to figure out the column in which each
+     # header was found.
+
+     foreach $row ($te->rows) {
+        print join(',', @$_),"\n";
+     }
+
+     # Using depth and count information.  In this example, our
+     # tables must be within two other tables, plus be the third
+     # table at that depth within those tables.  In other words,
+     # wherever there exists a table within a table that contains
+     # a cell with at least three tables in sequence, we grab
+     # the third table. Depth and count both begin with 0.
+
+     $te = new HTML::TableExtract( depth => 2, count => 2 );
+     $te->parse($html_string);
+     foreach ($te->tables) {
+        print "Table found at ", join(',', $te->table_coords($_)),
+":\n";
+        foreach ($te->rows($_)) {
+           print "   ", join(',', @$_), "\n";
+        }
+     }
+
+DESCRIPTION
+    HTML::TableExtract is a subclass of HTML::Parser that serves to
+    extract the textual information from tables of interest
+    contained within an HTML document. The textual information for
+    each table is stored in an array of arrays that represent the
+    rows and cells of that table.
+
+    There are three ways to specify which tables you would like to
+    extract from a document: *Headers*, *Depth*, and *Count*.
+
+    *Headers*, the most flexible and adaptive of the techniques,
+    involves specifying text in an array that you expect to appear
+    above the data in the tables of interest. Once all headers have
+    been located in a row of that table, all further cells beneath
+    the columns that matched your headers are extracted. All other
+    columns are ignored: think of it as vertical slices through a
+    table. In addition, HTML::TableExtract automatically rearranges
+    each row in the same order as the headers you provided. If you
+    would like to disable this, set *automap* to 0 during object
+    creation, and instead rely on the column_map() method to find
+    out the order in which the headers were found.
+
+    *Depth* and *Count* are more specific ways to specify tables
+    that have more dependencies on the HTML document layout. *Depth*
+    represents how deeply a table resides in other tables. The depth
+    of a top-level table in the document is 0. A table within a top-
+    level table has a depth of 1, and so on. *Count* represents
+    which table at a particular depth you are interested in,
+    starting with 0.
+
+    Each of the *Headers*, *Depth*, and *Count* specifications are
+    cumulative in their effect on the overall extraction. For
+    instance, if you specify only a *Depth*, then you get all tables
+    at that depth (note that these could very well reside in
+    separate higher-level tables throughout the document). If you
+    specify only a *Count*, then the tables at that *Count* from all
+    depths are returned. If you only specify *Headers*, then you get
+    all tables in the document matching those header
+    characteristics. If you have specified multiple characteristics,
+    then each characteristic has veto power over whether a
+    particular table is extracted.
+
+    If no *Headers*, *Depth*, or *Count* are specified, then all
+    tables are extracted from the document.
+
+    The main point of this module was to provide a flexible method
+    of extracting tabular information from HTML documents without
+    relying to heavily on the document layout. For that reason, I
+    suggest using *Headers* whenever possible -- that way, you are
+    anchoring your extraction on what the document is trying to
+    communicate rather than some feature of the HTML comprising the
+    document (other than the fact that the data is contained in a
+    table).
+
+    HTML::TableExtract is a subclass of HTML::Parser, and as such
+    inherits all of its basic methods. In particular, `start()',
+    `end()', and `text()' are utilized. Feel free to override them,
+    but if you do not eventually invoke them with some content,
+    results are not guaranteed.
+
+    Text that is gathered from the tables is decoded with
+    HTML::Entities first. Also note that text can be chunked, so you
+    are not guaranteed to be dealing with all of the text in a
+    particular cell when `text()' is invoked.
+
+METHODS
+    new()
+        Return a new HTML::TableExtract object. Valid attributes
+        are:
+
+    headers Passed as an array reference, headers specify strings of
+            interest at the top of columns within targeted tables.
+            These header strings will eventually be passed through a
+            non-anchored, case-insensitive regular expression, so
+            regexp special characters are allowed. The table row
+            containing the headers is not returned. Columns that are
+            not beneath one of the provided headers will be ignored.
+            Columns will, by default, be rearranged into the same
+            order as the headers you provide (see the *automap*
+            parameter for more information).
+
+    depth   Specify how embedded in other tables your tables of interest
+            should be. Top-level tables in the HTML document have a
+            depth of 0, tables within top-level tables have a depth
+            of 1, and so on.
+
+    count   Specify which table within each depth you are interested in,
+            beginning with 0.
+
+    automap Automatically applies the ordering reported by column_map()
+            to the rows returned by rows(). This only makes a
+            difference if you have specified *Headers* and they turn
+            out to be in a different order in the table than what
+            you specified. Automap will rearrange the column orders.
+            To get the original order, you will need to take another
+            slice of each row using column_map(). *automap* is
+            enabled by default, but only has an affect if you have
+            specified *headers*.
+
+    debug   Prints some debugging information to STDOUT.
+
+    rows()
+    rows($table)
+        Return all rows within a particular table that matched the
+        search. Each row is a reference to an array containing the
+        text of each cell. If no table is provided, then the first
+        table that matched is assumed.
+
+    column_map()
+    column_map($table)
+        For a particular table that matched the search, returns the
+        order in which the provided headers were found. This
+        information can be used as a slice on each table row to
+        reaarange the data in the order you initially specified. If
+        no table is provided, the first table that matched is
+        assumed.
+
+    tables()
+        Returns all tables in the document that matched the search,
+        in the order in which they were seen. This is depth-first
+        order.
+
+    first_table_found()
+        Returns the first table that matched the search from the
+        document.
+
+    table_coords($table)
+        Returns the depth and count for a particular table.
+
+    depths()
+        Returns all depths that contained matched tables in the
+        document.
+
+    counts($depth)
+        For a particular depth, returns all counts that contained
+        matched tables.
+
+    table($depth, $count)
+        Returns the matched table at a particular depth and count.
+
+REQUIRES
+    HTML::Parser(3), HTML::Entities(3)
+
+AUTHOR
+    Matthew P. Sisk, <sisk@mojotoad.com>
+
+COPYRIGHT
+    Copyright (c) 2000 Matthew P. Sisk. All rights reserved. All
+    wrongs revenged. This program is free software; you can
+    redistribute it and/or modify it under the same terms as Perl
+    itself.
+
+SEE ALSO
+    HTML::Parser(3), perl(1).

@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:63259
+Return-Path: <powerman@powerman.name>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 24422 invoked from network); 17 Nov 2008 12:40:42 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 17 Nov 2008 12:40:42 -0000
+Received: (qmail 7336 invoked by uid 225); 17 Nov 2008 12:40:42 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7329 invoked by alias); 17 Nov 2008 12:40:41 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from powerman.name (HELO powerman.name) (85.90.198.1)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 17 Nov 2008 04:40:39 -0800
+Received: (qmail 22983 invoked by uid 1000); 17 Nov 2008 12:40:32 -0000
+Date: Mon, 17 Nov 2008 14:40:32 +0200
+To: Steffen Mueller <wyp3rlx02@sneakemail.com>
+Cc: modules@perl.org
+Subject: Re: Module submission EV::Stream
+Message-ID: <20081117124032.GB25068@home.power>
+References: <200811161848.mAGImqGC013531@pause.perl.org> <161120081800019451%brian.d.foy@gmail.com> <20081117013825.GA15368@home.power> <49213371.9050700@sneakemail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <49213371.9050700@sneakemail.com>
+Organization: http://powerman.name/
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Approved: news@nntp.perl.org
+From: powerman@powerman.name (Alex Efros)
+
+Hi!
+
+On Mon, Nov 17, 2008 at 10:03:45AM +0100, Steffen Mueller wrote:
+> I would really suggest you settle for a different namespace. Less
+> potential for conflicts in the long run. It's up to you, there's worse
+> choices than EV::Stream. Off the top of my head, I could think of
+> IO::Stream::EV or similar.
+
+Maybe it's too impudently, but how about IO::Stream?
+
+Look, current module architecture is:
+    EV::Stream	    - user create object of that class to do I/O;
+		      EV::Stream itself doesn't contain anything
+		      EV-specific, it even doesn't "use EV";
+		      it's event-based, but these events are high-level
+		      events like RESOLVED, CONNECTED, EOF - they are not
+		      low-level EV events
+
+    EV::Stream::Proxy::HTTPS
+    EV::Stream::Crypt::RC4
+		    - these two plugins just work with I/O stream - they
+		      modify input/output buffers (scalars) and work with
+		      same high-level events; there nothing EV-specific here
+
+    EV::Stream::MatrixSSL
+		    - this plugin have single EV-specific point - it use
+		      EV::timer to handle SSL handshake timeouts;
+		      otherwise it also work on high-level like other
+		      plugins
+    
+    EV::Stream::stream
+		    - that's "default" plugin which is attached to end of
+		      plugin chain automatically by EV::Stream->new(),
+		      it do all low-level I/O and convert low-level
+		      EV events into high-level events for above plugins
+		      and user's callback;
+		      this plugin have a lot of EV-specific code.
+
+Now, I can create wrapper around EV::timer in EV::Stream::stream and make
+EV::Stream::MatrixSSL use it instead is calling EV::timer. This way _all_
+modules except EV::Stream::stream will work with I/O stream on high-level
+and have no EV-specific code. So, it may have sense to name them:
+
+    EV::Stream			-> IO::Stream
+    EV::Stream::stream		-> IO::Stream::EV
+    EV::Stream::Crypt::RC4	-> IO::Stream::Crypt::RC4
+    EV::Stream::Proxy::HTTPS	-> IO::Stream::Proxy::HTTPS
+    EV::Stream::MatrixSSL	-> IO::Stream::MatrixSSL
+
+Next we call IO::Stream::EV an 'engine' and say somebody may add another
+engines in the future, keeping all other plugins compatible with them
+because they have no EV-specific code.
+
+-- 
+			WBR, Alex.

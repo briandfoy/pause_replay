@@ -1,0 +1,113 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:52123
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 567 invoked from network); 6 Dec 2006 21:06:07 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 6 Dec 2006 21:06:07 -0000
+Received: (qmail 18849 invoked by uid 225); 6 Dec 2006 21:06:06 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18820 invoked by alias); 6 Dec 2006 21:06:04 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 06 Dec 2006 13:05:57 -0800
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by franz.ak.mind.de (8.13.8/8.13.8/Debian-2) with ESMTP id kB6L5n4e018704;
+	Wed, 6 Dec 2006 22:05:49 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.8/8.13.8/Submit) id kB6L5fDm018697;
+	Wed, 6 Dec 2006 22:05:41 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: modules@perl.org, John Peacock <jpeacock@rowman.com>
+Cc: kevin@sapphireoflondon.org (Kevin Ruscoe)
+Subject: Re: Tie::DxHash: upload caused failing version number
+References: <45753233.1000600@sapphireoflondon.org>
+	<051220061321239705%brian.d.foy@gmail.com>
+	<4575F996.5050504@sapphireoflondon.org>
+	<061220061150498558%brian.d.foy@gmail.com>
+Reply-To: modules@perl.org
+Date: Wed, 06 Dec 2006 22:05:41 +0100
+In-Reply-To: <061220061150498558%brian.d.foy@gmail.com> (brian d. foy's
+	message of "Wed\, 06 Dec 2006 11\:50\:49 -0600")
+Message-ID: <87psawlopm.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Wed, 06 Dec 2006 11:50:49 -0600, brian d foy <brian.d.foy@gmail.com> said:
+
+  > [[ This message was both posted and mailed: see
+  >    the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+  > In article <4575F996.5050504@sapphireoflondon.org>, Kevin Ruscoe
+  > <kevin@sapphireoflondon.org> wrote:
+
+ >> >> I switched to using extended version numbers as this is the style
+ >> >> recommended in Perl Best Practices.
+ >> 
+ >> > Well, I think switching just because Damian recommends it is the
+ >> > problem.
+
+Nono, it's OK to follow Damian. John Peacock, Graham Barr, and many
+others have been working very hard to make that thing work that Damian
+recommended. Should we burn his book just because things didn't work
+the way he recommended at that time? No, really, we made it work and
+it worked as far as I know until *you* came:)
+
+ >> 
+ >> It is not a problem for me, but I thought I 
+ >> should highlight the (minor) issue
+ >> to the maintainers of PAUSE.  
+
+  > Yes, it's still something Andreas might want to look at. PAUSE is
+  > supposed to support the three dot version numbers through version.pm,
+
+Yes.
+
+  > but I'm not sure if the qv() thing causes problems. I recall in the
+  > deep recesses of my mind that people have had to use some workarounds
+  > for v-strings.
+
+No, my deep recordatii say that it worked;)
+
+What is new to me is not the qv notation but the META.yml file that
+contains the following:
+
+provides:
+  Tie::DxHash:
+    file: lib/Tie/DxHash.pm
+    version: !!perl/hash:version
+      qv: 1
+      version:
+        - 1
+        - 0
+        - 0
+
+So here we have it spelled out: version is a blessed perl hash.
+
+I'm not sure what PAUSE is missing or if your software did the right
+thing. Most probably PAUSE needs an upgrade of YAML.pm or needs
+YAML::Syck installed.
+
+Paging "blessed" John "Version" Peacock.... What would you diagnose?
+
+  > There's a fairly new page in PAUSE that I just discovered. It resets
+  > what PAUSE thinks of the latest version of a module is (well, makes it
+  > forget it, really). I haven't tried this before, but you might tell it
+  > to forget the version for the current (non-3-dot) Tie::DxHash, then
+  > upload again. The indexer should pick up the new version and use that
+  > in the new sequence.
+
+That was not needed in this case because PAUSE did not accept the
+"HASH" word as a version. It stood at 0.93 and would have accepted 1.0
+without a problem.
+
+-- 
+andreas

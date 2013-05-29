@@ -1,0 +1,103 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:44255
+Return-Path: <mark@plogs.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31930 invoked from network); 20 Sep 2005 00:15:42 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 20 Sep 2005 00:15:42 -0000
+Received: (qmail 11160 invoked by uid 225); 20 Sep 2005 00:15:42 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11156 invoked by alias); 20 Sep 2005 00:15:41 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from plogs.net (HELO plogs.net) (207.189.111.51)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Mon, 19 Sep 2005 17:15:33 -0700
+Received: (qmail 34115 invoked by uid 1001); 20 Sep 2005 00:15:29 -0000
+Date: Mon, 19 Sep 2005 17:15:29 -0700
+To: modules@perl.org
+Subject: BitTorrent pure-perl implementation
+Message-ID: <20050920001529.GA56510@plogs.net>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="J2SCkAp4GZ/dPZZf"
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+Approved: news@nntp.perl.org
+From: mark@plogs.net (Mark Smith)
+
+--J2SCkAp4GZ/dPZZf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+I've written a module (set of modules, rather) that implement an object
+oriented BitTorrent client in pure Perl.
+
+The project itself is named 'Downpour', but in the interest of descriptive
+naming, I'm proposing using 'Net::BitTorrent::Client'.
+
+I realize that 'Net::BitTorrent::File' already exists, and my modules do
+not use this module at all since my torrent parser works with .torrent
+format data, whether it be from file or URL.
+
+Is it okay to use the Net::BitTorrent namespace, should I contact the
+author (module is from 2003), other suggestions, etc etc?
+
+Here is an example script of using this module in the Application interface:
+
+(yes, there will be a more 'using the module as a module, not as an
+application' interface, I'm just not demoing it here in the interest of
+brevity)
+
+
+#!/usr/bin/perl
+
+use strict;
+use Net::BitTorrent::Client;
+
+my $btc = new Net::BitTorrent::Client;
+
+# configure the client
+$btc->setUploadLimit(50 * 1024); # 50k/sec
+$btc->setDownloadLimit(50 * 1024); # 50k/sec
+$btc->setManagementPort(6900); # port for telnet management interface
+$btc->setWebManagementPort(6901); # port for web management interface
+$btc->setMaxPeers(40); # have 40 peers at most
+$btc->setMaxUnchokedPeers(6); # 6 peers unchoked (sending data to them)
+
+# now we can add torrents
+$btc->addTorrent("http://some.site.com/my.torrent");
+$btc->addTorrent("/path/to/some/file.torrent");
+
+# now the program can run
+$btc->run(\&callback);
+
+# called by the client every cycle so you can do anything you need to do
+# like write out status, find new files to process, etc...
+sub callback {
+    my $btc = shift;
+
+    print "Bytes in total:  " . $btc->getBytesIn() . "\n";
+    print "Bytes out total: " . $btc->getBytesOut() . "\n";
+}
+
+
+--
+Mark Smith
+mark@plogs.net
+
+--J2SCkAp4GZ/dPZZf
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+
+iD8DBQFDL1ShfbnHRNLT060RAtcwAJ9+q1E6i5k1Uo28nyl18ef8fgTmjACgknK3
+KEI3sRng8iRzVMvFqjGK5F8=
+=NgZ1
+-----END PGP SIGNATURE-----
+
+--J2SCkAp4GZ/dPZZf--

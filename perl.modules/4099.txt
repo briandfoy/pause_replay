@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4099
+Return-Path: <sam@daemoninc.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30783 invoked from network); 5 Jan 2001 01:25:56 -0000
+Received: from horrockscash.com (HELO daemonweb.daemoninc.com) (207.211.105.23)
+  by tmtowtdi.perl.org with SMTP; 5 Jan 2001 01:25:55 -0000
+Received: from daemonweb.daemoninc.com (localhost.localdomain [127.0.0.1])
+	by daemonweb.daemoninc.com (8.9.3/8.8.7) with ESMTP id RAA20465;
+	Thu, 4 Jan 2001 17:25:45 -0800
+cc: Doug MacEachern <dougm@covalent.net>, modules@perl.org
+Subject: Re: Proposed new module Sys::MemoryUsage 
+In-Reply-To: Your message of "Tue, 28 Nov 2000 11:27:51 PST."
+             <6106.975439671@daemonweb.daemoninc.com> 
+Date: Thu, 04 Jan 2001 17:25:45 -0800
+Message-ID: <20463.978657945@daemonweb.daemoninc.com>
+Approved: news@nntp.perl.org
+From: sam@daemoninc.com (Sam Horrocks)
+References: <6106.975439671@daemonweb.daemoninc.com>
+
+Doug - could you push out a new version of Gtop with this patch so that
+the searching is fixed.
+
+Thanks,
+Sam Horrocks
+
+
+ >  > if the search engine would index GTop.pod, then the package would turn up
+ >  > with keywords such as memory, cpu, etc.
+ >  ...
+ >  > i do not plan any further documentation or advertising for GTop, but
+ >  > patches are welcome of course.
+ > 
+ >  Here's a patch to generate the README from GTop.pod.  It also adds a
+ >  blurb explaining what libgtop is.
+ > 
+ > 
+ > 
+ > --- Makefile.PL.orig	Tue Nov 28 11:19:32 2000
+ > +++ Makefile.PL	Tue Nov 28 11:15:39 2000
+ > @@ -65,6 +65,9 @@
+ >  
+ >   http://home-of-linux.org/gnome/libgtop/
+ >  
+ > +LibGTop is a library that fetches system related information such as CPU Load,
+ > +Memory Usage and information about running processes.
+ > +
+ >  =head1 CLASSES
+ >  
+ >  EOF
+ > @@ -200,6 +203,18 @@
+ >  
+ >  Doug MacEachern
+ >  
+ > +=head1 SEE ALSO
+ > +
+ > +Stas Bekman's Apache::VMonitor
+ > +
+ > + http://www.cpan.org/modules/by-module/Apache/
+ > +
+ > +=head1 COPYRIGHT
+ > +
+ > +The source files in this distribution are 
+ > +Copyright (C) 1999, Doug MacEachern, and are licensed for
+ > +use under the same terms as Perl itself.
+ > +
+ >  EOF
+ >  
+ >  close TYPEMAP;
+ > @@ -244,6 +259,7 @@
+ >     'macro' => {
+ >  	  CVSROOT => 'modperl.com:/local/cvs_repository',
+ >     },
+ > +   dist => {DIST_DEFAULT => 'mydist'},
+ >  );
+ >  
+ >  sub MY::postamble { 
+ > @@ -252,6 +268,11 @@
+ >  cvs_tag :
+ >  	cvs -d $(CVSROOT) tag v$(VERSION_SYM) . 
+ >  	@echo update GTop.pm VERSION now 
+ > +
+ > +README : GTop.pod
+ > +	pod2text GTop.pod >README
+ > +
+ > +mydist : README tardist
+ > +
+ >  EOF
+ >  } 
+ > -

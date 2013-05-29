@@ -1,0 +1,54 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7790
+Return-Path: <ziya@ripe.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16188 invoked from network); 26 Sep 2001 14:50:03 -0000
+Received: from birch.ripe.net (193.0.1.96)
+  by onion.valueclick.com with SMTP; 26 Sep 2001 14:50:03 -0000
+Received: from x33.ripe.net (x33.ripe.net [193.0.1.33])
+	by birch.ripe.net (8.11.6/8.11.6) with ESMTP id f8QEnVv19949
+	for <modules@perl.org>; Wed, 26 Sep 2001 16:49:31 +0200
+Received: (from ziya@localhost)
+	by x33.ripe.net (8.11.6/8.11.6) id f8QEnVK27325
+	for modules@perl.org; Wed, 26 Sep 2001 16:49:31 +0200
+Date: Wed, 26 Sep 2001 16:49:30 +0200
+To: modules@perl.org
+Subject: Rcs::Parser or What namespace should I use?
+Message-ID: <20010926164930.E27630@x33.ripe.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: ziya@ripe.net (Ziya Suzen)
+
+Hi,
+
+I am working on RCS file parsing. I had to do it cause I have 3,000
+files with about 1 million revisions and I have to check them out one by
+one and collect information. Using existing Rcs module is very slow due
+to system calls to co for every revision. There is VCS::Rcs
+which I haven't tested but looks like it makes syscalls to 'co' too.
+
+Any way, what i do is to parse all the revisions into core and process
+them there. Which is about 10 times faster then using standart 'co' (or
+Rcs.pm). Ofcourse if you are talking about checking out atleast 20-25 
+revisions from the same revision file.
+
+The modules I wrote -for my own usage- are:
+XXX::Parser           # this the main interface
+XXX::YappRcsParser    # produced from a Yapp grammar (Yapp::Parse)
+XXX::Deltatext        # impliments RCS deltatext algorithms
+
+Would you please suggest;
+
+1- Shall I post them to CPAN, do you think others might use it?
+2- If so, do you think RCS::Parser is a good name to use or not?
+
+Thank you,
+
+Ziya Suzen
+

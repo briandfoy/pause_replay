@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12937
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9826 invoked by uid 76); 30 Jul 2002 14:29:22 -0000
+Received: from mail01.svc.cra.dublin.eircom.net (HELO mail01.svc.cra.dublin.eircom.net) (159.134.118.17)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Tue Jul 30 14:29:22 2002 -0000
+Received: (qmail 85610 messnum 931659 invoked from network[159.134.167.80/p848.as1.limerick1.eircom.net]); 30 Jul 2002 14:28:27 -0000
+Received: from p848.as1.limerick1.eircom.net (HELO dansat.data-plan.com) (159.134.167.80)
+  by mail01.svc.cra.dublin.eircom.net (qp 85610) with SMTP; 30 Jul 2002 14:28:27 -0000
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id g6UESD105383;
+	Tue, 30 Jul 2002 15:28:13 +0100 (BST)
+	(envelope-from timbo)
+Date: Tue, 30 Jul 2002 15:28:12 +0100
+To: James G Smith <JGSmith@TAMU.Edu>
+Cc: modules@perl.org
+Subject: Re: Request for Comments - module naming
+Message-ID: <20020730152812.M598@dansat.data-plan.com>
+References: <200207251801.g6PI1xj21687@moya.tamu.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <200207251801.g6PI1xj21687@moya.tamu.edu>; from JGSmith@TAMU.Edu on Thu, Jul 25, 2002 at 01:01:59PM -0500
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+On Thu, Jul 25, 2002 at 01:01:59PM -0500, James G Smith wrote:
+> I'm working on a fairly complex web application framework that
+> combines AxKit, Template Toolkit, and possibly HTML::Mason, under
+> mod_perl.
+> 
+> Some of the goals include rapid prototyping of form-driven
+> applications (looking at leveraging SVG), fail-over (robustness in
+> the face of machine/network failures), and the ability to scale by
+> running on a web farm.
+> 
+> I plan two main components for distribution: the framework (running
+> under Uttu - Uttu.pm) and the model.  For now, I am calling the
+> application framework Gestinanna.  So the framework would be
+> Uttu::Framework::Gestinanna and the model would be Gestinanna::*
+> (thinking of the MVC model of web programming).  The core model would
+> be distributed as Gestinanna-x.xx.tar.gz.
+
+Seems reasonable.
+
+> To allow for the rapid prototyping of form-driven applications, I am
+> putting together a state machine model - for now called
+> Gestinanna::StateMachine.  It allows inheritance of edges and actions
+> taken upon transitions.  However, the module does not require a web
+> environment.  It is quite independent of that -- it takes data and a
+> context, uses Form::DataValidator to look at which edge seems most
+> appropriate, and triggers the transition.  The application can
+> associate a view (TT2 file, for example) with a particular state and
+> use that to send the appropriate page to the client.
+> 
+> My questions for now are two:
+>  (1) should I place the state machine outside the general application
+>      namespace and, if so, what are some suggestions for where to put
+>      it?  I am trying to place general modules in general locations.
+
+Tricky. We don't have a namespace for state machines and the 'control flow
+utilities' section of the module list is a mish-mash of modules:
+    http://search-beta.cpan.org/modlist/Control_Flow_Utilities
+
+Searching on state machine is interesting:
+    http://search-beta.cpan.org/search?mode=all&query=state+machine
+but offers little practical help. It seems that state machine modules
+have always been closely tied to other modules (POE::Session,
+Bio::Tools::StateMachine::AbstractStateMachine, Win32::CtrlGUI::State)
+
+Is there any chance you could reuse/extend/subclass POE::Session?
+
+Otherwise perhaps StateMachine::Gestinanna would be a reasonable
+name (showing the association with the Gestinanna framework) and
+distribute it as a separate module - if it really is separate.
+
+>  (2) May I have the top-level Uttu and Gestinanna namespaces?  The
+>      first is used for the Uttu framework (http://uttu.tamu.edu/) and
+>      framework/application distributions while the second is used for
+>      the model modules for the Gestinanna application framework.  If
+>      this seems reasonable, I will go ahead and fill out the PAUSE
+>      namespace request.  (btw) I have submitted a request for Uttu
+>      twice before with no comments being made on the list.
+
+Seems okay to me.
+
+Tim.

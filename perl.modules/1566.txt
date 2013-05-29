@@ -1,0 +1,111 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1566
+Return-Path: <gbarr@gbarr.demon.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6225 invoked from network); 8 Apr 2000 18:05:17 -0000
+Received: from finch-post-10.mail.demon.net (194.217.242.38)
+  by tmtowtdi.perl.org with SMTP; 8 Apr 2000 18:05:17 -0000
+Received: from gbarr.demon.co.uk ([194.222.72.232])
+	by finch-post-10.mail.demon.net with esmtp (Exim 2.12 #1)
+	id 12dzbe-00064f-0A; Sat, 8 Apr 2000 18:05:15 +0000
+Received: from chipper.localdomain (local12.localdomain [192.168.1.12])
+	by gbarr.demon.co.uk (8.9.3/8.9.3) with ESMTP id TAA18900;
+	Sat, 8 Apr 2000 19:01:25 +0100
+Received: (from gbarr@localhost)
+	by chipper.localdomain (8.9.3/8.9.3/SuSE Linux 8.9.3-0.1) id TAA20680;
+	Sat, 8 Apr 2000 19:03:55 +0100
+Date: Sat, 8 Apr 2000 19:03:55 +0100
+To: andreas.koenig@anima.de (Andreas J. Koenig),
+        "Kurt D. Starsinic" <kstar@chapin.edu>, cpan@perl.org,
+        modules@perl.org, "Elaine M. Ashton" <elaine@chaos.wustl.edu>,
+        Jarkko Hietaniemi <jhi@iki.fi>
+Subject: Re: Reworking CPAN/authors/id/
+Message-ID: <20000408190355.D20444@pobox.com>
+Mail-Followup-To: andreas.koenig@anima.de (Andreas J. Koenig),
+	"Kurt D. Starsinic" <kstar@chapin.edu>, cpan@perl.org,
+	modules@perl.org, "Elaine M. Ashton" <elaine@chaos.wustl.edu>,
+	Jarkko Hietaniemi <jhi@iki.fi>
+References: <m3bt3ozpof.fsf@ak-71.mind.de> <20000405163427.A21001@O2.chapin.edu> <m3u2hctvng.fsf@ak-71.mind.de> <20000408184554.C20444@pobox.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3i
+In-Reply-To: <20000408184554.C20444@pobox.com>
+Approved: news@nntp.perl.org
+From: gbarr@pobox.com (Graham Barr)
+
+OK, I just checked and it will affect it. I will need to modify the database
+to point to the new directories Or modify the code, which may be easier.
+
+Graham.
+
+On Sat, Apr 08, 2000 at 06:45:54PM +0100, Graham Barr wrote:
+> Hm, I think this will affect search.cpan.org as it uses the CPAN mirror on that
+> machine when it goes to format docs. I will check.
+> 
+> Graham.
+> 
+> On Sat, Apr 08, 2000 at 06:17:07PM +0200, Andreas J. Koenig wrote:
+> > >>>>> On Wed, 5 Apr 2000 16:34:27 -0400, "Kurt D. Starsinic" <kstar@chapin.edu> said:
+> > 
+> >  > On Wed, Apr 05, 2000 at 02:40:32PM +0200, Andreas Koenig wrote:
+> > >> I believe, the CPAN/authors/id/ directory needs a gentle cleanup.
+> > >> Currently there is no simple algorithm to generate the directory of an
+> > >> author from the userid. The only way to find out that JHI has the
+> > >> directory JHI/ is by trying which of JHI/ and J/JH/JHI/ exists.
+> > >> 
+> > >> It would be a simple job to make the transition with backwards
+> > >> compatibility like so (tested):
+> > >> 
+> > >> use File::Path qw(mkpath);
+> > >> opendir DIR, "."; # from authors/id
+> > >> for (readdir DIR){
+> > >> next if /^\./ or length($_)==1;
+> > >> my $targ = substr($_,0,1) . "/" . substr($_,0,2);
+> > >> mkpath $targ;
+> > >> rename $_, "$targ/$_";
+> > >> symlink "$targ/$_", $_;
+> > >> }
+> > >> 
+> > >> But that will cause a huge avalanche of mirror traffic (both for
+> > >> mirror and rsync). So I suppose we'd have a sleep 3600 after each loop
+> > >> so that the job takes 12 days until all 290 directories are relocated.
+> > >> 
+> > >> The question is: do you see any other problems I am not seeing? Is
+> > >> sleep 3600 OK? Is the whole idea sound? If nobody has objections, I'll
+> > >> start tomorrow by relocating my own directory, wait a week and if no
+> > >> problems are reported run the job with the sleep 3600. Otherwise,,,
+> > >> 
+> > >> Opinions?
+> > 
+> >  >     The idea is very good, Andreas.  It would probably be a good idea _not_
+> >  > to run it when the update daemons are running, or you might get very
+> >  > confusing glitches in the moment between the rename and the symlink.
+> > 
+> > Excellent point. I have now tried to avoid that kind of race by first
+> > duplicating the directory with rsync, then let all the indexes adjust
+> > to the new directory and only after an hour remove the old directory.
+> > This is roughly the following in pseudocode:
+> > 
+> >  for (readdir DIR){
+> >    next if /^\./ or length($_)==1 or -l $_;
+> >    my $targ = substr($_,0,1) . "/" . substr($_,0,2);
+> >    mkpath $targ;
+> >    system rsync, "-va", $_, "$targ/";
+> >    # Now actively care for all indexes to be updated;
+> >    sleep 3600;
+> >    rmtree $_;
+> >    symlink "$targ/$_", $_;
+> >  }
+> > 
+> > I have started with my own CPAN directory now and am watching for
+> > glitches to show up (or better to not show up:)
+> > 
+> > Elaine, I will have to adjust the CPAN backup stuff when we are
+> > through the process as we do not want to end up with duplicates. I
+> > will probably even have to adjust a bit earlier to safe diskspace.
+> > 
+> > -- 
+> > andreas
+> > 

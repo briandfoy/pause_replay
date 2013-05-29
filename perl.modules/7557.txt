@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7557
+Return-Path: <skud@infotrope.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32866 invoked from network); 17 Sep 2001 03:43:17 -0000
+Received: from cr407766-a.rchrd1.on.wave.home.com (HELO lagavulin.dnsalias.org) (qmailr@24.114.169.177)
+  by onion.valueclick.com with SMTP; 17 Sep 2001 03:43:17 -0000
+Received: (qmail 17538 invoked by uid 8); 17 Sep 2001 03:40:45 -0000
+Received: from tanqueray.home.infotrope.net (192.168.1.42, claiming to be "tanqueray.infotrope.net")
+	by e-smith.lagavulin.dnsalias.org with SMTP id smtpdg4VBfy; Sun, 16 Sep 2001 23:40:37 EDT
+Received: from skud by tanqueray.infotrope.net with local (Exim 3.20 #1 (Debian))
+	id 15ipJM-0003eo-00; Sun, 16 Sep 2001 23:43:08 -0400
+To: kfox@vulpes.com, modules@perl.org
+Subject: Re: How to consolidate unit conversion modules?
+In-Reply-To: <3BA0F78B.C219D845@vulpes.com>
+References: <3BA0F78B.C219D845@vulpes.com>
+Message-ID: <E15ipJM-0003eo-00@tanqueray.infotrope.net>
+Date: Sun, 16 Sep 2001 23:43:08 -0400
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: skud@infotrope.net (Kirrily Robert)
+
+Sorry for taking so long to reply, but for what it's worth:
+
+>Does anybody have any advice for:
+>
+>How to merge modules together or otherwise
+>share a namespace between several authors? I
+>think there was recently a big effort to merge
+>time/date modules. Any lessons I should take
+>from that?
+
+The date/time efforts are still in progress over on datetime@perl.org.
+Nothing concrete yet, just some namespace suggestions and some further
+suggestions that modules with similar functionality should have similar
+APIs.
+
+>How to find all the affected people? Authors
+>of related modules, users of unit modules, etc?
+>Neither Robert or I are really keen on breaking
+>code by moving around modules.
+
+I don't know that there's really any way to contact users other than by
+posting to comp.lang.perl.* or relevant mailing lists or websites.  
+
+One thing I've seen done with some success is to make your Makefile.PL
+print out a big warning:
+
+***********************************************************************
+WARNING! The interface of this module has changed significantly between
+versions X.XX and Y.YY.  Installing this module may cause older code
+to break.  Are you sure you want to install this module?
+***********************************************************************
+
+Of course you should also increment the major version number, eg. going
+from 1.XX to 2.XX.
+
+Another thing you could do is provide a backwards compatibility mode,
+where the old stuff was left in there but undocumented.
+
+>Any tips for keeping up on how/where a module
+>is used or referred to? Frankly I was surprised
+>that Convert::Units existed, even though Robert
+>knew about (and referred to!) my Math::Units
+>module. I was also surprised to find out that
+>Math::Units was being actively used even though
+>I never advertised it.
+
+There's no real way to do this.  A note in your POD saying "please
+contact me if you're using this" might help a little, but not much.
+A google search might be useful, but again not much.
+
+K.
+
+-- 
+Kirrily 'Skud' Robert - skud@infotrope.net - http://infotrope.net/
+"Sure, only 2 percent of the Internet population uses lynx, but they're 
+the top 2 percent."  -- petro, on a.s.r

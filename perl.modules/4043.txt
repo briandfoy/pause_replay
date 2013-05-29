@@ -1,0 +1,241 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4043
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12356 invoked from network); 1 Jan 2001 03:08:13 -0000
+Received: from palladium.baremetal.com (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 1 Jan 2001 03:08:13 -0000
+Received: from [24.66.166.9] (h24-66-166-9.gv.shawcable.net [24.66.166.9])
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id TAA16725;
+	Sun, 31 Dec 2000 19:00:10 -0800
+Mime-Version: 1.0
+Message-ID: <f04320400b6759f93acbf@[24.66.166.9]>
+Date: Sun, 31 Dec 2000 19:08:08 -0800
+To: modules@perl.org
+Subject: [RFC] for HTML::EasyTags
+Cc: Sam Tregar <sam@tregar.com>
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+I would like to release the following module in its own distribution. 
+I have scoured the CPAN module list and the POD for similar modules, 
+and could find none.  The nearest equivalent is the HTML generation 
+in CGI.pm, but my solution
+is focused, has numerous improvements, and is about 200K lighter.
+
+My authorname is DUNCAND.
+
+The module is already on CPAN under the temporary name of 
+"HTML::TagMaker" and has complete POD, although I made significant 
+POD changes to the new version, for which I think "HTML::EasyTags" is 
+a better name.  Although, if you have any better suggestions for a 
+name, I would love to hear them.  The module has a DLSI of "bdpO".
+
+Below I quote the portion of the POD from Name, Dependencies, 
+Synopsis, Description, Sample Output (from Synopsis).  Left out is 
+the syntax and method list, but that POD changed little from the 
+TagMaker version.  The main exception
+being that the last two methods from TagMaker were removed, since they were
+more proprietary in nature.
+
+Thanks in advance,
+
+// Darren Duncan
+
+P.S.  If I get no response to this email in 24 hours, I will advance 
+to making a namespace request for "HTML::EasyTags", and provide a 
+more summarized "Name".
+
+---------------------------------
+
+NAME
+
+HTML::EasyTags - Make properly formatted HTML 4 tags, or lists or 
+parts of them, with one simple method call.
+
+DEPENDENCIES
+
+Perl Version
+
+         5.004
+
+Standard Modules
+
+         I<none>
+
+Nonstandard Modules
+
+         Class::ParamParser
+
+SYNOPSIS
+
+         use HTML::EasyTags;
+
+         my $html = HTML::EasyTags->new();
+         $html->groups_by_default( 1 );
+
+         print
+                 $html->prologue_tag,
+                 $html->html_start,
+                 $html->head_start,
+                 $html->title( 'This Is My Page' ),
+                 $html->style( $html->comment_tag( <<__endquote ) ),
+         \nBODY {
+                 background-color: #ffffff;
+                 background-image: none;
+         }
+         __endquote
+                 $html->head_end,
+                 $html->body_start,
+                 $html->h1( 'A Simple Example' ),
+                 $html->p(
+                         "Click " .
+                         $html->a( href => 'http://search.cpan.org', 
+text => 'here' ) .
+                         " for more."
+                 ),
+                 $html->hr,
+                 $html->table(
+                         $html->tr( [
+                                 $html->th( [ 'Name', 'Count', 'URL', 
+'First Access' ] ),
+                                 $html->td( [ 'Old Page', 33, 
+'http://www.domain.com',
+                                         '1999/04/23 13:55:02' ] )
+                         ] )
+                 ),
+                 $html->hr,
+                 $html->form_start( method => 'post', action => 
+'http://localhost' ),
+                 $html->p(
+                         "What's your name? " .
+                         $html->input( type => 'text', name => 'name' )
+                 ),
+                 $html->p(
+                         "What's the combination?" .
+                         $html->input_group(
+                                 -type => 'checkbox',
+                                 -name => 'words',
+                                 -value => ['eenie', 'meenie', 'minie', 'moe'],
+                                 -checked => [1, 0, 1, 0],
+                                 -text => ['Eenie', 'Meenie', 'Minie', 'Moe'] ),
+                 ),
+                 $html->p(
+                         "What's your favorite colour? " .
+                         $html->select_start( -size => 1, -name => 'color' ) .
+                         $html->option_group(
+                                 -value => ['red', 'green', 'blue', 
+'chartreuse'],
+                                 -text => ['Red', 'Green', 'Blue', 
+'Chartreuse'] ) .
+                         $html->select_end
+                 ),
+                 $html->input( type => 'submit' ),
+                 $html->form_end,
+                 $html->body_end,
+                 $html->html_end;
+
+DESCRIPTION
+
+This Perl 5 object class can be used to generate any HTML tags in a 
+format that is consistent with the W3C HTML 4.0 standard.  There are 
+no restrictions on what tags are named, however; you can ask for any 
+new or unsupported tag that comes along from Netscape or Microsoft, 
+and it will be made.  Additionally, you can generate lists of said 
+tags with one method call, or just parts of said tags (but not both 
+at once).
+
+This module's purpose is to be lightweight, easy to use, and whose 
+results are syntactically correct and nicely formatted (should humans 
+wish to read or debug it).  At the same time, it is supportive of 
+your existing knowledge of HTML and as such its interface closely 
+mirrors the actual appearance of the resulting tags.  This means that 
+methods have the same name as the actual tags, and named parameters 
+that you pass correspond directly to  the tag attributes produced. 
+This module saves you having to remember the little details on 
+formatting.  For your convenience, a majority of the methods and 
+their arguments are backwards-compatible with those in CGI.pm, but 
+you are saved 200K of code size.
+
+As a reference, I strongly recommend that you check out Kevin 
+Werbach's excellent "The Bare Bones Guide to HTML", which is 
+available at http://werbach.com/barebones/. I found this document 
+invaluable when making this module, as it provides a comprehensive 
+list of all the HTML tags along with their formatting and extensions.
+
+In this implementation, "standard format" means that tags are made as 
+pairs (<TAG></TAG>) by default, unless they are known to be "no pair" 
+tags.  Tags that I know to be "no pair" are [basefont, img, area, 
+param, br, hr, input, option, tbody, frame, comment, isindex, base, 
+link, meta].  However, you can force any tag to be "pair" or "start 
+only" or "end only" by appropriately modifying your call to the tag 
+making method.
+
+Also, "standard format" means that tag modifiers are formatted as 
+"key=value" by default, unless they are known to be "no value" 
+modifiers.  Modifiers that I know to be "no value" are [ismap, 
+noshade, compact, checked, multiple, selected, nowrap, noresize, 
+param].  These are formatted simply as "key" because their very 
+presence indicates positive assertion, while their absense means 
+otherwise.  For modifiers with values, the values will always become 
+bounded by quotes, which ensures they work with both string and 
+numerical quantities (eg: key="value").
+
+Note that this class is a subclass of Class::ParamParser, and 
+inherits all of its methods, "params_to_hash()" and 
+"params_to_array()".
+
+HTML CODE FROM SYNOPSIS PROGRAM
+
+         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+         <HTML>
+         <HEAD>
+         <TITLE>This Is My Page</TITLE>
+         <STYLE>
+         <!--
+         BODY {
+                 background-color: #ffffff;
+                 background-image: none;
+         }
+          --></STYLE>
+         </HEAD>
+         <BODY>
+         <H1>A Simple Example</H1>
+         <P>Click
+         <A HREF="http://search.cpan.org">here</A> for more.</P>
+         <HR>
+         <TABLE>
+         <TR>
+         <TH>Name</TH>
+         <TH>Count</TH>
+         <TH>URL</TH>
+         <TH>First Access</TH></TR>
+         <TR>
+         <TD>Old Page</TD>
+         <TD>33</TD>
+         <TD>http://www.domain.com</TD>
+         <TD>1999/04/23 13:55:02</TD></TR></TABLE>
+         <HR>
+         <FORM METHOD="post" ACTION="http://localhost">
+         <P>What's your name?
+         <INPUT TYPE="text" NAME="name"></P>
+         <P>What's the combination?
+         <INPUT TYPE="checkbox" NAME="words" CHECKED VALUE="eenie">Eenie
+         <INPUT TYPE="checkbox" NAME="words" VALUE="meenie">Meenie
+         <INPUT TYPE="checkbox" NAME="words" CHECKED VALUE="minie">Minie
+         <INPUT TYPE="checkbox" NAME="words" VALUE="moe">Moe</P>
+         <P>What's your favorite colour?
+         <SELECT NAME="color" SIZE="1">
+         <OPTION VALUE="red">Red
+         <OPTION VALUE="green">Green
+         <OPTION VALUE="blue">Blue
+         <OPTION VALUE="chartreuse">Chartreuse
+         </SELECT></P>
+         <INPUT TYPE="submit">
+         </FORM>
+         </BODY>
+         </HTML>
+

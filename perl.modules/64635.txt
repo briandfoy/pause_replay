@@ -1,0 +1,101 @@
+Newsgroups: perl.datetime,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.datetime:7201 perl.modules:64635
+Return-Path: <me@evancarroll.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 9017 invoked from network); 19 Feb 2009 19:45:16 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 19 Feb 2009 19:45:16 -0000
+Received: (qmail 15552 invoked by uid 225); 19 Feb 2009 19:45:15 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15543 invoked by alias); 19 Feb 2009 19:45:15 -0000
+X-Spam-Status: No, hits=1.4 required=8.0
+	tests=NO_DNS_FOR_FROM
+X-Spam-Check-By: la.mx.develooper.com
+Received: from fk-out-0910.google.com (HELO fk-out-0910.google.com) (209.85.128.188)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 19 Feb 2009 11:45:10 -0800
+Received: by fk-out-0910.google.com with SMTP id 19so515676fkr.10
+        for <multiple recipients>; Thu, 19 Feb 2009 11:45:05 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.103.213.10 with SMTP id p10mr949365muq.17.1235072705417; Thu, 
+	19 Feb 2009 11:45:05 -0800 (PST)
+In-Reply-To: <499D22E0.4020409@sneakemail.com>
+References: <497D0922.4070806@turnstep.com> <499D22E0.4020409@sneakemail.com>
+Date: Thu, 19 Feb 2009 13:45:05 -0600
+Message-ID: <428b865e0902191145s10e31be8v83f998cf20006a72@mail.gmail.com>
+Subject: Re: Co-maintainer of DateTime::Format::Strptime
+To: Steffen Mueller <wyp3rlx02@sneakemail.com>
+Cc: Greg Sabino Mullane <greg@turnstep.com>, Rick Measham <rickm@cpan.org>, modules@perl.org, 
+	datetime@perl.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: lists@evancarroll.com (Evan Carroll)
+
+Nice, being the report-bug link takes you to code.google.com (just
+filed one the other day with tests).
+http://code.google.com/p/datetime-format-strptime/issues/detail?id=10
+
+I've created a replacement for it just yesterday actually,
+DateTimeX::Format::POSIX::Strptime, which is still a developers
+release. I use the POSIX C bindings per POSIX::strptime() (cpan module
+not POSIX function). It uses my new framework DateTimeX::Format. It
+weights in under 50 lines of code.
+
+There is one minor issue: I'll probably rewrite ::CLDR too -- CLDR
+doesn't work with DateTimes that lack dates, and to vastly eliminate
+code, I pull the local specific conventions from DateTime::Local which
+stores them as CLDR patterns, and I feed off to DateTime::Format::CLDR
+(which is kind of bugged). The other options are to write a Strptime
+in perl, eww, or to use the POSIX way of setlocale() very bad idea.
+
+However DateTime::Local::CLDR is preventing me from parsing
+local-specific time formats (that lack dates) with ::POSIX::Strptime,
+which is why it is a developer release.
+
+If I get a DateTimeX::Format::CLDR, or DateTime::Format::CLDR patched,
+I'll go ahead and make it production. In the end it just makes another
+viable alternative to Format::Strptime.
+
+On Thu, Feb 19, 2009 at 3:14 AM, Steffen Mueller
+<wyp3rlx02@sneakemail.com> wrote:
+> Hi Greg, hi Rick,
+>
+> this somehow slipped through the modules@perl.org people's nets. I'm CC'ing
+> the datetime list in case Rick's reading that.
+>
+> Greg Sabino Mullane wrote:
+>>
+>> I'd like to be given the rights to co-maintain the
+>> DateTime::Format::Strptime, as it has a number of bugs that are solved
+>> in rt.cpan.org but have not been applied. I've applied some of these
+>> locally, but would much prefer to fix it once globally and release a new
+>> version.
+>>
+>> modules@perl.org:
+>>
+>> I've mailed Rick a month ago (December 23, 2008), but had no response.
+>> Hopefully just a missed email in the holiday craziness.
+>>
+>> My CPAN id is TURNSTEP. Thanks to all.
+>
+> To me, it seems Rick is still around. He's been maintaining the module for
+> several years and the last release is from 2008. Greg, have you read
+>  http://cpan.org/modules/04pause.html#takeover ?
+>
+> Rick, please let us know how to proceed.
+>
+> If anyone knows a working mail address for contacting Rick, please feel free
+> to forward this.
+>
+> Best regards,
+> Steffen, for the PAUSE admins.
+>
+
+
+
+-- 
+Evan Carroll
+System Lord of the Internets

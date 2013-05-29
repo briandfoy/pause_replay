@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1564
+Return-Path: <k@ak-71.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32080 invoked from network); 8 Apr 2000 16:17:37 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (0@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 8 Apr 2000 16:17:37 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id SAA08384;
+	Sat, 8 Apr 2000 18:17:07 +0200
+Sender: k@ak-71.mind.de
+To: "Kurt D. Starsinic" <kstar@chapin.edu>
+Cc: "Andreas J. Koenig" <andreas.koenig@anima.de>, cpan@perl.org,
+        modules@perl.org, "Elaine M. Ashton" <elaine@chaos.wustl.edu>,
+        Jarkko Hietaniemi <jhi@iki.fi>
+Subject: Re: Reworking CPAN/authors/id/
+References: <m3bt3ozpof.fsf@ak-71.mind.de> <20000405163427.A21001@O2.chapin.edu>
+Date: 08 Apr 2000 18:17:07 +0200
+In-Reply-To: "Kurt D. Starsinic"'s message of "Wed, 5 Apr 2000 16:34:27 -0400"
+Message-ID: <m3u2hctvng.fsf@ak-71.mind.de>
+Lines: 61
+User-Agent: Gnus/5.070098 (Pterodactyl Gnus v0.98) Emacs/20.6
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Wed, 5 Apr 2000 16:34:27 -0400, "Kurt D. Starsinic" <kstar@chapin.edu> said:
+
+ > On Wed, Apr 05, 2000 at 02:40:32PM +0200, Andreas Koenig wrote:
+>> I believe, the CPAN/authors/id/ directory needs a gentle cleanup.
+>> Currently there is no simple algorithm to generate the directory of an
+>> author from the userid. The only way to find out that JHI has the
+>> directory JHI/ is by trying which of JHI/ and J/JH/JHI/ exists.
+>> 
+>> It would be a simple job to make the transition with backwards
+>> compatibility like so (tested):
+>> 
+>> use File::Path qw(mkpath);
+>> opendir DIR, "."; # from authors/id
+>> for (readdir DIR){
+>> next if /^\./ or length($_)==1;
+>> my $targ = substr($_,0,1) . "/" . substr($_,0,2);
+>> mkpath $targ;
+>> rename $_, "$targ/$_";
+>> symlink "$targ/$_", $_;
+>> }
+>> 
+>> But that will cause a huge avalanche of mirror traffic (both for
+>> mirror and rsync). So I suppose we'd have a sleep 3600 after each loop
+>> so that the job takes 12 days until all 290 directories are relocated.
+>> 
+>> The question is: do you see any other problems I am not seeing? Is
+>> sleep 3600 OK? Is the whole idea sound? If nobody has objections, I'll
+>> start tomorrow by relocating my own directory, wait a week and if no
+>> problems are reported run the job with the sleep 3600. Otherwise,,,
+>> 
+>> Opinions?
+
+ >     The idea is very good, Andreas.  It would probably be a good idea _not_
+ > to run it when the update daemons are running, or you might get very
+ > confusing glitches in the moment between the rename and the symlink.
+
+Excellent point. I have now tried to avoid that kind of race by first
+duplicating the directory with rsync, then let all the indexes adjust
+to the new directory and only after an hour remove the old directory.
+This is roughly the following in pseudocode:
+
+ for (readdir DIR){
+   next if /^\./ or length($_)==1 or -l $_;
+   my $targ = substr($_,0,1) . "/" . substr($_,0,2);
+   mkpath $targ;
+   system rsync, "-va", $_, "$targ/";
+   # Now actively care for all indexes to be updated;
+   sleep 3600;
+   rmtree $_;
+   symlink "$targ/$_", $_;
+ }
+
+I have started with my own CPAN directory now and am watching for
+glitches to show up (or better to not show up:)
+
+Elaine, I will have to adjust the CPAN backup stuff when we are
+through the process as we do not want to end up with duplicates. I
+will probably even have to adjust a bit earlier to safe diskspace.
+
+-- 
+andreas

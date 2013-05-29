@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:61581
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20776 invoked from network); 30 Jul 2008 02:18:32 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 30 Jul 2008 02:18:32 -0000
+Received: (qmail 9606 invoked by uid 225); 30 Jul 2008 02:18:31 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9601 invoked by alias); 30 Jul 2008 02:18:31 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 29 Jul 2008 19:18:29 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-1) with ESMTP id m6U2Kjgo015215;
+	Wed, 30 Jul 2008 04:20:45 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id m6U2KiaO015214;
+	Wed, 30 Jul 2008 04:20:44 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: =?utf-8?Q?Jos=C3=A9_Castro?= <cogurov@gmail.com>
+Cc: modules@perl.org
+Subject: Re: I nominate =?utf-8?Q?Jos=C3=A9?= Castro as a new PAUSE admin
+References: <080620080128292421%brian.d.foy@gmail.com>
+	<87d4mspmgo.fsf@k75.linux.bogus>
+	<4895a0700807290828w622f51d7t80fd05fc2e145a80@mail.gmail.com>
+Reply-To: modules@perl.org
+Date: Wed, 30 Jul 2008 04:20:43 +0200
+In-Reply-To: <4895a0700807290828w622f51d7t80fd05fc2e145a80@mail.gmail.com>
+	(=?utf-8?Q?Jos=C3=A9?= Castro's message of "Tue\, 29 Jul 2008 16\:28\:00
+ +0100")
+Message-ID: <87d4kwaz9g.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Tue, 29 Jul 2008 16:28:00 +0100, "Jos=C3=A9 Castro" <cogurov@gmail=
+.com> said:
+
+  >      Seconded and DONE. Welcome Jos=C3=A9!
+
+
+  > Hey, guys.
+  > First of all, thanks.
+  > Secondly, I'm looking at my PAUSE menu with Adam, so he can give me a w=
+alkthrough, and
+  > finally found out why so many things aren't making any sense to me...
+  > It's because it seems I still don't have an admin bit O:-)
+  > I'm missing the admin menu :-)
+  > Any help? :-)
+
+Very sorry, my favorite mysql bug. Watch:
+
+mysql> select * from grouptable where user=3D'COG' and ugroup=3D'admin';
+Empty set (0.00 sec)
+
+mysql> alter table grouptable engine=3DInnoDB;
+Query OK, 33 rows affected (0.03 sec)
+Records: 33  Duplicates: 0  Warnings: 0
+
+mysql> select * from grouptable where user=3D'COG' and ugroup=3D'admin';
++------+--------+
+| user | ugroup |
++------+--------+
+| COG  | admin  |=20
++------+--------+
+1 row in set (0.00 sec)
+
+
+I hope this makes pause /accessible/ for you.
+
+--=20
+andreas

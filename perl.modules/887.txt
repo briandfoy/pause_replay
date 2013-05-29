@@ -1,0 +1,95 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:887
+Return-Path: <tobiasb@tobiasb.funcom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7784 invoked from network); 13 Jan 2000 18:21:57 -0000
+Received: from tobiasb.funcom.com (tobiasb@193.71.100.171)
+  by tmtowtdi.perl.org with SMTP; 13 Jan 2000 18:21:57 -0000
+Received: from localhost (tobiasb@localhost)
+	by tobiasb.funcom.com (8.8.5/8.8.5) with SMTP id TAA05096;
+	Thu, 13 Jan 2000 19:21:41 +0100
+Date: Thu, 13 Jan 2000 19:21:40 +0100 (MET)
+To: Tim Bunce <Tim.Bunce@ig.co.uk>
+cc: modules@perl.org
+Subject: Re: CPAN identity wanted
+In-Reply-To: <20000113175839.E14533@ig.co.uk>
+Message-ID: <Pine.LNX.3.95.1000113190428.4619p-100000@tobiasb.funcom.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: tobiasb@tobiasb.funcom.com (Tobias Brox)
+References: <20000113175839.E14533@ig.co.uk>
+
+> Umm,
+> 
+> ::SQLDataIO ?       Import/export file format with data and SQL
+
+Ok, I'll take that one.
+
+I also have another very minor thing ... where the "ideology" is more
+important than the module itself; actually the pod is a lot longer than
+the code itself :)
+
+CGI::
+::ClientError	bdpf	send error messages to the browser
+
+From the POD:
+
+SYNOPSIS
+(...)
+        &check_if_user_is_stupid() 
+	    && CGI::ClientError::error("You are stupid!");
+
+
+DESCRIPTION
+       Errors might appear in a CGI.  If the script knows what is
+       wrong, it should tell what is wrong - but I think it's
+       important to separate between when it should tell the
+       client, and when it should tell the webmaster.  The
+       user/client shouldn't be get error messages that are
+       irrelevant or meaningless or even possibly exploitable -
+       as "out of disk", "out of memory", "core dumped", etc.
+       Instead, the script should die, the error should be
+       logged, and perhaps even sent by mail to the webmaster -
+       perhaps even to his cellphone.  The user should get an
+       500 and a clear, friendly message that the problem is at
+       the server side and probably will be dealt with ("try
+       again later, or mail webmaster").
+
+       Anyway, sometimes the client is to blame for the error.
+       He has typed in a text string in a number box, he claims
+       beeing born in 2019-14-14, he has been typing in a long
+       URL with illegal parameters, etc. Then the client should
+       get an informative error message.  That's what this small
+       module is for.
+
+       Three variables might be set by the caller program,
+       header, footer and handler. The header and footer is what
+       to output before and after the error message. The default
+       header is:
+         Content-Type: text/html
+         <H1>Error</h1>
+         Here is an error message for you:<br>
+         <i>
+
+       The default footer is:
+         </i><br>
+         If something is unclear, feel free to contact the
+         webmaster.
+
+
+       The default handler is ... do nothing.
+
+       Somebody has probably written scientific papers about how
+       to be respectful and pedagogic when telling a user that he
+       has done an error.  I think it is wise to be humble, don't
+       expect too much - remember, the average web user of today
+       is not a typical unix user.  I don't know.  I don't care.
+
+-- 
+Tobias Brox (alias TobiX) - sysguy - +4722925871 - http://www.funcom.com/
+If an _urgent_ email is not acted upon within 10 minutes, you might try
+a _short_ mail to sms@tobiasb.funcom.com
+

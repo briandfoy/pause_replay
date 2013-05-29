@@ -1,0 +1,139 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:20341
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9560 invoked by uid 76); 11 Apr 2003 18:48:24 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.25) with SMTP; Fri, 11 Apr 2003 11:48:24 -0700
+Received: (qmail 14320 invoked by uid 225); 11 Apr 2003 18:48:23 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14315 invoked by uid 507); 11 Apr 2003 18:48:23 -0000
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66) by one.develooper.com (qpsmtpd/0.25) with SMTP; Fri, 11 Apr 2003 11:48:22 -0700
+Received: from franz.ak.mind.de (IDENT:k@localhost [127.0.0.1])	by franz.ak.mind.de (8.12.9/8.12.9) with ESMTP id h3BIlp9D001168;	Fri, 11 Apr 2003 20:47:51 +0200
+Received: (from k@localhost)	by franz.ak.mind.de (8.12.9/8.12.9/Submit) id h3BIlnmj001167;	Fri, 11 Apr 2003 20:47:49 +0200
+X-Authentication-Warning: franz.ak.mind.de: k set sender to andreas.koenig@anima.de using -f
+To: Eduardo =?iso-8859-1?q?P=E9rez?= Ureta <eperez@it.uc3m.es>
+Cc: modules@perl.org, jacks@cpan.org
+Subject: Re: [Eduardo =?iso-8859-1?q?P=E9rez?= Ureta <eperez@it.uc3m.es>] Removal of CPAN Unmaintained & Unexistant Entries
+References: <m3u1d5oruf.fsf@franz.ak.mind.de>
+Date: Fri, 11 Apr 2003 20:47:49 +0200
+In-Reply-To: <m3u1d5oruf.fsf@franz.ak.mind.de> (Andreas J. Koenig's message of "Fri, 11 Apr 2003 19:40:24 +0200")
+Message-ID: <m3istkq3ai.fsf@franz.ak.mind.de>
+User-Agent: Gnus/5.090017 (Oort Gnus v0.17) Emacs/21.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-1.6 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,MIME_LONG_LINE_QP,REFERENCES,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_GNUS_UA,X_AUTH_WARNING version=2.44
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+  > -------------------- Start of forwarded message --------------------
+  > Date: Fri, 11 Apr 2003 14:17:43 +0000
+  > From: Eduardo P=C3=A9rez Ureta <eperez@it.uc3m.es>
+  > To: Andreas K=C3=B6nig <andreas.koenig@anima.de>
+  > Subject: Removal of CPAN Unmaintained & Unexistant Entries
+  > Message-ID: <ee67aa9419f6cd8d83b4ccf7f4c93b0e@it.uc3m.es>
+
+  > Hi,
+
+  > I was looking at the modules list and found some packages I would like
+  > to use but I found they don't exist and the maintainer don't have/want
+  > to upload them anytime.
+  > Would you remove them from CPAN database?
+
+Absolutely! Thanks for letting us know.
+
+It's not easy to define the edge cases, but I guess we want to remove
+namespaces that have been reserved more than two years ago and that
+have no implementation on CPAN yet. Unfortunately this cannot be done
+automatically without the help of the owners: the database lists
+355[*] namespaces that fit the above definition, but each single one
+needs to be examined if it is an indexer mistake, or if there are
+other reasons to keep the namespace in the database. This will need
+some communicating.
+
+But as JackS (Hi!) has already answered to your concerns, I have
+immediately scheduled all these for deletion:
+
+mysql> select mods.modid,mods.mlstatus,mods.userid,from_unixtime(mods.intro=
+duced) from mods left outer join packages on mods.modid=3Dpackages.package =
+where packages.package is null and mods.mlstatus=3D'list' and mods.introduc=
+ed < unix_timestamp(NOW())-86400*365*2 and userid=3D'JACKS';
++------------------------------+----------+--------+-----------------------=
+---------+
+| modid                        | mlstatus | userid | from_unixtime(mods.int=
+roduced) |
++------------------------------+----------+--------+-----------------------=
+---------+
+| Server::FileQueue::Object    | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Echo::TcpISNowait    | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Echo::TcpDForking    | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::FileQueue::MboxQueue | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Inet::Functions      | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Inet::TcpClientObj   | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Inet::TcpMasterObj   | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Inet::UdpObj         | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::FileQueue::Functions | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Echo::TcpISWFork     | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Echo::MailPipe       | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Echo::TcpDMplx       | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Echo::TcpISWMplx     | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Mail::Object         | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Mail::Functions      | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Echo::UdpD           | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Inet::Object         | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::Echo::UdpIS          | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| Server::FileQueue::DirQueue  | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
+| IPC::Globalspace             | list     | JACKS  | 1995-09-27 01:00:00   =
+         |
++------------------------------+----------+--------+-----------------------=
+---------+
+20 rows in set (0.91 sec)
+
+update mods set mlstatus=3D'delete', changed=3Dunix_timestamp(NOW()),
+changedby=3D'ANDK' where modid in ('Server::FileQueue::Object',
+'Server::Echo::TcpISNowait', 'Server::Echo::TcpDForking',
+'Server::FileQueue::MboxQueue', 'Server::Inet::Functions',
+'Server::Inet::TcpClientObj', 'Server::Inet::TcpMasterObj',
+'Server::Inet::UdpObj', 'Server::FileQueue::Functions',
+'Server::Echo::TcpISWFork', 'Server::Echo::MailPipe',
+'Server::Echo::TcpDMplx', 'Server::Echo::TcpISWMplx',
+'Server::Mail::Object', 'Server::Mail::Functions', 'Server::Echo::UdpD',
+'Server::Inet::Object', 'Server::Echo::UdpIS',
+'Server::FileQueue::DirQueue', 'IPC::Globalspace');
+
+Thanks again,
+--=20
+andreas
+
+[*] select mods.modid, mods.mlstatus, mods.userid,
+    from_unixtime(mods.introduced) from mods left outer join packages
+    on mods.modid=3Dpackages.package where packages.package is null and
+    mods.mlstatus=3D'list' and mods.introduced <
+    unix_timestamp(NOW())-86400*365*2 order by userid,
+    mods.introduced+0;
+
+

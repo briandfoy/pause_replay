@@ -1,0 +1,113 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60994
+Return-Path: <pjf@perltraining.com.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12076 invoked from network); 24 Jun 2008 17:05:01 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 24 Jun 2008 17:05:01 -0000
+Received: (qmail 22010 invoked by uid 225); 24 Jun 2008 17:05:00 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22000 invoked by alias); 24 Jun 2008 17:05:00 -0000
+X-Spam-Status: No, hits= required=
+	tests=
+Received: from teddybear.perltraining.com.au (HELO teddybear.perltraining.com.au) (210.23.138.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 24 Jun 2008 10:01:25 -0700
+Received: from [210.23.138.172] (moemi.perltraining.com.au [210.23.138.172])
+	by teddybear.perltraining.com.au (Postfix) with ESMTP id 5CB1CA8381
+	for <modules@perl.org>; Wed, 25 Jun 2008 02:58:38 +1000 (EST)
+Message-ID: <486127B3.20807@perltraining.com.au>
+Date: Wed, 25 Jun 2008 02:58:27 +1000
+Organization: Perl Training Australia
+User-Agent: Thunderbird 2.0.0.14 (Windows/20080421)
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: Naming and module sanity check - Taint::More
+References: <48608751.5040802@perltraining.com.au> <240620081128061119%brian.d.foy@gmail.com>
+In-Reply-To: <240620081128061119%brian.d.foy@gmail.com>
+X-Enigmail-Version: 0.95.6
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: pjf@perltraining.com.au (Paul Fenwick)
+
+G'day brian,
+
+brian d foy wrote:
+
+>> I'm thinking of using the name "Taint::More", since it will be implementing 
+>> extra taint checks and paranoia.  Any feedback on the name?
+> 
+> Is it really implementing more taint checks, or just being paranoid?
+
+Both!  As an example, consider:
+
+	open(my $fh, '<$filename');
+
+Perl doesn't usually care if $filename is tainted.  However if we haven't 
+checked $filename at all, then it's dreadfully easy to fall prey to:
+
+	* Path attacks ( eg, ../../../../../etc/passwd )
+	* Stream dup attacks ( $filename = '=&1' or $filename = '-')
+	* Poison null bytes (example not shown)
+	* Opening with '+<', which in older perls didn't get taint-checked
+	  either.
+
+Under the proposed Taint::More, using *any* tainted arguments to open will 
+be considered an error.  That makes it much more difficult to make a mistake.
+
+> That is, will it complain about problems that don't involve tainted
+> data?
+
+If taint is turned off, it will either be a no-op or an error, depending 
+upon how it's called.  The module doesn't have much point without taint 
+being enabled.
+
+> Also, on the PERL5SHELL issue, maybe that's something that Perl should
+> already do. What does p5p think? :)
+
+Perl 5.8.8 and 5.10.0 check PERL5SHELL in taint mode the same as other 
+important environment variables (eg, PATH and IFS) are checked.  In older 
+versions of Perl, PERL5SHELL was respected, but not checked.
+
+In a similar vein, environment variables were not taint-checked when system 
+was called under older versions of Perl, although with newer versions it is. 
+  I guess you can think of Taint::More as including some backporting some of 
+those changes.
+
+Taint::More does provide a convenient place to put a few things I've been 
+wanting for a while:
+
+	* Backporting of 5.8.8 and 5.10.0 taint checking for
+	  system/eval/qx
+
+	* open() and sysopen() check all arguments for taint, rather
+	  than only if we're opening a file for reading (or sometimes
+	  writing or duping).
+
+	* Nicer/more reliable taint checks on edge cases like dbmopen().
+	  dbmopen has never been documented as doing taint checks, but
+	  it does.  I don't know when that started happening, but I
+	  consider it a feature.
+
+	* 'use re qw(taint)' enabled with global effect, to avoid
+	  accidental untainting in taint-ignorant code.
+
+Pie-in-the-sky plan is for these to be switchable.  Anyone using the module 
+probably wants to backport the more sane behaviour from later perls.  Not 
+everyone will want the extra paranoid opens, or the global 'use re qw(taint)'.
+
+> I'm not sure that the Taint::More name is the best, but I can't think
+> of a better one tight now.
+
+Taint::More is what I'll work with for now then.
+
+Thanks for the advice!
+
+	Paul
+
+-- 
+Paul Fenwick <pjf@perltraining.com.au> | http://perltraining.com.au/
+Director of Training                   | Ph:  +61 3 9354 6001
+Perl Training Australia                | Fax: +61 3 9354 2681

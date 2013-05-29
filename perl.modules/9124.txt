@@ -1,0 +1,110 @@
+Newsgroups: perl.datetime,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.datetime:304 perl.modules:9124
+Return-Path: <nick@rlnt.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 49398 invoked by uid 76); 3 Dec 2001 16:31:00 -0000
+Received: from 233-123.adsl6.netlojix.net (HELO world.tonkinresolutions.com) (207.71.233.123)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Mon Dec  3 16:31:00 2001 -0000
+Received: from localhost (nick@localhost)
+	by world.tonkinresolutions.com (8.11.5/8.11.5) with ESMTP id fB3GLTE16676;
+	Mon, 3 Dec 2001 08:21:29 -0800 (PST)
+	(envelope-from nick@rlnt.net)
+Date: Mon, 3 Dec 2001 08:21:29 -0800 (PST)
+X-Sender: nick@world.tonkinresolutions.com
+To: datetime@perl.org, msql-mysql-modules@lists.mysql.com, modules@perl.org
+Subject: [ANNOUNCE] MySQL::DateFormat
+Message-ID: <Pine.BSF.4.21.0112030816360.16662-100000@world.tonkinresolutions.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: nick@rlnt.net (Nick Tonkin)
+
+
+Hi,
+
+The uploaded file
+
+    MySQL-DateFormat-1.00.tar.gz
+
+has entered CPAN as
+
+  file: $CPAN/authors/id/T/TO/TONKIN/MySQL-DateFormat-1.00.tar.gz
+  size: 4551 bytes
+   md5: fac2758a2f31b63074d0595365327636
+
+From the doco:
+
+NAME
+       MySQL::DateFormat -- Manipulate dates back and forth
+       between human-readable and MySQL formats
+
+SYNOPSIS
+        use MySQL::DateFormat;
+        my $md = MySQL::DateFormat->new(format => 'us');
+        print $md->toMySQL("5/31/87");    # prints "1987-05-31"
+        print $md->frMySQL("1987-05-31"); # prints "05-31-1987"
+
+
+DESCRIPTION
+       The MySQL RDBMS requires dates to be supplied in
+       YYYY-MM-DD format[1,2,3], but many humans expect dates to
+       be presented, and to be able to enter them, in MM-DD-YY or
+       DD-MM-YY format or similar. This module converts dates
+       back and forth between human-readable and MySQL format.
+
+       While there are multiple ways in Perl to format dates, and
+       while certain modules on CPAN exist that perform the date
+       formatting that is part of this module's functionality,
+       the author believes that there is a place for a package
+       tailored to the MySQL database. Even if one used
+       Date::Format and the super-configurability of its
+       underlying C routines, there would still be a need in a
+       large application for a package containing routines to
+       reformat the dates coming in and going out of the database
+       server. And that's not all:
+
+       The module allows the user to configure the format for
+       dates used in the application code, whether to use or req
+       uire four digits for the year, what year to use as century
+       cutoff if two-digit years are allowed, etc., etc. All
+       these configuration options are managed by the user
+       through an extrememly simple interface. In the realm in
+       which this module is intended to be used, the author has
+       found this to be a significant advantage.
+
+       Another very important task when using MySQL is error
+       checking of the "human-readable" dates supplied. This is
+       because MySQL does not raise an error when given an
+       invalid date, but simply inserts "0000-00-00". The module
+       handles error-checking transparently.
+
+       -------------------------------------
+
+       [1] This format is accepted in many, but not apparently
+       all, circles as ISO format.
+
+       [2] MySQL also accepts strings as dates, but that behavior
+       is not dealt with here.
+
+       [3] To quote from the MySQL docs: "Although MySQL tries to
+       interpret values in several formats, it always expects the
+       year part of date values to be leftmost. Dates must be
+       given in year-month-day order (for example, '98-09-04'),
+       rather than in the month-day-year or day-month-year orders
+       commonly used elsewhere (for example, '09-04-98',
+       '04-09-98')."
+
+[ ... ]
+
+
+Enjoy,
+
+Nick
+
+
+~~~~~~~~~~~
+Nick Tonkin
+
+

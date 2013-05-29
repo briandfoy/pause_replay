@@ -1,0 +1,50 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:58169
+Return-Path: <jpeacock@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 30754 invoked from network); 11 Dec 2007 19:44:06 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 11 Dec 2007 19:44:06 -0000
+Received: (qmail 22482 invoked by uid 225); 11 Dec 2007 19:44:06 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22476 invoked by alias); 11 Dec 2007 19:44:05 -0000
+X-Spam-Status: No, hits=-10.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_HI
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Tue, 11 Dec 2007 11:44:03 -0800
+Received: (qmail 30464 invoked by uid 515); 11 Dec 2007 19:43:59 -0000
+To: modules@perl.org, michael@insulin-pumpers.org
+Message-ID: <475EE87F.4090103@cpan.org>
+Date: Tue, 11 Dec 2007 14:43:59 -0500
+User-Agent: Thunderbird 2.0.0.9 (X11/20071031)
+MIME-Version: 1.0
+Subject: Re: $VERSION in Safe compartment
+References: <475D47FB.23164.DB7CE7@michael.insulin-pumpers.org>, <200712111642.lBBGgQ58013244@ns2.bizsystems.net> <475E73C5.17462.56EBC13@michael.insulin-pumpers.org>
+In-Reply-To: <475E73C5.17462.56EBC13@michael.insulin-pumpers.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 8.8.38.2
+Approved: news@nntp.perl.org
+From: jpeacock@cpan.org (John Peacock)
+
+michael@insulin-pumpers.org wrote:
+> package Mail::SpamCannibal::DNSBLserver;
+> use vars qw($VERSION);
+> $VERSION = do { q|char version[] = "dnsbls 0.47, 3-29-07"; | =~ /(\d+)\.(\d+)/; sprintf("%d.%02d",$1,$2)};
+> # returns $VERSION which is non-zero
+
+That works fine (i.e. the file DNSBLserver will have a legal $VERSION), 
+since that code is all on one line (which wasn't clear from your e-mail).
+
+However, you just can't execute that file in some other file, because 
+that is outside of the Safe compartment.  The $VERSION assignment *must* 
+be contained completely within the package; it doesn't need to be a 
+constant assignment, but it must not depend on any other file.  You can 
+use a preprocessor to generate the other files based on that same string 
+during build.
+
+John

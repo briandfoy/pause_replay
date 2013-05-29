@@ -1,0 +1,84 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45329
+Return-Path: <saper@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28303 invoked from network); 12 Oct 2005 23:00:22 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 12 Oct 2005 23:00:22 -0000
+Received: (qmail 8030 invoked by uid 225); 12 Oct 2005 23:00:22 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8018 invoked by alias); 12 Oct 2005 23:00:21 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from smtp3-g19.free.fr (HELO smtp3-g19.free.fr) (212.27.42.29)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 12 Oct 2005 16:00:06 -0700
+Received: from imp5-g19.free.fr (imp5-g19.free.fr [212.27.42.5])
+	by smtp3-g19.free.fr (Postfix) with ESMTP id E4ACB33311;
+	Thu, 13 Oct 2005 01:00:01 +0200 (CEST)
+Received: by imp5-g19.free.fr (Postfix, from userid 33)
+	id CB2312451E; Thu, 13 Oct 2005 01:00:01 +0200 (MEST)
+Received: from jua06-1-82-242-157-236.fbx.proxad.net (jua06-1-82-242-157-236.fbx.proxad.net [82.242.157.236]) 
+	by imp5-g19.free.fr (IMP) with HTTP 
+	for <maddingue@212.27.48.2>; Thu, 13 Oct 2005 01:00:01 +0200
+Message-ID: <1129158001.434d9571b47bc@imp5-g19.free.fr>
+Date: Thu, 13 Oct 2005 01:00:01 +0200
+To: "Andreas J. Koenig" <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Cc: modules@perl.org
+Subject: Re: XSLoader is not indexed
+References: <1128330668.4340f5ac8c7f8@imp3-g19.free.fr> <874q7n676b.fsf@k75.linux.bogus> <1129105797.434cc98514e21@imp6-g19.free.fr> <87oe5u4kqo.fsf@k75.linux.bogus>
+In-Reply-To: <87oe5u4kqo.fsf@k75.linux.bogus>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: Internet Messaging Program (IMP) 3.2.5
+X-Originating-IP: 82.242.157.236
+Approved: news@nntp.perl.org
+From: saper@cpan.org (=?iso-8859-1?b?U+liYXN0aWVu?= Aperghis-Tramoni)
+
+Andreas J. Koenig <andreas.koenig.gmwojprw@franz.ak.mind.de> wrote:
+
+>   > Aha! This explains why several modules are "hidden" from PAUSE but
+>   > present on Search CPAN. A FAQ or a document just stating that would
+>   > be useful. If I may help..
+>
+> Very welcome!
+
+Do you prefer Pod or HTML?
+
+
+> You may be interested in the appended patch. I recently sent it as a
+> suggestion to Lincoln Stein against GD. He didn't apply it and
+> preferred one of the other solutions. I like to send it to you because
+> it took me several iterations until I had it right.
+>
+> Unfortunately GD-2.25 differed from XSLoader in that it wrote the
+> GD.pm from the Makefile.PL not from a separate *.PL file, but you get
+> the idea...
+
+Hmm, looking at your patch, the following line bother me:
+
+> +		    PREOP => '$(PERL) -i -nle \'print if /^(package|.VERSION)/\'
+> $(DISTVNAME)/GD.pm',
+
+Unless I'm wrong, this PREOP command is not portable. First, it assumes
+that a shell is available, which is not necessarily the case (MacOS Classic).
+Second, it assumes that the single quote can be used as a quoting character,
+which is not true everywhere (Win32).
+
+On the other hand, simply adding XSLoader.pm to MANIFEST and the following
+line to Makefile.PL before WriteMakefile():
+    1 while unlink "XSLoader.pm";
+
+Just Works(tm) as expected.
+
+
+Thanks anyway for your exaplanation and patch.
+
+--
+Sébastien Aperghis-Tramoni
+
+Close the world, txEn eht nepO.

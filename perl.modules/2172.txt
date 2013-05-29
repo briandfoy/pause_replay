@@ -1,0 +1,63 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2172
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20873 invoked from network); 18 Jun 2000 16:19:13 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 18 Jun 2000 16:19:13 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id SAA31322;
+	Sun, 18 Jun 2000 18:18:57 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: Matt Sergeant <matt@sergeant.org>
+Cc: modules@perl.org
+Subject: Re: Very simple blessed exceptions
+References: <Pine.LNX.4.21.0006051229330.32525-100000@ted.sergeant.org>
+Date: 18 Jun 2000 18:18:57 +0200
+In-Reply-To: Matt Sergeant's message of "Mon, 5 Jun 2000 12:51:09 +0100 (BST)"
+Message-ID: <m33dmb7yj2.fsf@ak-71.mind.de>
+Lines: 35
+User-Agent: Gnus/5.0806 (Gnus v5.8.6) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 5 Jun 2000 12:51:09 +0100 (BST), Matt Sergeant <matt@sergeant.org> said:
+
+[...]
+
+ > Of course you can overload simple exception to your heart's content. The
+ > most important thing it does is makes sure that $@->isa() works by
+ > overloading CORE::die, and dying with a SimpleException::Uncaught
+ > exception (which overloads "" so that "$@" works). This sort of simple
+ > base class is vital in things like mod_perl where you can have many
+ > applications that use blessed exceptions but you want 1 place where
+ > CORE::die is overloaded providing access to isa() without having first to
+ > check for ref($@).
+
+There is no need to check for ref($@) first, UNIVERSAL::isa($@,"..."),
+works always.
+
+ > Of course CORE::die should be overloaded in core perl, as has been
+ > discussed on p5p endlessly with no results yet...
+
+No, please let us not start another discussion on that, this isn't the
+right place anyway.
+
+ > And I also know of
+ > several other efforts for exception handling, but they all try and do a
+ > lot, whereas I'm trying to do a little and let the programmer do whatever
+ > he wants on top of that.
+
+ > Thoughts?
+
+Maybe call it Exception::Simple, then we can recommend future
+implementors of Exception modules to collect their alternatives in the
+Exception:: namespace.
+
+-- 
+andreas

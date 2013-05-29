@@ -1,0 +1,117 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:551
+Return-Path: <sampo@neuronio.pt>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5958 invoked from network); 17 Nov 1999 07:05:14 -0000
+Received: from mail.neuronio.pt (195.138.1.166)
+  by tmtowtdi.perl.org with SMTP; 17 Nov 1999 07:05:14 -0000
+Received: (qmail 11817 invoked by uid 2222); 17 Nov 1999 08:07:20 -0000
+To: modules@perl.org
+Cc: sampo@neuronio.pt
+Subject: New module: SMIMEUtil
+Date: 17 Nov 1999 08:07:19 +0000
+Message-ID: <ya9k8nh35jc.fsf@mail.neuronio.pt>
+Lines: 97
+X-Mailer: Gnus v5.5/Emacs 20.3
+Approved: news@nntp.perl.org
+From: sampo@mail.neuronio.pt (Sampo Kellomaki)
+
+I'd like to register a new module/name space
+
+	SMIMEUtil::
+
+which is described by the blurb below. Note that this is a combined
+distribution of C library, perl interface to it, and a command line
+utility.
+
+I already uploaded the module to pause SAMPO/smime-0.7.tgz
+
+Status bits:   amhf
+Description:   Sign, encrypt, verify and decrypt S/MIME mail. Generate keys and be your own CA. Uses OpenSSL.
+Module list chapter: 15) WWW, HTML, HTTP, CGI, MIME, etc.
+Mailing list:  openssl-users@openssl.org
+Home page:     http://www.bacus.pt/Net_SSLeay/smime.html
+
+Blurb follows
+
+SMIME TOOL VERSION 0.7
+======================
+17.11.1999, Sampo Kellomaki <sampo@iki.fi>
+
+Available from
+
+        http://www.bacus.pt/Net_SSLeay/smime.html
+
+or as part of (future) OpenSSL-0.9.5 (see www.openssl.org)
+
+Smime tool is a set of utilities for doing smime signatures as well as
+basic key generation and certificate authority functions. It does
+
+        - sign and encrypt email and other S/MIME messages
+        - verify signatures and decrypt messages
+        - generate keys, certification requests, and self signed certificates
+        - certificate authority: sign certificate requests into certificates
+        - convert pem format to and from PKCS12 (allows importing and
+          exporting keys to and from Netscape (and probably Outlook Express))
+        - interoperates with Netscape mail reader, will probably interoperate
+          with Outlook Express
+        - standards compliant uses S/MIME, PKCS12, and pem
+
+Included in the package
+
+        - smime command line tool
+        - smimeutil library (written in C)
+        - perl module to access all of the above functionality (SMIMEUtil::)
+        - tutorial (the README file)
+        - documentation (the simeutil.h file ;-)
+
+Applications
+
+        - Provide smime capability for popular mail readers, such as elm,
+          pine, or mh
+        - CGI scripts that send S/MIME mail
+        - Mail processing robots that read S/MIME mail
+        - S/MIME over http
+        - Archieve signed documents in S/MIME format
+	- Sign software distributions (tarballs)
+        - Be your own certification authority
+
+Usage
+        ./smime -cs private password <mime-entity >smime  # clear sign
+        ./smime -cv cert <smime-entity >data              # verify clear sig
+        ./smime -ds private passwd <file >smime-sig       # make detached sig
+        ./smime -dv file <smime-sig-entity                # verify detached
+        ./smime -s  private password <mime-entity >smime  # sign
+        ./smime -qs <smime-entity >signing-cert-info      # find out who signed
+        ./smime -v cert <smime-entity >signer-dn          # verify signature
+
+        ./smime -vc cacert <cert                          # verify certificate
+
+        ./smime -e public <mime-entity >smime-ent         # encrypt
+        ./smime -d private password <smime-entity >mime   # decrypt
+
+        ./smime -qr <req.pem    # Query all you can about request
+        ./smime -qc <cert.pem   # Query all you can about certificate
+        ./smime -ca ca_cert passwd serial <req.pem >cert.pem     # sign a req
+
+        ./smime -p12-pem p12pw pempw <x.p12 >x.pem  # convert PKCS12 to pem
+        ./smime -pem-p12 frindly@name.com pempw p12pw <x.pem >x.p12
+
+        ./smime -m type1 file1 type2 file2 type3 file3 <text  # make multipart
+        ./smime -m image/gif foo.gif <message | ./smime -s private pass >smime
+
+        ./smime -kg attr passwd req.pem <dn >priv_ss.pem  # keygen
+
+        ./smime -base64 <file >file.base64
+        ./smime -unbase64 <file.base64 >file
+        ./smime -mime text/plain <file >mime-entity
+        ./smime -mime_base64 image/gif <file.gif >mime-entity
+        ./smime -split dirprefix <multipart         # splits multipart
+        ./smime -base64 <in | ./smime -unbase64 >out
+        ./smime -cat <in >out   # copy input to output using slurp and barf
+
+        ./smime -kg 'description=Test' secret req.pem <me.dn >ss.pem
+
+--Sampo

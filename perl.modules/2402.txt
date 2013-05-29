@@ -1,0 +1,158 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2402
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26668 invoked from network); 9 Jul 2000 01:45:38 -0000
+Received: from mail1.rdc2.bc.home.com (24.2.10.84)
+  by tmtowtdi.perl.org with SMTP; 9 Jul 2000 01:45:38 -0000
+Received: from [24.67.200.33] by mail1.rdc2.bc.home.com
+          (InterMail vM.4.01.03.00 201-229-121) with ESMTP
+          id <20000709014531.SYSL10910.mail1.rdc2.bc.home.com@[24.67.200.33]>;
+          Sat, 8 Jul 2000 18:45:31 -0700
+Mime-Version: 1.0
+Message-ID: <f04320400b58d65a0a2d9@[24.67.200.33]>
+Date: Sat, 8 Jul 2000 18:45:51 -0700
+To: CPAN Maintainers <modules@perl.org>
+Subject: registering myself as a developer
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Greetings,
+
+I am in the position where I have developed a dozen or more Perl modules for=
+ my own use, but I had made them in a generic fashion such that they can be=
+ reused in a variety of fashions, and by other people.  It seemed that CPAN=
+ was the best forum to distribute my work (hundreds of hours worth) so that=
+ it could be used and enjoyed by the widest number of people.
+
+And so, by the numbers...
+
+1. My Name: Darren Duncan
+2. E-mail: perl@DarrenDuncan.net
+3. Homepage: www.DarrenDuncan.net
+4. preferred id: DUNCAND
+
+5. What I offer:
+
+My modules were developed originally to implement (generate/compile) an=
+ unlimited number of unrelated dynamic web-sites at once, but they can be=
+ used for various other purposes as well.  They are all Perl 5 objects and=
+ require 5.004 or later.  An overview of the current features for the set of=
+ modules is at my home page.  I have two working examples of the set in use=
+ as well, at both my home page and at www.chronology.net. 
+
+The intent here was to maximize code reuse such that each instance of a web=
+ site needs very little of its own Perl code to differentiate it from=
+ others.  As such, each "site" consists mostly of a set of hierarchically=
+ organized data files, such as the htmlized text for each page, settings/con=
+figuration files that say things like what questions are asked in forms such=
+ as guestbooks, and log files for the likes of guest books or usage count=
+ data.  Modules are designed such that their behaviour is customized by=
+ giving them different data or "preferences", rather than by changing the=
+ values of hardcoded constants.  Everything is designed with an extensible=
+ architecture so third parties can add features to it.  My ultimate goal is=
+ that website owners can update their sites using their web browsers over a=
+ user-friendly interface.
+
+Half of my modules are more lower-level and generic, and can be used in any=
+ projects with little or no resemblence to my own uses of them.  The other=
+ half are higher-level and would be harder to use in ways other than what=
+ they were developed for.  Either way, the modules are designed to be=
+ robust, and I have descriptively named code as a rule.
+
+It turns out that some of these modules can accomplish almost anything that=
+ people would have otherwise used CGI.pm for, making the latter redundant in=
+ those cases.  Now, you may ask, why would I reinvent much of what the=
+ popular and time-tested CGI.pm does rather than just using it?  The answer=
+ is that I had used CGI.pm quite a lot historically (and liked it), but=
+ found the module to be too complicated for my liking and incapable of some=
+ of the things I want to do at a low-level.  And Lincoln did say in the CGI=
+ docs that he wanted people to use smaller and more focused modules instead.=
+  My implementation is very different than his, and in some places mine=
+ accomplishes a lot more.  I'm following the UNIX philosophy that says to=
+ have many small pieces each doing their job well rather than one that tries=
+ to do everything.  Of course, I'm not trying to replace CGI, but rather=
+ complement it with new abilities that are Perl-5-object-clean.  We both=
+ have our specialties and limits.  Partly as a homage to Lincoln having done=
+ all this first, I have made as much as possible of my similarly-themed=
+ methods have backwards-compatible names, syntax, and behaviour as methods=
+ in CGI so that they are easy for people to adapt.
+
+6. Module descriptions:
+
+Note that all these module names are temporary, until more suitable and=
+ integrated names can be discussed.  During development, I have put them all=
+ in the "DDuncan::" folder such that they wouldn't conflict with any real=
+ name spaces.  What I give below are *possible* final names, which are still=
+ similar enough to the development names (on my site) to be recognizable. =
+ Everything shown here in a WPM:: subdirectory has a fairly specific use in=
+ mind (making part of a web page) and are put there so not to pollute=
+ 'standard' namespaces.  All betas have complete POD documentation, the=
+ others do not.
+
+Name                     DSLI   Description                                 
+----------------------   ----   --------------------------------------------
+
+Hash::OfArrays (HoA)   - bdpO - data (text,bin) store/parse/url-encode, subs=
+et
+IO::SequentialFile     - bdpO - store prefs,logs from HoAs/hash as k=3Dv=
+ text file
+Method::ParamParser    - bdpO - complex parameter parsing for subclass metho=
+ds
+HTML::TagMaker         - bdpO - make single,groups of HTML tags, head/footer=
+s
+HTML::FormMaker        - bdpO - predefined persistant forms, reports, valida=
+te
+CGI::WebPageContent    - bdpO - store/assemble web page parts, search and re=
+place
+
+CGI::WPM::SiteGlobals  - cdpO - stores/parses web site globals, utils, user =
+input
+CGI::WPM::WebPageMaker - adpO - defines API for WPM modules, stores local pr=
+efs
+CGI::WPM::MultiPage    - adpO - wpm resolves nav in page hierarchy, makes me=
+nus
+CGI::WPM::Static       - adpO - wpm for displaying static html pages
+CGI::WPM::MailForm     - adpO - wpm for implementing private e-mail forms
+CGI::WPM::GuestBook    - adpO - wpm for implementing a complete guest book
+CGI::WPM::SegTextDoc   - adpO - wpm displays static single/multipart text pa=
+ges
+CGI::WPM::MessageBoard - idpO - wpm implements a threaded discussion board
+CGI::WPM::Password     - idpO - wpm for securing parts of a site with a pass=
+word
+CGI::WPM::FormMaker    - idpO - wpm to make form defin used with HTML::FormM=
+aker
+IO::EventCountFile     - cdpO - for storing event counts and dates (usage)
+CGI::WPM::SiteUsage    - idpO - track site usage details, log, e-mail to own=
+er
+CGI::WPM::SiteManager  - cdpf - the "main program" that calls everything els=
+e
+
+Currently all documentation for a module is found inside that module,=
+ including its dependencies and version history.  Any "test" programs that I=
+ have are included in the module documentation as the "synopsis" section.  I=
+ don't know how to encode .tar or .gz archives on a Mac, so modules come as=
+ plain text or in Aladdin's Stuffit format.  All modules have the standard=
+ perl copyrights that say people can use and modify them for free, but that=
+ I retain all "rights" to the modules.
+
+7. I had posted announcements for my modules to a variety of local groups=
+ and to Comp::Lang::Perl::Modules as well.  While this caused me to get a=
+ few hundred page views on my site, where my modules are available, no one=
+ actually wrote me to discuss things.  Given the intense time contstraints I=
+ am under, I can't take too much time to have lengthy discussions about=
+ needs and wants.  However, I think that I have a number of unique products=
+ with capabilities that nothing else I saw on the modules list have.
+
+I hope we will be able to work out details smoothly and that my modules can=
+ be useful to a great number of people.
+
+Please reply when you have read this, so I know you received it.
+
+Good days,
+
+// Darren Duncan

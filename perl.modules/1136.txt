@@ -1,0 +1,95 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1136
+Return-Path: <jtobey@john-edwin-tobey.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19501 invoked from network); 20 Feb 2000 07:34:59 -0000
+Received: from jtobey.ne.mediaone.net (HELO feynman.localnet) (24.147.19.222)
+  by tmtowtdi.perl.org with SMTP; 20 Feb 2000 07:34:59 -0000
+Received: by ne.mediaone.net
+	via sendmail from stdin
+	id <m12MQs4-000FOKC@feynman.localnet> (Debian Smail3.2.0.102)
+	for modules@perl.org; Sun, 20 Feb 2000 02:33:36 -0500 (EST) 
+Message-ID: <m12MQs4-000FOKC@feynman.localnet>
+Date: Sun, 20 Feb 2000 02:33:36 -0500 (EST)
+To: modules@perl.org
+Subject: OO dates and timedates
+Bcc:
+Approved: news@nntp.perl.org
+From: jtobey@john-edwin-tobey.org (John Tobey)
+
+Faithful Guardians of the Name::Space,
+
+Hello!  I am near completion of a module that encapsulates date, time,
+and timezone information efficiently and conveniently in OO style.  I
+would appreciate your advice on how to name the module and its two
+classes.
+
+Here is some sample usage to whet the appetite:
+
+    $d = JTobey::Date->today;
+    print $d->strftime ("%B %d, %Y\n");
+    for my $y ($d->year .. $d->year + 3) {
+	print "<OPTION> $y\n";
+    }
+    $tomorrow = $d->plus(1);
+
+The module is implemented as:
+
+JTobey::
+::Date            cdpO Dates and Date/Time/Timezones as objects     JTOBEY
+
+I see this entry in the modules list:
+
+Date::
+::Time            idpO Lightweight normalised datetime data type    TIMB
+
+I think it is probably a match, and I am willing to take
+responsibility for Date::Time.
+
+I decided to use two separate, unrelated classes (no @ISA).  One is
+for dates and the other for <date, time, timezone> tuples.  The
+packages are currently called JTobey::Date and JTobey::TimeDate.
+Earlier versions had dates and timedates related by class inheritance.
+I may eventually go back to that, but having them separate serves to
+emphasize important differences.
+
+The simple date class benefits greatly from not having to worry about
+times, time zones, and daylight savings time.  It is essentially just
+an integer number of days offset from a reference point in the
+Gregorian(?) Calendar.  (I chose 1 Jan 1970 as the reference point,
+although the objects know nothing about the time_t type or the time()
+function.)
+
+If you throw times of day into the mix, you will soon want to involve
+time() values.  This leads to awareness of time zones and daylight
+savings.  The application that drives this module's development
+requires comparison and formatting of datetimes in different time
+zones, so that will be supported.  OTOH, my application does not care
+about fractional seconds, so that'll be on the wish list.  :)
+Multiple language support will probably be tacked on at some point.
+
+I divide the TimeDate object into a Date, a number of seconds since
+midnight, and a POSIX "TZ" time zone (undef for local time).  The
+implementation accesses zone information by locally setting $ENV{TZ}
+whenever needed, but I have thought seriously about borrowing libc
+code that parses the zoneinfo files so that I can cache them as a
+performance enhancement.
+
+Whoever knows what the following string means is qualified to look at
+the PRE-ALPHA version: ":pserver:cvs@john-edwin-tobey.org:/home/cvs co
+Date".  Some functions use GBarr's Date::Format and Date::Parse from
+the CPAN package TimeDate.  Perl's standard POSIX module is also used.
+
+I hope somebody besides me gets to exercise the 400-year Feb 29 code
+this time around....
+
+Thanks
+-John
+
+-- 
+John Tobey, late nite hacker <jtobey@john-edwin-tobey.org>
+\\\                                                               ///
+]]]             With enough bugs, all eyes are shallow.           [[[
+///                                                               \\\

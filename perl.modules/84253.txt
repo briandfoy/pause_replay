@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:84253
+Return-Path: <mst@shadowcat.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20028 invoked from network); 21 Jan 2013 14:40:56 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 21 Jan 2013 14:40:56 -0000
+Received: (qmail 31780 invoked by uid 225); 21 Jan 2013 14:40:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31776 invoked by alias); 21 Jan 2013 14:40:56 -0000
+X-Spam-Status: No, hits=-1.2 required=8.0
+	tests=BAYES_00,SPF_SOFTFAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from agaton.scsys.co.uk (HELO agaton.scsys.co.uk) (89.16.177.50)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 21 Jan 2013 06:40:53 -0800
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.72)
+	(envelope-from <mst@shadowcat.co.uk>)
+	id 1TxIYK-0004bN-Oo; Mon, 21 Jan 2013 14:40:48 +0000
+Date: Mon, 21 Jan 2013 14:40:48 +0000
+To: Peter Berghold <salty.cowdawg@gmail.com>
+Cc: modules@perl.org
+Subject: Re: Mea Culpa.. I messed up.... (RPG Dist)
+Message-ID: <20130121144048.GX6412@newagaton.scsys.co.uk>
+References: <CAArvnv1zDSqhTN55ryh-=-CCo1wMi-4YqHBXyUfLWZ0fgyVRhw@mail.gmail.com>
+ <20130121134030.GW6412@newagaton.scsys.co.uk>
+ <CAArvnv3XMHyrYcQhiV19her16b3VFDRa9+eNPDsShaBx2BTzOg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAArvnv3XMHyrYcQhiV19her16b3VFDRa9+eNPDsShaBx2BTzOg@mail.gmail.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Mon, Jan 21, 2013 at 08:56:00AM -0500, Peter Berghold wrote:
+> No particular reason.  It didn't even occur to me that there was a "Games"
+> TLD until I noticed it. The one issue I noticed though is the fact there is
+> already a Games::Dice namespace.  If we moved my stuff to Games::RPG::*
+> that might avoid the namespace collision that is likely to occur.
+
+That was what I had in mind.
+ 
+> Another issue that I can think of is the fact that I've already written
+> (and am doing pre-release cleanup for) a lot of code that looks for
+> RPG::Dice as a module.
+
+That's just a lot of s///ing and some checks that your tests still pass :)
+
+> Not to mention the fact that going from
+> RPG::Traveller to Games::RPG::Traveller is a very minor PITA. Not only does
+> the code need to be refactored but things such as
+> 
+>          my $parsec = new RPG::Traveller::Starmap::Parsec()
+>          becomes
+>          my $parsec = new Games::RPG::Traveller::Starmap::Parser();
+
+Neither of those are acceptable perl. You wanted -
+
+  my $parser = Games::RPG::Traveller::Stramp::Parser->new;
+
+See http://shadow.cat/blog/matt-s-trout/indirect-but-still-fatal/ for an
+explanation of why indirect object notation should never be used.
+
+> which makes me wonder how many levels deep does the namespace need to go?
+
+Enough to not be creating confusing top level namespaces, for preference - for
+example, Games::RPG is unambiguously about roleplaying whereas RPG:: could
+mean the programming language RPG.
+
+> Sorry for the lack of response.  I have not even looked at my email (except
+> this account) for a while. I added this account to PAUSE for that reason.
+
+RPG::Dice lists -
+
+  Peter L. Berghold <peter@berghold.net>
+
+so perhaps that needs to be corrected?
+
+-- 
+Matt S Trout - Shadowcat Systems - Perl consulting with a commit bit and a clue
+
+http://shadowcat.co.uk/blog/matt-s-trout/   http://twitter.com/shadowcat_mst/
+
+Email me now on mst (at) shadowcat.co.uk and let's chat about how our Catalyst
+commercial support, training and consultancy packages could help your team.

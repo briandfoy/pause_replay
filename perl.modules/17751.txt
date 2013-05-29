@@ -1,0 +1,58 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17751
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 66174 invoked by uid 76); 11 Feb 2003 19:06:46 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-02-11 19:06:45Z
+Received: (qmail 11679 invoked by uid 225); 11 Feb 2003 19:06:35 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11673 invoked by uid 507); 11 Feb 2003 19:06:34 -0000
+Received: from palladium2.baremetal.com (HELO pd2.baremetal.com) (208.184.111.59) by one.develooper.com (qpsmtpd/0.21-dev) with SMTP; 2003-02-11 19:06:31Z
+Received: from localhost (darren@localhost)	by pd2.baremetal.com (8.11.6/8.11.6) with ESMTP id h1BJ5sm17334;	Tue, 11 Feb 2003 11:05:54 -0800
+Date: Tue, 11 Feb 2003 11:05:54 -0800 (PST)
+X-X-Sender:  <darren@pd2.baremetal.com>
+To: "A. Bergman" <sky@nanisky.com>
+cc: <modules@perl.org>
+Subject: Re: making POD files appear in CPAN Search listing
+In-Reply-To: <66341CF9-3DEF-11D7-A2D3-003065D64CBE@nanisky.com>
+Message-ID: <Pine.LNX.4.33.0302111056280.8234-100000@pd2.baremetal.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-SMTPD: qpsmtpd/0.21-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-0.3 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,SPAM_PHRASE_00_01,USER_AGENT_PINE version=2.43
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+References: <66341CF9-3DEF-11D7-A2D3-003065D64CBE@nanisky.com>
+
+> On tisdag, feb 11, 2003, at 19:27 Europe/Stockholm, Darren Duncan wrote:
+> > As a follow-up to this thread that I posted yesterday, I'm letting you
+> > know that my problem is solved.
+
+On Tue, 11 Feb 2003, A. Bergman wrote:
+> you interested, what did you have to change?
+> Arthur
+
+It seems that part of the problem was, after I split 'Rosetta.pm' into
+itself and 'Documentation.pod', I had maintained an identical 'Name' line
+at the top of both files of 'Rosetta - framework for ...'.
+
+Graham explained that the CPAN Search indexer, upon finding two files with
+identical 'Name', was listing only one, and defaulted to using
+'Rosetta.pm' for POD extraction and conversion to HTML.
+
+What I changed was that I renamed the file 'Documentation.pod' to
+'Framework.pod', and I changed the first line of that file to
+'Rosetta::Framework - main documentation ...'.  Also, I put the POD file
+into lib/Rosetta/ instead of having it at the distribution root dir.
+
+I suspect that the changing of the 'Name' line was all that was actually
+needed by the indexer, and the other changes were just good ideas, which
+also made the file arrangement more 'standard'.  But following standards
+is still good as it makes it easier for people to find what they want.
+
+-- Darren Duncan
+

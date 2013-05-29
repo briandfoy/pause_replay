@@ -1,0 +1,79 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:36866
+Return-Path: <pjf@perltraining.com.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3434 invoked from network); 6 Dec 2004 06:39:31 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 6 Dec 2004 06:39:31 -0000
+Received: (qmail 15100 invoked by uid 225); 6 Dec 2004 06:39:31 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15093 invoked by alias); 6 Dec 2004 06:39:31 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from teddybear.perltraining.com.au (HELO teddybear.perltraining.com.au) (210.23.138.169)
+  by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 05 Dec 2004 22:39:29 -0800
+Received: from [210.23.138.171] (jarich.perltraining.com.au [210.23.138.171])
+	by teddybear.perltraining.com.au (Postfix) with ESMTP id 16A6C110002
+	for <modules@perl.org>; Mon,  6 Dec 2004 17:39:21 +1100 (EST)
+Message-ID: <41B3FE9C.3000406@perltraining.com.au>
+Date: Mon, 06 Dec 2004 17:39:24 +1100
+Organization: Perl Training Australia
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.7.3) Gecko/20040910
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: Module name advice - Sport::Dive::Tables
+References: <41B3C621.9000500@perltraining.com.au> <051220042230588639%comdog@panix.com>
+In-Reply-To: <051220042230588639%comdog@panix.com>
+X-Enigmail-Version: 0.86.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: pjf@perltraining.com.au (Paul Fenwick)
+
+G'day Brian,
+
+_brian_d_foy wrote:
+
+> I'd call it SCUBA::Table::NoDeco, to distinguish from tables that
+> give deco obligations.  Under that namespace, I'd also break it
+> down further by table name (Navy, PADI, etc), although the
+> interface my allow the user to select the table instead of loading
+> every table module by name.
+
+SCUBA::Table::NoDeco it is then.  The module already allows you to 
+choose which table to use at object creation, so further breaking down 
+shouldn't be necessary.  However I only have PADI and SSI tables sitting 
+on my desk at the moment.
+
+> sounds cool. :)
+
+The currently working interface looks a little like the following (both 
+metric and imperial friendly):
+
+my $stn = SCUBA::Table::NoDeco->new(table => "SSI");
+
+print $stn->max_time(feet => 40);		# 50 minutes max
+
+$stn->dive(metres => 18, minutes => 20);
+
+print "Group: ",$table->group,"\n";		# Group D
+
+$table->surface(minutes => 120);
+
+print "Group: ", $table->group,"\n";		# Group C
+print $stn->max_time(feet => 40);		# 29 minutes max
+
+Cheers,
+
+	Paul
+
+-- 
+Paul Fenwick <pjf@perltraining.com.au> | http://perltraining.com.au/
+Director of Training                   | Ph:  +61 3 9354 6001
+Perl Training Australia                | Fax: +61 3 9354 2681

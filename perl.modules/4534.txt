@@ -1,0 +1,130 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4534
+Return-Path: <nick@plum.flirble.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16122 invoked from network); 22 Feb 2001 16:52:50 -0000
+Received: from plum.flirble.org (exim@195.40.6.20)
+  by tmtowtdi.perl.org with SMTP; 22 Feb 2001 16:52:50 -0000
+Received: from nick by plum.flirble.org with local (Exim 3.20 #3)
+	id 14Vyz0-000BBj-00
+	for modules@perl.org; Thu, 22 Feb 2001 16:52:46 +0000
+Date: Thu, 22 Feb 2001 16:52:46 +0000
+To: modules@perl.org
+Subject: request for namespace for modules that provide layers for the new perlio system
+Message-ID: <20010222165245.M82930@plum.flirble.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+X-Organisation: Tetrachloromethane
+Sender: Nicholas Clark <nick@plum.flirble.org>
+Approved: news@nntp.perl.org
+From: nick@ccl4.org (Nicholas Clark)
+
+As you may be aware, development perl has just switched to using the new
+perlio system by default.  perlio lets you resister layers to perform
+transformations on data as it passes into or out of perl.
+
+I'm not quire sure of who (modules@perl.org, perl5-porters...) decides on
+the most sensible namespace for these. I sent a message to perl5-porters
+asking, and the only response was from Nick Ing-Simmons, which I've
+attached. He suggested PerlIO::*
+There was no other comment.
+
+On the basis of this show of silence I uploaded my gzip layer as
+PerlIO::gzip to CPAN, but I'm not sure if this was somewhat presumptuous
+of me, as it's occupying a new top level namespace without asking
+permission. As both the module and the whole perlio system is only in the
+development track, there is no problem changing its name if needed.
+
+Is Nick's suggestion of PerlIO::* [capitalisation is the same as all the PerlIO
+structures in the perlio.c source] the best name for perlio related
+modules?
+
+Nicholas Clark
+----- Forwarded message from Nick Ing-Simmons <nik@tiuk.ti.com> -----
+
+Date: Mon, 5 Feb 2001 09:26:44 GMT
+X-Mailer: tkmail-0.011/Perl5 Mail::Internet v1.32
+In-Reply-To: <20010204225849.B50969@plum.flirble.org> from Nicholas Clark    on Sun, 4 Feb 2001 22:58:49 +0000
+Subject: Re: namespace for layer modules
+To: nick@ccl4.org
+From: Nick Ing-Simmons <nik@tiuk.ti.com>
+Organization: via, but not speaking for : Texas Instruments Ltd.
+Cc: perl5-porters@perl.org
+Reply-To: Nick Ing-Simmons <nik@tiuk.ti.com>
+
+Nicholas Clark <nick@ccl4.org> writes:
+>On Sun, Feb 04, 2001 at 01:33:07AM +0000, Nicholas Clark wrote:
+>> 1: How is it proposed to avoid namespace clashes with layers?
+
+Right now there is no proposal.  Suggestions welcome.
+The use of ':' as in :gzip comes from similarity (eventual convergence with?)
+
+my $foo : gzip;
+
+attribute syntax.
+
+Given the desire for convergence there (does that make sense?) then 
+the issue you raise could be generalized to "how to we propose to 
+avoid namespace clashes with attributes?".
+
+>
+>> 2: Is there a suggested namespace (eg Layer:: ?) for modules implementing
+>> layers?
+
+I think PerlIO::* makes sense, unless we want to make the entire space
+pragma-oid and make it perlio::
+That avoids re-naming if "layers" as a term get the thumbs down from 
+Larry or book editors.
+
+>
+>3: Is there a standard (memorable) way of passing arguments to layers?
+
+Again the passing of arguments to layers, is a re-implemented version
+of the passing of arguments to attributes (as documented but little
+used). That speaks of being like qq() as I recall. 
+
+>
+>I was thinking of
+>
+>foo(bar,baz=string,name=foo%2D)
+>
+>where bar is an option, baz and name are options with a value, and the %
+>encoding is being used to allow characters that might have meaning in the
+>layer syntax. However, 2 digit % encoding isn't utf8 friendly at all.
+
+It isn't really utf8 unfriendly either - it just unfriendly in general.
+In that particular case utf8-ness isn't the issue but ASCII-ness vs 
+EBCDIC-ness would be.
+
+I have a feeling that putting too much in the one string is a mistake.
+I think we may need something akin to ioctl() which can call 
+"method(s)" on the "layer object" to allow a more extensible 
+approach.
+
+
+>This isn't a direct worry to me at the moment as RFC 1952 says gzip files
+>contain embedded names and comments in ISO 8859-1.
+
+The :encoding() stuff is also going to say that names are in some 
+well defined subset - as soon as I figure out what terminology to use.
+
+>
+>But I can see it being fun in the future.
+>
+>Should the push layer code use a negated length for the argument string to
+>specify utf8 like hash keys?
+
+That seems to be the way the guts are going, and being consistent is good.
+But that is just the latest in the long line of ad. hoc. conventions
+and is not really "proven" yet.
+
+-- 
+Nick Ing-Simmons <nik@tiuk.ti.com>
+Via, but not speaking for: Texas Instruments Ltd.
+
+
+----- End forwarded message -----

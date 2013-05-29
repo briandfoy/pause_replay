@@ -1,0 +1,308 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2451
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1919 invoked from network); 15 Jul 2000 07:14:50 -0000
+Received: from 208.184.111.7.baremetal.com (HELO palladium.baremetal.com) (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 15 Jul 2000 07:14:50 -0000
+Received: from [24.67.200.33] (24.67.200.33.bc.wave.home.com [24.67.200.33])
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id AAA21151;
+	Sat, 15 Jul 2000 00:14:06 -0700
+Mime-Version: 1.0
+Message-ID: <f04320409b595bd764ba9@[24.67.200.33]>
+Date: Sat, 15 Jul 2000 00:15:23 -0700
+To: PAUSE <modules@perl.org>
+Subject: request namespace for HTML::TagMaker
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Context Note: I am releasing a succession of around 15 Perl 5 object 
+modules.  Six of these are complete and documented, and will be 
+submitted quickly.  The others are working but not fully documented, 
+so I am holding them back for the moment.  All of these modules, with 
+info on how they can be used together (and working examples), are 
+available at http://www.DarrenDuncan.net.  They have temporary names 
+in the DDuncan::* name space.  They all require 5.004 for 
+consistency, although some can do with less.
+-----------------------------------------------
+
+Here is #4:
+
+Name            DSLI  Description                                    Info
+--------------  ----  ---------------------------------------------  -------
+HTML::TagMaker  bdpO  make single,groups of HTML tags, head/footers  DUNCAND
+
+If you have suggestions of alternate names for this module, I would 
+be happy to hear them.  Likewise, I appreciate suggestions for a 
+better brief description for use in the module list.
+
+For a good description of my module, I have provided part of its POD 
+at the end of this letter.  The rest of the POD is on my site.
+
+Currently, at least 2 of my other modules use this one.
+
+// Darren Duncan
+
+----------------------------------------------
+
+=head1 NAME
+
+DDuncan::HTMLTagMaker - Perl inheritable module that can generate any HTML tags
+at all, as well as lists of said tags, or just parts of said tags.
+
+I<Please note that the path name of this module is temporary, something that
+works until a more appropriate and integrated name can be found.  A possibility
+could be HTML::TagMaker>
+
+=head1 DEPENDENCIES
+
+=head2 Perl Version
+
+5.004
+
+=head2 Standard Modules
+
+=item I<none>
+
+=head2 Nonstandard Modules
+
+=item DDuncan::MethodParamParser 1.01
+
+=head1 SYNOPSIS
+
+	use DDuncan::HTMLTagMaker 1.02;
+
+	my $html = DDuncan::HTMLTagMaker->new();
+	$html->groups_by_default( 1 );
+
+	print
+		'Content-type: text/html'."\n\n",
+		$html->start_html(
+			-title => "This Is My Page",
+			-style => { -code => <<__endquote },
+	\nBODY {
+		background-color: #ffffff;
+		background-image: none;
+	}
+	__endquote
+		),
+		$html->h1( 'A Simple Example' ),
+		$html->p(
+			"Click " .
+			$html->a( href => 'http://search.cpan.org', 
+text => 'here' ) .
+			" for more."
+		),
+		$html->hr,
+		$html->table(
+			$html->tr( [
+				$html->th( [ 'Name', 'Count', 'URL', 
+'First Access' ] ),
+				$html->td( [ 'Old Page', 33, 
+'http://www.domain.com',
+					'1999/04/23 13:55:02' ] )
+			] )
+		),
+		$html->hr,
+		$html->form_start( method => 'post', action => 
+'http://localhost' ),
+		$html->p(
+			"What's your name? " .
+			$html->input( type => 'text', name => 'name' )
+		),
+		$html->p(
+			"What's the combination?" .
+			$html->input_group(
+				-type => 'checkbox',
+				-name => 'words',
+				-value => ['eenie', 'meenie', 'minie', 'moe'],
+				-checked => [1, 0, 1, 0],
+				-text => ['eenie', 'meenie', 'minie', 'moe'] ),
+		),
+		$html->p(
+			"What's your favorite colour? " .
+			$html->select_start( -size => 1, -name => 'color' ) .
+			$html->option_group(
+				-value => ['red', 'green', 'blue', 
+'chartreuse'],
+				-text => ['Red', 'Green', 'Blue', 
+'Chartreuse'] ) .
+			$html->select_end
+		),
+		$html->input( type => 'submit' ),
+		$html->form_end,
+		$html->end_html;
+
+=head1 DESCRIPTION
+
+This Perl 5 object class can be used to generate any HTML tags in a format that
+is consistent with the W3C HTML 4.0 standard.  There are no 
+restrictions on what
+tags are named, however; you can ask for any new or unsupported tag that comes
+along from Netscape or Microsoft, and it will be made.  Additionally, you can
+generate lists of said tags with one method call, or just parts of 
+said tags (but
+not both at once).
+
+In this implementation, "standard format" means that tags are made as pairs
+(<TAG></TAG>) by default, unless they are known to be "no pair" tags. 
+Tags that
+I know to be "no pair" are [basefont, img, area, param, br, hr, input, option,
+tbody, frame, comment, isindex, base, link, meta].  However, you can force any
+tag to be "pair" or "start only" or "end only" by appropriately modifying your
+call to the tag making method.
+
+Also, "standard format" means that tag modifiers are formatted as 
+"key=value" by
+default, unless they are known to be "no value" modifiers.  Modifiers 
+that I know
+to be "no value" are [ismap, noshade, compact, checked, multiple, selected,
+nowrap, noresize, param].  These are formatted simply as "key" 
+because their very
+presence indicates positive assertion, while their absense means 
+otherwise.  For
+modifiers with values, the values will always become bounded by quotes, which
+ensures they work with both string and numerical quantities (eg: key="value").
+
+Note that this class is a subclass of DDuncan::MethodParamParser, and inherits
+all of its methods, "params_to_hash()" and "params_to_array()".
+
+=head1 HTML CODE FROM SYNOPSIS PROGRAM
+
+	Content-type: text/html
+
+
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+	<HTML>
+	<HEAD>
+	<TITLE>This Is My Page</TITLE>
+	<STYLE>
+	<!--
+	BODY {
+		background-color: #ffffff;
+		background-image: none;
+	}
+	 --></STYLE>
+	</HEAD>
+	<BODY>
+	<H1>A Simple Example</H1>
+	<P>Click
+	<A HREF="http://search.cpan.org">here</A> for more.</P>
+	<HR>
+	<TABLE>
+	<TR>
+	<TH>Name</TH>
+	<TH>Count</TH>
+	<TH>URL</TH>
+	<TH>First Access</TH></TR>
+	<TR>
+	<TD>Old Page</TD>
+	<TD>33</TD>
+	<TD>http://www.domain.com</TD>
+	<TD>1999/04/23 13:55:02</TD></TR></TABLE>
+	<HR>
+	<FORM METHOD="post" ACTION="http://localhost">
+	<P>What's your name?
+	<INPUT TYPE="text" NAME="name"></P>
+	<P>What's the combination?
+	<INPUT TYPE="checkbox" NAME="words" CHECKED VALUE="eenie">eenie
+	<INPUT TYPE="checkbox" NAME="words" VALUE="meenie">meenie
+	<INPUT TYPE="checkbox" NAME="words" CHECKED VALUE="minie">minie
+	<INPUT TYPE="checkbox" NAME="words" VALUE="moe">moe</P>
+	<P>What's your favorite colour?
+	<SELECT NAME="color" SIZE="1">
+	<OPTION VALUE="red">Red
+	<OPTION VALUE="green">Green
+	<OPTION VALUE="blue">Blue
+	<OPTION VALUE="chartreuse">Chartreuse
+	</SELECT></P>
+	<INPUT TYPE="submit">
+	</FORM>
+	</BODY>
+	</HTML>
+
+=head1 SYNTAX
+
+This class does not export any functions or methods, so you need to call them
+using indirect notation.  This means using B<Class->function()> for 
+functions and
+B<$object->method()> for methods.
+
+Methods of this class always "return" their results, rather than printing them
+out to a file or the screen.  Not only is this simpler, but it gives 
+the calling
+code the maximum amount of control over what happens in the program.  They may
+wish to do post-processing with the generated HTML, or want to output it in a
+different order than it is generated.  By default, all results are 
+returned as a
+scalar, but methods which generate a list of tags can optionally 
+return an ARRAY
+ref, with each element containing a single tag.  This can aid in 
+post-processing
+and possibly speed up the program because there is less copying done.
+
+Through the magic of autoloading, this class can make any html tag by calling a
+class method with the same name as the tag you want.  For examples, 
+use "hr()" to
+make a "<HR>" tag, or "p('text')" to make "<P>text</P>".  This also 
+means that if
+you mis-spell any method name, it will still make a new tag with the 
+mis-spelled
+name.  For autoloaded methods only, the method names are case-insensitive.
+
+If you call a class method whose name ends in either of ['_start', '_end',
+'_pair'], this will be interpreted as an instruction to make just 
+part of one tag
+whose name are the part of the method name preceeding that suffix. 
+For example,
+calling "p_start( 'text' )" results in "<P>text" rather than "<P>text</P>".
+Similarly, calling "p_end()" will generate a "</P>" only.  Using the '_pair'
+suffix will force tags to be made as a pair, whether or not they would do so
+naturally.  For example, calling "br_pair" would produce a "<BR></BR>" rather
+than the normal "<BR>".  When using either of ['_start','_pair'], the arguments
+you pass the method are exactly the same as the unmodified method 
+would use, and
+there are no other symantec differences.  However, when using the 
+'_end' suffix,
+any arguments are ignored, as the latter member of a tag pair never carries any
+attributes anyway.
+
+If you call a class method whose name ends in "_group", this will be 
+interpreted
+as an instruction to make a list of tags whose name are the part of the method
+name preceeding the "_group".  For example, calling "td_group(
+['here','we','are'] )" results in "<TD>here</TD><TD>we</TD><TD>are</TD>" being
+generated.  The arguments that you call this method are exactly the same as for
+calling a method to make a single tag of the same name, except that the extra
+optional parameter "list" can be used to force an ARRAY ref of the 
+new tags to be
+returned instead of a scalar.  The symantec difference is that any arguments
+whose values are ARRAY refs are interpreted as a list of values where 
+each one is
+used in a separate tag; for a single tag, the literal ARRAY ref itself would be
+used.  The number of tags produced is equal to the length of the longest ARRAY
+ref passed as an argument.  For any other arguments who have fewer than this
+count, their last value is replicated and appended enough times as necessary to
+make them the same length.  The value of a scalar argument is used for all the
+tags.  For example, calling "input_group( type => checkbox, name => 'letters',
+value => ['a','b','c'] )" produces '<INPUT TYPE="checkbox" NAME="letters"
+VALUE="a"><INPUT TYPE="checkbox" NAME="letters" VALUE="b"><INPUT 
+TYPE="checkbox"
+NAME="letters" VALUE="c">'.
+
+All autoloaded methods require their parameters to be in named format.  These
+names and values correspond to attribute names and values for the new tags.
+Since "no value" attributes are essentially booleans, they can have any true or
+false value associated with them in the parameter list, which won't be printed.
+If an autoloaded method is passed exactly one parameter, it will be interpreted
+as the "text" that goes between the tag pair (<TAG>text</TAG>) or after "start
+tags" (<TAG>text).  The same result can be had explicitely by passing the named
+parameter "text".  Most static (non-autoloaded) methods require positional
+parameters, except for start_html(), which can take either format. 
+The names of
+any named parameters can optionally start with a "-".
+
+

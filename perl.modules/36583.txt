@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:36583
+Return-Path: <projS+perl@niss.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12781 invoked from network); 23 Nov 2004 13:20:13 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 23 Nov 2004 13:20:13 -0000
+Received: (qmail 12476 invoked by uid 225); 23 Nov 2004 13:20:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12471 invoked by alias); 23 Nov 2004 13:20:12 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from niss.com (HELO crag.niss.com) (24.123.82.170)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Tue, 23 Nov 2004 05:20:09 -0800
+Received: from crag.niss.com (localhost [127.0.0.1])
+	by crag.niss.com (8.13.1/8.13.1) with ESMTP id iANDK44H006370
+	for <modules@perl.org>; Tue, 23 Nov 2004 07:20:05 -0600 (CST)
+	(envelope-from projS+perl@niss.com)
+Message-ID: <200411231320.iANDK44H006370@crag.niss.com>
+To: modules@perl.org
+Subject: RFC: XML-MDS2 as new module name.
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <6368.1101216004.1@crag.niss.com>
+Date: Tue, 23 Nov 2004 07:20:04 -0600
+Approved: news@nntp.perl.org
+From: projS+perl@niss.com (Scott Bolte)
+
+	I'm looking for feedback on a new perl module's name.
+
+	Background:
+
+	    MDS2 is shorthand for Manufacturer's Disclosure Statement
+	    for Medical Device Security. It is a new standard format to
+	    describe a device's security capabilities.  Manufacturers
+	    will be creating thousands of these between now and a HIPAA
+	    compliance deadline of April 2005.  Healthcare providers
+	    will need to process all of the documents too. Automation
+	    will help everyone.
+
+	    http://www.himss.org/asp/ContentRedirector.asp?ContentId=59072
+
+	Proposal:
+
+	    XML::MDS2	A container for the modules below.
+
+	    XML::MDS2::Document
+
+		The class for creating, validating, and modifying an
+		instance of the MDS2 document.
+
+		Given the tight schedule, the underlying
+		XML::LibXML::Document will be exposed to the caller for
+		direct manipulation.
+
+	    XML::MDS2::Repository
+
+		The base class for storing and retrieving MDS2
+		documents. Initially likely to only have the derived
+		class XML::MDS2::Repository::Files.
+
+	    XML::MDS2::CGI
+
+		A convenience class that ties the document & repository
+		classes to CGI::Application for a quick and dirty web
+		system to create and update MDS2 documents.
+
+	I could make the case that the module should not have the
+	preceding XML::, but I'm reluctant to create a top level like
+	MDS2 for such a specialized need. There may be future efforts to
+	automate communication between medical device vendors and their
+	customers, but even if that does come to pass, I'm not sure what
+	a better high level bucket would be.
+
+	Comments?
+
+		Scott

@@ -1,0 +1,124 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7830
+Return-Path: <mark@profero.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15000 invoked from network); 28 Sep 2001 11:33:54 -0000
+Received: from gateway.profero.com (HELO eric.loc0.profero.com) (213.235.47.194)
+  by onion.valueclick.com with SMTP; 28 Sep 2001 11:33:53 -0000
+Received: from mark (helo=localhost)
+	by eric.loc0.profero.com with local-esmtp (Exim 3.22 #3)
+	id 15mvz5-000AHh-00
+	for modules@perl.org; Fri, 28 Sep 2001 12:39:11 +0100
+Date: Fri, 28 Sep 2001 12:39:11 +0100 (BST)
+X-X-Sender: <mark@eric.loc0.profero.com>
+To: <modules@perl.org>
+Subject: PAUSEID requests and naming a P3P/CP module
+Message-ID: <Pine.BSF.4.33.0109281237400.39235-100000@eric.loc0.profero.com>
+X-Buffy-Quote: We saved the world. I say we have to party.
+X-Perl-Mongers: London.pm and Bath.pm
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: Mark Fowler <mark@profero.com>
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: cpan@profero.com (Mark Fowler)
+
+Hi.
+
+I would like a PAUSE ID for the company I work for so we can start open
+sourcing modules we have written and uploading them to the CPAN (yey.)
+For this you'll probably want these details:
+
+- Our Name:     Profero Ltd.
+- Our Email:    cpan@profero.com
+- Our Homepage: http://www.profero.com/
+- Our CPAN-ID:  PROFERO
+
+And what we plan to contribute, which is the rest of this email which is
+worrying about what we should call the module we first contribute...
+
+The first thing we'd like to contribute is a module that I'm working on
+that converts a P3P file (a Platform for Privacy Preferences Policy file,
+a XML file that encodes a site's privacy policy) into a CP (A compact
+policy, a kind of non-XML geek code summary of that XML file designed to
+be transmitted in the HTTP headers.)  P3P and CP and the conversions are
+all defined in the W3C Working Draft at http://www.w3.org/TR/P3P/
+
+I think the need for this module is quite high as there seems to be very
+little perl work with P3P (which after all is a W3C standard.)  In
+addition to this, IE6 sites make restrictions on 'third party serving' of
+content (serving images from another websites) such as blocking cookies
+for those sites that do not implement a CP.  Having a utility that
+converts their P3P policy into a CP would be very useful.  Besides,
+python seems to have one and we don't and we can't be having that ;-)
+
+Now onto the tricky bit. I've been trying to get help in deciding a name
+for this module.  Before I came to you I've asked the london.pm.org
+mailing list, the irc channel for that group (#london.pm) and #perl.  I
+will attempt to summerise what everyone said below.
+
+I was originally going to call my module XML::P3P::CP as P3P is a subset
+of XML, and CP is a subset of P3P.  However, Marcel Grunauer and Leon
+Brocard rightly pointed out that my module doesn't really create a CP
+object, it just creates a string.  What I mean by this is that the module
+cannot set and get individual tags - it's basically immutable.  The way
+the module works is that it reads in the XML file and whenever a set of
+tags need to be read from the code the module pulls them out from the XML
+tree (with XML::XPath.)  It's very simple module, but it's turning out to
+be a pain to name...
+
+In light of this we suggested either
+
+ XML::P3P::CPConverter
+ XML::P3P::ToCP
+
+Leon expressed concern about the module having the "XML::" bit and that
+these should probably just be used for parsers.  At this point Matt
+Sergeant turned up and independently suggested dropping the "XML::" start,
+as he humorously put it "Otherwise eventually as everything starts to use
+XML, CPAN will just contain 1 directory: XML :-)".  He pointed out that
+the P3P top level namespace should also probably contain
+implementations of P3P (and maybe have a top level P3P.pm factory
+object.) He's probably right.
+
+So now we're at...
+
+ P3P::CPConverter
+ P3P::ToCP
+
+I had a discussion with Ryan King about making the code part of an P3P.pm
+implementation.  He rightly pointed out that
+"P3P->new("./file.xml")->to_CP" is probably the nicest syntax.  However,
+have several problems with this.  Firstly, and most honestly, that's a lot
+of code I've got to write to implement a P3P object construction
+system rather than just examining the original XML.  Secondly, it's
+perfectly valid for someone to want to deal with P3P without having to
+worry about CP (or my module's dependencies, such as XML::XPath) so they
+shouldn't have to have the CP code.  Thirdly, the CP code can be updated
+separately if it's a separate module.  Finally, for the case where someone
+just needs a until to convert between the P3P and CP they don't need any
+complex P3P code.  I guess what I'm trying to say is, interface issues
+aside, I do think they should be separate modules (this is not to say
+that Ryan didn't make some good arguments.)
+
+So we're still at
+
+ P3P::CPConverter
+ P3P::ToCP
+
+Which I'd like to pick the latter as it's a shorter (and more 'Perl') way
+of expressing the module name.  Though, as always, I'm open to suggestions
+on how I can do it better.
+
+Thanks for reading all of this...sorry it was a bit long.
+
+Mark.
+
+-- 
+s''  Mark Fowler                Technology Developer         Profero Ltd
+     http://www.profero.com/      mark@profero.com         020 7700 9960
+';use Term'Cap;$t=Tgetent Term'Cap{};print$t->Tputs(cl);for$w(split/  +/
+){for(0..30){$|=print$t->Tgoto(cm,$_,$y)." $w";select$k,$k,$k,.03}$y+=2}
+

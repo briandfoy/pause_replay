@@ -1,0 +1,134 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:32051
+Return-Path: <sam@debain.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2663 invoked from network); 19 May 2004 17:16:53 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by onion.develooper.com with SMTP; 19 May 2004 17:16:53 -0000
+Received: (qmail 10836 invoked by uid 225); 19 May 2004 17:16:52 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10829 invoked by alias); 19 May 2004 17:16:50 -0000
+X-Spam-Status: No, hits=3.7 required=7.0
+	tests=DATE_IN_PAST_12_24,RCVD_IN_DYNABLOCK,RCVD_IN_NJABL,RCVD_IN_NJABL_DIALUP,RCVD_IN_SORBS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from can64.de (HELO mis02.de) (213.203.199.64)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Wed, 19 May 2004 10:16:48 -0700
+Received: from chef (p508AAF1C.dip.t-dialin.net [80.138.175.28])
+	by mis02.de (mis02.de) with ESMTP id D65CB4B0203
+	for <modules@perl.org>; Wed, 19 May 2004 19:16:29 +0200 (CEST)
+Received: from sam by chef with local (Exim 3.36 #1 (Debian))
+	id 1BQ8Ce-0005oN-00
+	for <modules@perl.org>; Tue, 18 May 2004 19:16:32 +0200
+Subject: Re: Module submission IPDevices
+To: modules@perl.org
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Message-ID: <1084900592.22250.20.camel@chef>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.6 
+Date: Tue, 18 May 2004 19:16:32 +0200
+Sender: Sam <sam@debain.org>
+X-yoursite-MailScanner: Found to be clean
+X-Spam-Rating: onion.develooper.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: cpan@debain.org (Samuel Abels)
+
+_brian_d_foy wrote:
+> >     The toplevel-namespace "IPDevice" was chosen because I have not
+> >     found any other namespace where I believe a storage module like
+this
+> 
+> you don't like Device::* ?
+
+The current design includes what I have appended below, and this is
+still rapidly growing. Given the number of modules and that fact that
+all of the modules are one family interacting with each other, having
+them all mix with the other modules from Device:: might be unsatisfying.
+Also, some of the classes represent a Device, while others do not - they
+are still all required.
+
+So tell me to add it into Device:: and I will; I do not think that might
+be the best solution though.
+
+-Samuel
+
+-------------------------
+src
+|-- CiscoHW12000Parser
+|   |-- ShowVersion.pm
+|   `-- ShowDiag.pm
+|-- CiscoHW12000Parser.pm
+|-- CiscoHW7500Parser
+|   |-- ShowVersion.pm
+|   |-- ShowEnvironment.pm
+|   `-- ShowDiag.pm
+|-- CiscoHW7500Parser.pm
+|-- CiscoParser
+|   |-- Atom.pm
+|   |-- BGP.pm
+|   |-- Global.pm
+|   |-- ISIS.pm
+|   |-- Interface.pm
+|   `-- Prefixlist.pm
+|-- CiscoParser.pm
+|-- CiscoRouter
+|   |-- Accesslist.pm
+|   |-- AccesslistEntry.pm
+|   `-- Card.pm
+|-- CiscoRouter.pm
+|-- Classifier.pm
+|-- Database.pm
+|-- FileForeach.pm
+|-- HWParserBase.pm
+|-- IPv4.pm
+|-- Importer
+|   |-- BGP.pm
+|   |-- BGPNeighbor.pm
+|   |-- BGPVRF.pm
+|   |-- Card.pm
+|   |-- IPHost.pm
+|   |-- Interface.pm
+|   |-- LogicalInterface.pm
+|   |-- Module.pm
+|   |-- Prefixlist.pm
+|   |-- PrefixlistEntry.pm
+|   `-- Router.pm
+|-- Importer.pm
+|-- JuniperHWParser
+|   |-- Interfaces.pm
+|   `-- ChassisHardware.pm
+|-- JuniperHWParser.pm
+|-- JuniperParser
+|   |-- Atom.pm
+|   |-- BGP.pm
+|   |-- Global.pm
+|   |-- ISIS.pm
+|   |-- Interface.pm
+|   `-- Prefixlist.pm
+|-- JuniperParser.pm
+|-- JuniperRouter
+|-- JuniperRouter.pm
+|-- ParserDispatcher.pm
+|-- RouterBase
+|   |-- Atom.pm
+|   |-- BGP.pm
+|   |-- BGPGroup.pm
+|   |-- BGPNeighbor.pm
+|   |-- BGPVRF.pm
+|   |-- Card.pm
+|   |-- IPHost.pm
+|   |-- ISIS.pm
+|   |-- Interface.pm
+|   |-- LogicalInterface.pm
+|   |-- Module.pm
+|   |-- Prefixlist.pm
+|   |-- PrefixlistEntry.pm
+|   `-- StaticRoute.pm
+`-- RouterBase.pm
+-- 
+ ------------------------------------------------------
+|      Samuel Abels       |   http://www.debain.org    |
+| spam ad debain dod org  | knipknap ad jabber dod org |
+ ------------------------------------------------------

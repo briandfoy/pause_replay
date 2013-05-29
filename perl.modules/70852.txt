@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:70852
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3235 invoked from network); 18 Apr 2010 08:21:08 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 18 Apr 2010 08:21:08 -0000
+Received: (qmail 4174 invoked by uid 225); 18 Apr 2010 08:21:08 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4167 invoked by alias); 18 Apr 2010 08:21:07 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 18 Apr 2010 01:21:03 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-6) with ESMTP id o3I8KaWS000809
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sun, 18 Apr 2010 10:20:46 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id o3I8KVqK000798;
+	Sun, 18 Apr 2010 10:20:31 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Todd Rinaldo <toddr@null.net>
+Cc: modules@perl.org
+Subject: Re: Dual Core module missing from 02packages.details.txt.gz
+References: <t2j748c25c21004081400w2cb5bd90p47360069012ec580@mail.gmail.com>
+Reply-To: modules@perl.org
+Date: Sun, 18 Apr 2010 10:20:31 +0200
+In-Reply-To: <t2j748c25c21004081400w2cb5bd90p47360069012ec580@mail.gmail.com>
+	(Todd Rinaldo's message of "Thu, 8 Apr 2010 16:00:15 -0500")
+Message-ID: <871vedcgts.fsf@franz.ak.mind.de>
+User-Agent: Gnus/5.110011 (No Gnus v0.11) Emacs/23.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Thu, 8 Apr 2010 16:00:15 -0500, Todd Rinaldo <toddr@null.net> said:
+
+  > PAUSE Admins:
+  > Dual-Core module Unicode::Normalize just disappeared from
+  > 02packages.details.txt.gz
+
+  > I know it was there as recently as last Friday and I know there has
+  > been no new release to the module since February.
+
+  > perl 5.12.0 RC4 was released recently. This might be related.
+
+Thanks for the heads up! No, it is not related to 5.12.0 RC4. Short
+explanation: the upload in February was not indexed because it contained
+world writable files or directories. "Spring cleaning" inspired the
+author to remove all old versions. Ergo: module gone.
+
+I fixed the problem by rewriting the indexer. From now on it creates a
+fixed up version of the tarball without world writables whenever it
+encounters such a case. PAUSE ecosystem will then pick up the new file
+and index it unless there are other errors preventing that.
+
+>>>>> On Tue, 13 Apr 2010 11:23:05 -0500, Todd Rinaldo <toddr@null.net> said:
+
+  > PAUSE admins, any updates on this? perl 5.12 is out. This
+  > Unicode::Normalize is still missing from the 02packages.details.txt.gz
+  > file among other places.
+
+  > SADAHIRO: Maybe you can force a reindex via:
+
+  > https://pause.perl.org/pause/authenquery?ACTION=reindex
+
+Reindexing was tried several times but always failed with the same
+effect: pause refused to index based on the fact that there were world
+writables in it. The reindexing feature of PAUSE now contains the
+fix-it-up part. I have run it and SADAHIRO's directory now contains the
+fixed-up file. I expect that the indexer will pick it up during the day
+and index the replacement file
+(Unicode-Normalize-1.06-withoutworldwriteables.tar.gz)
+
+>>>>> On Tue, 13 Apr 2010 11:25:17 -0500, Todd Rinaldo <toddr@null.net> said:
+
+  > Also note that Unicode::Collate appears to have gone missing too. Same
+  > author. Same dual-life. Different package. Hasn't been updated since
+  > Feb 2010
+
+I gave it the same treatment. If the two files are not indexed in the
+next 12 hours I'll have to fix my fix another try.
+
+-- 
+andreas

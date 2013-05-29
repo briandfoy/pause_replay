@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7823
+Return-Path: <domi@ispserv.grenoble.hp.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 65753 invoked from network); 27 Sep 2001 15:08:53 -0000
+Received: from gremg1.net.external.hp.com (192.6.111.73)
+  by onion.valueclick.com with SMTP; 27 Sep 2001 15:08:53 -0000
+Received: from concerto.grenoble.hp.com (concerto.grenoble.hp.com [15.128.15.118])
+	by gremg1.net.external.hp.com (Postfix) with ESMTP
+	id 04B1F97; Thu, 27 Sep 2001 17:08:03 +0200 (METDST)
+Received: from komarr.grenoble.hp.com (mail@komarr.grenoble.hp.com [15.128.128.11])
+	by concerto.grenoble.hp.com (8.9.3 (PHNE_18979)/8.9.3 SMKit6.0.6 OpenMail) with ESMTP id RAA22646;
+	Thu, 27 Sep 2001 17:08:01 +0200 (METDST)
+Received: from domi by komarr.grenoble.hp.com with local (Exim 3.32 #1 (Debian))
+	id 15mcHl-0004JR-00; Thu, 27 Sep 2001 16:37:09 +0200
+To: modules@perl.org
+Cc: Ziya Suzen <ziya@ripe.net>, Randy J Ray <rjray@blackperl.com>,
+	Dominique Dumont <Dominique_Dumont@hp.com>,
+	Leon Brocard <leon@astray.com>, Craig Freter <freter@freter.com>
+Subject: Re: Rcs::Parser or What namespace should I use?
+References: <20010926164930.E27630@x33.ripe.net> <m31yks93fs.fsf@anima.de>
+Date: 27 Sep 2001 16:37:08 +0200
+In-Reply-To: <m31yks93fs.fsf@anima.de>
+Message-ID: <kgipu8caeej.fsf@komarr.grenoble.hp.com>
+Lines: 51
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.4 (Artificial Intelligence)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: domi@ispserv.grenoble.hp.com (Dominique Dumont)
+
+andreas.koenig@anima.de (Andreas J. Koenig) writes:
+
+> (CC'd to the RCS experts)
+> 
+> >>>>> On Wed, 26 Sep 2001 16:49:30 +0200, Ziya Suzen <ziya@ripe.net> said:
+> 
+> 
+>   > The modules I wrote -for my own usage- are:
+>   > XXX::Parser           # this the main interface
+>   > XXX::YappRcsParser    # produced from a Yapp grammar (Yapp::Parse)
+>   > XXX::Deltatext        # impliments RCS deltatext algorithms
+> 
+>   > Would you please suggest;
+> 
+>   > 1- Shall I post them to CPAN, do you think others might use it?
+> 
+> Definitely.
+> 
+>   > 2- If so, do you think RCS::Parser is a good name to use or not?
+> 
+> So far the namespaces for RCS are unsatisfying: VCS::RCS, VCS::Rcs,
+> and Rcs all exist, maybe it's time to clean that up. Maybe one of the
+> RCS experts can chime in and voice an opinion?
+
+OK, so far we have three kinds of modules:
+- modules to peek *inside* a VCS system (RCS in this case)
+- modules to access VCS systems (VCS::* and VcsTools::*)
+- modules to work with and add functionnalities to VCS systems
+  (VcsTools::*)
+
+I agree to clean that up. I think everything related to VCS should end
+up in VCS::* (or Vcs::*).
+
+Then we'll have to decided whether to split up the namespace for the
+various VCS system:
+
+Vcs::Rcs::*
+Vcs::Cvs::* 
+
+Then there's the problem of modules than can apply to several vcs
+system (like VcsTools::History). 
+
+Should it become Vcs::History, Vcs::Common::History or stay
+VcsTools::History ?
+
+What do you think ?
+
+Cheers
+
+-- 
+Dominique_Dumont@grenoble.hp.com

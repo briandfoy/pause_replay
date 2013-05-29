@@ -1,0 +1,99 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:6125
+Return-Path: <geniek@netvision.net.il>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16190 invoked from network); 14 Jun 2001 16:39:51 -0000
+Received: from mailgw2.netvision.net.il (194.90.1.9)
+  by onion.valueclick.com with SMTP; 14 Jun 2001 16:39:51 -0000
+Received: from dragon (ras4-p222.hfa.netvision.net.il [62.0.99.222])
+	by mailgw2.netvision.net.il (8.9.3/8.9.3) with ESMTP id TAA29411;
+	Thu, 14 Jun 2001 19:41:51 +0300 (IDT)
+Date: Thu, 14 Jun 2001 19:39:47 +0200
+X-Mailer: The Bat! (v1.51) Educational
+Reply-To: "Evgeny Goldin (aka Genie)" <geniek@bigfoot.com>
+X-Priority: 3 (Normal)
+Message-ID: <11814707297.20010614193947@bigfoot.com>
+To: modules@perl.org
+Subject: Tie::LazyList
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: geniek@netvision.net.il ("Evgeny Goldin (aka Genie)")
+
+
+Hi,
+
+My name is Goldin Evgeny,
+my email is geniek@bigfoot.com,
+my homepage is http://geniek.net
+my preferred user-ID on CPAN is "GENIE" or "GENIEK"
+
+
+I'd like to contribute the new module called "Tie::LazyList" - it
+allows programmer to generate infinite lists based on the start value
+and generation function, implemented as tied array and, once created, may be
+accessed for any value via $arr[ x ].
+This may allow to easily create arrays of factorials, powers of 2, Fibonachi
+numbers and access any value in it.
+
+
+Example :
+
+# creating array of factorials,
+# params to tie are starting values ( either numeric scalar or list ref ) and
+# the generation function, which will receive the ref to the list and
+# the index to generate when called
+tie @arr, "Tie::LazyList", [ 0, 1 ], sub { my ( $list_ref, $j ) = @_;
+                                           $list_ref->[ $j - 1 ] * $j };
+                                           
+# now we can access factorial of any number, the underlying array will be
+# dynamically expanded
+for ( 1 .. 20 ){
+        print $arr[ $_ ],"\n";
+}
+
+And here it's running :
+
+E:\Temp>perl -w
+use strict;
+use Tie::LazyList;
+my @arr;
+
+tie @arr, "Tie::LazyList", [ 0, 1 ], sub { my ( $list_ref, $j ) = @_;
+                                           $list_ref->[ $j - 1 ] * $j };
+for ( 1 .. 20 ){
+        print $arr[ $_],"\n";
+}
+^Z
+1
+2
+6
+24
+120
+720
+5040
+40320
+362880
+3628800
+39916800
+479001600
+6227020800
+87178291200
+1307674368000
+20922789888000
+355687428096000
+6.402373705728e+015
+1.21645100408832e+017
+2.43290200817664e+018
+
+E:\Temp>
+
+
+
+  Thank you !
+
+

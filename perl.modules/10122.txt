@@ -1,0 +1,454 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10122
+Return-Path: <hamid@morva.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16098 invoked by uid 76); 10 Feb 2002 00:12:01 -0000
+Received: from qmailr@yaghut.morva.net (HELO morva.net) (213.29.54.3)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Sun Feb 10 00:12:01 2002 -0000
+Received: (qmail 8074 invoked from network); 10 Feb 2002 00:11:42 -0000
+Received: from modem-04027.morva.net (HELO hashemi) (213.29.54.155)
+  by yaghut.morva.net with SMTP; 10 Feb 2002 00:11:42 -0000
+To: <modules@perl.org>
+Subject: Farsi Module for perl !
+Date: Sat, 9 Feb 2002 03:42:26 +0330
+Organization: Morva System Co.
+Message-ID: <002901c1b0fe$78300800$0101a8c0@hashemi>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_002A_01C1B11B.CE5F7400"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.2616
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Approved: news@nntp.perl.org
+From: hamid@morva.net ("Hamid Hashemi Golpayegani")
+
+------=_NextPart_000_002A_01C1B11B.CE5F7400
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Hi ,
+
+I have wrote a Farsi module for perl . It contained gregorian_to_jalali
+date converter ( Jalali is Iranian Date ) and also jalali_to_gregorian .
+Also a function like strftime named g2jstrftime that will get jalali
+date with given pattern like strftime . 
+Here is some function for converting Farsi windows unicode to
+windows-1256 charset for better web surfing named farsi_code and also a
+function for converting iransystem dos charset to windows unicode named
+iransystem2unicode .
+I have attached the module to this mail . 
+
+Also I want to have an account in cpan as a developer with this
+information : 
+
+My name : Seyyed Hamid Reza Hashemi Golpayegani
+My Email Address : hamid@morva.net
+My Homepage address : http://hamid.morva.net/
+My Preffered user-id on CPAN : HAMID
+My planning : To wrote farsi tools in perl for iranian and arab people
+that using perl .
+
+--
+Regards
+
+    =================================================================
+   /  Seyyed Hamid Reza    /        WINDOWS FOR NOW  !!            /
+  /  Hashemi Golpayegani  /  Linux for future , FreeBSD for ever  /
+ /    Morva System Co.   / ------------------------------------- /
+/  Network Administrator/ hamid@morva.net   ,   ICQ# : 42209876 /
+================================================================
+ 
+
+------=_NextPart_000_002A_01C1B11B.CE5F7400
+Content-Type: application/octet-stream;
+	name="Farsi.pm"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="Farsi.pm"
+
+package Farsi;=0A=
+=0A=
+# Copyright (c) 2001-2002 Hamid Hashemi (hamid@morva.net).  All rights =
+reserved.=0A=
+# This program is free software; you can redistribute it and/or modify it=0A=
+# under the same terms as Perl itself.=0A=
+=0A=
+# Function gregorian_to_jalali and jalali_to_gregorian is adopted from =
+Roozbeh Pournader's=0A=
+# PHP functions and I have convert them to Perl ( =
+http://sina.sharif.edu/~roozbeh/farsiweb )=0A=
+#########################################################################=
+##=0A=
+#########################################################################=
+##=0A=
+=0A=
+use strict;=0A=
+use warnings;=0A=
+use POSIX qw( strftime );=0A=
+=0A=
+BEGIN {=0A=
+  use Exporter   ();=0A=
+  our ($VERSION, @ISA, @EXPORT, @EXPORT_OK, %EXPORT_TAGS);=0A=
+=0A=
+  # set the version for version checking=0A=
+  $VERSION     =3D 0.01;=0A=
+=0A=
+  @ISA         =3D qw(Exporter);=0A=
+  @EXPORT      =3D qw(&farsi_code &iransystem2unicode =
+&gregorian_to_jalali &g2jstrftime &jalali_to_gregorian);=0A=
+  %EXPORT_TAGS =3D ( );     # eg: TAG =3D> [ qw!name1 name2! ],=0A=
+=0A=
+  # your exported package globals go here,=0A=
+  # as well as any optionally exported functions=0A=
+  # @EXPORT_OK   =3D qw($Var1 %Hashit &func3);=0A=
+}=0A=
+our @EXPORT_OK;=0A=
+=0A=
+# exported package globals go here=0A=
+# our $Var1;=0A=
+# our %Hashit;=0A=
+=0A=
+# then the others (which are still accessible as $Some::Module::stuff)=0A=
+# $stuff  =3D '';=0A=
+# @more   =3D ();=0A=
+=0A=
+# all file-scoped lexicals must be created before=0A=
+# the functions below that use them.=0A=
+=0A=
+=0A=
+# file-private lexicals go here=0A=
+# my $priv_var    =3D '';=0A=
+# my %secret_hash =3D ();=0A=
+my @g_days_in_month =3D (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);=0A=
+my @j_days_in_month =3D (31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29);=0A=
+=0A=
+=0A=
+# here's a file-private function as a closure,=0A=
+# callable as &$priv_func;  it cannot be prototyped.=0A=
+my $div =3D sub {=0A=
+  return int( $_[0] / $_[1] );=0A=
+};=0A=
+=0A=
+sub farsi_code($)=0A=
+{=0A=
+  my %code;=0A=
+  $code{'=A1'} =3D '&#1548;';  # Persian Comma=0A=
+  $code{'=BF'} =3D '&#1567;';  # Persian Question Mark=0A=
+  $code{'=C1'} =3D '&#1569;';  # Hamza=0A=
+  $code{'=C2'} =3D '&#1570;';  # Alef with Madda Above=0A=
+  $code{'=C3'} =3D '&#1571;';  # Alef with Hamza Above=0A=
+  $code{'=C4'} =3D '&#1572;';  # Waw with Hamza Above=0A=
+  $code{'=C5'} =3D '&#1573;';  # Alef with Hamza under Above=0A=
+  $code{'=C6'} =3D '&#1574;';  # Yeh with Hamza Above=0A=
+  $code{'=C7'} =3D '&#1575;';  # Alef=0A=
+  $code{'=C8'} =3D '&#1576;';  # Beh=0A=
+  $code{'=81'} =3D '&#1662;'; # Peh=0A=
+  $code{'=CA'} =3D '&#1578;';  # Teh=0A=
+  $code{'=CB'} =3D '&#1579;';  # Theh=0A=
+  $code{'=CC'} =3D '&#1580;';  # Jeem=0A=
+  $code{'=8D'} =3D '&#1670;'; # Tcheh=0A=
+  $code{'=CD'} =3D '&#1581;';  # Hah=0A=
+  $code{'=CE'} =3D '&#1582;';  # Khah=0A=
+  $code{'=CF'} =3D '&#1583;';  # Dal=0A=
+  $code{'=D0'} =3D '&#1584;';  # Thal=0A=
+  $code{'=D1'} =3D '&#1585;';  # Reh=0A=
+  $code{'=D2'} =3D '&#1586;';  # Zain=0A=
+  $code{'=8E'} =3D '&#1688;'; # Jeh=0A=
+  $code{'=D3'} =3D '&#1587;';  # Seen=0A=
+  $code{'=D4'} =3D '&#1588;';  # Sheen=0A=
+  $code{'=D5'} =3D '&#1589;';  # Sad=0A=
+  $code{'=D6'} =3D '&#1590;';  # Dad=0A=
+  $code{'=D8'} =3D '&#1591;';  # Tah=0A=
+  $code{'=D9'} =3D '&#1592;';  # Zah=0A=
+  $code{'=DA'} =3D '&#1593;';  # Ain=0A=
+  $code{'=DB'} =3D '&#1594;';  # Ghain=0A=
+  $code{'=DD'} =3D '&#1601;';  # Feh=0A=
+  $code{'=DE'} =3D '&#1602;';  # Qaf=0A=
+  $code{'=98'} =3D '&#1705;'; # Kaf=0A=
+  $code{'=90'} =3D '&#1711;'; # Gaf=0A=
+  $code{'=E1'} =3D '&#1604;';  # Lam=0A=
+  $code{'=E3'} =3D '&#1605;';  # Meem=0A=
+  $code{'=E4'} =3D '&#1606;';  # Noon=0A=
+  $code{'=E6'} =3D '&#1608;';  # Waw=0A=
+  $code{'=E5'} =3D '&#1607;';  # Heh=0A=
+  $code{'=ED'} =3D '&#1610;';  # Yeh=0A=
+  $code{'=FE'} =3D '&nbsp;';   # Hard Space=0A=
+  my $strout =3D '';=0A=
+  foreach (split //,$_[0]) =0A=
+  { =0A=
+    if ( $code{$_} )=0A=
+    {=0A=
+      $strout .=3D $code{$_}; =0A=
+    }=0A=
+    else=0A=
+    {=0A=
+      $strout .=3D $_;=0A=
+    }=0A=
+  }=0A=
+  return $strout;=0A=
+}=0A=
+=0A=
+sub iransystem2unicode($)=0A=
+{=0A=
+  my %code;=0A=
+  $code{"\x8A"}=3D"=A1";  # Persian Comma=0A=
+  $code{"\x8B"}=3D"";   #=0A=
+  $code{"\x8C"}=3D"=BF";  # Persian Question Mark=0A=
+  $code{"\x8D"}=3D"=C2";  # Alef with Madda Above=0A=
+  $code{"\x8E"}=3D"=C6";  # Yeh with Hamza Above=0A=
+  $code{"\x8F"}=3D"=C6";  #  "    "    "     "=0A=
+  $code{"\x90"}=3D"=C7";  # Alef=0A=
+  $code{"\x91"}=3D"=C7";  #  "=0A=
+  $code{"\x92"}=3D"=C8";  # Beh=0A=
+  $code{"\x93"}=3D"=C8";  #  "=0A=
+  $code{"\x94"}=3D"=81"; # Peh=0A=
+  $code{"\x95"}=3D"=81"; #  "=0A=
+  $code{"\x96"}=3D"=CA";  # Teh=0A=
+  $code{"\x97"}=3D"=CA";  #  "=0A=
+  $code{"\x98"}=3D"=CB";  # Theh=0A=
+  $code{"\x99"}=3D"=CB";  #  "=0A=
+  $code{"\x9A"}=3D"=CC";  # Jim=0A=
+  $code{"\x9B"}=3D"=CC";  #  "=0A=
+  $code{"\x9C"}=3D"=8D"; # Cheh=0A=
+  $code{"\x9D"}=3D"=8D"; #  "=0A=
+  $code{"\x9E"}=3D"=CD";  # Hah=0A=
+  $code{"\x9F"}=3D"=CD";  #  "=0A=
+  $code{"\xA0"}=3D"=CE";  # Khah=0A=
+  $code{"\xA1"}=3D"=CE";  #  "=0A=
+  $code{"\xA2"}=3D"=CF";  # Dal=0A=
+  $code{"\xA3"}=3D"=D0";  # Thal=0A=
+  $code{"\xA4"}=3D"=D1";  # Reh=0A=
+  $code{"\xA5"}=3D"=D2";  # Zain=0A=
+  $code{"\xA6"}=3D"=8E"; # Jeh=0A=
+  $code{"\xA7"}=3D"=D3";  # Seen=0A=
+  $code{"\xA8"}=3D"=D3";  #   "=0A=
+  $code{"\xA9"}=3D"=D4";  # Sheen=0A=
+  $code{"\xAA"}=3D"=D4";  #   "=0A=
+  $code{"\xAB"}=3D"=D5";  # Sad=0A=
+  $code{"\xAC"}=3D"=D5";  #  "=0A=
+  $code{"\xAD"}=3D"=D6";  # Dad=0A=
+  $code{"\xAE"}=3D"=D6";  #  "=0A=
+  $code{"\xAF"}=3D"=D8";  # Tah=0A=
+  $code{"\xE0"}=3D"=D9";  # Zah=0A=
+  $code{"\xE1"}=3D"=DA";  # Ain=0A=
+  $code{"\xE2"}=3D"=DA";  #  "=0A=
+  $code{"\xE3"}=3D"=DA";  #  "=0A=
+  $code{"\xE4"}=3D"=DA";  #  "=0A=
+  $code{"\xE5"}=3D"=DB";  # Ghain=0A=
+  $code{"\xE6"}=3D"=DB";  #   "=0A=
+  $code{"\xE7"}=3D"=DB";  #   "=0A=
+  $code{"\xE8"}=3D"=DB";  #   "=0A=
+  $code{"\xE9"}=3D"=DD";  # Feh=0A=
+  $code{"\xEA"}=3D"=DD";  #  "=0A=
+  $code{"\xEB"}=3D"=DE";  # Qaf=0A=
+  $code{"\xEC"}=3D"=DE";  #  "=0A=
+  $code{"\xED"}=3D"=98"; # Kaf=0A=
+  $code{"\xEE"}=3D"=98"; #  "=0A=
+  $code{"\xEF"}=3D"=90"; # Gaf=0A=
+  $code{"\xF0"}=3D"=90"; #  "=0A=
+  $code{"\xF1"}=3D"=E1";  # Lam=0A=
+  $code{"\xF2"}=3D"=E1=C7"; #  " and Alef=0A=
+  $code{"\xF3"}=3D"=E1";  #  "=0A=
+  $code{"\xF4"}=3D"=E3";  # Mim=0A=
+  $code{"\xF5"}=3D"=E3";  #  "=0A=
+  $code{"\xF6"}=3D"=E4";  # Noon=0A=
+  $code{"\xF7"}=3D"=E4";  #  "=0A=
+  $code{"\xF8"}=3D"=E6";  # Waw=0A=
+  $code{"\xF9"}=3D"=E5";  # Heh=0A=
+  $code{"\xFA"}=3D"=E5";  #  "=0A=
+  $code{"\xFB"}=3D"=E5";  #  "=0A=
+  $code{"\xFC"}=3D"=ED";  # Yeh=0A=
+  $code{"\xFD"}=3D"=ED";  #  "=0A=
+  $code{"\xFE"}=3D"=ED";  #  "=0A=
+  my $strout =3D '';=0A=
+  foreach ( reverse split //,$_[0] )=0A=
+  {=0A=
+    if ( $code{$_} )=0A=
+    {=0A=
+      $strout .=3D $code{$_};=0A=
+    }=0A=
+    else=0A=
+    {=0A=
+      $strout .=3D $_;=0A=
+    }=0A=
+  }=0A=
+  return $strout;=0A=
+}=0A=
+=0A=
+sub gregorian_to_jalali($$$) # ( @_[0] =3D Gregorian_Year , @_[1] =3D =
+Gregorian_Month , @_[2] =3D Gregorian_Day )=0A=
+{=0A=
+  my $i;=0A=
+  my $gy =3D $_[0]-1600;=0A=
+  my $gm =3D $_[1]-1;=0A=
+  my $gd =3D $_[2]-1;=0A=
+  =0A=
+  my $g_day_no =3D =
+365*$gy+&$div($gy+3,4)-&$div($gy+99,100)+&$div($gy+399,400);=0A=
+  =0A=
+  for ($i=3D0; $i < $gm; ++$i)=0A=
+  {=0A=
+    $g_day_no +=3D $g_days_in_month[$i];=0A=
+  }=0A=
+  $g_day_no++ if ($gm>1 && (($gy%4=3D=3D0 && $gy%100!=3D0) || =
+($gy%400=3D=3D0)));=0A=
+  $g_day_no +=3D $gd;=0A=
+=0A=
+  my $j_day_no =3D $g_day_no-79;=0A=
+=0A=
+  my $j_np =3D &$div($j_day_no, 12053); # 12053 =3D 365*33 + 32/4=0A=
+  $j_day_no =3D $j_day_no % 12053;=0A=
+  =0A=
+  my $jy =3D 979+33*$j_np+4*&$div($j_day_no,1461); # 1461 =3D 365*4 + 4/4=0A=
+=0A=
+  $j_day_no %=3D 1461;=0A=
+  =0A=
+  if ($j_day_no >=3D 366)=0A=
+  {=0A=
+    $jy +=3D &$div($j_day_no-1, 365);=0A=
+    $j_day_no =3D ($j_day_no-1)%365;=0A=
+  }=0A=
+=0A=
+  for ($i =3D 0; $i < 11 && $j_day_no >=3D $j_days_in_month[$i]; ++$i)=0A=
+  {=0A=
+    $j_day_no -=3D $j_days_in_month[$i];=0A=
+  }=0A=
+  my $jm =3D $i+1;=0A=
+  my $jd =3D $j_day_no+1;=0A=
+=0A=
+  return ( $jy, $jm, $jd );=0A=
+}=0A=
+=0A=
+sub g2jstrftime($$) # just Like strftime =3D ( @_[0] =3D pattern, @_[1] =
+=3D timestamp )=0A=
+{=0A=
+  my $pattern =3D $_[0];=0A=
+=0A=
+  my $g_y =3D strftime "%Y", localtime($_[1]);=0A=
+  my $g_m =3D strftime "%m", localtime($_[1]);=0A=
+  my $g_d =3D strftime "%d", localtime($_[1]);=0A=
+  my $g_d_s =3D strftime "%a", localtime($_[1]);=0A=
+=0A=
+  my ($j_y, $j_m, $j_d) =3D gregorian_to_jalali ($g_y, $g_m, $g_d);=0A=
+  =0A=
+  my ($j_d_s, $j_d_i);=0A=
+  if ( $g_d_s eq 'Sat' ) { ($j_d_s, $j_d_i) =3D ('=D4=E4=C8=E5', =
+'=D4=E4=C8=E5') }=0A=
+  elsif ( $g_d_s eq 'Sun' ) { ($j_d_s, $j_d_i) =3D =
+('=ED=98=D4=E4=C8=E5', '1 =D4=E4=C8=E5') }=0A=
+  elsif ( $g_d_s eq 'Mon' ) { ($j_d_s, $j_d_i) =3D =
+('=CF=E6=D4=E4=C8=E5', '2 =D4=E4=C8=E5') }=0A=
+  elsif ( $g_d_s eq 'Tue' ) { ($j_d_s, $j_d_i) =3D ('=D3=E5 =
+=D4=E4=C8=E5', '3 =D4=E4=C8=E5') }=0A=
+  elsif ( $g_d_s eq 'Wed' ) { ($j_d_s, $j_d_i) =3D =
+('=8D=E5=C7=D1=D4=E4=C8=E5', '4 =D4=E4=C8=E5') }=0A=
+  elsif ( $g_d_s eq 'Thu' ) { ($j_d_s, $j_d_i) =3D =
+('=81=E4=CC=D4=E4=C8=E5', '5 =D4=E4=C8=E5') }=0A=
+  elsif ( $g_d_s eq 'Fri' ) { ($j_d_s, $j_d_i) =3D ('=CC=E3=DA=E5', =
+'=CC=E3=DA=E5') }=0A=
+=0A=
+  my $j_m_s;=0A=
+  if ( $j_m eq '1' ) { $j_m_s =3D '=DD=D1=E6=D1=CF=ED=E4' }=0A=
+  elsif ( $j_m eq '2' ) { $j_m_s =3D '=C7=D1=CF=ED=C8=E5=D4=CA' }=0A=
+  elsif ( $j_m eq '3' ) { $j_m_s =3D '=CE=D1=CF=C7=CF' }=0A=
+  elsif ( $j_m eq '4' ) { $j_m_s =3D '=CA=ED=D1' }=0A=
+  elsif ( $j_m eq '5' ) { $j_m_s =3D '=E3=D1=CF=C7=CF' }=0A=
+  elsif ( $j_m eq '6' ) { $j_m_s =3D '=D4=E5=D1=ED=E6=D1' }=0A=
+  elsif ( $j_m eq '7' ) { $j_m_s =3D '=E3=E5=D1' }=0A=
+  elsif ( $j_m eq '8' ) { $j_m_s =3D '=C2=C8=C7=E4' }=0A=
+  elsif ( $j_m eq '9' ) { $j_m_s =3D '=C2=D0=D1' }=0A=
+  elsif ( $j_m eq '10' ) { $j_m_s =3D '=CF=ED' }=0A=
+  elsif ( $j_m eq '11' ) { $j_m_s =3D '=C8=E5=E3=E4' }=0A=
+  elsif ( $j_m eq '12' ) { $j_m_s =3D '=C7=D3=DD=E4=CF' }=0A=
+=0A=
+  my $j_y_s =3D substr ($j_y,2,2);=0A=
+  my $j_m_i =3D $j_m_s."=E3=C7=E5";=0A=
+=0A=
+  $pattern =3D~ s/\%Y/$j_y/g; =0A=
+  $pattern =3D~ s/\%y/$j_y_s/g; =0A=
+  $pattern =3D~ s/\%m/$j_m/g;=0A=
+  $pattern =3D~ s/\%b/$j_m_s/g;=0A=
+  $pattern =3D~ s/\%B/$j_m_i/g;=0A=
+  $pattern =3D~ s/\%d/$j_d/g;=0A=
+  $pattern =3D~ s/\%a/$j_d_i/g;=0A=
+  $pattern =3D~ s/\%A/$j_d_s/g;=0A=
+  =0A=
+  return $pattern;=0A=
+}=0A=
+=0A=
+sub jalali_to_gregorian($$$) # ( @_[0] =3D Jalali_Year , @_[1] =3D =
+Jalali_Month , @_[2] =3D Jalali_Day )=0A=
+{=0A=
+  my $i;=0A=
+  my $jy =3D $_[0]-979;=0A=
+  my $jm =3D $_[1]-1;=0A=
+  my $jd =3D $_[2]-1;=0A=
+=0A=
+  my $j_day_no =3D 365*$jy + &$div($jy, 33)*8 + &$div($jy%33+3, 4);=0A=
+  for ($i=3D0; $i < $jm; ++$i)=0A=
+  {=0A=
+    $j_day_no +=3D $j_days_in_month[$i];=0A=
+  }=0A=
+  =0A=
+  $j_day_no +=3D $jd;=0A=
+=0A=
+  my $g_day_no =3D $j_day_no+79;=0A=
+=0A=
+  my $gy =3D 1600 + 400*&$div($g_day_no, 146097); # 146097 =3D 365*400 + =
+400/4 - 400/100 + 400/400=0A=
+  $g_day_no =3D $g_day_no % 146097;=0A=
+=0A=
+  my $leap =3D 1;=0A=
+  if ($g_day_no >=3D 36525) # 36525 =3D 365*100 + 100/4=0A=
+  {=0A=
+    $g_day_no--;=0A=
+    $gy +=3D 100*&$div($g_day_no,  36524); # 36524 =3D 365*100 + 100/4 - =
+100/100=0A=
+    $g_day_no =3D $g_day_no % 36524;=0A=
+    =0A=
+    if ($g_day_no >=3D 365)=0A=
+    {=0A=
+      $g_day_no++;=0A=
+    }=0A=
+    else=0A=
+    {=0A=
+      $leap =3D 0;=0A=
+    }=0A=
+  }=0A=
+=0A=
+  $gy +=3D 4*&$div($g_day_no, 1461); # 1461 =3D 365*4 + 4/4=0A=
+  $g_day_no %=3D 1461;=0A=
+=0A=
+  if ($g_day_no >=3D 366)=0A=
+  {=0A=
+    $leap =3D 0;=0A=
+    =0A=
+    $g_day_no--;=0A=
+    $gy +=3D &$div($g_day_no, 365);=0A=
+    $g_day_no =3D $g_day_no % 365;=0A=
+  }=0A=
+  for ($i =3D 0; $g_day_no >=3D $g_days_in_month[$i] + ($i =3D=3D 1 && =
+$leap); $i++)=0A=
+  {=0A=
+    $g_day_no -=3D $g_days_in_month[$i] + ($i =3D=3D 1 && $leap);=0A=
+  }=0A=
+  my $gm =3D $i+1;=0A=
+  my $gd =3D $g_day_no+1;=0A=
+=0A=
+  return ($gy, $gm, $gd);=0A=
+}=0A=
+=0A=
+END { }       # module clean-up code here (global destructor)=0A=
+=0A=
+## YOUR CODE GOES HERE=0A=
+=0A=
+1;  # don't forget to return a true value from the file=0A=
+
+------=_NextPart_000_002A_01C1B11B.CE5F7400--
+
+

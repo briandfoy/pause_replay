@@ -1,0 +1,229 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:71829 perl.module-authors:8681
+Return-Path: <ludovicostevens@free.fr>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 29681 invoked from network); 4 Jul 2010 13:56:42 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 4 Jul 2010 13:56:42 -0000
+Received: (qmail 11834 invoked by uid 225); 4 Jul 2010 13:56:41 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11825 invoked by alias); 4 Jul 2010 13:56:40 -0000
+X-Spam-Status: No, hits=0.4 required=8.0
+	tests=FILL_THIS_FORM_FRAUD_PHISH,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,T_FILL_THIS_FORM,T_TO_NO_BRKTS_FREEMAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from smtp1-g21.free.fr (HELO smtp1-g21.free.fr) (212.27.42.1)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 04 Jul 2010 06:56:37 -0700
+Received: from [192.168.0.12] (unknown [88.167.93.140])
+	by smtp1-g21.free.fr (Postfix) with ESMTP id 5D745940146;
+	Sun,  4 Jul 2010 15:56:25 +0200 (CEST)
+Message-ID: <4C309307.7080506@free.fr>
+Date: Sun, 04 Jul 2010 15:56:23 +0200
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.10) Gecko/20100512 Thunderbird/3.0.5
+MIME-Version: 1.0
+To: modules@perl.org, module-authors@perl.org
+Subject: Advice for Module Namspace (Net::CLI vs CLI ...)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: ludovicostevens@free.fr (Ludovico Stevens)
+
+Hi
+
+I have recently registered on PAUSE and have a module to upload to CPAN; 
+I need some advice on the Name Space to use.
+
+I work with Ethernet switches & routers and I use Perl scripts to 
+automate tasks via the CLI (Command Line Interface).
+Typically, the CLI of a switch/router can be accessed via any of Telnet, 
+SSH, or Serial console port.
+
+For many years I used Net::Telnet, but more and more customers now use 
+SSH instead.
+Typically a switch/router will only implement CLI over SSH in an 
+interactive shell, and Net::SSH2 has no capabilities to handle an 
+interactive shell like Net::Telnet does.
+
+So I created my own module which presents a single consistent API and 
+can run over Telnet (using Net::Telnet), SSH (using Net::SSH2) or Serial 
+Coms port (using either Win32::SerialPort or Device::SerialPort); it 
+also provides all the necessary methods to deal with an interactive 
+shell regardless of the underlying connection type.
+So if I make a script to automate a task, that script can easily work 
+across any of Telnet, SSH, or Serial access.
+
+I have written a general module, which can be used against any device 
+from any vendor and can be re-used to customize the functionality for 
+specific product families; right now I have named it:
+
+     Net::CLI
+
+Since I work with Avaya Data (ex Nortel Enterprise) switches/routers I 
+also have a customized version which inherits and enhances the Net::CLI 
+functionality just for these products; right now named:
+
+     Net::CLI::AvayaData
+
+The idea is that me or someone else could extend this for other vendors, 
+e.g. Cisco and others..
+
+
+Now I read the various perlmodstyle, perlnewmod and pause_namingmodules, 
+and it seems I should not be using the Net namespace...
+The reason I started off with the above naming is that I expect my 
+module will mostly be used for Telnet/SSH use and most people would 
+start off looking under Net (where Net::Telnet and Net::SSH2 reside).
+
+So, ok, I can change the namespace not to use Net; so how about this 
+instead :
+
+     CLI
+     CLI::AvayaData
+
+Now however I'd be using top-level namespace, which I understand is also 
+discouraged.
+Any advice/suggestions/alternatives are welcome.
+
+I have pasted below the draft synopsis for the 2 Modules I have right 
+now (current naming using Net:: but I can still change that..)
+
+Thanks
+Ludovico Stevens
+
+
+=============================================================================================
+
+NAME
+
+Net::CLI - Command Line Interface I/O via any of Telnet, SSH or Serial port
+
+SYNOPSIS
+
+Telnet access
+
+         use Net::CLI;
+         # Create the object instance for Telnet
+         $cli = new Net::CLI('TELNET');
+         # Connect to host
+         $cli->connect('hostname');
+         # Perform login
+         $cli->login(    Username        => $username,
+                         Password        => $password,
+                    );
+         # Send a command and read the resulting output
+         $output = $cli->cmd("command");
+         print $output;
+         $cli->disconnect;
+
+SSH access
+
+         use Net::CLI;
+         # Create the object instance for SSH
+         $cli = new Net::CLI('SSH');
+         # Connect to host - Note that with SSH,
+         #  authentication is part of the connection process
+         $cli->connect(  Host            => 'hostname',
+                         Username        => $username,
+                         Password        => $password,
+                         PublicKey       => '.ssh/id_dsa.pub',
+                         PrivateKey      => '.ssh/id_dsa',
+                         Passphrase      => $passphrase,
+                      );
+         # Send a command and read the resulting output
+         $output = $cli->cmd("command");
+         print $output;
+         $cli->disconnect;
+
+Serial port access
+
+         use Net::CLI;
+         # Create the object instance for Serial port COM1
+         $cli = new Net::CLI('COM1');
+         # Connect to host
+         $cli->connect(  BaudRate        => 9600,
+                         Parity          => 'none',
+                         DataBits        => 8,
+                         StopBits        => 1,
+                         Handshake       => 'none',
+                      );
+         # Perform login
+         $cli->login(    Username        => $username,
+                         Password        => $password,
+                    );
+         # Send a command and read the resulting output
+         $output = $cli->cmd("command");
+         print $output;
+         $cli->disconnect;
+
+
+=============================================================================================
+
+NAME
+
+Net::CLI::AvayaData - Interact with CLI (Command Line Interface) of 
+Avaya (ex Nortel Enterprise) Data products over any of Telnet, SSH or 
+Serial port
+
+SYNOPSIS
+
+         use Net::CLI::AvayaData;
+
+Connecting with Telnet
+
+         # Create the object instance for Telnet
+         $cli = new Net::CLI::AvayaData('TELNET');
+         # Connect to host
+         $cli->connect(  Host            => 'hostname',
+                         Username        => $username,
+                         Password        => $password,
+                      );
+
+Connecting with SSH - password authentication
+
+         # Create the object instance for SSH
+         $cli = new Net::CLI::AvayaData('SSH');
+         # Connect to host
+         $cli->connect(  Host            => 'hostname',
+                         Username        => $username,
+                         Password        => $password,
+                      );
+
+Connecting with SSH - publickey authentication
+
+         # Create the object instance for SSH
+         $cli = new Net::CLI::AvayaData('SSH');
+         # Connect to host
+         $cli->connect(  Host            => 'hostname',
+                         PublicKey       => '.ssh/id_dsa.pub',
+                         PrivateKey      => '.ssh/id_dsa',
+                         Passphrase      => $passphrase,
+                      );
+
+Connecting via Serial port
+
+         # Create the object instance for Serial port COM1
+         $cli = new Net::CLI::AvayaData('COM1');
+         # Connect to host
+         $cli->connect(  BaudRate        => 9600,
+                         Parity          => 'none',
+                         DataBits        => 8,
+                         StopBits        => 1,
+                         Handshake       => 'none',
+                      );
+
+Sending commands once connected and disconnecting
+
+         $cli->enable;
+         $cli->cmd('config terminal');
+         $cli->cmd('no banner');
+         $cli->cmd('exit');
+         $cli->device_more_paging(0);
+         $config = $cli->cmd('show running-config');
+         print $config;
+         $cli->disconnect;
+
+
+

@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:63239
+Return-Path: <powerman@powerman.name>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 5645 invoked from network); 16 Nov 2008 19:23:53 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 16 Nov 2008 19:23:53 -0000
+Received: (qmail 28055 invoked by uid 225); 16 Nov 2008 19:23:53 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28050 invoked by alias); 16 Nov 2008 19:23:52 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from powerman.name (HELO powerman.name) (85.90.198.1)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 16 Nov 2008 11:23:50 -0800
+Received: (qmail 21565 invoked by uid 1000); 16 Nov 2008 19:23:41 -0000
+Date: Sun, 16 Nov 2008 21:23:41 +0200
+To: modules@perl.org
+Subject: Re: Module submission EV::Stream
+Message-ID: <20081116192341.GN1814@home.power>
+References: <200811161848.mAGImqGC013531@pause.perl.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200811161848.mAGImqGC013531@pause.perl.org>
+Organization: http://powerman.name/
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Approved: news@nntp.perl.org
+From: powerman@powerman.name (Alex Efros)
+
+Hi!
+
+On Sun, Nov 16, 2008 at 07:48:52PM +0100, Perl Authors Upload Server wrote:
+>     As example, use chain of 3 HTTPS proxies to connect to HTTPS web
+>     server:
+
+Nice. All formatting was lost. :( Here is how it should looks like:
+
+    EV::Stream->new({
+        host        => 'www.google.com',
+        port        => 443,
+        cb          => \&process_server_reply,
+        wait_for    => IN|EOF,
+        out_buf     => "GET / HTTP/1.0\nHost: www.google.com\n\n",
+        plugin      => [
+            ssl         => EV::Stream::MatrixSSL::Client->new({ 
+                cb          => \&server_cert_validate,
+            }),
+            proxy1      => EV::Stream::Proxy::HTTPS->new({
+                host        => 'last.proxy.com',
+                port        => 3128,
+            }),
+            proxy2      => EV::Stream::Proxy::HTTPS->new({
+                host        => 'middle.proxy.com',
+                port        => 3128,
+            }),
+            proxy3      => EV::Stream::Proxy::HTTPS->new({
+                host        => 'first.proxy.com',
+                port        => 3128,
+                user        => 'me',
+                pass        => 'mypass',
+            }),
+        ],
+    });
+
+-- 
+			WBR, Alex.

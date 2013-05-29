@@ -1,0 +1,144 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62585
+Return-Path: <chris@onthe.net.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 3381 invoked from network); 9 Oct 2008 04:08:51 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 9 Oct 2008 04:08:51 -0000
+Received: (qmail 9977 invoked by uid 225); 9 Oct 2008 04:08:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9966 invoked by alias); 9 Oct 2008 04:08:50 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from atlas1.onthe.net.au (HELO mail2.infoxchange.net.au) (203.22.202.174)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 08 Oct 2008 21:08:46 -0700
+Received: from zeus.office.infoxchange.net.au (zeus.office.infoxchange.net.au [192.168.181.9])
+	by mail2.infoxchange.net.au (Postfix) with ESMTP id 77581142928
+	for <modules@perl.org>; Thu,  9 Oct 2008 15:08:41 +1100 (EST)
+Received: from localhost (localhost [127.0.0.1])
+	by zeus.office.infoxchange.net.au (Postfix) with ESMTP id 8C24A132CC1
+	for <modules@perl.org>; Thu,  9 Oct 2008 15:08:41 +1100 (EST)
+X-Virus-Scanned: Amavisd/Clamav
+Received: from zeus.office.infoxchange.net.au ([127.0.0.1])
+	by localhost (zeus.office.infoxchange.net.au [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id oyZiMXc+3UBQ for <modules@perl.org>;
+	Thu,  9 Oct 2008 15:08:41 +1100 (EST)
+Received: from achates2.office.onthe.net.au (achates2.office.onthe.net.au [192.168.181.204])
+	by zeus.office.infoxchange.net.au (Postfix) with ESMTP id 2999F132CC5
+	for <modules@perl.org>; Thu,  9 Oct 2008 15:08:41 +1100 (EST)
+Received: by achates2.office.onthe.net.au (Postfix, from userid 999)
+	id 558436C3; Thu,  9 Oct 2008 15:08:42 +1100 (EST)
+Date: Thu, 9 Oct 2008 15:08:42 +1100
+To: modules@perl.org
+Subject: Authen::Captcha unmaintained?
+Message-ID: <20081009040842.GA31297@onthe.net.au>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="YiEDa0DAkWCtVeE4"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
+Approved: news@nntp.perl.org
+From: chris@onthe.net.au (Chris Dunlop)
+
+--YiEDa0DAkWCtVeE4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+Hi,
+
+I've tried contacting the author of the Authen::Captcha module
+with a patch to fix a problem when running under taint mode (see
+attached) but haven't received a response in just under a year,
+and the module seems to be unmaintained.  Without this patch the
+module can't be used in taint mode, which could be considered a
+security bug.  The patch has been included in the debian
+distribution for quite some time and was reported to the CPAN
+RT:
+
+<http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=409731>
+<http://rt.cpan.org/Public/Bug/Display.html?id=30806>
+
+Is there some way of having the patch applied without me taking
+on the maintainer's role?
+
+(I've recently applied for a PAUSE login as 'chrisrd'.)
+
+Cheers,
+
+Chris.
+
+--YiEDa0DAkWCtVeE4
+Content-Type: message/rfc822
+Content-Disposition: inline
+
+Date: Fri, 19 Oct 2007 18:34:36 +1000
+From: Chris Dunlop <chris@onthe.net.au>
+To: Josh Miller <jmiller@purifieddata.net>
+Subject: Authen-Captcha module
+Message-ID: <20071019083436.GA19935@onthe.net.au>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="MGYHOYXEY6WxJCY8"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.13 (2006-08-11)
+
+
+--MGYHOYXEY6WxJCY8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+Hi Josh,
+
+I've taken your contact details from the perl CPAN
+Authen-Captcha module.  I see the last time the module was
+modified was 2003 so I'm  not sure of you're still managing it!
+
+If you are...
+
+The v1.023 version of the module has a problem running with
+perl's -T flag (tainting).  The attached patch fixes this.
+
+
+Cheers,
+
+Chris Dunlop
+
+--MGYHOYXEY6WxJCY8
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment; filename="Authen-Captcha-untaint.patch"
+
+--- Authen-Captcha-1.023/Captcha.pm.orig	2003-12-18 15:44:34.000000000 +1100
++++ Authen-Captcha-1.023/Captcha.pm	2007-10-19 18:27:34.000000000 +1000
+@@ -232,7 +232,11 @@
+ 	foreach my $line (@data) 
+ 	{
+ 		$line =~ s/\n//;
+-		my ($data_time,$data_code) = split(/::/,$line);
++
++		#
++		# Extract untainted time and code
++		#
++		my ($data_time,$data_code) = $line =~ m/(^\d+)::([[:xdigit:]]{32})$/;
+ 		
+ 		my $png_file = File::Spec->catfile($self->output_folder(),$data_code . ".png");
+ 		if ($data_code eq $crypt)
+@@ -351,7 +355,12 @@
+ 	foreach my $line (@data) 
+ 	{
+ 		$line =~ s/\n//;
+-		my ($data_time,$data_code) = split(/::/,$line);
++
++		#
++		# Extract untainted time and code
++		#
++		my ($data_time,$data_code) = $line =~ m/(^\d+)::([[:xdigit:]]{32})$/;
++
+ 		if ( (($current_time - $data_time) > ($self->expire())) ||
+ 		     ($data_code  eq $md5) )
+ 		{	# remove expired captcha, or a dup
+
+--MGYHOYXEY6WxJCY8--
+
+--YiEDa0DAkWCtVeE4--

@@ -1,0 +1,59 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:2291 perl.modules:29
+Return-Path: <mike808@my-deja.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11851 invoked from network); 14 Oct 1999 15:14:08 -0000
+Received: from mc-qout4.whowhere.com (209.185.123.18)
+  by tmtowtdi.perl.org with SMTP; 14 Oct 1999 15:14:08 -0000
+Received: from Unknown/Local ([?.?.?.?]) by my-deja.com; Thu Oct 14 08:13:31 1999
+To: modules@perl.org
+Date: Thu, 14 Oct 1999 08:13:31 -0700
+Message-ID: <IHFLGLDINKIBAAAA@my-deja.com>
+Mime-Version: 1.0
+Cc: perl5-porters@perl.org
+X-Sent-Mail: on
+Reply-To: 
+X-Mailer: MailCity Service
+Subject: Re: NEW MODULE (pragma): import.pm
+X-Sender-Ip: 207.239.112.18
+Organization: My Deja Email  (http://www.my-deja.com:80)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: mike808@my-Deja.com ("Michael King")
+
+On Tue, 12 Oct 1999 00:46:17   Ronald J Kimball wrote:
+>I don't understand...  How does import determine whether the specified
+>package refers to a module or a directory?  Consider:
+>
+>use import qw( CGI );
+>
+>Does this load the CGI module, and alias it to CGI, or does it load all the
+>modules in the CGI directory, and alias them to their basenames?
+
+Easy, I look for a package (.pm file) first. So the above would find CGI.pm and probably alias it to the CGI namespace (or main, as in '::'?). I haven't tried this, and it is an interesting question. But, then I'm not out to prevent people from abusing the module. 
+
+I could probably work on the syntax (as in CGI:: would be the notation to indicate that you wanted to 'import' everyting from the CGI::* namespace. Thus, CGI::Carp would get loaded on top of Carp, making things really ugly. But that's not what I intended (or documented) the use of the pragma to be for. And the extra colons just seem superflous. Perl can find out whether you are talking about a directory or a module without requiring the colons, so why make life hard on the programmer? Except for the case you point out, where there are both.
+
+I will make the colons optional to allow me to determine your intent for that case.
+
+>This pragma seems somewhat dangerous, considering that modules may share
+>basenames.  Careless use of the pragma would lead to uncertainty about
+>which module was aliased to a particular package.
+
+Absolutely. I will beef up the warnings section about this. But, it is mainly used as a *convenience* feature - see "laziness".
+
+However, if you want to use random modules willy-nilly without regard for their proper use/context, why should you be surprised when weird/bad things happen?
+
+I could easily add checking to see if the namespace already exists before importing and various flavors of complaint when that happens. Java (because it is a compile process) can enforce importing only into a single namespace at compile time and prevent you from stepping on yourself. But, because perl is run-time centric, you might define symbols in a namespace at any time during execution, so I can't realy *prevent* you from doing what you say needs preventing.
+
+IMHO, It's up to you to avoid re-using a namespace you've previously explicitly said you were going to use for something else.
+
+Thanks for the constructive input,
+Michael King
+
+
+--== Sent via Deja.com http://www.deja.com/ ==--
+Share what you know. Learn what you don't.

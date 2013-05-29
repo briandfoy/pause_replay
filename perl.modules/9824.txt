@@ -1,0 +1,122 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9824 perl.module-authors:271
+Return-Path: <markdilger@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30814 invoked by uid 76); 22 Jan 2002 17:29:13 -0000
+Received: from web21003.mail.yahoo.com (HELO web21003.mail.yahoo.com) (216.136.227.57)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Tue Jan 22 17:29:13 2002 -0000
+Message-ID: <20020122172910.73418.qmail@web21003.mail.yahoo.com>
+Received: from [64.145.244.2] by web21003.mail.yahoo.com via HTTP; Tue, 22 Jan 2002 09:29:10 PST
+Date: Tue, 22 Jan 2002 09:29:10 -0800 (PST)
+Subject: Re: Seeking advice on possible module Map::Hash, etc.
+To: Adekunle Olonoh <ade@bottledsoftware.com>
+Cc: modules@perl.org, module-authors@perl.org
+In-Reply-To: <1011709159.31202.0.camel@koolade>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: markdilger@yahoo.com (Mark Dilger)
+References: <1011709159.31202.0.camel@koolade>
+
+Thank you for your reply.  I believe your system works
+for lists.  For hashes, things get complicated because
+equal hashes may serialize with their keys in
+different orders using Data::Dumper or Storable. 
+FreezeThaw seems to work, though.
+
+So, only Map::Set and Map::Bag now seem relevant, as
+they consider order to be irrelevant, and such
+behavior is not available from any of the packages
+mentioned so far.  In the case of Map::Set, duplicates
+are also considered to be irrelevant.  If anyone
+thinks these two modules would be useful let me know. 
+Otherwise I will not bother posting these to CPAN.
+
+--- END OF RELEVANT DISCUSSION ---
+
+If you're extra curious...
+
+I ran the following code and found that, in my runs,
+it always died on the very first iteration:
+
+    #!/usr/bin/perl
+
+    use Data::Dumper;
+
+    for(my $i = 0; $i < 100; $i++) {
+        my @list = map {
+            chr(rand(254)+1)
+        } (0..int(rand(100)));
+        my %hash1 = map { $_ => 1 } @list;
+        my %hash2 = map { $_ => 1 } reverse @list;
+
+        my $serialized1 = Dumper(\%hash1);
+        my $serialized2 = Dumper(\%hash2);
+
+        die $i unless($serialized1 eq $serialized2);
+    }
+
+Printing out $serialized1 and $serialized2 showed that
+they were unequal strings which represented equal
+hashes.
+
+Using Storable::freeze on \%hash1 and \%hash2 didn't
+solve the problem, though the format of the frozen
+string differs from previously.  (It appears binary
+and much less human readable if printed).
+
+Using FreezeThaw::freeze did solve the problem. 
+Thanks!
+
+--- Adekunle Olonoh <ade@bottledsoftware.com> wrote:
+> > To give an idea why this might be useful:  I often
+> > loop, calling a function which returns a list or
+> hash,
+> > and want to easily check if the list or hash I'm
+> > getting back is one I have seen already. The
+> following
+> > doesn't work:
+> > 
+> >    my %seen;
+> >    while(1)
+> >       {
+> >       my @list = some_func();
+> >       die if($seen{\@list});
+> >       $seen{\@list} = 1;
+> >       }
+> 
+> You may have implemented your module this way, but
+> serializing the data
+> structure with a module like Data::Dumper will get
+> you what you need:
+> 
+>     use Data::Dumper;
+>     my %seen;
+>     while(1) {
+>         my @list = some_func();
+>         my $serialized = Dumper(\@list);
+>         die if $seen{$serialized};
+>         $seen{$serialized} = 1;
+>     }
+> 
+> You might want to also look at Storable and
+> FreezeThaw.
+> 
+> -- 
+> 
+>
+_______________________________________________________
+> 
+>      Ade Olonoh, BOTTLED SOFTWARE
+> 
+>      317.576.1120 x12 (phone) 317.576.1135 (fax)
+>
+_______________________________________________________
+> 
+
+__________________________________________________
+Do You Yahoo!?
+Send FREE video emails in Yahoo! Mail!
+http://promo.yahoo.com/videomail/

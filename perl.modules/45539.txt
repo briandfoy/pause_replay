@@ -1,0 +1,172 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45539
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13118 invoked from network); 26 Oct 2005 23:01:34 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 26 Oct 2005 23:01:34 -0000
+Received: (qmail 6553 invoked by uid 225); 26 Oct 2005 23:01:34 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6547 invoked by alias); 26 Oct 2005 23:01:33 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO k75.linux.bogus) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 26 Oct 2005 16:01:29 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.13.5/8.13.5/Debian-1) with ESMTP id j9QN1OVV024296;
+	Thu, 27 Oct 2005 01:01:24 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.5/8.13.5/Submit) id j9QN1O8T024293;
+	Thu, 27 Oct 2005 01:01:24 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: ron@savage.net.au
+Cc: "Andreas J. Koenig" <modules@perl.org>
+Subject: Re: Curious errors from PAUSE namespace indexer
+References: <200510211482.523137@ron>
+Reply-To: modules@perl.org
+Date: Thu, 27 Oct 2005 01:01:24 +0200
+In-Reply-To: <200510211482.523137@ron> (Ron Savage's message of "Fri, 21 Oct
+	2005 14:08:02 +1000")
+Message-ID: <87r7a7hohn.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Fri, 21 Oct 2005 14:08:02 +1000, Ron Savage <ron@savage.net.au> said:
+
+  > On Fri, 21 Oct 2005 05:46:43 +0200, Andreas J. Koenig wrote:
+  > Hi Andreas
+
+ >>> 'No package statements could be found in the distro (maybe a
+ >>> script or documentation distribution?)'
+ >> Very confusing error message. Sorry. Suggestions for a better
+ >> wording welcome.
+
+  > Don't apologize. It's not your fault. See below.
+
+  > As for a new message, how about:
+
+  > Nothing in this distro has been indexed, because according to META.yml this 
+  > package does not provide any modules/scripts/etc.
+
+Thanks, I made a note to myself at the point in the code where this
+should be dealt with. But the implementation still needs some tuits.
+
+ >> No. It's because your META.yml says
+ >> provides: {}
+
+  > Now I understand.
+
+ >> Do you know why you have this empty hash in there?
+
+  > Yes, now you've indicated where to look :-)).
+  > It's a problem with Module::Build. Look at the last line of META.yml:
+
+  > generated_by: Module::Build version 0.24
+
+  > I just used V 0.2611 and now it says:
+
+  > provides:
+  >   Javascript::MD5:
+  >     file: lib/Javascript/MD5.pm
+  >     version: 1.05
+  > generated_by: Module::Build version 0.2611
+
+  > I will check all my modules, and release new versions where necessary.
+
+  > Luckily, the 2 Javascript modules are the only ones of mine which do not appear 
+  > in 01modules.index.html, which makes me think (fingers crossed!) they are the 
+  > only 2 with this problem.
+
+all of the folowing distros had an empty provides hash:
+
+empty_mb_lt0.26 B/BO/BOWMANBS/Regexp-Genex-0.05
+empty_mb_lt0.26 B/BO/BOWMANBS/Regexp-Genex-0.06
+empty_mb_lt0.26 D/DW/DWHEELER/MasonX-ApacheHandler-WithCallbacks-1.10
+empty_mb_lt0.26 E/EV/EVDB/Test-Numeric-0.1
+empty_mb_lt0.26 F/FG/FGLOCK/Inline-Parrot-0.15
+empty_mb_lt0.26 G/GA/GAZERRO/Business-GestPayCrypt-0.41
+empty_mb_lt0.26 J/JO/JOHNWRDN/constant-Atom-0.01
+empty_mb_lt0.26 J/JO/JOHNWRDN/constant-Atom-0.011
+empty_mb_lt0.26 J/JV/JV/mp3info-1.05a
+empty_mb_lt0.26 O/OS/OSFAMERON/Algorithm-Line-Bresenham-0.10
+empty_mb_lt0.26 R/RR/RRWO/Acme-Innuendo-0.02
+empty_mb_lt0.26 R/RR/RRWO/GPS-Lowrance-0.30
+empty_mb_lt0.26 R/RR/RRWO/GPS-Lowrance-0.31
+empty_mb_lt0.26 R/RR/RRWO/GPS-Lowrance-Trail-0.42
+empty_mb_lt0.26 R/RR/RRWO/GPS-Lowrance-Trail-0.43
+empty_mb_lt0.26 R/RR/RRWO/Module-ParseDeps-0.02
+empty_mb_lt0.26 R/RS/RSAVAGE/CGI-Explorer-2.05
+empty_mb_lt0.26 R/RS/RSAVAGE/CGI-Echo-1.04
+empty_mb_lt0.26 R/RS/RSAVAGE/CGI-Formalware-1.12
+empty_mb_lt0.26 R/RS/RSAVAGE/Class-Tree-1.24
+empty_mb_lt0.26 R/RS/RSAVAGE/CGI-Session-MembersArea-2.01
+empty_mb_lt0.26 R/RS/RSAVAGE/Class-DBI-Schema2Code-1.01
+empty_mb_lt0.26 R/RS/RSAVAGE/DBIx-Admin-TableInfo-1.02
+empty_mb_lt0.26 R/RS/RSAVAGE/DBIx-HTML-ClientDB-1.04
+empty_mb_lt0.26 R/RS/RSAVAGE/DBIx-Hash2Table-2.00
+empty_mb_lt0.26 R/RS/RSAVAGE/DBIx-MSAccess-Convert2Db-1.04
+empty_mb_lt0.26 R/RS/RSAVAGE/DBIx-MSSQLReporter-1.03
+empty_mb_lt0.26 R/RS/RSAVAGE/DBIx-Table2Hash-1.13
+empty_mb_lt0.26 R/RS/RSAVAGE/DFA-Command-1.98
+empty_mb_lt0.26 R/RS/RSAVAGE/Javascript-MD5-1.04
+empty_mb_lt0.26 R/RS/RSAVAGE/Javascript-SHA1-1.01
+empty_mb_lt0.26 R/RS/RSAVAGE/Lingua-EN-Infinitive-1.08
+empty_mb_lt0.26 R/RS/RSAVAGE/Module-MakeDist-1.08
+empty_mb_lt0.26 R/RS/RSAVAGE/X500-DN-Parser-1.16
+empty_mb_lt0.26 R/RU/RUBYKAT/txt2html-2.30
+empty_mb_lt0.26 R/RU/RUBYKAT/txt2html-2.31
+empty_mb_lt0.26 S/SS/SSCOTTO/File-Samba-0.02
+empty_mb_lt0.26 S/SS/SSCOTTO/File-Samba-0.03
+empty_mb_lt0.26 S/SS/SSCOTTO/NetStumbler-Mappoint-0.01
+empty_mb_lt0.26 S/SS/SSCOTTO/NetStumbler-Mappoint-0.02
+empty_mb_lt0.26 S/SS/SSCOTTO/NetStumbler-Speech-0.01
+empty_mb_lt0.26 S/SS/SSCOTTO/NetStumbler-Stumbler-0.06
+empty_mb_lt0.26 S/SS/SSCOTTO/NetStumbler-Stumbler-0.07
+empty_mb_lt0.26 S/SS/SSCOTTO/NetStumbler-Wap-0.06
+empty_mb_lt0.26 S/SS/SSCOTTO/NetStumbler-Wap-0.07
+empty_mb_lt0.26 S/SS/SSCOTTO/NetStumbler-Wap-0.08
+empty_mb_lt0.26 S/SS/SSCOTTO/SVN-SVNLook-0.01
+empty_mb_lt0.26 S/SS/SSCOTTO/SVN-SVNLook-0.02
+empty_mb_lt0.26 T/TE/TEVERETT/Win32-Security-0.50
+
+This is a total of 49 and remarkably many are yours.
+
+ >> Should the indexer distrust the YAML when the provides hash is
+ >> empty? I'd say it depends on why it is empty. I encounter this
+ >> problem for the first time.
+
+  > I agree - it depends. There seems no way to determine automatically why it is 
+  > empty.
+
+  > For the past:
+  > I'm reluctant to suggest you take on more work, but perhaps the best solution is 
+  > a quick script to examine every distro (someone must have done that before) and 
+  > report which ones have a problem with this 'provides' statement. Then the 
+  > authors could be emailed, as a once-off.
+
+49 distros had the problem, many of which are now superceded by newer
+ones. I will use these as test cases, but I suppose that until I have
+adjusted the indexer, the problem has vanished anyway.
+
+  > For the future:
+  > Anyway, a more specific error message as I suggest above would at least point 
+  > users to the source of the (potential) problem.
+
+  > I'll post a warning on the Module::Build mailing list about this.
+
+  > $many x $thanx;
+
+Many thanks to you, it's amazing how bugs can hide themselves over
+long periods. Thanks for digging them out.
+
+Cheers,
+-- 
+andreas

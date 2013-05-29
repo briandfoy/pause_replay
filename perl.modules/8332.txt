@@ -1,0 +1,86 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8332 perl.module-authors:198
+Return-Path: <autrijus@geb.elixus.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 96518 invoked from network); 16 Oct 2001 19:29:12 -0000
+Received: from unknown (HELO geb.elixus.org) (root@210.59.231.45)
+  by onion.valueclick.com with SMTP; 16 Oct 2001 19:29:12 -0000
+Received: (from autrijus@localhost)
+	by geb.elixus.org (8.11.6/8.11.3) id f9GJTvN15839;
+	Wed, 17 Oct 2001 03:29:57 +0800 (CST)
+	(envelope-from autrijus)
+Date: Wed, 17 Oct 2001 03:29:57 +0800
+To: Autrijus Tang <autrijus@autrijus.org>
+Cc: Ken Williams <ken@mathforum.org>, Dave Rolsky <autarch@urth.org>,
+   module-authors@perl.org, modules@perl.org, clkao@clkao.org
+Subject: Re: idea: ExtUtils::AutoInstall
+Message-ID: <20011017032957.A15570@not.autrijus.org>
+References: <Pine.LNX.4.40.0110152036320.4773-100000@urth.org> <29754210.1003185505@[0.0.0.0]> <20011016155423.B87085@not.autrijus.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-md5;
+	protocol="application/pgp-signature"; boundary="T4sUOijqQbZv57TR"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011016155423.B87085@not.autrijus.org>; from autrijus@autrijus.org on Tue, Oct 16, 2001 at 03:54:23PM +0800
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: autrijus@autrijus.org (Autrijus Tang)
+
+--T4sUOijqQbZv57TR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+(cc'ed to modules@perl.org since i just applied for a namespace)
+
+On Tue, Oct 16, 2001 at 03:54:23PM +0800, Autrijus Tang wrote:
+> On Mon, Oct 15, 2001 at 10:38:25PM -0500, Ken Williams wrote:
+> > Thanks for Cc-ing me on this, Dave - I'm not subscribed to the=20
+> > module-authors list.  I probably should be.
+>=20
+> thanks for your prompt response. :) i was a bit frightened by the
+> lack of activity on this list.
+
+encouraged by your response, i decided to release it early at v0.2,
+under the distname ExtUtils-AutoInstall.
+
+notably new features include the detection of CPAN connectivity,
+user's permission to write to the soures/ directory, a much cleaner
+interface and better diagnostics.
+
+if somebody'd like to look at it and comment, i'd be very grateful.
+
+> (about the bootstrapping problem of modules needed in Makefile.PL)
+> > There's not any great way around that as far as I know - you just have =
+to=20
+> > fail if your AutoInstall module isn't installed, asking people to insta=
+ll=20
+> > that first.
+
+i settled on this for now (in Makefile.PL):
+
+    # till we think of a better solution...
+    BEGIN { eval q{ require ExtUtils::AutoInstall; 1 } or eval q{
+	    warn "*** This module needs ExtUtils::AutoInstall...\n";
+	    use CPAN; CPAN::install('ExtUtils::AutoInstall') }; }
+
+but that has any number of problems. *frown*
+
+/Autrijus/
+
+--T4sUOijqQbZv57TR
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (FreeBSD)
+Comment: For info see http://www.gnupg.org
+
+iEYEARECAAYFAjvMirQACgkQtLPdNzw1AaC0GwCgpbcNTh543GdHdkJpjr2C2m4r
+S+sAoKVf12EgiAhUZBSbEWOXQmAF/ZFN
+=p3V0
+-----END PGP SIGNATURE-----
+
+--T4sUOijqQbZv57TR--

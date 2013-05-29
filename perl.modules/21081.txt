@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21081
+Return-Path: <nobody@pause.x.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13088 invoked by uid 76); 13 May 2003 18:57:11 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Tue, 13 May 2003 11:57:11 -0700
+Received: (qmail 21217 invoked by uid 225); 13 May 2003 18:57:07 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 21208 invoked by uid 507); 13 May 2003 18:57:05 -0000
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Tue, 13 May 2003 11:57:02 -0700
+Received: from pause.perl.org (IDENT:nobody@localhost [127.0.0.1])	by pause.perl.org (8.12.9/8.12.9) with ESMTP id h4DIuxI3022423;	Tue, 13 May 2003 20:56:59 +0200
+Received: (from nobody@localhost)	by pause.perl.org (8.12.9/8.12.9/Submit) id h4DIuxdU022422;	Tue, 13 May 2003 20:56:59 +0200
+Date: Tue, 13 May 2003 20:56:59 +0200
+Message-ID: <200305131856.h4DIuxdU022422@pause.perl.org>
+Subject: Module submission Heap::Number
+Reply-To: modules@perl.org
+To: modules@perl.org, thospel@cpan.org
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.8 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.x.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Heap::Number
+  DSLIP:       RdpOp
+  description: Heap of elements ordered by numbers
+  userid:      THOSPEL (Ton Hospel)
+  chapterid:    6 (Data_Type_Utilities)
+  communities:
+    modules@perl,org mailing list
+
+  similar:
+    Heap
+
+  rationale:
+
+    Heap::Number is meant as a basename for several submodules
+    depending on what kind of element you want to store in the heap
+    (Arrayreference, Hashreference, just the keys).
+
+    All of these will keep the heap ordered by some numeric value in
+    the element with low values being extracted first.
+
+    The interface is simpler than that of the standard Heap module
+    since you don't have to transform the elements first. It doesn't
+    support general sorting functions though.
+
+    For these reasons it's also substantially faster (about 3 times)
+
+    Here's a simple example if the elements are just the keys:
+
+    use Heap::Number;
+
+    my $heap = Heap::Number->new; $heap->insert($_) for @array; print
+    $heap->extract_min, "\n" for 1..$heap->count;
+
+    Here's another example sorting a hash based object (providing a
+    print method) by some key:
+
+    use Heap::Number::Hash;
+
+    my $heap = Heap::Number::Hash->new(key_name => "foo");
+    $heap->insert($_) for @objects; extract_min->print, "\n" for
+    1..$heap->count;
+
+    Simple, fast.
+
+  enteredby:   THOSPEL (Ton Hospel)
+  enteredon:   Tue May 13 18:56:59 2003 GMT
+
+The resulting entry would be:
+
+Heap::
+::Number          RdpOp Heap of elements ordered by numbers          THOSPEL
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=7e300000_5573ed74c31e0ca5&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=7e300000_5573ed74c31e0ca5&SUBMIT_pause99_add_mod_insertit=1

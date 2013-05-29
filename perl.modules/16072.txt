@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16072
+Return-Path: <adam@tusker.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 85015 invoked by uid 76); 10 Dec 2002 00:18:09 -0000
+Received: from postfix@fission.tusker.net (HELO fission.tusker.net) (202.161.117.211) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2002-12-10 00:18:09Z
+Received: from tusker.net (fission [127.0.0.1])	by fission.tusker.net (Postfix) with SMTP id 2866017F16	for <modules@perl.org>; Tue, 10 Dec 2002 11:18:26 +1100 (EST)
+Received: from 193.122.47.130 (proxying for unknown)        (SquirrelMail authenticated user adam)        by tusker.org with HTTP;        Tue, 10 Dec 2002 11:18:26 +1100 (EST)
+Message-ID: <23846.193.122.47.130.1039479506.squirrel@tusker.org>
+Date: Tue, 10 Dec 2002 11:18:26 +1100 (EST)
+Subject: Announcement Parse::Perl::Isolated, question about abbreviation of large names.
+To: <modules@perl.org>
+X-Priority: 3
+Importance: Normal
+X-MSMail-Priority: Normal
+X-Mailer: SquirrelMail (version 1.2.6)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: adam@tusker.net
+
+I've decided to pull out the old perl parser I've been working on from
+time to time, and have another go at it.
+The last attept stalled after much thought on WHAT exactly to call it,
+since it wasn't promising to parse perfectly, and we all know you can't
+REALLY 'parse' without a running perl interpretor.
+So after 6 months of stewing over it's purpose, I've come to this decision.
+
+Parse::Perl::Isolated is a module for parsing an isolated perl document.
+Perl source code can be parsed WITHOUT the need to have a running perl
+interpreter, WITHOUT having to first parse the module we 'use'.
+In exchange for this advance, we have to take a few set-backs. Firstly, it
+won't parse super strange grammer messing around with stuff, as achieved
+with code filters. Second, it doesn't try to tell what is a function, or
+an argument, etc. It tokenises, and lexes down to individual statements,
+but will avoid working out function arguments and really curly stuff.
+Also, it will try to parse to the 'most commonly used' style of perl
+programming. That is, if it can successfully understand everything in CPAN
+outside of Acme::, it is considered complete and successfull.. People that
+do ultra-weird things in their code may find it doesn't work perfectly.
+HOWEVER, taking Parse::Perl::Isolated does leave me with a few problems.
+Because there is quite an amount of stuff in it already ( tokenizer,
+lever, document object stuff, HTML formatters, analyser, obfuscater,
+tidyer etc ) I end up virtually giving myself RSI by typing class names
+like Parse::Perl::Isolated::Tokenizer::Quote::Simple or
+Parse::Perl::Isolated::Format::HTML::Komodo.
+What I'd LIKE to do, is to put the actual code in PPI::, with the option
+to load it as either use PPI or use Parse::Perl::Isolate ( which would be
+simply a load and documentation ).
+Is this not acceptable to some people? Does anyone have issues with using
+a root namespace for a large body of code. ( I see things like POE, DBI,
+LWP etc ).
+As a blatant promo on it's current state, I've cleaned up an old demo
+script that basically implements ::HTML::Format from the Tokenizer only (
+so it has some issues with function names ).
+It's available at
+
+http://ali.as/cgi-bin/CPAN/applications/psp/psp.pl
+
+If I don't get any feedback, I'm going to assume that nobody has a serious
+enough problem, and I'll go ahead with PPI.
+Adam
+
+

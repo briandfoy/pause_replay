@@ -1,0 +1,48 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11160
+Return-Path: <gary@dls.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 82395 invoked by uid 76); 13 Apr 2002 10:25:13 -0000
+Received: from blue.dls.net (HELO blue.dls.net) (209.242.10.156)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Sat Apr 13 10:25:13 2002 -0000
+Received: from saturn (unknown [216.145.231.24])
+	by blue.dls.net (Postfix) with SMTP
+	id 4A77712004F; Sat, 13 Apr 2002 05:25:09 -0500 (CDT)
+To: "Graham Barr" <gbarr@pobox.com>
+Cc: <modules@perl.org>
+Subject: RE: new cpan registration
+Date: Sat, 13 Apr 2002 05:25:19 -0500
+Message-ID: <CAEKKBDGMFBNNMIPALFJOEDDDMAA.gary@dls.net>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Importance: Normal
+In-Reply-To: <20020413110526.U79516@pobox.com>
+Approved: news@nntp.perl.org
+From: gary@dls.net
+References: <20020413110526.U79516@pobox.com>
+
+>
+> It imports to the current package, it is not affected by anything anyone
+> has done in another package.
+>
+Unless, of course, someone does *main::DEBUG = sub { ... } from their
+module. Of course, this is "asking for it", but so is your example.
+
+>
+> Your docs imply that it I use
+> someones module who had done use define DEBUG => o and then
+> I try todo use define DEBUG => 1 in my code it will barf.
+>
+My docs also imply that this is incorrect usage. It wouldn't make sense to
+place "use define DEBUG => 0" inside of a module. Modules shouldn't "use
+define", rather they should "no define", and let the user decide if s/he
+wants other values compiled in.
+

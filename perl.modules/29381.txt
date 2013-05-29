@@ -1,0 +1,189 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:29381
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25928 invoked by uid 76); 12 Mar 2004 04:36:18 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170)
+  by onion.perl.org (qpsmtpd/0.27.1) with SMTP; Thu, 11 Mar 2004 20:36:18 -0800
+Received: (qmail 14547 invoked by uid 225); 12 Mar 2004 04:36:14 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14412 invoked by alias); 12 Mar 2004 04:35:53 -0000
+Received: from [195.149.117.110] (HELO pause.perl.org) (195.149.117.110)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Thu, 11 Mar 2004 20:35:53 -0800
+Received: from pause.perl.org (localhost [127.0.0.1])
+	by pause.perl.org (8.12.3/8.12.3/Debian-6.6) with ESMTP id i2C4Zlcj027973;
+	Fri, 12 Mar 2004 05:35:47 +0100
+Received: (from nobody@localhost)
+	by pause.perl.org (8.12.3/8.12.3/Debian-6.6) id i2C4Zldp027971;
+	Fri, 12 Mar 2004 05:35:47 +0100
+Date: Fri, 12 Mar 2004 05:35:47 +0100
+Message-ID: <200403120435.i2C4Zldp027971@pause.perl.org>
+Subject: Module submission Filter::HereDocIndent
+Reply-To: modules@perl.org
+To: modules@perl.org, miko@cpan.org
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on x1.develooper.com
+X-Spam-Status: No, hits=-4.9 required=8.0 tests=BAYES_00 autolearn=no 
+	version=2.63
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Filter::HereDocIndent
+  DSLIP:       MdpOp
+  description: Fully indent here documents
+  userid:      MIKO (Miko O'Sullivan)
+  chapterid:    2 (Perl_Core_Modules)
+  communities:
+
+  similar:
+
+  rationale:
+
+    Filter::HereDocIndent - Indent here documents
+
+    SYNOPSIS
+
+    use Filter::HereDocIndent;
+
+    if ($sometest) { print <<'(MYDOC)'; Melody Starflower Miko (MYDOC)
+    }
+
+    outputs (with text beginning at start of line):
+
+    Melody Starflower Miko
+
+    HereDocIndent mimics the planned behavior of here documents in Perl
+    6.
+
+    DESCRIPTION
+
+    HereDocIndent allows you to indent your here documents along with
+    the rest of the code. The contents of the here doc and the ending
+    delimiter itself may be indented with any amount of whitespace. Each
+    line of content will have the leading whitespace stripped off up to
+    the amount of whitespace that the closing delimiter is indented.
+    Only whitespace is stripped off the beginning of the line, never any
+    other characters.
+
+    For example, in the following code the closing delimiter is
+    indented eight spaces:
+
+    if ($sometest) { print <<'(MYDOC)'; Melody Starflower Miko (MYDOC)
+    }
+
+    All of the content lines in the example will have the leading eight
+    whitespace characters removed, thereby outputting the content at the
+    beginning of the line:
+
+    Melody Starflower Miko
+
+    If a line is indented more than the closing delimiter, it will be
+    indented by the extra amount in the results. For example, this code:
+
+    if ($sometest) { print <<'(MYDOC)'; Melody Starflower Miko (MYDOC)
+    } produces this output:
+
+    Melody Starflower Miko
+
+    HereDocIndent does not distinguish between different types of
+    whitespace. If you indent the closing delimiter with a single tab,
+    and the contents eight spaces, each line of content will lose just
+    one space character. The best practice is to be consistent in how
+    you indent, using just tabs or just spaces.
+
+    HereDocIndent will only remove leading whitespace. If one of the
+    lines of content is not indented, the non-whitespace characters will
+    not be removed. The trailing newline is never removed.
+
+    INDENT_CONTENT
+
+    By default the contents of the here document are indented to the
+    same extent as the closing delimiter. If you want to leave the
+    contents indented, but still indent the closing delimiter so that it
+    lines up with its content, set the INDENT_CONTENT option to zero in
+    when you load HereDocIndent:
+
+    use Filter::HereDocIndent INDENT_CONTENT=>0;
+
+    LIMITATIONS
+
+    HereDocIndent was written to be conservative in what it decides are
+    here documents. HereDocIndent recognizes the most common usage for
+    here docs and disregards other less common usages. If you constrain
+    your here doc declarations to the format recognized by HereDocIndent
+    (which is by far the most popular format) then your code will
+    compile just fine.
+
+    The format recognized by HereDocIndent is a single print statement
+    or variable assignment, followed by <<, then a quoted string or
+    unquoted string of word characters, then a semicolon, then the end
+    of line. Here are a few examples that would be parsed properly by
+    HereDocIndent:
+
+    print << '(MYDOC)'; print << "MYDOC"; my $var = <<EOT; push @arr,
+    << '(MYDOC)';
+
+    Here are a few examples that would not be recognized by
+    HereDocIndent:
+
+    mysub (<<'MYDOC'); push @arr, <<'MYDOC', 'foo'; print <<'MYDOC',
+    "------\n";
+
+    HereDocIndent does not currently recognize POD notation, so there
+    could be unintended problems if you put text in your POD that looks
+    like a here doc. This issue will need to be fixed in a later
+    release. HereDocIndent also does not recognize if an entire line is
+    inside quotes from another line, or even inside a here doc that it
+    didn't recognize.
+
+    COMPARISON TO OTHER HEREDOC INDENTATION TECHNIQUES
+
+    There are several other here doc indentation techniques,
+    particularly those discussed in the Perl FAQ. Those techniques
+    generally have several shortcomings.
+
+    First, they require you to modify how you create the here doc.
+    Instead of simply creating the here doc as you usually would, except
+    that it is indented, you have to pass the entire string into a
+    function of through a regex to modify it.
+
+    Second, they usually require that the ending delimiter is still
+    flush against the left margin. It should be noted that this
+    shortcoming can be overcome by creating the heredoc delimiter with
+    padded spaces in the left. However, even that technique requires you
+    to ensure that the here doc declaration and the actual delimiter
+    have matching amounts of padded space... something I personally find
+    to be a distasteful extra drain on my brain resources. HereDocIndent
+    allows you to simply create a delimeter and use it as usual.
+
+    Finally, many techniques either produce a string with padded spaces
+    in the left margin, or force a function to guess how many spaces it
+    should remove. With HereDocIndent, that information is cleanly and
+    unambiguously determined by the indentation of the delimiter.
+
+    It is worth noting the HereDocIndent mimics the planned behavior of
+    here docs in Perl 6.
+
+  enteredby:   MIKO (Miko O'Sullivan)
+  enteredon:   Fri Mar 12 04:35:46 2004 GMT
+
+The resulting entry would be:
+
+Filter::
+::HereDocIndent   MdpOp Fully indent here documents                  MIKO
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=02700000_e7eace2f4407be45&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=02700000_e7eace2f4407be45&SUBMIT_pause99_add_mod_insertit=1

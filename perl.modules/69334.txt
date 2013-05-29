@@ -1,0 +1,342 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:69334
+Return-Path: <vinsworldcom@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 24286 invoked from network); 11 Jan 2010 14:33:56 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 11 Jan 2010 14:33:56 -0000
+Received: (qmail 1931 invoked by uid 225); 11 Jan 2010 14:33:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1872 invoked by alias); 11 Jan 2010 14:33:55 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,FREEMAIL_FROM,HTML_MESSAGE,RCVD_IN_DNSWL_NONE,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from ey-out-1920.google.com (HELO ey-out-1920.google.com) (74.125.78.144)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 11 Jan 2010 06:33:53 -0800
+Received: by ey-out-1920.google.com with SMTP id 4so4944358eyg.18
+        for <modules@perl.org>; Mon, 11 Jan 2010 06:33:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:reply-to:received
+         :in-reply-to:references:date:x-google-sender-auth:message-id:subject
+         :from:to:cc:content-type;
+        bh=QVzBH28eLLjyXn0uUu/WXipZJoglsbKEPh2f08Tx9jM=;
+        b=x8J/f+/oDPJwUeeZNmlJ7R6wvwh4nOxZo4FuQ4JcoD6pg+1mysbI5TtbPYNzx/u1o+
+         liUtCSu2ieuF01k3rrNEv8akC56guQGBdd62XcPfmxXEVuB2f5fhtrADS0u8pEsDEPxn
+         RQ6FhVu+ZoDAd+oxaYHYFQ5rxkdDdk0ec/CEY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:reply-to:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        b=PwnxEW61TkAWjuUgnVAlYeX0vCicx6g1oobZVo9Fx5PAuxu3beJX9pYbA/xzhZZMCD
+         KjU4m9kDMxQpzrVBQTog2WzpWJUixYrZvX4EcyvYFBhwbNdGOLabj2JbS4f1ZqnZqjiB
+         ZnxifWGf3XYR3jtQRD0GPk+n0P3HvRmSjIvk4=
+MIME-Version: 1.0
+Sender: vinsworldcom@gmail.com
+Reply-To: vinsworldcom@gmail.com
+Received: by 10.213.54.74 with SMTP id p10mr3438420ebg.54.1263220428719; Mon, 
+	11 Jan 2010 06:33:48 -0800 (PST)
+In-Reply-To: <007201ca9144$6904db10$3b0e9130$@com>
+References: <007201ca9144$6904db10$3b0e9130$@com>
+Date: Mon, 11 Jan 2010 09:33:48 -0500
+X-Google-Sender-Auth: 5da6616d6c763209
+Message-ID: <b85d81981001110633m2e9994aao4244588b1183cf3d@mail.gmail.com>
+Subject: Net::Syslog
+To: les@lesandchris.com, lhoward@cpan.org
+Cc: modules@perl.org
+Content-Type: multipart/alternative; boundary=001636025df1ed4a9d047ce46c83
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: vin@vinsworld.com (Vince)
+
+--001636025df1ed4a9d047ce46c83
+Content-Type: text/plain; charset=ISO-8859-1
+
+Les,
+
+I've been testing your Net::Syslog script against a Syslog server I'm
+writing in Perl and found a few improvements.
+
+I've logged a bug on CPAN (Fri Jun 12 15:38:39 2009):
+http://rt.cpan.org/Public/Bug/Display.html?id=46898
+The patch attached to that bug is a little out of date.
+
+I also posted to perlmonks.org (http://www.perlmonks.org/?node_id=816626)
+looking for you.
+
+The following is a patch file that will update Net::Syslog to enable RFC
+3164 compliance without affecting backward compatability (need to turn RFC
+3164 *on*):
+
+----<CLIP HERE>----
+--- Syslog.pm   Mon Nov 02 11:19:08 2009
++++ Syslog.pm   Tue Dec 22 15:33:59 2009
+@@ -2,6 +2,7 @@
+
+ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
+ use IO::Socket;
++use Sys::Hostname;
+
+ require Exporter;
+
+@@ -12,35 +13,50 @@
+ @EXPORT = qw(
+
+ );
+-$VERSION = '0.03';
++$VERSION = '0.04';
+
+
+ # Preloaded methods go here.
+
+ my %syslog_priorities=(
+       emerg   => 0,
++       emergency     => 0,
+       alert   => 1,
+       crit    => 2,
++       critical      => 2,
+       err     => 3,
++       error         => 3,
+       warning => 4,
+        notice  => 5,
+        info    => 6,
++        informational => 6,
+       debug   => 7
+ );
+
+ my %syslog_facilities=(
+       kern    => 0,
++       kernel    => 0,
+       user    => 1,
+       mail    => 2,
+       daemon  => 3,
++       system    => 3,
+       auth    => 4,
++       security  => 4,
+       syslog  => 5,
++       internal  => 5,
+       lpr     => 6,
++       printer   => 6,
+       news    => 7,
+       uucp    => 8,
+       cron    => 9,
++       clock     => 9,
+       authpriv=> 10,
++       security2 => 10,
+       ftp     => 11,
++       ntp       => 12,
++       audit     => 13,
++       alert     => 14,
++       clock2    => 15,
+       local0  => 16,
+       local1  => 17,
+       local2  => 18,
+@@ -48,8 +64,10 @@
+       local4  => 20,
+       local5  => 21,
+       local6  => 22,
++       local7    => 23
+ );
+
++my @month = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+
+ sub new{
+  my $class = shift;
+@@ -59,13 +77,13 @@
+  }
+  my $self = { Name     => $name,
+               Facility => 'local5',
+-               Priority => 'err',
++               Priority => 'error',
+               SyslogPort    => 514,
+               SyslogHost    => '127.0.0.1'};
+  bless $self,$class;
+  my %par = @_;
+  foreach (keys %par){
+-    $self->{$_}=$par{$_};
++    $self->{$_}=lc($par{$_});
+  }
+  return $self;
+ }
+@@ -80,18 +98,21 @@
+  }
+
+  my $pid=$$;
+-  my $facility_i=$syslog_facilities{$local{Facility}};
+-  my $priority_i=$syslog_priorities{$local{Priority}};
+-
+-  if(!defined $facility_i){
+-    $facility_i=21;
+-  }
+-  if(!defined $priority_i){
+-    $priority_i=4;
+-  }
++  my $facility_i = $syslog_facilities{$local{Facility}} || 21;
++  my $priority_i = $syslog_priorities{$local{Priority}} || 3;
+
+  my $d=(($facility_i<<3)|($priority_i));
+-  my $message = "<$d>$local{Name}\[$pid\]: $msg";
++
++  my $host = inet_ntoa((gethostbyname(hostname))[4]);
++  my @time = localtime();
++  my $ts   = $month[$time[4]] . " " . (($time[3] < 10)?(" " .
+$time[3]):$time[3]) . " " . (($time[2] < 10)?("0" . $time[2]):$time[2]) .
+":" . (($time[1] < 10)?("0" . $time[1]):$time[1]) . ":" . (($time[0] <
+10)?("0" . $time[0]):$time[0]);
++  my $message = '';
++
++  if ($local{rfc3164}) {
++      $message = "<$d>$ts $host $local{Name}\[$pid\]: $msg"
++  } else {
++      $message = "<$d>$local{Name}\[$pid\]: $msg"
++  }
+
+  my $sock=new IO::Socket::INET(PeerAddr => $local{SyslogHost},
+                        PeerPort => $local{SyslogPort},
+@@ -133,18 +154,22 @@
+
+       Name            <calling script name>
+       Facility        local5
+-       Priority        err
++       Priority        error
+       SyslogPort      514
+       SyslogHost      127.0.0.1
+
+ Valid Facilities are:
+-       kern, user, mail, daemon, auth, syslog, lpr, news, uucp, cron,
+-       authpriv, ftp, local0, local1, local2, local3, local4, local5,
+local6
++       kernel, user, mail, system, security, internal, printer, news,
++       uucp, clock, security2, FTP, NTP, audit, alert, clock2, local0,
++       local1, local2, local3, local4, local5, local6, local7
+
+ Valid Priorities are:
+-       emerg, alert, crit, err, warning, notice, info, debug
+-
++       emergency, alert, critical, error, warning, notice, informational,
+
++        debug
+
++Use:
++       rfc3164 => 1
++to enable RFC 3164 messages including timestamp and hostname.
+
+ =head1 AUTHOR
+
+
+----<CLIP HERE>----
+
+
+Cheers.
+
+--001636025df1ed4a9d047ce46c83
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div class=3D"gmail_quote">Les,<br><br>I&#39;ve been testing your Net::Sysl=
+og script against a Syslog server I&#39;m writing in Perl and found a few i=
+mprovements.<br><br>I&#39;ve logged a bug on CPAN (<span class=3D"date">Fri=
+=A0Jun=A012=A015:38:39=A02009</span>):<br>
+<a href=3D"http://rt.cpan.org/Public/Bug/Display.html?id=3D46898" target=3D=
+"_blank">http://rt.cpan.org/Public/Bug/Display.html?id=3D46898</a><br>The p=
+atch attached to that bug is a little out of date.</div>
+<div class=3D"gmail_quote">=A0</div>
+<div class=3D"gmail_quote">I also posted to <a href=3D"http://perlmonks.org=
+">perlmonks.org</a> (<a href=3D"http://www.perlmonks.org/?node_id=3D816626"=
+>http://www.perlmonks.org/?node_id=3D816626</a>) looking for you.<br><br>Th=
+e following is a patch file that will update Net::Syslog to enable RFC 3164=
+ compliance without affecting backward compatability (need to turn RFC 3164=
+ *on*):<br>
+<br>----&lt;CLIP HERE&gt;----<br>--- Syslog.pm =A0 Mon Nov 02 11:19:08 2009=
+<br>+++ Syslog.pm =A0 Tue Dec 22 15:33:59 2009<br>@@ -2,6 +2,7 @@<br><br>=
+=A0use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);<br>=A0use IO::Socket;<br>=
++use Sys::Hostname;<br>
+<br>=A0require Exporter;<br><br>@@ -12,35 +13,50 @@<br>=A0@EXPORT =3D qw(<b=
+r><br>=A0);<br>-$VERSION =3D &#39;0.03&#39;;<br>+$VERSION =3D &#39;0.04&#39=
+;;<br><br><br>=A0# Preloaded methods go here.<br><br>=A0my %syslog_prioriti=
+es=3D(<br>=A0 =A0 =A0 =A0emerg =A0 =3D&gt; 0,<br>
++ =A0 =A0 =A0 emergency =A0 =A0 =3D&gt; 0,<br>=A0 =A0 =A0 =A0alert =A0 =3D&=
+gt; 1,<br>=A0 =A0 =A0 =A0crit =A0 =A0=3D&gt; 2,<br>+ =A0 =A0 =A0 critical =
+=A0 =A0 =A0=3D&gt; 2,<br>=A0 =A0 =A0 =A0err =A0 =A0 =3D&gt; 3,<br>+ =A0 =A0=
+ =A0 error =A0 =A0 =A0 =A0 =3D&gt; 3,<br>=A0 =A0 =A0 =A0warning =3D&gt; 4,<=
+br>=A0 =A0 =A0 =A0 notice =A0=3D&gt; 5,<br>
+=A0 =A0 =A0 =A0 info =A0 =A0=3D&gt; 6,<br>+ =A0 =A0 =A0 =A0informational =
+=3D&gt; 6,<br>=A0 =A0 =A0 =A0debug =A0 =3D&gt; 7<br>=A0);<br><br>=A0my %sys=
+log_facilities=3D(<br>=A0 =A0 =A0 =A0kern =A0 =A0=3D&gt; 0,<br>+ =A0 =A0 =
+=A0 kernel =A0 =A0=3D&gt; 0,<br>=A0 =A0 =A0 =A0user =A0 =A0=3D&gt; 1,<br>=
+=A0 =A0 =A0 =A0mail =A0 =A0=3D&gt; 2,<br>
+=A0 =A0 =A0 =A0daemon =A0=3D&gt; 3,<br>+ =A0 =A0 =A0 system =A0 =A0=3D&gt; =
+3,<br>=A0 =A0 =A0 =A0auth =A0 =A0=3D&gt; 4,<br>+ =A0 =A0 =A0 security =A0=
+=3D&gt; 4,<br>=A0 =A0 =A0 =A0syslog =A0=3D&gt; 5,<br>+ =A0 =A0 =A0 internal=
+ =A0=3D&gt; 5,<br>=A0 =A0 =A0 =A0lpr =A0 =A0 =3D&gt; 6,<br>+ =A0 =A0 =A0 pr=
+inter =A0 =3D&gt; 6,<br>
+=A0 =A0 =A0 =A0news =A0 =A0=3D&gt; 7,<br>=A0 =A0 =A0 =A0uucp =A0 =A0=3D&gt;=
+ 8,<br>=A0 =A0 =A0 =A0cron =A0 =A0=3D&gt; 9,<br>+ =A0 =A0 =A0 clock =A0 =A0=
+ =3D&gt; 9,<br>=A0 =A0 =A0 =A0authpriv=3D&gt; 10,<br>+ =A0 =A0 =A0 security=
+2 =3D&gt; 10,<br>=A0 =A0 =A0 =A0ftp =A0 =A0 =3D&gt; 11,<br>+ =A0 =A0 =A0 nt=
+p =A0 =A0 =A0 =3D&gt; 12,<br>
++ =A0 =A0 =A0 audit =A0 =A0 =3D&gt; 13,<br>+ =A0 =A0 =A0 alert =A0 =A0 =3D&=
+gt; 14,<br>+ =A0 =A0 =A0 clock2 =A0 =A0=3D&gt; 15,<br>=A0 =A0 =A0 =A0local0=
+ =A0=3D&gt; 16,<br>=A0 =A0 =A0 =A0local1 =A0=3D&gt; 17,<br>=A0 =A0 =A0 =A0l=
+ocal2 =A0=3D&gt; 18,<br>@@ -48,8 +64,10 @@<br>=A0 =A0 =A0 =A0local4 =A0=3D&=
+gt; 20,<br>
+=A0 =A0 =A0 =A0local5 =A0=3D&gt; 21,<br>=A0 =A0 =A0 =A0local6 =A0=3D&gt; 22=
+,<br>+ =A0 =A0 =A0 local7 =A0 =A0=3D&gt; 23<br>=A0);<br><br>+my @month =3D =
+qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);<br><br>=A0sub new{<br>=
+=A0 my $class =3D shift;<br>@@ -59,13 +77,13 @@<br>
+=A0 }<br>=A0 my $self =3D { Name =A0 =A0 =3D&gt; $name,<br>=A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0Facility =3D&gt; &#39;local5&#39;,<br>- =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 Priority =3D&gt; &#39;err&#39;,<br>+ =A0 =A0 =A0 =A0 =A0 =A0 =A0 Pr=
+iority =3D&gt; &#39;error&#39;,<br>=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0SyslogPor=
+t =A0 =A0=3D&gt; 514,<br>
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0SyslogHost =A0 =A0=3D&gt; &#39;127.0.0.1&#39=
+;};<br>=A0 bless $self,$class;<br>=A0 my %par =3D @_;<br>=A0 foreach (keys =
+%par){<br>- =A0 =A0$self-&gt;{$_}=3D$par{$_};<br>+ =A0 =A0$self-&gt;{$_}=3D=
+lc($par{$_});<br>=A0 }<br>=A0 return $self;<br>
+=A0}<br>@@ -80,18 +98,21 @@<br>=A0 }<br><br>=A0 my $pid=3D$$;<br>- =A0my $f=
+acility_i=3D$syslog_facilities{$local{Facility}};<br>- =A0my $priority_i=3D=
+$syslog_priorities{$local{Priority}};<br>-<br>- =A0if(!defined $facility_i)=
+{<br>- =A0 =A0$facility_i=3D21;<br>
+- =A0}<br>- =A0if(!defined $priority_i){<br>- =A0 =A0$priority_i=3D4;<br>- =
+=A0}<br>+ =A0my $facility_i =3D $syslog_facilities{$local{Facility}} || 21;=
+<br>+ =A0my $priority_i =3D $syslog_priorities{$local{Priority}} || 3;<br><=
+br>=A0 my $d=3D(($facility_i&lt;&lt;3)|($priority_i));<br>
+- =A0my $message =3D &quot;&lt;$d&gt;$local{Name}\[$pid\]: $msg&quot;;<br>+=
+<br>+ =A0my $host =3D inet_ntoa((gethostbyname(hostname))[4]);<br>+ =A0my @=
+time =3D localtime();<br>+ =A0my $ts =A0 =3D $month[$time[4]] . &quot; &quo=
+t; . (($time[3] &lt; 10)?(&quot; &quot; .<br>
+$time[3]):$time[3]) . &quot; &quot; . (($time[2] &lt; 10)?(&quot;0&quot; . =
+$time[2]):$time[2]) .<br>&quot;:&quot; . (($time[1] &lt; 10)?(&quot;0&quot;=
+ . $time[1]):$time[1]) . &quot;:&quot; . (($time[0] &lt;<br>10)?(&quot;0&qu=
+ot; . $time[0]):$time[0]);<br>
++ =A0my $message =3D &#39;&#39;;<br>+<br>+ =A0if ($local{rfc3164}) {<br>+ =
+=A0 =A0 =A0$message =3D &quot;&lt;$d&gt;$ts $host $local{Name}\[$pid\]: $ms=
+g&quot;<br>+ =A0} else {<br>+ =A0 =A0 =A0$message =3D &quot;&lt;$d&gt;$loca=
+l{Name}\[$pid\]: $msg&quot;<br>
++ =A0}<br><br>=A0 my $sock=3Dnew IO::Socket::INET(PeerAddr =3D&gt; $local{S=
+yslogHost},<br>=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 PeerPort =3D=
+&gt; $local{SyslogPort},<br>@@ -133,18 +154,22 @@<br><br>=A0 =A0 =A0 =A0Nam=
+e =A0 =A0 =A0 =A0 =A0 =A0&lt;calling script name&gt;<br>
+=A0 =A0 =A0 =A0Facility =A0 =A0 =A0 =A0local5<br>- =A0 =A0 =A0 Priority =A0=
+ =A0 =A0 =A0err<br>+ =A0 =A0 =A0 Priority =A0 =A0 =A0 =A0error<br>=A0 =A0 =
+=A0 =A0SyslogPort =A0 =A0 =A0514<br>=A0 =A0 =A0 =A0SyslogHost =A0 =A0 =A012=
+7.0.0.1<br><br>=A0Valid Facilities are:<br>- =A0 =A0 =A0 kern, user, mail, =
+daemon, auth, syslog, lpr, news, uucp, cron,<br>
+- =A0 =A0 =A0 authpriv, ftp, local0, local1, local2, local3, local4, local5=
+,<br>local6<br>+ =A0 =A0 =A0 kernel, user, mail, system, security, internal=
+, printer, news,<br>+ =A0 =A0 =A0 uucp, clock, security2, FTP, NTP, audit, =
+alert, clock2, local0,<br>
++ =A0 =A0 =A0 local1, local2, local3, local4, local5, local6, local7<br><br=
+>=A0Valid Priorities are:<br>- =A0 =A0 =A0 emerg, alert, crit, err, warning=
+, notice, info, debug<br>-<br>+ =A0 =A0 =A0 emergency, alert, critical, err=
+or, warning, notice, informational,<br>
+<br>+ =A0 =A0 =A0 =A0debug<br><br>+Use:<br>+ =A0 =A0 =A0 rfc3164 =3D&gt; 1<=
+br>+to enable RFC 3164 messages including timestamp and hostname.<br><br>=
+=A0=3Dhead1 AUTHOR<br><br><br>----&lt;CLIP HERE&gt;----<br><br><br>Cheers.<=
+br><br><br><br></div>
+<br>
+
+--001636025df1ed4a9d047ce46c83--

@@ -1,0 +1,106 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:28591
+Return-Path: <zefram@fysh.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 93008 invoked by uid 76); 16 Feb 2004 23:16:11 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Mon, 16 Feb 2004 15:16:11 -0800
+Received: (qmail 1835 invoked by uid 225); 16 Feb 2004 23:16:10 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1745 invoked by alias); 16 Feb 2004 23:15:48 -0000
+Received: from [195.167.170.152] (HELO bowl.fysh.org) (195.167.170.152)  by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Mon, 16 Feb 2004 15:15:48 -0800
+Received: from zefram by bowl.fysh.org with local (Exim 3.35 #1 (Debian))	id 1AsrxT-00081t-00; Mon, 16 Feb 2004 23:15:23 +0000
+Date: Mon, 16 Feb 2004 23:15:23 +0000
+To: Tim Bunce <Tim.Bunce@pobox.com>
+Cc: modules@perl.org
+Subject: Re: Future of the "Module List"
+Message-ID: <20040216231523.GA23744@fysh.org>
+References: <20040215202039.GJ22408@fysh.org> <20040216154442.GA48122@dansat.data-plan.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20040216154442.GA48122@dansat.data-plan.com>
+User-Agent: Mutt/1.3.28i
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on x1.develooper.com
+X-Spam-Status: No, hits=-4.9 required=8.0 tests=BAYES_00 autolearn=ham 	version=2.63
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: zefram@fysh.org (Zefram)
+
+Some automation:
+
+https://pause.perl.org/pub/PAUSE/authors/id/Z/ZE/ZEFRAM/scrapemodlist-0.000
+
+This is a program that generates an approximation of the old-style
+module list, by scraping search.cpan.org.  Not a pleasant way to do it,
+but it produces a very clean result.  This program satisfies my desire
+for browseability of the module list -- I have yet to find anything more
+browseable than a plain text file.
+
+I'm assuming that search.cpan.org is providing data live from the
+database.  03modlist.data would be a cleaner source of the data, but it
+seems to be updated only intermittently, just like 00modlist.long.
+
+I have some suggestions regarding the various module lists.  I see the
+current arrangement of things is suffering from a requirement for human
+attention, so these suggestions are ones that are very easily implemented
+and don't require much future maintenance.
+
+0. Split 00modlist.long up, so that each of its four parts is a
+separate document.  They're very different, only loosely connected,
+and have different maintenance requirements.  (Part 4 already exists as
+an up-to-date separate document: $CPAN/authors/00whois.html.)  Turn the
+file 00modlist.long.html, which is pointed at from all over the web,
+into an index linking to the four resulting documents.
+
+1. Part 2 (the list) should be automatically generated, but until that's
+set up it should be replaced by a note saying that the list got out of
+date.  The note can point to search.cpan.org, the scrapemodlist script,
+and any other source of *up-to-date* module metadata.
+
+2. Part 1 (information about modules in general) is an essential tutorial
+for aspiring module writers.  (It doesn't otherwise have much connection
+with the module list.)  It's correct for this to be hand-maintained,
+which we've already established doesn't work for the list.  This document
+most naturally lives on the web, in HTML.  There are probably places
+that ought to be linking to it that weren't linking to the `module list'.
+
+3. It appears that 01modules.index, 02packages.details, and 03modlist.data
+are only updated when manually invoked, but their generation is in fact
+automatic.  (Correct me if I'm wrong.)  Set up cron jobs.  If automatic
+update is not feasible, then please withdraw the files, as proposed
+above for the module list.
+
+That's all I think needs to be done to end the madness.
+
+One more thing that's been puzzling me: in part 1 of the module list
+(the tutorial), it says
+
+#   If you insist on a name that we consider inappropriate, we
+#   won't prevent you from uploading your module -- but it'll
+#   remain in your "author" directory and won't be directly visible
+#   from CPAN/modules/by-module.
+
+but what I actually see has modules in the by-module hierarchy that
+are not listed in the browseable module lists that scrapemodlist uses.
+Are there two different degrees of acceptance here, or should the
+above-quoted paragraph be referring to "the module list" instead of the
+by-module hierarchy?
+
+Putting it another way, and widening the question a little, here are
+various places a module might be:
+
+	{0} in an author's PAUSE directory
+	{1} in an author's CPAN directory
+	{2} in the by-module hierarchy on CPAM
+	{3} in the database searched by search.cpan.org
+	{4} in the browseable lists at http://search.cpan.org/modlist/
+	{5} "on the module list"
+	{6} "registered"
+
+Which of the above are really the same thing?  (My current best guess:
+{1} = {2} = {3}; {4} = {5} = {6}; {0} != {1} != {4}.)  This really ought
+to be explained in the introductory PAUSE documentation.
+
+-zefram

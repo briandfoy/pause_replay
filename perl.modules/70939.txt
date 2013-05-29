@@ -1,0 +1,166 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:70939
+Return-Path: <email@greglondon.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 26726 invoked from network); 21 Apr 2010 18:00:47 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 21 Apr 2010 18:00:47 -0000
+Received: (qmail 23562 invoked by uid 225); 21 Apr 2010 18:00:47 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 23466 invoked by alias); 21 Apr 2010 18:00:46 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from weston.site5.com (HELO weston.site5.com) (174.132.151.34)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 21 Apr 2010 11:00:42 -0700
+Received: from localhost ([127.0.0.1] helo=www.greglondon.com)
+	by weston.site5.com with esmtpa (Exim 4.69)
+	(envelope-from <email@greglondon.com>)
+	id 1O4eDy-0005aA-CA; Wed, 21 Apr 2010 13:00:34 -0500
+Received: from 65.120.117.2 ([65.120.117.2])
+        (SquirrelMail authenticated user email@greglondon.com)
+        by www.greglondon.com with HTTP;
+        Wed, 21 Apr 2010 13:00:34 -0500
+Message-ID: <41abc20e5d3f5f4496a7cb29d2ba021a.squirrel@www.greglondon.com>
+In-Reply-To: <210420101049138538%brian.d.foy@gmail.com>
+References: <4ded149eff5fb611824ad3417ad01ea0.squirrel@www.greglondon.com>
+    <210420101049138538%brian.d.foy@gmail.com>
+Date: Wed, 21 Apr 2010 13:00:34 -0500
+Subject: Re: proposing Codegen::C::STL::Container::List and 
+ Codegen::C::STL::Container::Map
+To: modules@perl.org
+Cc: "Greg London" <email@greglondon.com>
+User-Agent: SquirrelMail/1.4.20
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - weston.site5.com
+X-AntiAbuse: Original Domain - perl.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - greglondon.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Approved: news@nntp.perl.org
+From: email@greglondon.com ("Greg London")
+
+
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+>
+> In article
+> <4ded149eff5fb611824ad3417ad01ea0.squirrel@www.greglondon.com>, Greg
+> London <email@greglondon.com> wrote:
+>
+>> The idea is that users would use my module to generate an STL container
+>> for linked lists, but the code would be generated in C rather than C++.
+>
+>> The namespace I was considering was something like
+>>
+>> Codegen::C::STL::Container::List
+>
+> Although you are interested in linked lists now, if this is a useful
+> idea people might want to add other things that they could do.
+
+The other one I wanted to do was hashes.
+Which I figured would go into
+Codegen::C::STL::Container::Map
+
+> I'd start with something like Codegen::STL, and hide everything else
+> behind that namespace. People could select the output language as part
+> of the interface.
+
+I'm not sure how I could do that without monopolizing the namespace.
+
+Say I create a module called Codegen::STL, and it contained a template
+for doing linked lists. If someoen wanted to create a template for
+a queue in C, then wouldn't they have to make it part of my distrubution?
+
+Or would the templates be in their own individual namespaces, but the
+top level interface for using them would be the same?
+
+I can see a benefit to having a common interface for using this module
+and creating C code of different functional block. I'm just not sure
+how to split up the design of the module so that other people can
+create their own templates (Codegen::STL::Queue::Optimized) and have them
+on CPAN, but still use my top level interface (Codegen::STL).
+
+What I figured was I'd make my module something like
+
+Codegen::STL::list
+
+and it would be a standalone module. ANd if someoen wanted to add
+
+Codegen::STL::Queue
+
+they could do that.
+
+It would mean the interface for List and Queue might be different,
+but by making them standalone modules anyone could add whatever
+module they wanted without sendign it to me and me putting it in
+my distribution.
+
+I guess I could just have the templates be in their own modules,
+and then the user downloads whatever template/modules they want.
+But have them all go through a common interface like Codegen::STL.
+
+That would mean all the templates would be in their own modules on CPAN.
+
+And thos modules wouldn't have any perl code in them, whihc might make
+installing them kind of odd. Make test might not do anything.
+
+Guess I'm just confused about how best to approach this.
+
+Maybe having all the templates in one top level module is the way
+to go, and I'll worry about someone wanting to add their template
+when that becomes a problem.
+
+So, I can think of three possible ways to do this:
+
+(1) each template is its own module with its own supporting code
+each module is standalone.
+Codegen::STL::list and Codegen::STL::queue
+
+(2) there is a central module for the interface and
+all templates are their own module
+interface is Codegen::STL and the template is Codegen::STL::Template::List
+
+(3) there is a central module for the interface
+and it contains all the templates
+Codegen::STL and it contains a "Template" subdirectory with all
+the possible templates in it.
+
+1: advantage: anyone can add their own template
+disadvantage: each template might have a completely different inteface.
+Users will have to download a bunch of modules if they want to generate
+a bunch of code.
+
+
+2: advantage: anyone can add their own template
+the interface for all the templates is the same
+disadvantage: users still have to download all the modules for all the
+different templates they want to use.
+
+3: advantage: user downloads one module that can generate everything
+disadvantage: developers have to send me their templates and
+I make them part of my distribution.
+
+I was originally suggesting (1).
+You were suggesting either (2) or (3).
+
+Now I'm thinking maybe go with (3) and maybe I shouldn't worry about
+having lots of people sending me templates until it happens.
+
+Could you clarify whether you were suggesting 2 or 3?
+or something else?
+
+Greg
+
+
+

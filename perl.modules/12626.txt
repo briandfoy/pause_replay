@@ -1,0 +1,69 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12626
+Return-Path: <adam@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6816 invoked by uid 76); 12 Jul 2002 14:17:01 -0000
+Received: from mail@cpe-203-45-77-241.nsw.bigpond.net.au (HELO fission) (203.45.77.241)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Fri Jul 12 14:17:01 2002 -0000
+Received: from [218.186.116.42] (helo=butcher)
+	by fission with asmtp (Exim 3.12 #1 (Debian))
+	id 17T1De-0001Hk-00
+	for <modules@perl.org>; Sat, 13 Jul 2002 00:16:26 +1000
+Message-ID: <001d01c229ae$b4fccd30$6601a8c0@butcher>
+To: <modules@perl.org>
+Subject: Proposed Validate:: namespace
+Date: Fri, 12 Jul 2002 22:15:54 +0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Approved: news@nntp.perl.org
+From: adam@ali.as ("Adam Kennedy")
+
+I'd like to get people's thoughts on a Validate:: namespace, to contain
+standalone modules for validating information.
+
+Modules in this namespace ( such as Validate::Net ) would be used to "check"
+values before they are handed off to another module.
+
+For example, Validate::Net->ip( $an_ip_address ) would allow you to check an
+ip address has a correct structure, before passing it to Net::Ping or some
+other Net:: type module.
+
+Use of these modules would let you catch user input problems early, rather
+than having to interpret responses from modules.
+
+Validation methods may also take options, for example Validate::Net->ip(
+$an_ip_address, 'host' ), or Validate::Net->ip( $an_ip_address,
+'broadcast' ) to test additional properties.
+
+A validator may also be instantiable, using $new = Validate::Net->new(
+'fast' ). You would then access it through $new->ip( $an_ip_address ).
+
+The construction argument would allow you to specify different levels of
+verification. As an example. Validate::Net has 'fast', 'local' and 'full'
+options, where 'fast' only uses code internal to Validate::Net, 'local' can
+also use other modules or services local to the host, or 'full' to allow the
+validator to access services on other hosts.
+
+For example:
+
+$new = Validate::Net->new( 'full' );
+$new->email( $an_email_address );
+
+would be allowed to not only check the email structure, but examine DNS to
+make sure the email's host exists, and has a valid MX record.
+
+Anyways, I'm looking for comments before I do an initial upload of
+Validate::Net to CPAN, speak now or forever hold your piece.
+
+Adam Kennedy
+CPAN Username: ADAMK
+
+

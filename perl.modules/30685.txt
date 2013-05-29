@@ -1,0 +1,239 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:30685
+Return-Path: <matthew.persico@verizon.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 96820 invoked by uid 76); 12 Apr 2004 02:29:59 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170)
+  by onion.perl.org (qpsmtpd/0.27.1) with SMTP; Sun, 11 Apr 2004 19:29:58 -0700
+Received: (qmail 26905 invoked by uid 225); 12 Apr 2004 02:29:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26899 invoked by alias); 12 Apr 2004 02:29:55 -0000
+X-Spam-Status: No, hits=3.3 required=7.0
+	tests=RCVD_IN_DYNABLOCK,RCVD_IN_NJABL,RCVD_IN_NJABL_DIALUP,RCVD_IN_SORBS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from out010pub.verizon.net (HELO out010.verizon.net) (206.46.170.133)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Sun, 11 Apr 2004 19:29:55 -0700
+Received: from mopxp ([162.83.203.68]) by out010.verizon.net
+          (InterMail vM.5.01.06.06 201-253-122-130-106-20030910) with ESMTP
+          id <20040412022953.JMVQ1910.out010.verizon.net@mopxp>
+          for <modules@perl.org>; Sun, 11 Apr 2004 21:29:53 -0500
+To:        <modules@perl.org>
+X-Mailer: PocoMail 3.03 (1740) - Licensed Version
+Date: Sun, 11 Apr 2004 22:30:02 -0400
+Message-ID: <200441122302.734768@mopxp>
+Subject: Request for Comment: Finance::Calc::Performance
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Authentication-Info: Submitted using SMTP AUTH at out010.verizon.net from [162.83.203.68] at Sun, 11 Apr 2004 21:29:49 -0500
+Approved: news@nntp.perl.org
+From: matthew.persico@verizon.net ("Matthew O. Persico")
+
+Please critique this potential new module with respect to namespace choice,=
+ naming conventions and general functionality. The POD is rather big so I=
+ will hold off on code posting unless requested.
+
+NAME
+    Finance::Calc::Performance - Perl extension to calculate linked
+    performance numbers.
+
+SYNOPSIS
+      use 5.006001;
+      use Finance::Calc::Performance qw (:all);
+
+      print ROR(bmv =3D> 20_000, emv =3D> 21_567.87)
+      # or, for convenience
+      print ROR(20_000, 21_567.87);
+
+      print ROR(bmv =3D> 20_000, emv =3D> 21_567.87,
+                flows =3D> [
+                          {mvpcf =3D> 20_345,
+                           cf    =3D> 1000},
+                          {mvpcf =3D> 23_500,
+                           cf    =3D> -3000}
+                         ]);
+
+      print link_ROR(0.017,0.234,'-3.4%');
+
+      print ized_ROR(0.07,5);
+
+      $Finance::Calc::Performance::return_percentages =3D 1;
+      print ROR(20_000,21_567.87);
+
+      print ROR(bmv =3D> 20_000, emv =3D> 21_567.87,
+                flows =3D> [{mvpcf =3D> 20_345,
+                           cf    =3D> 1000},
+                          {mvpcf =3D> 23_500,
+                           cf    =3D> -3000}
+                         ]);
+
+      print link_ROR(0.017,0.234,'-3.4%');
+
+      print ized_ROR(0.07,5);
+
+DESCRIPTION
+    This module allows you to calculate performance for number of
+    situations:
+
+    Single period performance, given a beginning market value (BMV) and
+    ending market value (EMV) and optional cash flows in between.
+
+    Linked periodic performance; i.e, given three consecutive monthly
+    returns, calculate the performance over the quarter.
+
+    "ized" performance. Given a rate of return that covers multiple=
+ periods,
+    calculate the per-period return.
+
+    The formulae are taken from the book "Measuring Investment=
+ Performance".
+    Author: David Spaulding. ISBN: 0-7863-1177-0.
+
+    NOTE And I'll say it again below, but this is 0.01 versioned software.
+    Before using in a production environment, you should independently
+    verify that the results obtained match what you expect. Don't come=
+ suing
+    me if the government comes after you because the numbers from this
+    module are incorrect.
+
+  FUNCTIONS
+    ROR
+         my $ror =3D ROR($bmv, $emv, @flowa);
+
+        Rate Of Return. Given a beginning market value ($bmv) and an ending
+        market value ($emv), the rate of return is calculated as
+
+         ($emv - $bmv)/$bmv
+
+        If there are intervening cash flows between the beginning market
+        value and the ending market value, they are each represented by a
+        hash ref containing the keys 'mvpcf' (market value prior to cash
+        flow) and 'cf' (cash flow). The return is caculated by determining
+        the rate of return between each cash flow and then linking the
+        returns together. In this case, the beginning market value and the
+        ending market value are treates as zero cash flow eventsused as=
+ cash
+        flow events; that is:
+
+         EMV is treated as {mvpcf =3D> EMV, cf =3D> 0}
+         BMV is treated as {mvpcf =3D> BMV, cf =3D> 0}
+
+        The rate of return is in decimal form (0.02 for a return of two
+        percent (2.0%).
+
+    linked_ROR
+         my $ror =3D linked_ROR(0.02, -0.02, '3.5%');
+
+        Given previously calculated multiple rates of return, calculate the
+        overall rate of return. The rates are linked using the algorithm:
+
+        o Convert any percentages to decimal (/100).
+
+        o Add 1.00 to each rate
+
+        o Multiply all the rates together
+
+        o Subtract 1.00 from the result
+
+        o Convert to percentage (* 100)
+
+        The function properly interprets strings with percents signs by
+        dividing by 100 before using the value in any calculation.
+
+        The rate of return is in decimal form (0.02 for a return of two
+        percent).
+
+    ized_ROR
+         my $ror =3D ('7.0%',12);
+
+        Given a rate of return, and a number of periods, calculate the rate
+        of return for each period. In our example, the 7.0% return is
+        annual. We want to find the monthly return (12 months in one year).
+        The calculation is:
+
+         ((ROR + 1.0) ** (1.0/numPeriods)) - 1.00;
+
+        The rate of return is in decimal form (0.02 for a return of two
+        percent).
+
+  GLOBAL CONFIGURATION
+    return_percentages
+        If this variable is set to 1, all of the rates of return that are
+        returned from the functions will be strings in percentage form;=
+ i.e.
+        '7.45%' instead of 0.0745. This eliminates the need for doing the
+        math and adding the percent yourself in a known display
+        circumstance.
+
+    trace
+        If set to 1, the steps in ROR and link_ROR will be printed as they
+        are executed. This does impose a speed penalty.
+
+  CAVEATS
+            The module does not do any extra special handling with regards
+            to precision. The first example above
+
+              print ROR(20_000,21_567.87);
+
+            happily returns a value of
+
+             0.0783934999999999
+
+            on my Linux box. In matters of precision, you have two choices:
+
+        1   Use regular Perl scalar floats as arguments and round the final
+            result.
+
+        2   Use numeric objects whose behavior can be controlled as
+            arguments. As an example:
+
+             use Math::FixedPrecision;
+             print ROR(new Math::FixedPrecision(20_000),new=
+ Math::FixedPrecision(21_567.87));
+
+            results in
+
+             0.08
+
+            Only two decimal places are returned because the most precise
+            term is the 21_567.87 value, two decimal places.
+
+            If you want more precision, ask for it:
+
+             use Math::FixedPrecision;
+             print ROR(new Math::FixedPrecision(20_000),new=
+ Math::FixedPrecision(21_567.87,4));
+
+            resulting in
+
+             0.0784
+
+            Be forewarned that using numeric objects as opposed to native
+            Perl numbers can result in loss of speed. YMMV. Test before
+            using in a production scenario.
+
+SEE ALSO
+        perl.
+
+AUTHOR
+        Matthew O. Persico, <persicom@cpan.org>
+
+COPYRIGHT AND LICENSE
+        Copyright (C) 2004 by Matthew O. Persico
+
+        This library is free software; you can redistribute it and/or=
+ modify
+        it under the same terms as Perl itself, either Perl version 5.6.1
+        or, at your option, any later version of Perl 5 you may have
+        available.
+
+        This software is 0.01 versioned software. Before using in a
+        production environment, you should independently verify that the
+        results obtained match what you expect. Don't come suing me if the
+        government comes after you because the numbers from this module are
+        incorrect.
+
+
+

@@ -1,0 +1,107 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2748
+Return-Path: <olekshy@avrasoft.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27124 invoked from network); 29 Aug 2000 00:40:19 -0000
+Received: from crash.ab.videon.ca (206.75.216.220)
+  by tmtowtdi.perl.org with SMTP; 29 Aug 2000 00:40:19 -0000
+Received: from avrasoft.com (Organon@c9755-004.avrasoft.com [24.108.83.186])
+	by crash.ab.videon.ca (8.9.2/8.9.2) with ESMTP id SAA06036
+	for <modules@perl.org>; Mon, 28 Aug 2000 18:39:52 -0600 (MDT)
+Message-ID: <39AB0633.620C0FC8@avrasoft.com>
+Date: Mon, 28 Aug 2000 18:39:15 -0600
+Organization: Avra Software Lab Inc.
+X-Mailer: Mozilla 4.5 [en] (WinNT; I)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Request for user name and module namespace.
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: olekshy@avrasoft.com (Tony Olekshy)
+
+I would like to request a user-id for CPAN/PAUSE,
+in order to upload the Try.pm module, as follows.
+
+Name:           Tony Olekshy
+email:          olekshy@avrasoft.com
+Preferred id:   OLEKSHY
+
+    Perl Language Extensions
+
+    Try  bdph Structured Exception Handling Mechanism  OLEKSHY
+
+This is an implementation in Perl 5 of the functionality described
+in Perl 6 RFC 88 (http://tmtowtdi.perl.org/rfc/88.pod).  The syntax
+details aren't the same as those in RFC 88, but the overall syntax
+and the functionality are the same.
+
+Try.pm lets you do stuff like this:
+
+    use Try;
+
+    exception 'Exception::Foo';
+    exception 'Alarm';
+    exception 'Error::IO';
+    exception 'MyError', isa => 'Exception::Me::Error';
+
+    try sub {};
+    try sub {}, catch                 sub {};
+
+    try sub {}, catch "Alarm" =>      sub {};
+    try sub {}, catch "Error::IO" =>  sub {};
+    try sub {}, catch "Foo", "Bar" => sub {};
+
+    try sub {}, catch sub {}                             => sub {};
+    try sub {}, catch sub { $_[0] =~ /foo/ }             => sub {};
+    try sub {}, catch sub { grep { $_->isa("Foo") } @_ } => sub {};
+
+    try sub {}, finally sub {};
+
+    try             sub {},
+    catch "This" => sub {},
+    catch "That" => sub {},
+    finally         sub {};
+
+    try %hooks, sub {}, ...;
+
+    throw Exception;
+    throw Exception "Can't foo.";
+    throw Exception "Can't foo.", data => $data, debug => $debug;
+
+    throw;
+    throw "Can't foo.";
+    throw "Can't foo.", data => $data, debug => $debug;
+
+    my $e = new Exception;  $e->throw(...);
+
+    $e->{message}
+    $e->{data}
+    $e->{debug}
+    $e->{trace}
+
+    $e->show
+    $e->snapshot
+
+    %hooks = (  '""'          => sub { stringify $_[0]       },
+		'snapshot'    => sub { return caller() info  },
+		'string_wrap' => sub { new Exception::Foo @_ },
+	     );
+
+In addition to RFC 88, this module has been extensively discussed at
+perl6-language-errors@perl.org, and was debated on the perl-friends
+mailing list in March of 2000.  The current version is closely
+related to a version that has been in use at Avra Softare Lab Inc
+for the last two years.  It provides functionality similar to
+Error.pm, but with a simpler and more extensible interface, with
+the addition of the concept of an exception unwind stack, and with
+the benefit of all the great contributions on perl6-language-errors.
+
+The current implementation includes over 40 regression tests.  I'm
+just finishing off a few more mechanism hooks, and I have to extract
+the module documentation out of RFC 88, but I'm working on that now.
+
+Yours, &c, Tony Olekshy

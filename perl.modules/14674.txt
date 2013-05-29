@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:14674
+Return-Path: <comdog@panix.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14133 invoked by uid 76); 25 Oct 2002 06:49:08 -0000
+Received: from relay1.pair.com (HELO relay.pair.com) (209.68.1.20) by onion.perl.org (qpsmtpd/0.12-dev) with SMTP; 2002-10-25 06:49:08Z
+Received: (qmail 89219 invoked from network); 25 Oct 2002 06:49:00 -0000
+Received: from 12-247-38-191.client.attbi.com (HELO 10-0-1-5) (12.247.38.191)  by relay1.pair.com with SMTP; 25 Oct 2002 06:49:00 -0000
+X-pair-Authenticated: 12.247.38.191
+Subject: Re: Module submission Finance::CompanyNames
+Date: Fri, 25 Oct 2002 01:49:19 -0500
+To: jwbaker@acm.org (Jeffrey Baker)
+Cc: modules@perl.org
+Reply-To: modules@perl.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+References: <200210250054.g9P0spX29814@pause.perl.org> <20021025063502.GA22390@heat>
+User-Agent: Thoth/1.4.6 (Carbon/OS X)
+X-SMTPD: qpsmtpd/0.12-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: comdog@panix.com (_brian_d_foy)
+Message-ID: <perl.modules-14674@nntp.perl.org>
+
+In article <20021025063502.GA22390@heat>, Jeffrey Baker <jwbaker@acm.org> wrote:
+
+> On Fri, Oct 25, 2002 at 01:07:08AM -0500, _brian_d_foy wrote:
+> > In article <200210250054.g9P0spX29814@pause.perl.org>, Perl Authors Upload Server <upload@p11.speed-link.de> wrote:
+> > 
+> > > The following module was proposed for inclusion in the Module List:
+
+> > >   modid:       Finance::CompanyNames
+
+> > >   description: Searches free text for names of companies
+
+> > how does it know what a company name is?  
+
+> Well, that's the trick.  You tell it what company you are
+> looking for (e.g. O'Reilly and Associates), and the module
+> finds instances of that company in the free text (e.g. 
+> O'Reilly, O'Reilly and Assoc., ORA, etc.)
+
+in that case i don't think this belongs in Finance.  it doesn't
+have anything to do with Finance (or as much to do with Finance
+as Marketing::*, Sales::*, etc).
+
+> The main point is that the code understands permutations
+> applied to company names in the English language, such as
+> contraction, abbreviation, embellishment, and so forth.
+
+i think this might live under Lingua:: or something similar,
+then.
+
+
+> As usual with CPAN, we hope to put it in the section where
+> people will actually find it.  Finance or Business is the
+> most suitable first word, but unfortunately Finance is in
+> Chapter 23 "Also Ran", and this module is about text.  So
+> either would be appropiate.
+
+neither is approriate for just the reason you say---it's about
+text.  the module isn't about Business or Finance, although
+you could use it for that.  however, it is much more general
+than those.
+
+
+> How about Text::ExtractCompanyNames?
+> Business::ExtractCompanyNames?
+
+even those name have problems.  right now you only handle english,
+but someone may want to handle another language.  your namespace
+should be able to accomodate that.
+
+beyond that, you want to separate parts of the names.  
+"ExtractCompanyName" has too much in one part of the namespace,
+so the "Extract" should be separated from the "CompanyName".
+
+i'm thinking something like:
+
+   Lingua::EN::CompanyName
+
+that can easily accomodate other languages.  then, you can provide
+another module to extract the possible permutations that the Lingua::
+modules return (and that module probably lives in another namespace).
+separate the permutation logic from the extraction logic and you will
+have much better flexibility.
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+please send all messages back to modules@perl.org

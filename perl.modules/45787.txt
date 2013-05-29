@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45787
+Return-Path: <dtr8sin02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 30360 invoked from network); 8 Nov 2005 19:44:06 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 8 Nov 2005 19:44:06 -0000
+Received: (qmail 31808 invoked by uid 225); 8 Nov 2005 19:44:06 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31802 invoked by alias); 8 Nov 2005 19:44:05 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_HELO_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from can01.de (HELO can01.de) (213.203.199.108)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 08 Nov 2005 11:43:58 -0800
+Received: from [10.0.0.76] (dslb-084-057-230-181.pools.arcor-ip.net [84.57.230.181])
+	by can01.de (can01.de) with ESMTP id 973B142C168;
+	Tue,  8 Nov 2005 20:43:45 +0100 (CET)
+Message-ID: <4370FFAD.2070302@sneakemail.com>
+Date: Tue, 08 Nov 2005 20:42:37 +0100
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041207)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Kurt Starsinic <kstar@cpan.org>
+Cc: modules@perl.org
+Subject: Re: New root namespace Collection:: as an alternative to Bundle::
+References: <1295.84.163.123.235.1131449409.squirrel@ma2geo.mathematik.uni-karlsruhe.de> <3cf4c0860511080607h556ced6cy9a9ef3dcc12b83c5@mail.gmail.com>
+In-Reply-To: <3cf4c0860511080607h556ced6cy9a9ef3dcc12b83c5@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: dtr8sin02@sneakemail.com (Steffen Mueller)
+
+Hi Kurt, hi modules@perl.org,
+
+I got a new keyboard, so my shift key's back. :)
+
+Kurt Starsinic wrote:
+> On 11/8/05, Steffen Mueller <smueller@cpan.org> wrote:
+[...]
+>>perl makefile.pl
+>>make
+>>make install
+[...]
+>     Can you please provide a bit more detail about what difficulties
+> you've experienced?  The above mantra always just works for me.  Also,
+> what do you mean by the "new kind of magic that works with a different
+> top-level namespace?"
+
+Well, about the usual "perl Makefile.PL", etc. Doing that for a bundle 
+results in the bundle itself being installed, but not its dependencies. 
+That, however, is the whole point of the bundle. People expect that 
+installing the bundle as they do with any other module will result in 
+all "bundled" modules being installed.
+
+While I'm at it, one other thing that people expected was that all 
+modules that are "bundled" within the Bundle:: would be actually 
+contained in the tarball. In this context I would possibly suggest a 
+different namespace like ModuleList::* instead of Collection:: or 
+Bunch::. The "List" part of the name makes it much clearer that the 
+distribution is not actually a bundle.
+
+By the way: When I said people above, I meant my co-workers and the 
+users of Bundle::Math::* that complained.
+
+>>if we really want this, what would you think about writing a module named
+>>bunch or collection or whatever which implements the necessary magic and
+>>which bunch..foo would inherit from or use in its makefile.
+
+What I meant is: In order to allow for more finely grained control of 
+the versions in a bundle and in order to install the dependencies when 
+the Makefile.PL is executed, one would have to write quite a bit of code 
+since you don't want every bundle's Makefile.PL to deal with CPAN.pm or 
+CPANPLUS internals/backends/whatever.
+
+Therefore, one could put the required code into the top level namespace, 
+say "Bunch" to stick with the current favourite. Then you could use that 
+in your Makefile.PL or Build.PL and pass some hash of distribution names 
+and versions. The module would then install these. That's what I meant 
+with "magic". I used that word because I know this is hard to do. But it 
+is what most people seem to expect from bundles! And since we shouldn't 
+replace or augment something imperfect with something equally imperfect, 
+  I think that's what it takes to gradually replace the mechanisms that 
+are used by bundles today.
+
+An additional advantage would be that the top level module that 
+implements the "magic" would provide a central place for documentation 
+and explanation.
+
+I hope this makes more sense.
+
+Steffen
+
+P.S: And no, I'm not volunteering to write the code, sorry.

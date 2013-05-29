@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53675
+Return-Path: <gavin@openfusion.com.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 23171 invoked from network); 22 Mar 2007 22:32:46 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 Mar 2007 22:32:46 -0000
+Received: (qmail 9225 invoked by uid 225); 22 Mar 2007 22:32:45 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9193 invoked by alias); 22 Mar 2007 22:32:43 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME,FORGED_RCVD_HELO,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of gavin@openfusion.com.au designates 59.167.252.163 as permitted sender)
+Received: from ppp167-252-163.static.internode.on.net (HELO granite.openfusion.com.au) (59.167.252.163)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Thu, 22 Mar 2007 15:32:41 -0700
+Received: (qmail 7623 invoked by uid 900); 22 Mar 2007 22:32:35 -0000
+Date: Fri, 23 Mar 2007 09:32:35 +1100
+To: modules@perl.org
+Subject: FW: Failed: PAUSE indexer report GAVINC/Nagios-Plugin-0.16.tar.gz
+Message-ID: <20070322223235.GB7411@openfusion.com.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+Organisation: Open Fusion
+Approved: news@nntp.perl.org
+From: gavin@openfusion.com.au (Gavin Carr)
+
+Hi,
+
+Today's stupid question - what does this mean (upload to PAUSE today):
+
+------------------------------------------------------------------------
+Status: Falling version number
+==============================
+
+     module: Nagios::Plugin
+    version: undef
+    in file: Nagios-Plugin-0.16/lib/Nagios/Plugin.pm
+     status: Not indexed because Nagios-Plugin-0.15/lib/Nagios/Plugin.pm
+             in G/GA/GAVINC/Nagios-Plugin-0.15.tar.gz has a higher
+             version number (0.15)
+
+Status: Successfully indexed
+============================
+
+     module: Nagios::Plugin::Config
+    version: undef
+    in file: Nagios-Plugin-0.16/lib/Nagios/Plugin/Config.pm
+     status: indexed
+
+<snip>
+
+------------------------------------------------------------------------
+
+
+The Nagios::Plugin version number failure, specifically. Version 0.15 contained:
+
+  our $VERSION = "0.15";
+
+Version 0.16 contains:
+
+  our $VERSION = $Nagios::Plugin::Functions::VERSION;
+
+which we've changed because we just want to maintain a single version
+number for the set, and N::P::Functions is the lowest level package.
+
+So also:
+- what's the status of this upload now, if the main module failed to index?
+- what are my options for fixing this (or getting this fixed)?
+
+
+Cheers,
+Gavin
+
+

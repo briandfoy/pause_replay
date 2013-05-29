@@ -1,0 +1,78 @@
+Newsgroups: perl.module.build,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.module.build:924 perl.modules:56860
+Return-Path: <xdaveg@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 23496 invoked from network); 22 Sep 2007 17:07:39 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 Sep 2007 17:07:39 -0000
+Received: (qmail 14973 invoked by uid 225); 22 Sep 2007 13:47:18 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14966 invoked by alias); 22 Sep 2007 13:47:17 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VERIFIED,DK_SIGNED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from wa-out-1112.google.com (HELO wa-out-1112.google.com) (209.85.146.179)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 22 Sep 2007 06:47:01 -0700
+Received: by wa-out-1112.google.com with SMTP id v27so1433782wah
+        for <modules@perl.org>; Sat, 22 Sep 2007 06:46:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        bh=n1/Q4nEeWtnBGemvnSTuGVCKLsxIr8VHuwM/3JHFj6c=;
+        b=sQQS8CazfsiRFo+SkPKBe24f1uaDXcaLRZwuBM8yhxLs4PtkDL0v38ZcqfYKE8ovb7j+vE5n3VTaw9j0A5jRLe/GyoGlnoo8FIjar6umhy7HYmoDrufE1rqKyCczifcZX4ZrATI4uFAa8UfQNYuYbuyaftx2Mgumu9O/WEyjRnc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=VdkMzn+4YOr5XCN5hNZaq3rataJuuZpYP64q+woGbzkUxdpRgot2KqmFzN6Dgfd/ZgH872ovC5LIW6gz3tpLCNvdz/PfckiZTygN0oy0hPb1M8gk6+KuVVgAbtUNNcQqRXtJtVdmRUkiunehEjMCn0vVRFUoW4D43Xh/UyKNORc=
+Received: by 10.114.59.1 with SMTP id h1mr4767632waa.1190468817783;
+        Sat, 22 Sep 2007 06:46:57 -0700 (PDT)
+Received: by 10.140.127.12 with HTTP; Sat, 22 Sep 2007 06:46:57 -0700 (PDT)
+Message-ID: <5d4beb40709220646j70f599b3l916e675367bc8d3f@mail.gmail.com>
+Date: Sat, 22 Sep 2007 09:46:57 -0400
+To: "Michael G Schwern" <schwern@pobox.com>
+Subject: Re: Which takes precedence, provides or no_index? (was Re: PAUSE indexer report MSCHWERN/Alien-SVN-1.4.5.2.tar.gz)
+Cc: modules@perl.org, "List - Module-Build" <module-build@perl.org>
+In-Reply-To: <46F3DAB2.6010707@pobox.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <200709211146.l8LBkj8l024169@pause.perl.org>
+	 <46F3D9C8.2080401@pobox.com> <46F3DAB2.6010707@pobox.com>
+Approved: news@nntp.perl.org
+From: xdaveg@gmail.com ("David Golden")
+
+On 9/21/07, Michael G Schwern <schwern@pobox.com> wrote:
+> Michael G Schwern wrote:
+> Hmm.  I just noticed that I set 'no_index' for the src directory which
+> contains the SVN:: modules which brings up the interesting question of which
+> takes precedence, no_index or provides?
+>
+> Since provides is explicit, I'd say it should override the more general no_index.
+
+My understanding is that these serve two different purposes.
+
+"provides" indicates what modules are included in the tarball so that
+tools don't have to unpack the tarball to understand the contents.
+The specification says it "can be" used to build indexes -- it doesn't
+say it must be.
+
+"no_index" indicates which modules "are not of interest" to an online
+index (e.g. search.cpan.org).  That is much more specific than
+"provides" so it makes sense that "no_index" takes precedence over
+"provides".
+
+I don't see those as opposites -- and in fact I use them both together
+for documentation using Pod::WikiDoc.  For "pure" documentation files,
+(e.g. CPAN::Reporter::API), I write documentation in WikiDoc in
+API.pm.  Pod::WikiDoc converts that during "Build dist" to ordinary
+Pod in API.pod.  In this case, "provides" shows API.pm (with its
+version information), but I add "API.pm" to "no_index".
+
+The result is that search.cpan.org indexes only API.pod and it thus
+shows up in the documentation section on search.cpan.org.
+
+David

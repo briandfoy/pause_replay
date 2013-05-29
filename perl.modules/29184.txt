@@ -1,0 +1,110 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:29184
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 94712 invoked by uid 76); 5 Mar 2004 21:05:20 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170)
+  by onion.perl.org (qpsmtpd/0.27-dev) with SMTP; Fri, 05 Mar 2004 13:05:20 -0800
+Received: (qmail 16054 invoked by uid 225); 5 Mar 2004 21:05:15 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15938 invoked by alias); 5 Mar 2004 21:04:53 -0000
+Received: from [208.184.111.59] (HELO pd2.baremetal.com) (208.184.111.59)
+  by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Fri, 05 Mar 2004 13:04:53 -0800
+Received: from [24.108.166.215] (h24-108-166-215.gv.shawcable.net [24.108.166.215])
+	by pd2.baremetal.com (8.12.10/8.12.9) with ESMTP id i25L4xOq010024;
+	Fri, 5 Mar 2004 13:05:02 -0800
+Mime-Version: 1.0
+X-Sender: darren@DarrenDuncan.net (Unverified)
+Message-ID: <p05200f00bc6e9282b246@[24.108.166.215]>
+In-Reply-To: <1078500738.1055.18.camel@localhost.localdomain>
+References: <p05200f02bc6dd6a6ba54@[24.108.166.215]>
+ <1078500738.1055.18.camel@localhost.localdomain>
+Date: Fri, 5 Mar 2004 13:04:46 -0800
+To: modules@perl.org, poop-group@lists.sourceforge.net, victoria-pm@pm.org
+Subject: Re: RFC: multi-package module best practices
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+X-Scanned-By: MIMEDefang 2.36
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on x1.develooper.com
+X-Spam-Status: No, hits=-4.9 required=8.0 tests=BAYES_00 autolearn=ham 
+	version=2.63
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Hello Stephen, thank you for your feedback.
+
+At 10:32 AM -0500 3/5/04, Stephen Adkins 
+(stephen.adkins@officevision.com)  wrote:
+>You asked about "best practices."
+>If you have internally-used modules, just indicate in the documentation
+>that they are internally-used.  Don't change the name to include
+>"::_::".
+
+Okay, so that answers one of my questions:  You are saying that I can 
+keep the couple related packages in one file but that they would not 
+contain any "::_" in their package names; I would say in the 
+documentation that the packages exist.
+
+>I looked through my /usr/local/lib/perl5 subdirectories and
+>don't see anyone else using the "_" directory in all the CPAN modules
+>I have installed.
+
+Have a look at the DBI module.  It uses these 3 package names all 
+throughout its code: "DBD::_::db", "DBD::_::st", "DBD::_::common". 
+True, there are no subdirectories named "_", and that is because all 
+of these packages are declared in the same file and not in files of 
+their own.
+
+Stephen said (this text originally above the other quoted text):
+>I would recommend you start by putting them in three separate files.
+>(This also clears up all of the uncertainty about questions 3 and 4
+>that I don't know the answers to.)  Within Foo.pm, you can
+>"use Foo::Bar;" and "use Foo::Baz;" so the developer only has to
+>"use Foo;".  Only combine these modules into one file if there is
+>some compelling reason to do so.
+
+These are some reasons that compelled me to combine them:
+
+1. I don't want potential users to come along and, seeing multiple 
+files, think that my module is a big scary framework; rather, I hope 
+that they see a friendly single non-framework file that is easy to 
+use.
+
+2. Since the package pair is conceptually one piece, it seems more 
+user friendly that there is a single bundle.  The user just has one 
+file to keep track of, whether moving or replacing or installing or 
+uninstalling or referencing, etc.  So unless the extras are optional, 
+I see fewer modules as easier to manage.
+
+3. In my mind, when you split code into multiple module-files, this 
+is saying that each piece is completely separate, or that one is an 
+extension of the other, or that one piece can be substituted for an 
+alternative.  Multiple files are great for optionality.  I wanted to 
+keep with one file because I do not see one piece as an extension of 
+the other, or that it is an optional piece.
+
+4. In each module there are a variety of constant values or utility 
+functions that each package both uses; having them together in one 
+file ensures that there is just one copy of each and that they all 
+packages see the same thing.
+
+5. The fact that I have multiple packages is a consequence of my 
+decision to make the module object oriented and yet use two main 
+types of data structures.  If my module was function oriented then 
+the module would have a single set of functions, where each function 
+mainly works with one type of data structure, or in some cases works 
+with both together.  In an OO conceptualization, there are two types 
+of distinct entities, Bar and Baz, each with their own properties and 
+methods, but for practical purposes they are always "joined at the 
+hip".  From a user-programmer's point of view, they are using Foo, 
+even if Foo is implemented in two pieces.  The documentation also 
+refers to it as a whole.  So it seems logical to just have a Foo 
+file; we would have just the one whether the module is object or 
+function oriented.
+
+Thanks again Stephen.
+
+Any other opinions or questions out there?
+
+Good day. -- Darren Duncan

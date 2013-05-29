@@ -1,0 +1,232 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12396
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 98326 invoked by uid 76); 30 Jun 2002 21:53:33 -0000
+Received: from mail02.svc.cra.dublin.eircom.net (HELO mail02.svc.cra.dublin.eircom.net) (159.134.118.18)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Sun Jun 30 21:53:33 2002 -0000
+Received: (qmail 57864 messnum 338638 invoked from network[159.134.167.218/p986.as1.limerick1.eircom.net]); 30 Jun 2002 21:47:41 -0000
+Received: from p986.as1.limerick1.eircom.net (HELO dansat.data-plan.com) (159.134.167.218)
+  by mail02.svc.cra.dublin.eircom.net (qp 57864) with SMTP; 30 Jun 2002 21:47:41 -0000
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id g5ULlnY17059;
+	Sun, 30 Jun 2002 22:47:49 +0100 (BST)
+	(envelope-from timbo)
+Date: Sun, 30 Jun 2002 22:47:40 +0100
+To: Mr Arhuman <arhuman@hotmail.com>
+Cc: modules@perl.org
+Subject: Re: Module submission Devel::Debug
+Message-ID: <20020630224740.U87029@dansat.data-plan.com>
+References: <F29CnzNwRC6HixqDCZx00000522@hotmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <F29CnzNwRC6HixqDCZx00000522@hotmail.com>; from arhuman@hotmail.com on Fri, Jun 28, 2002 at 08:24:35AM +0000
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+To be honest I'm struggling a bit with this one. CC'd to modules.
+
+If it wasn't for the fact that the 'use' line has to be commented
+and uncommented I'd say Devel::Debug was probably okay.
+
+So how about this for a feature-enhancement...
+
+	use Devel::Debug enable =3D> '/path/to/file';
+
+If the specified file exists, is readable, and contains a line that
+matches the caller's package, then enable debugging for that caller.
+
+Thus if /path/to/file contains a single line containing /./ then
+everything get debugging enabled. Or if it contains /^Foo::/ then
+all packages named Foo::* gets debugging enabled.
+
+While you're there - some other random thoughts ...
+
+	use Devel::Debug emit =3D> 'carp';
+	use Devel::Debug emit =3D> 'cluck';
+	use Devel::Debug emit =3D> sub { ... }; # syslog or whatever
+
+Umm, in fact those directives could also be embedded into the control
+file. So for some modules you could carp and other cluck (etc. etc.).
+
+Would also make sense to have the relevant data from the control file
+for this module available to the #!...! code - so the <value> part
+of wait could be specified externally, for example.
+
+The key point being to further your own aim of being able to
+enable debugging "without modyfying my code".
+
+Tim.
+
+p.s. I'd also suggest renaming some of the functions to be more
+natural and consistent with common perl and debugger conventions:
+	print -> carp (or emit to match the directive)
+	show -> dump
+	wait -> when
+
+On Fri, Jun 28, 2002 at 08:24:35AM +0000, Mr Arhuman wrote:
+> Thanx a lot for your time and avices !
+> You'll find the doc attached.
+>=20
+> Arnaud.
+>=20
+> >On Thu, Jun 27, 2002 at 10:17:25PM +0000, Mr Arhuman wrote:
+> > > Thanks for the comment, any idea for a proper name ?
+> > >
+> > > Devel::Debug::Utils ?
+>=20
+> > > Devel::Debug::Var ?
+> > > Devel::Debug::Data ?
+> >
+> >Not three-levels. There's no point: Devel::DebugFoo or Devel::FooDebug
+> >is fine.
+> >
+> > > You apart, nobody seems too really care (I've asked the question seve=
+ral times)
+> > > that's why I'm bothering you, just in case ;-)
+> >
+> >I'd need much more info. The summary didn't actually say much.
+> >Send me the docs.
+
+> .::Debug(3)    User Contributed Perl Documentation    .::Debug(3)
+>=20
+>=20
+> N=08NA=08AM=08ME=08E
+>        Devel::Debug - Simple debug module
+>=20
+> S=08SY=08YN=08NO=08OP=08PS=08SI=08IS=08S
+>        # in user's code:
+>=20
+>        Use Devel::Debug;
+>=20
+>        ... #!assert(<cond>)!
+>=20
+>              will die at this line if <cond> is not verified...
+>=20
+>        ... #!watch(<var_name>)!
+>=20
+>              will carp each access to <var_name>
+>              (Idea from Srinivasan's monitor module)
+>=20
+>        ... #!print(<double_quoted_string_to_be_printed>)!
+>=20
+>              will carp  the string
+>              Yes it's only the usual coder's best friend : print
+>=20
+>        ... #!show(<ref to a variable to be showed>)!
+>=20
+>              will carp the variable's structure
+>=20
+>        ... #!wait(<var_name>,<op>,<value>)!
+>=20
+>              will emit when <var_name> will pass the condition described =
+by
+>                  <op><value>. Currently, only works for 'watched' scalar.=
+...
+>=20
+>        ... #!emit(carp|croak)!
+>=20
+>              Define the emit's behaviour.
+>=20
+>=20
+> A=08AB=08BS=08ST=08TR=08RA=08AC=08CT=08T
+>        This module will allow you to debug your code in a non-
+>        intrusive way.
+>=20
+> D=08DE=08ES=08SC=08CR=08RI=08IP=08PT=08TI=08IO=08ON=08N
+>        T=08Th=08he=08e S=08St=08to=08or=08ry=08y
+>=20
+>        This module started as a joke called "Psychorigid.pm".
+>        Following a discussion with a JAVA zealot (hi Gloom) I
+>        coded a short module using Filter::Simple to show that
+>        strong type checking and other missing features could be
+>        added easily to Perl thanks to filters.
+>=20
+>        The code posted on www.perlmonks.org produced insightful
+>        comments (as always on perlmonks ! Go there it's a GREAT
+>        place for any Perl lover) One of them was emphazing the
+>        fact that any feature making the debugging easier is a
+>        good thing.  I then decided to play with Filter::simple to
+>=20
+>=20
+>=20
+> perl v5.6.1                 2002-06-28                          1
+>=20
+>=20
+>=20
+>=20
+>=20
+> .::Debug(3)    User Contributed Perl Documentation    .::Debug(3)
+>=20
+>=20
+>        make a useful module.  I quickly coded a dirty module to
+>        do the job, which stood unused on my hardisk for months.
+>        I entually decided that It could be a good thing to
+>        release my first module, I did some clean-up, wrote some
+>        documentation and : voila !
+>=20
+>        W=08Wh=08hy=08y a=08an=08no=08ot=08th=08he=08er=08r d=08de=08eb=08=
+bu=08ug=08g m=08mo=08od=08du=08ul=08le=08e=20
+> ?=08?
+>=20
+>        A simple search on CPAN will lead you to several other
+>        useful modules making debugging easier. (for example
+>        Carp::Assert) Why did I decide to reinvent the wheel ?
+>        Especially when some of the already existing wheel are
+>        well crafted. Simply beccause I wanted to explore a new
+>        kind of interface.
+>=20
+>        I wanted a simple and _=08n_=08o_=08n_=08-_=08i_=08n_=08t_=08r_=08=
+u_=08s_=08i_=08v_=08e way to=20
+> make the first
+>        stages of coding easier and safer.  (By non-intrusive I
+>        mean without modyfing the code)
+>=20
+>        Ideally I wanted to switch-on (via 'use Debug;') a battery
+>        of checks without modyfying my code, and then use it in
+>        production with only the use line commented out.
+>=20
+>        I could have used the usual embeded tests triggered by a
+>        variable (usually $DEBUG)  but I didn't want to pollute
+>        the code logic with the debugging statements and I also
+>        wanted to play with the wonderful Filter::Simple module.
+>=20
+>        Furthermore I've tried to group (and when possible
+>        enhance) in this modules several features dissiminated (or
+>        simply missing) in several modules.
+>=20
+> A=08AU=08UT=08TH=08HO=08OR=08R
+>        Arnaud (Arhuman) ASSAD <arhuman@hotmail.com>
+>=20
+> C=08CO=08OP=08PY=08YR=08RI=08IG=08GH=08HT=08T
+>        Copyright (c) 2001,2002 Arnaud ASSAD. All Rights Reserved.
+>        This module is free software. It may be used,
+>        redistributed and/or modified under the same terms as Perl
+>        itself.
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+> perl v5.6.1                 2002-06-28                          2
+>=20
+>=20
+>=20
+

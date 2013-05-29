@@ -1,0 +1,162 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13861
+Return-Path: <mark@www.veltzer.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 54259 invoked by uid 1008); 20 Sep 2002 11:52:16 -0000
+Delivered-To: cpanmail-modules@cpan.org
+Received: (qmail 54250 invoked by uid 76); 20 Sep 2002 11:52:16 -0000
+Received: from [Xxxst3/fD6/xdqnjqZ8+rz88utW73oRR]@line106-15.adsl.actcom.co.il (HELO www.veltzer.org) (192.117.106.15) by onion.perl.org (qpsmtpd/0.11-dev) with SMTP; 2002-09-20 11:52:16Z
+Received: from localhost (localhost [[UNIX: localhost]])	by www.veltzer.org (8.11.6/8.11.6) id g8KC3e429107;	Fri, 20 Sep 2002 15:03:40 +0300
+Message-ID: <200209201203.g8KC3e429107@www.veltzer.org>
+Content-Type: text/plain;  charset="iso-8859-1"
+Organization: Meta Ltd.
+To: <EXT-David.Helgason@nokia.com>, <modules@cpan.org>
+Subject: Re: The Meta::* namespace, and the modules in it
+Date: Fri, 20 Sep 2002 15:03:35 +0300
+X-Mailer: KMail [version 1.3.2]
+References: <5A2E76451DA64C4A8ED7F3FED8309E0A01095804@coebe002.europe.nokia.com>
+In-Reply-To: <5A2E76451DA64C4A8ED7F3FED8309E0A01095804@coebe002.europe.nokia.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SMTPD: qpsmtpd/0.11-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: mark@veltzer.org (Mark Veltzer)
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+On Friday 20 September 2002 14:20, you wrote:
+> Mark,
+>
+> It is good to see your modules in Meta::* being actively developed. However
+> I have some qualms about the whole project.
+>
+> I cannot find any documentation as to what functionality the module
+> hierarchy is supposed to provide. It's various subhierarchies do not seem
+> related in any particular way.
+>
+> Thus, I cannot see why they should occupy a namespace together, especially
+> a to lever namespace with such as 'Meta'. In fact the only reason for them
+> to be under 'Meta' is that there is a company with that name.
+
+First Meta is indeed the name of the consulting company that I run but the 
+name Meta is exactly right for what I need. I wanted a name without any 
+connection to anything that people already know (like DB, XML, Development 
+etc..). because Meta is a project to accomplish many tasks in an integrated 
+mannger. The name fits right on.
+
+There is actually a connection between the modules and my ambitions for it 
+are quite high.
+
+The idea is to develop a full suite of tools where by all information that 
+these tools store will be in a SINGLE rdbms (with relations ofcourse).
+
+The tools will include:
+1. A source configuration tool (with all source files and history inside the 
+database).
+2. A build manager (make replacement).
+3. A web server.
+4. An email client (all mails in the database ofcourse).
+5. A mailing list manager.
+6. Integrated web application frame work (OpenFrame).
+7. A set of XML tools to aid.
+8. Database Schema designer via xml description and inheritance.
+9. Music manager (with all mp3 in the database).
+10. Video manager (with all info in the database).
+11. Book library manager.
+12. Contacts database.
+13. Personal time tracker.
+14. Bug tracking system integrated into the source control system.
+15. Chess game database.
+..... [and much much more....]
+
+I know that this is ambitious but I think that in 2 years you'll be surprised.
+To get all of this done I submit a lot of bug reports to a lot of low level 
+modules that I use (and a lot of feature requests). Since I'm designing a 
+very big system I don't have time to wait for the feature requests to come in 
+so I extend each module [Foo] with [Meta::Foo] which provides the extra 
+features that I need. Once I learn that [Foo] has the feature I remove 
+[Meta::Foo] and use [Foo] directly. That's why I don't want to put 
+[Meta::Foo] in a namespace which is not under [Meta] (since I add the feature 
+in a sub optimal way and I wouldn't want anyone to actually rely on my 
+implementation because that's just a small nail in Meta and I won't 
+neccessarily keep maintaining for long - I prefer the lower level modules to 
+acquire these capabilities).
+
+The company Meta is my own (a small consulting company that I run) but the 
+name strikes me as good for such an ambitious project. I don't think I am 
+hurting anyone as I don't see anyone else using the name space or that has 
+any qualms about it. In addition the name space is NOT registered in the full 
+name space directory meaning that you can only get the package from my 
+personal CPAN directory which means that I do not clobber regular CPAN 
+development (If they wish to use the Meta namespace they do not need to fear 
+colliding with me and only my users will suffer until I stop colliding with 
+them). The name "Meta" has an english meaning and it is the exact meaning 
+that I wish to convey: A package which pulls a lot of other packages together 
+to create something which has never been seen before.
+
+>
+> If that is the case, the right place for it would perhaps be 'Acme::Meta'
+> or somesuch.
+>
+
+If anyone has problems with my name space I will change it. Do you have 
+concrete problems with the name space NOW ?!? Did I collide with any other 
+module you installed from CPAN ? Did you want to write a module with the 
+[Meta::] prefix and found that you couldn't ? I don't really understand the 
+issue.
+
+> But if they don't really belong together at all (they don't seem to), just
+> put the subhierarchies in the namespaces where they belong, and maintain a
+> bundle 'Bundle::Acme::Meta', 'Bundle::TheMetaCompany' or somesuch.
+
+Meta is a very large project and that's why they don't seem connected. Trust 
+me - they are.
+
+>
+> Or better yet, just distribute the programs from the
+> http://www.cpan.org/scripts section and have them state in their
+> installation guides which modules are prerequisites.
+>
+
+Meta is by no means a script and I want the benefits of Makefile.PL and 
+prerequisites (did you look at the Meta prerequisite list ?!? I want 
+automatic resolution for that - the list is a 100 modules long).
+
+>
+> Sorry if this comes out a bit harsh; I really do appreciate that people
+> publish their work on CPAN, as that is the #1 reason why perl's so damn
+> wonderful.
+>
+> I just think it's important that CPAN be used as more than just the
+> workarea of every-and-all (however clever) perl developer. I'm not
+> advocating any particular quality control over CPAN (the only module I
+> maintain there is one of which I am particularly unproud), just a minimum
+> of respect for everybodys time and mindspace.
+
+I'm not using CPAN as a work area. I could keep Meta on my private HD (the 
+contributions have been minimal so far). I don't need the 0.5 M space that 
+Meta takes on CPAN. Trust me. I have 120 Gig hard drive here and the 0.5 M 
+space is the least of my concern. The idea is to provoke other people to 
+seeing the potential. Take a look at the internals. How am I hurting someones 
+time ? did I make someone lose working time by using Meta as the name space ? 
+If you can give me an example I will be happy to change my namespace.
+
+>
+>
+> regards,
+>
+> David Helgason ( http://www.uti.is/david)
+
+Regards,
+	Mark
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE9iw6axlxDIcceXTgRAhutAKCVq+twnsdYawjcS7lHnY7tme0wXgCeNzx7
+E3lFiRevACWGlFG7PY+w/tY=
+=Rhn0
+-----END PGP SIGNATURE-----

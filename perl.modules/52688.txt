@@ -1,0 +1,117 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:52688
+Return-Path: <cpan@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 809 invoked from network); 20 Jan 2007 05:43:29 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 20 Jan 2007 05:43:29 -0000
+Received: (qmail 24050 invoked by uid 225); 20 Jan 2007 05:43:29 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24044 invoked by alias); 20 Jan 2007 05:43:29 -0000
+X-Spam-Status: No, hits=-4.4 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Fri, 19 Jan 2007 21:43:27 -0800
+Received: (qmail 754 invoked by uid 515); 20 Jan 2007 05:43:23 -0000
+Message-ID: <20070120054323.753.qmail@lists.develooper.com>
+To: modules@perl.org
+Date: Sat, 20 Jan 2007 16:41:23 +1100
+User-Agent: Thunderbird 1.5.0.9 (Windows/20061207)
+MIME-Version: 1.0
+Subject: Re: A potential bug in String::CRC
+References: <E1H83Qo-0006Nr-HK@elasmtp-scoter.atl.sa.earthlink.net>
+In-Reply-To: <E1H83Qo-0006Nr-HK@elasmtp-scoter.atl.sa.earthlink.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 124.188.112.75
+Approved: news@nntp.perl.org
+From: cpan@ali.as (Adam Kennedy)
+
+By the looks, while String::CRC does a CRC, it doesn't say the actual 
+CRC algorithm it uses, which looks like a different algorithm to the Zip 
+CRC algorithm.
+
+The module also hasn't been changed in 9 years, which suggests it is 
+defunct.
+
+I'd take a look at an alternative methods. Either use the Archize::Zip 
+method directly (if you need a Zip-compatible CRC) or perhaps another 
+CRC module can handle Zip-compatible CRCs.
+
+Adam K
+
+Matthew Ishii wrote:
+> Im not sure if this is the right place but here it goes:
+> 
+>  
+> 
+> I read in a string and use String::CRC to compute the CRC32 value.  Then 
+> I use the Archive::Zip::computeCRC32 function against the same string.
+> 
+>  
+> 
+> The returned values are different.  So I used a windows based utility 
+> against the same file.  The windows utility agrees with the Archive::Zip 
+> method.
+> 
+>  
+> 
+> Has anyone else reported any discrepancies?  Am I using String::CRC 
+> incorrectly?
+> 
+>  
+> 
+>  
+> 
+> This is my exact implementation of each:
+> 
+>  
+> 
+> #!/usr/bin/perl
+> 
+>  
+> 
+> use String::CRC;
+> 
+> use Archive::Zip;
+> 
+>  
+> 
+> $input = "hello world";
+> 
+>  
+> 
+> $zip = Archive::Zip->new();
+> 
+>  
+> 
+> $checksum1 = crc($input, 32);
+> 
+> $checksum2 = $zip->computeCRC32($input);
+> 
+>  
+> 
+> print "Checksum from String::CRC -> $checksum1\n";
+> 
+> print "Checksum from Archive::Zip -> $checksum2\n";
+> 
+>  
+> 
+> And here is the output:
+> 
+>  
+> 
+> Checksum from String::CRC -> 1701040017
+> 
+> Checksum from Archive::Zip -> 222957957
+> 
+>  
+> 
+>  
+> 
+> Any ideas would be very appreciated, this is something I need to rely on ;0)
+> 

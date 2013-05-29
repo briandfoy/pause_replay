@@ -1,0 +1,156 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:949
+Return-Path: <jpf@devweb.pt>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20796 invoked from network); 20 Jan 2000 16:24:55 -0000
+Received: from mail.devweb.pt (HELO blue.solsuni.pt) (194.65.16.121)
+  by tmtowtdi.perl.org with SMTP; 20 Jan 2000 16:24:55 -0000
+Received: from blue.solsuni.pt ([192.168.10.121]) by blue.solsuni.pt
+          (Netscape Messaging Server 3.5)  with ESMTP id AAA6A7A;
+          Thu, 20 Jan 2000 16:26:26 +0100
+Subject: Class::DBIStruct
+Content-Type: multipart/mixed; boundary="----------=_948385585-23229-0"
+To: modules@perl.org
+Mime-Version: 1.0
+Cc: joao.fonseca@devweb.pt
+X-Mailer: Mail::Mailer[v1.18] Net::SMTP[v2.13]
+Date: Thu, 20 Jan 2000 16:26:26 +0100
+Message-ID: <7735C2F0A41.AAA6A7A@blue.solsuni.pt>
+Approved: news@nntp.perl.org
+From: jpf@devweb.pt
+
+------------=_948385585-23229-0
+Content-Type: text/plain
+Content-Disposition: inline
+
+Hello,
+
+I'm the Net::IMAP::Simple author (JPAF)
+and I would like to submit another module
+to CPAN
+
+Suggested Name: Class::DBIStruct
+Development Stage: bdpO
+Description: declare DBI tables as Perl classes
+
+Class::DBIStruct is similar to Class::Struct,
+but is intended for mapping database tables to
+Perl objects. It helps building database APIs
+that resemble perl Objects. All the usual methods
+are automatically defined. You can then implement
+your own methods, if needed.
+
+
+You can take a look at the pod attached.
+
+Regards,
+Joao Fonseca
+
+
+
+
+
+------------=_948385585-23229-0
+Content-Type: text/plain; name="ClassDBIStruct.txt"
+Content-Disposition: inline; filename="ClassDBIStruct.txt"
+Content-Transfer-Encoding: 7bit
+
+NAME
+    Class::DBIStruct - declare DBI tables as Perl classes
+
+SYNOPSIS
+        package Person;
+
+        use Class::DBIStruct;
+
+        struct(
+            Person => [ 'id', 'name', 'phone' ],
+            Keys   => [ 'id' ]
+        );
+
+        # Your methods ...
+        #
+        # You can use $self->where( $dbh ) to get a where clause
+        # for your queries:
+        # $query = "UPDATE .... WHERE " . $self->where( $dbh )
+
+        1;
+
+        # The resulting class:
+
+        package main;
+
+        use Person;
+        use DBI;
+
+        $dbh = DBI->connect( ... );
+
+        # Get an instance from the database
+        # The cols you specify will be used in the WHERE clause of the
+        # SELECT statement
+
+        $p = new Person( $dbh, id => 1024 ) # SELECT * FROM Person WHERE id = 1024
+            or die "$@";
+
+        $p = new Person( $dbh, name => 'John' ) # SELECT * FROM Person WHERE name = 'John'
+            or die "$@";
+
+        # Insert a new record in the database
+        # You don't need do specify all columns, if they have
+        # default values.
+        insert Person( $dbh,
+             name => 'John Doe',
+             phone => '555-0000' )
+        or die "$@";
+
+        # accessors
+        $id = $p->id( $dbh ) or die "$@";
+        $name = $p->name( $dbh ) or die "$@";
+        $phone = $p->phone( $dbh ) or die "$@";
+        $id = $p->get( $dbh, 'id' ) or die "$@";
+        %all = $p->get( $dbh ) or die "$@";
+
+        # assignment
+        $old_name = $p->name( $dbh, $new_name ) or die "$@";
+        $old_phone = $p->phone( $dbh, $new_phone ) or die "$@";
+        $old_name = $p->set( $dbh, 'name', $new_name ) or die "$@";
+
+        # clears cached values. Further gets will fetch from the DB
+        $p->clear( 'name' );
+        $p->clear(); # clears all but the keys
+
+DESCRIPTION
+    Class::DBIStruct is similar to Class::Struct, but is intended
+    for mapping database tables to Perl objects. It helps building
+    database APIs that resemble perl Objects. All the usual methods
+    are automatically defined. You can then implement your own
+    methods, if needed.
+
+    The current implementation caches the values obtained in the
+    constructor. This means that the DBI handle is not used on the
+    accessor methods, but you should not rely on this!
+
+    Also, don't do this:
+
+        $count = $obj->count( $dbh );
+        $obj->count( $dbh, $count + 1 );
+
+    This may not work as expected (increment a value on the count
+    column), because someone may do an update in between. You will
+    have to implement an increment method that does the update in a
+    single SQL query.
+
+    The object constructed is a reference to a hash containing
+    column => value entries. You can rely on this for your specific
+    method implementations.
+
+AUTHOR
+    Joao Fonseca, joao_g_fonseca@yahoo.com
+
+SEE ALSO
+    Class::Struct(1).
+
+
+------------=_948385585-23229-0--

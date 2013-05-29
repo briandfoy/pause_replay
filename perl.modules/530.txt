@@ -1,0 +1,71 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:3896 perl.modules:530
+Return-Path: <muir@idiom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19076 invoked from network); 15 Nov 1999 23:56:45 -0000
+Received: from idiom.com (@216.240.32.1)
+  by tmtowtdi.perl.org with SMTP; 15 Nov 1999 23:56:45 -0000
+Received: (from muir@localhost)
+	by idiom.com (8.9.3/8.9.3) id PAA74897;
+	Mon, 15 Nov 1999 15:56:32 -0800 (PST)
+Date: Mon, 15 Nov 1999 15:56:32 -0800 (PST)
+Message-ID: <199911152356.PAA74897@idiom.com>
+To: Raphael Manfredi <Raphael.Manfredi@st.com>
+Cc: andreas.koenig@anima.de, modules@perl.org, perl5-porters@perl.org,
+        gsar@umich.edu
+Subject: Re: Need a module name... Transaction support for Storable file objects 
+Approved: news@nntp.perl.org
+From: muir@idiom.com (David Muir Sharnoff)
+
+* Raphael Manfredi <Raphael.Manfredi@st.com> wrote...
+* 
+* To be sure I understand your point here, are you basically saying that
+* all marshalling modules (Data::Dumper, FreezeThaw, Storable, others to
+* come) actually conform to an abstract common serializaing interface?
+* 
+* That is to say, in essence, that they all declare:
+* 
+* 	package XXX;
+* 	@ISA = qw(Serializer ...);
+* 
+* where
+* 
+* 	package Serializer;
+* 
+* 	sub serialize { die "deferred" };
+* 	sub deserialize { die "deferred" };
+* 
+* and therefore imposes heirs to actually define those primitives?
+* 
+* If you're saying this, then I doubt it will reasonably happen. That's why
+* the glue in MLDBM is there, to try offer a consistent serializing interface,
+* yet delegating the work to the actual serializing modules , understanding
+* their respective interfaces and features.
+* 
+* For instance, Storable supports store() and nstore() to deal with native
+* and network-neutral physical representation. But Data::Dumper has no need
+* for this, and its designer was free to superbly ignore the issue. Which he
+* did.
+
+I said what I did because I didn't see any reasonable way to extract the 
+work you did as part of MLDBM from MLDBM and use it elsewhere.   Your point about
+there being real differences in the interfaces that must be preserved is a 
+good one.
+
+I would like to use it, but I'm lazy and don't want to work hard that 
+integrate it into into my module.  Laziness can be a virtue because it can
+make you want things done right so that less work needs to be done later
+and having a consistent interface for the various Marshalling routines
+seems right to me.
+
+An alternative would be to extract your work from MLDBM into a module called
+Serializer that MLDBM would then use.  This would be a bunch of work for you
+so I'm not terribly comfortable asking for it.  On the other hand, it's really
+the only way I'll end up supporting multiple Serializers in my module.  It
+would be fine with me if it were still distributed with MLDBM.  Or not.
+
+Thanks,
+
+-Dave

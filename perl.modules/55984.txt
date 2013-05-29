@@ -1,0 +1,186 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:55984
+Return-Path: <michael@zedeler.dk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 9762 invoked from network); 23 Aug 2007 21:19:05 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 23 Aug 2007 21:19:05 -0000
+Received: (qmail 14934 invoked by uid 225); 23 Aug 2007 21:19:04 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14927 invoked by alias); 23 Aug 2007 21:19:04 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from tempest.supportfromweb.com (HELO tempest.supportfromweb.com) (193.31.15.53)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 23 Aug 2007 14:18:58 -0700
+Received: from [192.168.1.34] (62.79.106.232.adsl.ryv.tiscali.dk [62.79.106.232])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by tempest.supportfromweb.com (Postfix) with ESMTP id 7FAB96F5A4
+	for <modules@perl.org>; Thu, 23 Aug 2007 23:18:51 +0200 (CEST)
+Message-ID: <46CDF9B7.7000009@zedeler.dk>
+Date: Thu, 23 Aug 2007 23:18:47 +0200
+User-Agent: Thunderbird 1.5.0.12 (X11/20070604)
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: Name space question for new module
+References: <45069.87.48.152.72.1187871979.squirrel@michael.zedeler.dk> <230820071312175844%brian.d.foy@gmail.com>
+In-Reply-To: <230820071312175844%brian.d.foy@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: michael@zedeler.dk (Michael Zedeler)
+
+brian d foy wrote:
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+>
+> In article <45069.87.48.152.72.1187871979.squirrel@michael.zedeler.dk>,
+> Michael Zedeler <michael@zedeler.dk> wrote:
+>
+>   
+>> I am working on a module that makes it possible to write small chunks of
+>> code that carries out various transformation on large amounts of data
+>> (fast!). The transformations are handled by something I call data
+>> transformers that can be plugged together in many different ways.
+>>     
+>> The module is almost ready to be published, but I need to figure out
+>> what to call it.
+>>     
+> Can we see an example? That might help us suggest a name.
+Yes, but it probably looks greek without a kind of explanation.
+
+The basic building blocks defined are data sources, data targets and 
+data types. Sources have outgoing data types and targets have ingoing 
+data types. An object that is both a source and a target is called a 
+transformer. Transformers can be hooked up in chains (call them 
+processing chains if you like) starting with a data source and ending in 
+a data target. The first data source in the chain is called an importer. 
+The last target in the chain is called a sink.
+
+After setting up a processing chain, data is pushed into the chain by 
+calling the importer. Data is then passed from transformer to 
+transformer very much like SAX (I admit that I have drawn somewhat on 
+the paradigm of SAX, but using this module is far from as tedious to use 
+as SAX).
+
+Now I believe you're ready to see the example (shortened):
+
+# Load various modules
+use DS::Importer::TabFile;
+use DS::Target::Sink;
+use DS::Transformer::Sub;
+use DS::Transformer::TabFileWriter;
+use DS::TypeSpec;
+
+# Create an importer that reads from tab separated file
+my $importer = new DS::Importer::TabFile( "$Bin/languages.txt" );
+
+# Examine what fields the data stream importer provides
+my $fields = $importer->out_type->fields;
+print 'Fields in file: ', join(', ', keys %$fields ), ".\n";
+
+# Set up a transformer that adds integer values found in stream
+# and adds a field with this sum
+my $sum_transformer = new DS::Transformer::Sub(
+    # Anonymous subroutine
+    sub {
+        my( $self, $row ) = @_;
+
+        # $row may be set to undef which indicated end of stream
+        # in that case, skip computation
+        if( $row ) {
+            my $sum = 0;
+            foreach my $value (values %$row) {
+                $sum += $1 if( $value =~ /(\d+)/ );
+            }
+            # Carefully create a new row
+            $row = {%$row, sum => $sum};
+        }
+       
+        return $row;
+    },
+    # This is the in type for this transformer
+    # This transformer will accept any incoming type
+    $importer->out_type,
+    # It adds a field named 'sum'
+    # This is the out type for this transformer
+    new DS::TypeSpec( [ keys %$fields, 'sum' ] ),
+    # And we want to use the importer as a source
+    $importer
+);
+
+# Set up a small transformer that prints to screen
+my $print_transformer = new DS::Transformer::Sub(
+    sub {
+        my( $self, $row ) = @_;
+        print join(", ", %$row), "\n" if( $row );
+        return $row;
+    },
+    # No changes to data
+    $sum_transformer->out_type,
+    $sum_transformer->out_type,
+    # Source
+    $sum_transformer
+);
+
+# Set up tabular file writer
+my $exporter = new DS::Transformer::TabFileWriter(
+    # File name
+    "$Bin/languages-sum.txt",
+    # Field order (must be specified at time of writing)
+    [ sort (keys %$fields, 'sum') ],
+    # Source
+    $print_transformer,
+    # Dummy target
+    new DS::Target::Sink()
+);
+
+# Now the processing chain has been set up.
+
+# This will read the input file and process everything.
+$importer->execute();
+
+What happens when executing the script, is that the file "languages.txt" 
+(a tab separated file) is read line by line, each line being converted 
+to a hash reference, which is then passed to the anonymous sub in 
+$sum_transformer, then to the anonymous sub in $print_transformer and 
+finally to $exporter which writes a tab separated file with whatever the 
+two transformers produced.
+
+Note that the positional parameters are going away in a release not too 
+far away.
+
+The main idea behind setting up processing chains before doing the 
+processing, is to provide an environment where as much type validation 
+can be done before the actual processing starts. This leads to 
+performance gains in the order of the size of data set multiplied by 
+some factor. I am aware that the example above can be written without 
+using the library in much less code, but that comes with the cost of not 
+providing any easily defined, reusable building blocks that has the 
+performance characteristics I am looking for.
+
+Presently, all data passed through a processing chain must be a hash, 
+but I am considering the pros and cons of allowing any scalar.
+
+The interesting thing with this module is that there is a lot of 
+archetypal transformers, importers and exporters that can be written, 
+such as a class representing a stack of transformers (itself behaving as 
+an opaque transformer), an exception handling stack, a transaction-stack 
+(begins transaction when data gets in, rolls back on exception anywhere 
+in stack, commits otherwise), data validation transformers, tee-stacks 
+(sends data through multiple chains), buffers and many others. The 
+module presently provides approximately 25 of such reusable classes.
+
+Any short description of this module would "typed data streams", but 
+Data::Stream::Typed is awfully deep and I am planning to make typing 
+something that can be switched off when debugging.
+
+Regards,
+
+Michael.
+

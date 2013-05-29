@@ -1,0 +1,112 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:67728
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11290 invoked from network); 20 Sep 2009 08:11:17 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 20 Sep 2009 08:11:17 -0000
+Received: (qmail 13281 invoked by uid 225); 20 Sep 2009 08:11:17 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13277 invoked by alias); 20 Sep 2009 08:11:17 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 20 Sep 2009 01:11:12 -0700
+Received: from pause.perl.org (localhost.localdomain [127.0.0.1])
+	by pause.perl.org (8.13.8/8.13.8/Debian-3) with ESMTP id n8K8B7Kr003853
+	for <modules@perl.org>; Sun, 20 Sep 2009 10:11:07 +0200
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.8/8.13.8/Submit) id n8K8B7Gj003852;
+	Sun, 20 Sep 2009 10:11:07 +0200
+Date: Sun, 20 Sep 2009 10:11:07 +0200
+Message-ID: <200909200811.n8K8B7Gj003852@pause.perl.org>
+Subject: Module submission XUL::Gui
+Reply-To: modules@perl.org
+To: modules@perl.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       XUL::Gui
+  DSLIP:       adphp
+  description: display cross platform gui apps with firefox
+  userid:      ASG (Eric Strom)
+  chapterid:   8 (User_Interfaces)
+  communities:
+
+  similar:
+    XUL::Node POE::XUL::Node
+
+  rationale:
+
+    my module is a perl cross platform gui toolkit that utilizes
+    xul/html rendered with firefox/xulrunner. the initial concept is
+    similar to XUL::Node/POE::XUL::Node, however the execution is quite
+    different. the gui uses a dynamic transparent proxy layer between
+    perl and javascript, allowing direct use of javascript functions and
+    variables, with some hopefully convenient shortcuts. my module is
+    pure perl and only dependent upon core modules, making it trivial to
+    install applications based on it into a wide range of systems. in
+    contrast, XUL::Node and POE::XUL::Node each have large and difficult
+    to satisfy dependency trees. also, rather than a focus on network
+    gui features, my focus will be on developing a cross platform
+    desktop gui, one that can become an option alongside Tk and Wx.
+
+    the high level proxy dynamically translates and passes code from
+    perl to javascript without any knowledge of or binding to the
+    underlying mozilla implementation (beyond a runtime extensible list
+    of known xul and html tag names). the proxy is a direct link to
+    javascript's properties and methods, allowing developer.mozilla.com
+    to serve as the primary gui documentation. the dynamic nature of the
+    toolkit also means that it fully supports the features of the
+    installed firefox version, preventing the toolkit from ever falling
+    out of date
+
+    my current name for the module is XUL::Gui, which is not currently
+    taken. the module encourages a design pattern that mirrors the
+    nested nature of xml, for a compact yet descriptive syntax
+
+    use XUL::Gui;
+
+    # a simple hello world server Label 'hello, world!';
+
+    # nested design
+
+    Vbox( Hbox(Label('elements'), Button(label=>'are inside')),
+    Hbox(Label('their parent'), Button(label=>'elements')), )
+
+    # and a richly extensible syntax *hello = widget { # user definable
+    tags GroupBox( Caption( label=>'perl would like to say' ), Button(
+    label=>"hello, @_!", oncommand=>sub{ my @self = shift; $self->label
+    = 'ouch'; $self->{W}{clicks}++; } ) ) } value => sub{
+    shift->{clicks} }; # widget methods
+
+    server Window title => 'XUL::Gui demo', map {hello($_)} qw/world
+    cpan PAUSE/;
+
+  enteredby:   ASG (Eric Strom)
+  enteredon:   Sun Sep 20 08:11:07 2009 GMT
+
+The resulting entry would be:
+
+XUL::
+::Gui             adphp display cross platform gui apps with firefox ASG
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=d9300000_a1f9df694f35b453&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=d9300000_a1f9df694f35b453&SUBMIT_pause99_add_mod_insertit=1
+Peek at the current permissions:
+  https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=me&pause99_peek_perms_query=XUL%3A%3AGui

@@ -1,0 +1,410 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:29936
+Return-Path: <delbe@telus.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 48070 invoked by uid 76); 25 Mar 2004 01:29:10 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170)
+  by onion.perl.org (qpsmtpd/0.27.1) with SMTP; Wed, 24 Mar 2004 17:29:10 -0800
+Received: (qmail 6531 invoked by uid 225); 25 Mar 2004 01:29:08 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6522 invoked by alias); 25 Mar 2004 01:29:08 -0000
+X-Spam-Status: No, hits=1.4 required=7.0
+	tests=CLICK_BELOW,HTML_30_40,HTML_LINK_CLICK_HERE,HTML_MESSAGE
+X-Spam-Check-By: la.mx.develooper.com
+Received: from outbound01.telus.net (HELO priv-edtnes57.telusplanet.net) (199.185.220.220)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Wed, 24 Mar 2004 17:28:45 -0800
+Received: from mycomputer ([216.232.219.233])
+          by priv-edtnes57.telusplanet.net
+          (InterMail vM.6.00.05.02 201-2115-109-103-20031105) with ESMTP
+          id <20040325012843.GUFK2644.priv-edtnes57.telusplanet.net@mycomputer>;
+          Wed, 24 Mar 2004 18:28:43 -0700
+To: <modules@perl.org>
+Subject: Question re perl modules
+Date: Wed, 24 Mar 2004 17:28:29 -0800
+Message-ID: <001e01c41208$7d5ece20$e9dbe8d8@mycomputer>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_001F_01C411C5.6F3B8E20"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4024
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
+Importance: Normal
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: delbe@telus.net ("Dean Elbe")
+
+------=_NextPart_000_001F_01C411C5.6F3B8E20
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_001_0020_01C411C5.6F3B8E20"
+
+
+------=_NextPart_001_0020_01C411C5.6F3B8E20
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+
+Hi, I hope you can answer my question. The Internet service provider we
+use is making life difficult for us,
+since we have previously run the attached cgi script without problems,
+by simply placing the script in the cgi-bin folder of our website, and
+enabling executables from that folder.
+ 
+Now, they have moved the site to a new server, and want me to tell them
+which perl modules the script requires.
+I don't have a clue, since it worked fine on the old server, and I never
+had to install modules.
+
+Can you take a quick look at the script in question and advise me
+regarding which modules I need to download and send to our ISP? The
+script in question is called newlogin.cgi. I will attach a copy and also
+post the body of the script in this email.
+The script normally runs at www.cdhcf.org/members/index.asp
+ 
+Thank you in advance.
+Dean Elbe, webmaster
+www.cdhcf.org
+ 
+============================
+ 
+#! perl
+ 
+use CGI;
+use CGI::Cookie;
+use Cwd;
+
+# config values that you can set:
+#
+# filename:   the path to the data file. this should be in 
+#    the cgi directory to prvent people from reading it
+#
+# login_fail_url: the url to redirect to if the login attempt fails
+#
+# login_of_url:  the url to redirect to if the login attempt succeeds
+#
+my $filename = Cwd::cwd() ."/cgi-bin/db.cgi";
+my $login_fail_url = "/members/index.asp";
+my $login_ok_url = "/members/index.asp";
+ 
+
+###################################
+# no need to edit below this line #
+###################################
+ 
+my ($id,$fname,$lname,$addr1,$addr2,$addr3,$city,$state,$zip1,$zip2);
+my $cgi = CGI->new();
+#$cgi->param('pass','392587');
+#print "Content-type: text/plain\n\n";
+ 
+
+# attempt to authenticate this user
+#
+$id=$fname=$lname="default";
+if( $cgi->param('pass') eq 'powernetadm1n' ||
+auth_user($cgi->param('pass')) ){
+ 
+ # auth ok. set cookies and redirect
+ #
+ my $cookie = new CGI::Cookie(-name=>'usr',
+-value=>"$id:$fname:$lname");
+ #print "$cookie";
+ print CGI->header(
+   -cookie=>$cookie);
+   #-location=>$login_ok_url);
+ print "<html><head><META HTTP-EQUIV=\"refresh\"
+content=\"2;URL=/members/cdhcfmembers/pageone.asp\">
+  </head><body> Welcome $fname $lname ($id) !!<br><br> You should be
+redirected to the members area in 2 seconds. <br><br>If your browser
+does not automatically redirect you to the members area <a
+href='/members/cdhcfmembers/pageone.asp'>click here to
+continue</a></body></html>";
+ 
+
+}else{
+ # auth failed.
+ #
+ print CGI->header(-location=>$login_fail_url);
+ #print "fail ". $cgi->param('pass');
+}
+ 
+sub auth_user{
+ my $pass = shift || return 0;
+ my $auth_ok = 0;
+ 
+ open FIL, "<$filename" or die("couldn't open file");
+ 
+ while(<FIL>){
+  chomp $_;
+ 
+  ($id,$fname,$lname,$addr1,$addr2,$addr3,$city,$state,$zip1,$zip2) =
+split /\t/,$_;
+ 
+  if( $id eq $pass ){
+   close $fil;
+   return 1;
+  }  
+ }
+ 
+ close $fil;
+ return 0;
+}
+ 
+
+===============================
+
+------=_NextPart_001_0020_01C411C5.6F3B8E20
+Content-Type: text/html;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<TITLE>Message</TITLE>
+
+<META content=3D"MSHTML 6.00.2800.1400" name=3DGENERATOR></HEAD>
+<BODY>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial size=3D2>Hi, I =
+hope you can=20
+answer my question. The Internet service provider we use is making life=20
+difficult for us,</FONT></SPAN></DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial size=3D2>since =
+we have=20
+previously run the attached cgi script without problems, by simply =
+placing the=20
+script in the cgi-bin folder of our website, and enabling executables =
+from that=20
+folder.</FONT></SPAN></DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial=20
+size=3D2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial size=3D2>Now, =
+they have moved=20
+the site to a new server, and want me to tell them which perl modules =
+the script=20
+requires.</FONT></SPAN></DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial size=3D2>I =
+don't have a clue,=20
+since it worked fine on the old server, and I never had to install=20
+modules.</FONT></SPAN></DIV><SPAN class=3D125362201-25032004>
+<DIV><BR><FONT face=3DArial size=3D2>Can you take a quick look at the =
+script in=20
+question and advise me regarding which modules I need to download and =
+send to=20
+our ISP? The script in question is called newlogin.cgi. I will attach a =
+copy and=20
+also post the body of the script in this email.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN class=3D125362201-25032004>The =
+script normally=20
+runs at <A=20
+href=3D"http://www.cdhcf.org/members/index.asp">www.cdhcf.org/members/ind=
+ex.asp</A></SPAN></FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><SPAN=20
+class=3D125362201-25032004></SPAN></FONT>&nbsp;</DIV>
+<DIV></SPAN><SPAN class=3D125362201-25032004><FONT face=3DArial =
+size=3D2>Thank you in=20
+advance.</FONT></SPAN></DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial size=3D2>Dean =
+Elbe,=20
+webmaster</FONT></SPAN></DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial size=3D2><A=20
+href=3D"http://www.cdhcf.org">www.cdhcf.org</A></FONT></SPAN></DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial=20
+size=3D2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial=20
+size=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D</FONT></SPAN></DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial=20
+size=3D2></FONT></SPAN>&nbsp;</DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial size=3D2>#!=20
+perl</FONT></SPAN></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial size=3D2>use =
+CGI;<BR>use=20
+CGI::Cookie;<BR>use Cwd;</FONT></SPAN></DIV>
+<DIV><SPAN class=3D125362201-25032004><FONT face=3DArial size=3D2><BR># =
+config values=20
+that you can set:<BR>#<BR># filename: &nbsp;&nbsp;the path to the data =
+file.=20
+this should be in <BR># &nbsp;&nbsp;&nbsp;the cgi directory to prvent =
+people=20
+from reading it<BR>#<BR># login_fail_url:&nbsp;the url to redirect to if =
+the=20
+login attempt fails<BR>#<BR># login_of_url:&nbsp;&nbsp;the url to =
+redirect to if=20
+the login attempt succeeds<BR>#<BR>my $filename =3D Cwd::cwd()=20
+."/cgi-bin/db.cgi";<BR>my $login_fail_url =3D =
+"/members/index.asp";<BR>my=20
+$login_ok_url =3D "/members/index.asp";</FONT></SPAN></DIV>
+<DIV>&nbsp;</DIV><SPAN class=3D125362201-25032004>
+<DIV><BR><FONT face=3DArial =
+size=3D2>###################################<BR># no=20
+need to edit below this line=20
+#<BR>###################################</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>my=20
+($id,$fname,$lname,$addr1,$addr2,$addr3,$city,$state,$zip1,$zip2);<BR>my =
+$cgi =3D=20
+CGI-&gt;new();<BR>#$cgi-&gt;param('pass','392587');<BR>#print =
+"Content-type:=20
+text/plain\n\n";</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><BR><FONT face=3DArial size=3D2># attempt to authenticate this=20
+user<BR>#<BR>$id=3D$fname=3D$lname=3D"default";<BR>if( =
+$cgi-&gt;param('pass') eq=20
+'powernetadm1n' || auth_user($cgi-&gt;param('pass')) ){</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;# auth ok. set cookies and=20
+redirect<BR>&nbsp;#<BR>&nbsp;my $cookie =3D new =
+CGI::Cookie(-name=3D&gt;'usr',=20
+-value=3D&gt;"$id:$fname:$lname");<BR>&nbsp;#print =
+"$cookie";<BR>&nbsp;print=20
+CGI-&gt;header(<BR>&nbsp;&nbsp;&nbsp;-cookie=3D&gt;$cookie);<BR>&nbsp;&nb=
+sp;&nbsp;#-location=3D&gt;$login_ok_url);<BR>&nbsp;print=20
+"&lt;html&gt;&lt;head&gt;&lt;META HTTP-EQUIV=3D\"refresh\"=20
+content=3D\"2;URL=3D/members/cdhcfmembers/pageone.asp\"&gt;<BR>&nbsp;&nbs=
+p;&lt;/head&gt;&lt;body&gt;=20
+Welcome $fname $lname ($id) !!&lt;br&gt;&lt;br&gt; You should be =
+redirected to=20
+the members area in 2 seconds. &lt;br&gt;&lt;br&gt;If your browser does =
+not=20
+automatically redirect you to the members area &lt;a=20
+href=3D'/members/cdhcfmembers/pageone.asp'&gt;click here to=20
+continue&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;";</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><BR><FONT face=3DArial size=3D2>}else{<BR>&nbsp;# auth=20
+failed.<BR>&nbsp;#<BR>&nbsp;print=20
+CGI-&gt;header(-location=3D&gt;$login_fail_url);<BR>&nbsp;#print "fail =
+".=20
+$cgi-&gt;param('pass');<BR>}</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>sub auth_user{<BR>&nbsp;my $pass =3D =
+shift || return=20
+0;<BR>&nbsp;my $auth_ok =3D 0;</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;open FIL, "&lt;$filename" or =
+die("couldn't=20
+open file");</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial =
+size=3D2>&nbsp;while(&lt;FIL&gt;){<BR>&nbsp;&nbsp;chomp=20
+$_;</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial=20
+size=3D2>&nbsp;&nbsp;($id,$fname,$lname,$addr1,$addr2,$addr3,$city,$state=
+,$zip1,$zip2)=20
+=3D split /\t/,$_;</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;if( $id eq $pass=20
+){<BR>&nbsp;&nbsp;&nbsp;close $fil;<BR>&nbsp;&nbsp;&nbsp;return=20
+1;<BR>&nbsp;&nbsp;}&nbsp;&nbsp;<BR>&nbsp;}</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;close $fil;<BR>&nbsp;return=20
+0;<BR>}</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><BR><SPAN class=3D125362201-25032004><FONT face=3DArial=20
+size=3D2>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D</FONT></SPAN></SPAN></DIV></BODY></HTML>
+
+------=_NextPart_001_0020_01C411C5.6F3B8E20--
+
+------=_NextPart_000_001F_01C411C5.6F3B8E20
+Content-Type: application/octet-stream;
+	name="newlogin.cgi"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="newlogin.cgi"
+
+#! perl
+
+use CGI;
+use CGI::Cookie;
+use Cwd;
+
+# webauth
+# james mcgill
+# james@pgpin.com
+#
+# config values that you can set:
+#
+# filename: 		the path to the data file. this should be in=20
+# 			the cgi directory to prvent people from reading it
+#
+# login_fail_url:	the url to redirect to if the login attempt fails
+#
+# login_of_url:		the url to redirect to if the login attempt succeeds
+#
+my $filename =3D Cwd::cwd() ."/cgi-bin/db.cgi";
+my $login_fail_url =3D "/members/index.asp";
+my $login_ok_url =3D "/members/index.asp";
+
+
+###################################
+# no need to edit below this line #
+###################################
+
+my ($id,$fname,$lname,$addr1,$addr2,$addr3,$city,$state,$zip1,$zip2);
+my $cgi =3D CGI->new();
+#$cgi->param('pass','392587');
+#print "Content-type: text/plain\n\n";
+
+
+# attempt to authenticate this user
+#
+$id=3D$fname=3D$lname=3D"default";
+if( $cgi->param('pass') eq 'powernetadm1n' || =
+auth_user($cgi->param('pass')) ){
+
+	# auth ok. set cookies and redirect
+	#
+	my $cookie =3D new CGI::Cookie(-name=3D>'usr', =
+-value=3D>"$id:$fname:$lname");
+	#print "$cookie";
+	print CGI->header(
+			-cookie=3D>$cookie);
+			#-location=3D>$login_ok_url);
+	print "<html><head><META HTTP-EQUIV=3D\"refresh\" =
+content=3D\"2;URL=3D/members/cdhcfmembers/pageone.asp\">
+		</head><body> Welcome $fname $lname ($id) !!<br><br> You should be =
+redirected to the members area in 2 seconds. <br><br>If your browser =
+does not automatically redirect you to the members area <a =
+href=3D'/members/cdhcfmembers/pageone.asp'>click here to =
+continue</a></body></html>";
+
+
+}else{
+	# auth failed.
+	#
+	print CGI->header(-location=3D>$login_fail_url);
+	#print "fail ". $cgi->param('pass');
+}
+
+sub auth_user{
+	my $pass =3D shift || return 0;
+	my $auth_ok =3D 0;
+
+	open FIL, "<$filename" or die("couldn't open file");
+
+	while(<FIL>){
+		chomp $_;
+
+		($id,$fname,$lname,$addr1,$addr2,$addr3,$city,$state,$zip1,$zip2) =3D =
+split /\t/,$_;
+
+		if( $id eq $pass ){
+			close $fil;
+			return 1;
+		}	=09
+	}
+
+	close $fil;
+	return 0;
+}
+
+
+
+------=_NextPart_000_001F_01C411C5.6F3B8E20--
+
+

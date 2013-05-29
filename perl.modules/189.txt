@@ -1,0 +1,121 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:189
+Return-Path: <jdporter@min.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27063 invoked from network); 22 Oct 1999 15:35:55 -0000
+Received: from min.net (jdporter@208.222.210.19)
+  by tmtowtdi.perl.org with SMTP; 22 Oct 1999 15:35:55 -0000
+Received: (from jdporter@localhost)
+	by min.net (8.9.3/8.9.3) id LAA10383
+	for modules@perl.org; Fri, 22 Oct 1999 11:35:54 -0400 (EDT)
+Date: Fri, 22 Oct 1999 11:35:53 -0400
+To: modules@perl.org
+Subject: [RFC] Exporter::PkgAlias ?
+Message-ID: <19991022113553.A9049@min.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.1us
+Approved: news@nntp.perl.org
+From: jdporter@min.net (John Porter)
+
+
+I have a module which allows a module to specify
+that it should be defined into one or more namespaces
+(packages).
+
+Confused?  Here's an example (assumes my current
+working name, Exporter::PkgAlias):
+
+    # file Some/Package.pm
+    use Exporter::PkgAlias
+        'Some::Package',
+        'AKA',
+        'Yet::Another::Name', 
+        sub { <DATA> };
+    1;
+    __DATA__
+    sub some_func { ...
+    # etc.
+
+This example specifies that the module being loaded
+may be "defined into", and subsequently known as,
+any of the names in the list, i.e.
+    Some::Package
+    AKA
+    Yet::Another::Name
+and that the text of the module definition should
+be taken from the file's __DATA__ section.
+Which name is actually used depends on which one
+is the subject of an 'import' call.  In the absence
+of any other direction, it will be the one which
+some other code 'use'd, e.g.
+
+    use Some::Package;
+
+will cause this module to be loaded with that name.
+(Of course, the code above must be present in the
+appropriately named file, i.e. Some/Package.pm in
+the @INC path.)
+
+The practical effect of this is that the same
+exact file may be named as Some/Package.pm,
+AKA.pm, *and* Yet/Another/Name.pm -- perhaps by
+symbolic or hard links -- and they will all be
+'use'able by user code.
+
+That is, 
+
+	use Some::Package;
+	Some::Package->some_func;
+
+will have essentially the same effect as
+
+	use Yet::Another::Name;
+	Yet::Another::Name->some_func;
+
+(the only differences occuring when the function
+looks at and acts upon the package name by which
+it was invoked.)
+
+There is another invocation mode, by which the
+caller may control more exactly which name(s) the
+module gets loaded into.  This involves passing
+the names as the keys of a hash, with the corresponding
+values being flags indicating whether to load into
+that name:
+
+    # file Some/Package.pm
+    use Exporter::PkgAlias {
+          'Some::Package' => 1,
+          'AKA' => 0,
+          'Yet::Another::Name' => 0, 
+        }, 
+        sub { <DATA> };
+    1;
+    __DATA__
+    sub some_func { ...
+    # etc.
+
+This will cause the module to be loaded into
+the Some::Package namespace, regardless of which
+name it was 'import'ed as by perl.
+The other names are still considered "aliases"
+for the package, so that a subsequent 'import'
+call with one of the other names still accesses
+the same package definition text.
+(However, lexical variables are NOT shared
+between the various packages that have a
+common "definition".)
+
+-----------------------------------------------
+
+Considering its function, I figured Exporter
+would be the most appropriate top-level to put
+this under, even though it does operates on
+entire packages, rather than individual symbols.
+
+-- 
+John Porter
+

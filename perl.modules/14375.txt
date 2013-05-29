@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:14375
+Return-Path: <c.bailiff+cpan@devsecure.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 38034 invoked by uid 76); 16 Oct 2002 08:08:10 -0000
+Received: from siegfried.e-secure.com.au (HELO siegfried.e-Secure.com.au) (203.16.200.19) by onion.perl.org (qpsmtpd/0.12-dev) with SMTP; 2002-10-16 08:08:10Z
+Received: from dipsy.awayweb.net (IP-2-34.e-Secure.com.au [203.16.202.34])	by siegfried.e-Secure.com.au (8.12.1/8.12.1) with ESMTP id g9G87sRD020131	for <modules@perl.org>; Wed, 16 Oct 2002 18:07:54 +1000
+Content-Type: text/plain;  charset="us-ascii"
+Organization: /dev/secure Pty Ltd
+To: modules@perl.org
+Subject: Namespace recommendations solicited for libcurl XS interface
+Date: Wed, 16 Oct 2002 18:07:53 +1000
+User-Agent: KMail/1.4.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Message-ID: <200210161807.54310.c.bailiff+cpan@devsecure.com>
+X-SMTPD: qpsmtpd/0.12-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: c.bailiff+cpan@devsecure.com (Cris Bailiff)
+
+Hi,
+
+I'm the current maintainer of the perl XS interface which wraps 'libcurl', the 
+library interface of the 'cURL' command line tool. cURL is a "client for 
+URL's". (See http://curl.haxx.se for more info).
+
+Curl provides access to a variety of URL schemes (http, https, ftp, dict, 
+ldap, file), and includes SSL support, cookie jars, socks, ip-v6 etc. The 
+perl XS wrapper provides a more-or-less 1-to-1 mapping of the libcurl API 
+into perl, in both an OO and handle/function style.
+
+Following the naming scheme of the standard libcurl 'easy' API, the perl 
+module is currently called 'Curl::easy'. Most of the methods map directly 
+onto the curl_easy_foo library calls (using the XS PREFIX facility).
+
+Until now, the module has been distributed from the libcurl site, 
+http://curl.haxx.se/libcurl/perl . In order to make it easier for end-users 
+to install the module via CPAN, I have obtained a PAUSE account and intend to 
+distribute new releases via CPAN, in addition to the existing location.
+
+The module naming (chosen before I became maintainer) currently demands a new 
+'Curl' top-level namespace, which seems a little greedy for one specific 
+library wrapper. I am asking here for advice/recommendations/approval on 
+renaming or dual-naming the module, so as to better fit the namespace 
+hierarchy, and allow for some future growth in the Curl interface 
+functionality.
+
+The basic options, with pros/cons, as I see them:
+
+* Retain Curl::easy name as is.
+  + Maintain compatability with all existing code currently using the module.
+  + 'Curl' namespace doesn't collide with any existing namespace
+  + Immediate distribution of existing module via CPAN
+  - Mildly greedy
+  - Naming doesn't relate module to function performed, unless you already 
+know what curl is. 
+
+* Rename as Net::Curl::easy
+  + Unique name for future Net::Curl:: family (Net::Curl::difficult etc..)
+  + Better indication of network functionality
+  - Need to rename in existing code
+  - Breaks existing software unless compatability names also installed
+  - Delay in distribution whilst re-work performed
+
+* Rename as HTTP::Curl::easy
+  + Follows naming of HTTP::GHTTP, the interface to the gnu http library
+  + Indicates web/http-based function of libcurl and interface
+   - libcurl does much more than just HTTP, so it's not the best name
+   - as above, renaming requires re-work and compatability code
+
+I thought these were the 2 obvious names - please feel free to suggest others.
+
+Whilst considering the naming, note that there are other libcurl interfaces 
+under development, which should also be XS wrapped in future:
+* The 'multi' interface, which allows multiple non-blocking connections to be 
+dealt with simultaneously
+* The 'form' interface, which allows HTTP post request bodies to be built up 
+from lists of files, fields and in-memory data.
+* Perhaps a  'default' or 'handle' interface, which provides a more perl-like 
+interface (defaults, I/O settings etc.) compared to the detail-oriented 
+'easy' interface. This could be achieved by using Foo::Curl::easy as a 
+backend to LWP, as can be done with HTTP::GHTTP
+
+Any change to the existing name would have to be canvassed on the curl/libcurl 
+lists before implementation, but I thought it best to start with the 'expert' 
+opinions before suggesting any high-impact changes....
+
+Comments please!
+
+Cheers,
+Cris Bailiff

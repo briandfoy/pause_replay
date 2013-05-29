@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2889
+Return-Path: <sm108@hotmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10757 invoked from network); 15 Sep 2000 16:00:15 -0000
+Received: from f222.law7.hotmail.com (HELO hotmail.com) (216.33.237.222)
+  by tmtowtdi.perl.org with SMTP; 15 Sep 2000 16:00:15 -0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Fri, 15 Sep 2000 08:59:49 -0700
+Received: from 195.172.126.92 by lw7fd.law7.hotmail.msn.com with HTTP;	Fri, 15 Sep 2000 15:59:48 GMT
+X-Originating-IP: [195.172.126.92]
+To: modules@perl.org
+Subject: Application for CPAN
+Date: Fri, 15 Sep 2000 15:59:48 GMT
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+Message-ID: <F222zBxhJTANZwwPcMF00003024@hotmail.com>
+X-OriginalArrivalTime: 15 Sep 2000 15:59:49.0222 (UTC) FILETIME=[F9DAA860:01C01F2D]
+Approved: news@nntp.perl.org
+From: sm108@hotmail.com ("Steve Martina")
+
+Hello perl people,
+
+my name: Stephen Martina
+my email address: sm108@hotmail.com
+my homepage: www.stevemartina.com (there's nothing about perl yet)
+my preferred user-ID on CPAN: SMART :-)
+module description: I'm writing a superclass that simplifies object-oriented 
+access to database "objects" (essentially records) and takes out the tedious 
+repetitive bits (accessor methods, caching, etc).  I think it should be 
+called DBI::DBObject, because it builds on DBI but takes all the SQL out.
+You need to subclass the module to use it, but it's pretty straightforward.
+
+DSLI would be "cdpO".
+
+Description: it's easier to use than to explain, but essentially if you have 
+a DB with a table called "widget", you can do this:
+
+# start of Widget.pm
+
+package Widget;
+use base qw(DBI::DBObject);
+
+Widget->dbh(<specify db connection>); # either as in DBI->connect, or as a 
+pre-built DBI::db handle.
+Widget->table('whichTableHoldsRecords'); # in this case, "widget"
+Widget->primaryKey('primaryKeyName'); # e.g. widgetID
+
+# end of Widget!  That was simple, huh?
+
+When you use() Widget, you can then do:
+
+$widgetInstance=Widget->find($widgetID);
+
+$widgetDesc=$widgetInstance->desc; # if the description is in field "desc"
+
+and you change the price by doing:
+
+$widgetInstance->price($newPrice);
+
+Usual perl convention:
+$obj->method() GETs and $obj->method($newVal) SETs.
+Both return the old value.
+
+I haven't discussed this module with anyone yet; I know Tie::DBI does a 
+similar job, but this has an object-oriented syntax which comes in handy for 
+complex work.  It does for me, anyway.
+
+The module also supports in-memory caching and "relational" features I won't 
+get into right now, but essentially...
+
+    $widgetInstance->getSpec_ElectricalObject
+
+...returns an instance of the "Spec::Electrical" class, as specified in a 
+field within the widget record (you can specify which fields lead to which 
+classes of object).  This is as opposed to merely returning the string value 
+held in the "electricalSpec" field of the widget record, which would 
+probably hold the ID of the spec object.
+
+I hope you're still awake :-)
+
+Cheers -
+
+Steve Martina
+_________________________________________________________________________
+Get Your Private, Free E-mail from MSN Hotmail at http://www.hotmail.com.
+
+Share information about yourself, create your own public profile at 
+http://profiles.msn.com.
+

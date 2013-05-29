@@ -1,0 +1,63 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:85439
+Return-Path: <ether@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 26977 invoked from network); 30 Mar 2013 07:02:19 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 30 Mar 2013 07:02:19 -0000
+Received: (qmail 2734 invoked by uid 225); 30 Mar 2013 07:02:19 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2730 invoked by alias); 30 Mar 2013 07:02:18 -0000
+X-Spam-Status: No, hits=-0.4 required=8.0
+	tests=BAYES_00,FAKE_REPLY_C
+X-Spam-Check-By: la.mx.develooper.com
+Received: from ns2.lightspeed.ca (HELO ns2.lightspeed.ca) (206.12.82.4)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 30 Mar 2013 00:02:12 -0700
+Received: from 69-50-167-197.westerncable.ca ([69.50.167.197] helo=etheridge.ca)
+	by ns2.lightspeed.ca with esmtp (Exim 4.72)
+	(envelope-from <ether@cpan.org>)
+	id 1ULpnX-0005qV-75
+	for modules@perl.org; Sat, 30 Mar 2013 00:02:08 -0700
+Date: Sat, 30 Mar 2013 00:01:55 -0700
+To: modules@perl.org
+Message-ID: <20130330070154.GA48737@tequila.etheridge.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <rt-3.8.HEAD-30901-1363819249-1874.56681-7-0@rt.cpan.org>
+User-Agent: Mutt/1.4.2.3i
+X-ACL-Warn: !authenticated  = *
+X-SA-Exim-Connect-IP: 69.50.167.197
+X-SA-Exim-Mail-From: ether@cpan.org
+Subject: Re: [rt.cpan.org #56681] Unhandled type: REGEXP at ...Devel/Cycle.pm line 107 under Perl 5.12.0.
+X-SA-Exim-Version: 4.2.1 (built Mon, 22 Mar 2010 06:51:10 +0000)
+X-SA-Exim-Scanned: No (on ns2.lightspeed.ca); Unknown failure
+Approved: news@nntp.perl.org
+From: ether@cpan.org (Karen Etheridge)
+References: <rt-3.8.HEAD-30901-1363819249-1874.56681-7-0@rt.cpan.org>
+
+
+How did this end up being sent to the list?  I merely replied to a ticket
+to the Devel-Cycle queue on RT.
+
+The sole maintainer of this dist is LDS, whose email address doesn't appear
+to be this list, nor is the list address mentioned in the ticket.
+
+
+> <URL: https://rt.cpan.org/Ticket/Display.html?id=56681 >
+> 
+> On Fri Apr 16 18:01:50 2010, WYANT wrote:
+> 
+> > This appears to be because regular expressions have become first-class
+> > objects under 5.12, so UNIVERSAL::isa($thingy,'SCALAR'), which was true
+> > under 5.10 when $thingy contained a reference to a regexp, is false
+> > under 5.12.
+> 
+> It is not valid to use UNIVERSAL::isa in this way:
+> 1. isa is only a (object or class) method, not a function - it must have an invocant
+> 2. isa should only properly be used for class names or blessed objects, not for base types -- to check the base type of a reference, use Scalar::Util::reftype.
+> 
+> Is the repository in git yet? If so, I can provide patches. thank you!

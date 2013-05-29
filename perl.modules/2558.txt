@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2558
+Return-Path: <cthorman@innx.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14072 invoked from network); 28 Jul 2000 21:01:22 -0000
+Received: from adsl-63-195-108-163.dsl.snfc21.pacbell.net (HELO liz.fjgh.net) (63.195.108.163)
+  by tmtowtdi.perl.org with SMTP; 28 Jul 2000 21:01:22 -0000
+Received: (qmail 968 invoked from network); 28 Jul 2000 20:42:50 -0000
+Received: from host194.innx.com (HELO ?10.100.101.29?) (63.101.166.194)
+  by adsl-63-195-108-163.dsl.snfc21.pacbell.net with SMTP; 28 Jul 2000 20:42:50 -0000
+Mime-Version: 1.0
+X-Sender: chris@mail.fjgh.net
+Message-ID: <v0422085db5a7a3732610@[10.100.101.29]>
+In-Reply-To: <20000728163004.P13282@ghostwheel.wks.na.deuba.com>
+References: <"v0422085cb5a79b8c4ad2(a)(091)10.100.101.29(093)*"@MHS>
+ <20000728163004.P13282@ghostwheel.wks.na.deuba.com>
+Date: Fri, 28 Jul 2000 14:01:13 -0700
+To: Joshua N Pritikin <joshua.pritikin@db.com>
+Subject: Re: May I put Devel::Reloader into Devel::?
+Cc: modules@perl.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: cthorman@innx.com (Chris Thorman)
+
+Hi,
+
+I feel dumb for not having found that one in CPAN before writing mine :-).
+
+Yes, I think mine could maybe be a replacement, BUT it doesn't do the one=
+ feature that yours does: namely, reload based on file-changed-time. =20
+
+That's an optimization that's probably missing from mine, but I=
+ intentionally didn't add that because some modules have load-time side=
+ effects (such as BEGIN blocks) and so forcing an unconditional reload is=
+ slightly different from reloading only changed files.
+
+In light of that, maybe mine should be a different module, maybe called:
+
+Module::Reload::Force
+
+?
+
+=2E.. but one of the biggest aspects of mine is its ability to do nothing=
+ during end-user runtime, but kick in selectively at Development time --=
+ i.e. it doesn't always force the Reload.  That's why I thought Devel::=
+ might be the best place for it.
+
+
+Anyone else have any opinions?  I think naming is very important and I do=
+ want to come up with the best name.
+
+-c=20
+
+
+At 4:30 PM -0400 7/28/00, Joshua N Pritikin wrote:
+>On Fri, Jul 28, 2000 at 01:21:32PM -0700, cthorman@innx.com wrote:
+>> I'd like permission to submit a module called Devel::Reloader that's
+>> similar to the concept of Apache::StatInc but serves as a more
+>> general-purpose development tool.
+>>
+>> To describe it, I'm pasting the entire contents of the .pm file, which
+>> is more pod than code, below, since the pod docs are fairly complete.
+>>
+>> Thanks for your consideration, and also any advice or pointers you
+>> have time to offer before I release this module to the public.
+>
+>Looks like a more elaborate version of:
+>
+>  http://search.cpan.org/search?dist=3DModule-Reload
+>
+>I wonder if your module can just replace this one...?
+>
+>--=20
+>Never ascribe to malice that which can be explained by stupidity.
+>                       (via, but not speaking for Deutsche Bank)
+
+
+------------------------------------------------------------------------
+Chris Thorman                                       (413) 473-0853 e-fax
+------------------------------------------------------------------------

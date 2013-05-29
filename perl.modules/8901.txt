@@ -1,0 +1,50 @@
+Newsgroups: perl.datetime,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.datetime:299 perl.modules:8901
+Return-Path: <ask@perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 73893 invoked by uid 1012); 25 Nov 2001 14:58:19 -0000
+To: datetime@perl.org, modules@perl.org
+Sender: ask@miette.develooper.com
+Subject: Re: [RFC] Date::MySQL
+References: <Pine.SOL.3.96.1011103000318.13461B-100000@simpukka> <Pine.LNX.4.33.0111022142580.8230-100000@rhiannon.rcbowen.com>
+Date: 25 Nov 2001 06:58:16 -0800
+Message-ID: <86667yyk1j.fsf@miette.develooper.com>
+Lines: 31
+X-Newsreader: Gnus v5.7/Emacs 20.7
+X-Posted-By: 64.81.84.162
+Approved: news@nntp.perl.org
+From: ask@perl.org (Ask Bjoern Hansen)
+
+rbowen@rcbowen.com (Rich Bowen) writes:
+
+> rbowen@rhiannon:~% perl -MDate::ISO -le 'my $d=Date::ISO->new( epoch =>
+> time ); print $d->iso;'
+> 2001-W44-6
+> 
+> Unfortunately, the "default" ISO date format is this year-week-day
+> format. At least that's what I gathered from all the web sites that I
+> read about this format.
+
+ISO 8601 specifies multiple notations.  For everything I have ever
+done, the notation you choose seems ... uh, not so useful. :-)
+
+http://www.cl.cam.ac.uk/~mgk25/iso-time.html gives a pretty good
+overview of the standard.
+
+Something like 
+
+  strftime("%Y-%m-%dT%H:%M:%SZ", gmtime(time));
+
+seems more useful.  It gives
+
+$ perl -MPOSIX=strftime -e 'print strftime("%Y-%m-%dT%H:%M:%SZ\n", gmtime(time))';
+2001-11-25T14:56:48Z
+
+
+
+ - ask
+
+-- 
+ask bjoern hansen, http://ask.netcetera.dk/   !try; do();

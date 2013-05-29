@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5415
+Return-Path: <schwern@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 98467 invoked from network); 10 May 2001 16:12:30 -0000
+Received: from ashes.blackstar.co.uk (212.250.176.22)
+  by onion.valueclick.com with SMTP; 10 May 2001 16:12:30 -0000
+Received: (qmail 14020 invoked from network); 10 May 2001 16:12:27 -0000
+Received: from fuego.blackstar.co.uk (HELO blackrider.blackstar.co.uk) (212.250.176.253)
+  by ashes.blackstar.co.uk with SMTP; 10 May 2001 16:12:27 -0000
+Received: by blackrider.blackstar.co.uk (Postfix, from userid 1000)
+	id 56203177BE; Thu, 10 May 2001 17:12:27 +0100 (BST)
+Date: Thu, 10 May 2001 17:12:27 +0100
+To: modules@perl.org
+Subject: Re: Module submission AnyLoader
+Message-ID: <20010510171227.J22945@blackrider.blackstar.co.uk>
+References: <200105092005.WAA26544@pause.kbx.de> <m3lmo5gq57.fsf@ak-71.mind.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.15i
+In-Reply-To: <m3lmo5gq57.fsf@ak-71.mind.de>; from andreas.koenig@anima.de on Thu, May 10, 2001 at 05:49:56PM +0200
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: schwern@pobox.com (Michael G Schwern)
+
+On Thu, May 10, 2001 at 05:49:56PM +0200, Andreas J. Koenig wrote:
+> perl-5.6.1 has this:
+> 
+> =head1 NAME
+> 
+> autouse - postpone load of modules until a function is used
+> 
+> =head1 SYNOPSIS
+> 
+>   use autouse 'Carp' => qw(carp croak);
+>   carp "this carp was predeclared and autoused ";
+
+Yes, I remember trying to get autouse to work usefully a while back.
+Never quite did.
+
+The intents of AnyLoader and autouse are very similar, but the
+mechanism is a bit different (autoloader vs magic function stubs).
+
+autouse has piles of caveats:  autoused module must use
+Exporter->import; you can't meaningfully autouse two functions from
+different modules with different names).  So does AnyLoader, but
+they're different caveats.
+
+autouse also throws some annoying warnings:
+
+$ perl -wle 'use autouse "Carp" => qw(croak);  print croak("foo")'
+Subroutine croak redefined at /usr/local/lib/perl5/5.6.1/autouse.pm line 57.
+foo at -e line 1
+
+whereas AnyLoader does not (it surpresses the expected ones)
+
+$ perl -wle 'use AnyLoader;  print Carp::croak("foo")'
+foo at -e line 1
+
+
+Also, the feature sets are a bit different.  AnyLoader is universal
+(it only has to be used once anywhere and its in effect everywhere)
+and you don't have to predeclare what you want anyloaded (though you
+can).
+
+So there's enough differences, I'd think, to let AnyLoader in.  It was
+originally written as "Hey, UNIVERSAL::AUTOLOAD, that's a neat idea!"
+
+
+I'll remember to put autouse into AnyLoader's SEE ALSO though.
+
+
+-- 
+
+Michael G. Schwern   <schwern@pobox.com>    http://www.pobox.com/~schwern/
+Perl6 Quality Assurance     <perl-qa@perl.org>	     Kwalitee Is Job One
+There is nothing wrong.  We have taken control of this sig file.  We will 
+return it to you as soon as you are groovy.

@@ -1,0 +1,153 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:14585
+Return-Path: <rebel@obulous.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 51166 invoked by uid 76); 23 Oct 2002 13:42:45 -0000
+Received: from 66-108-170-3.nyc.rr.com (HELO hydrus.obulous.org) (66.108.170.3) by onion.perl.org (qpsmtpd/0.12-dev) with SMTP; 2002-10-23 13:42:45Z
+Received: from hydrus.obulous.org (localhost.localdomain [127.0.0.1])	by hydrus.obulous.org (Postfix) with SMTP id B39042050EC	for <modules@perl.org>; Wed, 23 Oct 2002 09:42:34 -0400 (EDT)
+Date: Wed, 23 Oct 2002 09:42:04 -0400
+To: modules@perl.org
+Subject: I would like a PAUSE id in order to publish a module on CPAN.
+Message-ID: <20021023094204.478f64e9.rebel@obulous.org>
+X-Mailer: Sylpheed version 0.8.2claws (GTK+ 1.2.10; )
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SMTPD: qpsmtpd/0.12-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: rebel@obulous.org ("Richard F. Rebel")
+
+
+Hello,
+
+As required:
+
+Name:		Richard F. Rebel
+Email:		rebel@obulous.org
+URL:		http://www.obulous.org
+Pref UserID:	REBEL
+
+Description:
+
+I have written several perl modules that I would like to contribute:
+
+HTML::Trunk	A module for creating ASCII encrypted 'trunks' of data
+		for embedding into HTML <FORM> variables.  Can be used
+		for client side sessions via forms.  Stores data 
+		structures using Storable too.
+
+		Useful for multi-page data collection applications etc
+		as it keeps you from having to do full server-side 
+		sessions for simple applications.
+
+Automatic::DB
+
+		A suite of modules that enables you to create a subclass
+		of Automatic::DB.  Upon usage, this subclassed module 			will scavenge the database for tables and columns, then
+		create a set of modules, one per table, that implement
+		a complete object oriented abstraction layer.  You do 
+		do not need to use SQL, and there is support in the 			Datum class for strong data-typing.
+
+		Each table class is made of Datum's of the correct SQL 			type.
+
+		Table classes are cached for future use; and re-created
+		only if cache is removed.
+
+		Each class contains:
+
+			new()
+			commit()
+			attr()
+			fetch_by()
+			primary_key()
+
+			For each INDEX on the table a fetch subroutine:
+
+				fetch_by_<INDEX NAME>
+				fetch_by_CustomerID
+				fetch_by_CustomerID_and_LastName
+
+		Usage is simple:
+
+		package CustomerDB;
+
+		use Automatic::DB;
+		@ISA = qw(Automatic::DB);
+		$CFG = "/opt/CustomerDB/etc/CustomerDB.cfg";
+
+		package main;
+
+		my $auto_db = CustomerDB->new();
+
+		my $customer = 	
+			CustomerDB::Table->fetch_by_CustomerID(1123);
+
+		my $datum = $customer->attr('FirstName');
+
+		print STDOUT "Customer First Name:", $datum->getValue();
+		print STDOUT "Customer First Name: $datum\n"; # magic
+
+		Your database configuration file contains DSN and SQL 			statements that you wish to cache for performance.
+
+		The modules detect mod_perl and install ChildInitHandler
+		and such automatically, and ensures that only one 			connection to the database is created unless you 			specifically code otherwise.
+
+Automatic::DB::Metadata
+
+		Database metadata, used be Automatic::DB.  Contains
+		all information about tables, columns and types, 			indexes, etc.
+
+Automatic::DB::Datum
+
+		Represents data items in the objects and enforce typing 		etc.
+
+Automatic::DB::Cached_sth
+
+		If configured to do so, Automatic::DB creates objects of
+		this class for all cached statements.  Overrides some
+		calls to the DBI::st class.
+
+Automatic::DB::Autoloader
+
+		By creating a table in your database, you may autoload 			perl code from the database as requested.  Great for
+		creating pseudo stored procedures or for very large
+		business process API's that you don't want loaded
+		in your applications unless the functions are used.
+
+		Autoloader provides several different ways to load and 			execute your code such as eval and inline execution.  It
+		also provides mechanisms to control cached code.  You
+		may specify that all code is compiled and cached at
+		start, or as needed.  You may specify that code is to
+		be discarded after each use.  Configuration for each
+		sub is done by the entry in the database.
+
+		First create a table like this:
+
+		DROP TABLE IF EXISTS perl_code;
+		CREATE TABLE perl_code (
+		  id smallint(6) unsigned NOT NULL auto_increment,
+		  load_type varchar(64) NOT NULL default 'eval',
+		  name varchar(64) NOT NULL default '',
+		  description tinytext,
+		  jump_point varchar(64) default NULL,
+		  code mediumblob NOT NULL,
+		  PRIMARY KEY  (id),
+		  UNIQUE KEY name_idx (name)
+		) ;
+
+		After creating your database subclass and creating your
+		simple configuration file:
+
+		use Automatic::DB::Autoloader;
+
+		@ISA = qw(Automatic::DB::Autoloader);
+
+		subroutine_in_database();
+
+All of this code has been in production use for several months and although some of it is immature, it's quite useful.  Very useful for sites wishing to quickly implement business applications in mod_perl that scale very well, perform well, and helps keep you from littering SQL everywhere.
+
+Thanks for your consideration.
+
+Richard F. Rebel

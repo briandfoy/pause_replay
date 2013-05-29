@@ -1,0 +1,78 @@
+Newsgroups: perl.mvs,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.mvs:1275 perl.modules:30498
+Return-Path: <JBryant@RiteAid.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 65132 invoked by uid 76); 6 Apr 2004 12:49:49 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170)
+  by onion.perl.org (qpsmtpd/0.27.1) with SMTP; Tue, 06 Apr 2004 05:49:49 -0700
+Received: (qmail 24084 invoked by uid 225); 6 Apr 2004 12:49:46 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24075 invoked by alias); 6 Apr 2004 12:49:46 -0000
+X-Spam-Status: No, hits=0.8 required=7.0
+	tests=PRIORITY_NO_NAME
+X-Spam-Check-By: la.mx.develooper.com
+Received: from onion.develooper.com (HELO onion.perl.org) (63.251.223.166)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with SMTP; Tue, 06 Apr 2004 05:49:45 -0700
+Received: (qmail 65076 invoked by uid 1012); 6 Apr 2004 12:49:44 -0000
+Message-ID: <20040406124944.65075.qmail@onion.perl.org>
+To: modules@perl.org, perl-mvs@perl.org
+Subject: Perl 5.8.1 on MVS, IO::TTY Ported
+Date: Tue, 6 Apr 2004 08:48:13 -0400
+Lines: 45
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Newsreader: Microsoft Outlook Express 6.00.2800.1158
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1165
+X-eShield-AntiVirus: Passed
+X-eShield-AntiVirus-Message: Scanned by http://www.bluecoat.com/eShield
+X-Posted-By: 204.28.140.7
+Approved: news@nntp.perl.org
+From: JBryant@RiteAid.com ("Joe Bryant")
+
+I have created a port of IO::TTY that builds and runs perfect under OE-MVS.
+I've tried to email the author, RGiersig@cpan.org, without success, so I am
+posting the changes here. I hope to find a way to get them into the module
+permanently, but for now, this lets Expect/Expect::Simple work.
+
+Joe Bryant
+Sr. Sys. Prog.
+Rite Aid Corp.
+
+
+
+
+Makefile.PL
+
+49a50,51
+> $define{'-D_MVS'}=undef
+>   if ($ENV{OSTYPE}=~/mvs/sig);
+
+
+Tty.xs
+
+630a631,649
+> #if defined(_MVS)
+>           {
+>             char devname[256];
+>             int dev;
+> #if PTY_DEBUG
+>           if (print_debug)
+>             fprintf(stderr, "trying MVS /dev/ptym/ptypXXXX...\n");
+> #endif
+>             for (dev=0;dev<9999;dev++) {
+>               sprintf(devname,"/dev/ptyp%04.4d",dev);
+>               *ptyfd=open(devname,O_RDWR | O_NOCTTY);
+>             if (*ptyfd >= 0 && open_slave(ptyfd, ttyfd, namebuf,
+namebuflen))
+>               break;
+>             }
+>           if (*ptyfd >= 0)
+>               break;
+>           }
+> #endif
+>
+
+
+

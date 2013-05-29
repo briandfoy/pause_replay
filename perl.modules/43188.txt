@@ -1,0 +1,104 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:43188
+Return-Path: <comdog@panix.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32631 invoked from network); 25 Aug 2005 21:16:02 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 25 Aug 2005 21:16:02 -0000
+Received: (qmail 14822 invoked by uid 225); 25 Aug 2005 21:16:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14785 invoked by alias); 25 Aug 2005 21:16:01 -0000
+X-Spam-Status: No, hits=-5.9 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: 63.251.223.186 is neither permitted nor denied by domain of comdog@panix.com)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Thu, 25 Aug 2005 14:15:57 -0700
+Received: (qmail 32623 invoked by uid 515); 25 Aug 2005 21:15:54 -0000
+To: modules@perl.org, "roode-cpan.org" <sdn.rains14757@zoemail.net>
+Subject: Re: Module submission Text::QuickTemplate
+Date: Thu, 25 Aug 2005 16:15:53 -0500
+Reply-To: modules@perl.org
+Posted-And-Mailed: yes
+Message-ID: <250820051615534831%comdog@panix.com>
+References: <430D5A87.8000702@zoemail.net>
+Organization: Perl Author's Upload SErver (PAUSE)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+User-Agent: Thoth/1.5.9 (Carbon/OS X)
+X-Posted-By: 24.12.70.36
+Approved: news@nntp.perl.org
+From: comdog@panix.com (_brian_d_foy)
+
+[[ This message was both posted and mailed: see
+   the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+In article <430D5A87.8000702@zoemail.net>, Eric J. Roode
+<sdn.rains14757@zoemail.net> wrote:
+
+> brian d. foy wrote:
+
+> >>   modid:       Text::QuickTemplate
+> >>   DSLIP:       bdphp
+> >>   description: A simple, lightweight text fill-in class
+
+
+Summary: I'm not against the module. I just don't see how "Quick"
+has anything to do with it.
+
+
+> >Is Quick actually a feature?
+
+
+> Well, I've used the Template toolkit extensively, but not for a few years.
+> I had to go hunting through the docs to figure out how to get process() to
+> write its result to a string instead of to STDOUT.
+
+It can be the third argument to process(), too.
+
+    my $tt = Template->new;
+  
+    $tt->process( 
+      \ "My name is [% name %]", 
+      { name => 'brian' }, 
+      \$output );
+
+> The equivalent Text::QuickTemplate code would be:
+> 
+>     my $qt = Text::QuickTemplate->new("template string");
+>     my $output = $qt->fill({keys => 'values'});
+
+> So yes, I do think that Text::QuickTemplate is simpler.  Also, I
+> personally don't like the idea of having to specify one output string
+> per template, and needing that variable to be in scope both at the
+> place the template is defined and where the output is created and used.
+
+Well, with your method, you have to create another object for every
+template that you want to process. It seems that your method
+requires a bit more work.
+
+I'm not sure what you mean by variables being in scope. I don't see
+how that effects either one (or if it does, it's the same).
+
+
+
+> Text::QuickTemplate is also "quick" in the other sense of the word:
+
+>     Benchmark: running QT, TT, qt for at least 10 CPU seconds...
+>         QT: 11 wallclock secs (10.48 usr +  0.03 sys = 10.52 CPU) @ 
+> 7220.62/s (n=75932)
+>         TT: 10 wallclock secs (10.48 usr +  0.00 sys = 10.48 CPU) @ 
+> 458.89/s (n=4811)
+>         qt: 11 wallclock secs (10.56 usr +  0.00 sys = 10.56 CPU) @ 
+> 13015.53/s (n=137483)
+
+It seems Template is just as quick. Again, I think there's a better
+name than "Quick".
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+archives at http://www.xray.mpe.mpg.de/mailing-lists/modules
+please send all messages back to modules@perl.org

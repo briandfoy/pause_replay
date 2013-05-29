@@ -1,0 +1,74 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62043
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23094 invoked from network); 1 Sep 2008 20:06:03 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 1 Sep 2008 20:06:03 -0000
+Received: (qmail 19352 invoked by uid 225); 1 Sep 2008 20:06:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19346 invoked by alias); 1 Sep 2008 20:06:02 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 01 Sep 2008 13:05:58 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-1) with ESMTP id m81K5mad013494;
+	Mon, 1 Sep 2008 22:05:48 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id m81K5lBo013493;
+	Mon, 1 Sep 2008 22:05:47 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: harryfmudd@comcast.net
+Cc: modules@perl.org
+Subject: Re: Astro::SIMBAD::Client::WSQueryInterfaceService (co-) maintainership
+References: <090120081549.1329.48BC0F0900020FBD0000053122073007930B0B9A0300979D9D0E08@comcast.net>
+Reply-To: modules@perl.org
+Date: Mon, 01 Sep 2008 22:05:47 +0200
+In-Reply-To: <090120081549.1329.48BC0F0900020FBD0000053122073007930B0B9A0300979D9D0E08@comcast.net>
+	(harryfmudd@comcast.net's message of "Mon\, 01 Sep 2008 15\:49\:29
+	+0000")
+Message-ID: <87y72bvdgk.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 01 Sep 2008 15:49:29 +0000, harryfmudd@comcast.net said:
+
+ >> This looks like a bug in the indexer --> TODO. But I don't think it
+ >> will cause you any grief, does it?
+
+  > No, it causes me no grief at all. I was just responding to the
+  > request on
+  > https://pause.perl.org/pause/authenquery?ACTION=peek_perms to
+  > report any errors to modules@perl.org. As I said, I do not _KNOW_
+  > that this is an error, but it looked funny to me so I reported it.
+
+And lots and lots of Thanks for that:!
+
+So now I've looked closer and must admit that I see no reasonable way
+to fix this on the side of the indexer. The problem is, in short, the
+fact that the namespace is declared in your META.yml but is not
+directly reachable by perl because you have the namespace (using
+abbreviated names for better visibility) A:S:C:W in the file A/S/C.pm,
+not in the file A:S:C:W.pm.
+
+So if we allow A:S:C:W to be indexed, we cause every other tool to
+fail because they won't be able to find the namespace on disk even
+when A:S:C is installed.
+
+I'd suggest you move A:S:C:W into its own file. Is this feasible?
+
+  > The only thing I hope is that, if you take this name away from me,
+  > you will let me know so I can re-name the module.
+
+It's probably worth it to get this straightened out now and into the
+normal indexer database than to delegate the causa to hope:)
+
+-- 
+andreas

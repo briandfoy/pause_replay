@@ -1,0 +1,304 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2346
+Return-Path: <christophe.dehaudt@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12128 invoked from network); 4 Jul 2000 09:37:30 -0000
+Received: from beta.dmz-eu.st.com (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 4 Jul 2000 09:37:30 -0000
+Received: from eux100.sgp.st.com (eux100.sgp.st.com [164.129.225.7])
+	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 2557948F4
+	for <modules@perl.org>; Tue,  4 Jul 2000 09:37:03 +0000 (GMT)
+Received: from st.com (lod15.gnb.st.com [164.129.117.34])
+	by eux100.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id LAA19029;
+	Tue, 4 Jul 2000 11:37:01 +0200 (METDST)
+Sender: dehaudtc@eux100.sgp.st.com
+Message-ID: <3961B03B.CE57BDAD@st.com>
+Date: Tue, 04 Jul 2000 11:36:59 +0200
+X-Mailer: Mozilla 4.5 [en] (X11; I; SunOS 5.5.1 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: andreas.koenig@anima.de
+Cc: modules@perl.org,
+	MANFREDI_Raphael/france_grenoble_gr@gnx003.gnb.st.com
+Subject: Re: registration
+References: <m366qnf9rq.fsf@ak-71.mind.de>
+Content-Type: multipart/alternative;
+ boundary="------------0AE244BE965C4BC43085EB93"
+Approved: news@nntp.perl.org
+From: christophe.dehaudt@st.com (Christophe Dehaudt)
+
+--------------0AE244BE965C4BC43085EB93
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+andreas.koenig@anima.de wrote:
+
+> >>>>> On Mon, 03 Jul 2000 16:14:47 +0200, Christophe Dehaudt <christophe.dehaudt@st.com> said:
+>
+>  > - contribution planning:
+>  >     1) I already get a module that allows to Debug And Trace some perl
+>  >     code with 'programming by contract' principles. I plan to name it:
+>  >     'Devel::Datum'. DLSI mail will follow.
+>
+> Could you add a few words for the archiving gremlins why you believe
+> Devel::Datum is a good name and how it relates to what the module
+> does? Thanks!
+>
+
+Name           DSLI  Description                                  Info
+-------------  ----  -------------------------------------------- -----
+Devel::Datum   cdpf  Debugging And Tracing Ultimate Module        CDE
+
+Datum stands for 'Debugging And Tracing Ultimate Module'.  It is a
+module which offers debugging and tracing facilities. It is based on
+'programing by contract' principles. Thus there are some notions of
+pre-condition, post-condition and assertion. It also provides the full
+tracing of the data flow when entering/exiting into subroutines. That
+latter functionalities has been inspired by the Devel::TraceFuncs
+module (I cannot use it as is but I have duplicated some parts :( ).
+
+example:
+
+-----------------------------------
+: # feed this into perl -*- Mode: perl -*-
+'/bin/true' && eval 'exec perl -S $0 "$@"'
+ if $running_under_some_shell;
+
+use Devel::Datum;
+
+sub my_function {
+    DFEATURE(my $f);
+    my ($x, $y) = @_;
+
+    DREQUIRE($x > 0, "x must be strictly positive");
+
+    my $result = $y / sqrt($x);
+
+    DENSURE(($y * $result) >= 0, "result gets the sign of y");
+    return DVAL $result;
+}
+
+
+DLOAD_CONFIG("debug.cf");
+DFEATURE(my $f);
+
+$x = 3;
+$y = 5;
+my $a = my_function($x, $y);
+DTRACE("the result of f($x, $y) = ", $a);
+exit;
+-----------------------------------
+
+Running the previous example will lead to the following print:
+
+   +-> global [./example:21]
+   |  +-> main::my_function(3, 5)  [./example:8]
+   |  |  Returning: 2.88675134594813 [./example:16]
+   |  +-< main::my_function(3, 5)  [./example:8]
+   |  the result of f(3, 5) =  2.88675134594813 [./example:26]
+   +-< global [./example:21]
+
+The debugging features might be dynamically customized thanks to a
+debug file which records the different flag settings according to the
+location of the program. For instance, we can ask for the full debug
+in all part of the program except in the routine named "xyx" for which
+the debug will be silent.
+
+when defining a debug.cf file like following:
+
+-----------------------------------
+flags common {
+    all(yes);
+    trace(yes): all;
+}
+
+flags silent {
+    all(no);
+}
+
+default common;
+
+routine "my_function" {
+    use silent;
+}
+-----------------------------------
+(yes, there is a grammar for it, it's based on a byacc emitting Perl code)
+
+the new run atempt gives:
+
+   +-> global [./example:21]
+   |  the result of f(3, 5) =  2.88675134594813 [./example:26]
+   +-< global [./example:21]
+
+
+Upon a (post|pre|assert)-condition failure, the default is to immediately
+stop the program (it can be changed by configuring flags into config file).
+
+Here is an example of failure (I have change the x setting to a
+negative number in the previous example):
+
+$x = -3;
+$y = 5;
+my $a = my_function($x, $y);
+DTRACE("the result of f($x, $y) = ", $a);
+
+
+it displays:
+
+   +-> global [./example:21]
+   |  +-> main::my_function(-3, 5)  [./example:8]
+!! |  |  pre-condition failure: x must be positive (in ./example:11)
+   |  |  Dump the stack here
+Stop on pre-condition failure
+   +-< global [./example:21]
+   |  +-< main::my_function(-3, 5)  [./example:8]
+
+
+Additionaly, Devel::Datum uses the Log::Agent module (which would tend
+to be the standart log module) to emit its messages.  Thus, it allows
+to route the debug traces to different target (screen, file,
+syslog...).
+
+
+I don't think that functionnality is already existing in a so
+integrated manner.
+
+I plan to release the first version by late summer 2000.
+
+Any comments are, of course, welcomed.
+
+
+Christophe Dehaudt
+
+
+--------------0AE244BE965C4BC43085EB93
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+andreas.koenig@anima.de wrote:
+<blockquote TYPE=CITE>>>>>> On Mon, 03 Jul 2000 16:14:47 +0200, Christophe
+Dehaudt &lt;christophe.dehaudt@st.com> said:
+<p>&nbsp;> - contribution planning:
+<br>&nbsp;>&nbsp;&nbsp;&nbsp;&nbsp; 1) I already get a module that allows
+to Debug And Trace some perl
+<br>&nbsp;>&nbsp;&nbsp;&nbsp;&nbsp; code with 'programming by contract'
+principles. I plan to name it:
+<br>&nbsp;>&nbsp;&nbsp;&nbsp;&nbsp; 'Devel::Datum'. DLSI mail will follow.
+<p>Could you add a few words for the archiving gremlins why you believe
+<br>Devel::Datum is a good name and how it relates to what the module
+<br>does? Thanks!
+<br>&nbsp;</blockquote>
+<tt>Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DSLI&nbsp;
+Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Info</tt>
+<br><tt>-------------&nbsp; ----&nbsp; --------------------------------------------
+-----</tt>
+<br><tt>Devel::Datum&nbsp;&nbsp; cdpf&nbsp; Debugging And Tracing Ultimate
+Module&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CDE</tt>
+<p>Datum stands for 'Debugging And Tracing Ultimate Module'.&nbsp; It is
+a
+<br>module which offers debugging and tracing facilities. It is based on
+<br>'programing by contract' principles. Thus there are some notions of
+<br>pre-condition, post-condition and assertion. It also provides the full
+<br>tracing of the data flow when entering/exiting into subroutines. That
+<br>latter functionalities has been inspired by the Devel::TraceFuncs
+<br>module (I cannot use it as is but I have duplicated some parts :( ).
+<p>example:
+<p>-----------------------------------
+<br><tt>: # feed this into perl -*- Mode: perl -*-</tt>
+<br><tt>'/bin/true' &amp;&amp; eval 'exec perl -S $0 "$@"'</tt>
+<br><tt>&nbsp;if $running_under_some_shell;</tt><tt></tt>
+<p><tt>use Devel::Datum;</tt><tt></tt>
+<p><tt>sub my_function {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; DFEATURE(my $f);</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; my ($x, $y) = @_;</tt><tt></tt>
+<p><tt>&nbsp;&nbsp;&nbsp; DREQUIRE($x > 0, "x must be strictly positive");</tt><tt></tt>
+<p><tt>&nbsp;&nbsp;&nbsp; my $result = $y / sqrt($x);</tt><tt></tt>
+<p><tt>&nbsp;&nbsp;&nbsp; DENSURE(($y * $result) >= 0, "result gets the
+sign of y");</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; return DVAL $result;</tt>
+<br><tt>}</tt>
+<br><tt></tt>&nbsp;<tt></tt>
+<p><tt>DLOAD_CONFIG("debug.cf");</tt>
+<br><tt>DFEATURE(my $f);</tt><tt></tt>
+<p><tt>$x = 3;</tt>
+<br><tt>$y = 5;</tt>
+<br><tt>my $a = my_function($x, $y);</tt>
+<br><tt>DTRACE("the result of f($x, $y) = ", $a);</tt>
+<br><tt>exit;</tt>
+<br>-----------------------------------
+<p>Running the previous example will lead to the following print:
+<p><tt>&nbsp;&nbsp; +-> global [./example:21]</tt>
+<br><tt>&nbsp;&nbsp; |&nbsp; +-> main::my_function(3, 5)&nbsp; [./example:8]</tt>
+<br><tt>&nbsp;&nbsp; |&nbsp; |&nbsp; Returning: 2.88675134594813 [./example:16]</tt>
+<br><tt>&nbsp;&nbsp; |&nbsp; +-&lt; main::my_function(3, 5)&nbsp; [./example:8]</tt>
+<br><tt>&nbsp;&nbsp; |&nbsp; the result of f(3, 5) =&nbsp; 2.88675134594813
+[./example:26]</tt>
+<br><tt>&nbsp;&nbsp; +-&lt; global [./example:21]</tt><tt></tt>
+<p>The debugging features might be dynamically customized thanks to a
+<br>debug file which records the different flag settings according to the
+<br>location of the program. For instance, we can ask for the full debug
+<br>in all part of the program except in the routine named "xyx" for which
+<br>the debug will be silent.
+<p>when defining a debug.cf file like following:
+<p>-----------------------------------
+<br><tt>flags common {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; all(yes);</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; trace(yes): all;</tt>
+<br><tt>}</tt><tt></tt>
+<p><tt>flags silent {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; all(no);</tt>
+<br><tt>}</tt><tt></tt>
+<p><tt>default common;</tt><tt></tt>
+<p><tt>routine "my_function" {</tt>
+<br><tt>&nbsp;&nbsp;&nbsp; use silent;</tt>
+<br><tt>}</tt>
+<br>-----------------------------------
+<br>(yes, there is a grammar for it, it's based on a byacc emitting Perl
+code)
+<p>the new run atempt gives:
+<p>&nbsp;<tt>&nbsp; +-> global [./example:21]</tt>
+<br><tt>&nbsp;&nbsp; |&nbsp; the result of f(3, 5) =&nbsp; 2.88675134594813
+[./example:26]</tt>
+<br><tt>&nbsp;&nbsp; +-&lt; global [./example:21]</tt>
+<br><tt>&nbsp;</tt>
+<p>Upon a (post|pre|assert)-condition failure, the default is to immediately
+<br>stop the program (it can be changed by configuring flags into config
+file).
+<p>Here is an example of failure (I have change the x setting to a
+<br>negative number in the previous example):
+<p><tt>$x = -3;</tt>
+<br><tt>$y = 5;</tt>
+<br><tt>my $a = my_function($x, $y);</tt>
+<br><tt>DTRACE("the result of f($x, $y) = ", $a);</tt>
+<br>&nbsp;
+<p>it displays:
+<p><tt>&nbsp;&nbsp; +-> global [./example:21]</tt>
+<br><tt>&nbsp;&nbsp; |&nbsp; +-> main::my_function(-3, 5)&nbsp; [./example:8]</tt>
+<br><tt>!! |&nbsp; |&nbsp; pre-condition failure: x must be positive (in
+./example:11)</tt>
+<br><tt>&nbsp;&nbsp; |&nbsp; |&nbsp; Dump the stack here</tt>
+<br><tt>Stop on pre-condition failure</tt>
+<br><tt>&nbsp;&nbsp; +-&lt; global [./example:21]</tt>
+<br><tt>&nbsp;&nbsp; |&nbsp; +-&lt; main::my_function(-3, 5)&nbsp; [./example:8]</tt>
+<br>&nbsp;
+<p>Additionaly, Devel::Datum uses the Log::Agent module (which would tend
+<br>to be the standart log module) to emit its messages.&nbsp; Thus, it
+allows
+<br>to route the debug traces to different target (screen, file,
+<br>syslog...).
+<br>&nbsp;
+<p>I don't think that functionnality is already existing in a so
+<br>integrated manner.
+<p>I plan to release the first version by late summer 2000.
+<p>Any comments are, of course, welcomed.
+<br>&nbsp;
+<p>Christophe Dehaudt
+<br>&nbsp;</html>
+
+--------------0AE244BE965C4BC43085EB93--
+

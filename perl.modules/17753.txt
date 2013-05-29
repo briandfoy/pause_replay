@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17753
+Return-Path: <sfandino@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 77973 invoked by uid 1012); 11 Feb 2003 19:22:32 -0000
+To: modules@perl.org
+Message-ID: <3E495B81.9010101@yahoo.com>
+Date: Tue, 11 Feb 2003 20:22:25 +0000
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.2) Gecko/20021120 Netscape/7.01
+X-Accept-Language: en-gb, en-us, en, es
+MIME-Version: 1.0
+Subject: Re: Module submission ctflags
+References: <200302111359.h1BDxnI00608@pause.perl.org> <53C76636-3DEF-11D7-A2D3-003065D64CBE@nanisky.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 217.230.114.146
+Approved: news@nntp.perl.org
+From: sfandino@yahoo.com (=?ISO-8859-1?Q?Salvador_Fandi=F1o?=)
+
+Hi,
+
+A . Bergman wrote:
+
+>>     2) it's more a pragma than a normal module and pragmas usually have
+>>     top level names
+
+
+> Does it change things compile time?
+
+yes, everything in ctflags occurs at compile time... actually the "ct" 
+in the name stands for compile time.
+
+The purpose of ctflags is to define flags that could be used to 
+conditional compile Perl code. i.e.:
+
+MyApp.pm______________________________________
+
+   package MyApp;
+
+   use ctflags prefix=>'dbg_', 'myapp:debug:*'
+
+   sub bar {
+     $f=foo();
+
+     dbg_f and warn "foo return $f"; # [1]
+
+     print "bar!\n\n"
+   }
+
+   sub foo {
+     # ...
+   }
+
+   1;
+
+
+sample.pl_____________________________________
+
+   use ctflags::parse ns=>'myapp:debug',
+                      env=>'SAMPLEDEBUG'; # [2]
+
+   use MyApp;
+
+   MyApp::bar()
+
+
+command_line__________________________________
+
+   $ SAMPLEDEBUG=f perl sample.pl
+   foo return whatever at MyApp line...
+   bar!
+
+   $ SAMPLEDEBUG='' perl sample.pl
+   bar!
+
+______________________________________________
+
+dbg_f [1] value is set from the env var 'SAMPLEDEBUG' in [2]. If its 
+value is 0 perl will optimize out all the sentence.
+
+The initial purpose of this module was to mimic the C preprocessor idiom 
+to activate/deactivate debugging code in programs. i.e:
+
+   #ifdef DEBUG_SOCKET
+        /* C socket debugging code */
+   #endif
+
+It also reassembles the usage of the perl -D switch to control perl 
+debugging where you can use letters to select which subsystems to debug.
+
+
+Bye,
+
+   - Salva
+
+

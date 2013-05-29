@@ -1,0 +1,63 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:840
+Return-Path: <mattd@mp3.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28118 invoked from network); 10 Jan 2000 17:26:16 -0000
+Received: from mail.mp3.com (HELO mp3.com) (192.215.249.224)
+  by tmtowtdi.perl.org with SMTP; 10 Jan 2000 17:26:16 -0000
+Received: (qmail 25894 invoked by uid 103); 10 Jan 2000 17:25:40 -0000
+Received: from dips.mp3.com (HELO mp3.com) ([192.215.249.184]) (envelope-sender <mattd@mp3.com>)
+          by mail.mp3.com (qmail-ldap-1.03) with SMTP
+          for <ask@valueclick.com>; 10 Jan 2000 17:25:40 -0000
+Sender: mattd
+Message-ID: <387A1604.B036D0C1@mp3.com>
+Date: Mon, 10 Jan 2000 09:25:24 -0800
+X-Mailer: Mozilla 4.51 [en] (X11; I; Linux 2.2.5-15 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Ask Bjoern Hansen <ask@valueclick.com>
+CC: modules@perl.org, sander@mp3.com
+Subject: Re: Request for PAUSE account
+References: <Pine.LNX.4.10.10001100108400.28692-100000@impatience.valueclick.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: mattd@mp3.com (Matt DiMeo)
+
+Ask Bjoern Hansen wrote:
+> 
+> On Tue, 4 Jan 2000, Matt DiMeo wrote:
+> 
+> > Name           DSLI  Description                                  Info
+> > -------------  ----  -------------------------------------------- -----
+> > MPEG::ID3v2    bdpO  OO, extensible ID3 v2.3 tagging module.
+> 
+> Why is this not integrated with the ID3v1 modules Sander made? Are the
+> differences between ID3v1 and ID3v2 so big that it's not feasible?
+
+Yes.
+
+id3v1:
+128 bytes that live at the end of a file, with a very rigid format
+You can make a C struct representing a complete id3v1 tag.
+
+id3v2:
+arbitrarily large, lives at the beginning of a file, constructed of
+a series of frames, each of which has its own format specification,
+some of which are also arbitrarily large.  The whole thing is versioned 
+and extensible with more frames.  There are currently at least three
+frames dedicated to describing the title of a recording.  Frames for
+lyrics synchronized with the recording, frames for pictures of the band,
+...
+
+While anything is possible in software, and you could conceivably 
+squash them both into the same module, they are more useful and
+flexible apart than together.  They are both well-behaved and
+can be use-d in the same program without ill effect.
+
+Btw., sander and I sit in the same cubicle, and we did certainly
+discuss it.
+
+-m@

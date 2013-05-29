@@ -1,0 +1,101 @@
+Newsgroups: perl.par,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.par:4054 perl.modules:65848
+Return-Path: <nj88udd02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 6478 invoked from network); 13 May 2009 09:00:55 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 13 May 2009 09:00:55 -0000
+Received: (qmail 25738 invoked by uid 225); 13 May 2009 09:00:55 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25731 invoked by alias); 13 May 2009 09:00:54 -0000
+X-Spam-Status: No, hits=0.7 required=8.0
+	tests=SPF_SOFTFAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from balanced.mail.policyd.dreamhost.com (HELO spunkymail-a16.g.dreamhost.com) (208.97.132.119)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 13 May 2009 02:00:47 -0700
+Received: from [141.52.67.205] (unknown [141.52.67.205])
+	by spunkymail-a16.g.dreamhost.com (Postfix) with ESMTP id 52B487B389;
+	Wed, 13 May 2009 02:00:43 -0700 (PDT)
+Message-ID: <4A0A8C36.1080107@sneakemail.com>
+Date: Wed, 13 May 2009 11:00:38 +0200
+User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
+MIME-Version: 1.0
+To: modules@perl.org
+Cc: bmorrow@cpan.org, par@perl.org
+Subject: Re: Module submission ExtUtils::PerlToExe
+References: <200905122141.n4CLfWTB014672@pause.perl.org>
+In-Reply-To: <200905122141.n4CLfWTB014672@pause.perl.org>
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: nj88udd02@sneakemail.com (Steffen Mueller)
+
+Hi Ben, hi all,
+
+I'm both a PAR maintainer and a PAUSE admin. I'll try to keep the 
+comments on the namespace and the general remarks separate.
+
+Perl Authors Upload Server wrote:
+>   modid:       ExtUtils::PerlToExe
+>   description: Build a binary executable from a Perl script
+>   similar:
+>     PAR::Packer pl2bat
+
+Namespace: Depending on where you want to go with the project, maybe a 
+"branded", probably top-level, namespace would be more appropriate. On 
+the other hand, if you're really going to stick to having this a 
+"pl2exe" tool, maybe one of these would be appropriate:
+
+ExtUtils::Pl2Exe (conveys the idea that it's about converting perl 
+*scripts*)
+
+App::Pl2Exe (see above comment and also stresses that it's a tool 
+similar to pl2bat)
+
+I'm also not sure about ExtUtils, but I guess if you don't like the 
+App:: prefix or "branded" namespace ideas, it's as good a place as any.
+
+Please let me know what you think. I'm also willing to approve 
+ExtUtils::PerlToExe.
+
+>   rationale:
+> 
+>     This module builds binary executables from Perl scripts. Unlike
+>     PAR, these executables don't need to unpack themselves before
+>     running. Currently the module can't pack up an @INC tree along with
+>     the script, so it's more of an alternative to pl2bat than to PAR.
+> 
+>     I'm not entirely convinced ExtUtils is the best place to put this
+>     (it hasn't really got anything to do with building extensions), but
+>     I couldn't see anywhere better. If you have any suggestions I'd be
+>     glad to hear them. I haven't uploaded it yet in case the name
+>     changes.
+
+Now speaking as "that PAR guy".
+
+There's an experimental branch of PAR::Packer/PAR in the PAR repository 
+that does not unpack any Perl modules courtesy of Scott Stanton. 
+Naturally, this is a much bigger problem for shared libraries or 
+arbitrary data files which might be packed alongside the Perl code, so 
+we never managed to sanely merge that into the main line of development.
+
+I really like the idea of NOT unpacking the stuff. This temporary 
+storage thing has cost me more hair than my girl-friend likes and it 
+just seems to be such a terrible hack to start with...
+
+My plea to you is that instead of starting from zero and then having to 
+reinvent all of the wheels we've been working hard to provide with PAR, 
+you could join the team and try to make it fit in with what we have. I'm 
+actually not sure which way is easier. It's no secret that the PAR code 
+is crufty, but it is for a reason: The problem is a difficult one. But 
+maybe you're just the right guy to solve this?
+
+Cheers,
+Steffen
+
+PS: If you don't have write access to the PAR repository already and 
+would like to get access, just let me know and I'll set you up. You'd 
+need an openfoundry username.

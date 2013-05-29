@@ -1,0 +1,140 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46757
+Return-Path: <cpan@kript.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 25100 invoked from network); 6 Jan 2006 11:49:41 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 6 Jan 2006 11:49:41 -0000
+Received: (qmail 11956 invoked by uid 225); 6 Jan 2006 11:49:41 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11947 invoked by alias); 6 Jan 2006 11:49:40 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from outmail1.freedom2surf.net (HELO outmail.freedom2surf.net) (194.106.33.237)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 06 Jan 2006 03:49:35 -0800
+Received: from [192.168.1.20] (i-195-137-52-156.freedom2surf.net [195.137.52.156])
+	by outmail.freedom2surf.net (8.12.10/8.12.10) with ESMTP id k06BnQcj003946
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <modules@perl.org>; Fri, 6 Jan 2006 11:49:31 GMT
+Date: Fri, 6 Jan 2006 11:54:58 +0000 (GMT)
+X-X-Sender: john@john.ddns.teaparty.net
+To: modules@perl.org
+Subject: RFC: Convert::Addressbook::Mozilla2Blackberry
+Message-ID: <Pine.LNX.4.61.0601061149120.20039@john.ddns.teaparty.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Approved: news@nntp.perl.org
+From: cpan@kript.net (John Constable)
+
+
+A follow up to my previous messages on Mozilla::Blackberry, I'd like to 
+register the namespace for Convert::Addressbook::Mozilla2Blackberry;
+
+NAME
+        Convert::Addressbook::Mozilla2Blackberry - Perl extension for converting a CSV comma delimited
+        addressbook from Mozilla to Blackbery csv import format
+
+SYNOPSIS
+                use Mozilla::Mork;
+                use Convert::Addressbook::Mozilla2Blackberry;
+
+                #get the file from the command line or quit with an error
+                $file = $ARGV[0];
+                unless ($file) { die "Useage: $0 <filename>\n"; }
+
+                #access the address book and setup the memory structure
+                my $MorkDetails = Mozilla::Mork->new($file);
+
+                #get a reference to an array of hash's
+                my $results = $MorkDetails->ReturnReferenceStructure();
+                #create an instance of the converter code
+                my $converter = Convert::Addressbook::Mozilla2Blackberry->new();
+                #print the Blackberry File headers
+                $converter->PrintBlackberryHeaders();
+
+                #process those results
+                # for each line in the database
+                # each line in the database corresponds to an address book record
+                # pass this reference to the StreamConvert routine which will
+                # convert and print it
+
+                for my $record_array ( @{$results} )
+                {
+                        $converter->StreamConvert($record_array);
+                }
+
+DESCRIPTION
+        This is a module that builds on the Mozilla::Mork module to translate the Mozilla address book to a
+        CSV format suitable for importing into a Blackberry via the Desktop Manager (i.e. even the CSv
+        fields are in the correct order).
+
+        Assumptions
+
+         1. the calling routine knows the correct format to send it in.
+         2. the 'right format' is a hash containing a set of records to convert as produced by Mozilla::Mork
+         3. this is not a full file conversion - some fields are missing, if there is no corresponding field, also, some fields are created from, or imported from others
+         4. You want to print the results so you can capture the output to a file of of your choice.
+
+        Caveats
+
+         It turns out that the import engine that comes with the Blackberry Desktop (I tested with version 4.0)  will happily import duplicates, even if you tell it not to; so I suggest this for a bulk load only, rather th
+an multiple import runs.  For a ongoing conversion I suggest using the Sync with Outlool/Outlook Express and u
+sing Dawn (See Also, below) to manage the combining and conversion.
+         I might write a conversion routine, but so far I've shaved my particular yak.
+
+        Also, the correct place for this code, if I am being honest is an addtion to the Mail::Address-
+        book::Convert suite.  However, my time to work on this is limited and by releasing in this way I can
+        get it 'out there' for others to use.  If someone wants to incorporate it in athe abobe namespace,
+        good for them.  I plan to, but no idea when I'll actually get round to it..
+
+        Routines
+
+        new()
+
+        create the new() OO Object.  Don't mind the man behind the curtain..
+
+        PrintBlackberryHeaders()
+
+        print the blackberry field headers - iterate over ever instance and print it, basically.
+
+        ReturnBlackberryHeaders()
+
+        return a list of the Header fields that Blackberry uses in its .CSV import file
+
+        StreamConvert()
+
+        Convert each record passed, from each line in an array expects a hash reference which contains a set
+        of data to convert This only converts one set of records at a time, to convert the entire file, you
+        must call it repeatedly.  Returns a single scalar containing the CSV record set of the converted
+        record, along with printing the record to STDOUT.
+
+        Formats
+
+         not that its needed here, but the Mozilla 'export' file format is:
+         First,Last,Display,Nickname,email,screen name,Work Phone,home phone,fax
+         pager,mobile
+
+         Blackberry import format is reachable with ReturnBlackberryHeaders(), above.
+
+        EXPORT
+
+        None by default.
+
+SEE ALSO
+        Also see Mozilla::Mork
+
+        Dawn is a decent Windows addressbook converter program that handles Mozilla Mork formats (unusually); http://www.joshie.com/projects/dawn/
+
+        Thanks to my company for giving me time work on this and release it to the public domain(http://www.ipaccess.com)
+
+
+-- 
+John Constable 
+Email: john@kript.net
+web: http://www.kript.net
+blog: http://cgi.kript.net/blosxom.cgi

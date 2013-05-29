@@ -1,0 +1,110 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:56040
+Return-Path: <sdn.instep41881@zoemail.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 29058 invoked from network); 28 Aug 2007 17:14:36 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 28 Aug 2007 17:14:36 -0000
+Received: (qmail 24915 invoked by uid 225); 28 Aug 2007 17:14:36 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24896 invoked by alias); 28 Aug 2007 17:14:35 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from smtp.zoemail.net (HELO zoemail.net) (64.74.53.227)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 28 Aug 2007 10:14:23 -0700
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.zoemail.net (Postfix) with ESMTP id 01A048FDA03
+	for <modules@perl.org>; Tue, 28 Aug 2007 13:14:05 -0400 (EDT)
+Received: from zoemail.net ([127.0.0.1])
+ by localhost (mark [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 29604-04 for <modules@perl.org>; Tue, 28 Aug 2007 13:14:04 -0400 (EDT)
+Received: from localhost (mark.zoemail.net [10.25.25.54])
+	by smtp.zoemail.net (Postfix) with ESMTP id D39668DF3AD
+	for <modules@perl.org>; Tue, 28 Aug 2007 13:14:04 -0400 (EDT)
+Received: from smtp.barrack.com (smtp.barrack.com [208.97.209.146]) 
+	by www.zoemail.net (IMP) with HTTP 
+	for <sdn@mark.zoemail.net>; Tue, 28 Aug 2007 13:14:04 -0400
+Message-ID: <1188321244.46d457dcc6f5e@www.zoemail.net>
+Date: Tue, 28 Aug 2007 13:14:04 -0400
+To: "modules-perl.org" <modules@perl.org>
+Subject: New module; asking for name suggestions.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+User-Agent: ZoEmail Webmail Client (ZWC) 3.2.2
+X-Originating-IP: 208.97.209.146
+X-Primary-Identity: sdn@zoemail.net
+X-Virus-Scanned: by ClamAV at zoemail.net
+X-Channels-Unique: 2
+Approved: news@nntp.perl.org
+From: sdn.instep41881@zoemail.net ("Eric Roode")
+
+Hello brian d foy and everyone else:
+
+    I have a new module which does two things, one serious and one
+silly.  The first thing it does is to assign strings to constants
+(either sigil-less constants like 'use constant' or $-prefixed
+constants like 'use Readonly'):
+
+    use ThisNewModule '$msg' => 'This is a simple message';
+    print "$msg\n";
+
+    This is no big shakes, there are modules to do that already.  It
+does add a little bit of nicety in that you can specify the strings in
+multiple natural languages simultaneously:
+
+    use ThisNewModule PENCIL => {fr => 'Mon crayon est large',
+                                 en => 'My pencil is big'      };
+    print PENCIL, "\n";
+
+    At compile-time, the module examines the current locale, and binds
+the appropriate string to the constant.  Thereafter, the string can be
+used with no performance penalty.
+
+    Now for the silly part.  The programmer has the option of
+specifying an additional variant of any of the strings.  On September
+19 (International Talk Like A Pirate Day), and only on that day, the
+alternate string is bound to the constant instead of the regular one.
+This allows your programs to magically issue messages in pirate-speak
+on the ITLAPD:
+
+    use ThisNewModule '$ERR' => ['Unrecoverable error',
+                             'Arr!  Ye'll walk the plank for that, matey!'];
+    print "$ERR\n";
+
+    So.  Here's a module that has a serious side, that of internationalization
+and centralization of output strings, and adds once-a-year piratespeak as
+an add-on bonus.  So is this an Acme:: module? Or a Text:: module?
+
+Possible name choices:
+
+    Acme::Pirate
+        Obvious, but what if someone is using it for the non-pirate features?
+
+    Text::Pirate
+        Ditto
+
+    Text::TLAP
+        Hides the "pirate" aspect, somewhat, but doesn't give any clue
+        to the "text" aspect.
+
+    Text::Define
+        This name focuses entirely on the useful string-binding part, and
+        ignores the cutesy pirate-speak part.  This might be the best choice.
+
+I am open to suggestions and advice.
+
+--
+Eric
+
+
+___________________________________________________________________
+
+Privacy Notice: This message has been sent via www.zoemail.net using
+patented e-mail protection technology developed by AT&T Labs. Reply to
+the "keyed address" above to ensure delivery.
+

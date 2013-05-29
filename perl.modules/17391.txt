@@ -1,0 +1,105 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17391
+Return-Path: <markov@speeltuin.ATComputing.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 54010 invoked by uid 76); 26 Jan 2003 12:05:59 -0000
+Received: from speeltuin.atcomputing.nl (HELO speeltuin.ATComputing.nl) (195.108.229.26) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-26 12:05:59Z
+Received: by speeltuin.ATComputing.nl (Postfix, from userid 1063)	id 9556739B0; Sun, 26 Jan 2003 13:08:10 +0100 (CET)
+Date: Sun, 26 Jan 2003 13:08:10 +0100
+To: modules@perl.org
+Subject: Re: Module submission User::Identity
+Message-ID: <20030126130810.A30796@speeltuin.ATComputing.nl>
+References: <200301201009.h0KA9hg03482@pause.perl.org> <15916.30427.385683.89018@phoenix.squirrel.nl> <20030121073828.98A6D39AA@speeltuin.ATComputing.nl> <20030121085035.N10531@speeltuin.ATComputing.nl> <m3ptqq3npy.fsf@k242.linux.bogus> <20030121110945.P10531@speeltuin.ATComputing.nl> <m3lm1c1fpx.fsf@k242.linux.bogus> <20030123090813.B5984@speeltuin.ATComputing.nl> <15919.47478.416809.26794@phoenix.squirrel.nl> <20030123172411.7823639AF@speeltuin.ATComputing.nl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20030123172411.7823639AF@speeltuin.ATComputing.nl>; from comdog@panix.com on Thu, Jan 23, 2003 at 11:21:37AM -0600
+Organization: MARKOV Solutions
+Sender: markov@speeltuin.ATComputing.nl
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: Mark@Overmeer.net (Mark Overmeer)
+
+* _brian_d_foy (comdog@panix.com) [030123 18:24]:
+> In article <15919.47478.416809.26794@phoenix.squirrel.nl>, Johan
+> Vromans <jvromans@squirrel.nl> wrote:
+> > I suggest to go ahead with User::Identity and Mail::Identity and see
+> > how it works out. I'm convinced that Mark has done a lot of thinking
+> > about it, and I don't see any better names coming up anyway.
+> 
+> i disgree---it sounds like two similar modules are getting different
+> top-level namespaces here.  if the common thing is Identity, that
+> concept should get pride of place in the name.  I suspect the 
+> actual data used to make the identity do not matter that much.
+> 
+> perhaps Mark should post some example code to show us what the 
+> modules do.
+
+I agrree that there is some communility.  In the original name space
+request I gave a small example what my plans are.
+
+On this moment, I try to get unicode working on e-mail headers in Mail::Box.
+Till now, Mail::Box uses the infamous Mail::Address object to pass addresses.
+However, that object is not unicode capabable, and will never be: it is
+used in many ancient applications, published in many books, and so on.
+
+So I am planning a new object which supports:
+ - username (unicode)
+ - e-mail address
+ - character set (to encode username correctly)
+ - pgp-key (and friends)
+ - signature
+ - address groups
+ - use application dependent settings
+
+The User::Identity (representing one physical person) can have more than
+one e-mail address where each of these components may differ.  In my
+personal situation, I will have about 10 different settings.
+
+Now about the suggested name.  My first idea was to call it
+User::Idenity::Email, however:
+ - this is very long: people have to type it often
+ - a group would become User::Identity::Email::Group
+ - in some situations, you do not have a user related to an e-mail address
+   (yet: some data can be derived)
+
+Much cleaner is Mail::Identity, mand Mail::Identity::Group
+
+ # straight forward creation
+ my $you     = Mail::Identity->new('Hi you!', 'tux@fish.aq');
+ print $you;        # no defaults for use object, but still usable
+                    # "Hi you!" <tux@fish.aq>
+ $msg->send(to => $you);
+
+ # based on an existing user
+ my $mark    = User::Identity->new(fullname => 'Mark Overmeer',
+    charset => 'iso-8859-15', language => 'nl');
+ my $my_role = $mark->createEmail(adress => 'markov@cpan.org');
+ print $my_role;    # defaults from the user object, so
+                    # Mark Overmeer <markov@cpan.org>
+
+ # create a group
+ my $us = Mail::Identity::Group->new('us', $you, $my_role);
+ $us->add(him => 'him@home.example');
+ $msg->reply(From => $us, Sender => $my_role)->send;
+
+The internals of Mail::Identity only store the information and organize
+the defaults.  The formatting depends on the possibilities of the
+agent, so the object can find wider use.
+
+Concluding, the reasons for Mail::Identity:
+ - only partially related to User::Indenity
+ - much shorter than User::Identity::Email, and needs to be typed often
+ - Mail::Identity::Group reads much better than User::Identity::Email::Group
+ - separate versioning.
+-- 
+Thanks for listening,
+               MarkOv       %-]
+
+------------------------------------------------------------------------
+drs Mark A.C.J. Overmeer                                MARKOV Solutions
+       Mark@Overmeer.net                          solutions@overmeer.net
+http://Mark.Overmeer.net                   http://solutions.overmeer.net

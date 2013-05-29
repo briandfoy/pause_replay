@@ -1,0 +1,61 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10802
+Return-Path: <Philip.Newton@gmx.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 98846 invoked by uid 76); 24 Mar 2002 18:27:32 -0000
+Received: from ns.picon.de (HELO mail.picon.de) (62.214.2.234)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Sun Mar 24 18:27:32 2002 -0000
+Received: (qmail 4998 invoked from network); 24 Mar 2002 18:29:28 -0000
+Received: from 125.138.hh1.ip.foni.net (212.7.138.125)
+  by mail.picon.de with SMTP; 24 Mar 2002 18:29:28 -0000
+To: pbaker@where2getit.com (Paul Baker)
+Cc: modules@perl.org
+Subject: Re: PAUSE ID request
+Date: Sun, 24 Mar 2002 19:31:56 +0000
+Organization: very little
+Message-ID: <d3as9ugmu1bhqnuljctjjptb44n2geskt3@4ax.com>
+References: <B0E29496-3712-11D6-A4D0-0003937562B8@where2getit.com>
+In-Reply-To: <B0E29496-3712-11D6-A4D0-0003937562B8@where2getit.com>
+X-Mailer: Forte Agent 1.8/32.548
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: Philip.Newton@gmx.net (Philip Newton)
+
+Disclaimer: I am not a PAUSE admin.
+
+On Thu, 14 Mar 2002 00:14:07 -0600, pbaker@where2getit.com (Paul Baker)
+wrote:
+
+> My reason for writing md5sum-perl is that Mac OS X does not ship with a=
+=20
+> md5sum binary. After spending an hour or so trying to find source code=20
+> for an md5sum binary, I decided to write my own in Perl!
+
+It should be fairly trivial to build something like that with
+Digest::MD5, shouldn't it? I imagine a no-brainer replacement might
+consist simply of something like
+
+    #!/usr/bin/perl -w
+
+    use strict;
+    use Digest::MD5;
+
+    if(@ARGV) {
+        for my $file (@ARGV) {
+            open FILE, $file or die "Can't open $file: $!";
+            binmode FILE;
+            print Digest::MD5->new->addfile(*FILE)->hexdigest,
+                  " $file\n";
+            close FILE;
+        }
+    } else {
+        print Digest::MD5->new->addfile(*STDIN)->hexdigest,
+              " -\n";
+    }
+
+Cheers,
+Philip

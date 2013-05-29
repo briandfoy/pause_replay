@@ -1,0 +1,88 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:41983 perl.module-authors:3875
+Return-Path: <david@hyperbolic.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24009 invoked from network); 25 Jul 2005 20:01:33 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 25 Jul 2005 20:01:33 -0000
+Received: (qmail 27400 invoked by uid 225); 25 Jul 2005 20:01:32 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27392 invoked by alias); 25 Jul 2005 20:01:31 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of david@hyperbolic.net designates 66.92.101.101 as permitted sender)
+Received: from dsl092-101-101.nyc2.dsl.speakeasy.net (HELO janus.hyperbolic.net) (66.92.101.101)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 25 Jul 2005 13:01:29 -0700
+Received: from [127.0.0.1] (janus.hyperbolic.net [66.92.101.101])
+	by janus.hyperbolic.net (8.13.1/8.13.1) with ESMTP id j6PK1Oxq021235;
+	Mon, 25 Jul 2005 16:01:24 -0400
+Message-ID: <42E54511.4050308@hyperbolic.net>
+Date: Mon, 25 Jul 2005 16:01:21 -0400
+User-Agent: Mozilla Thunderbird 1.0.2 (Windows/20050317)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: modules@perl.org, module-authors@perl.org
+Subject: RFC: Object::Local -- naming suggestions needed
+References: <20050725144904.GA23814@natura.di.uminho.pt>
+In-Reply-To: <20050725144904.GA23814@natura.di.uminho.pt>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: ClamAV version 0.86.1, clamav-milter version 0.86 on localhost
+X-Virus-Status: Clean
+Approved: news@nntp.perl.org
+From: david@hyperbolic.net (David Golden)
+
+Dear colleagues,
+
+I recently posted an RFC to Perlmonks and, while I got a nice response in 
+positive votes, I got a minimal response in terms of suggestions, which is 
+what I was really after.  The perlmonks article is here 
+(http://perlmonks.org/index.pl?node_id=477283) but I'll summarize again for 
+the list.
+
+In short, it's a (yet another) inside-out object generator aimed at 
+minimizing some of the repetitive typing associated with perl objects.  It 
+was inspired by the talks on Lexical::Attributes and Spiffy at YAPC::NA, but 
+it avoids souce filtering and most other evil (or, at least, tries to be 
+less evil).  Key features so far include:
+
+* Provides $self automatically to methods -- without source filtering
+
+* Provides dynamic aliasing of properties within methods, eliminating 
+accessor calls in methods -- again, without source filtering
+
+* Uses attributes to mark properties and methods, but only in the BEGIN 
+phase so should be mod_perl friendly (though I haven't tested this yet)
+
+* Under the hood, uses local() and dynamic scoping of package variables 
+($self, et al.) while remaining 'strict' friendly
+
+Here's a short example of use:
+
+package My::Object;
+use strict;
+use Object::Local;
+
+give_methods our $self;
+
+our $name  : Prop;
+our $color : Prop;
+
+sub as_string : Method {
+     return ref($self) . " named '$name' with color '$color'";
+}
+__END__
+
+As you can see from the subject and the example above, my working name for 
+it is "Object::Local" (makes objects work using "local") but I'm not 
+entirely sure that's the most clear.  On Perlmonks, someone suggested 
+"Object::LocalVars" which isn't bad either.   I'm generally trying to find a 
+name that is short, evocative, catchy, but not frivolous.  I'd greatly 
+appreciate comments and suggestions.
+
+Regards,
+David Golden
+

@@ -1,0 +1,181 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8738
+Return-Path: <dana@tolkien.realms.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22673 invoked by uid 75); 12 Nov 2001 02:58:50 -0000
+Received: from cdm-208-41-2-bent.cox-internet.com (HELO tolkien.realms.org) (208.180.41.2)
+  by onion.perl.org (qpsmtpd/0.04) with SMTP; Mon Nov 12 02:58:50 2001 -0000
+Received: (from dana@localhost)
+	by tolkien.realms.org (8.11.0/8.11.0) id fAC2mbK29674
+	for modules@perl.org; Sun, 11 Nov 2001 20:48:37 -0600
+Date: Sun, 11 Nov 2001 20:48:37 -0600
+To: modules@perl.org
+Subject: [ANNOUNCE] Proc::Swarm 0.5
+Message-ID: <20011111204837.A29167@tolkien.realms.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="DocE+STaALJfprDB"
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Approved: news@nntp.perl.org
+From: dana@realms.org ("Dana M . Diederich")
+
+--DocE+STaALJfprDB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Proc::Swarm is a module designed to handle, in a fairly creative and powerf=
+ul
+way, process oriented multiprocessing.  It was written to aid in large scale
+Network Management tasks using ping and SNMP against thousands of nodes.
+Those processes tend to be slow, especially across a WAN.  In order to get
+a lot of work done quickly, many processes must be spawned.  Getting all of
+the data back from the various processes can be tricky.  We had used databa=
+ses,
+System V IPC, sockets, and other custom solutions.  This version of=20
+Proc::Swarm solves many of the problems we faced.  It can be found at
+
+$CPAN/authors/id/D/DI/DIEDERICH/Proc-Swarm-0.5.tar.gz
+
+when CPAN gets done churning on it.
+
+I goofed up slightly and make the thing unpack into Swarm-0.5 rather than
+Proc-Swarm-0.5.  If that's a problem, I'll re-issue with the correct direct=
+ory
+in the archive.
+
+Here is the perldoc:
+
+__________CUT HERE__________
+NAME
+    Proc::Swarm - intelligently handle massive multi-processing on one
+    machine
+
+VERSION
+    This document describes version 0.5 of Proc::Swarm, released October 30,
+    2001
+
+SYNOPSIS
+            use Proc::Swarm;
+
+            my $code =3D sub {
+                    my $arg =3D shift;
+                    sleep($arg);
+                    $arg++;
+                    return($arg);
+            };
+
+            my $retvals =3D Proc::Swarm::swarm(
+                    {       'code' =3D> $code,        #code to run
+                            'children' =3D> 2,        #How many child proce=
+sses to run parallel
+                            'sort' =3D> 1,            #sort the results
+                            'work' =3D> [1,5,7,10]}); #List of objects to w=
+ork on
+            my @results =3D $retvals->get_result_objects;
+            #@results contain 2, 6, 8 and 11, in numeric order.
+
+            my @run_times =3D $retvals->get_result_times;
+            #how long each took to run.  Should contain something like 1,5,=
+7 and 10
+
+            my @objects =3D $retvals->get_objects;
+            #The objects passed in.  Should contain 1,5,7 and 10
+
+            my $specific_result =3D $retvals->get_result(10);=20
+            #Get specific result as keyed by passed object: 11 in this case.
+
+            my $specific_return_value =3D $retvals->get_result(5)->get_runt=
+ime;
+            #Returns how long it took to run object 5.
+
+DESCRIPTION
+    This module provides some fairly fine control over heavy-duty
+    multiprocessing work. This is probably most useful in two general cases:
+    a multi-CPU system that doesn't distribute load in a single process
+    across all CPUs, and programs that need to do a lot of slow, blocking
+    work quickly with many simultaneous processes. (For instance, SNMP,
+    SOAP, etc.) Swarm gathers the results of all of the child processes
+    together and returns that in a results object, along with information
+    about the status of each unit of work, how long it took to run each
+    unit, and related information.
+
+DESIGN
+    The parent process will be the consumer, and thus the last to exit. The
+    first forked child will be the producer, which will then in turn manage
+    all of the children. The consumer listens to message queue Qc, and the
+    producer listens to Qp. When the consumer gets an object, that means
+    that one of the children has finished. It then sends a massage to Qp
+    telling it to spawn another child. That message will be the object to
+    work on. As such, the consumer handles the list of all objects to be
+    worked on.
+
+    There are some real advantages to this design. We can cut the working
+    children free with double fork, since their results come back on the
+    message queue. We don't have to handle any dangerous signals. Both the
+    consumer and the producer are simplified because they just block on IPC
+    activity. The producer just double forks every time it gets a message,
+    and then waits for another message. The consumer has to look at every
+    message that comes back.
+
+    See the docs/ directory with the distribution for a comprehensive
+    outline of the included classes.
+
+TODO
+    Fix the below-cited limitation of sort functionality.
+
+    Add the ability to sort using an arbitrary code reference.
+
+    Add the ability to add and remove call objects runtime.
+
+    Eventually add the ability to control processes on many different
+    systems.
+
+    Make the timing of each run optionally calculated with HiRes.
+
+AUTHOR
+    Dana M. Diederich <dana@realms.org>
+
+BUGS
+    The sort option sorts under the assumption that there is a one to one
+    cardinality between the submitted objects and the result objects. That
+    is, if a given input object is repeated, and the code that is ran
+    against it returns more than one different result, the sort system is
+    not guaranteed to work correctly.
+
+    Some of the test suites are rather slow. One of them is very CPU
+    intensive. While not a bug, this can be rather alarming.
+
+COPYRIGHT
+    Copyright (c) 2001, Dana M. Diederich. All Rights Reserved. This module
+    is free software. It may be used, redistributed and/or modified under
+    the terms of the Perl Artistic License (see
+    http://www.perl.com/perl/misc/Artistic.html)
+
+
+__________CUT HERE__________
+
+Cheers,
+-Dana
+-*~'`^`'~*-,._.,-*~'`^`'~*-,._.,-*~'`^`'~*-,._.,-*~'`^`'~*-,._.,-*~'`^`'~*-,
+Dana M. Diederich       =20
+SMTP: dana@realms.org    HTTP:  http://realms.org/dana/   ICQ: 16433785
+`Berkeley invented LSD and Unix, and I don't think that's a coincidence.'
+
+--DocE+STaALJfprDB
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.2 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE77ziFtfV1DRxefAQRAlXWAJ9jflHW98ERZI6gcgpVXPPuZzDUOQCfaum1
+LlmC9jIZYqeVEKw9BEpJTOs=
+=RaUB
+-----END PGP SIGNATURE-----
+
+--DocE+STaALJfprDB--

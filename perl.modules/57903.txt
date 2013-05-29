@@ -1,0 +1,97 @@
+Newsgroups: perl.poe,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.poe:4089 perl.modules:57903
+Return-Path: <phil123@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 18178 invoked from network); 29 Nov 2007 02:02:16 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 29 Nov 2007 02:02:16 -0000
+Received: (qmail 26629 invoked by uid 225); 29 Nov 2007 02:02:16 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26623 invoked by alias); 29 Nov 2007 02:02:15 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VERIFIED,DK_SIGNED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from nz-out-0506.google.com (HELO nz-out-0506.google.com) (64.233.162.230)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 28 Nov 2007 18:01:52 -0800
+Received: by nz-out-0506.google.com with SMTP id i11so1448511nzh
+        for <modules@perl.org>; Wed, 28 Nov 2007 18:01:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        bh=9yiYgIEg5G6jyNArgVKeZvCnj4QIk7WWa6YdJsfM6bw=;
+        b=aAxovCbBu02Zw4MPIyHakakGmstk728YOJFlTnNbFDoUSnsDInD6d0GSvrcJrl8BTDu5JeEd5gd8BaKOdJRTB2+cWt9luVDUts+R9S356FCJl9sH7I/PArylfK3JFkoGi4RR3ANIH1LG29o0jlSA0cBqzQPOPzzvI0PbAnrcaQM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=lLXJwO2u5zJvlanJm6wRCkTyU3fmm8QlnVr4sgp8FUZS+hxVdpKazolI0NrPAJAl1wwAhBxT3TlxfBd9/OByJepvry6soLEz/ym+UC1WsxrLg1CyJg77snOcGoyEkv5DcgwdezxJvcTPVynhpnK5aEl7IXCRw6pTEHoHXltLuvY=
+Received: by 10.114.149.2 with SMTP id w2mr237543wad.1196301707291;
+        Wed, 28 Nov 2007 18:01:47 -0800 (PST)
+Received: by 10.115.32.6 with HTTP; Wed, 28 Nov 2007 18:01:47 -0800 (PST)
+Message-ID: <9cafbc680711281801g324e9768m649ab68672ba3138@mail.gmail.com>
+Date: Wed, 28 Nov 2007 18:01:47 -0800
+To: "Daisuke Maki" <daisuke@endeworks.jp>
+Subject: Re: POE::Filter::Stomp and POE::Component::Client::Stomp
+Cc: poe@perl.org, modules@perl.org
+In-Reply-To: <474E1579.4080003@endeworks.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <474E1579.4080003@endeworks.jp>
+Approved: news@nntp.perl.org
+From: phil123@gmail.com ("Phil Whelan")
+
+Hi Daisuke,
+
+Thanks. We've been working with that module in the past few weeks and
+it's seems to have a few issues.
+Also we had a problem with finding the end of the stomp block. It was
+ignoring the content-length, and looking for eom, so would only work
+with ascii text. We got around this by using JSON to encode the data
+structure we passed, instead of using Storable.
+Dave is looking at your code now and we'll let you know if we've got
+anything to add.
+
+Cheers,
+Phil (your old colleague from Livedoor)
+
+On Nov 28, 2007 5:27 PM, Daisuke Maki <daisuke@endeworks.jp> wrote:
+> Hi,
+>
+> I'm cross-posting this to modules-at-perl.org and poe-at-perl.org in
+> hopes that the author might see it.
+>
+> Last night I hacked up improvements on POE::Filter::Stomp (which assumed
+> that a single chunk of data passed to get_one_start() would contain an
+> entire Stomp message). I'm going to be using Stomp a lot, so I really
+> wanted to push that fix, so I tried contacting the author, but the email
+> listed at search.cpan.org bounced.
+>
+> I see that the last upload by the author is relatively recent, so I'm
+> sure he's around somewhere, but I don't think he's doing particularly
+> great job of maintaining his modules (judging from the cpan-testers
+> logs) -- and on the other hand here I am *desperately* needing to get
+> the Stomp stuff working.
+>
+> So please, if the author is lurking somewhere, please let us know.
+> Also, I'm willing to take up maintainership of the stomp related modules.
+>
+> --d
+>
+> P.S. my version of POE::Filter::Stomp can be found here:
+>
+>   http://svn.endeworks.jp/svn/perl/POE-Filter-Stomp/trunk
+>
+>
+
+-- 
+Phil Whelan
+Product Development
+
+Tel: +1.778.785.6145
+Fax: +1.604.677.6320
+Web: http://mailchannels.com
+MailChannels - Reliable Email Delivery (TM)

@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4371
+Return-Path: <joshua@chamas.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27409 invoked from network); 31 Jan 2001 04:28:58 -0000
+Received: from proxy.nodeworks.com (HELO www.apache-asp.org) (209.67.152.115)
+  by tmtowtdi.perl.org with SMTP; 31 Jan 2001 04:28:58 -0000
+Received: (from server)
+	œby www.apache-asp.org (8.8.8) with ESMTP id UAA03221;
+	Tue, 30 Jan 2001 20:28:40 -0800 (PST)
+Message-ID: <3A779413.49ED0D93@chamas.com>
+Date: Tue, 30 Jan 2001 20:26:59 -0800
+Organization: NodeWorks <http://nodeworks.com>
+X-Mailer: Mozilla 4.75 [en] (WinNT; U)
+X-Accept-Language: en,ja
+MIME-Version: 1.0
+To: ross.ferguson@cibc.co.uk
+CC: modules@perl.org, Mod Perl <modperl@apache.org>
+Subject: Apache::ASP::Lite -> CGI::ASP::Lite ( Please )
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: joshua@chamas.com (Joshua Chamas)
+
+Ross,
+
+I believe I already expressed this, but would like to 
+revisit that I think Apache::ASP::Lite is not appropriately
+named, and detracts from the current Apache::ASP namespace,
+which I maintain.
+
+I believe Apache::ASP::Lite should be named CGI::ASP::Lite
+because it creates ASP objects for use in perl CGI scripting.  
+Further, unlike most Apache::* modules, it does not run under 
+mod_perl which is what the Apache::* namespace is for.  It is built
+for the CGI model of execution, which Apache does in fact do, but
+the Apache::* namespace is misleading in this regard. 
+
+Further, there may be a namespace collision one day as 
+Apache::ASP currently relies on a variety of sub Apache::ASP::*
+modules to do its dirty work, such as:
+
+> grep ^package src/ASP.pm
+package Apache::ASP;
+package Apache::ASP::STDERR;
+package Apache::ASP::GlobalASA;
+package Apache::ASP::Request;
+package Apache::ASP::Response;
+package Apache::ASP::Server;
+package Apache::ASP::Application;
+package Apache::ASP::Session;
+package Apache::ASP::State;
+package Apache::ASP::CGI;
+package Apache::ASP::Collection;
+package Apache::ASP::CollectionItem;
+package Apache::ASP::Load;
+
+What if you wanted to create your own objects as you extend
+the framework, or I create a Apache::ASP::Lite for use in 
+Apache::ASP ( very possible ).
+
+Again, I beg you to pick another namespace for your work.
+Note that it will likely be used by others if more appropriately
+named in the CGI::* namespace.
+
+Thanks,
+
+Josh

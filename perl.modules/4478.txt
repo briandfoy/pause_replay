@@ -1,0 +1,242 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4478
+Return-Path: <ben@rhumba.pair.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20912 invoked from network); 16 Feb 2001 19:38:30 -0000
+Received: from relay1.pair.com (209.68.1.20)
+  by tmtowtdi.perl.org with SMTP; 16 Feb 2001 19:38:30 -0000
+Received: (qmail 1505 invoked from network); 16 Feb 2001 19:37:52 -0000
+Received: from ignition-gw.customer.dsl.alter.net (HELO ?10.100.100.31?) (206.66.205.2)
+  by relay1.pair.com with SMTP; 16 Feb 2001 19:37:52 -0000
+X-pair-Authenticated: 206.66.205.2
+User-Agent: Microsoft-Outlook-Express-Macintosh-Edition/5.02.2022
+Date: Fri, 16 Feb 2001 11:36:41 -0800
+Subject: Net::SSH::perl: Module Registration Request
+To: <modules@perl.org>
+Message-ID: <B6B2C148.7C28%ben@rhumba.pair.com>
+Mime-version: 1.0
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+Approved: news@nntp.perl.org
+From: ben@rhumba.pair.com (Benjamin Trott)
+
+Please register my distribution Net::SSH::perl. Here's the info:
+
+Name            DSLI  Description                                  Info
+--------------  ----  -------------------------------------------- ------
+Net::SSH::perl  bdpO  Perl client Interface to SSH                 BTROTT
+
+This should go in Section 5 (Networking), I think.
+
+The POD is below.
+
+Thanks,
+Benjamin Trott
+
+
+=head1 NAME
+
+Net::SSH::perl - Interact with SSH daemon
+
+=head1 SYNOPSIS
+
+    use Net::SSH::perl;
+    my $ssh = Net::SSH::perl->new($host);
+    $ssh->login($user, $pass);
+    my($stdout, $stderr, $exit) = $ssh->cmd($cmd);
+
+=head1 INSTALLATION
+
+I<Net::SSH::perl> installation is relatively straightforward. The
+only slightly complicated bit is that you'll need to install
+Crypt:: modules depending on which ciphers you wish to use.
+This has been made quite easy if you use the CPAN shell to
+install Net::SSH::perl; the installation process will ask you which
+ciphers you wish to have installed, and will then add the
+Crypt:: modules as prerequisites. The CPAN shell should then
+install them automatically.
+
+Otherwise you'll need to install Math::GMP (version 1.04 or
+greater), String::CRC32 (version 1.2 or greater), and
+Digest::MD5, plus any additional Crypt:: modules you wish
+to use. One method of determining the Crypt:: modules you
+need is to run the Makefile.PL and choose the ciphers you
+wish to install. It will then tell you which Crypt:: modules
+it has added to the module prerequisites, and you can then
+install those yourself. (Of course, the CPAN shell handles
+all of this for you automatically.)
+
+Net::SSH::perl itself installs like a Perl module should:
+
+    % perl Makefile.PL
+    % make && make test && make install
+
+=head1 DESCRIPTION
+
+I<Net::SSH::perl> is an all-Perl module implementing an ssh client.
+In other words, it isn't a wrapper around the actual ssh
+client, which is both good and bad. The good is that you don't
+have to fork another process to connect to an sshd daemon,
+so you save on overhead, which is a big win. The bad is that
+currently I<Net::SSH::perl> doesn't support all of the authentication
+protocols and encryption ciphers that the actual I<ssh> program does,
+so you can't take advantage of them. (For a list of what ciphers
+and auth methods are supported, keep reading.)
+
+Of course, I think that the good outweighs the bad (particularly
+since the bad is something that can be improved and worked on),
+and that's why I<Net::SSH::perl> exists.
+
+=head1 USAGE
+
+Usage of I<Net::SSH::perl> is very simple.
+
+=head2 Net::SSH::perl->new($host, %params)
+
+To set up a new connection, call the I<new> method, which
+connects to I<$host> and returns a I<Net::SSH::perl> object.
+
+I<new> accepts the following named parameters in I<%params>:
+
+=over 4
+
+=item * cipher
+
+Specifies the name of the encryption cipher that you wish to
+use for this connection. This must be one of the supported
+ciphers (currently, I<IDEA>, I<DES>, and I<DES3>); specifying
+an unsupported cipher is a fatal error. The default cipher
+is I<IDEA>.
+
+=item * port
+
+The port of the I<sshd> daemon to which you wish to connect;
+if not specified, this is assumed to be the default I<ssh>
+port.
+
+=item * debug
+
+Set to a true value if you want debugging messages printed
+out while the connection is being opened. These can be helpful
+in trying to determine connection problems, etc. The messages
+are similar (and in some cases exact) to those written out by
+the I<ssh> client when you use the I<-v> option.
+
+=item * interactive
+
+Set to a true value if you're using I<Net::SSH> interactively.
+This is used in determining whether or not to display password
+prompts, for example. It's basically the inverse of the
+I<BatchMode> parameter in ssh configuration.
+
+=item * privileged
+
+Set to a true value if you want to bind to a privileged port
+locally. You'll need this if you plan to use Rhosts or
+Rhosts-RSA authentication, because the remote server
+requires the client to connect on a privileged port. Of course,
+to bind to a privileged port you'll need to be root.
+
+=back
+
+=head2 $ssh->login([ $user [, $password ] ])
+
+Sets the username and password to be used when authenticating
+with the I<sshd> daemon. The username I<$user> is required for
+all authentication protocols (to identify yourself to the
+remote server), but if you don't supply it the currently
+logged-in user is used instead.
+
+The password I<$password> is needed only for password
+authentication (it's not used for RSA passphrase authentication,
+though perhaps it should be). And if you're running in an
+interactive session and you've not provided a password, you'll
+be prompted for one.
+
+=head2 $ssh->cmd($cmd, [ $stdin ])
+
+Runs the command I<$cmd> on the remote server and returns
+the I<stdout>, I<stderr>, and exit status of that
+command.
+
+If I<$stdin> is provided, it's supplied to the remote command
+I<$cmd> on standard input.
+
+NOTE: the ssh protocol does not support (so far as I know)
+running multiple commands per connection, unless those
+commands are chained together so that the remote shell
+can evaluate them. Because of this, a new socket connection
+is created each time you call I<cmd>, and disposed of
+afterwards. In other words, this code:
+
+    my $ssh = Net::SSH::perl->new("host1");
+    $ssh->login("user1", "pass1");
+
+    $ssh->cmd("foo");
+    $ssh->cmd("bar");
+
+will actually connect to the I<sshd> on the first
+invocation of I<cmd>, then disconnect; then connect
+again on the second invocation of I<cmd>, then disconnect
+again.
+
+This is less than ideal, obviously. Future version of
+I<Net::SSH::perl> may find ways around that.
+
+=head1 ENCRYPTION CIPHERS
+
+I<Net::SSH::perl> currently supports 3 encryption ciphers: IDEA,
+DES, and 3DES. Blowfish is also part of the distribution, but it
+doesn't actually work yet. :)
+
+In order to use the ciphers you'll need to install the
+corresponding Crypt:: module. I've not listed any of these
+modules as prerequisites above, but during the installation
+process you'll be prompted to add some of these modules
+so that you can use the encryption. If you're using the CPAN
+shell, the modules should be automatically installed;
+otherwise you'll need to do so yourself.
+
+=head1 BUGS
+
+The following bugs/problems still exist:
+
+=over 4
+
+=item * Blowfish support
+
+Blowfish support is included but it doesn't work, yet.
+This seems to be a problem with incompatibilities
+between the blowfish in ssh and Crypt::Blowfish,
+but I can't be sure.
+
+=back
+
+=head1 AUTHOR
+
+Benjamin Trott, ben@rhumba.pair.com
+
+=head1 SUPPORT
+
+Take a look at the scripts in F<eg/> for help and examples of
+using Net::SSH::perl. F<eg/cmd.pl> is just a simple example of
+some of the functionality, F<eg/pssh> is an ssh-like client
+for running commands on other servers, and F<eg/pscp> is a very
+simple scp-like script. Both pssh and pscp support a subset
+of the command line options that the actual tools support;
+obviously, only those options supported by Net::SSH::perl are
+supported by pssh and pscp.
+
+If you have any questions, code samples, bug reports, or
+feedback, please email them to:
+
+    ben@rhumba.pair.com
+
+=head1 COPYRIGHT
+
+(C) 2001 Benjamin Trott. All rights reserved.
+
+=cut
+

@@ -1,0 +1,558 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3704
+Return-Path: <joshua@chamas.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19629 invoked from network); 28 Nov 2000 20:39:29 -0000
+Received: from proxy.nodeworks.com (HELO www.apache-asp.org) (209.67.152.115)
+  by tmtowtdi.perl.org with SMTP; 28 Nov 2000 20:39:29 -0000
+Received: (from server)
+	œby www.apache-asp.org (8.8.8) with ESMTP id MAA24417
+	for <modules@perl.org>; Tue, 28 Nov 2000 12:39:26 -0800 (PST)
+Message-ID: <3A2417F9.6E79D8D@chamas.com>
+Date: Tue, 28 Nov 2000 12:39:21 -0800
+Organization: NodeWorks <http://nodeworks.com>
+X-Mailer: Mozilla 4.75 [en] (WinNT; U)
+X-Accept-Language: en,ja
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: MLDBM::Sync namespace request
+Content-Type: multipart/digest;
+ boundary="------------387DD1C21DD722F93E36B253"
+Approved: news@nntp.perl.org
+From: joshua@chamas.com (Joshua Chamas)
+
+--------------387DD1C21DD722F93E36B253
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hey,
+
+I would like to register a MLDBM::Sync package, which serves
+as a wrapper around MLDBM to flock() serialize reads/writes to 
+MLDBM databases so that they do not get corrupt under high load
+multiprocess scenarios.  Attached are some emails from me and
+others discussing the module on the mod_perl list.
+
+Thanks,
+
+Joshua
+
+Return-Path: modperl-return-11061-chamas=alumni.stanford.org@apache.org
+Received: from proxy1.ba.best.com (root@proxy1.ba.best.com [206.184.139.12])
+	by shell18.ba.best.com (8.9.3/8.9.2/best.sh) with ESMTP id CAA22882
+	for <chamas+XRCPT.6a6f73687561406368616d61732e636f6d@shell18.ba.best.com>; Fri, 17 Nov 2000 02:41:28 -0800 (PST)
+Received: from c004.sfo.cp.net (c004-mx002.c004.sfo.cp.net [209.228.13.215])
+	by proxy1.ba.best.com (8.9.3/8.9.2/best.in) with SMTP id CAA01430
+	for <joshua@chamas.com>; Fri, 17 Nov 2000 02:40:24 -0800 (PST)
+Received: (cpmta 16907 invoked from network); 17 Nov 2000 02:39:54 -0800
+Delivered-To: stanfordalumni.org%chamas@stanfordalumni.org
+Received: (cpmta 16905 invoked from network); 17 Nov 2000 02:39:54 -0800
+Received: from locus.apache.org (63.211.145.10)
+  by smtp.c004-mx000.c004.sfo.cp.net (209.228.13.215) with SMTP; 17 Nov 2000 02:39:54 -0800
+X-Received: 17 Nov 2000 10:39:54 GMT
+Received: (qmail 40813 invoked by uid 500); 17 Nov 2000 10:39:16 -0000
+Mailing-List: contact modperl-help@apache.org; run by ezmlm
+Precedence: bulk
+list-help: <mailto:modperl-help@apache.org>
+list-unsubscribe: <mailto:modperl-unsubscribe@apache.org>
+list-post: <mailto:modperl@apache.org>
+Delivered-To: mailing list modperl@apache.org
+Received: (qmail 40797 invoked from network); 17 Nov 2000 10:39:16 -0000
+Message-ID: <3A150AB9.F5619379@chamas.com>
+Date: Fri, 17 Nov 2000 02:38:49 -0800
+From: Joshua Chamas <joshua@chamas.com>
+Organization: NodeWorks <http://nodeworks.com>
+X-Mailer: Mozilla 4.75 [en] (WinNT; U)
+X-Accept-Language: en,ja
+MIME-Version: 1.0
+To: Mod Perl <modperl@apache.org>
+Subject: New Module Idea: MLDBM::Sync
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Rating: locus.apache.org 1.6.2 0/1000/N
+X-Rcpt-To: joshua@chamas.com
+X-Mozilla-Status2: 00000000
+
+Hey,
+
+I'm working on a new module to be used for mod_perl style 
+caching.  I'm calling it MLDBM::Sync because its a subclass 
+of MLDBM that makes sure concurrent access is serialized with 
+flock() and i/o flushing between reads and writes.  Below is 
+the code for the module.  I believe it could be used too as a 
+safe backing store for Memoize in a multi-process environment.
+
+It could be used like:
+
+  tie %mldbm, 'MLDBM::Sync', '/tmp/mldbm_dbm', O_CREAT|O_RDWR, 0666;
+  $mldbm{rand()} = [ rand() ];
+  %mldbm = ();
+
+The history is that I hunted around for on disk caching in 
+which I can stuff db query results temporarily, and the best I 
+liked was File::Cache, which is really cool BTW.  I would use it, 
+but MLDBM::Sync using default SDBM_File seems to be 2 to 3 times 
+faster, getting about 1000 writes / sec on my dual PIII 400.
+
+MLDBM::Sync using MLDBM in DB_File mode is considerably slower 
+than File::Cache, by 5-10 times, so it really depends on the
+data you want to store, for which you might use.  The 1024 byte
+limit on SDBM_File makes it often not the right choice.
+
+I also thought about calling it MLDBM::Lock, MLDBM::Serialize, 
+MLDBM::Multi ... I like MLDBM::Sync though.  For modperl
+caching usage, I imagine tieing to it in each child, and clearing
+when necessary, perhaps even at parent httpd initialization...
+no auto-expiration here, use File::Cache, IPC::Cache for that!
+
+Any thoughts? 
+
+--Joshua
+
+_________________________________________________________________
+Joshua Chamas			        Chamas Enterprises Inc.
+NodeWorks >> free web link monitoring	Huntington Beach, CA  USA 
+http://www.nodeworks.com                1-714-625-4051
+
+package MLDBM::Sync;
+use MLDBM;
+use Fcntl qw(:flock);
+use strict;
+no strict qw(refs);
+use vars qw($AUTOLOAD);
+
+sub TIEHASH { 
+    my($class, $file, @args) = @_;
+
+    my $fh = "$file.lock";
+    open($fh, ">>$fh") || die("can't open file $fh: $!");
+
+    bless { 
+	   'args' => [ $file, @args ],
+	   'lock' => $fh,
+	   'keys' => [],
+	  };
+}
+
+sub DESTROY { 
+    my $self = shift;
+    if (($self->{lock})) {
+	close($self->{lock})
+    }
+}
+
+sub AUTOLOAD {
+    my $self = shift;
+    $AUTOLOAD =~ /::([^:]+)$/;
+    my $func = $1;
+    $self->exlock;
+    my $rv = $self->{dbm}->$func(@_);
+    $self->unlock;
+    $rv;
+}
+
+sub STORE { 
+    my $self = shift;
+    $self->exlock;
+    my $rv = $self->{dbm}->STORE(@_);
+    $self->unlock;
+    $rv;
+};
+
+sub FETCH { 
+    my $self = shift;
+    $self->shlock;
+    my $rv = $self->{dbm}->FETCH(@_);
+    $self->unlock;
+    $rv;
+};
+
+sub FIRSTKEY {
+    my $self = shift;
+    $self->shlock;
+    $self->{keys} = [ keys %{$self->{dbm_hash}} ];
+    $self->unlock;
+    $self->NEXTKEY;
+}
+
+sub NEXTKEY {
+    shift(@{shift->{keys}});
+}
+
+sub mldbm_tie {
+    my $self = shift;
+    my $args = $self->{args};
+    my %dbm_hash;
+    my $dbm = tie(%dbm_hash, 'MLDBM', @$args) || die("can't tie to MLDBM with args: ".join(',', @$args)."; error: $!");
+    $self->{dbm_hash} = \%dbm_hash;
+    $self->{dbm} = $dbm;
+}
+
+sub exlock {
+    my $self = shift;
+    flock($self->{lock}, LOCK_EX) || die("can't write lock $self->{lock}: $!");
+    $self->mldbm_tie;
+}
+
+sub shlock {
+    my $self = shift;
+    flock($self->{lock}, LOCK_SH) || die("can't share lock $self->{lock}: $!");
+    $self->mldbm_tie;
+}
+
+sub unlock {
+    my $self = shift;
+    undef $self->{dbm};
+    untie %{$self->{dbm_hash}};
+    flock($self->{lock}, LOCK_UN) || die("can't unlock $self->{lock}: $!");
+}
+
+---------------------------------------------------------------------
+To unsubscribe, e-mail: modperl-unsubscribe@apache.org
+For additional commands, e-mail: modperl-help@apache.org
+
+
+
+
+Return-Path: perrin@primenet.com
+Received: from proxy1.ba.best.com (root@proxy1.ba.best.com [206.184.139.12])
+	by shell18.ba.best.com (8.9.3/8.9.2/best.sh) with ESMTP id PAA21790
+	for <chamas+XRCPT.6a6f73687561406368616d61732e636f6d@shell18.ba.best.com>; Tue, 21 Nov 2000 15:04:31 -0800 (PST)
+Received: from pharkins.office.etoys.com ([63.174.210.2])
+	by proxy1.ba.best.com (8.9.3/8.9.2/best.in) with ESMTP id PAA05503
+	for <joshua@chamas.com>; Tue, 21 Nov 2000 15:02:21 -0800 (PST)
+Received: from localhost (pharkins@localhost)
+	by pharkins.office.etoys.com (8.9.3/8.9.3) with ESMTP id PAA01988;
+	Tue, 21 Nov 2000 15:00:01 -0800
+X-Authentication-Warning: pharkins.office.etoys.com: pharkins owned process doing -bs
+Date: Tue, 21 Nov 2000 15:00:01 -0800 (PST)
+From: Perrin Harkins <perrin@primenet.com>
+X-Sender: pharkins@pharkins.office.etoys.com
+Reply-To: Perrin Harkins <perrin@primenet.com>
+To: Joshua Chamas <joshua@chamas.com>
+cc: Mod Perl <modperl@apache.org>
+Subject: Re: New Module Idea: MLDBM::Sync
+In-Reply-To: <3A150AB9.F5619379@chamas.com>
+Message-ID: <Pine.LNX.4.21.0011211449180.31695-100000@pharkins.office.etoys.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Rcpt-To: joshua@chamas.com
+X-Mozilla-Status2: 00000000
+
+On Fri, 17 Nov 2000, Joshua Chamas wrote:
+> I'm working on a new module to be used for mod_perl style 
+> caching.  I'm calling it MLDBM::Sync because its a subclass 
+> of MLDBM that makes sure concurrent access is serialized with 
+> flock() and i/o flushing between reads and writes.
+
+I looked through the code and couldn't see how you are doing i/o
+flushing.  This is more of an issue with Berkeley DB than SDBM I think,
+since Berkeley DB will cache things in memory.  Can you point to me it?
+
+Also, I'm confused on the usage.  Do you open the dbm file and keep it
+open, or do you tie/untie on every request?
+
+> Any thoughts? 
+
+You might want to look at the Mason caching API.  It would be nice to make
+an interface like that available on top of a module like this.
+
+- Perrin
+
+> package MLDBM::Sync;
+> use MLDBM;
+> use Fcntl qw(:flock);
+> use strict;
+> no strict qw(refs);
+> use vars qw($AUTOLOAD);
+> 
+> sub TIEHASH { 
+>     my($class, $file, @args) = @_;
+> 
+>     my $fh = "$file.lock";
+>     open($fh, ">>$fh") || die("can't open file $fh: $!");
+> 
+>     bless { 
+> 	   'args' => [ $file, @args ],
+> 	   'lock' => $fh,
+> 	   'keys' => [],
+> 	  };
+> }
+> 
+> sub DESTROY { 
+>     my $self = shift;
+>     if (($self->{lock})) {
+> 	close($self->{lock})
+>     }
+> }
+> 
+> sub AUTOLOAD {
+>     my $self = shift;
+>     $AUTOLOAD =~ /::([^:]+)$/;
+>     my $func = $1;
+>     $self->exlock;
+>     my $rv = $self->{dbm}->$func(@_);
+>     $self->unlock;
+>     $rv;
+> }
+> 
+> sub STORE { 
+>     my $self = shift;
+>     $self->exlock;
+>     my $rv = $self->{dbm}->STORE(@_);
+>     $self->unlock;
+>     $rv;
+> };
+> 
+> sub FETCH { 
+>     my $self = shift;
+>     $self->shlock;
+>     my $rv = $self->{dbm}->FETCH(@_);
+>     $self->unlock;
+>     $rv;
+> };
+> 
+> sub FIRSTKEY {
+>     my $self = shift;
+>     $self->shlock;
+>     $self->{keys} = [ keys %{$self->{dbm_hash}} ];
+>     $self->unlock;
+>     $self->NEXTKEY;
+> }
+> 
+> sub NEXTKEY {
+>     shift(@{shift->{keys}});
+> }
+> 
+> sub mldbm_tie {
+>     my $self = shift;
+>     my $args = $self->{args};
+>     my %dbm_hash;
+>     my $dbm = tie(%dbm_hash, 'MLDBM', @$args) || die("can't tie to MLDBM with args: ".join(',', @$args)."; error: $!");
+>     $self->{dbm_hash} = \%dbm_hash;
+>     $self->{dbm} = $dbm;
+> }
+> 
+> sub exlock {
+>     my $self = shift;
+>     flock($self->{lock}, LOCK_EX) || die("can't write lock $self->{lock}: $!");
+>     $self->mldbm_tie;
+> }
+> 
+> sub shlock {
+>     my $self = shift;
+>     flock($self->{lock}, LOCK_SH) || die("can't share lock $self->{lock}: $!");
+>     $self->mldbm_tie;
+> }
+> 
+> sub unlock {
+>     my $self = shift;
+>     undef $self->{dbm};
+>     untie %{$self->{dbm_hash}};
+>     flock($self->{lock}, LOCK_UN) || die("can't unlock $self->{lock}: $!");
+> }
+
+
+
+
+Return-Path: plindner@redhat.com
+Received: from proxy1.ba.best.com (root@proxy1.ba.best.com [206.184.139.12])
+	by shell18.ba.best.com (8.9.3/8.9.2/best.sh) with ESMTP id KAA08700
+	for <chamas+XRCPT.6a6f73687561406368616d61732e636f6d@shell18.ba.best.com>; Wed, 22 Nov 2000 10:01:41 -0800 (PST)
+Received: from hardrock.soma.redhat.com (firebox-ext.soma.redhat.com [205.217.45.80] (may be forged))
+	by proxy1.ba.best.com (8.9.3/8.9.2/best.in) with ESMTP id KAA04781
+	for <joshua@chamas.com>; Wed, 22 Nov 2000 10:00:38 -0800 (PST)
+Received: (from plindner@localhost)
+	by hardrock.soma.redhat.com (8.9.3/8.9.3) id JAA30808;
+	Wed, 22 Nov 2000 09:59:56 -0800
+Date: Wed, 22 Nov 2000 09:59:56 -0800
+From: Paul Lindner <plindner@redhat.com>
+To: Tim Bunce <Tim.Bunce@ig.co.uk>
+Cc: Perrin Harkins <perrin@primenet.com>, Joshua Chamas <joshua@chamas.com>,
+        Mod Perl <modperl@apache.org>
+Subject: Re: New Module Idea: MLDBM::Sync
+Message-ID: <20001122095956.E7977@redhat.com>
+Reply-To: plindner@redhat.com
+Mail-Followup-To: Tim Bunce <Tim.Bunce@ig.co.uk>,
+	Perrin Harkins <perrin@primenet.com>,
+	Joshua Chamas <joshua@chamas.com>, Mod Perl <modperl@apache.org>
+References: <3A150AB9.F5619379@chamas.com> <Pine.LNX.4.21.0011211449180.31695-100000@pharkins.office.etoys.com> <20001122105843.M13788@ig.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <20001122105843.M13788@ig.co.uk>; from Tim.Bunce@ig.co.uk on Wed, Nov 22, 2000 at 10:58:43AM +0000
+X-Rcpt-To: joshua@chamas.com
+X-Mozilla-Status2: 00000000
+
+On Wed, Nov 22, 2000 at 10:58:43AM +0000, Tim Bunce wrote:
+> On Tue, Nov 21, 2000 at 03:00:01PM -0800, Perrin Harkins wrote:
+> > On Fri, 17 Nov 2000, Joshua Chamas wrote:
+> > > I'm working on a new module to be used for mod_perl style 
+> > > caching.  I'm calling it MLDBM::Sync because its a subclass 
+> > > of MLDBM that makes sure concurrent access is serialized with 
+> > > flock() and i/o flushing between reads and writes.
+> > 
+> > I looked through the code and couldn't see how you are doing i/o
+> > flushing.  This is more of an issue with Berkeley DB than SDBM I think,
+> > since Berkeley DB will cache things in memory.  Can you point to me it?
+> 
+> I'm puzzled why people wouldn't just use version 3 of Berkeley DB (via
+> DB_File.pm or BerkeleyDB.pm) which supports multiple readers and
+> writers through a shared memory cache.  No open/close/flush required
+> per-write and very very much faster.
+> 
+> Is there a reason I'm missing?
+
+Might MLDBM::Sync work over an NFS mounted partition?  That's one
+reason I've not used the BerkeleyDB stuff yet..
+
+-- 
+Paul Lindner
+plindner@redhat.com
+Red Hat Inc.
+
+
+
+Return-Path: modperl-return-11259-chamas=alumni.stanford.org@apache.org
+Received: from proxy1.ba.best.com (root@proxy1.ba.best.com [206.184.139.12])
+	by shell18.ba.best.com (8.9.3/8.9.2/best.sh) with ESMTP id SAA11838
+	for <chamas+XRCPT.6a6f73687561406368616d61732e636f6d@shell18.ba.best.com>; Wed, 22 Nov 2000 18:46:12 -0800 (PST)
+Received: from c004.sfo.cp.net (c004-mx001.c004.sfo.cp.net [209.228.14.146])
+	by proxy1.ba.best.com (8.9.3/8.9.2/best.in) with SMTP id SAA13348
+	for <joshua@chamas.com>; Wed, 22 Nov 2000 18:44:58 -0800 (PST)
+Received: (cpmta 15598 invoked from network); 22 Nov 2000 18:44:28 -0800
+Delivered-To: stanfordalumni.org%chamas@stanfordalumni.org
+Received: (cpmta 15589 invoked from network); 22 Nov 2000 18:44:27 -0800
+Received: from locus.apache.org (63.211.145.10)
+  by smtp.c004-mx000.c004.sfo.cp.net (209.228.14.146) with SMTP; 22 Nov 2000 18:44:27 -0800
+X-Received: 23 Nov 2000 02:44:27 GMT
+Received: (qmail 61013 invoked by uid 500); 23 Nov 2000 01:54:43 -0000
+Mailing-List: contact modperl-help@apache.org; run by ezmlm
+Precedence: bulk
+list-help: <mailto:modperl-help@apache.org>
+list-unsubscribe: <mailto:modperl-unsubscribe@apache.org>
+list-post: <mailto:modperl@apache.org>
+Delivered-To: mailing list modperl@apache.org
+Received: (qmail 60999 invoked from network); 23 Nov 2000 01:54:42 -0000
+Message-ID: <3A1C78C1.A1BAACBE@chamas.com>
+Date: Wed, 22 Nov 2000 17:54:09 -0800
+From: Joshua Chamas <joshua@chamas.com>
+Organization: NodeWorks <http://nodeworks.com>
+X-Mailer: Mozilla 4.75 [en] (WinNT; U)
+X-Accept-Language: en,ja
+MIME-Version: 1.0
+To: plindner@redhat.com
+CC: Perrin Harkins <perrin@primenet.com>, Mod Perl <modperl@apache.org>
+Subject: Use Sambe, not NFS [Re: New Module Idea: MLDBM::Sync]
+References: <3A150AB9.F5619379@chamas.com> <Pine.LNX.4.21.0011211449180.31695-100000@pharkins.office.etoys.com> <20001122105843.M13788@ig.co.uk> <20001122095956.E7977@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Rating: locus.apache.org 1.6.2 0/1000/N
+X-Rcpt-To: joshua@chamas.com
+X-Mozilla-Status2: 00000000
+
+Paul Lindner wrote:
+> 
+> Might MLDBM::Sync work over an NFS mounted partition?  That's one
+> reason I've not used the BerkeleyDB stuff yet..
+> 
+
+Paul,
+
+For the first time, I benchmarked concurrent linux client write 
+access over a SAMBA network share, and it worked, 0 data loss.
+This is opposed to a NFS share accessed from linux which would
+see data loss due to lack of serialization of write requests.
+
+With MLDBM::Sync, I benchmarked 8 linux clients writing to a 
+samba mount pointed at a WinNT PIII 450 over a 10Mbs network.
+For 8000 writes, I got:
+
+ SDBM_File: 105 writes/sec
+ DB_File:    99 writes/sec [ better than to local disk ]
+
+It seems the network was the bottleneck on this test, as neither
+client nor server CPU/disk was maxed out.  The WinNT server was 
+running at 20-25% CPU utilization during the test.
+
+As Apache::ASP $Session uses a method similar to MLDBM::Sync 
+to flush i/o, you could then point StateDir to a samba/CIFS 
+share to cluster well an ASP application, with 0 data loss.
+My understanding is that you have a NetApp cluster which can
+export CIFS?  
+
+I'd benchmark this heavily obviously to see if there are any
+NetApp cluster locking issues, but am guessing that you could
+likely get 200+ ASP requests per second on a 100Mbs network, 
+which will likely far exceed your base application performance.
+
+-- Joshua
+_________________________________________________________________
+Joshua Chamas			        Chamas Enterprises Inc.
+NodeWorks >> free web link monitoring	Huntington Beach, CA  USA 
+http://www.nodeworks.com                1-714-625-4051
+
+---------------------------------------------------------------------
+To unsubscribe, e-mail: modperl-unsubscribe@apache.org
+For additional commands, e-mail: modperl-help@apache.org
+
+
+
+
+Return-Path: perrin@primenet.com
+Received: from proxy5.ba.best.com (root@proxy5.ba.best.com [206.184.139.16])
+	by shell18.ba.best.com (8.9.3/8.9.2/best.sh) with ESMTP id RAA09609
+	for <chamas+XRCPT.6a6f73687561406368616d61732e636f6d@shell18.ba.best.com>; Tue, 21 Nov 2000 17:44:31 -0800 (PST)
+Received: from pharkins.office.etoys.com ([63.174.210.2])
+	by proxy5.ba.best.com (8.9.3/8.9.2/best.in) with ESMTP id RAA28614
+	for <joshua@chamas.com>; Tue, 21 Nov 2000 17:42:54 -0800 (PST)
+Received: from localhost (pharkins@localhost)
+	by pharkins.office.etoys.com (8.9.3/8.9.3) with ESMTP id RAA04750;
+	Tue, 21 Nov 2000 17:39:29 -0800
+X-Authentication-Warning: pharkins.office.etoys.com: pharkins owned process doing -bs
+Date: Tue, 21 Nov 2000 17:39:29 -0800 (PST)
+From: Perrin Harkins <perrin@primenet.com>
+X-Sender: pharkins@pharkins.office.etoys.com
+Reply-To: Perrin Harkins <perrin@primenet.com>
+To: Joshua Chamas <joshua@chamas.com>
+cc: Mod Perl <modperl@apache.org>
+Subject: Re: New Module Idea: MLDBM::Sync
+In-Reply-To: <3A1B158B.B3399E30@chamas.com>
+Message-ID: <Pine.LNX.4.21.0011211733280.31695-100000@pharkins.office.etoys.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Rcpt-To: joshua@chamas.com
+X-Mozilla-Status2: 00000000
+
+On Tue, 21 Nov 2000, Joshua Chamas wrote:
+> On my box, some rough numbers in writes per sec, with doing a
+> tie/untie for each write, are:
+> 
+>   sync writes/sec with tie/untie
+> 
+> SDBM_File 	1000
+> DB_File		30
+> GDBM_File	40
+> 
+> Note that on a RAM disk in Linux, DB_File goes to 500 writes per sec,
+> but setting up a RAM disk is a pain, so I'd probably use File::Cache
+> which gets about 300 writes per sec on the file system.
+
+Useful numbers.  It looks as if File::Cache is the best approach if you
+need anything beyond the SDBM size limit.  Maybe some fine-tuning of that
+module could bring it more in line with SDBM performance.
+
+If you have the RAM to spare - and I guess you do, if you're considering
+things like RAM disks - you could try IPC::MM too.  I think it will be
+faster than the other IPC modules because it's a Perl API to a shared hash
+written in C.
+
+- Perrin
+
+
+
+--------------387DD1C21DD722F93E36B253--
+

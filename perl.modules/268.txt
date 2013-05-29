@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:268
+Return-Path: <Raphael.Manfredi@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3877 invoked from network); 26 Oct 1999 09:45:09 -0000
+Received: from beta.st.com (HELO beta.dmz-eu.st.com) (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 26 Oct 1999 09:45:09 -0000
+Received: from eux100.sgp.st.com (eux100.sgp.st.com [164.129.225.7])
+	by beta.dmz-eu.st.com (Postfix) with ESMTP id A9D9B259E
+	for <modules@perl.org>; Tue, 26 Oct 1999 09:44:30 +0000 (GMT)
+Received: from lod23.gnb.st.com (lod28.gnb.st.com [164.129.116.152])
+	by eux100.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id LAA14196
+	for <modules@perl.org>; Tue, 26 Oct 1999 11:44:37 +0200 (METDST)
+To: modules@perl.org
+Subject: Another module namespace request
+X-Mailer: NMH [version 1.0.1]
+Organization: ST Microelectronics, Grenoble, France
+Date: Tue, 26 Oct 1999 11:43:06 +0200
+Message-ID: <13046.940930986@lod23.gnb.st.com>
+Sender: manfredi@lod23.gnb.st.com
+Approved: news@nntp.perl.org
+From: Raphael.Manfredi@st.com (Raphael Manfredi)
+
+Module Namespace Guardians,
+
+I have a set of modules useful for CGI work, which more or less provide
+high level functionalities to low-level problems. ;-)
+
+The modules were inspired by Tom Christiansen's MxScreen.
+
+I have a State module (bad global name obviously) that handles the
+internal state machine and input form validation logic (like refusing
+to move to another state if the previous "screen" does not pass
+the validation callbak).
+
+The State module knows which state to display, which to hide. It calls
+screen displayer routines with a State::Context object as sole argument,
+which gives access to the State, the Query, and an additional state-specific
+argument.
+
+The Query module holds the underlying querying information: when did the
+query start, with which version of the CGI script. What was the last state
+we were in, which next state is associated to which button, etc... This
+is not handled by State because this deals with internal information passed
+via hidden parameters, systematically.
+
+Finally, I have a generic interactive form .pl file that allows one to
+specify a form, the validation information, the states the buttons should
+move the CGI to, etc... The idea is that the form is described once, and
+then the routine generate_input_form() knows that it must display the form
+if the screen is visible, or propate its input as hidden parameters otherwise.
+
+This .pl file (which I shall modularize as a name To Be Defined) interacts
+with both the State and Query classes to exchange information, so it's not
+a standalone class.
+
+Again, it's a framework, so I guess I need to choose a new root namespace
+and stick all my classes underneath.
+
+Proposals:
+
+	1) CGI_Multiform
+	2) CGI_Multiplexer
+	3) CGI_Screens
+
+I prefer 1).
+
+Raphael

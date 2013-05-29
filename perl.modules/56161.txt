@@ -1,0 +1,120 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:56161
+Return-Path: <flavio@polettix.it>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 9699 invoked from network); 6 Sep 2007 10:53:35 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 6 Sep 2007 10:53:35 -0000
+Received: (qmail 18860 invoked by uid 225); 6 Sep 2007 10:53:34 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18845 invoked by alias); 6 Sep 2007 10:53:32 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,RDNS_NONE
+X-Spam-Check-By: la.mx.develooper.com
+Received: from Unknown (HELO desantix.it) (195.130.249.251)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Thu, 06 Sep 2007 03:53:20 -0700
+Received: (qmail 4040 invoked by uid 511); 6 Sep 2007 11:01:34 -0000
+Received: from localhost.localdomain (HELO upmail.polettix.it) (127.0.0.1)
+  by localhost.localdomain with SMTP; 6 Sep 2007 11:01:34 -0000
+Received: from 195.130.249.248
+        (SquirrelMail authenticated user flavio@polettix.it)
+        by upmail.polettix.it with HTTP;
+        Thu, 6 Sep 2007 13:01:34 +0200 (CEST)
+Message-ID: <33179.195.130.249.248.1189076494.squirrel@upmail.polettix.it>
+Date: Thu, 6 Sep 2007 13:01:34 +0200 (CEST)
+Subject: [Fwd: Failed: PAUSE indexer report 
+     POLETTIX/Math-Telephony-ErlangB-0.9.1.tar.gz]
+To: modules@perl.org
+User-Agent: SquirrelMail/1.4.6
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+Approved: news@nntp.perl.org
+From: flavio@polettix.it ("Flavio Poletti")
+
+Hi,
+
+   I have a little doubt regarding this issue with the indexer.
+
+I use the version.pm module to handle version numbers in my packages
+(well, at least recently). In the 0.9 version of the module in the
+subject, I put
+(http://search.cpan.org/src/POLETTIX/Math-Telephony-ErlangB-v0.9/lib/Math/Telephony/ErlangB.pm):
+
+   use version; our $VERSION = qv('0.9');
+
+Then, in 0.9.1, I put
+(http://search.cpan.org/src/POLETTIX/Math-Telephony-ErlangB-0.9.1/lib/Math/Telephony/ErlangB.pm):
+
+   use version; our $VERSION = qv('0.9.1');
+
+A little check with version leads to this:
+
+poletti@PolettiX:~$ perl -Mversion -le '
+   for (@ARGV) {
+      my $v = qv($_);
+      print $v," => ",$v->numify
+   }
+' 0.9 0.9.1
+v0.9 => 0.009000
+0.9.1 => 0.009001
+
+(using perl 5.8.8 on Linux).
+
+This isn't the same evaluation made by the indexer, that understands the
+v0.9 as 0.900 (see below). Is this a bug in the indexer?
+
+In the meanwhile, I "promoted" the module to version 1.0.0, just to be on
+the safe side; on the other hand, I'd like to understand how to behave in
+the future.
+
+Regards,
+
+   Flavio Poletti.
+
+-------------------------- Messaggio originale ---------------------------
+Oggetto: Failed: PAUSE indexer report
+POLETTIX/Math-Telephony-ErlangB-0.9.1.tar.gz
+Da:      "PAUSE" <upload@pause.perl.org>
+Data:    Lun, 3 Settembre 2007 6:39 pm
+A:       flavio@polettix.it
+         andreas.koenig.gmwojprw+pause@franz.ak.mind.de
+--------------------------------------------------------------------------
+
+The following report has been written by the PAUSE namespace indexer.
+Please contact modules@perl.org if there are any open questions.
+  Id: mldistwatch 900 2007-08-12 14:37:02Z k
+
+               User: POLETTIX (Flavio Poletti)
+  Distribution file: Math-Telephony-ErlangB-0.9.1.tar.gz
+    Number of files: 13
+         *.pm files: 1
+             README: Math-Telephony-ErlangB-0.9.1/README
+           META.yml: Math-Telephony-ErlangB-0.9.1/META.yml
+  Timestamp of file: Mon Sep  3 16:37:41 2007 UTC
+   Time of this run: Mon Sep  3 16:39:25 2007 UTC
+
+Status of this distro: Decreasing version number
+================================================
+
+The following packages (grouped by status) have been found in the distro:
+
+Status: Decreasing version number
+=================================
+
+     module: Math::Telephony::ErlangB
+    version: 0.009001
+    in file: Math-Telephony-ErlangB-0.9.1/lib/Math/Telephony/ErlangB.pm
+     status: Not indexed because
+             Math-Telephony-ErlangB-v0.9/lib/Math/Telephony/ErlangB.pm
+             in P/PO/POLETTIX/Math-Telephony-ErlangB-v0.9.tar.gz has a
+             higher version number (0.900)
+
+__END__
+
+

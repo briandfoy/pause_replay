@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:20553
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 41086 invoked by uid 76); 21 Apr 2003 22:04:58 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Mon, 21 Apr 2003 15:04:58 -0700
+Received: (qmail 26303 invoked by uid 225); 21 Apr 2003 22:04:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26298 invoked by uid 507); 21 Apr 2003 22:04:56 -0000
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Mon, 21 Apr 2003 15:04:53 -0700
+Received: from franz.ak.mind.de (IDENT:k@localhost [127.0.0.1])	by franz.ak.mind.de (8.12.9/8.12.9) with ESMTP id h3LM4b9D028130;	Tue, 22 Apr 2003 00:04:37 +0200
+Received: (from k@localhost)	by franz.ak.mind.de (8.12.9/8.12.9/Submit) id h3LM4bmZ028129;	Tue, 22 Apr 2003 00:04:37 +0200
+X-Authentication-Warning: franz.ak.mind.de: k set sender to andreas.koenig@anima.de using -f
+To: "Jos I. Boumans" <kane@dwim.org>
+Cc: andreas.koenig@anima.de (Andreas J. Koenig),   "Marcus Holland-Moritz" <mhx-cpan@gmx.net>,   <andreas.koenig@pause.x.perl.org>, <modules@perl.org>
+Subject: Re: PAUSE indexer report MHX/Convert-Binary-C-0.13.tar.gz
+Date: Tue, 22 Apr 2003 00:04:37 +0200
+In-Reply-To: <350A1742-7442-11D7-A7B3-000393B97AA4@dwim.org> (Jos I. Boumans's message of "Mon, 21 Apr 2003 23:42:53 +0200")
+Message-ID: <m3el3vbj7u.fsf@franz.ak.mind.de>
+User-Agent: Gnus/5.090017 (Oort Gnus v0.17) Emacs/21.2 (gnu/linux)
+References: <350A1742-7442-11D7-A7B3-000393B97AA4@dwim.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-1.9 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,REFERENCES,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_GNUS_UA,X_AUTH_WARNING version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 21 Apr 2003 23:42:53 +0200, "Jos I. Boumans" <kane@dwim.org> said:
+
+  > On Monday, Apr 21, 2003, at 23:31 Europe/Amsterdam, Andreas J. Koenig
+  > wrote:
+
+ >>>> The following packages have been found in the distro:
+ >>>> 
+ >>>> Convert::Binary::C
+ >>>> version: 0.13
+ >>>> in file: Convert-Binary-C-0.13/lib/Convert/Binary/C.pm
+ >>>> status: Not indexed because
+ >>>> Convert-Binary-C-0.12/lib/Convert/Binary/C.pm in
+ >>>> M/MH/MHX/Convert-Binary-C-0.12.tar.gz has a higher version
+ >>>> number (0.38)
+ >> 
+ >>> Yes, in C::B::C-0.12 it did have a higher version number.
+ >>> However, I discovered that CPANPLUS had some trouble when
+ >>> the installed module reports version 0.38 while the latest
+ >>> distribution version was 0.12.
+ >> 
+ >> Jos, please tell us that this isn't true:-)
+
+  > hmm, it seems to make sense to me.. 02package.details reports C::B::C
+  > and C::B::C::C as:
+  > Convert::Binary::C       	0.38  M/MH/MHX/Convert-Binary-C-0.12.tar.gz
+  > Convert::Binary::C::Cached  0.12  M/MH/MHX/Convert-Binary-C-0.12.tar.gz
+
+No, it's now more like
+
+# zgrep Convert::Binary 02packages.details.txt.gz
+Convert::Binary::C                 0.38  M/MH/MHX/Convert-Binary-C-0.12.tar.gz
+Convert::Binary::C::Cached         0.13  M/MH/MHX/Convert-Binary-C-0.13.tar.gz
+
+
+  > so if 0.38 is also $C::B::C::VERSION, that's what cpanplus will report
+  > as being installed.
+
+ >> Well, in general, falling version numbers are not good for programmers
+ >> who care about version numbers.
+
+  > it's usually a Good Idea to match your versions to the distribution,
+  > unless you have a Very Good Reason not too, imvho. Although andreas is
+  > probably authoritive here :)
+
+Authoritative is what the programmer writes in the module itself, not
+what he decides to put into the filename of the distro. Give or take a
+few tweaks. Since the very first days of CPAN we had distros with a
+whole set of different version numbers.
+
+-- 
+andreas

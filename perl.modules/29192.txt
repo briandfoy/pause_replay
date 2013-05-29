@@ -1,0 +1,84 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:29192
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 94259 invoked by uid 76); 6 Mar 2004 00:17:58 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170)
+  by onion.perl.org (qpsmtpd/0.27-dev) with SMTP; Fri, 05 Mar 2004 16:17:58 -0800
+Received: (qmail 26100 invoked by uid 225); 6 Mar 2004 00:17:55 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26062 invoked by alias); 6 Mar 2004 00:17:34 -0000
+Received: from [208.184.111.59] (HELO pd2.baremetal.com) (208.184.111.59)
+  by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Fri, 05 Mar 2004 16:17:34 -0800
+Received: from [24.108.166.215] (h24-108-166-215.gv.shawcable.net [24.108.166.215])
+	by pd2.baremetal.com (8.12.10/8.12.9) with ESMTP id i260HgOq012148
+	for <modules@perl.org>; Fri, 5 Mar 2004 16:17:44 -0800
+Mime-Version: 1.0
+Message-ID: <p05200f01bc6ec8e4718d@[24.108.166.215]>
+Date: Fri, 5 Mar 2004 16:17:28 -0800
+To: modules@perl.org
+Subject: Re: RFC: multi-package module best practices
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+X-Scanned-By: MIMEDefang 2.36
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on x1.develooper.com
+X-Spam-Status: No, hits=-4.9 required=8.0 tests=BAYES_00 autolearn=ham 
+	version=2.63
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Thanks for your reply, Perrin.
+
+At 4:29 PM -0500 3/5/04, Perrin Harkins (perrin@elem.com) wrote:
+>[] and in fact I am more scared when I see one big honking module file.
+
+In this case, each of the two components and their sums is small 
+and/or medium-small with one piece being majority.
+
+Here is how the totals break down.  The numbers include all code, 
+whether methods or constant declarations, and code comments, but not 
+POD.  "total" is everything in the module, "shared" is common 
+utilities or constant data, and the capitalized items are methods 
+specific to the component package.
+
+Locale::KeyedText
+	- total - 6K
+	- shared - 1K
+	- Message - 2K
+	- Translator - 3K
+
+SQL::SyntaxModel
+	- total - 72K
+	- shared - 37K
+	- Node - 31K
+	- Container - 4K
+
+Rosetta (this is incomplete but stands to grow about 50% larger)
+	- total - 25K
+	- shared - 6K
+	- Interface - 17K (main growth to be here)
+	- Engine - 2K
+
+Suffice it to say, none of these look near a "big honking" size. 
+(Certainly not like some multi-megabyte modules out there.)
+
+Perrin said:
+>I don't buy it.  The majority of popular distributions contain more than
+>one module.  This doesn't seem to be scaring anyone, [...] Splitting 
+>your code up into manageable chunks is a good thing, and defining 
+>multiple
+>packages in one file is very rarely a good idea.
+
+Despite what I said before, I can concede that some of my modules may 
+indeed be better to split up into 3 pieces each.
+
+However, I only see that working with Locale::KeyedText and Rosetta. 
+I do not see a split working so well with SQL::SyntaxModel.
+
+(I see it as somewhat ironic that it is the smallest modules of the 
+modules that are easiest to find rationales for splitting.)
+
+Any further suggestions or comments?
+
+Thank you. -- Darren Duncan

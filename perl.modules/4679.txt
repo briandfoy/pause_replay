@@ -1,0 +1,59 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4679
+Return-Path: <jv@squirrel.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7623 invoked from network); 14 Mar 2001 13:54:20 -0000
+Received: from smtp9.xs4all.nl (194.109.127.135)
+  by tmtowtdi.perl.org with SMTP; 14 Mar 2001 13:54:20 -0000
+Received: from phoenix.squirrel.nl (jojan.xs4all.nl [213.84.56.213])
+	by smtp9.xs4all.nl (8.9.3/8.9.3) with ESMTP id OAA23669;
+	Wed, 14 Mar 2001 14:54:18 +0100 (CET)
+Received: by phoenix.squirrel.nl (Postfix, from userid 501)
+	id CE216570DB; Wed, 14 Mar 2001 14:54:17 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <15023.30729.791451.350672@phoenix.squirrel.nl>
+Date: Wed, 14 Mar 2001 14:54:17 +0100
+To: Benjamin Trott <ben@rhumba.pair.com>
+Cc: <modules@perl.org>
+Reply-To: <modules@perl.org>
+Subject: Re: Repost: Namespace registration: IO::Buffer
+References: <B6D279A1.8668%ben@rhumba.pair.com>
+X-Mailer: VM 6.92 under Emacs 21.0.99.1
+Approved: news@nntp.perl.org
+From: jvromans@squirrel.nl (Johan Vromans)
+
+[Quoting Benjamin Trott, on March 12 2001, 13:03, in "Repost: Namespace re"]
+
+>     use IO::Buffer;
+>     my $buffer = IO::Buffer->new;
+> 
+>     ## Add a 32-bit integer.
+>     $buffer->put_int32(10932930);
+> 
+>     ## Get it back.
+>     my $int = $buffer->get_int32;
+
+Somehow this doesn't look IO related to me.
+
+> All of the I<get_*> and I<put_*> methods respect the
+> internal offset state in the buffer object. This means
+> that, for example, if you call I<get_int16> twice in a
+> row, you can be ensured that you'll get the next two
+> 16-bit integers in the buffer.
+
+Does that mean that
+
+   $buf->put_int16(24);
+   $buf->put_int32(1233455);
+   $buf->put_int16(99);
+
+   $buf->get_int16   # 24
+   $buf->get_int16   # 99
+   $buf->get_int32   # 1233455
+
+Puzzled,
+	Johan

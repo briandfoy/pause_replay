@@ -1,0 +1,69 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:238
+Return-Path: <John.Redford@fmr.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19775 invoked from network); 25 Oct 1999 14:46:31 -0000
+Received: from gw17e.fmr.com (HELO gw17i.fmr.com) (192.223.252.81)
+  by tmtowtdi.perl.org with SMTP; 25 Oct 1999 14:46:31 -0000
+Received: (from smtp@localhost)
+	by gw17i.fmr.com (8.8.7/8.8.7) id KAA22146
+	for <modules@perl.org>; Mon, 25 Oct 1999 10:46:29 -0400 (EDT)
+Received: from msgbos101nts.fmr.com(137.199.100.30) by gw17i.fmr.com via smap (V2.0)
+	id xmaa21730; Mon, 25 Oct 99 10:45:57 -0400
+Received: by msgbos101nts.fmr.com with Internet Mail Service (5.5.2448.0)
+	id <40GNNHTX>; Mon, 25 Oct 1999 10:45:57 -0400
+Message-ID: <C139F4D49384D2118EB60008C7A4337B016FA9F6@MSGBOS675NTS.fmr.com>
+To: modules@perl.org
+Subject: React module
+Date: Mon, 25 Oct 1999 10:45:50 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Approved: news@nntp.perl.org
+From: John.Redford@fmr.com ("Redford, John")
+
+I want to publish a module which I have written called 'React'. This module
+is intended to provide the same general functionality that one gets from
+Tcl/Expect (as opposed to Expect, the Perl module).
+
+The interface for using React is to create a filehandle to communicate with
+a process on, then create a React object.
+	my ($pid, $fh) = spawn_pty("telnet localhost");
+	$reactor = new react($fh);
+
+Actions for handling expiration of a timeout of EOF on the filehandle may be
+specified:
+	$reactor->set_timeout( sub { ... } );
+	$reactor->set_eof( sub { ... } );
+
+A default timeout can be specified:
+	$reactor->set_wait(10);
+
+The output can be displayed or not:
+	$reactor->set_display(0);
+
+And then one proceeds to process react statements:
+	$reactor->react({
+		WAIT => 20,
+		'ogin:' => sub { $reactor->write($mylogin) },
+	}) or die "Failed to login\n";
+
+	$reactor->react({
+		'word:' => sub { $reactor->write($mypassword) },
+	}) or die "Failed to enter password\n";
+
+	$reactor->react({
+		WAIT => 20,
+		'\$' => sub { $reactor->write($mycommand) },
+	}) or die "Failed to get a prompt\n";
+
+
+And so forth....The 'WAIT' options override the default timeout period.
+There are a few additional options and features not presented here.
+
+--
+John Redford
+AKA GArrow

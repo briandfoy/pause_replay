@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3088
+Return-Path: <epa98@doc.ic.ac.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18428 invoked from network); 12 Oct 2000 12:04:57 -0000
+Received: from duck.doc.ic.ac.uk (exim@146.169.1.46)
+  by tmtowtdi.perl.org with SMTP; 12 Oct 2000 12:04:57 -0000
+Received: from texel16.doc.ic.ac.uk ([146.169.49.65] ident=epa98)
+	by duck.doc.ic.ac.uk with esmtp (Exim 3.16 #7)
+	id 13jh6O-0001Vb-00
+	for modules@perl.org; Thu, 12 Oct 2000 13:04:48 +0100
+Date: Thu, 12 Oct 2000 13:04:47 +0100 (BST)
+To: modules@perl.org
+Subject: Small module for debugging 'got to here' messages
+Message-ID: <Pine.LNX.4.21.0010121239370.17572-100000@texel16.doc.ic.ac.uk>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: epa98@doc.ic.ac.uk (Edward Avis)
+
+Rather than using a debugger, I prefer to put lots of print() statements
+in my code, showing where the execution has got to, values of variables,
+and so on.  I have written a module to help with this, at the moment
+it's called Dbg but obviously I need to pick a better name.
+
+An example may demonstrate why a module is useful for this, rather than
+just typing out print statements:
+
+use Dbg qw(t d);
+$Dbg::On = 1;      # global flag turning print statements on or off
+$Dbg::As_HTML = 1; # HTML-ify all messages, since this is a CGI script
+
+t('starting');
+
+# Tracing complex data structures with Data::Dumper
+my $v = [ 'a', 'b', { } ];
+t('variable $v has value ' . d($v));
+
+sub foo {
+    # This subroutine has already been debugged.  I'll turn off trace
+    # messages here.
+    #
+    local $Dbg::On = 0;
+
+    # do some stuff including lots of trace statements, which don't need
+    # to be commented out
+    #
+}
+
+The module provides an easy way to turn trace on and off for particular
+sections of code (rather than having to comment and uncomment trace
+lines in an editor).  The subroutine names 't' and 'd' are a bit
+cryptic, but something called so freqently (sometimes every other line
+of code) needs a short name.  They aren't exported without asking.
+
+I've looked for an existing module which does something similar.  The
+Devel:: modules seem to be focussed on peeking into perl's guts, while
+the Log:: modules are much more complex, and 'logging' is different to
+'debugging trace messages'.  (Logfiles are seen by the user, whereas
+trace messages are to help the developer and are turned off in the
+released version.)
+
+So I don't think that a Log:: prefix makes sense, and although the
+module is there to help developers, it doesn't fit in with the other
+Devel:: modules.  None of the other categories in the module list seems
+to fit.  The best I've come up with so far is Devel::Print or
+Log::TraceMessages.  Suggestions?
+
+-- 
+Ed Avis
+epa98@doc.ic.ac.uk
+
+

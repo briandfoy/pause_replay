@@ -1,0 +1,101 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:71301
+Return-Path: <emazep@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 5269 invoked from network); 22 May 2010 02:42:41 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 22 May 2010 02:42:41 -0000
+Received: (qmail 28092 invoked by uid 225); 22 May 2010 02:42:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28062 invoked by alias); 22 May 2010 02:42:40 -0000
+X-Spam-Status: No, hits=-0.1 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-fx0-f41.google.com (HELO mail-fx0-f41.google.com) (209.85.161.41)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 21 May 2010 19:42:38 -0700
+Received: by fxm11 with SMTP id 11so551397fxm.14
+        for <modules@perl.org>; Fri, 21 May 2010 19:42:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type;
+        bh=0VNll93yvj81565VbnkrAnc2pibNlZ43F5eDf+cjmPY=;
+        b=p5hcxKEnFFJZB+Y9vwDCJhT9dcPNqKh7oFAqKbhASz/Dd133bjZ7F8MYqz9/ty4jec
+         Sk/xV8O+fMmgQjjSCJrT9j1YgAEoJZpJaI1YAtyikRzW19cYr4mHHUwGoO9uWMEzTB2m
+         9knPl+CGnQGsQ7Rs5T161kxXjzKQTPrnvPv6A=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=QXAiLJgwz8mQ01nZ7r0FXJ6TPyxW2jWWuqPepR1gY71VwLWx0bH0gYR71eYseOZhpn
+         UFz4m76fSQwQwC+WwaKlAJdWNS/Qaij16I24Wna3aY1RJEiPRGtihhsX1NR2EBcEKAmt
+         sZ442awCvCAVnNWm3983j/1YXkIAfPE7PgLsM=
+MIME-Version: 1.0
+Received: by 10.239.135.2 with SMTP id b2mr220289hbb.206.1274496153806; Fri, 
+	21 May 2010 19:42:33 -0700 (PDT)
+Received: by 10.239.155.144 with HTTP; Fri, 21 May 2010 19:42:33 -0700 (PDT)
+In-Reply-To: <20100521151411.GZ15270@agaton.scsys.co.uk>
+References: <201005200049.o4K0nthf021769@pause.fiz-chemie.de>
+	 <20100520181402.GY15270@agaton.scsys.co.uk>
+	 <4BF59ACE.2090006@gmail.com>
+	 <20100521151411.GZ15270@agaton.scsys.co.uk>
+Date: Sat, 22 May 2010 04:42:33 +0200
+Message-ID: <AANLkTilxcJ-JFqwxwESXCZpqTg34HFZchYsKooXcLKIg@mail.gmail.com>
+Subject: Re: Module submission DBIx::DoMore
+To: Matt S Trout <mst@shadowcat.co.uk>
+Cc: modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+Approved: news@nntp.perl.org
+From: emazep@gmail.com (Emanuele Zeppieri)
+
+On Fri, May 21, 2010 at 5:14 PM, Matt S Trout <mst@shadowcat.co.uk> wrote:
+
+> On Thu, May 20, 2010 at 10:25:50PM +0200, Emanuele Zeppieri wrote:
+>> On 20/05/2010 20.14, Matt S Trout wrote:
+>>
+>> >How about DBIx::MultipleStatementDo then?
+>>
+>> This is certainly a much more descriptive name.
+>> I'll rename my module as soon as I'll get your reply about the question
+>> below.
+>
+> Glad you like the idea.
+
+Done!
+http://search.cpan.org/dist/DBIx-MultiStatementDo/
+
+I had just to strip some chars to try to silence the complaints from
+some lazy colleagues of mine  :-)
+
+>> >Also, can we please have the splitting behaviour in a standalone module
+>> >so I can steal it for DBIx::Class to use without copy and paste :)
+>>
+>> Sure!
+>> But, please, have a look at:
+>> http://search.cpan.org/~emazep/DBIx-DoMore-0.01002/lib/DBIx/DoMore.pm#split
+>>
+>> where you can see that (the to be renamed) DBIx::DoMore already exposes
+>> a public, documented (class) method which does precisely that (the
+>> method is called "split" indeed ;-)
+>
+> The guys working on the relevant DBIC bits are quite happy with it as is
+> since the new deployment management code is already Moose so we're not adding
+> any deps using it directly.
+
+I did not consider that the splitting behaviour didn't need Moose, so
+it could really be confined in a module of its own without that dep,
+you were perfectly right...
+
+> So sure, leave it in the main package. Thanks!
+
+... But I'll take advantage of this (for now).
+
+Rather, should you find any SQL code which is not split correctly,
+please let me know that I'll extend the parsing logic.
+
+Ciao!
+
+-Emanuele

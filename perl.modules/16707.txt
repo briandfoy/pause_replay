@@ -1,0 +1,103 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16707
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 375 invoked by uid 76); 6 Jan 2003 18:44:52 -0000
+Received: from palladium2.baremetal.com (HELO pd2.baremetal.com) (208.184.111.59) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-06 18:44:52Z
+Received: from localhost (darren@localhost)	by pd2.baremetal.com (8.11.6/8.11.6) with ESMTP id h06Ik9T29612;	Mon, 6 Jan 2003 10:46:09 -0800
+Date: Mon, 6 Jan 2003 10:46:09 -0800 (PST)
+X-X-Sender:  <darren@pd2.baremetal.com>
+To: Tim Bunce <Tim.Bunce@pobox.com>, <modules@perl.org>
+cc: Darren Duncan <darren@DarrenDuncan.net>, <victoria-pm@pm.org>
+Subject: Re: Module submission DBIx::Portable
+Message-ID: <Pine.LNX.4.33.0301060853080.8625-100000@pd2.baremetal.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Tim Bunce said:
+> Frameworks of multiple closely related modules are encouraged to
+> have a catchy 'brand name' at the top level rather than fit into
+> an existing namespace. e.g., Alzabo and Tangram.
+> Tim.
+
+Thanks, I appreciate the "encouragement"!
+
+(FYI, I had previously avoided making a new top level on
+purpose since the CPAN module guidelines said it was preferable to fit
+into an existing top level if possible, and only make a new one if there
+were no existing ones that were appropriate.  And I had thought it would
+be presumptuous of me to assume my work was important enough to deserve
+its own top level, as if that was highly sought-after real-estate like
+top level internet domain names.)
+
+As it stands, I had already structured my module hierarchy in such a way
+that it could be translated to elsewhere in the namespace but keep
+relative consistency to itself.  That is, "DBIx::Portable::PDBI"/::* can
+become "PDBI"/::* and "DBIx::Portable::PDBD"/::* become "PDBD"/::*.
+Technically, this means I would be using two top-level namespaces;
+however, in my mind this seems appropriate because I more or less have two
+distinct frameworks that use each other but are mostly separate (or as
+much as DBI and DBD::* are separate).
+
+I haven't thought much about branding since I usually name my modules
+according to their purpose or function.  So it may take me time to come up
+with something "brandable".  I welcome any suggestions from the community.
+The "Description" that I already posted should give a good idea of what I
+am going for: interface to all types of database activity or features in a
+completely portable, detailed level of control, and fast/efficient way.
+
+On the other hand, I don't really think that my distribution should be
+branded; despite anything I may have written, what I am doing is meant to
+be a generic way of talking to databases without knowing any SQL, so
+applications are portable, but do this more completely than existing
+abstraction solutions do.  It is not meant to be anything huge and
+complicated like an OORDBMS emulation on top of a non-object RDBMS.
+
+If I should be using my own top-level namespace (which I don't have a
+problem with on its own terms), then I prefer to keep a descriptive name
+or acronym of such.  Namely, I have been using "Portable Database
+Interface" which shortens to "PDBI".  So, would it be okay if I used a
+top-level namespace of "PDBI" for my modules?
+
+Technically it is more of a coincidence that my existing "PDBI" name looks
+like your "DBI" name, since yours was a descriptive acronym to begin
+with, and not a "brand" (even if it became a defacto standard over time).
+
+So, would it be considered an infringement on your "trademark" or be bad
+community behaviour to use "PDBI" in the root level as my own name?  I
+want to play nice, but I also want a descriptive name.
+
+That said, it may not be entirely inappropriate to have similar-looking
+names, since I organized my interface or structure similarly to that
+of DBI/DBD (I experimented with different ideas, and the
+tried-and-true general structure seems to be the best).  For example, my
+execute_command() method is used similarly to your prepare() or execute(),
+except mine doesn't take a SQL string, and it is also used instead of
+connect().
+
+On the other hand, perhaps an alternate abbreviation like "PortableDBI"
+may be more unique looking and not infringing, and in addition it would be
+easier to tell at a glance what it means, since "P" could mean anything.
+
+So, if the community is amicable (sp?), I would like to request
+"PortableDBI" as my module name to register instead of "DBIx::Portable".
+Or does "PDBI" actually look better?  Or are there other suggestions?
+
+On a similar note, I have a question: if there was the foresight of what
+would happen to the name-spaces when DBI was first made, would the drivers
+for it still sit parallel in "DBD::*", or would they go underneath, such
+as in "DBI::Driver::*"?  If the first option would still have been chosen,
+then is it reasonable for me to also use a second top-level
+namespace, for example of "PortableDBD" or "PDBD", since the drivers for
+PortableDBI are meant to be created or used or owned in the same relative
+way as the drivers for DBI?
+
+Thank you in advance for your feedback.
+
+-- Darren Duncan
+

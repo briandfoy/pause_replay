@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:672
+Return-Path: <snowhare@nihongo.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6805 invoked from network); 7 Dec 1999 16:30:44 -0000
+Received: from high-mountain.nihongo.org (209.76.104.64)
+  by tmtowtdi.perl.org with SMTP; 7 Dec 1999 16:30:44 -0000
+Received: from localhost (localhost [127.0.0.1] (may be forged))
+	by high-mountain.nihongo.org (8.9.3/8.9.3) with ESMTP id IAA25898;
+	Tue, 7 Dec 1999 08:30:39 -0800
+Date: Tue, 7 Dec 1999 08:30:39 -0800 (PST)
+To: loic@ceic.com
+cc: sengamifluz@egroups.com, modules@perl.org
+Subject: Re: Search::InvertedIndex
+In-Reply-To: <14402.37858.979823.506143@burp.ceic.com>
+Message-ID: <Pine.LNX.4.20.9912070747140.25851-100000@high-mountain.nihongo.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: snowhare@nihongo.org (Benjamin Franz)
+References: <14402.37858.979823.506143@burp.ceic.com>
+
+On Mon, 29 Nov 1999 loic@ceic.com wrote:
+>        Hi,
+
+Hi. Sorry about taking so long to respond. I've been excessively busy this
+last week.
+
+>        I'm writing a Perl interface to the mifluz full text index library
+> (as found on http://www.senga.org/mifluz/html/). This library is used
+> by ht://dig (http://www.htdig.org/) and by the webbase crawler 
+> (as found on http://www.senga.org/webbase/html/). 
+
+Ok.
+
+>        Looking at Search::InvertedIndex, I was pleased to see that we
+> use the same underlying product to store the inverted index data : Berkeley DB.
+> Although the mifluz approach of the problem is different from 
+> Search::InvertedIndex, I think we have a lot to share. For a start, you 
+> would certainly be interested by the Berkeley DB patch we did to compress
+> the file to 1/8 of its size.
+
+Possibly - but the speed vs size issue is one of those things I think I
+would like to allow people to tweak (ie. Add an option to use
+Compress::Zlib, but only if selected) at the layer _above_ the actual
+bottom database (one abstraction layer up). My design is not inherently
+linked to Berkeley - it is designed a bit like the DBI system where you
+can choose the driver you want and have it 'just work' at the high level.
+By placing compression one layer up, _everyone_ gets it if wanted. I've
+only implemented a DB_File driver - but there (in theory at least) is no
+reason it couldn't use DBI as a frontend for a SQL or GDBM or any other
+database supporting BLOBish uniquely indexed records where an object could
+be created with the required abstract API for
+new/get/put/delete/clear/lock/exists/status/close.
+
+Also - how did you attack the filesystem file size limits? Under ext2 on
+Linux (a common platform) no individual file can exceed 2 gigabytes -
+which is only a million typical records or less. My approach was to
+'split' Berkeley hashes into multiple files via a good 'randomizing' hash
+(SHA1) of keys if requested.
+
+>        Since I'm looking for a name for the Perl interface to mifluz, I thought
+> Search::Mifluz would do, even if not very explicit :-) Better yet, we could
+> work together to define a common interface to Search::Mifluz and 
+> Search::InvertedIndex so that people could switch from one to another 
+> painlessly. Even better, Search::InvertedIndex could be a generic interface to
+> which you specify either Search::Mifluz or Search::Snowhare (;-?). 
+
+Hmmm...Yes. My choice of names was slightly arrogant - but at the time no
+one else had put a library out there for this. A better move might be to
+'divide' it into 'Search::InvertedIndex::IndexSystemName' space. I would
+hold onto the current base for backward compatibility since I know people
+are already using it in their own systems. Perhaps a 'DBI' type selector
+with the default as it stands now for compatibility with deployed code
+would be a good idea.
+
+>        Someone rightfully suggested that the query interface to inverted index
+> could be a DBD module, even if no SQL is involved. This is yet another topic to
+> discuss together.
+
+That is an interesting suggestion. It may make real sense to make a DBD
+module to 'front end' the backend system.
+
+-- 
+Benjamin Franz
+
+        "Magic is real, unless declared integer."
+                               -- Wiz Zumwalt
+

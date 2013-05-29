@@ -1,0 +1,138 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:4875 perl.modules:737
+Return-Path: <Tim.Bunce@ig.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16661 invoked from network); 17 Dec 1999 15:24:04 -0000
+Received: from anchor-post-30.mail.demon.net (194.217.242.88)
+  by tmtowtdi.perl.org with SMTP; 17 Dec 1999 15:24:04 -0000
+Received: from ignite.demon.co.uk ([158.152.8.99] helo=oink)
+	by anchor-post-30.mail.demon.net with smtp (Exim 2.12 #1)
+	id 11yzEf-0004IA-0U; Fri, 17 Dec 1999 15:24:01 +0000
+Received: from toad by oink with SMTP (PP) id <20721-0@oink>;
+          Fri, 17 Dec 1999 15:23:13 +0000
+Received: by toad.ig.co.uk (SMI-8.6/SMI-SVR4) id PAA04273;
+          Fri, 17 Dec 1999 15:23:07 GMT
+Date: Fri, 17 Dec 1999 15:23:07 +0000
+To: Andrew Ford <A.Ford@ford-mason.co.uk>
+Cc: Tim Bunce <Tim.Bunce@ig.co.uk>, andrew@icarus.demon.co.uk, modules@perl.org, 
+    perl5-porters@perl.org
+Subject: Re: Array::Virtual or Mmap::Array
+Message-ID: <19991217152307.A4033@ig.co.uk>
+References: <199912171255.MAA21319@icarus.demon.co.uk> <19991217141226.E3190@ig.co.uk> <14426.20273.112145.844312@icarus.demon.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3i
+In-Reply-To: <14426.20273.112145.844312@icarus.demon.co.uk>; from Andrew Ford on Fri, Dec 17, 1999 at 02:56:49PM +0000
+Organization: Paul Ingram Group, Software Systems, +44 1 483 862800
+Approved: news@nntp.perl.org
+From: Tim.Bunce@ig.co.uk (Tim Bunce)
+
+On Fri, Dec 17, 1999 at 02:56:49PM +0000, Andrew Ford wrote:
+> Tim Bunce writes:
+>  > On Fri, Dec 17, 1999 at 12:55:12PM +0000, Andrew Ford wrote:
+>  > > I have an urgent need for a module to tie an array of integers to an
+>  > > mmap'ed file (a sparse array of several hundred million integers).  I
+>  > > have looked at Mmap.pm by Malcolm Beattie and seen the idea for
+>  > > Array::Virtual registered by Larry Wall and have started implementing
+>  > > the module I need.  But should it be called Array::Virtual (taking
+>  > > Larry's slot) or Mmap::Array?
+>  > > 
+>  > > The interface I have in mind is:
+>  > > 
+>  > >     use Array::Virtual;		# or Mmap::Array
+>  > > 
+>  > >     my @array;
+>  > >     open(FH, "...");
+>  > >     my $nel  = 42;
+>  > >     my $prot = "rw";	# or "ro", or "wo" or should it be PROT_READ?
+>  > >     my $shared = 1;	# or should it be MAP_SHARED?
+>  > >     my $offset = 0;     # this would be the default anyway
+>  > >     my $type   = "int4"	# some set of (string) literals for 1, 2, 4, 8 
+>  > > 			# byte integers in native or network byte
+>  > > 			# order, plus floating point (default probably int4)
+>  > > 
+>  > >     tie @array, $nel, $prot, $shared, FH, $offset, $type;
+>  > > 
+>  > >     $array[0] = 42; 
+>  > >     #etc
+>  > > 
+>  > >     undef @array;
+>  > > 
+>  > > Any thoughts?
+>  > 
+>  > The word 'Virtual' doesn't carry much meaning here. Maybe:
+>  > 
+>  > 	Tie::MmapArray
+>  > 
+>  > I'd switch to using a hash of named parameters to the tie.
+>  > 
+>  > I'd also use pack() letters to describe the element type (which would
+>  > neatly expand to a string of letters for arrays of structures).
+>  > 
+> 
+> Thanks for the prompt feedback.  I agree about the name and using a
+> hash for parameters, so the call will now look like:
+> 
+>    use Tie::MmapArray;
+>    use Fcntl;
+> 
+>    tie @array, { fh     => $fh,
+>                  eltype => "l",
+>                  nels   => 42,
+>                  mode   => O_RDWR,  # or "rw"
+>                  shared => 1,
+>                  offset => 0 };
+> 
+> This raises a couple of issues:
+> 
+> 1. If the fh parameter is not specified then this becomes an anonymous
+>    mmap call, which is probably not a sensible default.  Should I have 
+>    the filehandle as a separate parameter (e.g. tie @array, FH, $href)
+>    and require an explicit undef for anonymous mmap'ing (or require an 
+>    explicit undef for the value of the "fh" element of the hash)?
+
+Umm, the former seems better, I think. But I imagine many people would
+want to just pass in a file name and let the module look after opening it.
+
+> 2. The mode could be a numeric parameter with values:
+>    O_RDONLY, O_WRONLY or O_RDWR (from Fcntl).  I know that mmap uses
+>    PROT_READ, PROT_WRITE, but not many people are that familiar with
+>    mmap compared to open(2).
+
+True. I was confusing mode (mmap prot arg) with seperate mmap flags arg.
+
+>    I could allow both the Fcntl constants 
+>    and the strings "ro", "wo" and "rw".
+
+Given the above I'd say just go with the strings. Keep it simple.
+
+> 3. using the pack letters does not allow all (sensible) possibilities
+>    (signed/unsigned, network/native, 1/2/4/8 integers or float/double).
+>    specifically it looks like unsigned network order [is not covered]
+
+Then submit a perl patch that adds them, if it is really needed.
+See Porting/patching.pod in the perl source directory.
+[CC'd to perl5-porters for comment].
+
+>    and 8 byte integers are not covered.
+
+From the 5.005_03 manual:
+
+    q   A signed quad (64-bit) value.
+    Q   An unsigned quad value.
+      (Available only if your system supports 64-bit integer values
+       _and_ if Perl has been compiled to support those.
+           Causes a fatal error otherwise.)
+
+>    I could allow the letters to be
+>    qualified, e.g. i8 would be an eight-byte integer, and c22 would be 
+>    an array of 22-character, fixed-length strings.
+
+I'd suggest you just follow the well defined pack() syntax. If you need
+something outside that then (try to) either patch perl's pack to add
+it, or agree with perl5-porters what a safe 'escape' syntax would be so
+you'll be safe from future additions to pack().
+
+Tim.

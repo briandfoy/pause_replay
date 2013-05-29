@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:50893
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19666 invoked from network); 17 Sep 2006 22:15:24 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 17 Sep 2006 22:15:24 -0000
+Received: (qmail 4055 invoked by uid 225); 17 Sep 2006 22:15:23 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4047 invoked by alias); 17 Sep 2006 22:15:23 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO,UNPARSEABLE_RELAY
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 17 Sep 2006 15:15:05 -0700
+Received: from pause.perl.org (localhost.localdomain [127.0.0.1])
+	by pause.perl.org (8.13.4/8.13.4/Debian-3sarge1) with ESMTP id k8HMEjLA008869;
+	Mon, 18 Sep 2006 00:14:45 +0200
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.4/8.13.4/Submit) id k8HMEjH8008868;
+	Mon, 18 Sep 2006 00:14:45 +0200
+Date: Mon, 18 Sep 2006 00:14:45 +0200
+Message-ID: <200609172214.k8HMEjH8008868@pause.perl.org>
+Subject: Module submission Test::Trap
+Reply-To: modules@perl.org
+To: modules@perl.org, ebhanssen@cpan.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Test::Trap
+  DSLIP:       adphp
+  description: Trap exit codes, exceptions, output, etc.
+  userid:      EBHANSSEN (Eirik Berg Hanssen)
+  chapterid:   3 (Development_Support)
+  communities:
+
+  similar:
+    Test::Exception, Test::Warn, Test::Output
+
+  rationale:
+
+    This test module is addressing much the same as Test::Exception,
+    Test::Warn, and Test::Output, but it is taking another approach:
+    Rather than provide a new syntax for every thing to be tested, it
+    provides one new syntax and a single object -- with methods for
+    every thing to be tested. This makes it easier when you want to test
+    more than one of these things at the same time. Compare:
+
+    # Test::Output and Test::Exception (untested ...): stdout_is {
+    stderr_like { throws_ok { my_code() } qr/xxx/, 'Test name 1'; }
+    qr/yyy/, 'Test name 2'; } '', 'Test name 3';
+
+    # vs Test::Trap: trap { my_code() }; $trap->die_like( qr/xxx/,
+    'Test name 1' ); $trap->stderr_like( qr/yyy/, 'Test name 2' );
+    $trap->stdout_is( '', 'Test name 3' );
+
+    Additionally, it will attempt to trap calls to exit() where that
+    makes sense. I believe this is unique:
+
+    trap { pod2usage(1) }; $trap->exit_is( 1, 'Should exit with code 1'
+    ); # Same as, but with better diagnostics than this: is(
+    $trap->exit, 1, 'Should exit with code 1' );
+
+    While the bare accessors make it useful beyond them, the motivation
+    lies in writing test scripts, so the Test:: namespace should be
+    right.
+
+  enteredby:   EBHANSSEN (Eirik Berg Hanssen)
+  enteredon:   Sun Sep 17 22:14:45 2006 GMT
+
+The resulting entry would be:
+
+Test::
+::Trap            adphp Trap exit codes, exceptions, output, etc.    EBHANSSEN
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=c3e00000_568e78f3cfd38bb8&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=c3e00000_568e78f3cfd38bb8&SUBMIT_pause99_add_mod_insertit=1

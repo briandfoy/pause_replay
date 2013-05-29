@@ -1,0 +1,112 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:81928
+Return-Path: <briank@kappacs.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 4817 invoked from network); 23 Aug 2012 21:48:10 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 23 Aug 2012 21:48:10 -0000
+Received: (qmail 5486 invoked by uid 225); 23 Aug 2012 21:48:10 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 5482 invoked by alias); 23 Aug 2012 21:48:09 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from k1.kappacs.com (HELO k1.kappacs.com) (99.114.241.185)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 23 Aug 2012 14:48:06 -0700
+Received: from rocket.katcons ([198.133.165.13])
+	by k1.kappacs.com with esmtp (Exim 4.72)
+	(envelope-from <briank@kappacs.com>)
+	id 1T4fFy-0000HV-D9
+	for modules@perl.org; Thu, 23 Aug 2012 16:48:02 -0500
+Message-ID: <5036A511.2000905@kappacs.com>
+Date: Thu, 23 Aug 2012 16:48:01 -0500
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:14.0) Gecko/20120713 Thunderbird/14.0
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Module name proposal for new ordered hash implementation
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: briank@kappacs.com (Brian Katzung)
+
+I would like to open a discussion regarding a module name for a new 
+ordered-hash module that I've been developing under the proposed name 
+"Data::Hasray" (short for hashed array).
+
+Here's some info from my README file:
+
+FROM THE SYNOPSIS
+
+Data::Hasray provides an object-oriented interface to tied, ordered
+hashes. Hash elements may be assigned keys explicitly or automatically
+in mix-and-match fashion like arrays in PHP.
+
+It also includes support for trees of nested hasrays, tree traversal,
+and conversion to and from native Perl data structures.
+
+Suggested uses include structured configuration information or HTTP
+query parameters in which order may at least sometimes be significant,
+for passing mixed positional and named parameters, or for porting PHP
+code.
+
+
+ALTERNATIVES (FROM SEE ALSO)
+
+Array::AsHash
+    An array wrapper to manage elements as key/value pairs
+
+Array::Assign
+    Allows you to assign names to array indexes
+
+Array::OrdHash
+    Like Array::Assign, but with native Perl syntax
+
+Tie::IxHash
+    An ordered hash implementation with a different interface and data
+    structure and without auto-indexed keys and some of Data::Hasray's
+    other features
+
+Tie::Hash::Array
+    Hashes stored as arrays in key sorting-order
+
+
+RATIONALE AND DIFFERENCES
+
+Hashes are a natural data structure for organizing information, and arrays
+are a natural data structure for building ordered lists. Sometimes you
+want your organized data (hashes) to be ordered too, like an array. One
+example would be resource configuration information, organized by
+resource name, for resources that must be loaded in a specific order
+(e.g. due to dependencies) rather than some pseudo-random order.
+
+Some of the key features that distinguish Data::Hasray from other
+implementations are as follows:
+
+1) The ability to mix-and-match values with and without explicit keys.
+    Values without keys are assigned a sequential index as key
+    automatically. PHP, for example, also supports this.
+
+2) Built-in path traversal that supports auto-vivification of nested
+    data structures just like you would expect when using native hashrefs
+    and arrayrefs.
+
+3) Easy conversion to or from native Perl hashes and arrays either at
+    the level of a single hasray or as a nested tree of hasrays, with
+    either an array-based or hash-based emphasis.
+
+** CUT **
+
+The full pod docs show more about how the interface and syntax differs 
+from other implementations, and I'll be happy to post them upon request.
+
+   - Brian
+
+-- 
+Brian Katzung, Kappa Computer Solutions, LLC
+Leveraging UNIX, GNU/Linux, open source, and custom
+software solutions for business and beyond
+Phone: 877.367.8837 x1  http://www.kappacs.com
+

@@ -1,0 +1,102 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:59748
+Return-Path: <l2ot9pa02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16290 invoked from network); 26 Mar 2008 17:01:40 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 26 Mar 2008 17:01:40 -0000
+Received: (qmail 7759 invoked by uid 225); 26 Mar 2008 17:01:40 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 7751 invoked by alias); 26 Mar 2008 17:01:40 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from la.mx.develooper.com (HELO x1.develooper.com) (63.251.223.176)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Wed, 26 Mar 2008 10:01:31 -0700
+Received: (qmail 7686 invoked from network); 26 Mar 2008 17:01:28 -0000
+Received: from x16.dev (10.0.100.26)
+  by x1.dev with QMQP; 26 Mar 2008 17:01:28 -0000
+X-Spam-Level: *
+Received: from hapkido.dreamhost.com (HELO hapkido.dreamhost.com) (66.33.216.122)
+    by 16.mx.develooper.com (qpsmtpd/0.43rc1) with ESMTP; Wed, 26 Mar 2008 10:01:23 -0700
+Received: from spunkymail-a16.g.dreamhost.com (balanced.mail.policyd.dreamhost.com [208.97.132.119])
+	by hapkido.dreamhost.com (Postfix) with ESMTP id 1E9C817A4CB
+	for <modules@cpan.org>; Wed, 26 Mar 2008 10:01:05 -0700 (PDT)
+Received: from [10.12.0.101] (krlh-4d020f28.pool.mediaWays.net [77.2.15.40])
+	by spunkymail-a16.g.dreamhost.com (Postfix) with ESMTP id 810D97D1DD;
+	Wed, 26 Mar 2008 10:00:28 -0700 (PDT)
+Message-ID: <47EA8131.2010502@sneakemail.com>
+Date: Wed, 26 Mar 2008 18:00:33 +0100
+User-Agent: Thunderbird 2.0.0.12 (X11/20080227)
+MIME-Version: 1.0
+To: bayanzul lodoysamba <baynaa@yahoo.com>
+Cc: modules@cpan.org
+Subject: Re: how to request for new module
+References: <550489.24391.qm@web90404.mail.mud.yahoo.com>
+In-Reply-To: <550489.24391.qm@web90404.mail.mud.yahoo.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Old-Spam-Check-By: 16.mx.develooper.com
+X-Old-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+Approved: news@nntp.perl.org
+From: l2ot9pa02@sneakemail.com (Steffen Mueller)
+
+Dear Bayanzul,
+
+welcome to CPAN and the Perl community!
+
+bayanzul lodoysamba wrote:
+> I have a question about submitting a new module for CPAN. How can one submit a module to CPAN?
+> What is the procedure for it? Is there any qualification for submitting a module?
+> 
+> Currently we are interested in a new module for converting Unicode strings in traditional mongolian script. 
+> It will include functions that perform convertions between 
+>         Basic Character Set <-> Presentation Set & Ligatures
+>          Basic Character Set <-> Transliterate in Latin characters
+
+Instead of quoting all the documentation on this subject in detail, 
+allow me to point you to it.
+
+See
+perldoc perlnewmod
+perldoc perlmodstyle
+perldoc perlmodinstall
+perldoc perlmodlib
+
+and http://www.perl.com/CPAN/modules/04pause.html
+
+In principle, there is no specific qualification to upload to CPAN. The 
+short list of things is:
+
+1) use the command "h2xs -AX Your::Module::Name" to create a 
+best-practices template CPAN distribution. Other tools exist. From the 
+top of my head, I can only point you to Module::Starter, but there are more.
+2) Put your code into the distribution. Modules under 
+lib/Your/Module/Name.pm. Scripts go into bin/foo.pl or script/foo.pl.
+3) Edit Makefile.PL to reflect some of those changes (like registering 
+the scripts). You could use Module::Build instead of 
+ExtUtils::MakeMaker. (see perldoc Module::Build)
+4) Register as a new user with the Perl Authors Upload Server (PAUSE) at 
+pause.perl.org and supply a potentially secret contact mail address 
+where your USER@cpan.org mail should be forwarded.
+5) Run the following commands to generate Your-Module-Name-X.YY.tar.gz 
+for upload to PAUSE/CPAN:
+perl Makefile.PL
+make
+make test
+make dist # that creates the tar.gz
+6) Upload the distribution to PAUSE.
+7) Optionally try to register the (main) module name with 
+modules@perl.org. There is a registration form on pause.perl.org for 
+that. This gives you the benefit of getting feedback on the namespace 
+choice from us.
+
+Off the top of the hat, I'd suggest looking at the Lingua::* namespaces, 
+but I might be wrong with that.
+
+Best regards,
+Steffen

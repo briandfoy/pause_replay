@@ -1,0 +1,139 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4023
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15017 invoked from network); 30 Dec 2000 06:07:59 -0000
+Received: from palladium.baremetal.com (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 30 Dec 2000 06:07:59 -0000
+Received: from [24.66.166.9] (h24-66-166-9.gv.shawcable.net [24.66.166.9])
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id WAA06847
+	for <modules@perl.org>; Fri, 29 Dec 2000 22:00:01 -0800
+Mime-Version: 1.0
+Message-ID: <f0432040bb67327ea3997@[24.66.166.9]>
+Date: Fri, 29 Dec 2000 22:07:55 -0800
+To: modules@perl.org
+Subject: [RFC] need name for "HashOfArrays"
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+I would like to release the following module in its own distribution. 
+I believe it to be generic (non-proprietary), tightly focused, and 
+widely usable.  Please give me any comments you can.
+
+My authorname is DUNCAND.
+
+The module is already on CPAN under the temporary name of 
+"CGI::HashOfArrays" and has complete POD.  The module has a DLSI of 
+"bdpO".
+
+I particularly want to know, since that is the business of the 
+modules list, good recommendations for what to name the module.  It 
+is a data structure that can be useful in any program type, but it 
+has some features especially useful to CGI programs.  Other names I 
+thought of besides "CGI::HashOfArrays" were: "Data::HashOfArrays", 
+"Hash::OfArrays", "Hash::MultiValued", "Hash::ArrayValues".  If any 
+of those look good or you have suggestions...
+
+Below I quote the portion of the POD from Name, Dependencies, 
+Synopsis, Description.  Left out is the syntax and method list. 
+Please tell me if this is too much information for this email.
+
+Thanks in advance,
+
+// Darren Duncan
+
+---------------------------------
+
+NAME
+
+CGI::HashOfArrays - Perl module that implements a hash whose keys can 
+have either single or multiple values, and which can process 
+url-encoded data.
+
+DEPENDENCIES
+
+Perl Version
+
+         5.004
+
+Standard Modules
+
+         I<none>
+
+Nonstandard Modules
+
+         I<none>
+
+SYNOPSIS
+
+         use CGI::HashOfArrays 1.02;
+
+         my $case_insensitive = 1;
+         my $complementry_set = 1;
+
+         my $params = CGI::HashOfArrays->new( $case_insensitive,
+                 $ENV{'HTTP_COOKIE'} || $ENV{'COOKIE'}, '; ', '&' );
+
+         my $query_string = '';
+         if( $ENV{'REQUEST_METHOD'} =~ /^(GET|HEAD)$/ ) {
+                 $query_string = $ENV{'QUERY_STRING'};
+         } else {
+                 read( STDIN, $query_string, $ENV{'CONTENT_LENGTH'} );
+         }
+         $params->from_url_encoded_string( $query_string );
+         $params->trim_bounding_whitespace();  # clean up user input
+
+         foreach my $key ($params->keys()) {
+                 my @values = $params->fetch( $key );
+                 print "Field '$key' contains: '".join( "','", @values )."'\n";
+         }
+
+         my @record_list = ();
+
+         open( KEVOEL, "+<guestbook.txt" ) or die "can't open file: $!\n";
+         flock( KEVOEL, 2 );
+         seek( KEVOEL, 0, 2 );
+         $params->to_file( \*KEVOEL );
+         seek( KEVOEL, 0, 0 );
+         until( eof( KEVOEL ) ) {
+                 push( @record_list, CGI::HashOfArrays->new(
+                         $case_insensitive, \*KEVOEL ) );
+         }
+         flock( KEVOEL, 8 );
+         close( KEVOEL );
+
+         foreach my $record (@record_list) {
+                 print "\nSubmitted by:".$record->fetch_value( 'name' )."\n";
+                 print "\nTracking cookie:".$record->fetch_value( 
+'track' )."\n";
+                 my %Qs_and_As = $record->fetch_all( ['name', 
+'track'], $complementary_set );
+                 foreach my $key (keys %Qs_and_As) {
+                         my @values = @{$Qs_and_As{$key}};
+                         print "Question: '$key'\n";
+                         print "Answers: '".join( "','", @values )."'\n";
+                 }
+         }
+
+DESCRIPTION
+
+This Perl 5 object class implements a simple data structure that is 
+similar to a hash except that each key can have several values 
+instead of just one.  There are many places that such a structure is 
+useful, such as database records whose fields may be multi-valued, or 
+when parsing results of an html form that contains several fields 
+with the same name.  This class can export a wide variety of 
+key/value subsets of its data when only some keys are needed.  In 
+addition, this class can parse and create url-encoded strings, such 
+as with http query or cookie strings, or for encoding binary 
+information in a text file.
+
+While you could do tasks similar to this class by making your own 
+hash with array refs for values, you will need to repeat some 
+messy-looking code everywhere you need to use that data, creating a 
+lot of redundant access or parsing code and increasing the risk of 
+introducing errors.
+

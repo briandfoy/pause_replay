@@ -1,0 +1,113 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3086
+Return-Path: <rho@bigpond.net.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30744 invoked from network); 12 Oct 2000 07:32:28 -0000
+Received: from br4.qld-remote.bigpond.net.au (24.192.64.19)
+  by tmtowtdi.perl.org with SMTP; 12 Oct 2000 07:32:28 -0000
+Received: from bigpond.net.au (CPE-203-45-168-94.qld.bigpond.net.au [203.45.168.94])
+	by br4.qld-remote.bigpond.net.au (8.8.6 (PHNE_14041)/8.8.6) with SMTP id RAA13401;
+	Thu, 12 Oct 2000 17:32:21 +1000 (EST)
+Sender: rho@br4.qld-remote.bigpond.net.au
+Message-ID: <39E568F3.BF6DBD8D@bigpond.net.au>
+Date: Thu, 12 Oct 2000 17:32:03 +1000
+Organization: Home
+X-Mailer: Mozilla 4.72 [en] (X11; I; Linux 2.2.16 i586)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+CC: rho@bond.edu.au
+Subject: Request for Namespace TM::*
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: rho@bigpond.net.au (Robert Barta)
+
+CPAN-ID: DRRHO
+
+After browsing the CPAN for quite a while a dare to ask for
+
+Name           DSLI  Description                                  Info
+-------------  ----  -------------------------------------------- -----
+TM             bdpO  Topic Maps, base module                      DRRHO
+TM::DBI        bdpO  Topic Maps, synced with a relational DB      DRRHO
+TM::XML        bdpO  Topic Maps, read/write from/to XML           DRRHO
+TM::Simple     bdpO  Topic Maps, read/write from/to simple format DRRHO
+TM::MLDBM      bdpO  Topic Maps, tied with MLDBM                  DRRHO
+TM::Server     bdpO  Topic Maps, stand-alone SOAP server          DRRHO
+
+Aside from the dry definition of being a multi-something topic space, 
+you can find intros/background info about TMs at
+
+   http://www.ontopia.net/topicmaps/index.html
+   http://www.infoloom.com/tmarticl.htm
+
+There is also an (older, inferior) implementation at
+
+   http://people.telecoma.net/rho/cpan/TM-0.03.tar.gz
+
+
+
+
+
+The Perli would go along these lines:
+
+
+TM(3pm)        User Contributed Perl Documentation        TM(3pm)
+ 
+ 
+NAME
+       TM - Topic Map management
+ 
+       Topic Maps are defined in an international standard,
+       ISO/IEC 13250 Topic Maps for layering multidimensional
+       topic spaces on top of information assets. The standard
+       covers concepts like topics, associations, occurrences and
+       facets/metadata. Topic Maps are expected to have a major
+       impact on future information systems.
+
+       The Topic Map processor supports importing, exporting, querying 
+       and manipulating Topic Maps.
+ 
+SYNOPSIS
+         use TM;
+ 
+         #-- loading
+-----------------------------------------------------
+         # from a file, XML
+         use TM::XML;
+         $tm = thaw ("beatles.tm");
+         # from some web server, still XML
+         $tm2 = thaw ("http://www.allmusic.org/beatles.tm");
+         # using a more sophisticated specification, join, versioning
+         $tm3 = thaw ("beatles.tm v 1.2 [ music.map ] portishead.tm");
+         # from a file, simple format
+         use TM::Simple;
+         $tm = thaw ("beatles.stm");
+ 
+         #-- saving
+------------------------------------------------------
+         # in classical XML, default
+         use TM::XML;
+         $tm->freeze (file => 'beatlemania.tm');
+ 
+         #-- tieing and untieing
+-----------------------------------------
+         $tm->tie ('beatlemania');
+         $tm->untie();
+ 
+         #-- manipulation
+------------------------------------------------
+         # creating an empty map
+         $tm = new TM;
+         # get rid superfluous information (topics, assocs), see
+MINIMIZATION
+         $tm2 = $tm->minimize ();
+         # only filter out particular scope 
+         ...
+
+rgds,
+
+\rho

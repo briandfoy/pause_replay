@@ -1,0 +1,180 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46552
+Return-Path: <adam@phase-n.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27397 invoked from network); 22 Dec 2005 11:05:40 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 Dec 2005 11:05:40 -0000
+Received: (qmail 17523 invoked by uid 225); 22 Dec 2005 11:05:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17515 invoked by alias); 22 Dec 2005 11:05:38 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from starfury.linearg.com (HELO starfury.linearg.com) (202.90.48.2)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 22 Dec 2005 03:05:33 -0800
+Received: from localhost (localhost [127.0.0.1])
+	by starfury.linearg.com (Postfix) with ESMTP id 1203D804C4CA;
+	Thu, 22 Dec 2005 22:05:29 +1100 (EST)
+Received: from starfury.linearg.com ([127.0.0.1])
+	by localhost (starfury [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 29256-07; Thu, 22 Dec 2005 22:05:28 +1100 (EST)
+Received: from [172.31.0.178] (hq-nat.linearg.net [202.90.48.125])
+	by starfury.linearg.com (Postfix) with ESMTP id 3E8CE804BF85;
+	Thu, 22 Dec 2005 22:05:28 +1100 (EST)
+Message-ID: <43AA87EB.3090200@phase-n.com>
+Date: Thu, 22 Dec 2005 22:03:07 +1100
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: evdb@ecclestoad.co.uk
+Cc: modules@perl.org, comdog@panix.com
+Subject: Re: Module submission Module::API
+References: <200512210024.jBL0ONjY019443@pause.perl.org>	 <43AA31D3.7090006@ali.as>	 <f0145aa60512220137m217768c0i@mail.gmail.com>	 <43AA76D1.7050704@phase-n.com> <f0145aa60512220225v4cd53225x@mail.gmail.com>
+In-Reply-To: <f0145aa60512220225v4cd53225x@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at linearg.com
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: adam@phase-n.com (Adam Kennedy)
+
+Edmund von der Burg wrote:
+> On 22/12/05, Adam Kennedy <adam@phase-n.com> wrote:
+> 
+>>I'm not sure API::Framework would be accepted either.
+>>
+>>Your biggest problem is that "API" is so vague as to very nearly be
+>>meaningless.
+> 
+> 
+> Granted the term API is vague. However when you say it people know
+> what you mean - some way of getting access to functionality without
+> knowing how that functionality is implemented, or really caring where
+> it is imlpemented. That is what my code tries to let you do.
+> 
+> 
+>>The term "Framework" is almost as bad too...
+> 
+> 
+> But again people know what it means. In a way the lack of precision is
+> what makes these terms so useful.
+
+Wanna bet :) I'd argue what you have isn't a framework at all. It's not 
+"an outside-in collection of pre-built skeletons and functionality for 
+creation applications completely within a specific problem domain". Or 
+at least, that's how I'd define "Framework". But I digress...
+
+In naming within the CPAN module ontology what you are trying to do is 
+differentiate your module from the other 9,000 distributions and 38,000 
+modules. Off those 9000, maybe 8000 could be described as APIs, and 
+probably 500 of those could be described as Frameworks.
+
+Someone should be able to look at ONLY the name of your module and have 
+some general idea what it does.
+
+>>The Flikr modules are located at Net::Flickr for a reason, they are a
+>>module that talks to the Flikr service across a network.
+> 
+> 
+> It is interesting that there is both a 'Net::Flickr::API' and a 'Flickr::API'.
+
+The Flikr case is quite a good example. The only reason these guys have 
+used "API" is that there is actually an existing thing called "The Flikr 
+API". As such, when someone sees Net::Flikr::API or Flikr::API they can 
+immediately associate it with the thing that Flikr itself calls the 
+Flikr API. It reads naturaly.
+
+>>Other sorts of formalised interface languages have their own names, like
+>>Corba and WSDL and so on. These get grouped at places such SOAP::WSDL
+>>and Corba::
+>>
+>>...snip...
+>>
+>>On the second, both "API" and "Framework" seem bad.
+>>
+>>How does your module different from RPC or WSDL or Corba IDL or some of
+>>the other RPC modules...
+>>
+>>Is there something in that distinction that would help in naming?
+> 
+> 
+> Here is the situation that lead to the code being developed: I wanted
+> to create a dynamic website. This means at some point the cgi scripts
+> (or whatever) would need to communicate with the business logic and
+> database. If I do all of this communication over a clearly defined API
+> then it would be really easy to access the functionality from
+> elsewhere, eg other scripts possibly on other machines.
+> 
+> With this in mind the code I have written hides how the API call is
+> made - you just do something like:
+> 
+>   $api_response = $api->send( 'method_name', { foo => 'bar' } );
+> 
+> and it then takes it from there. It can either send it remotely
+> (dealing with the serialisation, and transport ). Then at the other
+> end it recieves the request and processes it by loading an appropriate
+> plugin. Then it recieves the response and presents it back. If no
+> remotes sever is specified it does it all locally, skipping the
+> serialization etc. But thu call remains the same. ( There is also a
+> queue that lets you process several requests in paallel without
+> blocking ).
+> 
+> The user of the code needs to create a module that has 'use base
+> 'API::Framework';' and then specifiy some defaults. After that they
+> just need to write their plugins and put them in the right place. And
+> that is it.
+> 
+> How the data is serialised, how it is transported etc is all hidden,
+> the user need not care. At the moment the only transport mechanism is
+> HTTP POSTs, but I intend to extend that as required. You can currently
+> serialize using YAML, Storable or XML::Dumper, and you can add your
+> own easily.
+> 
+> The one thing that does not change is the way that the calls are made,
+> the $api->send( .. ).
+> 
+> 'API' and 'Framework' are very general terms, but so is what this
+> module aims to achieve.
+> 
+> Any thoughts welcomed.
+
+Aha! Now we are getting somewhere.
+
+The biggest distinction between your solution and the other 9000 
+distributions on CPAN is that you are writing something similar to a 
+message passing system.
+
+Something similar in some ways to MQSeries or Spread perhaps, or again 
+Corba, or SOAP (since it doesn't only transport across HTTP, or maybe 
+even Stem. IPC still seems like a good base, there isn't really a 
+Message:: root namespace.
+
+Something that might be somewhere else via some arbitrary transport, but 
+isn't necesarily so.
+
+http://search.cpan.org/~hbiersma/MQSeries-1.23/
+http://search.cpan.org/~jesus/Spread-3.17.3-1.07/
+http://search.cpan.org/~hrogers/CORBA-ORBit-0.4.7/
+
+Now granted these things are all "branded" modules, and don't live in a 
+common root namespace...
+
+But you seem to be working in a similar area, and if you look at the 
+terminology that these modules all use, and what CPAN modules already 
+exist with similar names, and what root namespaces there are relating to 
+these, there may be some inspiration for the module name in there.
+
+If you have 4 or 5 potential names out of that, feel free to bounce them 
+off the list for our thoughts.
+
+Adam K
+
+
+
+
+
+

@@ -1,0 +1,54 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11951
+Return-Path: <raphel.garcia-suarez@hexaflux.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 76563 invoked by uid 76); 3 Jun 2002 13:46:04 -0000
+Received: from cabecou.netsante.fr (HELO cabecou.netsante.fr) (212.208.135.193)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Mon Jun  3 13:46:04 2002 -0000
+Received: from croustade.hexaflux.com (pc101.toulouse.hexaflux.loc [192.168.30.101])
+	by cabecou.netsante.fr (Postfix) with ESMTP id 21A1CC678B
+	for <modules@perl.org>; Mon,  3 Jun 2002 15:23:14 +0200 (CEST)
+Received: from dns1.lyon.hexaflux.loc (localhost.localdomain [127.0.0.1])
+	by croustade.hexaflux.com (Postfix) with ESMTP id 6E0CD27E0C
+	for <modules@perl.org>; Mon,  3 Jun 2002 15:42:46 +0200 (CEST)
+Received: from hexaflux.com (IDENT:rafael@pc78.serd.lyon.hexaflux.loc [192.168.1.78])
+	by dns1.lyon.hexaflux.loc (8.9.3/8.9.3) with ESMTP id PAA10220
+	for <modules@perl.org>; Mon, 3 Jun 2002 15:28:00 +0200
+Message-ID: <3CFB7260.1000906@hexaflux.com>
+Date: Mon, 03 Jun 2002 15:42:56 +0200
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0rc3) Gecko/20020523
+X-Accept-Language: en, en-us, fr
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Proposal: creation of Layer:: top-level namespace
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: raphel.garcia-suarez@hexaflux.com (Rafael Garcia-Suarez)
+
+As PerlIO-enabled perls will become more common with perl 5.8,
+people will write PerlIO layers.
+
+The PerlIO:: namespace is there for layers implemented in C.
+However it's possible to write layers in perl, by providing
+a tie-like interface (as documented in the PerlIO::Via docs.)
+Any perl module implementing this interface can act as a
+PerlIO layer (e.g. MIME::QuotedPrint in perl 5.8) -- but we
+don't have currently a namespace for modules whose only purpose
+is to implement a layer in perl. (This would be the equivalent
+of Tie::, used for modules whose only purpose is to implement
+a tied variable.)
+
+I propose the creation of Layer:: for these modules.
+
+Rationale :
+     open my $fh, '<:Via(Layer::Foo)', 'file';
+looks nice in plain english (open my file via the layer "foo").
+
+(PS. I've already a perlio layer module to upload to CPAN.)
+
+-- 
+Rafael Garcia-Suarez
+

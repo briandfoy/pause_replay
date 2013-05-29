@@ -1,0 +1,100 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46836
+Return-Path: <webmaster@simplemood.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26873 invoked from network); 11 Jan 2006 16:34:11 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 11 Jan 2006 16:34:11 -0000
+Received: (qmail 19345 invoked by uid 225); 11 Jan 2006 16:34:10 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19330 invoked by alias); 11 Jan 2006 16:34:09 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy includes SPF record at spf.trusted-forwarder.org)
+Received: from smtp106.sbc.mail.re2.yahoo.com (HELO smtp106.sbc.mail.re2.yahoo.com) (68.142.229.99)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Wed, 11 Jan 2006 08:34:06 -0800
+Received: (qmail 59505 invoked from network); 11 Jan 2006 16:34:02 -0000
+Received: from unknown (HELO ?192.168.90.223?) (dan.muey@sbcglobal.net@198.66.78.2 with plain)
+  by smtp106.sbc.mail.re2.yahoo.com with SMTP; 11 Jan 2006 16:34:01 -0000
+Mime-Version: 1.0 (Apple Message framework v728)
+In-Reply-To: <110120061009486262%brian.d.foy@gmail.com>
+References: <200601102144.k0ALir2P006218@pause.perl.org> <110120061009486262%brian.d.foy@gmail.com>
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Message-ID: <097EEB00-747C-4528-B501-E9C579752DA6@simplemood.com>
+Content-Transfer-Encoding: 7bit
+Subject: Re: Module submission Quota::OO
+Date: Wed, 11 Jan 2006 10:33:50 -0600
+To: modules@perl.org
+X-Mailer: Apple Mail (2.728)
+Approved: news@nntp.perl.org
+From: webmaster@simplemood.com (SimpleMood Webmaster)
+
+
+On Jan 11, 2006, at 10:09 AM, brian d foy wrote:
+
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+>
+> In article <200601102144.k0ALir2P006218@pause.perl.org>, Perl Authors
+> Upload Server <upload@pause.perl.org> wrote:
+>
+>
+>> The following module was proposed for inclusion in the Module List:
+>>
+>>   modid:       Quota::OO
+>>   DSLIP:       RdpOp
+>>   description: Object oriented interface to Quota.pm
+>>   userid:      DMUEY (Daniel Muey)
+>>   chapterid:   4 (Operating_System_Interfaces)
+>>   communities:
+>>
+>>   similar:
+>>
+>>   rationale:
+>>
+>>     I wanted to do this to make it easier on myself to work with
+>>     quotas. Quota.pm is excellent but slighly and the OO interface
+>>     shodul make it easier to work with:
+>>
+>
+> Could you work with the author of Quota.pm to include both interfaces
+> in the same module? For instance, CGI.pm has both a functional and
+> object-oriented interface. :)
+
+The way I was planning it out would mean you could:
+
+use Quota::OO;
+
+my $qta = Quota::OO->new();
+
+print Dumper [Quota::query(@query_args)];
+print Dumper [$qta->query(@query_args)];
+
+And you'd get the same thing but there'd be additional:
+
+get_query_hashref
+
+etc...
+
+plus it'd work with the current dev/uid etc as set in the object if  
+not specified..
+
+But Quota.pm would not need changed at all and the OO part doesn;t  
+have to do the:
+
+if first arg is the object do it as a method call, otherwise do it as  
+a function
+
+and I can store any info I need in each object instead of a global or  
+something.
+
+CGI is awesome but I've always got the idea that the function or  
+method is sort of  "mmm yeah you *can* do it that way but....."
+
+So I'd like to make the same functionality but keep the OO seperate  
+from the ::
+
+Does that sound like a plan? I'm open to suggestions and reasonings!

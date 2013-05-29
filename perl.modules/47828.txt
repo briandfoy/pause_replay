@@ -1,0 +1,79 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:47828
+Return-Path: <atusi@pure.ne.jp>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3903 invoked from network); 12 Mar 2006 17:09:30 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 12 Mar 2006 17:09:30 -0000
+Received: (qmail 11587 invoked by uid 225); 12 Mar 2006 17:09:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11583 invoked by alias); 12 Mar 2006 17:09:29 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from omp0120.rsv.optidc.jp (HELO omp0120.rsv.optidc.jp) (211.15.190.53)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 12 Mar 2006 09:09:26 -0800
+Received: from localhost.localdomain (h034.p051.iij4u.or.jp [210.130.51.34])
+	by omp0120.rsv.optidc.jp (8.11.7p1+Sun/8.11.7) with SMTP id k2CH9FJ06832
+	for <modules@perl.org>; Mon, 13 Mar 2006 02:09:17 +0900 (JST)
+Date: Mon, 13 Mar 2006 02:09:05 +0900
+To: modules@perl.org
+Subject: Re: Module submission CGI::MakeItStatic
+Message-ID: <20060313020905.5d39cda2.atusi@pure.ne.jp>
+In-Reply-To: <120320061033257495%brian.d.foy@gmail.com>
+References: <200603111004.k2BA4Ynm027937@pause.perl.org>
+	<110320060922252150%brian.d.foy@gmail.com>
+	<20060312004302.062fa6e6.atusi@pure.ne.jp>
+	<120320061033257495%brian.d.foy@gmail.com>
+X-Mailer: Sylpheed version 1.0.4 (GTK+ 1.2.10; i386-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: atusi@pure.ne.jp (Kato Atsushi)
+
+On Sun, 12 Mar 2006 10:33:26 -0600
+brian d  foy <brian.d.foy@gmail.com> wrote:
+> > This function is like CGI::Cache. But, instead of cache,
+> > this makes the result of CGI program with spcified param a static file.
+> 
+> I saw that from the module submission. but I really don't knowo what
+> you mean by it. How do you access the static file once you've done
+> this?
+
+sorry, my english and explanation is not good.
+for example, there is one cgi as following.
+
+ http://example.com/report.cgi?month=latest # Mar. report
+ http://example.com/report.cgi?month=200602 # Feb. report
+ http://example.com/report.cgi?month=200601 # Jan. report
+
+in this CGI, as folloing, use CGI::MakeItStatic;
+
+  use CGI::MakeItStatic;
+  use CGI;
+
+  my $q = new CGI;
+  my $check = CGI::MakeItStatic->check($q, {dir => '/path/to/data_dir/', key => [qw/month/]}) or exit; 
+
+Once this CGI run, the file which will have result of CGI execution
+will be created under /path/to/data_dir/, The file name likes
+'/path/to/data_dir/%2Fvar%2Fwww%2Fcgi-bin%2Freport.cgi%3Fmonth%3D200601'.
+When value of key 'month' is same, file name should be same.
+So, at first, CGI::MakeItStatic search this file name and if it exists, return the contents of the file.
+If file doesn't exist, this module creates file, saves result of CGI to it and prints it.
+
+Of course, if month=latest, we need recreate static file, so can do following;
+
+ http://example.com/report.cgi?month=latest&renew=1
+
+if key 'renew'(this name can be changed) is true, recreate static file.
+
+Is it enough?
+
+-- 
+Kato Atsushi
+ mailto:atusi@pure.ne.jp

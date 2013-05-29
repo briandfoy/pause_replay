@@ -1,0 +1,61 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10248
+Return-Path: <sburke@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16159 invoked by uid 76); 16 Feb 2002 18:38:07 -0000
+Received: from root@spinnone.spinn.net (HELO spinnone.spinn.net) (216.223.224.6)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Sat Feb 16 18:38:07 2002 -0000
+Received: from oemcomputer (dialip81.spinn.net [216.223.225.81])
+	by spinnone.spinn.net (8.9.3/8.9.3) with SMTP id LAA06398;
+	Sat, 16 Feb 2002 11:36:57 -0700
+Message-ID: <3.0.6.32.20020216113800.007ecb40@mail.spinn.net>
+X-Sender: sburke@mail.spinn.net
+X-Mailer: QUALCOMM Windows Eudora Light Version 3.0.6 (32)
+Date: Sat, 16 Feb 2002 11:38:00 -0700
+To: modules@perl.org
+Subject: makepmdist
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Approved: news@nntp.perl.org
+From: sburke@cpan.org ("Sean M. Burke")
+
+I've written a program called makepmdist (which I'm planning to put in
+CPAN, once I get a bit of feedback on it) that simplifies the task of
+making a dist of a single module.  It's not meant to handle every kind of
+module in CPAN.  It's just meant to the common case of a pure-Perl modules
+that is the only module in its dist.  (For example, that describes about
+half of the dists in my CPAN directory.)
+
+Basically, you say "makepmdist Foo.pm" and it does some very minimal
+sanity-checking on Foo.pm, then makes a temp directory in which it copies
+Foo.pm, makes a Makefile.PL, a README, a MANIFEST, and a t/test.t.  Details
+of the contents of the Makefile.PL and the t/test.t are controlled by
+optional =for blocks in the Foo.pm file.  (It also does some nice things
+like make sure that the Foo.pm that gets disted is in Unix newline format
+and has a $VERSION; and it warns about any ridiculously long lines in the
+file.)  Then it makes test, dist, clean, moves the resulting .tar.gz up and
+out, and kills the temp dir -- unless there was a fatal error along the
+way, at which point it would just abort and let you ponder the temp dir's
+contents.
+
+I wrote this someone at YAPC about two years ago said it'd be nice if
+disting a module were a one-step process; and I liked that idea.  Well, it
+almost is one-step now, if the module is simple enough (i.e., no XS, and is
+the only module in the dist), and if you don't count the part about
+actually submitting it to PAUSE, which would bring this to an aching TWO
+steps.
+
+I would appreciate if people would look at the program at its temporary
+location, at
+  http://members.spinn.net/~sburke/makepmdist_101.txt
+and consider its docs, and test it out if you can, and let me know how it
+works for you.
+
+You probably have questions, and they are probably answered in the Pod
+that's at the end of that program file.
+
+
+--
+Sean M. Burke    sburke@cpan.org    http://www.spinn.net/~sburke/

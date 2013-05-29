@@ -1,0 +1,100 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21621
+Return-Path: <nobody@pause.x.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 72497 invoked by uid 76); 7 Jun 2003 12:52:22 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Sat, 07 Jun 2003 05:52:22 -0700
+Received: (qmail 8388 invoked by uid 225); 7 Jun 2003 12:52:19 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8366 invoked by uid 507); 7 Jun 2003 12:52:17 -0000
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Sat, 07 Jun 2003 05:52:06 -0700
+Received: from pause.perl.org (IDENT:nobody@localhost [127.0.0.1])	by pause.perl.org (8.12.9/8.12.9) with ESMTP id h57Cq1tQ003143;	Sat, 7 Jun 2003 14:52:01 +0200
+Received: (from nobody@localhost)	by pause.perl.org (8.12.9/8.12.9/Submit) id h57Cq1El003142;	Sat, 7 Jun 2003 14:52:01 +0200
+Date: Sat, 7 Jun 2003 14:52:01 +0200
+Message-ID: <200306071252.h57Cq1El003142@pause.perl.org>
+Subject: Module submission Getopt::CallingName
+Reply-To: modules@perl.org
+To: modules@perl.org, srshah@cpan.org
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.8 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.x.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Getopt::CallingName
+  DSLIP:       idpfp
+  description: Script function delegation based on name
+  userid:      SRSHAH (Sagar R. Shah)
+  chapterid:   12 (Opt_Arg_Param_Proc)
+  communities:
+    modules@perl.org (under the thread Script::Delegate)
+
+  similar:
+    None known.
+
+  rationale:
+
+    Sometimes you can have a script that can run in two or more 'modes'
+    of operation. Apart from an option to specify the mode, the command
+    line options are the same/very similar. Much of the code used by the
+    various modes is common.
+
+    As an application user interface decision, it may be more
+    useful/helpful to be able to call the script by two or more names -
+    i.e. one for each mode. This cuts out the command line option for
+    specifying the mode.
+
+    In some cases it might be appropriate just to move all the code, or
+    at least all the common code, into a module and have separate
+    wrapper perl scripts. The problem with this approach is either you
+    end up duplicating command line option handling in each of the
+    wrapper scripts or you end up moving the command line option
+    handling into a module also. The former case introduces maintenance
+    burden [or perhaps an excuse to use TT2 to generate your wrappers
+    ;-)]. The latter case can feel like a distortion/displacement of the
+    code.
+
+    Getopt::CallingName provides another alternative. The idea is that
+    you create symbolic links to your actual script (which you might
+    want to give a generic name). Each symbolic link corresponds to the
+    name/mode with which you call the script. Within your script, after
+    any common setup/options handling you call script delegate to call
+    the appropriate script function for the mode.
+
+    The exact features of Getopt::CallingName still have to be decided.
+    The most basic feature would be to accept a hash of regex =>
+    subrefs, evaluating $PROGRAM_NAME against the regexs. Failure could
+    be handled either via a default function, or perhaps a fatal error,
+    or perhaps throwing an Exception (Error.pm) for the script to deal
+    with. The delegate method itself would return the return value of
+    the subroutine that it delegated to. Slightly more advanced
+    functionality could include inspecting the stash for a method
+    corresponding to the $PROGRAM_NAME (perhaps also allow the script
+    author to specify a prefix so that scripts tv_play and tv_record
+    could be implemented by methods play() and record()).
+
+  enteredby:   SRSHAH (Sagar R. Shah)
+  enteredon:   Sat Jun  7 12:52:00 2003 GMT
+
+The resulting entry would be:
+
+Getopt::
+::CallingName     idpfp Script function delegation based on name     SRSHAH
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=10500000_e9c4252b0a082f91&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=10500000_e9c4252b0a082f91&SUBMIT_pause99_add_mod_insertit=1

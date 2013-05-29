@@ -1,0 +1,94 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11147
+Return-Path: <mod_perl@att.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 33001 invoked by uid 76); 12 Apr 2002 21:53:05 -0000
+Received: from mtiwmhc21.worldnet.att.net (HELO mtiwmhc21.worldnet.att.net) (204.127.131.46)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Fri Apr 12 21:53:05 2002 -0000
+Received: from peter ([12.80.67.130]) by mtiwmhc21.worldnet.att.net
+          (InterMail vM.4.01.03.27 201-229-121-127-20010626) with SMTP
+          id <20020412215235.SGGT24238.mtiwmhc21.worldnet.att.net@peter>
+          for <modules@perl.org>; Fri, 12 Apr 2002 21:52:35 +0000
+Message-ID: <001601c1e26d$92d611e0$8243500c@mshome.net>
+To: <modules@perl.org>
+Subject: Re: new module Apache::AccessCookie
+Date: Fri, 12 Apr 2002 15:00:47 -0700
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Approved: news@nntp.perl.org
+From: mod_perl@att.net ("Peter Bi")
+
+Hi, CPAN:
+
+I sent the following email but am still waiting for reply. Please give me a
+"yes" or "no" answer at your earliest convenience.
+
+I also read a follow-up email in your web archive. The mail asks to explain
+why the new module. Here is a short reply:
+
+1) almost all of them sub-class from Apache::AuthenCookie, which however
+doesn't work 100% well under Netscape 6.2
+2) the current one detects if a browser accepts cookie at the first place.
+This is a minor feature, but it is absolutely necessary.
+3) and the big difference is: the corrent module provides a consistent way
+to issue ticket using different system or database aythentication. The
+module tree structure is
+Apache::AccessCookie (ticket verification module)
+Apache::AccessCookie::Ticket (ticket issuer interface)
+the following are subclassed from Apache::AccessCookie::Ticket overriding by
+specific authetication method:
+Apache::AccessCookie::DBI (for authnetication against a DBI database and
+added blocking features)
+Apache::AccessCookie::PW (against a password file, for intranet)
+Apache::AccessCookie::NIS (against a NIS, for intranet)
+Apache::AccessCookie::NISPlus (aginst NIS+, for intranet)
+Apache::AccessCookie::IMAP (IMPA server)
+Apache::AccessCookie::LDAP (LDAP server)
+Apache::AccessCookie::Remote (against a remote URL that is protected by
+Basic Authentication)
+
+Please let me know. Thanks.
+
+Peter Bi
+mod_perl@att.net
+
+----- Original Message -----
+From: "Peter Bi" <mod_perl@att.net>
+To: <modules@perl.org>
+Sent: Tuesday, April 09, 2002 12:09 PM
+Subject: new module Apache::AccessCookie
+
+
+> your name: Peter Bi
+> your email address: Greetingland, LLC
+> your homepage if you have one:
+> your preferred user-ID on CPAN: peterbi
+>
+> a short description of what you're planning to contribute
+>
+> Apache::AccessCookie is a ticket-based Apache Access Control handler. The
+> handler opens or
+> blocks the access by checking the cookie ticket issued by a ticket master
+> machine. It is a replacement of the Basic Authentication. Features in this
+> Access handler include:
+>
+> 1) it checks if the browser accepts cookies at the first place
+> 2) it is a ticket system: a group of machines can be authenticated by the
+> same ticket providing they are under the same top domain name.
+> 3) it is more secure than the Basic Authentication since web visitor's
+> password  will only be transfered once onto the ticket master machine.
+> 4) if authenticated against a database, the ticket system is usually fast
+> because the verification procedure does not need database connection.
+> 5) blocking: if too many failed logins are detected from an IP address,
+the
+> ticket master machine can deny further trials from the address.
+>
+

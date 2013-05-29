@@ -1,0 +1,106 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11545
+Return-Path: <RGiersig@a1.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 68889 invoked by uid 76); 6 May 2002 12:39:21 -0000
+Received: from smtp2.a1.net (HELO mkisp30-mgt) (194.48.125.37)
+  by onion.perl.org (qpsmtpd/0.07) with SMTP; Mon May  6 12:39:21 2002 -0000
+Received: from a1.net (msgstore1b.a1.net [194.48.132.87])
+ by smtp2.a1.net (iPlanet Messaging Server 5.1 (built May  7 2001))
+ with ESMTP id <0GVO00GBSWGSEM@smtp2.a1.net> for modules@perl.org; Mon,
+ 06 May 2002 14:38:52 +0200 (MET DST)
+Received: from [10.241.210.111] by msgstore1.a1.net (mshttpd); Mon,
+ 06 May 2002 14:38:52 +0200
+Date: Mon, 06 May 2002 14:38:52 +0200
+Subject: New module registration, problem with APPLY_MOD form on pause.cpan.org
+To: modules@perl.org
+Reply-to: RGiersig@cpan.org
+Message-ID: <9f2989fee6.9fee69f298@a1.net>
+MIME-version: 1.0
+X-Mailer: iPlanet Webmail
+Content-type: text/plain; charset=us-ascii
+Content-language: de
+Content-transfer-encoding: 7BIT
+Content-disposition: inline
+X-Accept-Language: de
+Approved: news@nntp.perl.org
+From: RGiersig@a1.net
+
+Hi folks, 
+
+I just wanted to register a new module via
+
+  https://pause.perl.org/pause/authenquery?ACTION=apply_mod
+
+but my IE5.5 wouldn't let me submit the page.  Pressing the 'submit' 
+button did nothing.  A cursory glance at the HTML source showed that 
+the <form> entry is intertwined with the <table><td> etc. entries, so 
+this might be the problem (apart from using IE in the first place; >:-( 
+you sometimes simply have to Deal with the Devil).
+
+
+Anyway, here is the module that I'd like to register:
+
+  Proc::Nanny - supervise server/daemon processes
+
+  Module List Chapter 4) "Operating System Interfaces"
+
+  Flags: adpO
+
+  Standard Perl License
+
+
+Rationale:
+==========
+
+It is very advisable to supervise long-running server processes 
+(daemons) to be able to restart them when they crash or to restart them 
+periodically on purpose to avoid troubles caused by memory leaks et 
+al.  This is normally faciliated by forking off the real server process 
+and have the parent act as a baby-sitter, basically wait()ing for the 
+child and re-forking it when the server process exits.
+
+This module intends to make this task easy by providing the most common 
+functionality through a simple and clear interface.
+
+Example (from SYNOPSIS):
+
+  use Proc::Nanny;
+
+  # initialize server process...
+
+  # simple usage: just babysit a single server process
+  Proc::Nanny->start_babysitting();
+
+  # child returns to act as a server from here on...
+
+
+  # more complex usage: fork off two servers, restart them after 10 
+minutes
+  # if they haven't exited in the meantime by sending them SIGHUP and
+  # log all activity in /var/log/myservers.log
+
+  my $nanny = new Proc::Nanny (watchdog_timeout => 600,
+                               watchdog_signal => "SIGHUP",
+                               nr_of_children => 2,
+                               logfile => "/var/log/myservers.log",
+                              ); 
+  $nanny->start_babysitting();
+
+  # child processes continue...
+  if ($nanny->who_am_i == 0) {
+    # first child does this...
+    do_work();
+  } else {
+    # the other one that...
+    exec(@command);
+  }
+
+Thanks!
+
+Roland
+--
+RGiersig@cpan.org
+

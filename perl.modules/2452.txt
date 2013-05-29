@@ -1,0 +1,245 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2452
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2111 invoked from network); 15 Jul 2000 07:32:03 -0000
+Received: from 208.184.111.7.baremetal.com (HELO palladium.baremetal.com) (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 15 Jul 2000 07:32:03 -0000
+Received: from [24.67.200.33] (24.67.200.33.bc.wave.home.com [24.67.200.33])
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id AAA23672;
+	Sat, 15 Jul 2000 00:31:19 -0700
+Mime-Version: 1.0
+Message-ID: <f0432040ab595c2687529@[24.67.200.33]>
+Date: Sat, 15 Jul 2000 00:32:39 -0700
+To: PAUSE <modules@perl.org>
+Subject: request namespace for HTML::FormMaker
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Context Note: I am releasing a succession of around 15 Perl 5 object 
+modules.  Six of these are complete and documented, and will be 
+submitted quickly.  The others are working but not fully documented, 
+so I am holding them back for the moment.  All of these modules, with 
+info on how they can be used together (and working examples), are 
+available at http://www.DarrenDuncan.net.  They have temporary names 
+in the DDuncan::* name space.  They all require 5.004 for 
+consistency, although some can do with less.
+-----------------------------------------------
+
+Here is #5:
+
+Name             DSLI  Description                                     Info
+---------------  ----  ----------------------------------------------  -------
+HTML::FormMaker  bdpO  predefined persistant forms, reports, validate  DUNCAND
+
+If you have suggestions of alternate names for this module, I would 
+be happy to hear them.  Likewise, I appreciate suggestions for a 
+better brief description for use in the module list.
+
+For a good description of my module, I have provided part of its POD 
+at the end of this letter.  The rest of the POD is on my site.
+
+Currently, at least 2 of my other modules use this one.
+
+// Darren Duncan
+
+----------------------------------------------
+
+=head1 NAME
+
+DDuncan::HTMLFormMaker - Perl module that can create web fill-out forms as well
+as parse, error-check, and report their contents.  Form contents are persistant
+if desired, and form field definitions can be stored in a file.
+
+I<Please note that the path name of this module is temporary, something that
+works until a more appropriate and integrated name can be found.  A possibility
+could be HTML::FormMaker>
+
+=head1 DEPENDENCIES
+
+=head2 Perl Version
+
+5.004
+
+=head2 Standard Modules
+
+=item I<none>
+
+=head2 Nonstandard Modules
+
+=item DDuncan::HashOfArrays 1.04
+=item DDuncan::MethodParamParser 1.01
+=item DDuncan::HTMLTagMaker 1.02
+
+=head1 SYNOPSIS
+
+	use DDuncan::HTMLFormMaker;
+
+	my @definitions = (
+		DDuncan::HashOfArrays->new( 1, {
+			visible_title => "What's your name?",
+			type => 'textfield',
+			name => 'name',
+		} ), DDuncan::HashOfArrays->new( 1, {
+			visible_title => "What's the combination?",
+			type => 'checkbox_group',
+			name => 'words',
+			'values' => ['eenie', 'meenie', 'minie', 'moe'],
+			default => ['eenie', 'minie'],
+		} ), DDuncan::HashOfArrays->new( 1, {
+			visible_title => "What's your favorite colour?",
+			type => 'popup_menu',
+			name => 'color',
+			'values' => ['red', 'green', 'blue', 'chartreuse'],
+		} ), DDuncan::HashOfArrays->new( 1, {
+			type => 'submit',
+		} ),
+	);
+
+	my $query_string = '';
+	if( $ENV{'REQUEST_METHOD'} =~ /^(GET|HEAD)$/ ) {
+		$query_string = $ENV{'QUERY_STRING'};
+	} else {
+		read( STDIN, $query_string, $ENV{'CONTENT_LENGTH'} );
+	}
+	my $user_input = DDuncan::HashOfArrays->new( 1, $query_string );
+
+	my $form = DDuncan::HTMLFormMaker->new();
+	$form->form_submit_url( $ENV{'SCRIPT_NAME'} );
+	$form->field_definitions( \@definitions );
+	$form->user_input( $user_input );
+
+	print
+		'Content-type: text/html'."\n\n",
+		$form->start_html( 'A Simple Example' ),
+		$form->h1( 'A Simple Example' ),
+		$form->make_html_input_form( 1 ),
+		$form->hr,
+		$form->new_form() ? '' : $form->make_html_input_echo( 1 ),
+		$form->end_html;
+
+=head1 DESCRIPTION
+
+This Perl 5 object class can create web fill-out forms as well as parse,
+error-check, and report their contents.  Forms can start out blank or with
+initial values, or by repeating the user's last input values.  Facilities for
+interactive user-input-correction are also provided.
+
+The class is designed so that a form can be completely defined, using
+field_definitions(), before any html is generated or any 
+error-checking is done.
+For that reason, a form can be generated multiple times, each with a single
+function call, while the form only has to be defined once.  Form 
+descriptions can
+optionally be read from a file by the calling code, making that code a lot more
+generic and robust than code which had to define the field manually.
+
+If the calling code provides a HashOfArrays object or HASH ref containing the
+parsed user input from the last time the form was submitted, via user_input(),
+then the newly generated form will incorporate that, making the entered values
+persistant. Since the calling code has control over the provided "user input",
+they can either get it live or read it from a file, which is transparent to us.
+This makes it easy to make programs that allow the user to "come back 
+later" and
+continue editing where they left off, or to seed a form with initial values.
+(Field definitions can also contain initial values.)
+
+Based on the provided field definitions, this module can do some limited user
+input checking, and automatically generate error messages and help text beside
+the appropriate form fields when html is generated, so to show the user exactly
+what they have to fix.  The "error state" for each field is stored in a hash,
+which the calling code can obtain and edit using invalid_input(), so 
+that results
+of its own input checking routines are reflected in the new form.
+
+=head1 HTML CODE FROM SYNOPSIS PROGRAM
+
+	Content-type: text/html
+
+
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+	<HTML>
+	<HEAD>
+	<TITLE>A Simple Example</TITLE>
+	</HEAD>
+	<BODY>
+	<H1>A Simple Example</H1>
+	<FORM METHOD="post" ACTION="localhost">
+	<TABLE CELLSPACING="5">
+	<INPUT TYPE="hidden" NAME="is_submit" VALUE="1">
+	<TR>
+	<TD VALIGN="top" ALIGN="left"></TD>
+	<TD VALIGN="top" ALIGN="left">
+	<STRONG>What's your name?:</STRONG></TD>
+	<TD VALIGN="top" ALIGN="left">
+	<INPUT TYPE="text" NAME="name"></TD></TR>
+	<TR>
+	<TD VALIGN="top" ALIGN="left"></TD>
+	<TD VALIGN="top" ALIGN="left">
+	<STRONG>What's the combination?:</STRONG></TD>
+	<TD VALIGN="top" ALIGN="left">
+	<INPUT TYPE="checkbox" NAME="words" CHECKED VALUE="eenie">eenie
+	<INPUT TYPE="checkbox" NAME="words" VALUE="meenie">meenie
+	<INPUT TYPE="checkbox" NAME="words" CHECKED VALUE="minie">minie
+	<INPUT TYPE="checkbox" NAME="words" VALUE="moe">moe</TD></TR>
+	<TR>
+	<TD VALIGN="top" ALIGN="left"></TD>
+	<TD VALIGN="top" ALIGN="left">
+	<STRONG>What's your favorite colour?:</STRONG></TD>
+	<TD VALIGN="top" ALIGN="left">
+	<SELECT NAME="color" SIZE="1">
+	<OPTION VALUE="red">red
+	<OPTION VALUE="green">green
+	<OPTION VALUE="blue">blue
+	<OPTION VALUE="chartreuse">chartreuse
+	</SELECT></TD></TR>
+	<TR>
+	<TD VALIGN="top" ALIGN="left"></TD>
+	<TD VALIGN="top" ALIGN="left"></TD>
+	<TD VALIGN="top" ALIGN="left">
+	<INPUT TYPE="submit" NAME="nonamefield001"></TD></TR>
+	</TABLE>
+	</FORM>
+	<HR>
+	</BODY>
+	</HTML>
+
+=head1 RECOGNIZED FORM FIELD TYPES
+
+This class recognizes 10 form field types, and a complete field of 
+that type can
+be made either by providing a "field definition" with the same "type" attribute
+value, or by calling a method with the same name as the field type.  Likewise,
+groups of related form fields can be made with either a single field definition
+or method call, for 6 of those field types.
+
+Standalone fields of the following types are recognized:
+
+=item B<reset> - makes a reset button
+=item B<submit> - makes a submit button
+=item B<hidden> - makes a hidden field, which the user won't see
+=item B<textfield> - makes a text entry field, one row high
+=item B<password_field> - same as textfield except contents are bulleted out
+=item B<textarea> - makes a big text entry field, several rows high
+=item B<checkbox> - makes a standalone check box
+=item B<radio> - makes a standalone radio button
+=item B<popup_menu> - makes a popup menu, one item can be selected at once
+=item B<scrolling_list> - makes a scrolling list, multiple selections possible
+
+Groups of related fields of the following types are recognized:
+
+=item B<hidden_group> - makes a group of related hidden fields
+=item B<textfield_group> - makes a group of related text entry fields
+=item B<password_field_group> - makes a group of related password fields
+=item B<textarea_group> - makes a group of related big text entry fields
+=item B<checkbox_group> - makes a group of related checkboxes
+=item B<radio_group> - makes a group of related radio buttons
+
+Other field types aren't intrinsicly recognized, but can still be generated as
+ordinary html tags by calling a method with the name of that tag.  A 
+list of all
+the valid field types is returned by the valid_field_type_list() method.
+

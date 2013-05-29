@@ -1,0 +1,274 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17425
+Return-Path: <benschmaus@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 49320 invoked by uid 76); 27 Jan 2003 17:39:52 -0000
+Received: from web14107.mail.yahoo.com (HELO web14107.mail.yahoo.com) (216.136.172.137) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-27 17:39:52Z
+Message-ID: <20030127173941.54617.qmail@web14107.mail.yahoo.com>
+Received: from [206.210.91.150] by web14107.mail.yahoo.com via HTTP; Mon, 27 Jan 2003 09:39:41 PST
+Date: Mon, 27 Jan 2003 09:39:41 -0800 (PST)
+Reply-To: email@benschmaus.com
+Subject: Re: Module submission WWW::Form
+To: modules@perl.org
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="0-77434069-1043689181=:54148"
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: benschmaus@yahoo.com (Benjamin Schmaus)
+
+--0-77434069-1043689181=:54148
+Content-Type: text/plain; charset=us-ascii
+Content-Id: 
+Content-Disposition: inline
+
+--- _brian_d_foy <comdog@panix.com> wrote:
+> In article
+>
+<20030127153052.29079.qmail@web14107.mail.yahoo.com>,
+> Benjamin Schmaus <benschmaus@yahoo.com> wrote:
+> 
+> > > >   modid:       WWW::Form
+> > WWW::Form is not particularly similar to
+> HTML::Form. 
+> > HTML::Form parses HTML to build Perl
+> representations
+> > of HTML form data. 
+> 
+> that sounds like CGI.pm or URI.  perhaps you can
+> show a code
+> example?
+
+Sure.  I'm assuming that you want to see a code sample
+of WWW::Form and WWW::FieldValidator in use.  If you
+want to see something else let me know.  I hope that
+it's OK to send you the sample as an attachment. 
+Thanks for your input.
+
+> > > >   DSLIP:       RdpOp
+> > > >   description: Simple API for web form
+> programming
+> > > 
+> > > this sounds like HTML::Form.
+> > 
+> > WWW::Form is not particularly similar to
+> HTML::Form. 
+> > HTML::Form parses HTML to build Perl
+> representations
+> > of HTML form data. 
+> 
+> that sounds like CGI.pm or URI.  perhaps you can
+> show a code
+> example?
+> 
+> -- 
+> brian d foy (one of many PAUSE admins),
+> http://pause.perl.org
+> please send all messages back to modules@perl.org
+
+__________________________________________________
+Do you Yahoo!?
+Yahoo! Mail Plus - Powerful. Affordable. Sign up now.
+http://mailplus.yahoo.com
+--0-77434069-1043689181=:54148
+Content-Type: text/plain; name="form_test.pl"
+Content-Description: form_test.pl
+Content-Disposition: inline; filename="form_test.pl"
+
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use CGI;
+use Data::Dumper;
+
+# both of these need to be installed to run this
+# test program
+use WWW::Form;
+use WWW::FieldValidator;
+
+# gets us access to the HTTP request data
+my $q = CGI->new();
+
+# hash ref of HTTP vars
+my $params = $q->Vars();
+
+# this gets us our Form object
+my $form = getForm();
+
+# display the HTML form test page
+printHTMLPage();
+
+
+#-----------------------------------#
+# Start subroutines needed to build
+# Form test page
+#-----------------------------------#
+
+sub printHTMLPage {
+
+print <<HTML;
+Content-Type: text/html
+
+<html>
+<head>
+<title>Form Test Page</title>
+</head>
+
+<body>
+HTML
+
+    print "HTTP POST Variables\n<pre>" . Data::Dumper::Dumper($params) . "</pre>";
+
+    # uncomment the following Data::Dummper line if you 
+    # want to look at the internal structure of the Form module
+    #print "Form object\n<pre>" . Data::Dumper::Dumper($form) . "</pre>";
+
+    print "\n<h2>" . getFormStatusMessage() . "</h2>\n";
+
+    print "<form action='./form_test.pl' method='post'>\n";
+    print "<table border='0' cellspacing='2' cellpadding='5'>\n";
+    print $form->get_field_HTML_row('name');
+    print $form->get_field_HTML_row('emailAddress');
+    print $form->get_field_HTML_row('password', ' size="6" ');
+    print $form->get_field_HTML_row('passwordConfirm', ' size="6" ');
+    print $form->get_field_HTML_row('comments', " rows='5' cols='40' ");
+    print $form->get_field_HTML_row('favoriteColor');
+    print $form->get_field_HTML_row('elvisOrBeatles');
+    print $form->get_field_HTML_row('spam');
+    print $form->get_field_HTML_row('aHiddenInput');
+    print "</table>\n\n";
+
+print <<HTML;
+<input type="submit" value="Submit" />
+</form>
+</body>
+</html>
+HTML
+}
+
+# uses the isSubmitted, validateFields, and isValid methods
+# of WWW::Form object
+sub getFormStatusMessage() {
+    # init status message to display
+    # in the form test web page
+    my $formStatusMessage = 'Form has not been submitted';
+
+    # check to see that the form was submitted
+    if ($form->isSubmitted($ENV{REQUEST_METHOD})) {
+
+        # the form was POSTed so
+        # validate the user entered input
+	$form->validateFields($params);
+
+        # update our status message depending on
+	# whether or not the form data was good
+        # if the form data is good then do some stuff
+	if ($form->isValid()) {
+	    $formStatusMessage = 'Form was submitted and the data is good';
+	} else {
+	    $formStatusMessage = 'Form was submitted and the data is bad';
+	}
+    }
+    return $formStatusMessage;
+}
+
+# creates and return a WWW::Form object
+sub getForm {
+    # if there are HTTP params then use those
+    # values to instantiate our Form object with
+    if ($params) {
+        return WWW::Form->new(getFormFields(), $params);
+    } else {
+        return WWW::Form->new(getFormFields());
+    }
+}
+
+# returns data structure suitable for passing
+# to Form object constructor
+# this example covers how to handle all of the various
+# types of form inputs with WWW::Form
+sub getFormFields {
+    my %fields = (
+        emailAddress => {
+            label        => 'Email address',
+            defaultValue => '',
+	    type         => 'text',
+            validators   => [WWW::FieldValidator->new(
+                                WWW::FieldValidator::WELL_FORMED_EMAIL,
+                                'Make sure email address is well formed')]
+        },
+        name => {
+            label        => 'Full name',
+	    defaultValue => '',
+	    type         => 'text',
+            validators   => [WWW::FieldValidator->new(
+                                WWW::FieldValidator::MIN_STR_LENGTH,
+                                'Please enter your name (at least 3 characters)', 3)]
+	},
+        aHiddenInput => {
+            label        => '',
+	    defaultValue => 'Hey, I am a hidden form input, nice to meet you!',
+	    type         => 'hidden',
+            validators   => []
+	},
+        password => {
+            label        => 'Password',
+	    defaultValue => '',
+	    type         => 'password',
+            validators   => [WWW::FieldValidator->new(
+                                WWW::FieldValidator::MIN_STR_LENGTH,
+                                'Password must be at least 6 characters', 6)]
+	},
+        passwordConfirm => {
+            label        => 'Confirm password',
+	    defaultValue => '',
+	    type         => 'password',
+            validators   => [WWW::FieldValidator->new(
+                                WWW::FieldValidator::MIN_STR_LENGTH,
+                                'Password confirm must be at least 6 characters', 6),
+			     WWW::FieldValidator->new(
+                                WWW::FieldValidator::REGEX_MATCH,
+                                'Passwords must match', '^' . $params->{password} . '$')]
+	},
+        spam => {
+            label          => 'Do we have your permission to send you spam?',
+	    defaultValue   => 'Yes, spam me.',
+	    defaultChecked => 0, # set to 1 to check by default
+	    type           => 'checkbox',
+            validators     => []
+	},
+        comments => {
+            label        => 'Comments',
+	    defaultValue => '',
+	    type         => 'textarea',
+            validators   => [WWW::FieldValidator->new(
+                                WWW::FieldValidator::MIN_STR_LENGTH,
+                                "If you're going to say something, how about at least 10 characters?",
+				10,
+				my $isOptional = 1)]
+	},
+        favoriteColor => {
+            label        => 'Favorite color',
+	    defaultValue => '', # set to 'green', 'red', or 'blue' to set default option group
+	    type         => 'select',
+            optionsGroup => [{label => 'Green', value => 'green'},
+			     {label => 'Red',   value => 'red'},
+			     {label => 'Blue',  value => 'blue'}],
+            validators   => []
+	},
+        elvisOrBeatles => {
+            label        => 'Do you like Elvis or the Beatles',
+	    defaultValue => 'I am a Beatles dude(tte)', # uncomment to leave group unchecked by default
+	    type         => 'radio',
+            optionsGroup => [{label => 'I like Elvis',       value => "I am an Elvis dude(tte)"},
+			     {label => 'I like the Beatles', value => "I am a Beatles dude(tte)"}],
+            validators   => []
+	}
+    );
+    return \%fields;
+}
+
+--0-77434069-1043689181=:54148--

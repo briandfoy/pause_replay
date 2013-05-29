@@ -1,0 +1,211 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:56899
+Return-Path: <ehammond@thinksome.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 19894 invoked from network); 23 Sep 2007 23:43:50 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 23 Sep 2007 23:43:50 -0000
+Received: (qmail 18439 invoked by uid 225); 23 Sep 2007 21:41:19 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18402 invoked by alias); 23 Sep 2007 21:41:18 -0000
+X-Spam-Status: No, hits=-0.6 required=8.0
+	tests=BAYES_00,RDNS_DYNAMIC,SPF_PASS,TVD_RCVD_IP
+X-Spam-Check-By: la.mx.develooper.com
+Received: from 206.111.205.169.ptr.us.xo.net (HELO smtp.level22.com) (206.111.205.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 23 Sep 2007 14:41:04 -0700
+Received: from [192.168.1.108] (gran.level22.com [192.168.1.108])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.level22.com (Postfix) with ESMTP id 958D9ABA61
+	for <modules@perl.org>; Sun, 23 Sep 2007 14:40:49 -0700 (PDT)
+Message-ID: <46F6DD61.9030001@thinksome.com>
+Date: Sun, 23 Sep 2007 14:40:49 -0700
+User-Agent: Thunderbird 1.5.0.13 (X11/20070824)
+MIME-Version: 1.0
+To:  modules@perl.org
+Subject: RFC: Crypt::Skip32
+X-Enigmail-Version: 0.94.2.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: ehammond@thinksome.com (Eric Hammond)
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+
+I would like to upload/register Crypt::Skip32, an 80-bit key, 32-bit
+block cipher based on Skipjack
+
+Feedback welcomed.
+
+Also posted to comp.lang.modules in case anybody still digs through the
+spam there.
+
+- --
+Eric Hammond
+ehammond@thinksome.com
+======================
+
+NAME
+    Crypt::Skip32 - 32-bit block cipher based on Skipjack
+
+SYNOPSIS
+      use Crypt::Skip32;
+
+      my $cipher     = new Crypt::Skip32 $key;
+      my $ciphertext = $cipher->encrypt($plaintext);
+      my $plaintext  = $cipher->decrypt($ciphertext);
+
+DESCRIPTION
+    Skip32 is a 80-bit key, 32-bit block cipher based on
+    Skipjack. The Perl code for the algorithm is a direct
+    translation from C to Perl of skip32.c by Greg Rose found
+    here:
+
+      http://www.qualcomm.com.au/PublicationsDocs/skip32.c
+
+    This cipher can be handy for scrambling small (32-bit) values
+    when you would like to obscure them while keeping the
+    encrypted output size small (32 bits).
+
+    One example where Skip32 has been useful: You have numeric
+    database record ids which increment sequentially. You would
+    like to use them in URLs, but you don't want to make it
+    obvious how many X's you have in the database by putting the
+    ids directly in the URLs.
+
+    You can use Skip32 to scramble ids and put the resulting
+    32-bit value in URLs (perhaps as 8 hex digits or some other
+    shorter encoding). When a user requests a URL, you can
+    unscramble the id to retrieve the object from the database.
+
+    Warning: A 32-bit value can only go a little over 4 billion
+    (American). Plan ahead if what you need to encrypt might
+    eventually go over this limit.
+
+FUNCTIONS
+    new
+          my $cipher = new Crypt::Skip32 $key;
+
+        Creates a new Crypt::Skip32 block cipher object, using
+        $key, where $key is a key of "keysize" (10) bytes.
+
+    encrypt
+          my $ciphertext = $cipher->encrypt($plaintext);
+
+        Encrypt $plaintext and return the $ciphertext. The
+        $plaintext must be of "blocksize" (4) bytes.
+
+    decrypt
+          my $plaintext = $cipher->decrypt($ciphertext);
+
+        Decrypt $ciphertext and return the $plaintext. The
+        $ciphertext must be of "blocksize" (4) bytes.
+
+    blocksize
+          my $blocksize = $cipher->blocksize;
+          my $blocksize = Crypt::Skip32->blocksize;
+
+        Returns the size (in bytes) of the block cipher. This is
+        always 4 bytes (for 32 bits).
+
+    keysize
+          my $keysize = $cipher->keysize;
+          my $keysize = Crypt::Skip32->keysize;
+
+        Returns the size (in bytes) of the key. This is always 10
+        bytes.
+
+EXAMPLE
+      use Crypt::Skip32;
+
+      my $key        = pack("H20", "112233445566778899AA"); # Your secret!
+      my $cipher     = new Crypt::Skip32 $key; # Always 10 bytes!
+
+      my $plaintext1 = pack("N", 3493209676);
+      my $ciphertext = $cipher->encrypt($plaintext1); # Always 4 bytes!
+      print "scrambled 3493209676 -> 0x",
+        unpack("H8", $ciphertext), "\n";
+
+      my $plaintext2 = $cipher->decrypt($ciphertext);
+      die "something went horribly wrong"
+        unless $plaintext2 eq $plaintext1;
+
+      print "blocksize: ", $cipher->blocksize, " bytes \n";
+      print "keysize: ",   $cipher->keysize,   " bytes \n";
+
+CAVEATS
+    This initial alpha Perl implementation of SKIP32 has not been
+    extentively reviewed by cryptographic experts, nor has it
+    been tested extensively on many different platforms. It is
+    recommended that this code not be used for applications which
+    require a high level of security. Reviewers and testers
+    welcomed.
+
+TODO
+    This version of Skip32 is implemented entirely in Perl. Since
+    there is a free C implementation of the algorithm, this
+    should probably be made available with XS or Inline::C so
+    that it can run a bit faster.
+
+SEE ALSO
+    The original Skip32 implementation in C by Greg Rose:
+
+    http://www.qualcomm.com.au/PublicationsDocs/skip32.c
+
+    The 80-bit key, 64-bit block Skipjack cipher created by the
+    NSA (Perl code maintained by Julius C. Duque):
+
+    Crypt::Skipjack
+
+AUTHOR
+    Perl code maintained by Eric Hammond <eric dash cpan at
+    thinksome dot com> http://www.anvilon.com
+
+    Original Skip32 C code written 1999-04-27 by Greg Rose, based
+    on an implementation of the Skipjack algorithm written by
+    Panu Rissanen.
+
+COPYRIGHT AND LICENSE
+    (C) Copyright 2007, Eric Hammond
+
+    This library is free software; you can redistribute it and/or
+    modify it under the same terms as Perl itself, either Perl
+    version 5.8.8 or, at your option, any later version of Perl 5
+    you may have available.
+
+    The C version of Skip32 by Greg Rose (see below) is
+    explicitly "not copyright, no rights reserved". Even so,
+    permission was requested and granted to make a Perl version
+    available on the CPAN.
+
+ORIGINAL C SOURCE
+    /* SKIP32 -- 32 bit block cipher based on SKIPJACK. Written
+    by Greg Rose, QUALCOMM Australia, 1999/04/27.
+
+       In common: F-table, G-permutation, key schedule.
+       Different: 24 round feistel structure.
+       Based on:  Unoptimized test implementation of SKIPJACK algorithm
+                  Panu Rissanen <bande@lut.fi>
+
+       SKIPJACK and KEA Algorithm Specifications
+       Version 2.0
+       29 May 1998
+
+       Not copyright, no rights reserved.
+    */
+
+[...]
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFG9t1gN9qi28wBkF0RAhkkAKDBB+g1HAAAl9/bwXq4hHzxjrJRRQCgou4k
+D6ssQJ6hoAauDDA6Nqu6Tc8=
+=bjLT
+-----END PGP SIGNATURE-----

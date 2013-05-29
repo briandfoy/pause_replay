@@ -1,0 +1,88 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4743
+Return-Path: <autarch@urth.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20475 invoked from network); 19 Mar 2001 19:00:18 -0000
+Received: from urth.org (216.161.20.244)
+  by tmtowtdi.perl.org with SMTP; 19 Mar 2001 19:00:18 -0000
+Received: from localhost (autarch@localhost)
+	by urth.org (8.9.3/8.9.3) with ESMTP id NAA07589
+	for <modules@perl.org>; Mon, 19 Mar 2001 13:05:18 -0600
+Date: Mon, 19 Mar 2001 13:05:18 -0600 (CST)
+To: <modules@perl.org>
+Subject: Re: 2nd request: Params::Validate
+In-Reply-To: <15030.6201.513867.122574@phoenix.squirrel.nl>
+Message-ID: <Pine.LNX.4.30.0103191249040.7470-100000@urth.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: autarch@urth.org (Dave Rolsky)
+References: <15030.6201.513867.122574@phoenix.squirrel.nl>
+
+On Mon, 19 Mar 2001, Johan Vromans wrote:
+
+> Sorry for the delay...
+>
+> [Quoting Dave Rolsky, on March 18 2001, 10:51, in "2nd request: Params:"]
+> > Name:   Params::Validate
+> > DSLI:   bdpf
+> > Author: DROLSKY
+> > Description: Validate subroutine parameters based on type, class, or
+> > interface
+>
+> Can you indicate the differences between Params::Validate and
+> Getargs::Long?
+
+Good question.  I didn't even know Getargs::Long existed.  It looks like
+it was released after Params::Validate so that explains how I missed it.
+
+Anyway, having looked at it, I think I'd probably want to continue using
+and maintaining my module.  The two do fairly similar things but the
+interfaces look quite different, and IMHO mine is significantly more
+readable.
+
+For example, doing this in Getargs::Long
+
+ my ($port, $server) = getargs( \@_, qw( port=i server=HTTP::Server ) );
+
+would be written this way for my module:
+
+ validate( @_, { port => { type => SCALAR },
+                 server => { isa => 'HTTP::Server' } } );
+ my %params = @_;
+
+There isn't a one hundred percent overlap as there is no way to specify
+that a scalar should be an integer vs. being a float or string.  I also
+don't plan to do this as in Perl I don't feel this can be meaningully
+done.  However, my module does allow a callbacks interface so the very
+anal could do:
+
+ validate( @_, { port => { type => SCALAR,
+                           callbacks => { 'is integer' =>
+					  { sub { shift =~ /^[\d.]$/ } } },
+                         } } );
+
+This, while somewhat ugly, is fairly self-documenting.  To me, one of the
+main purposes of my module is to help people write self-documenting code,
+along with being a sanity checker.
+
+In addition, my module can be used to validate positional arguments as
+well (via the validate_pos sub) which is quite useful for me, since I have
+code that uses both (positional for very simple methods, named for more
+complex).
+
+
+-dave
+
+/*==================
+www.urth.org
+We await the New Sun
+==================*/
+
+
+
+
+
+

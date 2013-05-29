@@ -1,0 +1,69 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:72776
+Return-Path: <smueller@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27882 invoked from network); 17 Sep 2010 10:31:41 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 17 Sep 2010 10:31:41 -0000
+Received: (qmail 28664 invoked by uid 225); 17 Sep 2010 10:31:41 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28660 invoked by alias); 17 Sep 2010 10:31:40 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from caiajhbdccac.dreamhost.com (HELO homiemail-a31.g.dreamhost.com) (208.97.132.202)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 17 Sep 2010 03:31:39 -0700
+Received: from homiemail-a31.g.dreamhost.com (localhost [127.0.0.1])
+	by homiemail-a31.g.dreamhost.com (Postfix) with ESMTP id 92DE1202022;
+	Fri, 17 Sep 2010 03:31:35 -0700 (PDT)
+Received: from [141.52.67.206] (unknown [141.52.67.206])
+	(Authenticated sender: catch-all@steffen-mueller.net)
+	by homiemail-a31.g.dreamhost.com (Postfix) with ESMTPA id F2EA820200F;
+	Fri, 17 Sep 2010 03:31:34 -0700 (PDT)
+Message-ID: <4C934385.7050203@cpan.org>
+Date: Fri, 17 Sep 2010 12:31:33 +0200
+User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
+MIME-Version: 1.0
+To: tech@tool.de
+CC: modules@perl.org
+Subject: Re: Fw: Failed: PAUSE indexer report AHERNIT/Class-Injection-1.01.tar.gz
+References: <201009142015.o8EKFmip021675@rs68.luxsci.com>
+In-Reply-To: <201009142015.o8EKFmip021675@rs68.luxsci.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: smueller@cpan.org (Steffen Mueller)
+
+Hi Andreas,
+
+Andreas Hernitscheck wrote:
+> 
+>  Hello,
+>  
+> for my new module, there are some examples with dummy modules. Is there 
+> a way the 'examples' folder's modules can be skipped for indexing?
+
+You should ship your distribution with a META.yml file that contains 
+meta-information for CPAN clients and the PAUSE indexer. Most trivially, 
+you can have one generated automatically from Makefile.PL. When you 
+create a new release, just do:
+
+perl Makefile.PL
+make manifest
+(check your MANIFEST file!)
+make dist
+
+The "make dist" step will generate a META.yml and include it in the 
+resulting distribution tarball which is (after a quick test) ready for 
+upload to CPAN.
+
+As for not indexing examples/, I thought that would be the default for 
+the thusly generated META.yml, but I'm not certain. You can use the 
+META_MERGE feature and the 'no_index' META attribute (see 
+http://search.cpan.org/~rjbs/CPAN-Meta-2.102400/lib/CPAN/Meta/Spec.pm) 
+to achieve what you want.
+
+Best regards,
+Steffen

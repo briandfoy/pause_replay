@@ -1,0 +1,116 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:8531 perl.modules:1259
+Return-Path: <Raphael.Manfredi@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29179 invoked from network); 6 Mar 2000 09:01:41 -0000
+Received: from beta.st.com (HELO beta.dmz-eu.st.com) (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 6 Mar 2000 09:01:41 -0000
+Received: from eux100.sgp.st.com (eux100.sgp.st.com [164.129.225.7])
+	by beta.dmz-eu.st.com (Postfix) with ESMTP id 7EE192681
+	for <modules@perl.org>; Mon,  6 Mar 2000 09:00:39 +0000 (GMT)
+Received: from lod23.gnb.st.com (lod28.gnb.st.com [164.129.116.152])
+	by eux100.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id KAA15402;
+	Mon, 6 Mar 2000 10:01:02 +0100 (MET)
+To: perl5-porters@perl.org, modules@perl.org
+Subject: ANNOUNCE: Released Log-Agent-Rotate-0.1.0
+X-Mailer: NMH [version 1.0.1]
+Organization: ST Microelectronics, Grenoble, France
+Date: Mon, 06 Mar 2000 10:03:28 +0100
+Message-ID: <18092.952333408@lod23.gnb.st.com>
+Sender: manfredi@lod23.gnb.st.com
+Approved: news@nntp.perl.org
+From: Raphael.Manfredi@st.com (Raphael Manfredi)
+
+I have released version 0.1 of the Log::Agent::Rotate module, which is
+an extension for the Log::Agent framework that allows configuration
+of rotating policies for the logfiles, the rotation being performed by
+the application itself when the need arises.
+
+The Log::Agent framework provides a common interface for all the reusable
+modules to perform their logging activities, without comitting for
+the underlying implementation of the log itself.
+
+Appended is the README file for the module.
+
+Raphael
+
+------------------------------------------------------------------------
+                        Log::Agent::Rotate 0.1
+                 Copyright (c) 2000, Raphael Manfredi
+
+------------------------------------------------------------------------
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the Artistic License, a copy of which can be
+    found with perl.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    Artistic License for more details.
+------------------------------------------------------------------------
+
+       *** This is alpha software -- use at your own risks ***
+
+Name           DSLI  Description                                  Info
+-----------    ----  -------------------------------------------- -----
+Log::Agent     ----  A general logging framework                  RAM
+::Rotate       adpr  Logfile rotation config parameters           RAM
+Log::Agent::File
+::Rotate       adpr  A logfile which may be rotated               RAM
+
+
+The Log::Agent::Rotate module is an extension of Log::Agent that brings
+file-rotating features to the File logging driver.
+
+It is separated from Log::Agent itself because it has dependencies
+on LockFile::Simple and Compress::Zlib that Log::Agent cannot have:
+everyone with a plain stock Perl distribution must be able to simply
+install Log::Agent and start using it.
+
+This is NOT a generic all-purpose logfile rotation package.  It is meant
+to be used only within the Log::Agent framework.
+
+SYNOPSIS
+
+	use Log::Agent;
+	require Log::Agent::Driver::File;
+	require Log::Agent::Rotate;
+
+	(my $me = $0) =~ s|.*/(.*)|$1|;
+
+	my $rotate = Log::Agent::Rotate->make(
+		-backlog       => 7,		# keep last seven logs + current
+		-unzipped      => 2,		# don't compress last archived 2 logs
+		-is_alone      => 1,		# programmer says only ONE process will run
+		-max_size      => 100_000,  # file will rotate when bigger than 100K
+	);
+
+	my $driver = Log::Agent::Driver::File->make(
+		-prefix     => $me,
+		-showpid    => 1,
+		-rotate     => $rotate,		# default rotation policy
+		-channels   => {
+			'error'    => '/tmp/output.err',
+			'output'   => ['log.out', $rotate],	# could have special policy
+			'debug'    => '../appli.debug',
+		},
+	);
+	logconfig(-driver => $driver, -level => 'notice');
+
+DESCRIPTION
+
+Log::Agent::Rotate lets you specify the logfile rotation policy that will
+be used on the logfiles managed via a Log::Agent::Driver::File driver.
+
+It can be useful for daemon process to periodically rotate the logfiles
+whilst keeping some fair amount of backlog.  But it can also be used by
+programs that run a short period of time and generate systematic logging,
+that would end-up eating all the diskspace if not monitored.
+
+Please read the Log::Agent::Rotate(3) manpage and the related pages for more
+information.
+
+-- Raphael Manfredi <Raphael_Manfredi@pobox.com>
+

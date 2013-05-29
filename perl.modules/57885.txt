@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:57885
+Return-Path: <gwhulbert@eol.ca>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 21027 invoked from network); 27 Nov 2007 13:55:03 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 27 Nov 2007 13:55:03 -0000
+Received: (qmail 22198 invoked by uid 225); 27 Nov 2007 13:55:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22193 invoked by alias); 27 Nov 2007 13:55:02 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from smtp105.rog.mail.re2.yahoo.com (HELO smtp105.rog.mail.re2.yahoo.com) (206.190.36.83)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Tue, 27 Nov 2007 05:54:58 -0800
+Received: (qmail 42235 invoked from network); 27 Nov 2007 13:54:53 -0000
+Received: from unknown (HELO cal.cotef.org) (gwhulbert@rogers.com@99.244.79.32 with plain)
+  by smtp105.rog.mail.re2.yahoo.com with SMTP; 27 Nov 2007 13:54:53 -0000
+X-YMail-OSG: DJklSp0VM1kocxLDZcFjs5NGor3Ubb.jDclDxS3Bxa_k2Y6wHSCC9As8sVofPwmh1w--
+Subject: Re: Namespaces [typo fix]
+To: modules@perl.org
+In-Reply-To: <1196167589.6833.38.camel@cal.cotef.org>
+References: <1196091909.15390.17.camel@cal.cotef.org>
+	 <271120070521369905%brian.d.foy@gmail.com>
+	 <1196167589.6833.38.camel@cal.cotef.org>
+Content-Type: text/plain
+Date: Tue, 27 Nov 2007 08:54:52 -0500
+Message-ID: <1196171692.9304.8.camel@cal.cotef.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.4 
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: gwhulbert@eol.ca (Guy Hulbert)
+
+Apologies for replying to myself.
+
+On Tue, 2007-11-27 at 07:46 -0500, Guy Hulbert wrote:
+> On Tue, 2007-11-27 at 05:21 -0600, brian d foy wrote:
+[snip]
+
+> > Well, you can start by telling us what your module does :)
+> 
+> Ok.  At the moment, I'm still hacking a little bit.
+> 
+> The main thing I am doing is writing an application to do sysadmin.  In
+> that case the namespace is really for a framework.   I notice a number
+
+[comment]
+I can use:
+	FWNS::OO::Class
+where 'FWNS' stands for the prospective namespace.  So I don't really
+need a second namespace.
+
+However, the namespace "pollution" on CPAN is a bit awkward.  I wrote a
+script to search ~/.cpan/ (it's necessary to use regex on the module
+names), which will be part of the application.
+
+[snip]
+> However, I see there are tons of
+> Class::<things> and someone may have already written something
+> equivalent.
+> 
+> Here's how you use it.  Let's just call it 'Class'.
+> 
+> 	package SubClass;
+> 	use Class;
+> 	our @ISA = qw ( Class );
+> 	sub _init {
+> 		my $subclass = shift;
+> 		$subclass->_define( qw ( meth1 meth2 ) );
+> 		$subclass;	# must be returned for Class::new()
+> 	}
+> 
+> which provides:
+> 
+> 	_meth1(VAL), VAL = _meth1()
+> 	_meth2(VALU), VALU = _meth2()
+Argg...
+	VALU = meth2()
+(and so on).  Setters are private, getters are public.
+
+[snip]
+
+-- 
+--gh
+
+

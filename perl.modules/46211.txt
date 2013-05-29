@@ -1,0 +1,214 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46211
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23219 invoked from network); 1 Dec 2005 15:48:09 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 1 Dec 2005 15:48:09 -0000
+Received: (qmail 14292 invoked by uid 225); 1 Dec 2005 15:48:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14285 invoked by alias); 1 Dec 2005 15:48:08 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 01 Dec 2005 07:47:59 -0800
+Received: from pause.perl.org (localhost [127.0.0.1])
+	by pause.perl.org (8.13.4/8.13.4/Debian-3) with ESMTP id jB1FlFQ0024261;
+	Thu, 1 Dec 2005 16:47:16 +0100
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.4/8.13.4/Submit) id jB1FlDjr024259;
+	Thu, 1 Dec 2005 16:47:14 +0100
+Date: Thu, 1 Dec 2005 16:47:14 +0100
+Message-ID: <200512011547.jB1FlDjr024259@pause.perl.org>
+Subject: Module submission String::Util
+Reply-To: modules@perl.org
+To: modules@perl.org, miko@cpan.org
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       String::Util
+  DSLIP:       Rdpfp
+  description: Handy string processing utilities
+  userid:      MIKO (Miko O'Sullivan)
+  chapterid:   11 (String_Lang_Text_Proc)
+  communities:
+
+  similar:
+    CGI.pm, others. Nothing wildly original here, but functions have
+    their own flavor for doing things.
+
+  rationale:
+
+    NAME String::Util -- Handy string processing utilities
+
+    SYNOPSIS use String::Util ':all'; # "crunch" whitespace and remove
+    leading/trailing # whitespace crunch $val; # does this value have
+    "content", i.e. it's defined # and has something besides whitespace?
+    if (hascontent $val) {...} # format for display in web page htmlesc
+    $val; # remove leading/trailing whitespace trim $val; # ensure
+    defined value define $val; # remove leading/trailing quotes unquote
+    $val; # remove all whitespace nospace $val; # format for use in URL
+    urlencode $val; # decode URL encoded data urldecode $val; # remove
+    trailing \r and \n, regardless of what # the OS considers an
+    end-of-line fullchomp $val; # encrypt string using random seed
+    randcrypt $val; # are these two values equal, where two undefs #
+    count as "equal"? if (equndef $a, $b) {...} # are these two values
+    different, where two # undefs count as "equal"? if (neundef $a, $b)
+    {...} # get a random string of some specified length $val = randword
+    (10);
+
+    DESCRIPTION String::Util provides a collection of small, handy
+    utilities for processing strings.
+
+    INSTALLATION String::Util can be installed with the usual routine:
+
+    perl Makefile.PL make make test make install
+
+    You can also just copy Util.pm into the String/ directory of one of
+    your library trees.
+
+    crunch(string) Crunches all whitespace in the string down to single
+    spaces. Also removes all leading and trailing whitespace. Undefined
+    input results in undefined output.
+
+    In void context modifies the value in place. Otherwise returns the
+    modified value.
+
+    hascontent(scalar) Returns true if the given argument contains
+    something besides whitespace.
+
+    This function tests if the given vaoue is defined and, if it is, if
+    that defined value contains something besides whitespace.
+
+    An undefined value returns false. An empty string returns false. A
+    value containing nothing but whitespace (spaces, tabs, carriage
+    returns, newlines, backspace) returns false. A string containing any
+    other characers (including zero) returns true.
+
+    trim(string) Returns the string with all leading and trailing
+    whitespace removed. Trim on undef returns undef.
+
+    In void context modifies the value in place. Otherwise returns the
+    modified value.
+
+    nospace(string) Removes all whitespace characters from the given
+    string.
+
+    In void context changes the values in place. Otherwise returns
+    modified value.
+
+    htmlesc(string) Formats a string for literal output in HTML. An
+    undefined value is returned as an empty string. In void context
+    changes the values in place. Otherwise returns modified value.
+
+    htmlesc is very similar to CGI.pm's escapeHTML. If your script
+    already loads CGI.pm, you may well not need htmlesc. However, there
+    are a few differences. htmlesc changes an undefined value to an
+    empty string, whereas escapeHTML returns undefs as undefs and also
+    results in a warning. Also, escapeHTML will not modify a value in
+    place: you always have to store the return value, even in you're
+    putting it back in to the variable the value came from. It's a
+    matter of taste.
+
+    unquote(string) If the given string starts and ends with quotes,
+    removes them. Recognizes single quotes and double quotes. The value
+    must begin and end with same type of quotes or nothing is done to
+    the value. Undef input results in undef output.
+
+    In void context changes the values in place. Otherwise returns
+    modified value.
+
+    define(scalar) Takes a single value as input. If the value is
+    defined, it is returned unchanged. If it is not defined, an empty
+    string is returned.
+
+    This subroutine is useful for printing when an undef should simply
+    be represented as an empty string. Granted, Perl already treats
+    undefs as empty strings in string context, but this sub makes -w
+    happy. And you ARE using -w, right?
+
+    In void context modifies the value in place. Otherwise returns the
+    modified value.
+
+    randword(length, %options) Returns a random string of characters.
+    String will not contain any vowels (to avoid distracting dirty
+    words). First argument is the length of the return string.
+
+    option: numerals If the numerals option is true, only numerals are
+    returned, no alphabetic characters.
+
+    option: strip_vowels This option is true by default. If true,
+    vowels are not included in the returned random string.
+
+    equndef($str1, $str2) Returns true if the two given strings are
+    equal. Also returns true if both are undef. If only one is undef, or
+    if they are both defined but different, returns false.
+
+    neundef($str1, $str2) The opposite of equndef, returns true if the
+    two strings are *not* the same.
+
+    urlencode(string) Returns the string URL encoded. Undef returns an
+    empty string.
+
+    This subroutine works much like CGI.pm's escape function. The main
+    difference is that this sub returns an empty string if an undefined
+    value is input.
+
+    urldecode(string) Returns the string URL decoded. Undef returns an
+    empty string.
+
+    In void context modifies the value in place. Otherwise returns the
+    modified value.
+
+    This subroutine works much like CGI.pm's escape function. The main
+    difference is that this sub returns an empty string if an undefined
+    value is input.
+
+    This subroutine also has a bug I haven't been able to fix. See
+    notes in the code.
+
+    fullchomp(string) Works like chomp, but is a little more thorough
+    about removing \n's and \r's even if they aren't part of the OS's
+    standard end-of-line.
+
+    Undefs are returned as undefs.
+
+    randcrypt(string) Crypts the given string, seeding the encryption
+    with a random two character seed.
+
+    TERMS AND CONDITIONS Copyright (c) 2005 by Miko O'Sullivan. All
+    rights reserved. This program is free software; you can redistribute
+    it and/or modify it under the same terms as Perl itself. This
+    software comes with NO WARRANTY of any kind.
+
+    AUTHORS Miko O'Sullivan miko@idocs.com
+
+    VERSION Version 0.10 December 1, 2005 Initial release
+
+  enteredby:   MIKO (Miko O'Sullivan)
+  enteredon:   Thu Dec  1 15:46:25 2005 GMT
+
+The resulting entry would be:
+
+String::
+::Util            Rdpfp Handy string processing utilities            MIKO
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=4ab00000_550d57f5322e22d6&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=4ab00000_550d57f5322e22d6&SUBMIT_pause99_add_mod_insertit=1

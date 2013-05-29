@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45237
+Return-Path: <burakgursoy@gmx.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7770 invoked from network); 11 Oct 2005 11:33:28 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 11 Oct 2005 11:33:28 -0000
+Received: (qmail 15656 invoked by uid 225); 11 Oct 2005 11:33:27 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15648 invoked by alias); 11 Oct 2005 11:33:26 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=BAYES_00,RCVD_IN_DSBL,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of burakgursoy@gmx.net designates 213.165.64.20 as permitted sender)
+Received: from pop.gmx.net (HELO mail.gmx.net) (213.165.64.20)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Tue, 11 Oct 2005 04:33:18 -0700
+Received: (qmail invoked by alias); 11 Oct 2005 11:33:13 -0000
+Received: from unknown (EHLO cybertro972836) [195.174.117.143]
+  by mail.gmx.net (mp029) with SMTP; 11 Oct 2005 13:33:13 +0200
+X-Authenticated: #14869754
+To: <modules@perl.org>
+Subject: RE: indexer fails to find $VERSION
+Date: Tue, 11 Oct 2005 14:33:00 +0300
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-9"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+In-Reply-To: <874q7p6nvf.fsf@k75.linux.bogus>
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2670
+Thread-Index: AcXN5QOCCYX9iaOZTXK4sIVfVDH9NwAb+Iuw
+X-Y-GMX-Trusted: 0
+Approved: news@nntp.perl.org
+From: burakgursoy@gmx.net (=?iso-8859-9?Q?Burak_G=FCrsoy?=)
+Message-ID: <perl.modules-45237@nntp.perl.org>
+References: <874q7p6nvf.fsf@k75.linux.bogus>
+
+Ok. Thanks. However, I'm packaging the distributions on Windows XP using
+"nmake dist". So, there must not be a permission problem as far as I =
+know
+(and it looks like  I'm wrong). But, I was using Archive::Tar for tar =
+and
+gzip operations before (and I didn't get any indexer errors). I'm now =
+using
+win32 ports of GNU tar and gzip. And I don't get any error during "nmake
+dist" or "nmake disttest" or "nmake test". I'll check these program's =
+(tar &
+gzip) options or will use Archive::Tar again.
+
+
+-----Original Message-----
+From: Andreas J. Koenig =
+[mailto:andreas.koenig.gmwojprw@franz.ak.mind.de]=20
+Sent: 11 Ekim 2005 Sal=FD 00:53
+To: Burak G=FCrsoy
+Cc: Andreas J. Koenig; modules@perl.org
+Subject: Re: indexer fails to find $VERSION
+
+>>>>> On Tue, 4 Oct 2005 22:01:06 +0300, Burak G=FCrsoy =
+<burakgursoy@gmx.net>
+said:
+
+  > Hello,
+  > I'm getting this indexer error third or fourth time. I've tried to
+re-index
+  > 1.56 but got that error. And now 1.57 gives the same.=20
+
+  > I've tried modules@perl.org before (as suggested inside the report), =
+but
+  > that list seems to be dead and it is filled with spam. So, nobody
+responded.
+
+  > Is this a PAUSE indexer bug or is there a bug in my distribution?
+
+It's a bug in your packaging. All your directories have a permission
+of 666 which means that the indexer can untar your distribution but
+cannot read the files.
+
+I'd recommend, you use 'make dist' and 'make disttest' to distribute
+your modules.
+
+I apologize that the indexer is not smart enough to write a proper
+report to you. On first sight a fix to that end seems to involve quite
+a view parts of the code, so I must defer such a fix....
+
+Regards,
+--=20
+andreas
+
+
+

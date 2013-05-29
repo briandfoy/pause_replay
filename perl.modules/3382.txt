@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3382
+Return-Path: <ajalis@twu.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32015 invoked from network); 8 Nov 2000 02:01:56 -0000
+Received: from shell.twu.net (HELO twu.net) (63.97.42.127)
+  by tmtowtdi.perl.org with SMTP; 8 Nov 2000 02:01:56 -0000
+Received: (from ajalis@localhost)
+	by twu.net (8.9.3/8.9.3) id VAA27083;
+	Tue, 7 Nov 2000 21:02:38 -0500
+Date: Tue, 7 Nov 2000 21:02:37 -0500
+To: modules@perl.org
+Subject: Request For PAUSE Registration
+Message-ID: <20001107210237.A26143@twu.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.0.1i
+Approved: news@nntp.perl.org
+From: ajalis@twu.net
+
+Name: Asim Jalis
+E-Mail Address: ajalis@twu.net
+Homepage: None
+Preferred User-ID: asimjalis
+Description Of Contribution: See appended pod documentation
+
+A note about the module has been posted on comp.lang.perl.modules 
+with subject "Request For Comments: UnitTest.pm" and message-id
+<8uab0d$hqj$1@nnrp1.deja.com>.
+
+Here are the details of the module.
+
+NAME
+    UnitTest - A unit testing framework for Perl
+
+VERSION
+    This document describes version 1.00 of UnitTest, released August
+    25, 2000.
+
+SYNOPSIS
+            use UnitTest;
+
+            testAdd 'main.string.setup' => sub {
+                testSetContext {
+                  string1 => "abc", string2 => "def"
+                };
+            }
+
+            testAdd 'main.string.teardown' => sub { }
+
+            testAdd 'main.string.equals' => sub {
+                my $c = testGetContext(); assert ("equals",
+                $c->{string1} eq $c->{string2}); assert ("not equals",
+                $c->{string2} ne $c->{string3});
+            }
+
+            testAdd 'main.string.length' => sub {
+                assert ("length", length($c->{string1}) == 3);
+            }
+
+            runTests();
+
+DESCRIPTION
+    This module is inspired by JUnit (the Java unit-testing framework)
+    written by Kent Beck and Erich Gamma.
+
+    The idea is to follow Junit in spirit rather than in letter. Perl
+    shines in data structures, not in OO. Mimicking JUnit in structure
+    requires contortions that can make unit-testing in Perl seem
+    unwieldy and unnatural. The object-hierarchy of JUnit is replaced by
+    a path-based tree like structure. Each test has a name of the form
+    "a.b.c.d". If a test is added with a name like "a.b.c.setup" then
+    it is run before every "a.b.c.somefunc". A test registered under
+    "a.b.c.teardown" is run after every test immediately under "a.b.c".
+
+    runTests() runs all the tests that have been registered running them
+    in the order they were registered in.
+
+FUNCTIONS
+    The functions exported by this module are: testAdd, runTests. The
+    functions which must be called inside tests are: testSetContext,
+    testGetContext, assert.
+
+AUTHOR
+    Asim Jalis (ajalis@twu.net)
+
+BUGS
+    Bug reports and feedback may be e-mailed to me.
+
+COPYRIGHT
+    Copyright (c), Asim Jalis. All Rights Reserved. This module
+    is free software. It may be used, redistributed and/or
+    modified under the terms of the Perl Artistic License (see
+    http://www.perl.com/perl/misc/Artistic.html)
+

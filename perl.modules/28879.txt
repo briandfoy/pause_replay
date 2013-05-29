@@ -1,0 +1,76 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:28879
+Return-Path: <toby@ovod-everett.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 88954 invoked by uid 76); 26 Feb 2004 04:43:06 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Wed, 25 Feb 2004 20:43:06 -0800
+Received: (qmail 6220 invoked by uid 225); 26 Feb 2004 04:43:04 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6110 invoked by alias); 26 Feb 2004 04:42:43 -0000
+Received: from [209.124.128.79] (HELO ppp.ovod-everett.org) (209.124.128.79)  by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Wed, 25 Feb 2004 20:42:43 -0800
+Received: from ppp.ovod-everett.org (localhost.localdomain [127.0.0.1])	by ppp.ovod-everett.org (8.12.8/8.12.8) with ESMTP id i1Q4gcZ3002041	for <modules@perl.org>; Wed, 25 Feb 2004 19:42:39 -0900
+Received: (from toby@localhost)	by ppp.ovod-everett.org (8.12.8/8.12.8/Submit) id i1Q4gcld002039	for modules@perl.org; Wed, 25 Feb 2004 19:42:38 -0900
+Date: Wed, 25 Feb 2004 19:42:37 -0900
+To: modules@perl.org
+Subject: Questions regarding writing test code . . .
+Message-ID: <20040226044237.GA1962@ppp.ovod-everett.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on x1.develooper.com
+X-Spam-Status: No, hits=-1.9 required=8.0 tests=BAYES_00,SEARCH_ENGINE_PROMO 	autolearn=no version=2.63
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: toby@ovod-everett.org (Toby Ovod-Everett)
+
+I'm attempting to write some test code for the Win32::Security modules, and
+I'm beset by a conundrum.
+
+To really test something that is designed to manipulate the security of files
+on the filesystem, one has to really do that.  Otherwise, it's just smoke and
+mirrors and you don't know if the code really works.
+
+I've flipped back and forth over this issue.  Should I knowingly put code in a
+test suite that intentionally makes changes to the state of a system?  I've
+started playing with such a test suite, and I've decided that if I decide to
+do this, the best approach is one like:
+
+* Create the directory "$ENV{TEMP}\\Win32-Security_TestDir_$$" and do all my
+  testing in there
+
+* Wrap all of the test code in an eval {}; and have it do its work in and on
+  that directory
+
+* After the eval, do a system("rd /s /q \"$tempdir\""); (where $testdir is the
+  directory created above)
+
+Other requirements for the code are that it be able to identify the user
+running the test (using $ENV{USERDOMAIN} and $ENV{USERNAME}) and that it be
+able to find cacls.exe (which wasn't standard with the OS until Win2K, IIRC).
+
+So, should I risk this?  Is this a reasonable solution?  How and where should
+I put appropriate warnings?
+
+Thoughts?
+
+In another vein, I'd like to write a test suite for some scripts I distribute
+with the modules (PermDump.pl, PermChg.pl, and PermFix.pl).  I've placed these
+scripts in the lib/Win32/Security directory so that they will get packaged up
+and distributed by PPM packages (I hope), since they are very useful tools
+based upon this module.
+
+What is the best way to locate those modules so that I can test them from a .t
+file?  Scanning @INC for the files?  How do I know what version of perl.exe to
+call (remember I'm running under Win32, and I'd like this module to work on
+any build since 5.005)?
+
+Finally, I need another account to assign permissions to for the testing.  Do
+you think I'm safe using Guest (since it's a BUILTIN and present on every
+machine)?  What about localization issues?  I think these accounts get
+different names under different localized versions of Win32.  Aiiii!!!!
+
+--Toby Ovod-Everett
+

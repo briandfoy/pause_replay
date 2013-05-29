@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4186
+Return-Path: <starfire@zipcon.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21814 invoked from network); 12 Jan 2001 16:37:48 -0000
+Received: from zipcon.net (qmailr@209.221.136.5)
+  by tmtowtdi.perl.org with SMTP; 12 Jan 2001 16:37:48 -0000
+Received: (qmail 12607 invoked from network); 12 Jan 2001 16:39:07 -0000
+Received: from gudgec-modem111.zipcon.net (HELO adcom133) (63.249.15.111)
+  by mail.zipcon.net with SMTP; 12 Jan 2001 16:39:07 -0000
+Message-ID: <02f101c07cb6$21a334d0$650ff93f@adcom133>
+To: <andreas.koenig@anima.de>
+Cc: <modules@perl.org>
+References: <033101c062c5$f06d2ce0$700ff93f@adcom133><m31yvgkp2t.fsf@ak-71.mind.de><037e01c062f3$4140bab0$700ff93f@adcom133> <m3zoi26n44.fsf@ak-71.mind.de>
+Subject: Re: MakeMaker question
+Date: Fri, 12 Jan 2001 08:38:40 -0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Approved: news@nntp.perl.org
+From: starfire@zipcon.net ("Richard Anderson")
+
+O.K., here's how I think it should work:
+
+The Makefile.PL has a postamble subroutine that adds an additional step to
+"make install" that installs the http-webtest directory in /usr/local/etc.
+
+There is a Bourne shell script called "configure", to be run BEFORE "perl
+Makefile.PL", that prompts the user for where he/she wants to install the
+http-webtest directory.  If the desired location is not /usr/local/etc, the
+shell script modifies the Makefile.PL using sed.
+
+Sounds good?  The alternative is to have the "make install" step prompt the
+user for the location of the directory, but this seems non-standard to me
+and would be more difficult for me to program.
+
+Richard.Anderson@unixscripts.com              RayCosoft, LLC
+Perl/Java/Oracle/Unix software engineering    www.unixscripts.com
+www.zipcon.net/~starfire/home                     Seattle, WA, USA
+----- Original Message -----
+From: "Andreas J. Koenig" <andreas.koenig@anima.de>
+To: "Richard Anderson" <starfire@zipcon.net>
+Cc: <andreas.koenig@anima.de>; <modules@perl.org>
+Sent: Tuesday, December 12, 2000 12:48 AM
+Subject: Re: MakeMaker question
+
+
+> >>>>> On Sun, 10 Dec 2000 13:50:41 -0800, "Richard Anderson"
+<starfire@zipcon.net> said:
+>
+>  > And how do I hook this subroutine into Makefile.PL so that typing "perl
+>  > Makefile.PL will insert the needed lines into the Makefile?  Or do I
+need to
+>  > add another step to the normal installation procedure?
+>
+> It may sound weird, but it has historical reasons: MakeMaker looks
+> into the MY namespace and handles subroutines there as if they had
+> been written in its own namespace so that your subroutine
+> MY::postamble will be executed. Its return value will end up in the
+> Makefile. So all you do is write something like
+>
+> sub MY::postamble {
+>         return "# See me in the Makefile\n";
+> }
+>
+> in your Makefile.PL
+>
+>  > I don't like using /usr/local/etc/http-webtest either, but I don't
+think it
+>  > is appropriate to install a subdirectory structure in
+>  > /usr/lib/perl5/site_perl/5.005/HTTP - this seems reserved for .pm
+files.  At
+>  > least /usr/local/etc/http-webtest will persist even after an upgrade to
+perl
+>  > v 6.0.  The only problem with that directory would be if another app
+uses
+>  > /usr/local/etc/http-webtest, which seems unlikely.  Or is your point
+that
+>  > even the mere presence of a subdirectory in /usr/local/etc give MYSQL
+>  > problems?
+>
+> The latter. But mind you, I have no solution for that, just the
+> recommendation that you let the users decide where they prefer the
+> files installed. A safer default place might be ~/.http-webtest.
+>
+> --
+> andreas
+>
+>
+

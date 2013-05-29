@@ -1,0 +1,88 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13665
+Return-Path: <kurt.gjerde@intermedia.uib.no>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 66748 invoked by uid 76); 9 Sep 2002 15:03:34 -0000
+Received: from exim@alf.uib.no (HELO alf.uib.no) (129.177.30.3) by onion.perl.org (qpsmtpd/0.10) with SMTP; 2002-09-09 15:03:34Z
+Received: from hermes.svf.uib.no [129.177.30.70] 	by alf.uib.no for modules@perl.org with esmtp (Exim 3.35)	id 17oQ3o-00045w-00; Mon, 09 Sep 2002 17:02:44 +0200
+Received: from smkgg by hermes.svf.uib.no with local-esmtp (Exim 3.35)	id 17oQ3n-0000uf-00; Mon, 09 Sep 2002 17:02:43 +0200
+Date: Mon, 9 Sep 2002 17:02:43 +0200 (MET DST)
+To:  <modules@perl.org>
+Subject: Requesting name XML::XPathToXML
+Message-ID: <Pine.GSO.4.33.0209091651110.14695-100000@hermes.svf.uib.no>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Sender: Kurt George Gjerde <smkgg@hermes.svf.uib.no>
+X-checked-clean: by exiscan on alf
+X-Scanner: 17a08ad65b4ebcebce96ce74e3311b79 http://tjinfo.uib.no/virus.html
+X-UiB-SpamFlag: NO UIB: -7 hits, 8 required;
+X-SMTPD: qpsmtpd/0.10, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: kurt.gjerde@intermedia.uib.no (Kurt George Gjerde)
+
+Hi,
+
+Got a new module, needs name. Proposing XML::XPathToXML unless objections
+or better suggestions.
+
+Excerpt from POD:
+
+=head1 NAME
+
+XML::XPathToXML - Generates XML document from XPath expressions
+
+=head1 SYNOPSIS
+
+  my %data = (
+    '/project/name'         => 'The Ultimate Question',
+    '/project/start'        => '2002-09-08',
+    '/project/end'          => '7002002-09-08',
+    '/project/@id'          => '42',
+    '/project/temp/pre'     => '41',
+    '/project/temp/pre[position()=6]' => '46',
+    '/project/temp/pre[3]'  => '43',
+  );
+
+  my $xpx = new XML::XPathToXML( debug=>1 );
+
+  $xpx->parse( \%data );
+
+  $xpx->parse( '/project/temp/pre[last()]/@guess', 'tooHigh' );
+
+  print $xpx->documentElement->toString(1)."\n";
+
+Result:
+
+  <project id="42">
+    <name>The Ultimate Question</name>
+    <start>2002-09-08</start>
+    <end>7002002-09-08</end>
+    <temp>
+      <pre>41</pre>
+      <pre/>
+      <pre>43</pre>
+      <pre/>
+      <pre/>
+      <pre guess="tooHigh">46</pre>
+    </temp>
+  </project>
+
+
+=head1 DESCRIPTION
+
+Generates an XML document or node tree from one or more XPath expressions.
+Returnes an XML::LibXML::Document or XML::LibXML::Element.
+
+=cut
+
+
+Thanks,
+-Kurt.
+__________
+kurt george gjerde <kurt.gjerde@intermedia.uib.no>
+intermedia uib, university of bergen
+
+Working for bandwidth.
+

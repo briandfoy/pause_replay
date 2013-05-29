@@ -1,0 +1,105 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:44305
+Return-Path: <cpan@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2013 invoked from network); 21 Sep 2005 02:18:00 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 21 Sep 2005 02:18:00 -0000
+Received: (qmail 11078 invoked by uid 225); 21 Sep 2005 02:17:59 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11068 invoked by alias); 21 Sep 2005 02:17:58 -0000
+X-Spam-Status: No, hits=-5.9 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Tue, 20 Sep 2005 19:17:55 -0700
+Received: (qmail 2000 invoked by uid 515); 21 Sep 2005 02:17:51 -0000
+Message-ID: <20050921021751.1999.qmail@lists.develooper.com>
+To: modules@perl.org
+Date: Wed, 21 Sep 2005 12:17:31 +1000
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+Subject: Re: BitTorrent pure-perl implementation
+References: <20050920001529.GA56510@plogs.net>
+In-Reply-To: <20050920001529.GA56510@plogs.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 202.90.48.125
+Approved: news@nntp.perl.org
+From: cpan@ali.as (Adam Kennedy)
+
+It's quite fine to use another A:B:C namespace if nobody actually owns A:B.
+
+Two comments though...
+
+1) You may want to consider using a more Perl-ish foo_bar_baz method 
+naming rather than Java-ish fooBarBaz.
+
+2) Given that BitTorrent is a quite large, well known system that 
+involves more than just the networking (there's the managing of the 
+local files and so on) and that any given bittorrent client module needs 
+to be practically an entire standalone system, you may want to consider 
+just using BitTorrent::Client. It would certainly not be unexpected.
+
+Adam K
+
+Mark Smith wrote:
+> I've written a module (set of modules, rather) that implement an object
+> oriented BitTorrent client in pure Perl.
+> 
+> The project itself is named 'Downpour', but in the interest of descriptive
+> naming, I'm proposing using 'Net::BitTorrent::Client'.
+> 
+> I realize that 'Net::BitTorrent::File' already exists, and my modules do
+> not use this module at all since my torrent parser works with .torrent
+> format data, whether it be from file or URL.
+> 
+> Is it okay to use the Net::BitTorrent namespace, should I contact the
+> author (module is from 2003), other suggestions, etc etc?
+> 
+> Here is an example script of using this module in the Application interface:
+> 
+> (yes, there will be a more 'using the module as a module, not as an
+> application' interface, I'm just not demoing it here in the interest of
+> brevity)
+> 
+> 
+> #!/usr/bin/perl
+> 
+> use strict;
+> use Net::BitTorrent::Client;
+> 
+> my $btc = new Net::BitTorrent::Client;
+> 
+> # configure the client
+> $btc->setUploadLimit(50 * 1024); # 50k/sec
+> $btc->setDownloadLimit(50 * 1024); # 50k/sec
+> $btc->setManagementPort(6900); # port for telnet management interface
+> $btc->setWebManagementPort(6901); # port for web management interface
+> $btc->setMaxPeers(40); # have 40 peers at most
+> $btc->setMaxUnchokedPeers(6); # 6 peers unchoked (sending data to them)
+> 
+> # now we can add torrents
+> $btc->addTorrent("http://some.site.com/my.torrent");
+> $btc->addTorrent("/path/to/some/file.torrent");
+> 
+> # now the program can run
+> $btc->run(\&callback);
+> 
+> # called by the client every cycle so you can do anything you need to do
+> # like write out status, find new files to process, etc...
+> sub callback {
+>     my $btc = shift;
+> 
+>     print "Bytes in total:  " . $btc->getBytesIn() . "\n";
+>     print "Bytes out total: " . $btc->getBytesOut() . "\n";
+> }
+> 
+> 
+> --
+> Mark Smith
+> mark@plogs.net

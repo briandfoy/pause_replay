@@ -1,0 +1,133 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21642
+Return-Path: <afoxson@guild.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25722 invoked by uid 76); 7 Jun 2003 21:51:09 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Sat, 07 Jun 2003 14:51:09 -0700
+Received: (qmail 9077 invoked by uid 225); 7 Jun 2003 21:51:06 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9060 invoked by uid 507); 7 Jun 2003 21:51:05 -0000
+Received: from [209.166.167.23] (HELO guild.net) (209.166.167.23) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Sat, 07 Jun 2003 14:51:03 -0700
+Received: (qmail 8068 invoked by uid 1002); 7 Jun 2003 21:51:00 -0000
+Date: Sat, 7 Jun 2003 17:51:00 -0400
+To: Kurt Starsinic <kstar@cpan.org>
+Cc: Adam Foxson <afoxson@pobox.com>, modules@perl.org, fox@cpan.org
+Subject: Re: Module submission Net::IANA::PortNumbers
+Message-ID: <20030607215100.GA2713@magnonel.guild.net>
+References: <200306070711.h577Bgo6031794@pause.perl.org> <20030607163242.GA16864@verizon.net> <20030607182118.GA28164@magnonel.guild.net> <20030607192602.GB17639@verizon.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030607192602.GB17639@verizon.net>
+User-Agent: Mutt/1.3.24i
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-2.7 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_02_03,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: afoxson@pobox.com (Adam Foxson)
+
+On Sat, Jun 07, 2003 at 03:26:02PM -0400, Kurt Starsinic wrote:
+
+>     Ah.  I only saw that new() calls _init_db(), which reads from <DATA>.
+> And I now see that there's no way to easily use the output from
+> _create_db(), without editing the module's source.
+
+That is currently correct, however, thanks to your input, that's going to be
+changed.
+
+>     I'd suggest a few things.  Use any, all, or none:
+> 
+>         Document _create_db().
+
+Yes. _create_db() will become create_db() and will be documented. It will take
+two parameters. The first argument will be the filesystem location of the text
+file of the port registry, and the second argument will be the filesystem
+location of where you want the resulting translated database to be stored. The
+constructor will be extended to allow for a database argument that will then
+use the translated database specified instead of the default one (see below).
+
+>         Have _create_db() remove the ports you don't like (it appears
+>         to me that you hand-edited its output before incorporating
+>         it in the module), unless you agree with me (see below) that
+>         the ports shouldn't be removed.
+
+I agree with you (see below).
+
+>         Don't put the data into __DATA__.  Have the module run
+>         _create_db(), and put its output in a separate data file,
+>         on installation.
+
+In the interest of ease-of-use for users with lessened needs, I think I'm going
+to continue to include a database translation in __DATA__, which will be used
+as the default. However, a user can always create and use their own (newer)
+database translation as described above. If you feel this is not sane, I'm open
+to suggestions.
+
+Granted, using __DATA__ by default means that there will a greater utilization
+of memory since since there won't be a file to easily dismiss as would be the
+case if one specified a database to use within the constructor. But, if I don't
+go the __DATA__ route there will probably be a need for install-time
+interaction with the user, portability issues, and a greater level of
+complexity.
+
+That is, if I have the module run _create_db(), and put its output in a
+separate data file, on installation, how would the installer know where to put
+it? I don't think we can guess in a portable manner, and if we interactively
+ask them it makes installation more difficult. How then would the file be
+addressed? Either the user would have to remember the location or we'd have
+to store a file somewhere that records the location, if we wanted to have a
+default behavior, and we run into the same issue. I'd definitely like to hear
+how this could be implemented in a sane manner, if the memory utilization of
+using __DATA__ by default is too problematic.
+
+>     I think it's better if updating the data doesn't require updating
+> the module.  Organizations and software distros with tight software
+> control management will be more likely to use it then.
+
+Agreed.
+
+>     I would suggest that the protocol should be '', and while I'm
+> armchair protocol-tweaking, I'll suggest that '' as a protocol in
+> port2svc() and port2desc() should match any protocol, in which case
+> they would return a list of matches.  E.g.:
+> 
+>         $iana->port2svc(113);   # Returns qw(ident auth)
+>         $iana->port2desc(7300); # Returns 'The Swiss Exchange'
+
+I don't mind making the protocol an optional argument for all of svc2port(),
+svc2desc(), port2svc(), and port2desc(). Being that the below four point are
+factual, there are several ways that this could be approached from an interface
+perspective. We could:
+
+    - Always return an arayref, queries that return no port or service will
+      simply result in an empty list contained within the reference
+    - Return either an arrayref or undef in the event of no port or service
+    - Always return a list, queries that return no port or service will simply
+      result in an empty list
+    - Return either an list or undef in the event of no port or service
+    - Use wantarray and return either a list or the first element, and in the
+      event of no port or service return an empty list or undef, respectively
+
+I'm just not quite sure what the best approach would be. I'd like to keep
+things easy and consistent. What's your take?
+
+    - There can be ports with multiple services, with or without a protocol
+      specified (port 113)
+    - There can be services with multiple ports, with or without a protocol
+      specified (service x11)
+    - There can be ports with multiple descriptions, with or without a protocol
+      specified (port 399/port 113).
+    - There can be services with multiple descriptions, with or without a
+      protocol specified (service compressnet/service iso-tsap-c2).
+
+As an fyi, I just noticed a minor documentation error with svc2desc and
+port2desc. It currently indicates that if there is no description for the
+associated service or port it will return undef. This is not the case. If there
+is no description it will simply return the name of service, which serves as
+the "poor mans" description in these cases.
+
+-- 
+Adam J. Foxson

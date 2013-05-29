@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1840
+Return-Path: <steve@colgreen.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16192 invoked from network); 12 May 2000 00:19:24 -0000
+Received: from colgreen.com (192.41.31.174)
+  by tmtowtdi.perl.org with SMTP; 12 May 2000 00:19:24 -0000
+Received: from hottub ([216.112.95.126]) by colgreen.com (8.8.5) id SAA14601; Thu, 11 May 2000 18:19:10 -0600 (MDT)
+To: <modules@perl.org>
+Subject: Module Name? Text::Tokens
+Date: Thu, 11 May 2000 17:18:48 -0700
+Message-ID: <000401bfbba7$a4995cf0$7e5f70d8@hottub.colgreen.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.3110.3
+Approved: news@nntp.perl.org
+From: steve@colgreen.com ("Steve McKay")
+
+
+Name           DSLI  Description
+-------------  ----  --------------------------------------------
+Text::Tokens   bdpO  Base class for parsing text with tokens
+
+I wrote Text::Tokens for the sole purpose of having a small and simple token
+parsing base class, something easy to work and relatively speedy. The module
+is quite short and simple.
+
+What fer? I can subclass class Text::Tokens, with say Text::Tokens::Perl,
+override the token method, and the ether method ('ether' is what's out side
+the tokens), slap an eval on the token, and boom, you have An embedded perl
+template parser. I could do the same to parse certain tags from HTML...you
+get the picture.
+
+I was originally thinking about using Text::Atoms (which I like) but then
+thought that Text::Tokens (I don't see that being used already) would be a
+natural.
+
+There's a brief synopsis below if you are interested.
+
+Any comments, recommendations?
+
+--
+Steve McKay
+Colgreen Internet Development
+http://www.colgreen.com/
+steve@colgreen.com
+(562) 951-9128
+
+
+SYNOPSIS
+      use Text::Tokens;
+      @ISA = ('Text::Tokens');
+
+      # override SUPER::token
+      sub token
+      {
+        my $self = shift;
+        my $token = shift;
+        # $token->[0] - left bracket
+        # $token->[1] - contents
+        # $token->[2] - right bracket
+        # do something with the token...
+      }
+
+      # override SUPER::ether
+      sub ether
+      {
+        # my $self = shift;
+        # my $text = shift;
+        # do something with the text...
+      }
+
+      #... else where ...
+
+      $self->text("Some text with [-TOKENS-] in it");
+      $self->delimiters(['[-','-]']);
+      $self->parse();
+
+

@@ -1,0 +1,156 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21292
+Return-Path: <muir@idiom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 91573 invoked by uid 76); 23 May 2003 23:53:55 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Fri, 23 May 2003 16:53:55 -0700
+Received: (qmail 3285 invoked by uid 225); 23 May 2003 23:53:54 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3280 invoked by uid 507); 23 May 2003 23:53:54 -0000
+Received: from idiom.com (HELO idiom.com) (216.240.32.1) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Fri, 23 May 2003 16:53:52 -0700
+Received: from idiom.com (localhost [127.0.0.1])	by idiom.com (8.12.8p1/8.12.6) with ESMTP id h4NNrpvZ087519	for <modules@perl.org>; Fri, 23 May 2003 16:53:51 -0700 (PDT)	(envelope-from muir@idiom.com)
+Received: (from muir@localhost)	by idiom.com (8.12.8p1/8.12.6/Submit) id h4NNrpMO087517;	Fri, 23 May 2003 16:53:51 -0700 (PDT)	(envelope-from muir)
+Date: Fri, 23 May 2003 16:53:51 -0700 (PDT)
+Message-ID: <200305232353.h4NNrpMO087517@idiom.com>
+To: modules@perl.org
+Subject: updates for my module listings
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=2.7 required=7.0 tests=CARRIAGE_RETURNS,RCVD_IN_MULTIHOP_DSBL,RCVD_IN_UNCONFIRMED_DSBL,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: muir@idiom.com (David Muir Sharnoff)
+
+I've taken a look at how my modules are listed...  
+
+* *** Operating System Interfaces, Hardware Drivers
+* 
+* BSD::
+* ::Ipfwgen          bdpf? Generate ipfw(8) filters                     
+
+Delist BSD::Ipfwgen.  I's suffered age-related bitrot.
+
+* Proc
+* ::Forkfunc	   Rdpf? Simple lwall-style fork wrapper
+
+Leave this as is.
+
+* *** Networking, Device Control (modems) and InterProcess Communication
+* 
+* Net::
+* ::Netmask	   RdpO? Understand and manipulate network blocks
+
+Change DSLIP to "RdpOo"
+
+* *** Data Types and Data Type Utilities (see also Database Interfaces)
+* 
+* Time::
+* ::CTime            Rdpf? Format Times ala ctime(3) with many formats
+* ::DaysInMonth      Rdpf? Returns the number of days in a month        
+* ::JulianDay        Rdpf? Converts y/m/d into seconds                 
+* ::ParseDate        Rdpf? Parses many forms of dates and times         
+* ::Timezone         Rdpf? Figures out timezone offsets                 
+
+Change DSLIP to "RdpOo"
+
+* Object::
+* ::Transaction      bdpO? Transactions on serialized HASH files       
+
+Change DSLIP to "RdpOo".
+
+This would be a better fit in "Data Type Marshaling (converting to/from strings) 
+and Persistent Storage"
+
+* Ref                RdpO? Print, compare, and copy perl structures
+
+Delete this.  It's dead code at this point.
+
+* *** Data Type Marshaling (converting to/from strings) and Persistent Storage
+* 
+* Marshal::
+* ::Dispatch         cdpO? Convert arbitrary objects to/from strings    
+* ::Packed           cdpO? Run-length coded version of Marshal module   
+* ::Eval             cdpO? Undo serialization with eval                 
+
+Delete these.  Dead code.
+
+* *** File Names, File Systems and File Locking (see also File Handles)
+* 
+* File::
+* ::Flock            Mdph? flock() wrapper.  Auto-create locks          
+* ::Slurp            Mdpf? Read/write/append files quickly              
+* ::BasicFlock       Rdpf? Simple flock() wrapper                
+
+Change Slurp's DSLIP to "Mdpfo"
+
+* *** String Processing, Language Text Processing, Parsing and
+* 
+* String::
+* ::CRC              Rdcf? Cyclic redundency check generation       
+
+Change DSLIP to "Rdcfo"
+
+* *** Language text related modules
+* 
+* Text::
+* ::Tabs             Sdpf? Expand and contract tabs ala expand(1)      
+* ::Wrap             Sdpf? Wraps lines to make simple paragraphs      
+
+Change DSLIPs to "Sdpfo"
+
+* *** Option, Argument, Parameter and Configuration File Processing
+* 
+* Getopt::
+* ::Tiny             adpr? Table of references interface, auto usage()
+
+Change DSLIP to "Rdpra"
+
+* *** World Wide Web, HTML, HTTP, CGI, MIME etc (see Text Processing)
+* 
+* CGI::
+* ::Out              adpf? Buffer CGI output and report errors          
+
+Change DSLIP to "bdpf?"
+
+* *** Control Flow Utilities (callbacks and exceptions etc)
+* 
+* Callback           RdpO? Define easy to use function callback objects
+
+Change DSLIP to "RdpOo"
+
+
+Add:
+
+Cisco::Reconfig  bdpOp Parse and generate Cisco configuration files
+
+IO::Event	 bdpOp tied non-blocking filehandles with callbacks
+
+Net::SMTP::Receive RdpOo Receive email by with SMTP
+
+
+Also...
+
+I'm currently working on a matched pair of object persistance modules.
+One of them maps perl objects into relational databases.  This is 
+halfway done.  It stores each attribute separately so it's not another
+blob module.  Queries on the perl psudo-tables (one per class) will be
+supported.
+
+The other module maps relational database schemas into perl objects.
+This one is not even designed yet.
+
+I'm planning to release them togehter.  My working titles are
+
+Object::Rectangular (maps objects to relational tables)
+Rectangular::Object (maps relational tables to objects)
+
+I'm open to suggestions for other names and I'm also looking for help
+especially on Rectangular::Object.  
+
+Anyone know how to untie a scalar from within a FETCH routine?
+
+Thanks,
+
+-Dave

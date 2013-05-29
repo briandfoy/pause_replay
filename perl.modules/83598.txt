@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:83598
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16823 invoked from network); 6 Dec 2012 21:01:28 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 6 Dec 2012 21:01:28 -0000
+Received: (qmail 4183 invoked by uid 225); 6 Dec 2012 21:01:27 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4179 invoked by alias); 6 Dec 2012 21:01:27 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-vc0-f169.google.com (HELO mail-vc0-f169.google.com) (209.85.220.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 06 Dec 2012 13:01:23 -0800
+Received: by mail-vc0-f169.google.com with SMTP id gb23so7864350vcb.14
+        for <modules@perl.org>; Thu, 06 Dec 2012 13:01:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:content-transfer-encoding:x-gm-message-state;
+        bh=P97FS/moZs5va5jgmzaFXP9pFD44aiBKe6cgZzwAekI=;
+        b=fVqIjlYXYKwuB5D1Dv5uziv7hQA4+8padKKf7t+qejrQkNXWo9rx2WdCvWx4nf3IAr
+         2bewSr33cer15MQzHum7b8/nZl/JCQxVfh2v5s4H7ckZbRoMkwGk+tsjVnN47UtqjeIx
+         ZRd3Q0Gllkud+6akWIgdwwAalIBsbiHZfud4p4Lp+FJRRuh6ci/ljKIBGZfTNZXbisMr
+         J6QOvT+qRpWfqjKom860DVdQa/x2/BWuPvGKhvZzFWnF5fnpOrXF2Yy1A9zJ9dRz+5DC
+         t+u1Ng0L5h7YqO5LFs46+VuxOHRoWi2Tkxh8nMZTDvjzaaG0Pn4+syh+RRqgw6yQVL/u
+         VzVg==
+Received: by 10.220.238.148 with SMTP id ks20mr2381201vcb.5.1354827679428;
+ Thu, 06 Dec 2012 13:01:19 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.58.128.69 with HTTP; Thu, 6 Dec 2012 13:00:49 -0800 (PST)
+In-Reply-To: <25567196.xW5oRbDG2q@sphinx>
+References: <25567196.xW5oRbDG2q@sphinx>
+Date: Thu, 6 Dec 2012 16:00:49 -0500
+Message-ID: <CAOeq1c8H6qNsG_9g1W67UiEWUamEL+Z3cpkJ6QsT623-UzXi7g@mail.gmail.com>
+Subject: Re: Need help fixing my Makefile.PL
+To: Stefan Seifert <nine@detonation.org>
+Cc: modules@perl.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Gm-Message-State: ALoCoQmLO7H8qI5Ikn9tEtAzT9WagnAa+RfU04zZq5hEMDJdZo62dxRXIiunHGVHGdD3LUSxnArA
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+Without actually trying it, I would suggest setting build_requires
+using the BUILD_REQUIRES argument for MakeMaker rather than in
+META_MERGE.  Then you need to make sure that the ExtUtils::MakeMaker
+version in configure_requires is new enough to support BUILD_REQUIRES.
+ That looks to be 6.56 (released in 2009).
+
+Regards,
+David
+
+
+On Wed, Dec 5, 2012 at 3:18 PM, Stefan Seifert <nine@detonation.org> wrote:
+> Hi!
+>
+> I'm the author of WWW::WebKit and am trying to provide a smooth installat=
+ion
+> for my users. I already found out how to add configure_requires and
+> build_requires information to the META files which improved the situation=
+ a
+> lot. But it seems like perl Makefile.PL also creates some MYMETA files wh=
+ich do
+> contain the configure_requires information, but for some unknown reason l=
+acks
+> the build_requires, causing attempts to install on fresh perlbrew perl to
+> fail.
+>
+> I'm attaching the Makefile.PL in question. Any help on what I have to do =
+to fix
+> this would be greatly appreciated. As would be pointers to some definitiv=
+e
+> guide on how to prepare a module for release on CPAN because this whole
+> MakeMaker, Module::Install, Module::Build, DistZilla and whatnot stuff is
+> nothing but confusing.
+>
+> Thanks,
+> Stefan Seifert
+
+
+
+--=20
+David Golden <xdg@xdg.me>
+Take back your inbox! =E2=86=92 http://www.bunchmail.com/
+Twitter/IRC: @xdg

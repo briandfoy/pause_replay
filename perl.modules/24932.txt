@@ -1,0 +1,110 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:24932
+Return-Path: <autrijus@autrijus.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 60860 invoked by uid 76); 9 Dec 2003 00:14:12 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Mon, 08 Dec 2003 16:14:12 -0800
+Received: (qmail 20255 invoked by uid 225); 9 Dec 2003 00:14:10 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20249 invoked by uid 507); 9 Dec 2003 00:14:10 -0000
+Received: from smtp3.apol.com.tw (HELO smtp3.apol.com.tw) (203.79.224.67) by one.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Mon, 08 Dec 2003 16:14:09 -0800
+Received: from mail.autrijus.org (210-85-16-204.cm.apol.com.tw [210.85.16.204])	by smtp3.apol.com.tw (8.9.3/8.9.3) with ESMTP id IAA47676306;	Tue, 9 Dec 2003 08:13:46 +0800 (CST)
+Received: from [172.16.1.4] (unknown [172.16.1.4])	by mail.autrijus.org (Postfix) with ESMTP id 1A6373F90;	Tue,  9 Dec 2003 08:12:52 +0800 (CST)
+Subject: Re: Module submission result
+To: Daniel.Peder@infoset.cz
+Cc: modules@perl.org
+In-Reply-To: <20031208171615.GD2319@r2p36.mistral.cz>
+References: <200312081557.hB8FvVlA015578@pause.perl.org>	 <20031208162053.GA36307@aut.dyndns.org>	 <20031208171615.GD2319@r2p36.mistral.cz>
+Content-Type: text/plain; charset=UTF-8
+Message-ID: <1070928828.814.7.camel@localhost>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.5 
+Date: Tue, 09 Dec 2003 08:13:49 +0800
+Content-Transfer-Encoding: 8bit
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-1.0 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: autrijus@autrijus.org (Autrijus Tang)
+
+(Please Cc modules@perl.org on all correspondences, thanks)
+
+?b 二, 2003-12-09 01:16, Daniel Peder [INFOSET.CZ] ?g?D?G
+> MAIL [09.12.2003 00:20] 'Autrijus Tang <autrijus@autrijus.org>':
+> On Mon, Dec 08, 2003 at 04:57:31PM +0100, Perl Authors Upload Server wrote:
+> > > The following module was proposed for inclusion in the Module List:
+> > >   modid:       result
+> > >   rationale:
+> > >     the written code should be as shorter as possible.
+> > 
+> > Maybe, but all-lowercase module names are often thought as pragmas,
+> > like "warnings" and "strict".  As "no result;" makes little sense,
+> > I think it perhaps needs a better name.
+> well, probably does, however I plan to extend its functionality 
+> with international message support, eg. you specify only the err
+> key and the proper message willbe fetched from hash-array with messages.
+> 
+> then the use could be something like:
+> 
+> 	use result qw( /var/local/myProgMessages/messages.en )
+> 
+> so that it would display messages in specified language (here english)
+> 
+
+Totally off-topic here, but I'd like to point to
+Locale::Maketext::Simple and other Locale:: modules for simple,
+transparent internationalization support. :-)
+
+> > Also, how does your class differ from Class::ReturnValue?
+> 
+> 1.
+> It is used to return error values *ONLY*, 
+> so it is transparent untill error or exeption happens.
+> There is special class method result::iserr which takes *ANY* value
+> and returns true only if the supplied value is ref to error object.
+> 
+> Other words: it is some kind of sofisticated replacement for returning undef
+> and checking it by if( defined( ... ))
+
+I see.  Still, I feel the pragma-like name to be strange.  Any other
+folks on modules@ who'd like to chip in?
+
+> compare this two examples:
+> 
+>   example (using undef):
+> 
+> 	sub mySub { return undef if( somethingWrong() ) }
+> 
+> 	my $expectedValue = mySub();
+> 
+> 	die 'must write here the reason' unless( defined( $expectedValue ))
+> 
+> 	# ...continue using the normal $expectedValue
+> 
+>   example (equivalent using result):
+> 
+> 	sub mySub { return result::err( someErrMsgKey=> 'something wrong happend' ) if( somethingWrong() ) }
+> 
+> 	my $expectedvalue = mySub();
+> 
+> 	die 'reason:'.$expectedValue->msg if( result::iserr( $expectedValue ))
+> 
+> 	# ...continue using the normal $expectedValue
+> 
+> 2. the errors can bubble while the error history can be updated, 
+> then the programmer could see its custom error messages instead of studying
+> Carp's extended stack trace ( which is sometimes usefull, sometimes not )
+> 
+> 3.
+> It is much simple to use, no needs to predeclare err object variables, just use it where required,
+> don't pollute the code around.
+> 
+> well, I don't know if my english is clear, just ask me if You don't get it.
+> 
+> 4. see the testSynopsis.pl in the version 1.0 distribution package,
+> there are few lines of selfexplanatory examples  
+
+
+

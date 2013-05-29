@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:34442
+Return-Path: <markov@speeltuin.ATComputing.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5336 invoked from network); 31 Aug 2004 19:12:26 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 31 Aug 2004 19:12:26 -0000
+Received: (qmail 11906 invoked by uid 225); 31 Aug 2004 19:12:23 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11876 invoked by alias); 31 Aug 2004 19:12:20 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from speeltuin.ATComputing.nl (HELO speeltuin.ATComputing.nl) (195.108.229.26)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Tue, 31 Aug 2004 12:12:17 -0700
+Received: by speeltuin.ATComputing.nl (Postfix, from userid 1063)
+	id A8C023A03; Tue, 31 Aug 2004 21:12:11 +0200 (CEST)
+Date: Tue, 31 Aug 2004 21:12:11 +0200
+To: modules@perl.org
+Cc: markov@cpan.org
+Subject: Re: Module submission Geo::2DPoint
+Message-ID: <20040831211211.O21044@speeltuin.ATComputing.nl>
+References: <200408171425.i7HEPsXR020333@pause.perl.org> <310820041257138529%comdog@panix.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <310820041257138529%comdog@panix.com>; from comdog@panix.com on Tue, Aug 31, 2004 at 12:57:16PM -0500
+Organization: MARKOV Solutions
+Sender: markov@speeltuin.ATComputing.nl
+Approved: news@nntp.perl.org
+From: Mark@Overmeer.net (Mark Overmeer)
+
+* _brian_d_foy (comdog@panix.com) [040831 19:57]:
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+> 
+> In article <200408171425.i7HEPsXR020333@pause.perl.org>, Perl Authors
+> 
+> > The following module was proposed for inclusion in the Module List:
+> >   modid:       Geo::2DPoint
+> 
+> >   description: Points on the globe
+> >     Geo::Coordinates
+> 
+> have you looked at the new stuff with proposes a GIS:: namespace?
+>    http://wiki.bluedevbox.com/newgeo/new.htm
+
+No, I didn't know about that.  But what I see there are two things:
+  1) it follows the Geo::Coordinates approach: one class per
+     projection system
+  2) no movements in the last 6 months
+
+However, there are at least 200 projections, and they often have
+their own specific parameters.  Therefore, "my" points have
+two values plus a projection name.
+
+> How about separating the "2D" (or "3D") into its own part of the
+> namespace?  The trick there is to figure out which interface you
+> want to preserve.
+> 
+> Having thought about this for all of five minutes, I tend to like
+> an interface that figures it out:
+>    Geo::Point->new( $a, $b );     # Get the 2D stuff
+>    Geo::Point->new( $a, $b, $c ); # Get the 3D stuff
+> If you like that, then a name like Geo::Point::2D works.
+
+I started out with Geo::Point, beautiful name, but realized how much
+more complicated the Geo 3D (with altitude) is: much more complex
+calculations.  To leave room in the name-space to develop a (separate)
+module for that, I added the 2D name part.
+
+   Geo::2D->newProjection(latlong => ...);
+   my $point = Geo::2DPoint->new($x, $y, 'latlong');
+
+The projections are handled by the existing Geo::Proj4 library.  But
+the abstraction I create is really useful.
+
+When a country's is described in geo-coordinates, you are talking
+about thousands of points.  It is bad for performance to add 3D
+checks and complications to those points. That's my most important
+reasoning behind that '2D' thing.
+-- 
+               MarkOv
+
+------------------------------------------------------------------------
+drs Mark A.C.J. Overmeer                                MARKOV Solutions
+       Mark@Overmeer.net                          solutions@overmeer.net
+http://Mark.Overmeer.net                   http://solutions.overmeer.net

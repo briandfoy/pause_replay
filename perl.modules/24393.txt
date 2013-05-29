@@ -1,0 +1,99 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:24393
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 64299 invoked by uid 76); 6 Nov 2003 19:39:10 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Thu, 06 Nov 2003 11:39:10 -0800
+Received: (qmail 4973 invoked by uid 225); 6 Nov 2003 19:39:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4969 invoked by alias); 6 Nov 2003 19:39:08 -0000
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Thu, 06 Nov 2003 11:38:56 -0800
+Received: from pause.perl.org (localhost [127.0.0.1])	by pause.perl.org (8.12.3/8.12.3/Debian-6.6) with ESMTP id hA6JcH5c032365;	Thu, 6 Nov 2003 20:38:17 +0100
+Received: (from nobody@localhost)	by pause.perl.org (8.12.3/8.12.3/Debian-6.6) id hA6JcGtH032363;	Thu, 6 Nov 2003 20:38:16 +0100
+Date: Thu, 6 Nov 2003 20:38:16 +0100
+Message-ID: <200311061938.hA6JcGtH032363@pause.perl.org>
+Subject: Module submission Tie::Silk
+Reply-To: modules@perl.org
+To: modules@perl.org, dirt@cpan.org
+X-Spam-Check-By: la.mx.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Tie::Silk
+  DSLIP:       bdprp
+  description: Indexed hash prepend w/ `-' to get index/key
+  userid:      DIRT (Theo Lengyel)
+  chapterid:    6 (Data_Type_Utilities)
+  communities:
+
+  similar:
+    Tie::IxHash
+
+  rationale:
+
+    Tie::Silk - Silk = Somewhat Intuitive List Knitter
+
+    This is an indexed hash with some added strange behavior. It is
+    useful for keeping track of several related lists based on the same
+    key set. When an (existing) key is prepended with a `-' (minus sign
+    - regular keys may NOT begin with a `-') it returns the index for
+    that element. When an index (integer) is used to access the hash it
+    acts like an array (new values may NOT be introduced with integer
+    keys) and returns/sets the VALUE in that slot. When an integer is
+    prepended with a `-' it returns/sets the corresponding KEY for that
+    slot. When accessed with normal text keys is behaves like a normal
+    hash, except that order is preserved.
+
+    # this is a hash that also acts like a funny array. It preserves
+    order # like an array(akin to Tie::IxHash), but also has some other
+    specific # behavior that is described below ( the `===' I am using
+    here to mean # `equivalent to') # where $x is an integer $x >= 0 #
+    then $h{$x} === $h{$h{"-$x"}} # # here is a sample hash: # $th = tie
+    %h, __PACKAGE__ # %h = qw( _foo bar # _baz fup # ); #
+    Taowebs::Tie::Silk; these are the behaviors we are after: # 1) when
+    accessed with a negative number it returns the hash hey for # the
+    indicated pair(need to be careful with a `minus zero' key # MUST be
+    a string because perl compiler will convert an unquoted -0 to 0) #
+    $h{'-0'} === _foo # $h{-1} === _baz # 2) when accessed with a
+    positive integer it returns the value for # the associated key pair
+    (same as fetching it with the normal # hash key, but now we are
+    accessing it with pseudo-array indexing # using {} instead of []
+    notation) # $h{0} === bar === $h{_foo} === $h{$h{'-0'}} # $h{1} ===
+    fup === $h{_baz} === $h{$h{-1}} # $h{_baz} === fup # $h{_foo} ===
+    bar # 3) a normal hash key preceded by a `-' (minus sign) returns
+    the # index of that pair ( except when setting a value this way, see
+    #4) # $h{-_baz} === 1 # $h{-_foo} === 0 # 4) when setting an element
+    and preceding the hash key with a minus # sign `-' this actually
+    replaces the hash key with the value # therefore we have: #
+    $h{-_foo} = '_new_foo' === $h{'-0'} # equivalently: # $h{'-0'} =
+    '_new_foo' === $h{'-0'} # $h{_new_foo} === bar # $h{-_new_foo} === 0
+    # $h{'-0'} === _new_foo # 5) you cannot set a new slot with an
+    integer unless the integer matches the next open slot, otherwise
+    confusion may ensue #
+
+  enteredby:   DIRT (Theo Lengyel)
+  enteredon:   Thu Nov  6 19:38:15 2003 GMT
+
+The resulting entry would be:
+
+Tie::
+::Silk            bdprp Indexed hash prepend w/ `-' to get index/key DIRT
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=73500000_95e73362a06ea6fb&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=73500000_95e73362a06ea6fb&SUBMIT_pause99_add_mod_insertit=1

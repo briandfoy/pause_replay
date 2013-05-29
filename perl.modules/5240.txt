@@ -1,0 +1,84 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5240
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26102 invoked from network); 26 Apr 2001 22:05:03 -0000
+Received: from palladium.baremetal.com (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 26 Apr 2001 22:05:03 -0000
+Received: from localhost (darren@localhost)
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id PAA05411;
+	Thu, 26 Apr 2001 15:04:01 -0700
+Date: Thu, 26 Apr 2001 15:04:01 -0700 (PDT)
+X-Sender:  <darren@palladium.baremetal.com>
+To: <modules@perl.org>, <cgi-list@mail.jann.com>
+cc: <duncand@cpan.org>
+Subject: RFC: a new name in CGI::* for HTML::Application
+Message-ID: <Pine.LNX.4.30.0104261421440.29583-100000@palladium.baremetal.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Giving this matter of my new module further thought, I realize that
+perhaps my requested choice of HTML::Application isn't really the way to
+go, so I request that specific registration be cancelled.
+
+Rather, I need a new name for this module that is more appropriate, and I
+request comments in that regard.  What I really need is a name that
+describes my module's strengths such that someone would choose it over
+other modules.  The old name wasn't very descriptive of its uniqueness,
+but only implied that it was for applications.
+
+Some new options I thought of were:
+  - CGI::Reusable
+  - CGI::PlugIn
+  - CGI::PlugInInterface
+  - CGI::PlugInScreen
+  - CGI::DataDriven
+  - CGI::Portable
+  - CGI::PortableApp
+  - CGI::PortableInterface
+  - CGI::AppState
+  - CGI::RapidAppDevel
+  - CGI::Hierarchy
+  - CGI::HierarScreen
+  - CGI::MultiScreen
+  - CGI::Componentized
+  - CGI::ComplexApp
+  - CGI::Framework
+  - ... your ideas here ...
+
+I realize now that something in the CGI::* namespace is much
+more appropriate than anything in HTML::*, because all of my module's
+functionality relates to CGI (and mod_perl and perl based servers) but
+very little of it is HTML specific, and in fact it could be adapted for
+XML or some other alternate to HTML quite easily.  I realize now that just
+because my module doesn't do actual I/O by itself does not exclude it from
+this space; lots of other CGI::* modules don't do I/O either.
+
+The second issue is that I can easily split my module into 5 modules, of
+which one subclasses the other 4, since it is really doing 4 separate
+tasks in parallel:
+  1. file-system abstraction and file-based prefs/config/settings
+management.  I would put the error list tracking in here also since they
+are usually related to files of some kind (or modules)
+  2. user input parsing and storage plus construction of call-back urls
+  3. storage of common parts for an HTML page and assembly of them
+  4. storage of common parts of an HTTP response (but no assembly)
+  5. The fifth module that subclasses these would add things like making
+new and taking back application contexts, and calling one app component from
+another, misc object storage, and the "is debugging" state.
+
+I figured that I would make the subclassed module have the parent
+namespace of CGI::mynewname and the other 4 would have CGI::mynewname::*.
+
+So I very much appreciate any feedback on a good name to request for this
+main module.
+
+Thanks a lot,
+
+// Darren Duncan
+
+

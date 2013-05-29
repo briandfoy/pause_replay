@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7452
+Return-Path: <schwern@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 57434 invoked from network); 7 Sep 2001 18:44:14 -0000
+Received: from ool-18ba90a1.dyn.optonline.net (HELO ool-18b93024.dyn.optonline.net) (24.186.144.161)
+  by onion.valueclick.com with SMTP; 7 Sep 2001 18:44:14 -0000
+Received: by ool-18b93024.dyn.optonline.net (Postfix, from userid 1000)
+	id 33E2C81F8; Fri,  7 Sep 2001 14:44:12 -0400 (EDT)
+Date: Fri, 7 Sep 2001 14:44:12 -0400
+To: modules@perl.org
+Subject: Re: Core modules and CPAN indexing priorities
+Message-ID: <20010907144412.H606@blackrider>
+References: <20010905200448.I11386@blackrider> <m3heuf3pcv.fsf@anima.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <m3heuf3pcv.fsf@anima.de>
+User-Agent: Mutt/1.3.20i
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: schwern@pobox.com (Michael G Schwern)
+
+On Fri, Sep 07, 2001 at 07:03:28PM +0200, Andreas J. Koenig wrote:
+> Your examples nearly conviced me, but...
+> 
+> What if your module depends on version 2.102 of Data::Dumper? How many
+> users will come and ask us where to find 2.102?
+
+That's just trading one problem for another.  Currently, they ask "How
+can I get Data::Dumper 2.102 without upgrading Perl?"
+
+But... hmmm... you *do* have that comment field in the
+02packages.details file you're looking for in CPAN.pm, but not using.
+Why not make it read...
+
+Data::Dumper           2.101  G/GS/GSAR/Data-Dumper-2.101.tar.gz  incore 2.102
+
+indicating there's a higher version in the perl core?  Then the CPAN
+shell can tip them off with something like...
+
+    Foo::Bar depends on Data::Dumper 2.102, but that version is only
+    available by upgrading your version of Perl.  Sorry.
+
+
+> Also consider the effect of a module that's in the core and not
+> maintained on CPAN anymore. 
+
+This is a problem with the core modules I'm trying to correct.
+Ideally, with a few obvious exceptions, they should all be available
+on CPAN in some backwards compatible form or another.
+
+
+> After a while, somebody will complain that CPAN is horribly
+> outdated. Then either the author will delete the outdated version
+> (complicating the indexer's logic)
+
+If the author does not intend to release new versions of the module to
+CPAN, deleting the old versions (or moving them to backpan) is the
+next best thing to do.
+
+The indexing logic isn't terribly complicated by this.  All you have
+to add is a little clause saying "If there's no other version of the
+module available, list the core version".
+
+If you could tell me where to get the indexer code, I'll have a look
+at it and try a patch.
+
+
+-- 
+
+Michael G. Schwern   <schwern@pobox.com>    http://www.pobox.com/~schwern/
+Perl6 Quality Assurance     <perl-qa@perl.org>	     Kwalitee Is Job One
+<purl> Hey Schwern! honk, honk, honk, honk, honk, honk, honk, honk,
+honk, honk, honk, honk, honk, honk, honk, honk, honk, honk, honk,
+honk, honk, honk, honk, honk, honk, honk, honk, honk, honk, honk,
+honk, honk, honk, honk, honk, honk, honk, honk, honk, honk, honk,
+honk, honk, honk, honk, honk, honk, honk, honk, honk, honk!  

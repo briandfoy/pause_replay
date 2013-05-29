@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8577
+Return-Path: <sfink@foxglove.dnsalias.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 48589 invoked by uid 75); 1 Nov 2001 19:20:04 -0000
+Received: from root@dsl-64-194-27-161.telocity.com (HELO foxglove.dnsalias.org) (64.194.27.161)
+  by onion.perl.org (qpsmtpd/0.04) with SMTP; Thu Nov  1 19:20:04 2001 -0000
+Received: (from sfink@localhost)
+	by foxglove.dnsalias.org (8.11.1/8.11.1) id fA1JJbA24427
+	for modules@perl.org; Thu, 1 Nov 2001 11:19:37 -0800
+Date: Thu, 1 Nov 2001 11:19:37 -0800
+To: modules@perl.org
+Subject: Re: Module submission Web::Walker
+Message-ID: <20011101111937.L25306@foxglove.digital-integrity.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+Approved: news@nntp.perl.org
+From: steve@fink.com (Steve Fink)
+
+Ack. I always forget that the form eats whitespace. If you haven't
+already read it, I'll repeat what I just said, with formatting:
+
+Ok, I'll confess -- I am very uncertain of what to name this thing, so
+I picked Web::Walker because it sounds kinda cool and is guaranteed to
+annoy^Wbe noticed by the happy fun modules@ people.
+
+It is a framework for writing web application-specific sanity
+checkers. It differs from all the related tools I can find in that it
+does no automatic link-walking; the entire operation is under
+programmatic control. It's really a scripting language for web
+applications. It pulls out all the forms, links, images, etc., and
+allows the scripter to set field values and click on links. Also,
+before you start wandering through the site, you can create global
+constraints on all or some of the pages. If this seems too abstract,
+here's an example script:
+
+use Unnamed::Web::Walker::Doohickey;
+my $site = Blah::Site->new();
+$site->page("Login", url => qr/login/i);
+$site->constrain_page(sub { shift()->{name} ne 'Login' },
+                      has_text => qr/copyright/);
+$site->constrain_page('any', sub { validate_html(shift()->{content} });
+
+my $walker = Blah::Walker->new($site);
+$walker->get("http://localhost/myapp/");
+$walker->assert_at("Login");
+$walker->post('any', user => 'bob', password => 'bob');
+$walker->setField('any', pretext => qr/first\s*name/i, 'Robert');
+
+('pretext' means any text discovered in a preorder traversal of an
+HTML tree rooted at a form, before arriving at the specified input
+field. Which usually means text to the left of a form field. Not that
+this is relevant.)
+
+HTML::Checker? (not necessarily HTML specific)
+WWW::Checker? (seems a little vague)
+WWW::Check?
+WebSite::Walker? (just as intrusive as Web::Walker)
+WWW::Constrain?
+WWW::Browser? (too misleading, even if this is a browser)
+WWW::Sanity? (I use it to write web app sanity checks)
+WWW::Lint? (sounds too automated; this is a framework)
+WWW::AppLint? (huh?)
+WWW::Agent? (too overloaded)
+WWW::Auto?
+WWW::Automate?
+WWW::Script? (a bit high-falutin')
+Script::WWW? (it's just an OO extension, not a scripting language)
+WWW::Clean/Scrub?
+
+Argh. Thanks in advance for doing my thinking for me. :-)

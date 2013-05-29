@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2243
+Return-Path: <nathan.wiger@west.sun.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6357 invoked from network); 26 Jun 2000 16:59:14 -0000
+Received: from mercury.sun.com (192.9.25.1)
+  by tmtowtdi.perl.org with SMTP; 26 Jun 2000 16:59:14 -0000
+Received: from udcsd.West.Sun.COM ([129.153.51.1])
+	by mercury.Sun.COM (8.9.3+Sun/8.9.3) with ESMTP id JAA01930;
+	Mon, 26 Jun 2000 09:57:59 -0700 (PDT)
+Received: from west.sun.com (matrix [129.153.51.97])
+	by udcsd.West.Sun.COM (8.8.8+Sun/8.8.8/ENSMAIL,v1.9) with ESMTP id JAA12627;
+	Mon, 26 Jun 2000 09:57:58 -0700 (PDT)
+Sender: Nathan.Wiger@west.sun.com
+Message-ID: <39578B96.E1355944@west.sun.com>
+Date: Mon, 26 Jun 2000 09:57:58 -0700
+X-Mailer: Mozilla 4.61 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+CC: nate@west.sun.com, nate@wiger.org
+Subject: Apache::Config module
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: nathan.wiger@west.sun.com (Nathan Wiger)
+
+Hi all-
+
+I've written a module that can parse the Apache httpd.conf config file
+(and in fact any Apache-like config file). It will take a set of
+directive like:
+
+    ServerName         www.mydomain.com
+    UseCanonicalName   Off
+
+And parse it case-insensitively, returning a ref to a hash:
+
+    my $ac = new Apache::Config;
+    my $conf = $ac->readconf($configfile);
+    print $conf->{servername};       # = "www.mydomain.com";
+    print $conf->{usecanonicalname}; # = 0   (not undef so can test
+                                     #        for defined() still)
+
+I am also finishing up the ability to parse within contexts, such as
+<Directory> and <Location>. I am still unsure of the interface, I have
+two ideas:
+
+   1. multi-level hash, i.e.
+         $conf->{"directory /"}->{sethandler}
+
+   3. individual functions, i.e.
+         $conf->directory("/")->{sethandler}
+
+If anyone has any input, I'm all ears. I like the first one because it's
+really flexible, the problem is that it's difficult to search. The
+second one helps with this issue, but the downside is that new functions
+have to be added if new Apache contexts are defined. It also makes the
+module less flexible as a general config parser, unless you play some
+tricks with the AutoLoader ala Shell.
+         
+In any case, I have several questions:
+
+   1. Does a module like this exist anywhere?  I saw Doug's
+      Apache::httpd_conf, but this only takes care of writing
+      a very minimal config file. I looked thru all the
+      Apache:: modules but didn't see one.
+
+   2. Is the name Apache::Config a good name for this module?
+      I also played around with Apache::ReadConf but this
+      prevents me from adding methods that write config files
+      as well (I'd like to provide a writeconf()).
+
+Thanks as always for your help and input.
+
+-Nate

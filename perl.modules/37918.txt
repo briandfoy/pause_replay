@@ -1,0 +1,247 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:37918
+Return-Path: <nic@angel.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1165 invoked from network); 25 Jan 2005 04:42:17 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 25 Jan 2005 04:42:17 -0000
+Received: (qmail 13852 invoked by uid 225); 25 Jan 2005 04:42:17 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13847 invoked by alias); 25 Jan 2005 04:42:17 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of nic@angel.net designates 204.141.51.10 as permitted sender)
+Received: from hola.angel.net (HELO mail.angel.net) (204.141.51.10)
+  by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 24 Jan 2005 20:42:13 -0800
+Received: from [192.168.0.3] (68-175-106-232.nyc.rr.com [68.175.106.232])
+	by mail.angel.net (Postfix) with ESMTP id 8043318F809
+	for <modules@perl.org>; Mon, 24 Jan 2005 23:42:08 -0500 (EST)
+Mime-Version: 1.0 (Apple Message framework v619)
+Content-Transfer-Encoding: 7bit
+Message-ID: <78DEF9C8-6E8B-11D9-8A3D-000393CE109A@angel.net>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+To: modules@perl.org
+Subject: Please help suggest a namespace for my XHTML-writing module
+Date: Mon, 24 Jan 2005 23:42:09 -0500
+X-Mailer: Apple Mail (2.619)
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: nic@angel.net (Nic Wolff)
+
+I've written a module a little like HTML::LoL but for XHTML. When I 
+registered for PAUSE
+I thought I'd call it XHTML::FromData since "LoL" is if not whimsical 
+at least pretty silly. Now it seems to me that since it's a basic 
+XHTML-generating tool, it would actually be clearer just to call it 
+XHTML. Are one-level module names still assigned? Or is XHTML::FromData 
+better? Thanks.
+
+My module has (at least) these advantages over HTML::LoL:
+   1. it generates valid XHTML 1.0
+   2. it's simpler to call since it doesn't have the callback-aggregator 
+argument
+   3. it skips elements whose names eval to false which lets you use 
+Perl logic
+      inline to conditionally add tags around elements
+   4. it skips attributes whose values eval to undef which lets you use 
+Perl logic
+      inline to conditionally turn on attributes
+   5. it lets you more easily include literal text that won't be 
+HTML-encoded.
+
+
+Here for your consideration is the POD for the module:
+
+NAME
+     XHTML - output XHTML described by a Perl data structure
+
+SYNOPSIS
+       use XHTML;
+       print_xhtml
+         [ html => [ head => [ title => 'My Web page' ] ], [ body => 
+'Hello' ] ];
+
+DESCRIPTION
+     This module exports functions that let you easily print valid XHTML
+     without embedding it in your Perl code.
+
+   xhtml(@)
+     Takes a list of strings and arrayrefs describing XHTML content and
+     returns the XHTML string. The strings are encoded; each arrayref
+     represents an XHTML element, as follows:
+
+       [ $element_name, $attributes, @content ]
+
+    $element_name
+     evaluates to 'html', 'head', 'title', 'body', 'table', 'tr', 'td', 
+'p',
+     &c. If $element_name is false then the whole element is replaced by 
+its
+     content.
+
+     If an arrayref's first element is another arrayref instead of an 
+element
+     name, then the value of the first item of that array will be 
+included in
+     the XHTML string but will not be encoded. This lets you include 
+text in
+     the XHTML that has already been entity-encoded.
+
+    $attributes
+     is an optional hashref defining the element's attributes. If an
+     attribute's value is undefined then the attribute will not appear 
+in the
+     generated XHTML string. Attribute values will be encoded. If there 
+isn't
+     a hashref in the second spot in the element-definition list then the
+     element won't have any attributes in the generated XHTML.
+
+    @content
+     is another list of strings and arrayrefs, which will be used to 
+generate
+     the content of the element. If the content list is empty, then the
+     element has no content and will be represented in the generated 
+XHTML
+     string by a single tag that ends with />.
+
+   print_xhtml(@)
+     Prints the results of xhtml(@_) to STDOUT.
+
+   start_tag()
+     Takes a list with an element name and an optional hashref defining 
+the
+     element's attributes, and returns just the opening tag of the 
+element.
+     This and end_tag() are useful in those occasions when you really 
+want to
+     print out XHTML piecewise procedurally, rather than building the 
+whole
+     page in memory.
+
+   end_tag()
+     Just takes an element name and returns the end tag for that element.
+
+   doctype()
+     Takes a doctype level - presuamably either "transitional" (the 
+default)
+     or "strict" - and returns a doctype declaration.
+
+   xmlns()
+     Takes no arguments, and returns an attribute hash you can include 
+in the
+     <html> element to explicitly declare the XHTML namespace.
+
+EXAMPLES
+     Note that I've formatted the output XHTML for clarity - the xhtml()
+     function returns it all machine-readable and compact.
+
+   Simple content
+     Strings are just encoded and printed, so
+
+       print_xhtml 'Hi', [ 'br' ], 'there, this & that';
+
+     would print
+
+       Hi<br />there, this &amp; that
+
+   Literal content
+     If an element's name is an arrayref, its first item is printed 
+without
+     being encoded; this lets you include text that is already encoded by
+     double-bracketing it:
+
+       print_xhtml [ p => [[ '&copy; Angel Networks&trade;' ]] ];
+
+     would print
+
+       <p>&copy; Angel Networks&trade;</p>
+
+   Using map to iterate, and optional elements
+     You can map any element over a list to iterate it, and by testing 
+the
+     value being mapped over can wrap some values in sub-elements:
+
+       print_xhtml
+         map [ p => [ $_ > 100 && 'b' => $_ ] ], 4, 450, 12, 44, 74, 102;
+
+     would print
+
+       <p>4</p>
+       <p><b>450</b></p>
+       <p>12</p>
+       <p>44</p>
+       <p>74</p>
+       <p><b>102</b></p>
+
+   Optional attributes
+     Similarly, by testing the value being mapped over in the attributes
+     hash, you can set an attribute for only some values. Note that you 
+have
+     to explicitly return undef to skip the attribute since 0 is a valid
+     value for an attribute.
+
+       print_xhtml
+         [ select => { name => 'State' },
+           map
+             [ option => { selected => $_ eq $c{state} || undef }, $_ ],
+             @states
+         ];
+
+     would print
+
+       <select name="State">
+         <option>Alabama</option>
+         <option selected="1">Alaska</option>
+         <option>Arkansas</option>
+         ...
+       </select>
+
+     assuming $c{state} equalled 'Alaska'.
+
+   XHTML DOCTYPE declaration
+     It's nice to put a DOCTYPE declaration at the top of a document so 
+that
+     browsers can tell what protocol they're in.
+
+       print doctype();
+
+     will print
+
+       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+   XHTML namespace assignment
+     Strictly-conforming XHTML documents have to specify the XHTML 
+namespace
+     in their root element. The xmlns function will give you an attribute
+     hash for your <html> element.
+
+       print xhtml( [ html => xmlns(), [ head => ... ], [ body => ... ] 
+] );
+
+     would print
+
+       <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" 
+lang="en">
+         <head>...</head>
+         <body>...</body>
+       </html>
+
+   Printing XHTML tags one at a time
+     Sometimes you really don't want to build the whole page before 
+printing
+     it; you'd rather loop through some data and print an element at a 
+time.
+     The start_tag and end_tag functions will help you do this:
+
+       print start_tag( [ td => { colspan => 3 } ] );
+       print end_tag( 'td' );
+
+     would print
+
+       <td colspan="3">
+       </td>
+

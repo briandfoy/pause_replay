@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:49569
+Return-Path: <pjf@perltraining.com.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 31679 invoked from network); 25 Jun 2006 02:09:00 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 25 Jun 2006 02:09:00 -0000
+Received: (qmail 23499 invoked by uid 225); 25 Jun 2006 02:09:00 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 23495 invoked by alias); 25 Jun 2006 02:08:59 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of pjf@perltraining.com.au designates 210.23.139.158 as permitted sender)
+Received: from gateway.perltraining.com.au (HELO teddybear.perltraining.com.au) (210.23.139.158)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 24 Jun 2006 19:08:45 -0700
+Received: from [210.23.138.171] (jarich.perltraining.com.au [210.23.138.171])
+	by teddybear.perltraining.com.au (Postfix) with ESMTP id 66260A8017
+	for <modules@perl.org>; Sun, 25 Jun 2006 12:08:38 +1000 (EST)
+Message-ID: <449DF027.3040708@perltraining.com.au>
+Date: Sun, 25 Jun 2006 12:08:39 +1000
+Organization: Perl Training Australia
+User-Agent: Thunderbird 1.5.0.2 (Windows/20060308)
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: system() made simple. Discussion and naming -- IPC::System::Simple?
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: pjf@perltraining.com.au (Paul Fenwick)
+
+Greetings, my module overlords,
+
+I'm currently in the process of preparing course materials on using Perl 
+for system administration, and I've hit a snag.  I can't find *any* way 
+to make system() as simple and easy as I would like for the most simple 
+and common cases.  The full discussion can be found on PerlMonks[1], but 
+in short my ideal module would look like this:
+
+	use Some::Module qw(run);
+
+	# Run some command.  Throw an exception on core-dump,
+	# signal-death, or non-zero exit value.  This calls
+	# single-argument system underneath.
+
+	run("some_command");
+
+	# Run some command as above, but use multi-argument
+	# system.
+
+	run("some_command",@arguments);
+
+	# Run some command, but allow an exit-status of 0..2
+	# to be non-fatal.  Returns the exit value.
+	
+	my $exit_value = run([0..2], "some_command");
+
+The intent is to make it both simple and easy to "do the right thing" in 
+terms of error-checking for the most simple cases when using system(). 
+I'm not looking for fancy pipes or process control, but I am looking for 
+something that will give excellent diagnostics (and exceptions) when 
+things go wrong.
+
+This is about making "simple things easy"; we already have lots of 
+modules that make hard things possible.  I feel such a module would have 
+great use with system administrators, who often know enough Perl to call 
+system(), but not enough to properly check (and unpack) $? and $! .
+
+Unfortunately, I can't find any such module.  IPC::Run3 comes close, but 
+looking over the source code it doesn't appear to check for signals, 
+core-dumps, or give an easy way to get to the error-status.    IPC::Run 
+fails the simplicity test, and Perl6::Builtins requires the developer to 
+actually check their return values.  IPC::Cmd is actually very close, 
+but doesn't do the diagnostics that I'm after.
+
+As such, I'm intending to write a module to fulfill these requirements, 
+and hence I need a module name, or convincing that I really am 
+reinventing yet another wheel.  My current choice of names is 
+"IPC::System::Simple", which I believe both fits into the existing 
+namespace tree, and makes it reasonably clear about what it does.  I'd 
+actually love to call it "System::Simple", but I feel that doesn't 
+follow namespace conventions, although I'd like to be convinced otherwise.
+
+Any advice, discussion, criticism, or questions would be appreciated.
+
+Many thanks!
+
+	Paul
+
+[1] http://perlmonks.org/?node_id=557107
+
+-- 
+Paul Fenwick <pjf@perltraining.com.au> | http://perltraining.com.au/
+Director of Training                   | Ph:  +61 3 9354 6001
+Perl Training Australia                | Fax: +61 3 9354 2681

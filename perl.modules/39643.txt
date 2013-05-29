@@ -1,0 +1,105 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:39643
+Return-Path: <lbottelberghs@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11475 invoked from network); 13 Apr 2005 13:44:02 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 13 Apr 2005 13:44:02 -0000
+Received: (qmail 24158 invoked by uid 225); 13 Apr 2005 13:44:01 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24142 invoked by alias); 13 Apr 2005 13:44:00 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,RCVD_BY_IP
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of lbottelberghs@gmail.com designates 64.233.184.207 as permitted sender)
+Received: from wproxy.gmail.com (HELO wproxy.gmail.com) (64.233.184.207)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 13 Apr 2005 06:43:58 -0700
+Received: by wproxy.gmail.com with SMTP id 36so163091wra
+        for <modules@perl.org>; Wed, 13 Apr 2005 06:43:54 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=DlHq6ZUWIuLM/NB1TkWeAt16skJvGTJJzKkQbKzVSj42/PSTuJcbWeyQYFRj43fP7Gr9cufYKZbNbOwnfRyK2G+Ph2Ld7kWUl48/WhoMwKxjhxfePQijjl81gvlV/EitumyZPD8C09lW66dq7cGcykDPOv/nqLmUoQPyHV0fXv4=
+Received: by 10.54.55.61 with SMTP id d61mr350152wra;
+        Wed, 13 Apr 2005 06:43:54 -0700 (PDT)
+Received: by 10.54.34.8 with HTTP; Wed, 13 Apr 2005 06:43:54 -0700 (PDT)
+Message-ID: <133343540504130643d514446@mail.gmail.com>
+Date: Wed, 13 Apr 2005 15:43:54 +0200
+Reply-To: Leendert Bottelberghs <lbottelberghs@gmail.com>
+To: modules@perl.org
+Subject: Re: Module submission Apache::LogFormat
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Approved: news@nntp.perl.org
+From: lbottelberghs@gmail.com (Leendert Bottelberghs)
+
+I read this message on codecomments.com by coincidence. This message
+never came directly to me, but I'm pretty sure it is directed to me
+since I proposed the module namespace. Excuse me if I'm not supposed
+to post to this list.
+
+The Apache::LogFormat is a base module, for which I now have two
+extensions: Apache::LogFormat::Common, and
+Apache::LogFormat::Combined. These modules can construct an
+accesslog-line in the approriat format. This line (string) can then be
+used to write to a file (or whatever). It is Object oriented, an
+expample of it's intended use:
+
+<code>
+use Apache::LogFormat::Common;
+
+sub handler{
+my $r =3D shift;
+my $lf =3D Apache::LogFormat::Common->new($r);
+open (FH, '/var/log/access_log');
+print FH $lf->toString();
+close(FH);
+}
+</code>
+
+The base module Apache::LogFormat contains an algorithm for
+efficiently creating the Apache date format.
+I wrote this module because I couldn't find any module or interface
+that could do this.
+
+I hope my explaination of the module is sufficient,
+
+-leendert bottelberghs
+
+[[ This message was both posted and mailed: see
+the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+In article <200504081153.j38BrYvA006498@pause.perl.org>, Perl Authors
+Upload Server <upload@pause.perl.org> wrote:
+
+> The following module was proposed for inclusion in the Module List:
+>
+>   modid:       Apache::LogFormat
+>   DSLIP:       RdpOg
+>   description: Interface for log formats for apache
+>   userid:      LBOTTEL (Leendert Bottelberghs)
+>   chapterid:   16 (Server_and_Daemon_Utilities)
+>   communities:
+>
+>   similar:
+>
+>   rationale:
+>
+>     Currently there are no modules on CPAN that provide a proper
+>     interface to the access log format of Apache.
+
+Does this module get and set the LogFormat value? I just
+want to be sure since the first thing I thought was that it
+might be a parser.
+
+If that first situation is the case, I have no problem with
+the name (and wonder how we went this long without it :)
+
+--
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+archives at http://www.xray.mpe.mpg.de/mailing-lists/modules
+please send all messages back to modules@perl.org

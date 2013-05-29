@@ -1,0 +1,110 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:22930
+Return-Path: <sterling@cis.ksu.edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 72685 invoked by uid 76); 18 Aug 2003 15:46:31 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Mon, 18 Aug 2003 08:46:31 -0700
+Received: (qmail 1107 invoked by uid 225); 18 Aug 2003 15:46:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1102 invoked by uid 507); 18 Aug 2003 15:46:30 -0000
+Received-SPF: unknown (domain of sender sterling@cis.ksu.edu does not designate mailers: NXDOMAIN)
+Received: from hanenkam-64-39-197-33.pixius.com (HELO dobby.hanenkamp.com) (64.39.197.33) by one.develooper.com (qpsmtpd/0.27-dev) with SMTP; Mon, 18 Aug 2003 08:46:20 -0700
+Received: from cis.ksu.edu (padfoot.int.hanenkamp.com [192.168.1.3])	(authenticated bits=0)	by dobby.hanenkamp.com (8.12.6/8.12.6/Debian-7) with ESMTP id h7IFk8dM017467	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO);	Mon, 18 Aug 2003 10:46:11 -0500
+Message-ID: <3F40F49E.5040309@cis.ksu.edu>
+Date: Mon, 18 Aug 2003 10:45:34 -0500
+Organization: Hanenkamp.com
+User-Agent: Mozilla/5.0 (Windows; U; WinNT4.0; en-US; rv:0.9.4) Gecko/20011128 Netscape6/6.2.1
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Kurt Starsinic <kstar@cpan.org>
+CC: modules@perl.org, hanenkamp@cpan.org
+Subject: Re: Module submission Class::Hash
+References: <200308180519.h7I5JBMw017607@pause.perl.org> <20030818143609.GA18510@verizon.net>
+In-Reply-To: <20030818143609.GA18510@verizon.net>
+X-Enigmail-Version: 0.76.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SMTPD: qpsmtpd/0.27-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-2.2 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,NOSPAM_INC,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_03_05,USER_AGENT,USER_AGENT_MOZILLA_UA,X_ACCEPT_LANG version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: sterling@cis.ksu.edu (Andrew Sterling Hanenkamp)
+
+It's all (more or less) syntactic sugar. I don't necessarily think it 
+provides any value beyond notation.  It just removes the extra noise of 
+the curly braces.  For my purposes, this is value enough.  However, I 
+figured that if I was going to add a module I might as well give it some 
+additional functionality besides simply adding an lvalued AUTOLOAD that 
+might make it even more generally valuable.  So, I added the ability to 
+use (or not) a bunch of helper methods that look more or less like the 
+tied interface of a hash. Some might prefer:
+
+  $hash->clear;
+
+to:
+
+  %$hash = ();
+
+This class lets you do both, if you turn on the clear method--by default 
+$hash->clear will just return the value of $hash->{clear}.  That is, if 
+you don't like the additional methods, you don't turn them on.  If you 
+like the additional methods, but you aren't real fond of the named 
+accessors using AUTOLOAD, turn the methods and the accessors off.  Still 
+further, if something has been turned off and you still want to use the 
+functionalty use the Class::Hash syntax or use the hash directly.  I 
+think this module just takes hashes to a new level of TMTOWTDI.
+
+Cheers,
+Sterling
+
+
+Kurt Starsinic wrote:
+
+>On Aug 18, Perl Authors Upload Server wrote:
+>  
+>
+>>The following module was proposed for inclusion in the Module List:
+>>
+>>  modid:       Class::Hash
+>>  DSLIP:       adpOp
+>>  description: An object-orient wrapper for hashes.
+>>  userid:      HANENKAMP (Andrew Sterling Hanenkamp)
+>>  chapterid:    6 (Data_Type_Utilities)
+>>  communities:
+>>
+>>  similar:
+>>    Class::Struct
+>>
+>>  rationale:
+>>
+>>    Essentially, I've just wrapped a hash in an object-orient
+>>    interface.
+>>    
+>>
+>
+>    How is this different from a tied hash?  In what situations is it
+>useful?
+>
+>    - Kurt
+>  
+>
+-- 
+
+
+-- 
+<>< ><> <>< ><> <>< ><> <>< ><> <>< ><> <>< ><> <>< ><> <>< ><> <>< ><>
+  Andrew Sterling Hanenkamp
+  http://Andrew.Sterling.Hanenkamp.com/
+  sterling@hanenkamp.com / sterling@cis.ksu.edu
+
+  "When an opponent declares, 'I will not come over to your side,' I
+  calmly say, 'Your child belongs to us already...What are you? You will
+  pass on. Your descendants, however, now stand in the new camp. In a
+  short time they will know nothing else but this new community.'"
+                         -- Adolf Hitler, on public education.
+
+

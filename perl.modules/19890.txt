@@ -1,0 +1,77 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:19890 perl.module-authors:695
+Return-Path: <enrico@sorcinelli.it>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4432 invoked by uid 76); 27 Mar 2003 06:12:49 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.25) with SMTP; Wed, 26 Mar 2003 22:12:49 -0800
+Received: (qmail 17717 invoked by uid 225); 27 Mar 2003 06:12:45 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17708 invoked by uid 507); 27 Mar 2003 06:12:45 -0000
+Received: from smtp0.libero.it (HELO smtp0.libero.it) (193.70.192.33) by one.develooper.com (qpsmtpd/0.25) with SMTP; Wed, 26 Mar 2003 22:12:41 -0800
+Received: from koenig.sorcinelli.it (151.27.29.98) by smtp0.libero.it (7.0.012)        id 3E81B41B0003D626; Thu, 27 Mar 2003 07:12:37 +0100
+Message-ID: <5.0.2.1.2.20030327064247.0343a3f0@mail.sestante.net>
+X-Sender: bepi@boniface.sestante.net
+X-Mailer: QUALCOMM Windows Eudora Version 5.0.2
+Date: Thu, 27 Mar 2003 07:24:57 +0100
+To: modules@perl.org
+Subject: [RFC] new module proposal
+Cc: module-authors@perl.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: enrico@sorcinelli.it (Enrico Sorcinelli)
+
+Hi all,
+I wrote a simple collection of HTML/XML widget generator (like tabs,
+boxes, paths) using a master class and the subclasses rendering the
+particular elements with the same API.
+I searched on CPAN and apparently I've not found similar modules,
+except CGI::Widget::Tabs (but my implementation differs, and moreover
+I can try to intergrate additional graphical tabs feature to this module).
+I would put it into an existing namespace like CGI::Widget
+or HTML::Widgets.
+The problem is where to put the main class without conflict with existent
+modules.
+
+I have my files like:
+
+    something/MyWidget.pm
+    something/MyWidget/Path.pm
+    something/MyWidget/Tabs.pm
+    something/MyWidget/Box.pm
+    something/MyWidget/Tree.pm
+    ...
+
+For example, this is the code using Path widget class
+generator:
+
+use MyWidget::Path;
+# create new path object
+my $path = new MyWidget::Path(
+	separator => '::',
+	root      => { name => "Home", url => "/" },
+	base_url  => 'http://www.foo.com',
+);
+$path->addElem( elems => [{ name => "My site", url => "mysite/", append => 
+1 }] );
+print $path->asHTML;
+
+will produce the HTML:
+<A HREF="http://www.foo.com/">Home</A>::<A 
+HREF="http://www.foo.com/mysite/">My Site</A>
+
+Also a filename path can be passed in order to create an "hyperlinked"
+path.
+
+Any suggestions about the module and/or namespace are welcome.
+
+Thanks in advance
+
+	- Enrico
+

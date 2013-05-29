@@ -1,0 +1,102 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2158
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19821 invoked from network); 17 Jun 2000 08:09:55 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 17 Jun 2000 08:09:55 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id KAA10760;
+	Sat, 17 Jun 2000 10:10:01 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: Elaine -HFB- Ashton <elaine@chaos.wustl.edu>
+Cc: "Andreas J. Koenig" <andreas.koenig@anima.de>,
+        Graham Barr <gbarr@pobox.com>, jhi@iki.fi, modules@perl.org
+Subject: Re: More hyperlinks in the module list
+References: <m3pupigktq.fsf@ak-71.mind.de>
+	<20000616104408.3093.qmail@plover.com> <20000616121911.X451@pobox.com>
+	<m3og51bq93.fsf@ak-71.mind.de> <20000616170711.L451@pobox.com>
+	<m3d7lhb2jg.fsf@ak-71.mind.de> <20000616214544.B8217@chaos.wustl.edu>
+Date: 17 Jun 2000 10:10:01 +0200
+In-Reply-To: Elaine -HFB- Ashton's message of "Fri, 16 Jun 2000 21:45:44 -0500"
+Message-ID: <m3u2esafty.fsf@ak-71.mind.de>
+Lines: 57
+User-Agent: Gnus/5.0806 (Gnus v5.8.6) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Fri, 16 Jun 2000 21:45:44 -0500, Elaine -HFB- Ashton <elaine@c=
+haos.wustl.edu> said:
+
+ > Concerns are:
+
+ > - It's really big. Might it be time to segment it?
+
+I still love it as one big piece. I wouldn't mind producing additional
+lists chapterwise though. Would that fit the bill?
+
+ > - The core modules. I noticed the other night that some guy was craw=
+ling
+ > the heck out of search at the rate of 7 or 8 requests per second. Th=
+is
+ > didn't load the server too horribly until he started hitting the core
+ > modules and docs because the tar.gz distribution has to be uncompres=
+sed
+ > for each request. I was thinking perhaps that unless the query param=
+eter
+ > is present the engine could fetch it out of already decompressed sou=
+rces.
+ > It's a thought since it would be trivial to DoS the box with these
+ > requests en masse.
+
+If search isn't programmed to be fast, we are in deep troubles. Maybe
+the code should be made publically available and setting up mirrors of
+search should be made easy. That could serve two purposes: attract
+contributing programmers and later clusterize search services. Maybe
+such a tarball is available already?
+
+ > - I thought the addition of the author pages might be a nice touch a=
+long
+ >   with the RFCs, etc. which I put up at=20
+ > http://chaos.wustl.edu/~elaine/download/modulelist-E.html=20
+ > Use if you like, I'm just procrastinating on a Friday night :)
+
+Sure, looks much better than before, thanks! I've replaced the thing
+on PAUSE's incoming directory with this fix.
+
+ > - Deprecation. e.g., TOMC has Date-GetDate listed on search yet clic=
+king
+ >   on it gives me a module listing ANDK. It's a nit, but people who h=
+aven't
+ > been around will see that and wonder if they have the right module s=
+ince
+ > it seemed to change ownership without explanation. Yes, the README e=
+xplains
+ > the deal but maybe there can be some sort of tag for deprecated modu=
+les
+ > and modules which have been passed from one author to another.
+
+This is most definitely a bug on search
+
+  cpan> m Date::GetDate=20
+  Module id =3D Date::GetDate
+      CPAN_USERID  ANDK (Andreas J. K=F6nig <andreas.koenig@anima.de>)
+      CPAN_VERSION 2.02
+      CPAN_FILE    A/AN/ANDK/Date-GetDate-2.02.tar.gz
+      INST_FILE    (not installed)
+
+What search doesn't know is that both TOMC and ANDK are on an access
+control list, so uploads from either of them will get indexed while
+uploads by anybody else will be ignored. We need either to propagate
+the ACL to search or search needs to follow
+modules/02packages.details.txt.gz more closely. I'm not sure which of
+the two.
+
+--=20
+andreas

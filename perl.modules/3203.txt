@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3203
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5837 invoked from network); 26 Oct 2000 04:22:23 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 26 Oct 2000 04:22:23 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id GAA05270;
+	Thu, 26 Oct 2000 06:22:09 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: andk@cpan.org, nthiery@cpan.org, gthyni@cpan.org, abh@cpan.org,
+        gabor@cpan.org, smaxime@cpan.org, arndt@cpan.org, terje@cpan.org,
+        schoen@cpan.org, svinto@cpan.org, salva@cpan.org, hmnielsen@cpan.org,
+        roland@cpan.org, mschlue@cpan.org, dlux@cpan.org, davidh@cpan.org
+Cc: modules@perl.org, cpan@perl.org
+Subject: PAUSE now Unicoded
+Date: 26 Oct 2000 06:22:09 +0200
+Message-ID: <m34s20fczy.fsf@ak-71.mind.de>
+Lines: 54
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+Hi aliens,
+
+I'm writing this mail to all CPAN authors who are registered with a
+name containing bytes that have the 8th bit on.
+
+Today PAUSE has made the switch from LATIN1 to UTF-8 in the database
+and is going to complete this step in the next days, so please be
+prepared that a few things can work unexpectedly during the next days.
+
+Let's face the problematic areas:
+
+1. The forms on PAUSE will issue UTF-8 forms and accept them. If your
+   browser doesn't handle UTF-8, you will get a LATIN1 form and PAUSE
+   will translate them to UTF-8 back and forth on the fly. So this
+   should just work. I know that Non-Japanese Netscape versions are
+   not able to edit Japanese forms, but this will not hurt the
+   Japanese users who usually have their own Netscape.
+
+2. The files created by cronjobs that contain your names are:
+
+   authors/00whois.html         I have half way converted to XHTML, so
+                                UTF-8 is OK. I'll fix the XHTML to
+                                perfection in the next days.
+
+   authors/01mailrc.txt.gz      I intend to keep this file as it is
+                                and fill with UTF-8
+
+   The second of these files is used by CPAN.pm, so your names will
+   come out as UTF-8 and if the terminal understands it, users will
+   enjoy the output and if the terminal doesn't understand it, they
+   will see the infamous UTF-8 gibberish. Some of you will consider
+   this a breakage, but I expect it will be fixable in a future
+   version of CPAN.pm and for mailer programs we are used to bad
+   bahaviour anyway.
+
+   All other generated files do not contain names, just English text
+   and userids, so no problem there.
+
+3. The four symlinks under CPAN/authors that contain high-bit-bytes
+   will just be deleted without replacement.
+
+4. Future mails from PAUSE will be UTF-8 encoded. Most mailers
+   nowadays can handle that perfectly well from my experience. PAUSE
+   will not insert UTF-8 into headers.
+
+That's all I have to say for today. Should the need arise that we
+discuss more about this, I'll find a mailing list where we can do it,
+but in general I expect that you can send your bugreports and
+suggestions directly to me and that all bugs are resolved in a few
+days.
+
+Thanks for you attention, Enjoy & Regards,
+-- 
+andreas

@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3710
+Return-Path: <Raphael.Manfredi@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7824 invoked from network); 29 Nov 2000 13:26:39 -0000
+Received: from beta.dmz-eu.st.com (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 29 Nov 2000 13:26:39 -0000
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+	by beta.dmz-eu.st.com (STMicroelectronics) with SMTP id F296B4A38
+	for <modules@perl.org>; Wed, 29 Nov 2000 13:26:10 +0000 (GMT)
+Received: by zeta.dmz-eu.st.com (STMicroelectronics, from userid 0)
+	id 58DE24A38; Wed, 29 Nov 2000 13:26:34 +0000 (GMT)
+Received: from eux220.sgp.st.com (localhost [127.0.0.1])
+	by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 26A271846
+	for <modules@perl.org>; Wed, 29 Nov 2000 13:26:34 +0000 (GMT)
+Received: from gnx009.gnb.st.com (gnx009.gnb.st.com [164.129.103.229])
+	by eux220.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id OAA14098
+	for <modules@perl.org>; Wed, 29 Nov 2000 14:26:09 +0100 (MET)
+Received: from lod23.gnb.st.com (lod28.gnb.st.com [164.129.117.125])
+	by gnx009.gnb.st.com (8.8.6 (PHNE_14041)/8.8.6) with ESMTP id OAA13544;
+	Wed, 29 Nov 2000 14:26:11 +0100 (MET)
+To: modules@perl.org
+Cc: Raphael Manfredi <ram@chram.org>,
+	Brad Appleton <bradapp@enteract.com>
+Subject: Would like Pod::PP name space
+X-Mailer: NMH [version 1.0.1]
+Organization: ST Microelectronics, Grenoble, France
+Date: Wed, 29 Nov 2000 14:28:07 +0100
+Message-ID: <12864.975504487@lod23.gnb.st.com>
+Sender: manfredi@lod23.gnb.st.com
+Approved: news@nntp.perl.org
+From: Raphael.Manfredi@st.com (Raphael Manfredi)
+
+I'm implementing a Pod pre-processor using the:
+
+    =for pp command <option1, option2> args
+
+escape syntax that Pod gives us.  I've started using the Pod::PP namespace,
+but would like to reserve the name space.  Here's the DLSI entry:
+
+    Name           DSLI  Description                                  Info
+    -----------    ----  -------------------------------------------- -----
+    Pod::PP        idpO  A Pod pre-processor                          RAM
+
+[The following might be of interest to Brad only]
+
+The Pod::PP class inherits from Pod::Parser. It currently suports things like:
+
+CPP-like features:
+
+    =for pp include "file"              # a #include, relative to local file
+
+CPP-like features, toying for now:
+
+    =for pp define SYMBOL value         # a #define SYMBOL value (not a macro)
+    =for pp undef SYMBOL                # a #undef SYMBOL
+    =for pp ifdef SYMBOL
+    =for pp else
+    =for pp endif
+    =for pp ifndef
+    =for pp if defined(SYMBOL) || (OTHER <= 4 && TARGET eq 'html')
+    =for pp elif expr
+
+No-so CPP-like, and 100% experimental:
+
+    =for pp include <nest> "file"       # a #include with =head1 -> =head3...
+    =for pp image <center> "file"       # insert image + format (centered)
+    =for pp autolink "key phrase" LINK  # turn all X<key phrase> into LINK
+
+The feature set is not fully established yet.  I'm implementing what I
+currently need...  Also, it's really pre-processing.  For instance, the
+"image" command can generate the various "=for html", "=for text" etc...,
+(which might load "file.text" instead if "file.jpeg" is loaded for HTML),
+unless pre-processing is constrained (we know we're going to generate HTML,
+so don't bother, and strip all =for which are not for html).
+
+Finally all output is normalized.  A sequence of
+
+    ==for xxx...
+    ==for yyy...
+
+is turned into:
+
+    =for xxx...
+
+    =for yyy...
+
+so that translators do not choke on the non-standard (but useful) == prefix.
+
+Raphael

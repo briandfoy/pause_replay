@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9196
+Return-Path: <matisse@matisse.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 41805 invoked by uid 76); 11 Dec 2001 07:14:29 -0000
+Received: from user-112uhe2.biz.mindspring.com (HELO MATISSE.NET) (66.47.69.194)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Tue Dec 11 07:14:29 2001 -0000
+Received: from [66.47.69.205] (user-112uhed.biz.mindspring.com [66.47.69.205])
+	by MATISSE.NET (8.9.3/8.9.3) with ESMTP id XAA17910
+	for <modules@perl.org>; Mon, 10 Dec 2001 23:14:27 -0800
+Mime-Version: 1.0
+X-Sender: matisse@smtp.matisse.net (Unverified)
+Message-ID: <p05100315b83b61f3f18a@[66.47.69.205]>
+Date: Mon, 10 Dec 2001 23:14:49 -0800
+To: modules@perl.org
+Subject: Registration Request
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: matisse@matisse.net (Matisse Enzer)
+
+my name:              Matisse Enzer
+my email address:     matisse@matisse.net
+my homepage:          http://www.matisse.net/
+my preferred user-ID: MATISSE
+
+My first planned contribution is a module that provides a simple 
+high-level wrapper around DBI. I've used it on several projects now 
+and it is quite handy.
+
+I have it on my web site now at http://www.matisse.net/perl-modules/
+
+Here's the README from the module (proposed name is  DBI::Wrapper )
+
+
+DBI/Wrapper version 0.01
+========================
+
+DBI::Wrapper is a simple module that provides a high-level interface
+to the Perl DBI module. The provided methods are for fetching
+a single record (returns a hash-ref), many records (returns
+an array-ref of hash-refs), and for executing a non-select statement
+(returns a result code).
+
+The intention here is that your application will have much cleaner 
+code, so instead of writing:
+
+     my $sql = "SELECT name,address FROM $table WHERE zipcode=?";
+     my $sth = $dbh->prepare("SELECT name,address FROM $table WHERE zipcode=?");
+     my $rv  = $sth->execute("$zipcode");
+     my @found_rows;
+     while ( my $hash_ref = $sth->fetchrow_hashref ) {
+         push( @found_rows, $hash_ref );
+     }
+
+You would write:
+
+     my $sql = "SELECT name,address FROM $table WHERE zipcode=?";
+     my $found_rows = $wrapper->FetchAll("$sql","$zipcode");
+     # $found_rows is an array_ref of hash_refs
+
+
+INSTALLATION
+
+To install this module type the following:
+
+    perl Makefile.PL
+    make
+    make test
+    make install
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+   DBI
+
+COPYRIGHT AND LICENCE
+
+
+Copyright (c)2001 by Matisse Enzer <matisse@matisse.net>
+
+This package is free software and is provided "as is"
+without express or implied warranty.  It may be used,
+redistributed and/or modified under the terms of the Perl
+Artistic License (see http://www.perl.com/perl/misc/Artistic.html)
+
+
+
+
+
+-- 
+-------------------------------------------
+Matisse Enzer
+matisse@matisse.net
+http://www.matisse.net/

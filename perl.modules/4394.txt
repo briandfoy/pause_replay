@@ -1,0 +1,150 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4394
+Return-Path: <sam@tregar.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3893 invoked from network); 3 Feb 2001 21:15:51 -0000
+Received: from airtrout.tregar.com (qmailr@209.73.238.93)
+  by tmtowtdi.perl.org with SMTP; 3 Feb 2001 21:15:51 -0000
+Received: (qmail 824 invoked by uid 500); 3 Feb 2001 21:11:39 -0000
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 3 Feb 2001 21:11:39 -0000
+Date: Sat, 3 Feb 2001 16:11:39 -0500 (EST)
+X-Sender:  <sam@localhost.localdomain>
+To:  <modules@perl.org>
+Subject: Proposed Module: Tie::IntegerArray
+Message-ID: <Pine.LNX.4.30.0102031550050.31494-100000@localhost.localdomain>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: sam@tregar.com (Sam Tregar)
+
+Hello again.  I'd like to register the namespace for a new module called
+Tie::IntegerArray.  Here's the module list entry:
+
+  DSLI:        Rdpr
+  description: provides a tied array of packed integers of any bit length
+  userid:      SAMTREGAR
+  chapterid:   6 (Data_Type_Utilities)
+
+And here's the POD, which should answer any questions you might have
+about the module:
+
+=head1 NAME
+
+Tie::IntegerArray - provides a tied array of packed integers of any bit length
+
+=head1 SYNOPSIS
+
+  use Tie::IntegerArray;
+
+  # an array of signed 16-bit integers with no undef support and
+  # starting room for 100,000 items.  You can expect this to consume a
+  # bit more than 200K of memory versus more than 800K for a normal
+  # Perl array.
+  my @integer_array;
+  tie @integer_array, 'Tie::IntegerArray',
+     bits => 16,
+     signed => 1,
+     undef => 0,
+     size => 100_000;
+
+  # put a value in
+  $integer_array[0] = 10;
+
+  # and print it out
+  print "Int 0: $integer_array[0]\n";
+
+  # the full range of array operations are available
+
+=head1 DESCRIPTION
+
+This module provides an array interface to packed array of integers.  A
+packed array of integers is useful in situations where you need to
+store a large set of integers in as small a space as possible.  Access
+to the packed array will be significantly slower than access to a
+normal array but for many applications the reduction in memory usage
+makes this a good trade-off.
+
+=head1 USAGE
+
+To create an IntegerArray you call tie with a number of optional
+arguements.  These arguements let you fine-tune the storage of your
+integers.  The simplest C<tie> call uses no options:
+
+  my @integer_array;
+  tie @integer_array, 'Tie::IntegerArray';
+
+This will create an array of signed integers with the same size as
+native ints on your platform.  By default the array does not support
+C<undef> - values are 0 by default.  This may be ideal for many
+applications - read below for other options.
+
+=head1 OPTIONS
+
+=over 4
+
+=item * bits (defaults to your machine's int size)
+
+This option specifies how many bits to use to store the integer value.
+This setting determines the possible range of your integers.  If you
+specify unsigned integers (see below) then the maximum range on your
+integers is simply 2^bits.  For example, 8 bits provides an unsigned
+range of 0 - 255.
+
+Since the integers are stored in a packed array you can calculate the
+size of your array by multiplying the number of items by the number of
+bits.
+
+Attempting to store a value into the array that is too large or too
+small for the available bit size will cause an error.
+
+=item * signed (defaults to 1)
+
+If you set signed to 1 then your integers will be signed.  This
+reduces their positive range by a power of 2 but provides equal
+negative range.  For example, an 8 bit signed integer has a range from
+-128 - 127.
+
+=item * undef (defaults to 0)
+
+By default IntegerArrays do not support undef.  This means that array
+values will be 0 until they are set to some value.  Calling defined()
+on an array value will return true if exists() will.  You can change
+this by setting undef to 1.  This requires extra memory - 1 bit per
+array entry.
+
+=item * size (defaults to 1)
+
+IntegerArrays grow automatically as you add items but you can specify
+a size arguement to pre-allocate space.  This will improve performance
+for large arrays.
+
+=back 4
+
+=head1 FUTURE PLANS
+
+This module is functionally complete but not yet fully optimized.  It
+relies on Tie::Array for the more advanced array functions (push, pop,
+etc) and a native implementation could be faster.  If this module
+proves at all popular then I will definitely move in that direction.
+
+=head1 CREDITS
+
+Steffen Beyer - Bit::Vector is pure magic.
+
+=head1 AUTHOR
+
+Sam Tregar, sam@tregar.com
+
+=head1 SEE ALSO
+
+Bit::Vector
+
+=cut
+
+Thanks!
+-sam
+
+

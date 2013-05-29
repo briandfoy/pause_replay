@@ -1,0 +1,152 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:68796
+Return-Path: <t0m@state51.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 17743 invoked from network); 2 Dec 2009 19:39:40 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 2 Dec 2009 19:39:40 -0000
+Received: (qmail 5287 invoked by uid 225); 2 Dec 2009 19:39:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 5280 invoked by alias); 2 Dec 2009 19:39:39 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail.state51.co.uk (HELO mail.state51.co.uk) (193.34.28.19)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 02 Dec 2009 11:39:36 -0800
+Received: from localhost (localhost [127.0.0.1])
+	by mail.state51.co.uk (Postfix) with ESMTP id A33CF1AA044;
+	Wed,  2 Dec 2009 19:39:31 +0000 (GMT)
+X-Virus-Scanned: amavisd-new at mail.state51.co.uk
+Received: from mail.state51.co.uk ([127.0.0.1])
+	by localhost (mail.state51.co.uk [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 1ua2K5fiH5dC; Wed,  2 Dec 2009 19:39:29 +0000 (GMT)
+Received: from t0mlaptop.consume.semi.colondot.net (adsl.semi.colondot.net [212.23.14.8])
+	by mail.state51.co.uk (Postfix) with ESMTPA id 2B8B31AA029;
+	Wed,  2 Dec 2009 19:39:25 +0000 (GMT)
+Cc: modules@perl.org,
+ rafl@debian.org,
+ Tomas Doran <bobtfish@bobtfish.net>,
+ Matt S Trout <mst@shadowcat.co.uk>
+Message-ID: <18A46659-9D75-4FB4-B5A7-63EB865958B6@state51.co.uk>
+To: Sven Verdoolaege <skimo@kotnet.org>,
+ fastcgi-developers@mailman.fastcgi.com
+In-Reply-To: <20091129203838.GE7872@kotnet.org>
+Content-Type: multipart/mixed; boundary=Apple-Mail-31-155419080
+Mime-Version: 1.0 (Apple Message framework v936)
+Subject: FILENO IO:: interface patch to the FCGI CPAN module. (Was: Re: The FCGI module)
+Date: Wed, 2 Dec 2009 19:42:56 +0000
+References: <20091031120356.GT451@agaton.scsys.co.uk> <20091031122041.GV15045@kotnet.org> <20091031155437.GU451@agaton.scsys.co.uk> <027A781D-D519-4DFA-ABFE-9811E028995B@bobtfish.net> <20091128211327.GX7872@kotnet.org> <0604107D-9087-4F32-8517-70E112DFCE81@bobtfish.net> <20091129141829.GZ7872@kotnet.org> <4B129783.4000100@bobtfish.net> <20091129162852.GD7872@kotnet.org> <4B12A669.1030402@bobtfish.net> <20091129203838.GE7872@kotnet.org>
+X-Mailer: Apple Mail (2.936)
+Approved: news@nntp.perl.org
+From: t0m@state51.co.uk (Tomas Doran)
+
+--Apple-Mail-31-155419080
+Content-Type: text/plain;
+	charset=US-ASCII;
+	format=flowed;
+	delsp=yes
+Content-Transfer-Encoding: 7bit
+
+
+On 29 Nov 2009, at 20:38, Sven Verdoolaege wrote:
+
+> On Sun, Nov 29, 2009 at 04:50:49PM +0000, Tomas Doran wrote:
+>> Sven Verdoolaege wrote:
+>>> Also, would you like me to collect your patches or do you
+>>> plan on taking over eventually?
+>
+> Let's just stick to you sending me patches for now (CC'd to the list).
+> I'll release a new version of FCGI before the end of the year.
+
+Please find attached a patch to add a FILENO method to FCGI.pm, as  
+discussed.
+
+If you would prefer to view a diff in your browser, please see:
+http://goatse.co.uk/~bobtfish/Gitalist/script/gitalist.fcgi/commitdiff?p=fcgi2.git;h=bc584fde07f64d87f33ec75b92bf342c3649c094
+
+or if you'd like to pull from my repository:
+http://goatse.co.uk/~bobtfish/fcgi2.git/
+
+This fixes a longstanding issue (http://rt.cpan.org/Public/Bug/Display.html?id=50972 
+), and removes the need for vendor patches applied by (at least)  
+debian and OpenBSD.
+
+Cheers
+t0m
+
+
+--Apple-Mail-31-155419080
+Content-Disposition: attachment;
+	filename=0001-Add-FILENO-method-to-FCGI.pm-to-comply-with-IO-inter.patch
+Content-Type: application/octet-stream;
+	x-unix-mode=0644;
+	name="0001-Add-FILENO-method-to-FCGI.pm-to-comply-with-IO-inter.patch"
+Content-Transfer-Encoding: quoted-printable
+
+=46rom=20bc584fde07f64d87f33ec75b92bf342c3649c094=20Mon=20Sep=2017=20=
+00:00:00=202001=0AFrom:=20t0m=20<bobtfish@bobtfish.net>=0ADate:=20Sun,=20=
+29=20Nov=202009=2011:46:21=20+0000=0ASubject:=20[PATCH]=20Add=20FILENO=20=
+method=20to=20FCGI.pm=20to=20comply=20with=20IO::=20interface=0A=0A=
+FILENO=20method=20returns=20a=20defined=20but=20invalid=20value=20(can=20=
+never=20be=20defined=0Aas=20the=20error=20return=20from=20the=20syscall=20=
+is=20-1)=20to=20placate=20things=20such=20as=0AIPC::Run=20which=20call=20=
+fileno=20to=20check=20if=20a=20filehandle=20is=20open.=0A=0ACloses=20=
+bugs:=0A=20http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D544540=0A=20=
+http://rt.cpan.org/Public/Bug/Display.html?id=3D50972=0A=20Removes=20=
+need=20for=20upstream=20patch=20in=20OpenBSD=0A---=0A=20perl/ChangeLog=20=
+|=20=20=20=208=20++++++++=0A=20perl/FCGI.PL=20=20=20|=20=20=20=209=20=
++++++----=0A=202=20files=20changed,=2013=20insertions(+),=204=20=
+deletions(-)=0A=0Adiff=20--git=20a/perl/ChangeLog=20b/perl/ChangeLog=0A=
+index=208c5547f..74e5b2e=20100644=0A---=20a/perl/ChangeLog=0A+++=20=
+b/perl/ChangeLog=0A@@=20-1,3=20+1,11=20@@=0A+=20=20=20=20o=20Add=20=
+FILENO=20method=20which=20returns=20a=20defined=20but=20invalid=20value=20=
+to=0A+=20=20=20=20=20=20placate=20things=20such=20as=20IPC::Run=20which=20=
+call=20fileno=20to=20check=20if=20a=0A+=20=20=20=20=20=20filehandle=20is=20=
+open.=0A+=20=20=20=20=20=20Closes=20bugs:=0A+=20=20=20=20=20=20=
+http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D544540=0A+=20=20=20=20=
+=20=20http://rt.cpan.org/Public/Bug/Display.html?id=3D50972=0A+=20=20=20=20=
+=20=20Removes=20need=20for=20upstream=20patch=20in=20OpenBSD=0A+=0A=20=
+Version=200.68=20--=0921=20June=202003=20=20=20<skimo@kotnet.org>=20Sven=20=
+Verdoolaege=0A=20=0A=20=09o=20Call=20the=20fcgi=20lib's=20attach/detach=20=
+<robs@fastcgi.com>=0Adiff=20--git=20a/perl/FCGI.PL=20b/perl/FCGI.PL=0A=
+index=20f4069fd..0e6ebf0=20100644=0A---=20a/perl/FCGI.PL=0A+++=20=
+b/perl/FCGI.PL=0A@@=20-390,10=20+390,11=20@@=20sub=20OPEN=20{=0A=20=20=20=
+=20=20}=0A=20}=0A=20=0A-#=20Apparently=20some=20use=20fileno=20to=20=
+determine=20if=20a=20filehandle=20is=20open,=0A-#=20so=20we=20might=20=
+want=20to=20return=20a=20defined,=20but=20meaningless=20value.=0A-#=20An=20=
+alternative=20would=20be=20to=20return=20the=20fcgi=20stream=20fd.=0A-#=20=
+sub=20FILENO=20{=20-2=20}=0A+#=20Some=20things=20(e.g.=20IPC::Run)=20use=20=
+fileno=20to=20determine=20if=20a=20filehandle=20is=20open,=0A+#=20so=20=
+we=20return=20a=20defined,=20but=20meaningless=20value.=20(-1=20being=20=
+the=20error=20return=0A+#=20value=20from=20the=20syscall=20in=20c,=20=
+meaning=20it=20can=20never=20be=20a=20valid=20fd=20no)=0A+#=20Probably=20=
+a=20better=20alternative=20would=20be=20to=20return=20the=20fcgi=20=
+stream=20fd.=0A+sub=20FILENO=20{=20-1=20}=0A=20=0A=201;=0A=20=0A--=20=0A=
+1.6.5.3.171.ge36e=0A=0A=
+
+--Apple-Mail-31-155419080
+Content-Type: text/plain;
+	charset=US-ASCII;
+	format=flowed;
+	delsp=yes
+Content-Transfer-Encoding: 7bit
+
+
+
+
+P.S. I am unsure if this message will make it to the FCGI developers  
+list - I tried to subscribe from both my work and home addresses, but  
+I only got a confirm to work (this address), and I am unable to log  
+into the mailman web interface with the password in my 'welcome to the  
+"FCGI-developers" mailing list email to check as it says the password  
+is incorrect. The 'email me my password' button also does not appear  
+to function as expected.
+
+P.P.S. I emailed both addresses I could find for the list admin about  
+this issue several days ago and have received no response.
+
+
+--Apple-Mail-31-155419080--

@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7211
+Return-Path: <aml@world.std.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 74901 invoked from network); 27 Aug 2001 16:46:56 -0000
+Received: from sgi04-e.std.com (199.172.62.134)
+  by onion.valueclick.com with SMTP; 27 Aug 2001 16:46:56 -0000
+Received: from world.std.com (world-f.std.com [199.172.62.5])
+	by sgi04-e.std.com (8.9.3/8.9.3) with ESMTP id MAA14630705;
+	Mon, 27 Aug 2001 12:46:48 -0400 (EDT)
+Received: (from aml@localhost)
+	by world.std.com (8.9.3/8.9.3) id MAA29935;
+	Mon, 27 Aug 2001 12:46:48 -0400 (EDT)
+Message-ID: <20010827124647.A18323@world.std.com>
+Date: Mon, 27 Aug 2001 12:46:47 -0400
+To: Kirrily Robert <skud@infotrope.net>
+Cc: modules@perl.org
+Subject: Resource file module (was: author ID request)
+References: <20010827002106.A9195@world.std.com> <20010827095946.A19951@infotrope.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91i
+In-Reply-To: <20010827095946.A19951@infotrope.net>; from Kirrily Robert on Mon, Aug 27, 2001 at 09:59:46AM -0400
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: aml@world.std.com ("Andrew M. Langmead")
+
+On Mon, Aug 27, 2001 at 09:59:46AM -0400, Kirrily Robert wrote:
+> On Mon, Aug 27, 2001 at 12:21:06AM -0400, Andrew M. Langmead wrote:
+> | I guess to bring it to a point, I strongly feel that Mac:: is the
+> | wrong hierarchy for the module to be in. The choice of Data:: wasn't
+> | done without any thought or consultation, although I agree it isn't
+> | ideal.
+> | 
+> | Do you have any suggestions besides Mac:: for a namespace?
+> 
+> A suggestion was made for starting a top-level namespace for
+> cross-platform tools, but no good name was suggested for it.
+
+In that Usenet thread that I pointed to earlier, someone mentioned
+FileFormat:: as a possibility. I guess with that my module would be
+FileFormat::Mac::Resource. The counter argument to that is similar to
+your Data:: argument. All files have some sort of format and so it is
+essentially meaningless. A FileFormat:: hierarchy could argue for
+FileFormat::XML, FileFormat::PDF::, FileFormat::TeX,
+FileFormat::Text::TeX and then the FileFormat:: part is essentially
+meaningless.
+
+Last night when writing my previous response, I was toying with
+something that would imply that the it was working with uniquely
+macintosh data but not macintosh native. Unfortunately the best I
+could come up with was Macish::Resource.
+
+> 
+> The general process you should be doing is drilling down on this blurry
+> "data" thing and saying "what sort of data is it?"  Well, it's a file.
+> OK, so how about File::?  Perhaps something like File::Mac::Resources?
+> Or if it's more like a file system (I'm not very knowledgeable about
+> macs) then perhaps Filesys:: 
+
+So we're kind of in sync on what its doing. Resource forks on
+macintosh's are accessed with a set of I/O routines that don't follow
+POSIX style stream semantics. I guess its somewhat analogous to fixed
+record files on VMS in that they are contained in the same file
+system, but need different I/O calls than a stream of bytes. (I guess
+another way of looking at it is if Unix had DBM built into the file
+system code and things like dbm_fetch() and dbm_nextkey() were system
+calls rather than library routines.) The reason I passed by File::
+before was that most of those modules fit well withing the module
+lists description of "File Names, File Systems and File Locking" in
+that they either deal with a file's metadata and not its contents
+(File::Find, File::Glob, File::stat) or deal with their contents as a
+whole with indifference towards its contents (File::Copy, File::Rsync)
+
+So with those issues out, I guess names I find reasonable, in order of
+preference, would be:
+
+Macish::Resource
+FileFormat::Mac::Resource
+File::Mac::Resource
+
+
+
+-- 
+"I'm going to sing Twinkle Twinkle in Jazz: TWINKle, TWINKle, lit-tle-star.
+HOW i WONder what-you-are..."  - Samantha Langmead, age 4
+

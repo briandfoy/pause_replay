@@ -1,0 +1,67 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8228
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 61967 invoked from network); 11 Oct 2001 20:33:38 -0000
+Received: from mail1.tinet.ie (HELO mcclure.tinet.ie) (159.134.237.19)
+  by onion.valueclick.com with SMTP; 11 Oct 2001 20:33:38 -0000
+Received: from p347.as1.limerick1.eircom.net ([159.134.165.91] helo=dansat.data-plan.com)
+	by mcclure.tinet.ie with esmtp (Exim 2.05 #23)
+	id 15rmVp-00025e-00; Thu, 11 Oct 2001 21:33:03 +0100
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id f9BKX2g10228;
+	Thu, 11 Oct 2001 21:33:02 +0100 (BST)
+	(envelope-from timbo)
+Date: Thu, 11 Oct 2001 21:32:54 +0100
+To: chromatic <chromatic@rmci.net>
+Cc: Kirrily Robert <skud@infotrope.net>, modules@perl.org
+Subject: Re: Module submission Devel::Constants
+Message-ID: <20011011213254.R6912@dansat.data-plan.com>
+References: <200110092224.AAA27512@pause.perl.org> <E15r8wA-0003DE-00@tanqueray.infotrope.net> <20011010023014.C17E87DF49@granite.pobox.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011010023014.C17E87DF49@granite.pobox.com>; from chromatic@rmci.net on Tue, Oct 09, 2001 at 08:23:12PM -0600
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+BTW, the Devel:: namespace isn't right for this. Devel:: is for
+development-time tools, not run-time.
+
+Tim.
+
+On Tue, Oct 09, 2001 at 08:23:12PM -0600, chromatic wrote:
+> On Tuesday 09 October 2001 20:17, Kirrily Robert wrote:
+> 
+> > >    Devel::Constants captures constant declarations (with the constant
+> > >    pragma), allowing values to be resolved to their symbols at runtime.
+> > >    It has a special method to resolve bitwise flag markers, such as
+> > >    those found in a TCP packet.
+> 
+> > I've read this through three times and I still don't understand what
+> > you're talking about.
+> 
+> The constants pragma lets Perl turn names like PI and NEXT into values like 
+> '3.14' and '1' at compile time.  It's a lot easier and more maintanable to 
+> use those names when programming.  (Common sense.)
+> 
+> At runtime, unless the author has gone to some trouble, there's no easy way 
+> of getting the name ('PI'), given the value ('3.14').  For some modules, 
+> that's no problem -- people who muck about inside should know what they're 
+> doing.
+> 
+> With a module such as NetPacket::TCP, trying to see what flags are set on a 
+> packet doesn't work very well.  The module defines constants corresponding to 
+> bits, using boolean logic to set and unset these bits with the flags.  Using 
+> the module's published interface, attempting to read the flags returns a 
+> number like '24' instead of 'RST ACK SYN' or whatever.
+> 
+> My solution is to overload constant::import, stashing away the names and 
+> values, so they can be fetched at runtime.
+> 
+> Does that help?
+> -- chromatic

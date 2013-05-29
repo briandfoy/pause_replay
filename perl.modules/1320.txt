@@ -1,0 +1,442 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1320
+Return-Path: <RonaldWS@software-path.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2279 invoked from network); 14 Mar 2000 01:15:32 -0000
+Received: from c014-h003.c014.sfo.cp.net (HELO c014.sfo.cp.net) (209.228.12.67)
+  by tmtowtdi.perl.org with SMTP; 14 Mar 2000 01:15:32 -0000
+Received: (cpmta 2101 invoked from network); 13 Mar 2000 17:15:05 -0800
+Received: from 63-248-60-59.usa3.flashcom.net (HELO software-path.com) (63.248.60.59)
+  by smtp.flashcom.net with SMTP; 13 Mar 2000 17:15:05 -0800
+X-Sent: 14 Mar 2000 01:15:05 GMT
+Message-ID: <38CD8523.F9DA510D@software-path.com>
+Date: Mon, 13 Mar 2000 19:17:39 -0500
+Organization: The Software Path
+X-Mailer: Mozilla 4.7 [en] (Win98; I)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org, elaine@chaos.wustl.edu
+Subject: [Fwd: hi]
+Content-Type: multipart/mixed;
+ boundary="------------8A6878C48CE1D435DBC2A6F9"
+Approved: news@nntp.perl.org
+From: RonaldWS@software-path.com ("Ronald W. Schmidt")
+
+--------------8A6878C48CE1D435DBC2A6F9
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Name: Ronald Schmidt
+Email: RonaldWS@software-path.com
+Homepage: www.software-path.com
+Preferred user id: RONALDWS
+Description: fetch_unanswered.pl script (version number to be added)
+        Retrieve articles from one newsgroup to which no
+        followup/reply has yet been posted.  Articles are
+        printed to the standard output.
+Categorization: I recommend "Networking".  See Description.
+Publicity: Recommended by  Ms. Ashton below and has been publicly
+available on my web site for some time.
+
+Requires CPAN Module: News::NNTPClient
+Please send any comments to: RonaldWS@software-path.com
+
+Ms. Ashton writes:
+>>Subject:             Re: hi
+>>    Date:             Mon, 13 Mar 2000 11:24:52 -0600
+>>  From:             Elaine -HFB- Ashton <elaine@chaos.wustl.edu>
+>>      To:             "Ronald W. Schmidt" <RonaldWS@software-path.com>
+
+>>References:      1 , 2
+
+>> Get yourself a PAUSE ID and write the scripts list again and ask if
+anyone
+>> has objections to your adding them. I don't see why anyone would.
+
+>> e.
+
+--------------8A6878C48CE1D435DBC2A6F9
+Content-Type: application/x-perl;
+ name="fetch_unanswered.pl"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="fetch_unanswered.pl"
+
+#!/usr/bin/perl -w
+
+######################################################################
+# 
+# Program: fetch_unanswered.pl
+#
+#       Retrieve articles from one newsgroup to which no reply
+#       has yet been posted.  Articles are all printed to the
+#       standard output.
+#
+#       options:
+#               -g <news group name>    override default news group
+#               -j Turn off threading of articles by subject.
+#               -n <limit>              Fetch at most <limit> NOV records
+#                                       with one request to server.
+#               -s <news server name>   override default news server 
+#
+# Current version of this program will be accessible from.
+#       http://www.software-path.com/scripts.html
+#
+# Please send any comments to: RonaldWS@software-path.com
+#
+# A version with a reply feature exists.  The reply feature is not included
+# here since it requires about 200 lines of additional unrelated code and 
+# belongs in a separate script. CPAN script submission currently requires 
+# that "It must be a single file ...". Contact the author if interested in 
+# the reply feature.
+#
+######################################################################
+
+use strict;
+
+my $VERSION = 0.15;
+
+use vars qw($opt_g $opt_j $opt_n $opt_s $VERSION);
+
+# server will be set to (in order of decreasing priority)
+#       -s command line parameter
+#       NNTPSERVER environment variable
+#       /etc/nntpserver
+#       default set here
+my $server;
+my $default_server = 'news.compuserve.com';
+
+my $group = 'comp.lang.perl.misc';
+my $xover_batch_size = 500;
+my $default_email = 'nonesuch@nonesuch.org';
+
+######################################################################
+# "Nice to have" enhancements:
+#       support for newnews
+#       time estimation
+#       FAQ filtering option/kill file.
+######################################################################
+
+######################################################################
+# A compatible News::NNTPClient module may be retrieved from URL:
+#       http://www.perl.com/CPAN/authors/id/RVA/NNTPClient-0.36.tar.gz
+######################################################################
+use News::NNTPClient;
+use Getopt::Std;
+
+my $news_client;
+my %unanswered = ();
+my %record_dup_subj = ();
+my ($first_num, $last_num);
+
+######################################################################
+# Print a status message to STDERR.  If caller does not provide
+# line termination then terminate line with time stamp and LF("\n").
+######################################################################
+sub post_console_message {
+        print STDERR @_;
+        print STDERR " (", scalar(localtime()), ")\n" unless (
+                $_[$#_] =~ /\n/         # Last parm has LF.
+        );
+}
+
+######################################################################
+# Here we remove messages with subjects that look like replies and
+# begin to track groups of messages with the same subject.
+# User may request no filter by subject.
+######################################################################
+sub FilterSubject {
+        my $msg_id = shift;
+        my $subj = lc(shift);
+        my $has_ref = shift;
+
+        $subj =~ s/^\s*//;
+        $subj =~ s/\s*$//;
+
+        # if subject filtering remove msgs with subject that looks like reply
+        delete $unanswered{$msg_id} if (
+                ($subj =~ s/^re(\:?)\s+//) && (! $has_ref)
+        );
+
+        # List of message id's by subject.  Advanced technique - sorry!
+        push @{$record_dup_subj{$subj}}, $msg_id;
+}
+
+######################################################################
+# Look through duplicate subject hash for cases where multiple messages
+# had the same subject and remove their message id's from the unanswered
+# list.
+######################################################################
+sub RemoveDuplicateSubject {
+        foreach my $msg_id_lh (values %record_dup_subj) {
+                if (scalar(@$msg_id_lh) > 1) {
+                        foreach my $dup_msg_id (@$msg_id_lh) {
+                                delete $unanswered{$dup_msg_id};
+                        }
+                }
+        }
+}
+
+######################################################################
+# Use NNTP XOVER request to fetch header information needed to
+# determine which articles have not yet received a response.
+# This is one of the more efficient approaches.
+######################################################################
+sub SetUnansweredXover {
+        my ($news_client, $first_num, $last_num, $batch_size) = @_;
+
+        my ($batch_first, $batch_last);
+        my $overview_fmt;
+        my ($i, %overview_fields, $id_field, $ref_field, $subject_field);
+        my @all_ref;
+
+        $overview_fmt = $news_client->list('overview.fmt');
+        die $news_client->message() unless ($news_client->ok());
+        
+        %overview_fields = map((uc($_), $i++), 
+                grep(s/\s*$//, @$overview_fmt));
+        $id_field = $overview_fields{'MESSAGE-ID:'};
+        $ref_field = $overview_fields{'REFERENCES:'};
+        $subject_field = $overview_fields{'SUBJECT:'};
+
+        for (   $batch_first = $first_num,
+                $batch_last = $first_num + $batch_size -1;
+                $batch_first < $last_num;
+                $batch_first = $batch_last + 1,
+                $batch_last = $batch_first + $batch_size -1
+        ) {
+                $batch_last = $last_num if ($batch_last > $last_num);
+                foreach my $xover_line 
+                        ($news_client->xover("${batch_first}-${batch_last}")) {
+                        my ($msg_num, $msg_id, $ref, $subject) =
+                                (split /\t/, $xover_line)
+                                 [0, $id_field +1, 
+                                        $ref_field +1, $subject_field +1];
+                        my $has_ref = (defined($ref) && $ref);
+                        if ($has_ref) {
+                                foreach my $ref_id (split(' ', $ref)) {
+                                        delete $unanswered{$ref_id};
+                                }
+                        }
+                        else {
+                                $unanswered{$msg_id} = $msg_num;
+                        }
+                        FilterSubject($msg_id, $subject, $has_ref) 
+                                unless ($opt_j);
+                }
+                post_console_message 'Processed requests for ', 
+                        $batch_last - $first_num +1,
+                        " NOV records of ", $last_num - $first_num +1, '.';
+        }
+}
+
+######################################################################
+# Fetch each article header, one at a time, to determine which
+# articles have not yet received any response.
+# This is a very inefficient approach but does not require any
+# NNTP extension services.
+######################################################################
+sub SetUnansweredHead {
+        my ($news_client, $first_num, $last_num) = @_;
+
+        my ($article_num, $err_count);
+        my $i = 0;
+        
+        for (   $article_num = $first_num; 
+                $article_num <= $last_num;
+                $article_num++) {
+                my $head;
+                my ($msg_id, $ref_id);
+
+                post_console_message("counting heads: $i") if ((++$i % 100)==0);       
+                $head = $news_client->head($article_num);
+                unless ($news_client->ok()) {
+                        $err_count++ if (
+                                $news_client->message() !~ 
+                                        /bad article number/i
+                        );
+                        next;
+                }
+
+                ($msg_id) = grep(/Message\-ID\:/i, @$head);
+                ($msg_id) = ($msg_id =~ /Message\-ID\: (\<.*?\>)/i);
+                ($ref_id) = grep(/References\:/i, @$head);
+                if (defined $ref_id) {
+                        ($ref_id) = ($ref_id =~ /References\: (\<.*?\>)/i);
+                        delete $unanswered{$ref_id};
+                }
+                else {
+                        $unanswered{$msg_id} = $article_num;
+                }
+                unless ($opt_j) {
+                        my ($subject) = grep(/Subject\:/i, @$head);
+                        ($subject) = ($subject =~ /Subject: (.*)/i);
+                        FilterSubject($msg_id, $subject, defined($ref_id));
+                }
+        }
+        post_console_message("counting heads: $i") unless (($i % 100)==0);
+        post_console_message("*Warning* errors: $err_count.") if ($err_count);
+}
+
+######################################################################
+# Here we expend too much effort to be platform independent.
+# We really should `cat ...`
+######################################################################
+sub read_etc_nntpserver {
+        my $rc;
+
+        open(FH, '</etc/nntpserver') || return undef;
+        $rc = scalar(<FH>);
+        close(FH);
+        $rc =~ s/\s*$//;
+        return $rc || undef;
+}
+
+######################################################################
+# Start of program.
+######################################################################
+
+# process command line options
+getopts("g:jn:rs:");
+$server = $opt_s if (defined($opt_s));
+$group = $opt_g if (defined($opt_g));
+$xover_batch_size = $opt_n if (defined($opt_n));
+
+$server = $ENV{'NNTPSERVER'} if (
+        (! defined($server))            &&
+        $ENV{'NNTPSERVER'}
+);
+$server = read_etc_nntpserver() if (
+        (! defined($server))            &&
+        (-r '/etc/nntpserver')
+);
+$server = $default_server unless(defined $server);
+
+# connect to news server
+$news_client = new News::NNTPClient($server);
+unless ($news_client->ok()) {
+        $news_client->quit();
+        die $news_client->message();
+}
+
+$news_client->debug(0);
+$news_client->mode_reader();
+
+# get news article number range
+($first_num, $last_num) = $news_client->group($group);
+die $news_client->message() unless ($news_client->ok());
+
+# Test scaffolding.  Under Linux this forces overview analysis to fail.
+# $news_client->quit();
+# $news_client = new News::NNTPClient($server);
+# $news_client->debug(0);
+
+post_console_message('Finding unanswered articles.');
+
+######################################################################
+# The actual work of deciding which articles for the group are
+# unanswered is done here.
+######################################################################
+eval {
+        SetUnansweredXover(
+                $news_client, $first_num, $last_num, $xover_batch_size
+        );
+};
+if ($@) {
+        post_console_message 'Xover failed; trying one message at a time.  ',
+                'This may take a while.', "\n";
+
+# more test scaffolding
+#        $news_client->mode_reader(); 
+#        $news_client->group($group);
+
+       SetUnansweredHead($news_client, $first_num, $last_num);
+}
+
+unless ($opt_j) {
+        RemoveDuplicateSubject();
+        %record_dup_subj = ();  # free what may be substantial memory
+}
+
+######################################################################
+# End of "find unanswered" code block.
+######################################################################
+post_console_message('Done finding unanswered articles.');
+post_console_message('Fetching ', scalar(keys %unanswered),
+        ' unanswered articles.');
+
+# Fetch each unanswered article from the news server
+# and print it to the standard output.
+foreach my $article_id (
+                sort {$unanswered{$b} <=> $unanswered{$a}} keys(%unanswered)
+        ) {
+        my $msg = $news_client->article($article_id);
+        print @$msg;
+}
+post_console_message('Done.');
+
+$news_client->quit();
+
+
+=head1 NAME
+
+fetch_unanswered.pl - Retrieve news articles that do not have a reply. 
+
+=head1 DESCRIPTION
+
+
+Retrieve articles from one newsgroup to which no reply has yet been posted.  
+Articles are all printed to the standard output and status messages are 
+printed to STDERR.
+
+=head1 COMMAND LINE OPTIONS
+
+=over 4
+
+=item -g <news group name>
+
+Override default news group.  Default is comp.lang.perl.misc.
+
+=item -j
+
+Turn off threading of articles by subject.  Turning this off also
+saves (some) time and memory.  Article threading eliminates
+articles starting with 'Re:' and groups of articles with the
+same subject.
+
+=item -n <NOV record batch size>
+
+Limit number of NOV records we read from server with one
+request.  A small number will result in more frequent
+feedback to the user.   
+
+=item  -s <news server name>
+
+Override default news server.
+
+        Default is: (in order of decreasing priority)
+        value of NNTPSERVER environment variable
+        value from /etc/nntpserver file
+        value set at start of fetch_unanswered.pl source code.
+
+=back 4
+
+=head1 PREREQUISITES
+
+This script requires the C<strict> module.  It also requires
+C<Getopt::Std> and C<News::NNTPClient>.
+
+=pod OSNAMES
+
+any
+
+=pod SCRIPT CATEGORIES
+
+Networking
+
+=cut
+
+--------------8A6878C48CE1D435DBC2A6F9--
+

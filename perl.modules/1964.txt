@@ -1,0 +1,67 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1964
+Return-Path: <coopercc@netheaven.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30129 invoked from network); 22 May 2000 12:39:40 -0000
+Received: from coopercc.netheaven.com (HELO camel) (198.69.29.163)
+  by tmtowtdi.perl.org with SMTP; 22 May 2000 12:39:40 -0000
+Received: (from ccc@localhost) by camel (8.6.12/8.6.12) id IAA00217; Mon, 22 May 2000 08:22:24 -0400
+Date: Mon, 22 May 2000 08:22:24 -0400
+Message-ID: <200005221222.IAA00217@camel>
+To: perl-xml@listserv.activestate.com, xml-dev@xml.org
+Cc: modules@perl.org
+Subject: ANN: Version 2.29 of Perl module XML::Parser released
+Approved: news@nntp.perl.org
+From: coopercc@netheaven.com (Clark Cooper)
+
+
+I've uploaded Version 2.29 of XML::Parser to CPAN.
+
+This is a maintenance release.
+
+Here's the relevant part of the Changes log:
+
+2.29 Sun May 21 21:19:45 EDT 2000
+  - In expat, notation declaration handler registration wasn't
+    surviving through external entity references.
+  - Chase Tingley <tingley@sundell.net> discovered that text
+    accumulation in the Stream style wasn't working across processing
+    instructions and recommended the appropriate fix.
+  - Jochen Wiedmann <jochen.wiedmann@softwareag.com>, noted that
+    you couldn't use ExpatNB directly because it wasn't setting
+    the protective _State_ variable. Now doing this in the
+    parse_more method of ExpatNB.
+  - At the suggestion of Grant Hopwood <hopwoodg@valero.com>, now
+    calling the env_proxy method on the LWP::UserAgent in the LWP
+    external entity handler when it's created to set any proxies
+    from environment variables.
+  - Grant McLean, Matt Sergeant (& others I may have missed) noted that
+    loading the LWP & URI modules slowed startup of the module, even
+    if the application didn't need it. The default LWP handler is now
+    dynamicly loaded (along with LWP & URI modules) the first time an
+    external entity is referenced. Also provided a NoLWP option to
+    XML::Parser that forces the file based external entity handler.
+  - Fixed allocation errors in element declaration patches in expat
+  - The Expat base method now works, even before expat starts parsing.
+  - Changed the canonical script to take an optional file argument.
+  - Enno Derksen <enno@att.com> reported that the attlist handler
+    was not returning NOTATION type attlist information.
+  - Michel Rodriguez <mrodrigu@ieee.org>, noted that the constructor
+    for XML::Parser objects no longer checked for the existence of
+    applications installed external entity handlers before installing
+    the default ones.
+  - Burkhard Meier <burkhard.meier@ixos.de> sent in a fix for
+    compiler directives in Expat/Makefile.PL for Win32 machines.
+    A change in 5.6.0 caused the old conditional to fail.
+  - Forgot to document changes to the Entity declaration handler:
+    there is an additional "IsParam" argument that indicates whether
+    or not the entity is a parameter entity. This information is
+    no longer passed on in the name.
+  - Ben Low <ben@snrc.uow.edu.au> reported an undefined macro with
+    version 5.004_04.
+
+-- 
+Clark Cooper		Software Engineer	Home:   coopercc@netheaven.com
+			Schenectady, NY	USA	Work:   cccooper@ltionline.com

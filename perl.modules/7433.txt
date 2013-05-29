@@ -1,0 +1,66 @@
+Newsgroups: perl.beginners.cgi,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.beginners.cgi:2209 perl.modules:7433
+Return-Path: <mark@summersault.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12846 invoked from network); 6 Sep 2001 17:39:14 -0000
+Received: from nollie.summersault.com (qmailr@208.10.44.140)
+  by onion.valueclick.com with SMTP; 6 Sep 2001 17:39:14 -0000
+Received: (qmail 36390 invoked from network); 6 Sep 2001 17:41:30 -0000
+Received: from hoobella.summersault.com (HELO summersault.com) (208.10.44.182)
+  by nollie.summersault.com with SMTP; 6 Sep 2001 17:41:30 -0000
+Message-ID: <3B97B4CB.678C958C@summersault.com>
+Date: Thu, 06 Sep 2001 12:39:35 -0500
+Reply-To: mark@summersault.com
+Organization: Summersault
+X-Mailer: Mozilla 4.78C-CCK-MCD {C-UDP; EBM-APPLE} (Macintosh; U; PPC)
+X-Accept-Language: en,pdf
+MIME-Version: 1.0
+To: Maryana Osipchuk <chyortik@inbox.lv>
+CC: beginners-cgi@perl.org, modules@perl.org, perl-help@perl.org
+Subject: Re: FW: problem with using HTML::FormValidator
+References: <B7BC17C9.9445%jsimoni@totalsite.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: mark@summersault.com (Mark Stosberg)
+
+
+> ------ Forwarded Message
+> From: "Maryana Osipchuk" <chyortik@inbox.lv>
+> When I try using this one (as constraint rule - my own function)
+> --
+> p1 => {
+>               constraints => valid_equiv,
+>               params => [qw (p1 p2)]
+>       }
+> valid_equiv as &main::valid_equiv
+> --
+> I receive an error(something like that):
+> 'Undefined subroutine &HTML::FormValidator::valid_ called at
+> C:/Perl/lib/HTML/FormValidator.pm line 401'
+
+Hello Maryana,
+
+First, if you just learning HTML::FormValidator, I suggest looking into
+Data::FormValidator. It contains all the old functions plus a few new features.
+
+In your case, I think your solution may be found an example in the
+documentation which looks like this:
+
+    {
+        customer_infos => {
+             constraints => {
+                cc_no      => {  constraint  => "cc_number",
+                                 params      => [ qw( cc_no cc_type ) ],
+                                },
+		}
+	}
+
+
+# cc_no is the field name with the constraint
+# cc_number is the custom function
+
+   -mark

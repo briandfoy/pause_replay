@@ -1,0 +1,49 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17493
+Return-Path: <fibonaci@babylonia.flatirons.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 676 invoked by uid 76); 30 Jan 2003 06:21:21 -0000
+Received: from [161.97.199.99] (HELO babylonia.flatirons.org) (161.97.199.99) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-30 06:21:21Z
+Received: by babylonia.flatirons.org (Postfix, from userid 2003)	id 3EA1674; Wed, 29 Jan 2003 23:21:04 -0700 (MST)
+To: modules@perl.org
+Subject: Module Naming
+Message-ID: <20030130062104.3EA1674@babylonia.flatirons.org>
+Date: Wed, 29 Jan 2003 23:21:04 -0700 (MST)
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: fibonaci@babylonia.flatirons.org (Luke Palmer)
+
+I have a module that performs parallel substitutions on a string, as
+in:
+
+   $str = subst $str,
+          qr/foo/ => 'bar',
+          qr/bar/ => 'baz',
+          qr/baz/ => 'foo';
+
+Just as if it were typed:
+
+   $str =~ s/(foo|bar|baz)/$1 eq 'foo' ? 'bar' :
+                           $1 eq 'bar' ? 'baz' :
+                           $1 eq 'baz' ? 'foo'/g;
+
+For any set of regexes you want, handling $1,$2 and all that
+correctly.  I call it Regexp::Subst::Parallel at the moment.  Does
+anyone have any better ideas for the name of such a module?
+
+Additionally, can someone think of a better calling convention to use
+than the one illustrated above?  I'm running into problems with other
+kinds of interpolations:
+
+  $str = substr,
+         qr/(the contractee)/i => "\$1, $name, ",
+         qr/(the contractor)/i => "\$1, $name2, ";
+
+That works, replacing \$1 with "the contractee" in whatever case it
+was.  The problem is, that for a literal $ with other interpolations,
+it would have to be "\\\$", which is by no means pretty.  Any ideas?
+
+Thanks,
+Luke

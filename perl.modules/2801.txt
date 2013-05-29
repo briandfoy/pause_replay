@@ -1,0 +1,190 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2801
+Return-Path: <aqutiv@softhome.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3511 invoked from network); 1 Sep 2000 23:33:13 -0000
+Received: from tango.softhome.net (204.144.231.49)
+  by tmtowtdi.perl.org with SMTP; 1 Sep 2000 23:33:13 -0000
+Received: (qmail 10798 invoked by uid 417); 1 Sep 2000 23:35:29 -0000
+Received: from unknown (HELO logicsense) (213.8.18.115)
+  by smtpb.softhome.net with SMTP; 1 Sep 2000 23:35:29 -0000
+Message-ID: <000401bdd609$8e3db3a0$731208d5@logicsense>
+To: <modules@perl.org>
+Subject: A suggestion for a module: File::Struct
+Date: Wed, 2 Sep 1998 02:33:53 +0200
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0005_01BDD61A.209A0360"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2314.1300
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+Approved: news@nntp.perl.org
+From: aqutiv@softhome.net ("Aqutiv")
+
+------=_NextPart_000_0005_01BDD61A.209A0360
+Content-Type: text/plain;
+	charset="windows-1255"
+Content-Transfer-Encoding: quoted-printable
+
+Hey,
+I've  been working on a module lately... It's experimental yet, but it =
+seems to be fully working.
+I've decided about the namespace: File::Struct because I think it'll =
+appeal for that.
+If you think that the name is not appropiate and/or it should have =
+another namespace, then please say so. ;-)
+
+What the module does is sort of simulate c-style structures for the easy =
+i/o of binary files.
+While it uses an Object Oriented interface, it also exports constants =
+that are data types which
+you may be familiar with (it seems like magic, but it really isn't. :) =
+)... To explain this, here's an example code that uses the module:
+
+use File::Struct;
+
+#Those act similiar to typedef in c/c++.
+use constant byte =3D> unsigned char;=20
+use constant Ushort =3D> unsigned short;
+use constant Ulong =3D> unsigned long;
+
+$fs =3D new File::Struct;
+
+$struct =3D {
+    type =3D> str->(4), #a string of 4 chars...=20
+    version =3D> Ushort,
+    var1 =3D> long,
+    var2 =3D> byte,
+    var3 =3D> doubleF,=20
+            =20
+    _order =3D> [type, version, var1, var2, var3]
+};
+
+$obj =3D $fs->CreateFromStruct($struct); #Not really neccessery... atm, =
+anyway.
+$obj{type} =3D "TEST";
+$obj{version} =3D 100;
+$obj{var1} =3D 1024;
+$obj{var2} =3D 91;
+$obj{var3} =3D 3.1415;
+
+#Write the "object" to the file
+open (F, ">file.txt") or die $!;
+$fs->WriteObj($struct, \%obj =3D> *F);
+close (F);
+
+#read from the file into the "object"
+open (F, "<file.txt") or die $!;
+$fs->ReadObj($struct, *F =3D> \%newObj);
+close (F);
+
+
+any comments and/or suggestions are welcome as always.
+
+-IR
+aqutiv@softhome.net
+
+
+
+
+
+
+
+------=_NextPart_000_0005_01BDD61A.209A0360
+Content-Type: text/html;
+	charset="windows-1255"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Dwindows-1255" =
+http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.2314.1000" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>Hey,</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>I've&nbsp; been working on a module =
+lately... It's=20
+experimental yet, but it seems to be fully working.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>I've decided about the namespace: =
+File::Struct=20
+because I think it'll appeal for that.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>If you think that the name is not =
+appropiate and/or=20
+it should have another namespace, then please&nbsp;say so. =
+;-)</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>What the module does is sort of =
+simulate c-style=20
+structures for the easy i/o of binary files.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>While it uses an Object Oriented =
+interface, it also=20
+exports constants that are data types which</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>you may be familiar with (it seems like =
+magic, but=20
+it really isn't. :) )... To explain this, here's an example code that =
+uses the=20
+module:</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>use File::Struct;</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>#Those act similiar to typedef in=20
+c/c++.<BR></FONT><FONT face=3DArial size=3D2>use constant byte =3D&gt; =
+unsigned char;=20
+</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>use constant Ushort =3D&gt; unsigned =
+short;<BR>use=20
+constant Ulong =3D&gt; unsigned long;</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>$fs =3D new File::Struct;</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>$struct =3D {<BR>&nbsp;&nbsp;&nbsp; =
+type =3D&gt;=20
+str-&gt;(4), #a string of 4 chars... <BR>&nbsp;&nbsp;&nbsp; version =
+=3D&gt;=20
+Ushort,<BR>&nbsp;&nbsp;&nbsp; var1 =3D&gt; long,<BR>&nbsp;&nbsp;&nbsp; =
+var2 =3D&gt;=20
+byte,<BR>&nbsp;&nbsp;&nbsp; var3 =3D&gt;=20
+doubleF,&nbsp;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;<BR>&nbsp;&nbsp;&nbsp;=20
+_order =3D&gt; [type, version, var1, var2, var3]<BR>};</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>$obj =3D =
+$fs-&gt;CreateFromStruct($struct); #Not=20
+really neccessery... atm, anyway.</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2>$obj{type} =3D "TEST";<BR>$obj{version} =
+=3D=20
+100;<BR>$obj{var1} =3D 1024;<BR>$obj{var2} =3D 91;<BR>$obj{var3} =3D=20
+3.1415;</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>#Write the "object" to the file<BR>open =
+(F,=20
+"&gt;file.txt") or die $!;<BR>$fs-&gt;WriteObj($struct, \%obj =3D&gt;=20
+*F);<BR>close (F);</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>#read from the file into the =
+"object"<BR>open (F,=20
+"&lt;file.txt") or die $!;<BR>$fs-&gt;ReadObj($struct, *F =3D&gt;=20
+\%newObj);<BR>close (F);</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>any comments and/or suggestions are =
+welcome as=20
+always.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>-IR</FONT></DIV>
+<DIV><FONT face=3DArial size=3D2><A=20
+href=3D"mailto:aqutiv@softhome.net">aqutiv@softhome.net</A><BR></DIV></FO=
+NT>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_0005_01BDD61A.209A0360--
+

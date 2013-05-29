@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2734
+Return-Path: <ram@mageos.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15139 invoked from network); 24 Aug 2000 19:53:08 -0000
+Received: from smtp-rt-8.wanadoo.fr (HELO lantana.wanadoo.fr) (@193.252.19.51)
+  by tmtowtdi.perl.org with SMTP; 24 Aug 2000 19:53:08 -0000
+Received: from antholoma.wanadoo.fr (193.252.19.153) by lantana.wanadoo.fr; 24 Aug 2000 21:48:06 +0200
+Received: from lyon.wanadoo.fr (193.251.23.108) by antholoma.wanadoo.fr; 24 Aug 2000 21:47:32 +0200
+Received: from nice.ram.loc ([192.168.0.3]) by lyon.wanadoo.fr
+	 with esmtp id m13S334-000GS6C
+	(Debian Smail-3.2.0.102 1998-Aug-2 #2); Thu, 24 Aug 2000 21:52:26 +0200 (MEST)
+Received: from nice (localhost [127.0.0.1])
+	by nice.ram.loc (8.9.3/8.9.3/Debian 8.9.3-21) with ESMTP id VAA06061
+	for <modules@perl.org>; Thu, 24 Aug 2000 21:52:26 +0200
+X-Authentication-Warning: nice.ram.loc: Host localhost [127.0.0.1] claimed to be nice
+To: modules@perl.org
+Subject: Request new module name: Getargs::Long
+X-Mailer: MH [version 6.8]
+Organization: Home, Grenoble, France
+Date: Thu, 24 Aug 2000 21:52:26 +0200
+Message-ID: <6059.967146746@nice>
+Sender: ram@mageos.com
+Approved: news@nntp.perl.org
+From: Raphael_Manfredi@pobox.com (Raphael Manfredi)
+
+Hi namespace keepers,
+
+I'm requesting the new module name: Getargs::Long (by analogy with
+Getopt::Long).
+
+It allows one to easily parse/extract information from routines called
+with a set of -argument => value pairs.
+
+Here's the interface I came up with:
+
+ use Getargs::Long;                 # case sensitive, exports [cx]+getargs
+ use Getargs::Long qw(ignorecase);  # case insensitive
+
+ sub myroutine {
+     my (@x) = @_;      # (-val => something, -other => xxx)
+
+     # Simple, args mandatory
+     my ($val, $other) = getargs(\@x, qw(val other));
+
+     # Simple, args optional (in [] means optional)
+     my ($val, $other) = getargs(\@x, [qw(val other)]);
+
+     # Simple with typechecking, args mandatory
+     my ($val, $other) = getargs(\@x, qw(val=Class::X other=ARRAY));
+
+     # Simple with typechecking, args optional
+     my ($val, $other) = getargs(\@x, [qw(val=Class::X other=ARRAY)]);
+
+     # Extract remainaing unparsed args in @extra
+     my ($val, $other, @extra) = getargs(\@x, qw(val other));
+
+     # Other cases, use full specs:
+     my ($x, $y, $z, $a, $b, $c) = xgetargs(\@x,
+
+        # Non-mandatory, defaults to undef unless specified otherwise
+        'x'     => ['i'],                   # integer, no default
+        'y'     => ['ARRAY', ['a', 'b']],   # Has a default
+        'z'     => [],                      # No typecheck, can be anything
+
+        # Mandatory arguments
+        'a'     => 'i',                     # integer (scalar)
+        'b'     => 'TYPE',                  # TYPE or any ancestor of TYPE
+        'c'     => undef,                   # unspecified type but mandatory
+    );
+
+     # Cache version -- parsing anonymous routine created and saved
+     my ($val, $other) = cgetargs(\@x, qw(val other));
+}
+
+Raphael

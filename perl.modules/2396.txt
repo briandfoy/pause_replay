@@ -1,0 +1,66 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2396
+Return-Path: <gbarr@gbarr.demon.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28886 invoked from network); 7 Jul 2000 22:11:39 -0000
+Received: from anchor-post-34.mail.demon.net (194.217.242.92)
+  by tmtowtdi.perl.org with SMTP; 7 Jul 2000 22:11:39 -0000
+Received: from gbarr.demon.co.uk ([194.222.72.232])
+	by anchor-post-34.mail.demon.net with esmtp (Exim 2.12 #1)
+	id 13AgLR-000AFR-0Y; Fri, 7 Jul 2000 23:11:37 +0100
+Received: from chipper.localdomain (local12.localdomain [192.168.1.12])
+	by gbarr.demon.co.uk (8.9.3/8.9.3) with ESMTP id WAA00368;
+	Fri, 7 Jul 2000 22:59:01 +0100
+Received: (from gbarr@localhost)
+	by chipper.localdomain (8.9.3/8.9.3/SuSE Linux 8.9.3-0.1) id XAA14791;
+	Fri, 7 Jul 2000 23:07:31 +0100
+Date: Fri, 7 Jul 2000 23:07:30 +0100
+To: Michael G Schwern <schwern@pobox.com>,
+        "Kurt D. Starsinic" <kstar@chapin.edu>, modules@perl.org
+Subject: Re: Class::WhiteHole
+Message-ID: <20000707230730.E465@pobox.com>
+Mail-Followup-To: Michael G Schwern <schwern@pobox.com>,
+	"Kurt D. Starsinic" <kstar@chapin.edu>, modules@perl.org
+References: <20000707042639.A1219@blackrider.aocn.com> <20000707095840.B17806@O2.chapin.edu> <20000707151929.S465@pobox.com> <20000707160712.A9396@athens.aocn.com> <20000707214606.D465@pobox.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="uAKRQypu60I7Lcqm"
+X-Mailer: Mutt 1.0pre3i
+In-Reply-To: <20000707214606.D465@pobox.com>
+Approved: news@nntp.perl.org
+From: gbarr@pobox.com (Graham Barr)
+
+--uAKRQypu60I7Lcqm
+Content-Type: text/plain; charset=us-ascii
+
+In fact the attached patch allows you to stop the AUTOLOAD inheritance
+with a simple
+
+sub AUTOLOAD;
+
+Which will currently dies with an undefined subroutine package::AUTOLOAD
+
+but with this patch it will die using the name of the sub being called
+
+Graham.
+
+
+--uAKRQypu60I7Lcqm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=patch
+
+--- gv.c.orig	Fri Jun 30 14:01:12 2000
++++ gv.c	Fri Jul  7 22:52:17 2000
+@@ -418,6 +418,9 @@
+ 	return Nullgv;
+     cv = GvCV(gv);
+ 
++    if (!CvROOT(cv))
++	return Nullgv;
++
+     /*
+      * Inheriting AUTOLOAD for non-methods works ... for now.
+      */
+
+--uAKRQypu60I7Lcqm--

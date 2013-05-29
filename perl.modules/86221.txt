@@ -1,0 +1,110 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:86221
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22270 invoked from network); 28 May 2013 15:22:50 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 28 May 2013 15:22:50 -0000
+Received: (qmail 2300 invoked by uid 225); 28 May 2013 15:22:50 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2295 invoked by alias); 28 May 2013 15:22:49 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-qe0-f52.google.com (HELO mail-qe0-f52.google.com) (209.85.128.52)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 28 May 2013 08:22:41 -0700
+Received: by mail-qe0-f52.google.com with SMTP id 1so4367527qec.39
+        for <modules@perl.org>; Tue, 28 May 2013 08:22:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:content-transfer-encoding:x-gm-message-state;
+        bh=ijFTsBXhqVYq9XFwusCiVYCswOiwsMW3Po2dgo2ITw0=;
+        b=du42lX5MVoh9+FHam2REuyLhFsbBjauQfEEECh7xJLG/jDPqbNSWh/+pp/FSFaTQwN
+         hw8KtXxGIX0QTOiAh7EGr2IXkbzIqpPmzO5N0XaRDOYI0kZbaYvISALxMsJ5LdsxEQ9B
+         bQMSf2Cq+cLbXrwehIMC3BuraV6iNZhb2lFSHGYEEq22fMsimqoOw7zRwyIsbGYy9J6v
+         wfQ2skKICEsy7KS4hFDr7nEfXSBbMwUMEPrsqlqrH4El+Z94KpGY0r7OXmmqoMO75e0U
+         q45WbKRoUHGVY8yWLAv6Yb2ne5nIPW+Mpr9TMcK487GWWjHyIHhgaDz9omMu2neUjJV7
+         rknA==
+X-Received: by 10.229.135.10 with SMTP id l10mr1564693qct.82.1369754557324;
+ Tue, 28 May 2013 08:22:37 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.49.4.98 with HTTP; Tue, 28 May 2013 08:22:07 -0700 (PDT)
+In-Reply-To: <20130527170554.GH45787@tequila.etheridge.ca>
+References: <20130527011935.GF45787@tequila.etheridge.ca> <CAOeq1c8+oBd+0kRRBPWDkh7qRGzqDoTbfDey_5edtXWKL33mmA@mail.gmail.com>
+ <20130527170554.GH45787@tequila.etheridge.ca>
+Date: Tue, 28 May 2013 11:22:07 -0400
+Message-ID: <CAOeq1c95TGuCdegSyzQqaBEmDHQ2nX6zRbfQCSxWr6vYj4HJAA@mail.gmail.com>
+Subject: Re: PAUSE indexing problem
+To: Karen Etheridge <perl@froods.org>
+Cc: "modules@perl.org" <modules@perl.org>, Chris Nehren <apeiron@cpan.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Gm-Message-State: ALoCoQlOpIQoN6wMZBBEsfoeszVgvEwtM/08BBMTsCiTfMT25cvI3s/6GHPxwQR4qWWq+mS2dso9
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+On Mon, May 27, 2013 at 1:05 PM, Karen Etheridge <perl@froods.org> wrote:
+> I cannot think of any scenario where I would want to block a duplicate
+> upload from the same user but allow a duplicate upload from another user.=
+..
+> this sounds like a failure in application of the "be liberal in what you
+> accept" rule.
+
+You're missing what I'm saying.  PAUSE prevents a duplicate *path*.  It's W=
+ORM.
+
+You can't upload 'authors/id/E/ET/ETHER/Foo-1.23.tar.gz' twice.  You
+*can* upload 'authors/id/E/ET/ETHER/Foo-1.23-fixed.tar.gz' with the
+exact same content -- perhaps just fixing your Changes file and having
+every .pm file be the same.
+
+Uploading to 'authors/id/A/AP/APEIRON/Foo-1.23.tar.gz' is just another
+way of uploading to a different path.
+
+> Is this genuinely considered a beneficial feature?  Is there any appetite
+> for tightening up the checking?
+
+No, because it would prevent the sort of updates I described.  The
+rule is that module versions must not decrease.  There is no rule that
+requires that at least one version increase.
+
+Another example: I take over comaint of Foo.  I want to update the Pod
+to mention that and change the bugtracker.  Otherwise, the module is
+exactly the same.  I can ship a new tarball with the same module
+*code* and thus version.   That prevents end users who use
+cpan-outdated from having to install my tarball just because I changed
+that.
+
+>> No, it's because metacpan is stupid.  See
+>> http://www.nntp.perl.org/group/perl.cpan.workers/2013/03/msg1047.html
+>
+> It looks as if metacpan is just following PAUSE's lead here.
+
+No.  PAUSE does nothing to suggest that distribution names (or
+name-version) are unique keys[1].  Metacpan, search.cpan, CPAN testers
+(except Metabase) and RT do.
+
+If your DBA came to you with a schema with a unique key for non-unique
+data (and didn't bother to check or enforce uniqueness), wouldn't you
+describe that as "stupid" or something similar?
+
+"Hi, here's the customer table.  I've created an index on FIRST_NAME.
+We can use it as a primary key for our URL schema and API.  Sometimes
+it's not unique though.  Is that OK?  It probably doesn't happen very
+often."
+
+/me facepalm
+
+David
+
+[1] But we addressed this in the Lancaster Consensus and eventually
+PAUSE will start treating distribution names as unique keys, with some
+grandfathering of existing distributions.
+
+--
+David Golden <xdg@xdg.me>
+Take back your inbox! =E2=86=92 http://www.bunchmail.com/
+Twitter/IRC: @xdg

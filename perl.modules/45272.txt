@@ -1,0 +1,86 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45272
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32514 invoked from network); 11 Oct 2005 22:06:00 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 11 Oct 2005 22:06:00 -0000
+Received: (qmail 9359 invoked by uid 225); 11 Oct 2005 22:05:59 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9355 invoked by alias); 11 Oct 2005 22:05:59 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO k75.linux.bogus) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 11 Oct 2005 15:05:50 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.13.5/8.13.5/Debian-1) with ESMTP id j9BM5Y7Q013330;
+	Wed, 12 Oct 2005 00:05:34 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.5/8.13.5/Submit) id j9BM5Xe5013322;
+	Wed, 12 Oct 2005 00:05:33 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: =?utf-8?Q?S=C3=A9bastien?= Aperghis-Tramoni <saper@cpan.org>
+Cc: modules@perl.org
+Subject: Re: XSLoader is not indexed
+References: <1128330668.4340f5ac8c7f8@imp3-g19.free.fr>
+Reply-To: modules@perl.org
+Date: Wed, 12 Oct 2005 00:05:32 +0200
+In-Reply-To: <1128330668.4340f5ac8c7f8@imp3-g19.free.fr> (=?utf-8?Q?S?=
+ =?utf-8?Q?=C3=A9bastien?=
+	Aperghis-Tramoni's message of "Mon, 03 Oct 2005 11:11:08 +0200")
+Message-ID: <874q7n676b.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 03 Oct 2005 11:11:08 +0200, S=C3=A9bastien Aperghis-Tramoni <=
+saper@cpan.org> said:
+
+  > Hello,
+  > It appears that although I already uploaded two stable releases of
+  > XSLoader, it is currently not indexed by PAUSE. Could this be fixed
+  > so the module can be installed using the CPAN and CPANPLUS shells?
+
+Over the years I get the impression, this needs to be put into some
+FAQ. Something like this (and the whole text is subject to radical
+changes if needed and if alternative means via META.yml evolve):
+
+To satisfy the CPAN indexer, it's necessary to distribute one or more
+*.pm files. If your distro contains no *.pm file, because for example,
+your Foo.pm is written by a script during the execution of 'perl
+Makefile.PL', then you need to take precautions if you want to be
+acknowledged by the indexer. The META.yml by MakeMaker doesn't help.
+There are several possible solutions:
+
+1. Write a different file on the fly, say Foo/Local.pm and have that
+   be required by Foo.pm and let Foo.pm be just
+
+   package Foo;
+   $VERSION =3D "2.26";
+   require Foo::Local;
+
+2. Write only a few configuration variables into some Foo/Config.pm
+   and the common logic into Foo.pm. This is really the same thing as
+   above.
+
+3. I have not yet enough experience with Module::Build instead of
+   MakeMaker. M:B writes a bigger META.yml file that would be parsed
+   by the indexer. That would be an interesting approach but would
+   probably need some more support on the PAUSE side.
+
+4. The least intrusive to you as an author would probably be to let
+   Makefile.PL care for the distribution of a bare minimum of Foo.pm
+   and overwrite it during installation. This approach is the
+   trickiest and thus probably least maintainable one. But it is
+   conceptually possible and is therefore mentioned as an alternative.
+   An actual implementation is left as an exercixe to the reader:-)
+
+--=20
+andreas

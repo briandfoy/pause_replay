@@ -1,0 +1,549 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1703
+Return-Path: <barries@jester.slaysys.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13515 invoked from network); 26 Apr 2000 17:07:08 -0000
+Received: from adsl-151-201-19-72.bellatlantic.net (HELO jester.slaysys.com) (151.201.19.72)
+  by tmtowtdi.perl.org with SMTP; 26 Apr 2000 17:07:08 -0000
+Received: (from barries@localhost)
+	by jester.slaysys.com (8.9.3/8.9.3) id NAA22919;
+	Wed, 26 Apr 2000 13:07:07 -0400
+Date: Wed, 26 Apr 2000 13:07:07 -0400
+Message-ID: <200004261707.NAA22919@jester.slaysys.com>
+To: modules@perl.org
+Subject: IPC::BashEm???
+Cc: barries@slaysys.com
+Approved: news@nntp.perl.org
+From: barries@jester.slaysys.com (Barrie Slaymaker)
+
+A while ago on p5p there was some discussion of writing a 'shellpipe'
+routine that would allow you to do subprocess management using
+a sh-like interface.
+
+Below is a start at it I'm tentatively calling IPC::BashEm.  Suggestions
+for better names appreciated.
+
+- Barrie
+
+
+package IPC::BashEm ;
+
+#
+# Copyright (c) 1999 by Barrie Slaymaker, barries@slaysys.com
+#
+# You may distribute under the terms of either the GNU General Public
+# License or the Artistic License, as specified in the README file.
+#
+
+=head1 NAME
+
+IPC::BashEm - bash (bourne again shell) command line emulation
+
+=head1 SYNOPSIS
+
+   use IPC::BashEm ;
+
+   ## Read from / write to scalars
+   bashem( 'cat', '<', \$stdin, '>', \$stdout, '2>', \$stderr ) ;
+
+   ## Read from / write using subroutine handlers
+   bashem(
+      'cat',
+      '<',  \&get_some_in,
+      '>',  \&catch_some_out,
+      '2>', \&catch_some_err
+   ) ;
+
+=head1 DESCRIPTION
+
+Provides limited support for bash shell command line redirection constructs.
+
+=head2 Supported constructs
+
+=over
+
+=item <ARG, N<ARG
+
+Redirects input the child reads on file descriptor N to come from a
+scalar variable, subroutine, file handle, or file name.
+
+N may only be 0 (stdin) and defaults to 0 if not present.
+
+ARG may be a reference to a scalar or a subroutine.  For instance:
+
+   bashem( 'ls', '<', sub { my $r = $in ; $in = undef ; $r } ) ;
+
+does the same basic thing as:
+
+   bashem( 'ls', '<', \$in ) ;
+
+The subroutine should return undef when there is no more input to be
+fed to the child.
+
+Redirecting input from a file is not yet implemented.
+
+=item >ARG, N>ARG
+
+Redirects any output the child emits via file descriptor N
+to a scalar variable, subroutine, file handle, or file name.
+
+N may be 1 (stdout), or 2 (stderr).  If not provided, N defaults to 1.
+
+ARG may be a reference to a scalar or a subroutine.  For instance:
+
+   bashem( 'ls', '2>', sub { $err_out .= $_[0] } ) ;
+
+does the same basic thing as:
+
+   bashem( 'ls', '2>', \$err_out ) ;
+
+Redirecting output to a file is not yet implemented.
+
+The subroutine will be called each time some data is read from the child.
+
+=back
+
+=head1 RETURN VALUE
+
+Returns the result of the last command in chain, as returned by waitpid().
+
+This will not be true when a non-blocking option is added and used.
+
+=head1 LIMITATIONS
+
+Very incomplete, still growing.
+
+No support for ';', '&', '|', '{ ... }', etc: only one subprocess is
+supported yet.
+
+No non-blocking mode.
+
+=cut
+
+use strict ;
+use Exporter ;
+use vars qw( $VERSION @ISA @EXPORT $debug ) ;
+
+$VERSION = '0.001' ;
+
+@ISA = qw( Exporter ) ;
+
+## We use @EXPORT for the end user's convenience: there's only one function
+## exported, it's homonymous with the module, it's an unusual name, and
+## it can be suppressed by "use IPC::BashEm () ;".
+
+@EXPORT = qw( bashem ) ;
+
+use Carp ;
+use Errno qw( EAGAIN ) ;
+use File::Spec ;
+use FileHandle ;
+use IPC::Open3 ;
+use UNIVERSAL qw( isa ) ;
+
+###############################################################################
+
+my %cmd_cache ;
+
+sub debug {
+   return unless $debug ;
+   print STDERR 'bashem: ', @_, "\n" ;
+}
+
+sub _search_path($) {
+   my ( $cmd_name ) = @_ ;
+   return $cmd_name if File::Spec->file_name_is_absolute( $cmd_name ) ;
+   return $cmd_cache{$cmd_name} if exists $cmd_cache{$cmd_name} ;
+
+   my @searched_in ;
+
+   unless ( exists $cmd_cache{$cmd_name} ) {
+      ## This next bit is Unix specific, unfortunately.
+      ## There's been some conversation about extending File::Spec to provide
+      ## a universal interface to PATH, but I haven't seen it yet.
+      for ( split( /:/, $ENV{PATH}, -1 ) ) {
+	 $_ = "." unless length $_ ;
+	 push @searched_in, $_ ;
+	 my $prospect = File::Spec->catfile( $_, $cmd_name ) ;
+	 if ( -x $prospect ) {
+	    $cmd_cache{$cmd_name} = $prospect ;
+	    debug( 'found ', $prospect ) ;
+	    last ;
+	 }
+      }
+   }
+   return $cmd_cache{$cmd_name} if exists $cmd_cache{$cmd_name} ;
+
+   croak "Command '$cmd_name' not found in " . join( ", ", @searched_in ) ;
+}
+
+
+sub empty($) { ! defined $_[0] && length $_[0] }
+
+
+sub _parse {
+   my @errs ;
+   my @out ;
+   ## The UNSUPPORTED => 1 ops are not fatal, since we want to test the
+   ## grammar.  _setup catches them and turns them fatal.
+   while ( @_ ) { for ( shift ) {
+      eval {
+	 ## Do >&, <& first so that 
+	 if ( /^(\d+)>&(\d+)$/ ) {
+	    push @out, {
+	       UNSUPPORTED => 1,
+	       TYPE        => '>&',
+	       KFD1        => $1,
+	       KFD2        => $2,
+	    } ;
+	 }
+	 elsif ( /^(\d+)<&(\d+)$/ ) {
+	    push @out, {
+	       UNSUPPORTED => 1,
+	       TYPE        => '<&',
+	       KFD1        => $1,
+	       KFD2        => $2,
+	    } ;
+	 }
+	 elsif ( /^(?:>&|&>)(.*)$/ ) {
+	    my $dest = length $1 ? $1 : shift ;
+	    die "'$_' missing a destination\n" if empty $dest ;
+	    push @out, {
+	       UNSUPPORTED => 1,
+	       TYPE        => '>2>&1',
+	       DEST        => $dest,
+	       MODE        => 'trunc',
+	    } ;
+	 }
+	 elsif ( /^(\d*)<(.*)$/ ) {
+	    my $source = length $2 ? $2 : shift ;
+	    die "'$_' missing a source\n" if empty $source;
+	    push @out, {
+	       TYPE   => '<',
+	       KFD    => length $1 ? $1 : 0,
+	       SOURCE => $source,
+	    } ;
+	 }
+	 elsif ( /^(\d*)>(>?)(.*)$/ ) {
+	    my $dest = length $3 ? $3 : shift ;
+	    die "'$_' missing a destination\n" if empty $dest ;
+	    push @out, {
+	       TYPE => '>',
+	       KFD  => length $1 ? $1 : 1,
+	       MODE => $2 eq '>' ? 'append' : 'trunc',
+	       DEST => $dest,
+	    }
+	 }
+	 else {
+	    push @out, {
+	       TYPE => 'cmd',
+	       NAME => $_,
+	    } ;
+	 }
+      } ;
+      push @errs, $@ if $@ ;
+   } }
+   croak join( '', @errs ) if @errs ;
+   return @out ;
+}
+
+
+sub _w_scalar {
+   ## This is the callback that gets used when a scalar value needs to be
+   ## written to a file handle.
+   my ( $w, $s ) = @_ ;
+
+   my $c = syswrite( $w->{FH}, $$s ) ;
+   die "$! writing to kid's file $w->{KFD}\n" unless defined $c ;
+
+   debug( "wrote $c to $w->{FD} (kid's $w->{KFD})" ) ;
+
+   return 0 if $c = length $$s ;
+
+   $$s = substr( $$s, $c ) ;
+   return 1 ;
+}
+
+
+sub _r_scalar {
+   ## This is the callback that gets used when a scalar value needs to be
+   ## written to a file handle.
+   my ( $r, $s ) = @_ ;
+
+   my $in ;
+   my $c = sysread( $r->{FH}, $in, 16384 ) ;
+   die "$! reading from kid's file $r->{KFD}\n" unless defined $c ;
+
+   debug( "read $c from $r->{FD} (kid's $_->{KFD})" ) ;
+
+   $$s .= $in if $c > 0 ;
+
+   return $c ;
+}
+
+
+sub _w_sub {
+   ## This is the callback that gets used when a sub value needs to be
+   ## called to get the data to write to a file handle.
+   my ( $w, $sub ) = @_ ;
+
+   unless ( length $w->{OUT} ) {
+      $w->{OUT} = $sub->() ;
+      return 0 unless defined $w->{OUT} ;
+   }
+
+   my $c = syswrite( $w->{FH}, $w->{OUT} ) ;
+   die "$! writing to kid's file $w->{KFD}\n" unless defined $c ;
+
+   debug( "wrote $c to $w->{FD} (kid's $w->{KFD})" ) ;
+
+   $w->{OUT} = substr( $w->{OUT}, $c ) ;
+   return 1 ;
+}
+
+
+sub _r_sub {
+   ## This is the callback that gets used when a scalar value needs to be
+   ## written to a file handle.
+   my ( $r, $sub ) = @_ ;
+
+   my $in ;
+   my $c = sysread( $r->{FH}, $in, 16384 ) ;
+   die "$! reading from kid's file $r->{KFD}\n" unless defined $c ;
+
+   debug( "read $c from $r->{FD} (kid's $_->{KFD})" ) ;
+
+   $sub->( $in ) if $c > 0 ;
+
+   return $c ;
+}
+
+
+sub _setup {
+   my @kids ;    ## future child processes
+   my $cur_kid ; ##
+   my @errs ;
+
+   @_ = &_parse ;
+   while ( @_ ) {
+      eval {
+	 for ( shift ) {
+	    die "$_->{TYPE}' not supported yet\n" if $_->{UNSUPPORTED} ;
+
+	    if ( $_->{TYPE} eq '<' ) {
+	       ## N< input redirection
+	       die "No command before '$_'\n" unless defined $cur_kid ;
+
+	       ## TODO: Lots of error checking here.
+	       for my $source ( $_->{SOURCE} ) {
+	          if ( ! ref $source ) {
+		     die "<file not supported yet\n" ;
+#		     my $fd = FileHandle->new() ;
+#		     sysopen( $fd, $_->{SOURCE}, 
+		  }
+		  elsif ( isa( $source, 'SCALAR' ) ) {
+		     debug( "kid writing $_->{KFD} to SCALAR" ) ;
+		     $_->{FH}  = FileHandle->new() ;
+		     ## Copy of the source data so as not to destroy it.
+		     my $s = $$source ;
+		     $_->{SUB} = sub { _w_scalar( $_, \$s ) } ;
+		  }
+		  elsif ( isa( $source, 'CODE' ) ) {
+		     debug( "kid writing $_->{KFD} to CODE" ) ;
+		     $_->{FH}  = FileHandle->new() ;
+		     ## Copy of the source data so as not to destroy it.
+		     $_->{SUB} = sub { _w_sub( $_, $source ) } ;
+		     $_->{OUT} = '' ;
+		  }
+	       }
+	       $cur_kid->{WS}->[$_->{KFD}] = $_ ;
+	    }
+	    elsif ( $_->{TYPE} eq '>' ) {
+	       die "No command before '$_'\n" unless defined $cur_kid ;
+
+	       ## TODO: Lots of error checking here.
+	       for my $dest ( $_->{DEST} ) {
+	          if ( ! ref $dest ) {
+		     die ">file not supported yet\n" ;
+#		     my $fd = FileHandle->new() ;
+#		     sysopen( $fd, $_->{SOURCE}, 
+		  }
+		  elsif ( isa( $dest, 'SCALAR' ) ) {
+		     debug( "kid reading $_->{KFD} from SCALAR" ) ;
+		     $_->{FH}  = FileHandle->new() ;
+		     $_->{SUB} = sub { _r_scalar( $_, $dest ) } ;
+		  }
+		  elsif ( isa( $dest, 'CODE' ) ) {
+		     debug( "kid reading $_->{KFD} from CODE" ) ;
+		     $_->{FH}  = FileHandle->new() ;
+		     $_->{SUB} = sub { _r_sub( $_, $dest ) } ;
+		  }
+	       }
+	       $cur_kid->{RS}->[$_->{KFD}] = $_ ;
+	    }
+	    elsif ( $_->{TYPE} eq 'cmd' ) {
+	       if ( ! defined $cur_kid ) {
+		  $_->{PATH} = _search_path( $_->{NAME} ) ;
+		  $_->{ARGS} = [] ;
+		  $cur_kid = $_ ;
+		  push @kids, $cur_kid ;
+	       }
+	       else {
+	          push @{$cur_kid->{ARGS}}, $_->{CMD} ;
+	       }
+	    }
+	 }
+      } ;
+      push @errs, $@ if $@ ;
+   }
+   croak join( '', @errs ) if @errs ;
+
+   return \@kids ;
+}
+
+sub _open($) {
+   my ( $kids ) = @_ ;
+
+   my $win = '' ;
+   my $rin = '' ;
+   my $ein = '' ;
+   my @files ;
+
+   my @errs ;
+
+   for my $kid ( @$kids ) {
+      eval {
+         my ( $inh, $outh, $errh ) =  (
+	    $kid->{WS}->[0]->{FH},
+	    $kid->{RS}->[1]->{FH},
+	    $kid->{RS}->[2]->{FH},
+	 ) ;
+	 ## TODO: <&STDIN closes our STDIN, probably should dup it and reopen
+	 ## it after we waitpid().
+         $inh  = "<&STDIN"   unless defined $inh ;
+         $outh = ">&STDOUT" unless defined $outh ;
+         $errh = ">&STDERR" unless defined $errh ;
+
+	 $kid->{PID} =
+	    open3( $inh, $outh, $errh, $kid->{PATH}, @{$kid->{ARGS}} ) ;
+
+	 for ( @{$kid->{WS}} ) {
+	    next if ! defined $_ || ! defined $_->{FH} || $_->{AUTO} ;
+	    $_->{FD} = fileno( $_->{FH} ) ;
+	    debug( "kid's $_->{KFD} is my $_->{FD}" ) ;
+	    die "Already writing file $_->{FD}\n" if vec( $win, $_->{FD}, 1 ) ;
+	    die "Can't read and write file $_->{FD}\n"
+	       if vec( $rin, $_->{FD}, 1 ) ;
+	    vec( $win, $_->{FD}, 1 ) = 1 ;
+	    vec( $ein, $_->{FD}, 1 ) = 1 ;
+	    $files[$_->{FD}] = $_ ;
+	 }
+	 for ( @{$kid->{RS}} ) {
+	    next if ! defined $_ || ! defined $_->{FH} || $_->{AUTO} ;
+	    $_->{FD} = fileno( $_->{FH} ) ;
+	    debug( "kid's $_->{KFD} is my $_->{FD}" ) ;
+	    die "Already reading file $_->{FD}\n" if vec( $rin, $_->{FD}, 1 ) ;
+	    die "Can't read and write file $_->{FD}\n"
+	       if vec( $win, $_->{FD}, 1 ) ;
+	    vec( $rin, $_->{FD}, 1 ) = 1 ;
+	    vec( $ein, $_->{FD}, 1 ) = 1 ;
+	    $files[$_->{FD}] = $_ ;
+	 }
+      } ;
+      push @errs, $@ if $@ ;
+   }
+
+   croak join( '', @errs ) if @errs ;
+
+   return ( \@files, $rin, $win, $ein ) ;
+}
+
+
+sub _select_loop {
+   my ( $files, $rin, $win, $ein ) = @_ ;
+
+   my $fd_count = grep { defined $_ } @$files ;
+   debug( "$fd_count files" ) ;
+   my $nfound ;
+   my ( $rout, $wout, $eout ) ;
+   while ( $fd_count ) {
+      my $nfound = select( $rout = $rin, $wout = $win, $eout = $ein, undef ) ;
+      croak "$! in select" if $nfound < 0 ;
+      debug( "$nfound selected" ) ;
+      for ( @$files ) {
+         next unless defined $_ ;
+         if ( vec( $rout, $_->{FD}, 1 ) ) {
+	    debug( "reading $_->{FD}" ) ;
+	    unless ( $_->{SUB}->() ) {
+	       debug( "closing $_->{FD} (kid's $_->{KFD})" ) ;
+	       vec( $rin, $_->{FD}, 1 ) = 0 ;
+	       vec( $ein, $_->{FD}, 1 ) = 0 ;
+	       close $_->{FH} ;
+	       $_->{FH} = undef ;
+	       --$fd_count ;
+	    }
+	 }
+         if ( vec( $wout, $_->{FD}, 1 ) ) {
+	    debug( "writing $_->{FD}" ) ;
+	    unless ( $_->{SUB}->() ) {
+	       debug( "closing $_->{FD} (kid's $_->{KFD})" ) ;
+	       vec( $win, $_->{FD}, 1 ) = 0 ;
+	       vec( $ein, $_->{FD}, 1 ) = 0 ;
+	       close $_->{FH} ;
+	       $_->{FH} = undef ;
+	       --$fd_count ;
+	    }
+	 }
+         if ( vec( $eout, $_->{FD}, 1 ) ) {
+	    croak "Exception on file $_->{FD}" ;
+	 }
+      }
+   }
+}
+
+
+sub _cleanup($$) {
+   my ( $files, $kids ) = @_ ;
+   for ( @$files ) {
+      next unless defined $_ && defined $_->{FH} ;
+      debug( 'closing ', $_->{FD}, " (kid's ", $_->{KFD}, ')' ) ;
+      close $_->{FH} or carp "$! closing $_->{FD} (kid's $_->{KFD})" ;
+   }
+   my $num = 0 ;
+   for my $kid ( @$kids ) {
+      debug( 'reaping child ', $num++, ' (pid ', $kid->{PID}, ')' ) ;
+      my $pid = waitpid $kid->{PID}, 0 ;
+      $kid->{RESULT} = $? ;
+      debug( 'reaped ', $pid, ', $?=', $kid->{RESULT} ) ;
+   }
+}
+
+
+sub bashem {
+   my $kids = &_setup ;
+   my ( $files, $rin, $win, $ein ) ;
+
+   eval {
+      ( $files, $rin, $win, $ein ) = _open( $kids ) ;
+      debug( "survived open()" ) ;
+      _select_loop( $files, $rin, $win, $ein ) ;
+   } ;
+   my $a = $@ ;
+   debug( "exception '$a'" ) if $a ;
+   eval {
+      _cleanup( $files, $kids ) ;
+   } ;
+   die $a if $a ;
+
+   return $kids->[-1]->{RESULT} ;
+}
+
+=head1 AUTHOR
+
+Barrie Slaymaker <barries@slaysys.com>
+
+=cut
+
+1 ;

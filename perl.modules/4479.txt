@@ -1,0 +1,88 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4479
+Return-Path: <cquach@apexchange.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25511 invoked from network); 16 Feb 2001 19:59:30 -0000
+Received: from unknown (HELO prdc370a.apexchange.com) (216.33.118.249)
+  by tmtowtdi.perl.org with SMTP; 16 Feb 2001 19:59:30 -0000
+Received: from apexchange.com (CQUACH [10.35.5.39]) by prdc370a.apexchange.com with SMTP (Microsoft Exchange Internet Mail Service Version 5.5.2650.21)
+	id D0BV1FDR; Fri, 16 Feb 2001 14:57:52 -0500
+Message-ID: <3A8D861B.9426CF69@apexchange.com>
+Date: Fri, 16 Feb 2001 14:57:15 -0500
+X-Mailer: Mozilla 4.75 [en] (WinNT; U)
+X-Accept-Language: en,zh,zh-CN,zh-TW
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Please help
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: cquach@apexchange.com (Chrsitopher Lam Quach)
+
+Tim/Andreas,
+
+Would you please kindly shed some light on this error:
+
+
+root:tsts420a$ ./mymailx
+Can't locate Mail/Internet.pm in @INC (@INC contains:
+/usr/local/lib/perl5/site_
+perl/5.005/MIME /usr/local/lib/perl5/5.00503/sun4-solaris
+/usr/local/lib/perl5/5
+.00503 /usr/local/lib/perl5/site_perl/5.005/sun4-solaris
+/usr/local/lib/perl5/si
+te_perl/5.005 .) at /usr/local/lib/perl5/site_perl/5.005/MIME/Entity.pm
+line 230
+.
+BEGIN failed--compilation aborted at
+/usr/local/lib/perl5/site_perl/5.005/MIME/E
+ntity.pm line 230.
+BEGIN failed--compilation aborted at ./mymailx line 5.
+
+================
+
+
+And this is my program mymailx:
+
+#!/usr/local/bin/perl
+
+use lib "/usr/local/lib/perl5/site_perl/5.005/MIME";
+use strict;
+use MIME::Entity;
+
+my $from = 'cquach@apexchange.com';
+my $recipients = 'cquach@apexchange.com';
+my $subject = "mymail test";
+my $report_file = "emal.asc";
+
+&attach_mail( $from, $recipients, $subject, $report_file );
+
+exit 0;
+
+sub attach_mail {
+
+   my ($from, $to, $subject, $file) = @_;
+
+   my $top = build MIME::Entity Type =>"multipart/mixed",
+                          -From => "$from",
+                          -To =>"$to",
+                          -Subject => "$subject";
+
+    attach $top  Path=>"$file",
+             Type=>"application/APE",
+             Disposition=>"attachment",
+             Encoding=>"binary";
+
+   open MAIL, "| /usr/lib/sendmail -t -i" or die "open: $!";
+
+   $top->print(\*MAIL);
+   close MAIL;
+}
+
+Thanks
+
+
+
+

@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9927
+Return-Path: <merlin@camelot.co.pt>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 45995 invoked by uid 76); 30 Jan 2002 15:05:11 -0000
+Received: from mail.sl.pt (HELO sl.pt) (212.55.140.13)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Wed Jan 30 15:05:11 2002 -0000
+Received: (qmail 28336 invoked from network); 30 Jan 2002 15:05:06 -0000
+Received: from unknown (HELO there) ([172.28.230.201]) (envelope-sender <merlin@camelot.co.pt>)
+          by mail-int.sl.pt (qmail-ldap-1.03) with SMTP
+          for <modules@perl.org>; 30 Jan 2002 15:05:06 -0000
+Content-Type: text/plain;
+  charset="iso-8859-15"
+Organization: Camelot Online
+To: modules@perl.org
+Subject: HTML::FormWizard
+Date: Wed, 30 Jan 2002 14:49:20 +0000
+X-Mailer: KMail [version 1.3.1]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Approved: news@nntp.perl.org
+From: merlin@camelot.co.pt (Merlin)
+Message-ID: <perl.modules-9927@nntp.perl.org>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hello,
+
+	I'd coded a module, Which propose is to write HTML Forms and retrieve Data 
+Posted on them.
+	I called the Module HTML::FormWizard, but I can change the name to something 
+else. My choice was 'cause the module entent is only write and process HTML 
+Forms.
+	The diferences from other modules is that externally everything is perl 
+structured data, for example:
+
+               use HTML::FormWizard();
+	       use CGI();
+		
+		my $cgi=CGI->new();
+
+               my $form = HTML::FormWizard->new(
+                 -title  => 'A simple Example',
+		 -cgi	 => $cgi,
+                 -fields => [
+	                     { name            => 'name',
+                               description => "What's your name?"},
+	                     { name                    => 'words',
+                               descritpion     => "What's the combination?",
+                               type            => 'check',
+                               value           => ['eenie','meenie',
+                                       'minie',moe'],
+                               defaults        => ['eenie','minie'] },
+            	             { name                => 'color',
+            	               description => "What's your favorite color?",
+            	               type                => 'list',
+            	               value               => ['red','green',
+                                       'blue','chartreuse']}
+                       ]
+               );
+
+		if (my $data=$form->run()) {
+			# do things with %{$data}.
+		}
+
+	Other diferences are:
+		- The module can receive a -template parameter to write parameterize the 
+HTML output;
+		- Can be used to write HTML files with the form;
+
+	I would like to upload the module for CPAN.
+
+	The module can be get from http://www.code.online.pt.
+
+	I'm already registered in PAUSE, with the ID NEVES.
+
+NEVES, Marco
+
+- -- 
+A paixão dos olhos das crianças é toda a magia que o mundo precisa!
+Alguem disse, talvez Merlin:  Camelot vai renascer... Brevemente... Online!!
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE8WAf28lgnN4TXjusRAvTJAKCDHirX1kx7PyZRbINrryp8aZluMQCfcxYg
+PpicoR7KQOM/qmdMFJcC8XI=
+=0L3e
+-----END PGP SIGNATURE-----

@@ -1,0 +1,248 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:43879
+Return-Path: <erwan.lemonnier@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5733 invoked from network); 9 Sep 2005 16:00:19 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 9 Sep 2005 16:00:19 -0000
+Received: (qmail 25192 invoked by uid 225); 9 Sep 2005 16:00:18 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25186 invoked by alias); 9 Sep 2005 16:00:17 -0000
+X-Spam-Status: No, hits=-1.3 required=8.0
+	tests=BAYES_00,HTML_30_40,HTML_MESSAGE,RCVD_BY_IP,RCVD_IN_BL_SPAMCOP_NET
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of erwan.lemonnier@gmail.com designates 66.249.82.201 as permitted sender)
+Received: from xproxy.gmail.com (HELO xproxy.gmail.com) (66.249.82.201)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 09 Sep 2005 08:59:53 -0700
+Received: by xproxy.gmail.com with SMTP id i29so1900630wxd
+        for <modules@perl.org>; Fri, 09 Sep 2005 08:59:50 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:references;
+        b=THPWe3vBmN1wmEHyoq9E8F1s2xLi32+8rEX9ywhK16OOeB7J10uqgKQT4csJk2auE7CRBlafh0XmfZ2Xfw+sCjnfxySjmXTncS8X8CYdcn8UNUKl82gCUkjaFtrpieeK8CXZ4SUFD/60e79GXesab2oesIIxmqPXF7RLMIkASPI=
+Received: by 10.70.94.17 with SMTP id r17mr6805wxb;
+        Fri, 09 Sep 2005 08:59:49 -0700 (PDT)
+Received: by 10.70.100.16 with HTTP; Fri, 9 Sep 2005 08:59:49 -0700 (PDT)
+Message-ID: <e3c09ff5050909085934ac6fca@mail.gmail.com>
+Date: Fri, 9 Sep 2005 17:59:49 +0200
+Reply-To: erwan.lemonnier@gmail.com
+To: modules@perl.org
+Subject: Re: Module submission Log::Debug
+In-Reply-To: <200509091310.j89DAbHR014092@pause.perl.org>
+Mime-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_3783_4544391.1126281589986"
+References: <200509091310.j89DAbHR014092@pause.perl.org>
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: erwan.lemonnier@gmail.com (Erwan Lemonnier)
+
+------=_Part_3783_4544391.1126281589986
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+After discussing the module's name offline with Claes Jacobsson from=20
+Stockholm.pm <http://Stockholm.pm>, we concluded that the name Log::Debug i=
+s=20
+not acceptable.
+
+Hence, please reconsider the previous module submission but replace all=20
+occurences of Log::Debug with Log::Verbosity.
+
+Why calling this module Log::Verbosity?
+
+First, it has nothing to do with debugging. It can be used for debugging,=
+=20
+but it's only one usage among many others.
+
+Second, what the module really does is to define a scale of logging=20
+*verbosity*, in which messages are logged if their own verbosity level is=
+=20
+equal or less than the current logging verbosity in the file/module/functio=
+n=20
+currently executing.
+
+Comments and critics are welcome!
+
+/Erwan
+
+
+
+
+On 9/9/05, Perl Authors Upload Server <upload@pause.perl.org> wrote:
+>=20
+>=20
+> The following module was proposed for inclusion in the Module List:
+>=20
+> modid: Log::Debug
+> DSLIP: Mdpfp
+> description: Implement multiple level of debug messages
+> userid: ERWAN (Erwan Lemonnier)
+> chapterid: 3 (Development_Support)
+> communities:
+>=20
+> similar:
+> Log::Dispatch, Log::Log4perl
+>=20
+> rationale:
+>=20
+> Most logging modules follow the standard syslog hierarchy of
+> message types: INFO, WARNING, ERROR, DEBUG, etc. This is the case in
+> for example Log::Log4perl.
+>=20
+> But what a developer often needs in larger projects is a special
+> logging function only for debug messages, that accept more than one
+> level of debug verbosity, and that can be triggered from a
+> configuration file in a fashion similar to Log4perl. There are no
+> such modules on CPAN, as far as I could see.
+>=20
+> Hence the creation of Log::Debug.
+>=20
+> Synopsis:
+>=20
+> hack.pl: use Log::Debug;
+>=20
+> sub hack { debug(2,"printing naph"); print "not another perl
+> hacker.\n"; }
+>=20
+> debug(1,"starting code"); hack();
+>=20
+> When running ./hack.pl with a debug verbosity of 0, you'll get no
+> debug message. > ./hack.pl not another perl hacker.
+>=20
+> When running ./hack.pl with a debug verbosity of 1, you'll get: >
+> ./hack.pl # [main::main() l.10] [DEBUG 1]: starting code not another
+> perl hacker.
+>=20
+> When running ./hack.pl with a debug verbosity of 2 or more, you'll
+> get: > ./hack.pl # [main::main() l.10] [DEBUG 1]: starting code #
+> [main::hack() l.6] [DEBUG 2]: printing naph not another perl hacker.
+>=20
+> That's the basic idea.
+>=20
+> Add to that the possibility of defining debug verbosity systemwide,
+> or per file, per module or function, via a configuration file. Then
+> add Log::Dispatch to handle the destination and formatting of debug
+> messages. What you'll get is something pretty powerfull :)
+>=20
+> enteredby: ERWAN (Erwan Lemonnier)
+> enteredon: Fri Sep 9 13:10:35 2005 GMT
+>=20
+> The resulting entry would be:
+>=20
+> Log::
+> ::Debug Mdpfp Implement multiple level of debug messages ERWAN
+>=20
+>=20
+> Thanks for registering,
+> --
+> The PAUSE
+>=20
+> PS: The following links are only valid for module list maintainers:
+>=20
+> Registration form with editing capabilities:
+>=20
+> https://pause.perl.org/pause/authenquery?ACTION=3Dadd_mod&USERID=3D40b000=
+00_c45ff5928c90756b&SUBMIT_pause99_add_mod_preview=3D1
+> Immediate (one click) registration:
+>=20
+> https://pause.perl.org/pause/authenquery?ACTION=3Dadd_mod&USERID=3D40b000=
+00_c45ff5928c90756b&SUBMIT_pause99_add_mod_insertit=3D1
+>
+
+------=_Part_3783_4544391.1126281589986
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+After discussing the module's name offline with Claes Jacobsson from
+<a href=3D"http://Stockholm.pm">Stockholm.pm</a>, we concluded that the nam=
+e Log::Debug is not acceptable.<br>
+<br>
+Hence, please reconsider the previous module submission but replace all occ=
+urences of Log::Debug with Log::Verbosity.<br>
+<br>
+Why calling this module Log::Verbosity?<br>
+<br>
+First, it has nothing to do with debugging. It can be used for debugging, b=
+ut it's only one usage among many others.<br>
+<br>
+Second, what the module really does is to define a scale of logging
+*verbosity*, in which messages are logged if their own verbosity level
+is equal or less than the current logging verbosity in the
+file/module/function currently executing.<br>
+<br>
+Comments and critics are welcome!<br>
+<br>
+/Erwan<br>
+<br>
+<br>
+<br><br><div><span class=3D"gmail_quote">On 9/9/05, <b class=3D"gmail_sende=
+rname">Perl Authors Upload Server</b> &lt;<a href=3D"mailto:upload@pause.pe=
+rl.org">upload@pause.perl.org</a>&gt; wrote:</span><blockquote class=3D"gma=
+il_quote" style=3D"border-left: 1px solid rgb(204, 204, 204); margin: 0pt 0=
+pt 0pt 0.8ex; padding-left: 1ex;">
+<br>The following module was proposed for inclusion in the Module List:<br>=
+<br>&nbsp;&nbsp;modid:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Log::Debug<br>&n=
+bsp;&nbsp;DSLIP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mdpfp<br>&nbsp;&nbsp;d=
+escription: Implement multiple level of debug messages<br>&nbsp;&nbsp;useri=
+d:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ERWAN (Erwan Lemonnier)
+<br>&nbsp;&nbsp;chapterid:&nbsp;&nbsp; 3 (Development_Support)<br>&nbsp;&nb=
+sp;communities:<br><br>&nbsp;&nbsp;similar:<br>&nbsp;&nbsp;&nbsp;&nbsp;Log:=
+:Dispatch, Log::Log4perl<br><br>&nbsp;&nbsp;rationale:<br><br>&nbsp;&nbsp;&=
+nbsp;&nbsp;Most logging modules follow the standard syslog hierarchy of<br>=
+&nbsp;&nbsp;&nbsp;&nbsp;message types: INFO, WARNING, ERROR, DEBUG, etc. Th=
+is is the case in
+<br>&nbsp;&nbsp;&nbsp;&nbsp;for example Log::Log4perl.<br><br>&nbsp;&nbsp;&=
+nbsp;&nbsp;But what a developer often needs in larger projects is a special=
+<br>&nbsp;&nbsp;&nbsp;&nbsp;logging function only for debug messages, that =
+accept more than one<br>&nbsp;&nbsp;&nbsp;&nbsp;level of debug verbosity, a=
+nd that can be triggered from a
+<br>&nbsp;&nbsp;&nbsp;&nbsp;configuration file in a fashion similar to Log4=
+perl. There are no<br>&nbsp;&nbsp;&nbsp;&nbsp;such modules on CPAN, as far =
+as I could see.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;Hence the creation of Log::D=
+ebug.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;Synopsis:<br><br>&nbsp;&nbsp;&nbsp;&nb=
+sp;hack.pl: use Log::Debug;
+<br><br>&nbsp;&nbsp;&nbsp;&nbsp;sub hack { debug(2,&quot;printing naph&quot=
+;); print &quot;not another perl<br>&nbsp;&nbsp;&nbsp;&nbsp;hacker.\n&quot;=
+; }<br><br>&nbsp;&nbsp;&nbsp;&nbsp;debug(1,&quot;starting code&quot;); hack=
+();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;When running ./hack.pl with a debug verb=
+osity of 0, you'll get no
+<br>&nbsp;&nbsp;&nbsp;&nbsp;debug message. &gt; ./hack.pl not another perl =
+hacker.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;When running ./hack.pl with a debug =
+verbosity of 1, you'll get: &gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;./hack.pl # [ma=
+in::main() l.10] [DEBUG 1]: starting code not another<br>
+&nbsp;&nbsp;&nbsp;&nbsp;perl hacker.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;When ru=
+nning ./hack.pl with a debug verbosity of 2 or more, you'll<br>&nbsp;&nbsp;=
+&nbsp;&nbsp;get: &gt; ./hack.pl # [main::main() l.10] [DEBUG 1]: starting c=
+ode #<br>&nbsp;&nbsp;&nbsp;&nbsp;[main::hack() l.6] [DEBUG 2]: printing nap=
+h not another perl hacker.
+<br><br>&nbsp;&nbsp;&nbsp;&nbsp;That's the basic idea.<br><br>&nbsp;&nbsp;&=
+nbsp;&nbsp;Add to that the possibility of defining debug verbosity systemwi=
+de,<br>&nbsp;&nbsp;&nbsp;&nbsp;or per file, per module or function, via a c=
+onfiguration file. Then<br>&nbsp;&nbsp;&nbsp;&nbsp;add Log::Dispatch to han=
+dle the destination and formatting of debug
+<br>&nbsp;&nbsp;&nbsp;&nbsp;messages. What you'll get is something pretty p=
+owerfull :)<br><br>&nbsp;&nbsp;enteredby:&nbsp;&nbsp; ERWAN (Erwan Lemonnie=
+r)<br>&nbsp;&nbsp;enteredon:&nbsp;&nbsp; Fri Sep&nbsp;&nbsp;9 13:10:35 2005=
+ GMT<br><br>The resulting entry would be:<br><br>Log::<br>::Debug&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Mdpfp Implement multiple level of debug messages&nbsp;&nbsp; ERWAN<br><br><=
+br>Thanks for registering,<br>--<br>The PAUSE<br><br>PS: The following link=
+s are only valid for module list maintainers:<br><br>Registration form with=
+ editing capabilities:
+<br>&nbsp;&nbsp;<a href=3D"https://pause.perl.org/pause/authenquery?ACTION=
+=3Dadd_mod&amp;USERID=3D40b00000_c45ff5928c90756b&amp;SUBMIT_pause99_add_mo=
+d_preview=3D1">https://pause.perl.org/pause/authenquery?ACTION=3Dadd_mod&am=
+p;USERID=3D40b00000_c45ff5928c90756b&amp;SUBMIT_pause99_add_mod_preview=3D1
+</a><br>Immediate (one click) registration:<br>&nbsp;&nbsp;<a href=3D"https=
+://pause.perl.org/pause/authenquery?ACTION=3Dadd_mod&amp;USERID=3D40b00000_=
+c45ff5928c90756b&amp;SUBMIT_pause99_add_mod_insertit=3D1">https://pause.per=
+l.org/pause/authenquery?ACTION=3Dadd_mod&amp;USERID=3D40b00000_c45ff5928c90=
+756b&amp;SUBMIT_pause99_add_mod_insertit=3D1
+</a><br></blockquote></div><br>
+
+------=_Part_3783_4544391.1126281589986--

@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:55992
+Return-Path: <l2ot9pa02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11257 invoked from network); 24 Aug 2007 07:16:02 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 24 Aug 2007 07:16:02 -0000
+Received: (qmail 2494 invoked by uid 225); 24 Aug 2007 07:16:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2481 invoked by alias); 24 Aug 2007 07:16:00 -0000
+X-Spam-Status: No, hits=-1.1 required=8.0
+	tests=BAYES_00,URIBL_OB_SURBL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from fzkmail1.fzk.de (HELO fzkmail1.fzk.de) (141.52.32.18)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 24 Aug 2007 00:15:44 -0700
+Received: from /spool/local
+	by fzkmail1.fzk.de with [XMail 1.22mod18-ISS LMAIL Server]
+	for <modules@perl.org> from <l2ot9pa02@sneakemail.com>;
+	Fri, 24 Aug 2007 09:15:38 +0200
+Received: from FZKMSX4.ka.fzk.de [[141.52.92.4]]
+	by fzkmail1.fzk.de [[141.52.32.18]] with [XMail 1.22mod18-ISS ESMTP Server];
+	Fri, 24 Aug 2007 09:15:34 +0200
+Received: from [141.52.67.25] ([141.52.67.25]) by FZKMSX4.ka.fzk.de with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 24 Aug 2007 09:15:33 +0200
+Message-ID: <46CE8595.4020201@sneakemail.com>
+Date: Fri, 24 Aug 2007 09:15:33 +0200
+User-Agent: Thunderbird 1.5.0.9 (X11/20060911)
+MIME-Version: 1.0
+To:  jt@toerring.de
+CC:  modules@perl.org
+Subject: Re: Module submission File::Fcntl_Lock
+References: <200708052114.l75LEsxS015998@pause.perl.org> <46CC7AF5.7000800@sneakemail.com> <20070823224103.GC28208@john.toerring.de>
+In-Reply-To: <20070823224103.GC28208@john.toerring.de>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 24 Aug 2007 07:15:33.0503 (UTC) FILETIME=[8F8B58F0:01C7E61E]
+Approved: news@nntp.perl.org
+From: l2ot9pa02@sneakemail.com (Steffen Mueller)
+
+Hi Jens,
+
+Jens Thoms Toerring jt-at-toerring.de |newsgroups5| schrieb:
+> On Wed, Aug 22, 2007 at 08:05:41PM +0200, Steffen Mueller wrote:
+> > Would you be fine with File::FcntlLock?
+> 
+> I have no problems with that. I just have to look how to rename
+> the already uploaded module, but that's probably not too hard to
+> do;-)
+> 
+> Is there anything beside this I have to do (sorry, I don't have
+> any experience with CPAN and I don't want to make a mess out of
+> it on the first go...)
+
+I was in the same spot when I uploaded my first distribution to CPAN. So
+don't worry. I'd suggest the following steps:
+
+a) Locally rename the module file.
+b) Replace all occurrances of Fcntl_Lock with FcntlLock (Also in
+Makefile.PL or Build.PL and related files. It's best to just grep for it.)
+c) perl Makefile.PL && make && make test && make dist
+d) Upload the new distribution under the new name.
+
+Now, e) depends on whether your module has been on CPAN for a longer
+period of time or not. If it's been there for a while, removing it might
+cause things to fail for users and we don't want that. If it's
+relatively new, you can just delete it via pause.perl.org's "Delete
+File" feature. If you'd rather not just delete it, you can do the following:
+
+e1) Create a new distribution under the old name with a higher version
+number than before.
+e2) Put the word "DEPRECATED" prominently next to the module name (the
+short description) and add a more elaborate deprecation warning which
+points to the new name to the documentation and README.
+e3) Upload the new deprecated distribution along with the actual new one.
+e4) Delete the (very) old one.
+
+In your case, it's probably sufficient to just delete the old
+distribution and upload the one with the new name.
+
+I have just registered the new namespace for you.
+
+Best regards,
+Steffen

@@ -1,0 +1,50 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:63260 perl.modules:12660
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9754 invoked by uid 76); 14 Jul 2002 16:17:00 -0000
+Received: from mail04.svc.cra.dublin.eircom.net (HELO mail04.svc.cra.dublin.eircom.net) (159.134.118.20)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Sun Jul 14 16:17:00 2002 -0000
+Received: (qmail 62768 messnum 1110813 invoked from network[159.134.166.236/p748.as1.limerick1.eircom.net]); 14 Jul 2002 16:16:05 -0000
+Received: from p748.as1.limerick1.eircom.net (HELO dansat.data-plan.com) (159.134.166.236)
+  by mail04.svc.cra.dublin.eircom.net (qp 62768) with SMTP; 14 Jul 2002 16:16:05 -0000
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id g6EGG7420483;
+	Sun, 14 Jul 2002 17:16:07 +0100 (BST)
+	(envelope-from timbo)
+Date: Sun, 14 Jul 2002 17:16:06 +0100
+To: Jarkko Hietaniemi <jhi@iki.fi>
+Cc: Graham Barr <gbarr@pobox.com>, Tim Bunce <Tim.Bunce@pobox.com>,
+   Elizabeth Mattijsen <liz@dijkmat.nl>, modules@perl.org,
+   Johan Vromans <jvromans@squirrel.nl>, perl5-porters@perl.org
+Subject: Re: CPAN Upload: E/EL/ELIZABETH/threads-farm-0.01.tar.gz
+Message-ID: <20020714171606.B568@dansat.data-plan.com>
+References: <4.2.0.58.20020712203805.02252680@mickey.dijkmat.nl> <15663.14507.555555.238488@phoenix.squirrel.nl> <4.2.0.58.20020712221730.05262900@mickey.dijkmat.nl> <20020712232317.D2065@alpha.hut.fi> <20020712231626.V568@dansat.data-plan.com> <20020712232239.X65206@pobox.com> <20020713013704.S2065@alpha.hut.fi>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020713013704.S2065@alpha.hut.fi>; from jhi@iki.fi on Sat, Jul 13, 2002 at 01:37:04AM +0300
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+On Sat, Jul 13, 2002 at 01:37:04AM +0300, Jarkko Hietaniemi wrote:
+> Hmmm.  Going with "Thread" does complicate things in that we do
+> currently have "lib/Thread/Semaphore.pm"... it currently is 5.005
+> threads interface.  If I just dump the ithreads version in its place,
+> no more semaphores for old threads code. 
+
+Not a big loss. Just rename it: Thread::Semaphore5005 (or move it into
+a different directory that a "use lib" could enable access to).
+
+The old threads code was a failed experiment that people shouldn't
+be using in production. People who need to keep using it should
+live with 5.6.x.
+
+The 5.8.x code is so much better, and such a fundamental change,
+that anyone upgrading should expect to have to rework any code that
+uses threads.
+
+Tim.

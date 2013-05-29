@@ -1,0 +1,129 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12615
+Return-Path: <bigj@kamelfreund.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30099 invoked by uid 1012); 12 Jul 2002 08:48:55 -0000
+To: modules@perl.org
+Subject: Re: Module submission Data::CrossTable
+Date: Fri, 12 Jul 2002 09:47:47 +0200
+Message-ID: <pan.2002.07.12.07.46.33.19649.1278@kamelfreund.de>
+References: <200207110746.g6B7kN127349@pause.perl.org> <20020711165635.K568@dansat.data-plan.com>
+User-Agent: Pan/0.11.3 (Unix)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Comment-To: "Tim Bunce" <Tim.Bunce@pobox.com>
+X-Posted-By: 172.179.111.44
+Approved: news@nntp.perl.org
+From: bigj@kamelfreund.de (Janek Schleicher)
+
+Tim Bunce wrote at Thu, 11 Jul 2002 17:56:35 +0200:
+
+> Why 'Cross'? Makes me think of 'pivot' cross-tabulations, which are a different thing.
+
+I hadn't the association to pivot cross-tabulation.
+I simply translated the german word "Kreuztabelle" directly into english.
+
+I think the name comes as every data cell influence 
+its row sum, its col sum and finally the total table sum,
+what gives a picture like that (where the XXX are modified)
+
+     Col1    Col2    Col3  Sum
+Row1  ???    XXX     ???   XXX
+Row2  ???    ???     ???   ???
+Row3  ???    ???     ???   ???
+Sum   ???    XXX     ???   XXX
+
+Perhaps it doesn't like very much like a cross,
+but our calculation seems to go along "crossings".
+
+However,
+if the name isn't intuitive enough,
+we really should find a better one.
+
+> 
+> See http://search.cpan.org/search?mode=doc&query=pivot 
+> There's already Data::Pivot, Data::Pivoter,
+> and Data::Xtab (which sounds close to yours even if it's spelt differently :)
+
+I didn't found them on my first review,
+as I hadn't the association to pivoting
+(as I don't rotate or loop really something :-)),
+and read Xtab as eXtending tabbing.
+(By a table I would have expected an uppercase T)
+
+The both Pivot modules are mainly for creating some sensful
+output of tables,
+but I want to calculate with the tables.
+It's similar to Data::Xtab.
+
+What I primarly want is some statistical calculations.
+Let's think e.g. to a population count.
+Let's say we want to create a table showing the population
+in the U.S.A. regarding to the towns 
+'New York', 'Chicago', 'L.A.', 'San Francisco', 'Houston'
+and the sex
+'female', 'male'.
+
+Let's think I've got a big file with information of the population,
+e.g. the phone books.
+Then I'd like to write a pseudocode like
+
+my @towns = ('New York', 'Chicago', 'L.A.', 'San Francisco', 'Houston');
+my @sex   = qw/female male/;
+my $population = Data::CrossTable->new(rows => \@sex, cols => \@towns);
+while (<FILE>) {
+   my ($town, $sex) = /...../;
+   $population->data($sex,$town)++;
+}
+where the populations of each town, each sex and the total population 
+are updated in the background.
+
+Finally we could say,
+e.g. there are $population->rowresult('female') women in the big cities.
+
+Furthermore I'd like to calculate with the CrossTables.
+E.g. the percentuage of inhabitants could be calculated with:
+
+my $perc_population = $population / $population->totalresult();
+
+or if we would like to have the more readable 12% reading than the 0.12,
+we could write something like
+my $perc100_population = $perc_population->change( sub { $_ *= 100 } );
+
+Another way is that we have built the tax payings for the big cities.
+Then we could write
+
+my $tax_per_inhabitent = $tax_per_city_and_sex / $population;
+
+
+Of course,
+a nice output is still important,
+but I really want to avoid me to always write
+foreach (...) { $_ *= 100 for ( ... ) }
+lines.
+
+
+> 
+> How about Data::TableAutoSum?
+
+I don't know.
+I'd prefer to work also with other associative and distribute operations.
+E.g., we could find the maximum living people in a town by:
+
+$population->op(sub {max @_});
+And now $population->totalresult() contains the maximum living people.
+
+More sensful could be the multiplication when working with probabilities or 
+something like an average (allthough it isn't distributive).
+
+So I don't really like the association to Sum as Addition.
+Summarize could be O.K.,
+but Data::TableAutoSummarize would sound like I'll make a summerizing of every table.
+
+
+Greetings,
+Janek
+

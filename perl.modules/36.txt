@@ -1,0 +1,92 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:2295 perl.modules:36
+Return-Path: <John.Redford@fmr.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15689 invoked from network); 14 Oct 1999 15:47:48 -0000
+Received: from gw17e.fmr.com (HELO gw17i.fmr.com) (192.223.252.81)
+  by tmtowtdi.perl.org with SMTP; 14 Oct 1999 15:47:48 -0000
+Received: (from smtp@localhost)
+	by gw17i.fmr.com (8.8.7/8.8.7) id LAA00309;
+	Thu, 14 Oct 1999 11:47:46 -0400 (EDT)
+Received: from msgmro101nts.fmr.com(172.26.2.64) by gw17i.fmr.com via smap (V2.0)
+	id xma000191; Thu, 14 Oct 99 11:47:31 -0400
+Received: by msgmro101nts.fmr.com with Internet Mail Service (5.5.2448.0)
+	id <46YY23T6>; Thu, 14 Oct 1999 11:47:30 -0400
+Message-ID: <C139F4D49384D2118EB60008C7A4337B57848F@MSGBOS675NTS.fmr.com>
+To: "'Michael King'" <mike808@my-Deja.com>, modules@perl.org
+Cc: perl5-porters@perl.org
+Subject: RE: NEW MODULE (pragma): import.pm 
+Date: Thu, 14 Oct 1999 11:47:24 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Approved: news@nntp.perl.org
+From: John.Redford@fmr.com ("Redford, John")
+
+Why not just hack up the Perl core some more & make this work:
+
+use Foo::*;
+
+Everyone will be able to tell the difference between these:
+
+use CGI;
+use CGI::*;
+
+And in time, someone will even come up with:
+
+use qr/CGI::[AC].*::\*/;
+
+--
+John Redford
+AKA GArrow
+
+		-----Original Message-----
+		From:	Michael King [mailto:mike808@my-Deja.com]
+		Sent:	Thursday, October 14, 1999 11:29 AM
+		To:	modules@perl.org
+		Cc:	perl5-porters@perl.org
+		Subject:	Re: NEW MODULE (pragma): import.pm 
+
+		On Mon, 11 Oct 1999 22:52:57   Tom Christiansen wrote:
+		>I'm also concerned about
+		>    use CGI;
+		>versus
+		>    use import 'CGI';
+		>versus
+		>    import CGI;
+		>I just don't see those as different enough.
+
+		The WHOLE POINT of the module/pragma is to make
+Really::Long::Namespaces::That::Programmers::Hate::To::Type *alot* easier to
+use without cluttering up their program with FQPNs. IMHO, it only adds noise
+to the code.
+
+		I don't recommend (ab)using the module/pragma in the above
+case. What exactly was your intent / reasoning for using the module in that
+code example? What did you need my module to do for you that just 'use CGI'
+didn't already do? I think the example is contrived, and therefore, the
+problematic results are contrived. It's not a problem I need to fix. (I
+address the module/directory both existing problem in another posting.)
+
+		I think the heart of this issue that Tom brings up(although
+the code example is bogus) is for accessing modules that either don't or
+won't export useful symbols into the caller's namespace. Also, many times, I
+*don't want* my namespace cluttered up by some other modules symbols. I just
+want a shorthand notation that makes my code cleaner, not more cluttered.
+
+		For a module that lets me pick and choose, I don't need
+'import'. But when I've got 35 modules to import from some arbitrarily deep
+namespace, 'import' makes my life much easier, and my code easier to read
+and understand.
+
+		I plan to take these topics (as they are constructive) and
+incorporate them into the next revision of the documentation, if that makes
+anyone feel better.
+		Michael
+
+
+		--== Sent via Deja.com http://www.deja.com/ ==--
+		Share what you know. Learn what you don't.

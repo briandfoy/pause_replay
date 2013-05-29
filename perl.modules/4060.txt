@@ -1,0 +1,111 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4060
+Return-Path: <martin.tomes@controls.eurotherm.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1580 invoked from network); 2 Jan 2001 14:35:19 -0000
+Received: from gatekeeper202.eurotherm.co.uk (HELO schnapps.eurotherm.co.uk) (193.129.71.202)
+  by tmtowtdi.perl.org with SMTP; 2 Jan 2001 14:35:19 -0000
+Received: from merlot.controls.eurotherm.co.uk (IDENT:root@merlot.controls.eurotherm.co.uk [149.121.128.168])
+	by schnapps.eurotherm.co.uk (8.9.3/8.9.3) with ESMTP id OAA16683
+	for <modules@perl.org>; Tue, 2 Jan 2001 14:34:48 GMT
+Received: from MOA (moa.controls.eurotherm.co.uk [149.121.128.117])
+	by merlot.controls.eurotherm.co.uk (8.8.7/8.8.7) with ESMTP id OAA26103
+	for <modules@perl.org>; Tue, 2 Jan 2001 14:34:47 GMT
+To: modules@perl.org
+Subject: Author registration and Perl Ole for Process Control module
+Date: 02 Jan 2001 14:34:47 +0000
+Message-ID: <upui6kooo.fsf@martin.controls.eurotherm.co.uk>
+Lines: 84
+User-Agent: Gnus/5.0803 (Gnus v5.8.3) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: martin.tomes@controls.eurotherm.co.uk (Martin Tomes)
+
+
+I have a Perl module which uses the Win32::OLE modules to implement a Perl
+interface to the OLE for Process Control COM interface.  This module is
+currently available from the OPC Programmers Connection site at
+http://www.opc.dial.pipex.com/tooltech.shtml#perl
+
+I am not sure how many people have downloaded this, but I have received a
+request to put this module on CPAN to make it easier for the Perl community to
+find.
+
+Therefore I am asking for access to PAUSE and these are the required details:
+
+Name:                Martin Tomes
+Email address:       martin@tomes.org.uk
+user-ID on CPAN:     MARTINTO
+Contributed Module:  Win32::OLE::OPC - OPC Server Interface
+
+           SYNOPSIS
+               Two ways of using the OPC interface are provided, the class
+               methods:
+
+                   use Win32::OLE::OPC;
+
+                   my $opcintf = Win32::OLE::OPC->new('Someones.OPCAutomation',
+                                                      'Someones.Server');
+                   $opcintf->MoveToRoot;
+                   foreach $item ($opcintf->Leafs) {
+                     print $item->{name}, "\n";
+                     my %result = $opcintf->ItemData($item->{itemid});
+                     for $attrib (keys %result) {
+                       print "        [", $attrib, " = '", $result{$attrib}, "']", "\n";
+                     }
+                     print "\n";
+                   }
+                   foreach $item ($opcintf->Branches) {
+                     print $item->{name}, "\n";
+                   }
+               or a tied hash:
+           
+                   use Win32::OLE::OPC;
+
+                   my %OPC;
+                   tie %OPC, Win32::OLE::OPC, 'Someones.OPCAutomation', 'Someones.Server';
+           
+                   # OK, list the keys...
+                   for $key (keys %OPC) {
+                     my %x = %{$OPC{$key}};
+                     print $key, "\n";
+                     for $attrib (keys %x) {
+                       print "        '", $attrib, "' = '", $x{$attrib}, "'", "\n";
+                     }
+                     print "\n";
+                   }
+
+               The tied hash method has to return a reference to a hash
+               containing the item data hence the unpleasant code '`%x =
+               %{$OPC{$key}}''. Alternatively one can assign the returned value
+               into a scalar and dereference it when using the hash like this
+               '`keys %$x'' and '`$result->{$item}''.
+
+               Note that both methods can be used together. First create an
+               interface using the `new()' method and then tie it like this:
+
+                   tie %OPC, $opcintf, 'Someones.OPCAutomation', 'Someones.Server';
+
+Module Listing:  (argh!! the name is two chars too long.)
+
+Name            DSLI  Description                                  Info
+-------------   ----  -------------------------------------------- -----
+Win32::OLE::OPC RdpO  Ole for Process Control Server Interface     MARTINTO
+
+
+I would like advice on the namespace.  This is a COM interface and it is
+therefore logical to put it in the Win32::OLE space, but that is owned and run
+from ActiveState (I think).  Is it Bad Form(tm) to put a module in someone
+elses space?  The only realistic alternative is Win32::OPC which would be OK
+if a little less accurate.
+
+-- 
+Regards,
+
+Martin Tomes
+
+Martin.Tomes@controls.eurotherm.co.uk
+

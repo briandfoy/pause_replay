@@ -1,0 +1,248 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:6947
+Return-Path: <hv@crypt.compulink.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 67709 invoked from network); 10 Aug 2001 13:16:51 -0000
+Received: from crypt.compulink.co.uk (194.153.27.127)
+  by onion.valueclick.com with SMTP; 10 Aug 2001 13:16:51 -0000
+Received: from crypt.compulink.co.uk (hv@localhost)
+	by crypt.compulink.co.uk (8.11.2/8.11.2) with ESMTP id f7ADGOc16537;
+	Fri, 10 Aug 2001 14:16:26 +0100
+Message-ID: <200108101316.f7ADGOc16537@crypt.compulink.co.uk>
+To: modules@perl.org
+cc: hv@crypt0.demon.co.uk
+reply-to: hv@crypt0.demon.co.uk
+Subject: Name for Regexp::Word
+Date: Fri, 10 Aug 2001 14:16:24 +0100
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: hv@crypt.compulink.co.uk (Hugo van der Sanden)
+
+I am working on a module that I hope to release shortly, which constructs
+various regexps for solving (loosely) crossword-style problems. As per
+the subject line, my working name for it is Regexp::Word; anyone got
+suggestions for a better name?
+
+Pod attached.
+
+Hugo
+---
+=head1 NAME
+
+Regexp::Word - regular expressions for various crossword-style word patterns
+
+=head1 SYNOPSIS
+
+  use Regexp::Word;
+  use re qw/ eval /;
+  if ("sett" =~ anagram("test")) {
+    print "sett is an anagram of test\n";
+  }
+  if ("true" =~ subset("turbulent")) {
+    print "true is a subset of turbulent\n";
+  }
+  if ("true" =~ subset_anagram("suture")) {
+    print "true is a subset of an anagram of suture\n";
+  }
+  # etc
+
+=head1 DESCRIPTION
+
+Given an input pattern of a recognisable form, these functions will
+return an anchored regular expression that will match words that
+satisfy one or other variant of the pattern, as described for the
+individual functions below.
+
+Recognisable patterns look like normal regular expressions, but are
+constrained to consist only of normal characters, character classes
+and quantifiers, so that for example 'ab[c-m]n?o*p+q{3,5}[^r-z]' is
+accepted. Parentheses and anchors are not recognised.
+
+Functions that have 'anagram' in the name will usually have embedded
+eval groups in the returned regular expression, so you will usually
+need to C<use re 'eval';> before applying these.
+
+The results returned are simple strings, so that you can apply
+modifiers to them when you use them:
+
+  # test case-insensitive anagram
+  my $re = anagram("test");
+  print "ok" if "SETT" =~ /$re/i;
+
+NOTE that a single regular expression may not be the best way of
+solving some of these problems in the general case: for example,
+if you want to check whether two words are anagrams of each other
+it may be more efficient to sort the characters and compare the
+resulting ordered strings:
+
+  my($word1, $word2) = ("sett", "test");
+  my $order1 = join '', sort split //, $word1;
+  my $order2 = join '', sort split //, $word2;
+  print "ok" if $order1 eq $order2;
+
+.. but non-regexp solutions to these problems would belong in a
+different module.
+
+=head2 EXPORT
+
+All the functions described below are exported by default.
+
+=head2 FUNCTIONS
+
+=over 4
+
+=item anagram ( pattern )
+
+Returns a regular expression that matches any word that is an anagram of
+the components of the input pattern. May require C<use re 'eval'>.
+
+=for testing
+
+  use re 'eval';
+  my $re = anagram('ab[cd]{1,2}[^ef].');
+  print "xycacb" =~ $re ? "ok 1" : "not ok 1";
+  print "eecacb" !~ $re ? "ok 2" : "not ok 2";
+  print "cdbaaa" =~ $re ? "ok 3" : "not ok 3";
+
+=item subset ( pattern )
+
+Returns a regular expression that matches any word that is a subset of
+the input pattern.
+
+=for testing
+
+  my $re = subset('ab[cd]{1,2}[^ef].');
+  print "acccc" =~ $re ? "ok 1" : "not ok 1";
+  print "accccc" !~ $re ? "ok 2" : "not ok 2";
+  print "zz" =~ $re ? "ok 3" : "not ok 3";
+
+=item subset_anagram ( pattern )
+
+Returns a regular expression that matches any word that is a subset of
+any anagram of the input pattern. May require C<use re 'eval'>.
+
+=for testing
+
+  use re 'eval';
+  my $re = subset_anagram('ab[cd]{1,2}[^ef].');
+  print "cccca" =~ $re ? "ok 1" : "not ok 1";
+  print "ccccca" !~ $re ? "ok 2" : "not ok 2";
+  print "zzb" =~ $re ? "ok 3" : "not ok 3";
+
+=item superset ( pattern )
+
+Returns a regular expression that matches any word that is a superset
+of the input pattern.
+
+=for testing
+
+  my $re = superset('ab[cd]{1,2}[^ef].');
+  print "accccc" !~ $re ? "ok 1" : "not ok 1";
+  print "abcccc" =~ $re ? "ok 2" : "not ok 2";
+  print "zzzzabcdz" =~ $re ? "ok 3" : "not ok 3";
+
+=item superset_anagram ( pattern )
+
+Returns a regular expression that matches any word that is a superset
+of any anagram of the input pattern. May require C<use re 'eval'>.
+
+=for testing
+
+  my $re = superset_anagram('ab[cd]{1,2}[^ef].');
+  print "ccccca" !~ $re ? "ok 1" : "not ok 1";
+  print "ccccba" =~ $re ? "ok 2" : "not ok 2";
+  print "zdcba" =~ $re ? "ok 3" : "not ok 3";
+
+=item insert ( count, pattern )
+
+Returns a regular expression that matches any word that inserts
+exactly I<count> characters (not necessarily consecutive) into the
+input pattern.
+
+=for testing
+
+  my $re = insert(2, 'ab[cd]{1,2}[^ef].');
+  print "abcdezz" =~ $re ? "ok 1" : "not ok 1";
+  print "abcddezz" =~ $re ? "ok 2" : "not ok 2";
+  print "abcdddezz" !~ $re ? "ok 3" : "not ok 3";
+  print "abcezz" !~ $re ? "ok 4" : "not ok 4";
+
+=item insert_anagram ( count, pattern )
+
+Returns a regular expression that matches any word that inserts
+exactly I<count> characters (not necessarily consecutive) into
+an anagram of the input pattern. May require C<use re 'eval'>.
+
+=for testing
+
+  my $re = insert(2, 'ab[cd]{1,2}[^ef].');
+  print "zzedcba" =~ $re ? "ok 1" : "not ok 1";
+  print "zzeddcba" =~ $re ? "ok 2" : "not ok 2";
+  print "zzedddcba" !~ $re ? "ok 3" : "not ok 3";
+  print "zzebca" !~ $re ? "ok 4" : "not ok 4";
+
+=item delete ( count, pattern )
+
+Returns a regular expression that matches any word that deletes
+exactly I<count> characters (not necessarily consecutive) from the
+input pattern.
+
+=for testing
+
+  my $re = delete(2, 'ab[cd]{1,2}[^ef].');
+  print "ab" !~ $re ? "ok 1" : "not ok 1";
+  print "abc" =~ $re ? "ok 2" : "not ok 2";
+  print "abcd" =~ $re ? "ok 3" : "not ok 3";
+  print "abcde" !~ $re ? "ok 4" : "not ok 4";
+
+=item delete_anagram ( count, pattern )
+
+Returns a regular expression that matches any word that deletes
+exactly I<count> characters (not necessarily consecutive) from
+an anagram of the input pattern. May require C<use re 'eval'>.
+
+=for testing
+
+  my $re = delete(2, 'ab[cd]{1,2}[^ef].');
+  print "ba" !~ $re ? "ok 1" : "not ok 1";
+  print "cba" =~ $re ? "ok 2" : "not ok 2";
+  print "dcba" =~ $re ? "ok 3" : "not ok 3";
+  print "edcba" !~ $re ? "ok 4" : "not ok 4";
+
+=item latent ( pattern )
+
+Returns a regular expression that matches any word that, after
+removing all occurrences of one character, matches the input
+pattern.
+
+=for testing
+
+  my $re = latent('ab[cd]{1,2}[^ef].');
+  print "zazbzczdzez" =~ $re ? "ok 1" : "not ok 1";
+  print "abccdgh" =~ $re ? "ok 2" : "not ok 2";
+  print "abdddgh" !~ $re ? "ok 3" : "not ok 3";
+
+=item latent_anagram ( pattern )
+
+Returns a regular expression that matches any word that, after
+removing all occurrences of one character, matches an anagram
+of the input pattern. May require C<use re 'eval'>.
+
+=for testing
+
+  my $re = latent_anagram('ab[cd]{1,2}[^ef].');
+  print "zezdzczbzaz" =~ $re ? "ok 1" : "not ok 1";
+  print "hgdccba" =~ $re ? "ok 2" : "not ok 2";
+  print "hgdddba" !~ $re ? "ok 3" : "not ok 3";
+
+=head1 AUTHOR
+
+Hugo van der Sanden, E<lt>hv@crypt0.demon.co.ukE<gt>
+
+=head1 SEE ALSO
+
+L<perlre>, L<Regexp::Common>.
+
+=cut

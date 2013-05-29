@@ -1,0 +1,136 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:82878
+Return-Path: <alfie@linode1.alfiejohn.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4016 invoked from network); 23 Oct 2012 20:49:44 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 23 Oct 2012 20:49:44 -0000
+Received: (qmail 26206 invoked by uid 225); 23 Oct 2012 20:49:44 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26202 invoked by alias); 23 Oct 2012 20:49:44 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from linode1.alfiejohn.com (HELO linode1.alfiejohn.com) (69.164.204.237)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 23 Oct 2012 13:49:41 -0700
+Received: by linode1.alfiejohn.com (Postfix, from userid 1000)
+	id 478736099; Wed, 24 Oct 2012 07:49:37 +1100 (EST)
+Date: Wed, 24 Oct 2012 07:49:37 +1100
+To: Matt S Trout <mst@shadowcat.co.uk>
+Cc: modules@perl.org
+Subject: Re: Module submission Data::PathSimple
+Message-ID: <20121023204937.GJ20714@linode1.alfiejohn.com>
+References: <201210131234.q9DCYOJp005719@pause.fiz-chemie.de>
+ <221020122322238384%brian.d.foy@gmail.com>
+ <20121023092947.GI20714@linode1.alfiejohn.com>
+ <20121023153731.GT6412@newagaton.scsys.co.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20121023153731.GT6412@newagaton.scsys.co.uk>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Approved: news@nntp.perl.org
+From: alfie@h4c.kr (Alfie John)
+
+On Tue, Oct 23, 2012 at 04:37:31PM +0100, Matt S Trout wrote:
+> On Tue, Oct 23, 2012 at 08:29:47PM +1100, Alfie John wrote:
+> > Any objection to Data::Tree? I could then rename the description to:
+> > 
+> > 	Data::Tree - Navigate and manipulate data structures like a tree
+> > 
+> > Otherwise, I'd be willing to hear some suggestions.
+> 
+> I can't really make a suggestion if you don't show any examples of usage.
+
+Here's the SYNOPSIS:
+
+	use Data::PathSimple qw{
+    get
+    set
+  };
+
+  my $data = {
+    Languages => {
+      Perl   => {
+        CurrentVersion => '5.16.1',
+        URLs           => [
+          'http://www.perl.org',
+          'http://www.cpan.org',
+        ],
+      },
+      PHP    => {
+        CurrentVersion => '5.4.7',
+        URLs           => [
+          'http://www.php.net',
+          'http://pear.php.net',
+        ],
+      },
+      Python => {
+        CurrentVersion => '2.7.3',
+        URLs           => [
+          'http://www.python.org',
+        ],
+      },
+    },
+  };
+
+  my $current_perl = get( $data, '/Languages/Perl/CurrentVersion' );
+  my @perl_urls    = @{ get( $data, '/Languages/Perl/URLs' ) || [] };
+
+  set( $data, '/Languages/Perl/CurrentVersion', '5.16.2' );
+  set( $data, '/Languages/Python/URLs/1/', 'http://pypi.python.org' );
+
+> What distinguishes it from Data::SPath? From Data::DPath? From straight up
+> XPath matching using an adaptor like Class::XPath?
+
+First off, Data::SPath, Data::Dpan and Class::XPath only allow getting. My
+module does setting too.
+
+As you can see from the code above, the way you access the data that you want
+is by *simple* paths. If you have a look at Data::DPath and Class::XPath, they
+take complex paths and are used to match across the entire data structure.
+That's not what my module is about. Mine is about access the specific part of
+the data structure that you're after.
+
+Comparing Data::SPath and my module, by default Data::SPath will croak when
+accessing a path that doesn't exist. Since I'm using my module on the command
+line and the path is coming from user input, I just want an undef if there is a
+key miss.
+
+Data::SPath provides a way to override the croak on key misses and other errors
+by taking in error handling subroutines on the import:
+
+	 use Data::SPath
+        spath => {
+            method_miss => \&_method_miss,
+            key_miss => \&_key_miss,
+            index_miss => \&_index_miss,
+            key_on_non_hash => \&_key_on_non_hash,
+            args_on_non_method => \&_args_on_non_method
+        };
+
+To me, this seems a bit too much for what I want and feels inelegant. After
+listening to Damian's Sufficiently Advanced Technology talk, I think my module
+DWEM (where E is everyone)... unless I'm mistaken?
+
+> "It picks the right thing 80% of the time" is true of all of those from the
+> point of view of the people -currently- using each one. I'm not using any yet
+> - what's special about your module apart from "it's a different set of
+> defaults" ? What made it worth being a separate module rather than a wrapper
+> around SPath or DPath ?
+
+As for integrating set() into Data::SPath. I guess I could have created a
+wrapper around it as my get() would just fill in the import subroutines with my
+preferences and just copy/paste my set() in. The biggest drawback here (which
+is a killer IMHO) is having a dependency. My get() subroutine is 32 lines and
+set() 56 lines. Do I really want to rely on another peice of code for the sake
+of 56 lines? No I don't. The less dependencies the better IMHO and I think the
+majority would agree too.
+
+Alfie
+
+-- 
+Alfie John
+http://h4c.kr

@@ -1,0 +1,115 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:70908
+Return-Path: <email@greglondon.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 5604 invoked from network); 19 Apr 2010 13:52:42 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 19 Apr 2010 13:52:42 -0000
+Received: (qmail 29746 invoked by uid 225); 19 Apr 2010 13:52:41 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29741 invoked by alias); 19 Apr 2010 13:52:41 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from weston.site5.com (HELO weston.site5.com) (174.132.151.34)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 19 Apr 2010 06:52:37 -0700
+Received: from localhost ([127.0.0.1] helo=www.greglondon.com)
+	by weston.site5.com with esmtpa (Exim 4.69)
+	(envelope-from <email@greglondon.com>)
+	id 1O3rOq-0001S8-Uw
+	for modules@perl.org; Mon, 19 Apr 2010 08:52:33 -0500
+Received: from 65.120.117.2 ([65.120.117.2])
+        (SquirrelMail authenticated user email@greglondon.com)
+        by www.greglondon.com with HTTP;
+        Mon, 19 Apr 2010 08:52:32 -0500
+Message-ID: <4ded149eff5fb611824ad3417ad01ea0.squirrel@www.greglondon.com>
+Date: Mon, 19 Apr 2010 08:52:32 -0500
+Subject: proposing Codegen::C::STL::Container::List and 
+ Codegen::C::STL::Container::Map
+To: modules@perl.org
+User-Agent: SquirrelMail/1.4.20
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - weston.site5.com
+X-AntiAbuse: Original Domain - perl.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - greglondon.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Approved: news@nntp.perl.org
+From: email@greglondon.com ("Greg London")
+
+Hi,
+
+I'm thinking about creating a new perl module and wanted to run the idea
+by you folks to see if (1) it's already been done somewhere and I didn't
+see it and (2) if it is good idea to come up with a reasonable name for
+the perl module/package namespace.
+
+The module I'm thinking about creating would generate C code that would
+implement the STL container for linked lists. The STL library for C++ is
+here:
+
+http://www.cplusplus.com/reference/stl/list/
+
+The idea is that users would use my module to generate an STL container
+for linked lists, but the code would be generated in C rather than C++.
+The user would specify what C type is contained in the linked list, and my
+module would do everything else. Basically, replace the C++ template
+capability by using Perl's Template toolkit module with my template
+specific to generating C linked lists wrapped around it.
+
+The namespace I was considering was something like
+
+Codegen::C::STL::Container::List
+
+'Codegen' because all my module does is generate code for someone else.
+'C' because what it generates is in the C language.
+'STL' because people are generally familiar with the STL library
+'Container::List' because that's the same hierarchy in the STL library.
+
+Other perl developers might create Codegen::C::STL::Container::Vector or
+Codegen::C::STL::Algorithm::Sort or whatever and could follow the same
+naming convention. Deviating further, soemone might create
+Codegen::Assembly::Arm11::(some other functionality) and so on.
+
+Actual use of my module would look soemthing like this:
+
+use Codegen::C::STL::Container::List;
+
+Codegen::C::STL::Container::List::New(
+   type => 'unsigned int'
+);
+
+
+This would generate files codegen_c_stl_container_list_unsigned_int.(c/h)
+
+And these files would implement a linked list for unsigned integers that
+the user would include in their c code.
+
+The two blocks I was thinking of doing would be
+
+Codegen::C::STL::Container::List and
+Codegen::C::STL::Container::Map
+
+I haven't found anything on the web that does this sort of thing and I
+haven't found any generic C libraries that can do this for whatever type
+the user wants. But they may exist and my google-fu may be too weak.
+
+As for the module name, I didn't see a namespace for generic code
+generation of code in other languages. Not sure if that's a good idea or
+not.
+
+Greg
+
+
+
+

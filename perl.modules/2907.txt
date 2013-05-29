@@ -1,0 +1,240 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2907
+Return-Path: <yw@alabanza.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26108 invoked from network); 20 Sep 2000 03:43:12 -0000
+Received: from max5p27a.smart.net (HELO ywlap.alabanza.com) (209.136.133.27)
+  by tmtowtdi.perl.org with SMTP; 20 Sep 2000 03:43:12 -0000
+Received: from alabanza.net (localhost [127.0.0.1])
+	by ywlap.alabanza.com (8.9.3/8.9.3) with ESMTP id XAA03203
+	for <modules@perl.org>; Tue, 19 Sep 2000 23:42:08 -0400
+Sender: yw@ywlap.alabanza.com
+Message-ID: <39C8320F.26AC572E@alabanza.net>
+Date: Tue, 19 Sep 2000 23:42:07 -0400
+Reply-To: yw@alabanza.net
+Organization: Alabanza Corp
+X-Mailer: Mozilla 4.73 [en] (X11; U; Linux 2.2.16 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: [Fwd: Registration]
+Content-Type: multipart/mixed;
+ boundary="------------1421FBF01BE90F9EE3D036B6"
+Approved: news@nntp.perl.org
+From: yw@alabanza.net ("Ye, Wei")
+
+--------------1421FBF01BE90F9EE3D036B6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+
+Greeting,
+
+I have sent the request for one and half weeks, but still not any
+response yet.
+Sorry for sending it once again, I'm looking forward to getting your
+response soon.
+
+Thanks!
+
+
+--------------1421FBF01BE90F9EE3D036B6
+Content-Type: message/rfc822
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+X-Mozilla-Status2: 00000000
+Message-ID: <39BC3399.B6A18FB0@yw.alabanza.com>
+Date: Sun, 10 Sep 2000 21:21:30 -0400
+From: wei ye <yw@yw.alabanza.com>
+Reply-To: yw@alabanza.net
+Organization: Alabanza Corp
+X-Mailer: Mozilla 4.73 [en] (X11; U; Linux 2.2.16 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Registration
+Content-Type: multipart/mixed;
+ boundary="------------449DF2DA540DB67AF9D0D8AD"
+
+This is a multi-part message in MIME format.
+--------------449DF2DA540DB67AF9D0D8AD
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+I'm going to upload a module Jvm, which allow Perl invoke Java API, so
+I'm applying a userID.
+
+I attached the document of my package at the end for your reference.
+I have a Java project for our company, but I like Perl very much, I
+started
+to try to find a way to call Java in Perl, I did find out there is a
+module "Java"
+in CPAN, however that module launch Java server localhost and have Perl
+talk with that Java server via some protocol instead of JNI.
+The performance is poor, I don't like it. Then later, I happen to know
+that
+PHP has a java module, then I asked myself why not write such module for
+
+Perl myself?
+
+Then I began to work on it. Almost at the end of the project, I read a
+news from
+mailinglist that there is already a module "JPL" has been available for
+perl and
+Java communication for more than 2 years. I downloaded it and
+gave it a try.  I understand that JPL's idea is very cool, however it
+seems too complex.
+Mine is much simple and more practice for some people.
+
+So I still want to upload to CPAN, so that people want to call Java API
+inside perl
+has an alternative way to do that.
+
+
+Below is my personal information:
+Name: Ye, Wei
+Email: yw@alabanza.net
+HomePage: undef
+Perferred UID: YEWEI
+Description of what I'm planning to contribute: Jvm, a module which can
+invoke Java VM API.
+DSLI:
+  Development Stage: a/b (Alpha/Beta)
+  Support Level: d (Developer)
+  Language:  c(C and Perl)
+  Interface:  O(Object oriented)
+
+Thanks for your help!
+
+
+
+--------------449DF2DA540DB67AF9D0D8AD
+Content-Type: text/plain; charset=us-ascii;
+ name="t0"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="t0"
+
+NAME
+    Jvm - Perl extension for Java VM invocation
+
+SYNOPSIS
+      use Jvm;
+
+      # Initialize the JVM
+      new Jvm();
+
+      ###################################
+      #invoke static method of Java class
+      ###################################
+      #Java:
+      #   Thread.sleep(1000);
+      Jvm::call("java.lang.Thread", "sleep", "(J)V", 1000);
+
+      ##########################
+      #Java instance manipulate
+      ##########################
+      #Java:
+      # Integer obj = new Integer(99);
+      # String s = i.toString();
+      $obj = new Jvm("java.lang.Integer", "(I)V", 99);
+      $s = $obj->toString("()Ljava/lang/String;");
+
+      #######################
+      #get/set static member
+      #######################
+      #Java:
+      # System.out.println("Hello world!");
+      $out = Jvm::getProperty("java.lang.System", "out", "Ljava/io/PrintStream;");
+      $out->println("(Ljava/lang/String;)V", "Hello world!");
+
+DESCRIPTION
+    This package allow you to invoke Java API in Perl. You can invoke
+    standard Java classes as well as your own Java program.
+
+Java Signature
+    You have to specify Java method signature when call Java API. This is
+    because a java class may have more than 1 methods which has the same
+    method name, e.g.
+
+        public class Foo {
+            public static void test(int i) {}
+            public static void test(byte b) {}
+        };
+
+    You have to use method signature to specify which method you are going
+    to call. Here is a sample to invoke them respectively:
+
+    Jvm::call("Foo","test","(I)V", 1234567); Jvm::call("Foo","test","(B)V",
+    22);
+
+    Java Signature rule is simple, you can get it at
+    http://java.sun.com/j2se/1.3/docs/guide/jni/spec/types.doc.html#16432
+
+    Or, you can use 'javap' tool comes with JDK to print out all the
+    signatures in your class: usage is 'javap -s Your_java_class'. Here is
+    an example:
+
+      [root@ywlap Jvm]# javap -s Foo
+      Compiled from Foo.java
+      public class Foo extends java.lang.Object {
+          public static void test(int);
+            /*   (I)V   */
+          public static void test(byte);
+            /*   (B)V   */
+          public Foo();
+            /*   ()V   */
+      }
+      [root@ywlap Jvm]# 
+
+Function List
+    new Jvm();
+        Initialize JVM.
+
+    $obj = new Jvm($class, $constructorMethodSig, @args);
+        create a Java object, whose class name is $class, constructor has
+        $constructorMethodSig signature, and @args are arguments for
+        constructor. Then later you can invoke method XXX of this instance:
+        $result = $obj->XXX($methodSignature, @args);
+
+    $ret = call($class, $method, $methodSignature, @args);
+        Invoke static method $method which has the signature
+        $methodSignature of class $class.
+
+    $ver = getVersion();
+        return current JVM version.
+
+    $value = getProperty($class, $member, $memberSignature);
+        return value of static member $member of class $class.
+
+    setProperty($class, $member, $memberSignature, $value);
+        set static member of class $class to $value.
+
+    dump($obj)
+        This function invokes "System.out.println($obj)" to dump the java
+        object $obj.
+
+AUTHOR
+        Ye, Wei yw@alabanza.net
+
+SEE ALSO
+        perl(1).
+
+        Java JNI Specification http://java.sun.com/j2se/1.3/docs/guide/jni/
+
+        JPL JPL is a very complex language, it allows you to invoke Java in
+        Perl as well as embed Perl in java. It's bundled with Perl5.6, and
+        you can get it at: http://users.ids.net/~bjepson/jpl/cvs.html
+
+
+--------------449DF2DA540DB67AF9D0D8AD--
+
+
+
+--------------1421FBF01BE90F9EE3D036B6--
+

@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:41064
+Return-Path: <ondr@mail.ru>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10769 invoked from network); 16 Jun 2005 11:05:01 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 16 Jun 2005 11:05:01 -0000
+Received: (qmail 8959 invoked by uid 225); 16 Jun 2005 11:05:00 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8952 invoked by alias); 16 Jun 2005 11:04:59 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of ondr@mail.ru designates 194.67.23.121 as permitted sender)
+Received: from mx1.mail.ru (HELO mx1.mail.ru) (194.67.23.121)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 16 Jun 2005 04:04:56 -0700
+Received: from [83.219.135.161] (port=50783 helo=ondr)
+	by mx1.mail.ru with asmtp 
+	id 1DisAy-000GUi-00
+	for modules@perl.org; Thu, 16 Jun 2005 15:04:49 +0400
+Message-ID: <003701c57263$375cbb00$0100a8c0@ondr>
+To: <modules@perl.org>
+Subject: Re: Module submission personal
+Date: Thu, 16 Jun 2005 14:04:39 +0300
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="koi8-r"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1106
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+Approved: news@nntp.perl.org
+From: ondr@mail.ru ("Andrian Zubko")
+
+> brain d foy:
+> they don't mention fixing the real problem: relative paths in @INC.
+> If you fix that, most of that problem is fixed.
+
+about what you talking about? i can't understand
+maybe you mean problem problem with relative paths on threaded mod_perl2?
+
+  # well, quick solution
+  use lib substr($ENV{SCRIPT_FILENAME}, rindex($ENV{SCRIPT_FILENAME}, '/'));
+
+> The other problem is when a user wants to load the same module
+> name, but from another location. Technology isn't going to fix
+> that problem. Don't choose names of modules that already exist
+> for your own, use a namespace that separates your modules from
+> everyone else's, or load the module by filename. That last one
+> is especially important: if you know that's the one you want
+> and that you don't want others, you have to make sure that's
+> the one you get. You can't rely on @INC to find one that has
+> a matching name.
+
+what you said it is not universal solution.
+and exists many many examples, where it's can't help.
+i have made universal solution
+
+> Besides all this, I don't think "personal" is a name that
+> describes what you are actually doing. Even with a good name,
+> you have to tailor a bunch of code to use it, which means you
+> could have just done the other fixes the mod_perl traps
+> suggests, I think.
+
+yes, i am renaming packages in compile time. the "personal" it is not best
+name for this operation
+but! user don't need to think about that:
+'use personal PACKAGE' - it said what user want use the PACKAGE only
+personaly! and no one other scripts
+will access to this loaded copy of PACKAGE. better name 'use local' but
+'local' is busy by built in directive.
+
+"to tailor a bunch of code to use it" - i am understanding, what my
+documentation is very pure. in
+near future i will write more and will be many examples.
+
+"mod_perl traps" - mod_perl1 have not other serious traps. mod_perl2 have,
+but not in this area.
+
+ps: i am understanding, what it is the last message in conversation, but..
+time will tell
+

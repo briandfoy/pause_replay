@@ -1,0 +1,76 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:2342 perl.modules:67
+Return-Path: <bpowers@ms.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 947 invoked from network); 15 Oct 1999 15:16:42 -0000
+Received: from piinbh1.ms.com (199.89.64.71)
+  by tmtowtdi.perl.org with SMTP; 15 Oct 1999 15:16:42 -0000
+Received: (from uucp@localhost)
+        by piinbh1.ms.com (8.8.6/fw v1.22) id LAA28907;
+        Fri, 15 Oct 1999 11:16:34 -0400 (EDT)
+Received: from unknown(144.14.19.186) by piinbh1 via smap (4.1)
+	id xma027860; Fri, 15 Oct 99 11:16:01 -0400
+Received: from POWERSBPC.ms.com (powersbpc.morgan.com [144.14.34.231])
+        by sasmh1.ms.com (8.8.5/hub+ldap v2.3) with SMTP id LAA02790;
+        Fri, 15 Oct 1999 11:16:00 -0400 (EDT)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <14343.17713.613000.103470@ms.com>
+Date: Fri, 15 Oct 1999 11:16:01 -0400 (Eastern Daylight Time)
+To: "Moore, Paul" <Paul.Moore@uk.origin-it.com>
+Cc: "'Michael King'" <mike808@my-Deja.com>, modules@perl.org,
+        perl5-porters@perl.org
+Subject: RE: NEW MODULE (pragma): import.pm 
+In-Reply-To: <714DFA46B9BBD0119CD000805FC1F53BB41591@UKRUX002.rundc.uk.origin-it.com>
+References: <714DFA46B9BBD0119CD000805FC1F53BB41591@UKRUX002.rundc.uk.origin-it.com>
+X-Mailer: VM 6.71 under 21.2  (beta18) "Toshima" XEmacs Lucid
+Approved: news@nntp.perl.org
+From: bpowers@ms.com ("Brent B. Powers")
+
+>>>>> "Paul Moore" == Moore, Paul <Paul.Moore@uk.origin-it.com> writes:
+
+    Paul Moore> From: Michael King [mailto:mike808@my-Deja.com]
+    >>  The WHOLE POINT of the module/pragma is to make
+    >> Really::Long::Namespaces::That::Programmers::Hate::To::Type
+    >> *alot* easier to use without cluttering up their program with
+    >> FQPNs. IMHO, it only adds noise to the code.
+
+    Paul Moore> That is a good goal. However, I'm not so sure that
+    Paul Moore> taking the Java approach works. I reiterate my earlier
+    Paul Moore> suggestion:
+
+    Paul Moore> use Alias qw(alias_package);
+    Paul Moore> alias_package 
+    Paul Moore> 'Really::Long::Namespaces::That::Programmers::Hate::To::Type' => RLNS;
+
+The only problem I have with this is that the alias ought not imply
+the use, i.e. 
+
+use Alias qw(alias_package);
+alias_package '......' => RLNS;
+use RLNS;
+
+This would also allow one to have a module of nought but aliases.
+
+
+    Paul Moore> (I bet that line gets wrapped somewhere :-)
+
+    Paul Moore> Effectively this steals an idea from C++ (namespace
+    Paul Moore> ABC = DEF) instead of from Java (import a.b.*).
+
+    Paul Moore> I am against wholesale importing in principle, and
+    Paul Moore> this "everything currently installed under this
+    Paul Moore> namespace" approach is a particularly extreme
+    Paul Moore> example. Particularly as installing new modules could
+    Paul Moore> silently change the effect. Imagine someone installing
+    Paul Moore> a new package XML::gotcha which included an exported
+    Paul Moore> subroutine open. This would silently override the
+    Paul Moore> builtin open for ANY module which did a use import
+    Paul Moore> 'XML::*'. That CAN'T be a good thing!
+
+    Paul Moore> Paul Moore.
+
+

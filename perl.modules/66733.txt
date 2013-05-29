@@ -1,0 +1,124 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:66733
+Return-Path: <inthrax@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 14021 invoked from network); 18 Jul 2009 00:07:30 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 18 Jul 2009 00:07:30 -0000
+Received: (qmail 2724 invoked by uid 225); 18 Jul 2009 00:07:29 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2719 invoked by alias); 18 Jul 2009 00:07:29 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=DK_SIGNED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-px0-f171.google.com (HELO mail-px0-f171.google.com) (209.85.216.171)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 17 Jul 2009 17:07:23 -0700
+Received: by pxi1 with SMTP id 1so567710pxi.24
+        for <modules@perl.org>; Fri, 17 Jul 2009 17:07:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:received:in-reply-to
+         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
+         :content-type:content-transfer-encoding;
+        bh=9F0CSWHyc9F9i6xjgQM2Q9/uG3p0L5PZZcZ7mb4KRM0=;
+        b=xbEIRb3f7vYCdrvBjBD2ZFUs9c+H+OKbuJxpUCNWV9rQurTHjdLVCOy4g1iY0rPqXC
+         1SC0gcZaWpDAqs7VV4jNz8TPCU8qfOJNxAXsgzyp9sEAsKe1ly2tOdOEHNkoCw4dOznS
+         mCp6ekmImqksZ2ge1cTJsnUrsxp+p26ZwSwSQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=wGUvAvKBXWYnvzXTCGLxRUApt6RchMgQMhomRjdRJhmnMUXROllOXJ2xrthPv/EQBz
+         p3Z3M3UXIgN4AGSgcIUHa4Ow7j5kPdNOMDer2ixkAc5AwbqkZBSHWFluk6F1p9Flwr0m
+         rjUTJFWOO1fFYti2j7wEUaOg/9doaaE0OrNU0=
+MIME-Version: 1.0
+Sender: inthrax@gmail.com
+Received: by 10.142.226.7 with SMTP id y7mr377433wfg.113.1247875639758; Fri, 
+	17 Jul 2009 17:07:19 -0700 (PDT)
+In-Reply-To: <20090717181812.GQ17782@agaton.scsys.co.uk>
+References: <200907130905.n6D95oZc022033@pause.perl.org>
+	 <20090716181112.GH17782@agaton.scsys.co.uk>
+	 <200907171655.15475.mons@cpan.org>
+	 <20090717181812.GQ17782@agaton.scsys.co.uk>
+Date: Sat, 18 Jul 2009 04:07:19 +0400
+X-Google-Sender-Auth: 1ac844c69ba94110
+Message-ID: <20f279210907171707o6f878261ref78feff870b4b1c@mail.gmail.com>
+Subject: Re: Module submission self::init
+To: Matt S Trout <mst@shadowcat.co.uk>
+Cc: modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: mons@cpan.org (Mons Anderson)
+
+On Fri, Jul 17, 2009 at 10:18 PM, Matt S Trout<mst@shadowcat.co.uk> wrote:
+> On Fri, Jul 17, 2009 at 04:55:15PM +0400, Mons Anderson wrote:
+>> On Thursday 16 July 2009 22:11:12 Matt S Trout wrote:
+>> > On Mon, Jul 13, 2009 at 11:05:50AM +0200, Perl Authors Upload Server wrote:
+>> > > The following module was proposed for inclusion in the Module List:
+>> > >
+>> > >   modid:       self::init
+>> > >   DSLIP:       Rdppp
+>> > >   description: Invoke package init methods at compile time
+>> > >   userid:      MONS (Mons Anderson)
+>> > >   chapterid:   27 (Pragma)
+>> > >   communities:
+>> > >
+>> > >   similar:
+>> > >
+>> > >   rationale:
+>> > >
+>> > >     This module mainly used for initialization with such modules like
+>> > >     Catalyst, DBIC, etc. So the main purpose is invoking self methods on
+>> > >     "self". Since the usage is pragmatic, the name is in lower case
+>> > >
+>> > >   enteredby:   MONS (Mons Anderson)
+>> > >   enteredon:   Mon Jul 13 09:05:49 2009 GMT
+>> > >
+>> > > The resulting entry would be:
+>> > >
+>> > > self::
+>> > > ::init            Rdppp Invoke package init methods at compile time  MONS
+>> >
+>
+> I still don't see what you gain over:
+>
+
+Ok, I'll try to explain.
+use constant DEBUG => 1 is better than BEGIN { *DEBUG = sub () { 1 } }
+use lib '/opt/lib' is better than BEGIN { @INC='opt/lib'; }
+use base 'Base::Package' is better than BEGIN { use Base::Package;
+push @ISA,'Base::Package'; }
+
+I'll gain
+
+use self::init
+  \-m1 => (args),
+  \-m2 => (args),
+;
+
+over
+
+BEGIN {
+  __PACKAGE__->m1(args);
+  __PACKAGE__->m2(args);
+}
+
+or over
+
+BEGIN {
+  for (__PACKAGE__) {
+    $_->m1(args);
+    $_->m2(args);
+  }
+}
+
+which one more linguistic as the perl itself?
+
+-- 
+Best wishes,
+Vladimir V. Perepelitsa aka Mons <inthrax@gmail.com>

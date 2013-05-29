@@ -1,0 +1,74 @@
+Newsgroups: perl.module.build,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.module.build:930 perl.modules:56863
+Return-Path: <xdaveg@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 5728 invoked from network); 22 Sep 2007 23:42:13 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 Sep 2007 23:42:13 -0000
+Received: (qmail 11004 invoked by uid 225); 22 Sep 2007 20:54:52 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10995 invoked by alias); 22 Sep 2007 20:54:51 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VERIFIED,DK_SIGNED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from wa-out-1112.google.com (HELO wa-out-1112.google.com) (209.85.146.178)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 22 Sep 2007 13:54:43 -0700
+Received: by wa-out-1112.google.com with SMTP id v27so1534553wah
+        for <modules@perl.org>; Sat, 22 Sep 2007 13:54:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        bh=ESVOChgDXu4rfNNPP4q2LWvloQ1y/d6C/td8S2xriTk=;
+        b=sJmzhEBfiU0Kw6p0rUJMpfgYP2cBPFnS5o+RSCMLK3JmkwXpQM1rUtQiFcavlg4RFRu1Cg9Na3yzG8X3CiJZ3D5gImVkGuSVjUy88WpBsGk9AGFK/GsF1nbQL1j9mPSWUN93lUf7F0YqObCmaEeLtQo5EVcxSVJvAxy9q3yF9a0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=VrqcznchFgvBmHISsES1f/9eoRGWh2sEL84RkJvY1DUum2XGJLODEgeyZrloBtGzQLgU5R1ke3uWAQUUY5aIKELPyL8QnBoWQ2b0fMW0vkcH2vuLb8VCa6KQD8rsoApA2r97yGBDPjvyfXQcoxES4L6nLO3oESiTL2dNcojPibA=
+Received: by 10.114.192.1 with SMTP id p1mr1613902waf.1190494479652;
+        Sat, 22 Sep 2007 13:54:39 -0700 (PDT)
+Received: by 10.140.127.12 with HTTP; Sat, 22 Sep 2007 13:54:39 -0700 (PDT)
+Message-ID: <5d4beb40709221354n2d0744ddve0ec69caa9bca9b0@mail.gmail.com>
+Date: Sat, 22 Sep 2007 16:54:39 -0400
+To: "Ken Williams" <kenahoo@gmail.com>
+Subject: Re: Which takes precedence, provides or no_index? (was Re: PAUSE indexer report MSCHWERN/Alien-SVN-1.4.5.2.tar.gz)
+Cc: "Michael G Schwern" <schwern@pobox.com>, modules@perl.org, 
+	"List - Module-Build" <module-build@perl.org>
+In-Reply-To: <69C984BE-C860-43ED-A8C3-28A5E3B9C32F@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <200709211146.l8LBkj8l024169@pause.perl.org>
+	 <46F3D9C8.2080401@pobox.com> <46F3DAB2.6010707@pobox.com>
+	 <5d4beb40709220646j70f599b3l916e675367bc8d3f@mail.gmail.com>
+	 <69C984BE-C860-43ED-A8C3-28A5E3B9C32F@gmail.com>
+Approved: news@nntp.perl.org
+From: xdaveg@gmail.com ("David Golden")
+
+On 9/22/07, Ken Williams <kenahoo@gmail.com> wrote:
+> My understanding is that "no_index" is only useful when "provides"
+> isn't there and an indexer has to guess what you provide.  When
+> "provides" is there, it should be exhaustive.  Note that the spec
+> says "indexers will usually trust the C<provides> field if it's
+> present."  That's just a recommendation from me to the owners of the
+> indexers, but I think it's one they follow.
+>
+> So in Schwern's case, "provides" should indeed win, and furthermore
+> you should be able to just remove "no_index" altogether.
+
+If you're saying that if "provides" is there, indexers should *only*
+index those and not do any other searching?  I don't think that's the
+case for search.cpan.org, as I seem to recall that failing to include
+"inc" or "examples" directories in no_index wind up with them being
+indexed for .pm files.  "t" directories are ignored, I think, but
+that's it as far as I know.
+
+Time permitting, I suggest that the META.yml spec be updated with some
+tighter "must", "should", "shouldn't" kind of language to make these
+kinds of cases more explicit.
+
+Regards,
+David

@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3426
+Return-Path: <gisle@ActiveState.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14478 invoked from network); 8 Nov 2000 16:26:41 -0000
+Received: from gw.activestate.com (HELO caliper.ActiveState.com) (209.17.183.249)
+  by tmtowtdi.perl.org with SMTP; 8 Nov 2000 16:26:41 -0000
+Received: (from gisle@localhost)
+	by caliper.ActiveState.com (8.9.3/8.9.3) id IAA11660;
+	Wed, 8 Nov 2000 08:25:47 -0800
+X-Authentication-Warning: caliper.ActiveState.com: gisle set sender to gisle@ActiveState.com using -f
+Sender: gisle@caliper.ActiveState.com
+To: Michael Stevens <michael@etla.org>
+Cc: "Andreas J. Koenig" <andreas.koenig@anima.de>, modules@perl.org
+Subject: Re: Python namespace (Was: PAUSE ID request)
+References: <20001107191454.A30537@firedrake.org>
+	<m3n1fa1y7o.fsf@ak-71.mind.de> <20001108155007.A3649@firedrake.org>
+Date: 08 Nov 2000 08:25:47 -0800
+In-Reply-To: Michael Stevens's message of "Wed, 8 Nov 2000 15:50:08 +0000"
+Message-ID: <lry9yuh1mc.fsf@caliper.ActiveState.com>
+Lines: 41
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.5
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: gisle@ActiveState.com (Gisle Aas)
+
+Michael Stevens <michael@etla.org> writes:
+
+> On Wed, Nov 08, 2000 at 12:48:27PM +0100, Andreas J. Koenig wrote:
+> > >>>>> On Tue, 7 Nov 2000 19:14:54 +0000, Michael Stevens <michael@etla.org> said:
+> >  > Modules:
+> >  > Python - a small module for embedding a python interpreter in perl,
+> >  > as soon as I find my copy of the source, and clean it up.
+> > Please speak with Gisle (CC'd) who has done that already and has
+> > presented it at the last perl conference. Please let us know how you
+> > would envision the future of the Python namespace.
+> 
+> I've had a chance to see what Gisle has done now, and his wheels seem to
+> be currently significantly rounder than my own. Accordingly I no longer
+> propose to submit my code to CPAN currently.
+
+You probably noticed that what I did was basically to embed perl in
+python, not the other way around as your original plan was.  The
+interfaces go between languages both ways, but with my stuff things
+need to be bootstrapped from python currently.  Some more patching is
+needed to make it bootstrap from perl.
+
+Anyway, I think the Zope-free stuff of what we did should go to CPAN.
+It currently lives in:
+
+   ftp://ftp.activestate.com/Zope-Perl/pyperl-1.0.beta2.tar.gz
+
+At the top level it uses python's answer to Makefile.PL (called
+'setup.py') and inside the sub directory 'Python-Object' contains a
+traditional perl XS extension. Will CPAN's indexer manage to figure
+out what part of perl's Python:: namespace it uses if I upload it as
+it is?
+
+If not, then perhaps we should add some entries to the module list:
+
+Python     bmcf    Interface to the Python API (for embedded python)
+Python::
+::Object   bmcO    Wrapper for python objects
+::Err      bmcO    Wrapper for python exceptions
+
+Regards,
+Gisle

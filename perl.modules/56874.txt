@@ -1,0 +1,96 @@
+Newsgroups: perl.module.build,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.module.build:932 perl.modules:56874
+Return-Path: <kenahoo@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 14613 invoked from network); 23 Sep 2007 05:22:17 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 23 Sep 2007 05:22:17 -0000
+Received: (qmail 11233 invoked by uid 225); 23 Sep 2007 03:04:47 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11226 invoked by alias); 23 Sep 2007 03:04:46 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VERIFIED,DK_SIGNED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from wa-out-1112.google.com (HELO wa-out-1112.google.com) (209.85.146.179)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 22 Sep 2007 20:04:32 -0700
+Received: by wa-out-1112.google.com with SMTP id v27so1619952wah
+        for <modules@perl.org>; Sat, 22 Sep 2007 20:04:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:in-reply-to:references:mime-version:content-type:message-id:cc:content-transfer-encoding:from:subject:date:to:x-mailer;
+        bh=3DpB9NZIOXuiliVQfmYNZZ1OTjGu3/ihxfFn8wJoBa0=;
+        b=ek7RhcsB5y4A21DStxz6iMVZioN4W6E4/VVnARBoefU2aObGyB/eEaPFIt6HOywOoPOT91/STe35zUbuXxtmOVmRrTAabr6BFDIKLVkYmynDH3VMHsdBNx1vvjPz2ITkRLvpQV9yrJp+nBrtdg69/WOfr5aVc8aXMwQvJxsZgcs=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:in-reply-to:references:mime-version:content-type:message-id:cc:content-transfer-encoding:from:subject:date:to:x-mailer;
+        b=OAiz3j/LrQKlgD2ceKe9tGKh0qMcRYz+DDwf1a7+V9c8XJFoUQt5ldrxCEh9NaSrtoRX7jhHbwOBLl32vDJaOIf9jNNZQioK0H4ZuTVeEZcHs/44NvCc5EiTMQvoz/iN7IGglUG6zFmPd6opr0vHcMTeIv0uI+dIdwQHOtduJ+M=
+Received: by 10.114.60.19 with SMTP id i19mr214264waa.1190516668608;
+        Sat, 22 Sep 2007 20:04:28 -0700 (PDT)
+Received: from ?192.168.0.101? ( [71.215.199.117])
+        by mx.google.com with ESMTPS id m28sm2957964waf.2007.09.22.20.04.26
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sat, 22 Sep 2007 20:04:27 -0700 (PDT)
+In-Reply-To: <5d4beb40709221354n2d0744ddve0ec69caa9bca9b0@mail.gmail.com>
+References: <200709211146.l8LBkj8l024169@pause.perl.org> <46F3D9C8.2080401@pobox.com> <46F3DAB2.6010707@pobox.com> <5d4beb40709220646j70f599b3l916e675367bc8d3f@mail.gmail.com> <69C984BE-C860-43ED-A8C3-28A5E3B9C32F@gmail.com> <5d4beb40709221354n2d0744ddve0ec69caa9bca9b0@mail.gmail.com>
+Mime-Version: 1.0 (Apple Message framework v752.2)
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Message-ID: <396C9BED-2232-4BAA-8377-E4182349AD8F@gmail.com>
+Cc: "Michael G Schwern" <schwern@pobox.com>,
+ modules@perl.org,
+ "List - Module-Build" <module-build@perl.org>
+Content-Transfer-Encoding: 7bit
+Subject: Re: Which takes precedence, provides or no_index? (was Re: PAUSE indexer report MSCHWERN/Alien-SVN-1.4.5.2.tar.gz)
+Date: Sat, 22 Sep 2007 22:04:22 -0500
+To: David Golden <xdaveg@gmail.com>
+X-Mailer: Apple Mail (2.752.2)
+Approved: news@nntp.perl.org
+From: kenahoo@gmail.com (Ken Williams)
+
+
+On Sep 22, 2007, at 3:54 PM, David Golden wrote:
+
+> On 9/22/07, Ken Williams <kenahoo@gmail.com> wrote:
+>> My understanding is that "no_index" is only useful when "provides"
+>> isn't there and an indexer has to guess what you provide.  When
+>> "provides" is there, it should be exhaustive.  Note that the spec
+>> says "indexers will usually trust the C<provides> field if it's
+>> present."  That's just a recommendation from me to the owners of the
+>> indexers, but I think it's one they follow.
+>>
+>> So in Schwern's case, "provides" should indeed win, and furthermore
+>> you should be able to just remove "no_index" altogether.
+>
+> If you're saying that if "provides" is there, indexers should *only*
+> index those and not do any other searching?
+
+Yeah, more or less.  I don't control the indexers, though, so of  
+course they can do whatever they want.  And of course each indexer  
+can have a different purpose from the others, so there's no one-size- 
+fits-all declaration for them.
+
+For instance, PAUSE indexes are intended for the use case I  
+mentioned: if you want to get Foo::Bar, install version X of  
+distribution Foo.  But search.cpan.org probably wants to be more  
+liberal, so that if you want to find all places where a Foo::Bar  
+module is created in CPAN, it'll show it to you (subject to whatever  
+Graham finds prudent).
+
+
+> Time permitting, I suggest that the META.yml spec be updated with some
+> tighter "must", "should", "shouldn't" kind of language to make these
+> kinds of cases more explicit.
+
+I think the META spec shouldn't add that kind of language, actually,  
+because as I mentioned above, various consumers of the metadata can  
+be doing very different things with it.  I think the spec needs to be  
+more explicit about what it *means* to put a certain value in a  
+certain field, though, so that consumers of META.yml can understand  
+exactly what the author is asserting about their distribution in it.   
+I agree that at the moment those consumers only have a vague idea  
+about what "no_index" and "provides" really mean.
+
+  -Ken
+

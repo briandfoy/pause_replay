@@ -1,0 +1,74 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21884
+Return-Path: <root@schmorp.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 71807 invoked by uid 76); 18 Jun 2003 10:12:42 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Wed, 18 Jun 2003 03:12:42 -0700
+Received: (qmail 26106 invoked by uid 225); 18 Jun 2003 10:12:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26101 invoked by uid 507); 18 Jun 2003 10:12:40 -0000
+Received: from islay.mach.uni-karlsruhe.de (HELO mailout.schmorp.de) (129.13.162.92) by one.develooper.com (qpsmtpd/0.26) with SMTP; Wed, 18 Jun 2003 03:12:37 -0700
+Received: from [10.0.0.1] (helo=fuji.laendle)	by mailout.schmorp.de with esmtp (Exim 4.20)	id 19SZvZ-0003QY-Sm	for modules@perl.org; Wed, 18 Jun 2003 12:12:29 +0200
+Received: from root by fuji.laendle with local (Exim 3.33 #1)	id 19SZvZ-00008Z-00	for modules@perl.org; Wed, 18 Jun 2003 12:12:29 +0200
+Date: Wed, 18 Jun 2003 12:12:29 +0200
+To: modules@perl.org
+Subject: Gtk2 module family splitup, and corresponding module names
+Message-ID: <20030618101229.GA370@schmorp.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-Operating-System: Linux version 2.4.21-rc7 (root@cerebro) (gcc version 3.3 (Debian)) 
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.8 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: pcg@goof.com (( Marc) (A.) (Lehmann ))
+
+(I am not on the list, a courtesy cc is appreciated)
+
+Hi,
+
+The Gtk module (on cpan for years) uses a lot of namespace (Gtk, Gnome,
+Bonobo), because they all have a common origin, but not necessarily the
+same target audience.
+
+With the Gtk2 module, it is very similar (Gtk2, Glib, Gnome2), but I
+intend to seperate these into seperate modules, as especially Glib is
+very usable in non Gtk2-programs, the same is true for Gtk2 vs. Gnome.
+(gnu/linux distributions split it into submodules for this very reason).
+
+Right now, I intend to at least split Glib into it's own module (and
+register the namespace for it).
+
+The full list of packages right now is:
+
+   Glib
+      Glib::Object
+      Glib::PkgConfig
+   Gnome2
+      Gnome2::Print
+   Gtk2
+      Gtk2::Gdk::Atom
+      Gtk2::GladeXML
+      Gtk2::ItemFactory
+      Gtk2::Spell
+
+Lending itself to three modules naturally.
+
+Also, the category I'd chose for glib (utility library, object model,
+event multiplexor and more) right now would be "23 Misc.", which is pretty
+undescriptive but ok for Glib, which is widely known.
+
+Any comments before I start registering the additional namespaces?
+
+-- 
+      -----==-                                             |
+      ----==-- _                                           |
+      ---==---(_)__  __ ____  __       Marc Lehmann      +--
+      --==---/ / _ \/ // /\ \/ /       pcg@goof.com      |e|
+      -=====/_/_//_/\_,_/ /_/\_\       XX11-RIPE         --+
+    The choice of a GNU generation                       |
+                                                         |

@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2388
+Return-Path: <gbarr@gbarr.demon.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15993 invoked from network); 7 Jul 2000 14:23:35 -0000
+Received: from anchor-post-34.mail.demon.net (194.217.242.92)
+  by tmtowtdi.perl.org with SMTP; 7 Jul 2000 14:23:35 -0000
+Received: from gbarr.demon.co.uk ([194.222.72.232])
+	by anchor-post-34.mail.demon.net with esmtp (Exim 2.12 #1)
+	id 13AZ2R-0003sb-0Y; Fri, 7 Jul 2000 15:23:31 +0100
+Received: from chipper.localdomain (local12.localdomain [192.168.1.12])
+	by gbarr.demon.co.uk (8.9.3/8.9.3) with ESMTP id PAA29240;
+	Fri, 7 Jul 2000 15:10:55 +0100
+Received: (from gbarr@localhost)
+	by chipper.localdomain (8.9.3/8.9.3/SuSE Linux 8.9.3-0.1) id PAA11364;
+	Fri, 7 Jul 2000 15:19:29 +0100
+Date: Fri, 7 Jul 2000 15:19:29 +0100
+To: "Kurt D. Starsinic" <kstar@chapin.edu>
+Cc: Michael G Schwern <schwern@pobox.com>, modules@perl.org
+Subject: Re: Class::WhiteHole
+Message-ID: <20000707151929.S465@pobox.com>
+Mail-Followup-To: "Kurt D. Starsinic" <kstar@chapin.edu>,
+	Michael G Schwern <schwern@pobox.com>, modules@perl.org
+References: <20000707042639.A1219@blackrider.aocn.com> <20000707095840.B17806@O2.chapin.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3i
+In-Reply-To: <20000707095840.B17806@O2.chapin.edu>
+Approved: news@nntp.perl.org
+From: gbarr@pobox.com (Graham Barr)
+
+On Fri, Jul 07, 2000 at 09:58:40AM -0400, Kurt Starsinic wrote:
+> On Fri, Jul 07, 2000 at 04:26:39AM -0400, Michael G Schwern wrote:
+> > Name                    DSLI    Description                     Info
+> > --------------------    ----    -----------------------------   --------
+> > Class::WhiteHole        adpO    Blocks autoloader inheritance   MSCHWERN
+> > 
+> > 
+> > So, this module might be a little silly, but I had a need.  This does
+> > the reverse of Class::BlackHole, all unhandled methods become normal
+> > errors as if no autoloader existed.  Useful if you've accidentally
+> > inherited an autoloader and its making your class's error messages
+> > look funny.  Class::DBI and Ima::DBI have such a problem.
+> 
+>     The module isn't silly at all, but the name isn't too expressive.
+> Maybe something like Class::NoAutoInherit or something?
+
+Even that name is ambigious as it implies (to me) no automatic inheritance,
+which I know sounds silly. Maybe Class::NoAutoLoader;
+
+I have not looked at the code, but I assume it works by Class::WhiteHole 
+defining an AUTOLOAD sub which just dies. If so then I would consider a
+patch to AutoLoader.pm which allows
+
+  no AutoLoader;
+
+It would just need to do somethig like
+
+sub unimport {
+  my $caller = caller;
+  *{"$caller\::AUTOLOAD} = \&noAUTOLOAD;
+}
+
+Where noAUTOLOAD is defined in AutoLoader.pm
+
+
+Graham.
+

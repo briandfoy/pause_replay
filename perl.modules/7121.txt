@@ -1,0 +1,498 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7121
+Return-Path: <ron@broadcom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17351 invoked from network); 21 Aug 2001 05:11:29 -0000
+Received: from mms1.broadcom.com (63.70.210.58)
+  by onion.valueclick.com with SMTP; 21 Aug 2001 05:11:29 -0000
+Received: from 63.70.210.1 by mms1.broadcom.com with ESMTP (Broadcom
+ MMS-1 SMTP Relay (MMS v4.7)); Mon, 20 Aug 2001 22:11:25 -0700
+X-Server-Uuid: 1e1caf3a-b686-11d4-a6a3-00508bfc9ae5
+Received: from mail-sj1-1.sj.broadcom.com (mail-sj1-1.sj.broadcom.com
+ [10.16.128.231]) by mon-irva-11.broadcom.com (8.9.1/8.9.1) with ESMTP
+ id WAA19092 for <modules@perl.org>; Mon, 20 Aug 2001 22:11:28 -0700 (
+ PDT)
+Received: from pcsj000515 (dhcpe1-sj1-498 [10.16.66.244]) by
+ mail-sj1-1.sj.broadcom.com (8.8.8/8.8.8/MS01) with SMTP id WAA19310 for
+ <modules@perl.org>; Mon, 20 Aug 2001 22:11:28 -0700 (PDT)
+To: modules@perl.org
+Subject: Btrees.pm
+Date: Mon, 20 Aug 2001 22:12:20 -0700
+Message-ID: <002101c129ff$daa01c90$f442100a@sj.broadcom.com>
+MIME-Version: 1.0
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
+X-WSS-ID: 179F32F7420704-01-01
+Content-Type: multipart/mixed; 
+ boundary="----=_NextPart_000_0022_01C129C5.2E414490"
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: ron@broadcom.com ("Ron Squiers")
+
+------=_NextPart_000_0022_01C129C5.2E414490
+Content-Type: text/plain; 
+ charset=iso-8859-1
+Content-Transfer-Encoding: 7bit
+
+Hi Tim or Andreas,
+
+I poked http://search.cpan.org/search?module=Tree::Base but there was
+nothing there. I've instead used and tested the AVL tree code from
+"Mastering Algorithms with Perl" by Jon Orwant, Jarkko Hietaniemi & John
+Macdonald. There were bugs in the book, which I've fixed, tested and added a
+list routine. Would it be legal to post this module or do I need O'Reilly's
+permission first?
+
+Thanks,
+-Ron
+
+=============================================================
+Ron Squiers                           mailto:ron@broadcom.com
+Broadcom Corporation                  http://www.broadcom.com
+Security Line of Business             3151 Zanker Road
+408.501.8443 (direct)                 San Jose CA 95134
+408.501.8460 (fax)                    510.390.1278 (cell)
+
+------=_NextPart_000_0022_01C129C5.2E414490
+Content-Type: application/octet-stream; 
+ name=Btrees.pm
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment; 
+ filename=Btrees.pm
+
+=0A=
+package Btrees;=0A=
+$VERSION=3D1.00;=0A=
+=0A=
+require 5.000;=0A=
+require Exporter;=0A=
+=0A=
+=3Dhead1 NAME=0A=
+=0A=
+    Btrees - Binary trees using the AVL balancing method.=0A=
+=0A=
+=3Dhead1 SYNOPSIS=0A=
+=0A=
+    # yes, do USE the package ...=0A=
+    use Btrees;=0A=
+=0A=
+    # no constructors=0A=
+=0A=
+    # traverse a tree and invoke a function=0A=
+    traverse( $tree, $func );=0A=
+=0A=
+    # find a node in a balanced tree=0A=
+    $node =3D bal_tree_find( $tree, $val $cmp );=0A=
+=0A=
+    # add a node in a balanced tree, rebalancing if required =0A=
+    ($tree, $node) =3D bal_tree_add( $tree, $val, $cmp )=0A=
+=0A=
+    # delete a node in a balanced tree, rebalancing if required =0A=
+    ($tree, $node) =3D bal_tree_del( $tree, $val , $cmp )=0A=
+=0A=
+=3Dhead1 DESCRIPTION=0A=
+=0A=
+    Btrees uses the AVL balancing method, by G. M. Adelson-Velskii=0A=
+    and E.M. Landis. Bit scavenging, as done in low level languages like=0A=
+    C, is not used for height balancing since this is too expensive for=0A=
+    an interpreter. Instead the actual height of each subtree is stored=0A=
+    at each node. A null pointer has a height of zero. A leaf a height of=0A=
+    1. A nonleaf a height of 1 greater than the height of its two =
+children.=0A=
+=0A=
+=3Dhead1 AUTHOR=0A=
+=0A=
+ Ron Squiers (ron@broadcom.com). Adapted from "Mastering Algorithms with=0A=
+ Perl" by Jon Orwant, Jarkko Hietaniemi & John Macdonald. Copyright=0A=
+ 1999 O'Reilly and Associates, Inc. All right reserved. ISBN: =
+1-56592-398-7=0A=
+=0A=
+=3Dcut=0A=
+=0A=
+@ISA =3D qw(Exporter);=0A=
+@EXPORT =3D qw( traverse bal_tree_find bal_tree_add bal_tree_del list );=0A=
+=0A=
+#########################################=0A=
+#=0A=
+# Method: list=0A=
+#=0A=
+# List $tree in order in turn=0A=
+#=0A=
+# list( $tree );=0A=
+#=0A=
+sub list {=0A=
+    my $tree =3D shift or return undef;=0A=
+=0A=
+    local $max =3D $tree->{height};=0A=
+    sub List {=0A=
+        my $tree =3D shift;=0A=
+=0A=
+        my $height =3D $tree->{height} || $max;=0A=
+	while( $max - $height ) { print "  "; $height++; }=0A=
+        printf("0x%x\n", $tree->{val});=0A=
+    }=0A=
+    my $func =3D \&List;=0A=
+    traverse( $tree, $func );=0A=
+}=0A=
+=0A=
+#########################################=0A=
+#=0A=
+# Method: traverse=0A=
+#=0A=
+# Traverse $tree in order, calling $func() for each element.=0A=
+#    in turn =0A=
+# traverse( $tree, $func );=0A=
+#=0A=
+sub traverse {=0A=
+    my $tree =3D shift or return;	# skip undef pointers=0A=
+    my $func =3D shift;=0A=
+=0A=
+    traverse( $tree->{left}, $func );=0A=
+    &$func( $tree );=0A=
+    traverse( $tree->{right}, $func );=0A=
+}=0A=
+=0A=
+#########################################=0A=
+#=0A=
+# Method: bal_tree_find=0A=
+#=0A=
+# Traverse $tree in order, calling $func() for each element.=0A=
+#    in turn =0A=
+# $node =3D bal_tree_find( $tree, $val[, $cmp ] );=0A=
+#=0A=
+sub bal_tree_find {=0A=
+    my( $tree, $val, $cmp) =3D @_;=0A=
+    my $result;=0A=
+=0A=
+    while ( $tree ) {=0A=
+	my $relation =3D defined $cmp=0A=
+	    ? $cmp->( $val, $tree->{val} )=0A=
+	    : $val <=3D> $tree->{val};=0A=
+=0A=
+	    ### Stop when the desired node if found.=0A=
+	    return $tree if $relation =3D=3D 0;=0A=
+=0A=
+	    ### Go down the correct subtree.=0A=
+	    $tree =3D $relation < 0 ? $tree->{left} : $tree->{right};=0A=
+	}=0A=
+=0A=
+	### The desired node doesn't exist.=0A=
+	return undef;=0A=
+}=0A=
+=0A=
+#########################################=0A=
+#=0A=
+# Method: bal_tree_add=0A=
+#=0A=
+# Search $tree looking for a node that has the value $val,=0A=
+#    add it if it does not already exist. =0A=
+# If provided, $cmp compares values instead of <=3D>. =0A=
+#=0A=
+# ($tree, $node) =3D bal_tree_add( $tree, $val, $cmp )=0A=
+# the return values:=0A=
+#    $tree points to the (possible new or changed) subtree that=0A=
+#	has resulted from the add operation.=0A=
+#    $node points to the (possibly new) node that contains $val=0A=
+#=0A=
+sub bal_tree_add {=0A=
+    my( $tree, $val, $cmp) =3D @_;=0A=
+    my $result;=0A=
+=0A=
+    unless ( $tree ) {=0A=
+	$result =3D { =0A=
+		left	=3D> undef,=0A=
+		right	=3D> undef,=0A=
+		val	=3D> $val,=0A=
+		height	=3D> 1=0A=
+	    };=0A=
+	return( $result, $result );=0A=
+    }=0A=
+=0A=
+    my $relation =3D defined $cmp=0A=
+	? $cmp->( $val, $tree->{val} )=0A=
+	: $val <=3D> $tree->{val};=0A=
+=0A=
+    ### Stop when the desired node if found.=0A=
+    return ( $tree, $tree ) if $relation =3D=3D 0;=0A=
+=0A=
+    ### Add to the correct subtree.=0A=
+    if( $relation < 0 ) {=0A=
+	($tree->{left}, $result) =3D=0A=
+	    bal_tree_add ( $tree->{left}, $val, $cmp );=0A=
+    } else {=0A=
+	($tree->{right}, $result) =3D=0A=
+	    bal_tree_add ( $tree->{right}, $val, $cmp );=0A=
+    }=0A=
+=0A=
+    ### Make sure that this level is balanced, return the=0A=
+    ###    (possibly changed) top and the (possibly new) selected node. =0A=
+    return ( balance_tree( $tree ), $result );=0A=
+}=0A=
+=0A=
+#########################################=0A=
+#=0A=
+# Method: bal_tree_del=0A=
+#=0A=
+# Search $tree looking for a node that has the value $val,=0A=
+#    and delete it if it does not already exist. =0A=
+# If provided, $cmp compares values instead of <=3D>. =0A=
+#=0A=
+# ($tree, $node) =3D bal_tree_del( $tree, $val , $cmp )=0A=
+#=0A=
+# the return values:=0A=
+#    $tree points to the (possible empty or changed) subtree that=0A=
+#	has resulted from the delete operation.=0A=
+#    if found, $node points to the node that contains $val=0A=
+#    if not found, $node is undef =0A=
+#=0A=
+sub bal_tree_del {=0A=
+    # An empty (sub)tree does not contain the target.=0A=
+    my $tree =3D shift or return (undef,undef);=0A=
+=0A=
+    my ($val, $cmp) =3D @_;=0A=
+    my $node;=0A=
+=0A=
+    my $relation =3D defined $cmp=0A=
+	? $cmp->( $val, $tree->{val} )=0A=
+	: $val <=3D> $tree->{val};=0A=
+=0A=
+    if( $relation !=3D 0 ) {=0A=
+	### Not this node, go down the tree.=0A=
+	if( $relation < 0 ) {=0A=
+	    ($tree->{left}, $node) =3D=0A=
+		bal_tree_del ( $tree->{left}, $val, $cmp );=0A=
+	} else {=0A=
+	    ($tree->{right}, $node) =3D=0A=
+		bal_tree_del ( $tree->{right}, $val, $cmp );=0A=
+	}=0A=
+=0A=
+	### No balancing required if it wasn't found. =0A=
+	return ( $tree, undef ) unless $node;=0A=
+    } else {=0A=
+	# Must delete this node. Remember it to return it,=0A=
+	$node =3D $tree;=0A=
+=0A=
+	# but splice the rest of the tree back together first=0A=
+	$tree =3D bal_tree_join( $tree->{left}, $tree->{right} );=0A=
+=0A=
+	# and make the deleted node forget its children (precaution=0A=
+	# in case the caller tries to use the node).=0A=
+	$node->{left} =3D $node->{right} =3D undef;=0A=
+    }=0A=
+=0A=
+    ### Make sure that this level is balanced, return the=0A=
+    ###    (possibly undef) selected node.=0A=
+    return ( balance_tree($tree), $node );=0A=
+}=0A=
+=0A=
+#########################################=0A=
+#=0A=
+# Method: bal_tree_join=0A=
+#=0A=
+# Join two trees together into a single tree=0A=
+#=0A=
+# the return values:=0A=
+#    $tree points to the joined subtrees that has resulted from=0A=
+#	the join operation.=0A=
+#=0A=
+sub bal_tree_join {=0A=
+    my ($l, $r) =3D @_;=0A=
+=0A=
+    ### Simple case - onr or both is null.=0A=
+    return $l unless defined $r;=0A=
+    return $r unless defined $l;=0A=
+=0A=
+    ### Nope - we've got two real trees to merge here.=0A=
+    my $top;=0A=
+=0A=
+    if ( $l->{height} > $r->{height} ) {=0A=
+	$top =3D $l;=0A=
+	$top->{right} =3D bal_tree_join( $top->{right}, $r );=0A=
+    } else {=0A=
+	$top =3D $r;=0A=
+	$top->{left} =3D bal_tree_join( $l, $top->{left} );=0A=
+    }=0A=
+    return balance_tree( $top );=0A=
+}=0A=
+=0A=
+#########################################=0A=
+#=0A=
+# Method: balance_tree=0A=
+#=0A=
+# Balance a potentially out of balance tree =0A=
+#=0A=
+# the return values:=0A=
+#    $tree points to the balanced tree root=0A=
+#=0A=
+sub balance_tree {=0A=
+    ### An empty tree is balanced already.=0A=
+    my $tree =3D shift or return undef;=0A=
+=0A=
+    ### An empty link is height 0.=0A=
+    my $lh =3D defined $tree->{left} && $tree->{left}{height};=0A=
+    my $rh =3D defined $tree->{right} && $tree->{right}{height};=0A=
+=0A=
+    ### Rebalance if needed, return the (possibly changed) root.=0A=
+    if ( $lh > 1+$rh ) {=0A=
+	return swing_right( $tree );=0A=
+    } elsif ( $lh+1 < $rh ) {=0A=
+	return swing_left( $tree );=0A=
+    } else {=0A=
+	### Tree is either perfectly balanced or off by one.=0A=
+	### Just fix its height.=0A=
+	set_height( $tree );=0A=
+	return $tree;=0A=
+    }=0A=
+} =0A=
+=0A=
+#########################################=0A=
+#=0A=
+# Method: set_height=0A=
+#=0A=
+# Set height of a node =0A=
+#=0A=
+sub set_height {=0A=
+    my $tree =3D shift;=0A=
+=0A=
+    my $p;=0A=
+    ### get heights, an undef node is height 0.=0A=
+    my $lh =3D defined ( $p =3D $tree->{left}  ) && $p->{height};=0A=
+    my $rh =3D defined ( $p =3D $tree->{right} ) && $p->{height};=0A=
+    $tree->{height} =3D $lh < $rh ? $rh+1 : $lh+1;=0A=
+}=0A=
+=0A=
+#########################################=0A=
+#=0A=
+# Method: $tree =3D swing_left( $tree )=0A=
+#=0A=
+# Change        t       to      r      or       rl=0A=
+#              / \             / \            /    \ =0A=
+#             l   r           t   rr         t      r=0A=
+#                / \         / \            / \    / \=0A=
+#               rl  rr      l   rl         l  rll rlr rr=0A=
+#              /  \            / \=0A=
+#            rll  rlr        rll rlr=0A=
+#=0A=
+# t and r must both exist.=0A=
+# The second form is used if height of rl is greater than height of rr=0A=
+# (since the form would then lead to the height of t at least 2 more=0A=
+# than the height of rr).=0A=
+#=0A=
+# changing to the second form is done in two steps, with first a =
+move_right(r)=0A=
+# and then a move_left(t), so it goes:=0A=
+#=0A=
+# Change        t       to      t   and then to   rl=0A=
+#              / \             / \              /    \ =0A=
+#             l   r           l   rl           t      r=0A=
+#                / \             / \          / \    / \=0A=
+#               rl  rr         rll  r        l  rll rlr rr=0A=
+#              /  \                / \=0A=
+#            rll  rlr            rlr  rr=0A=
+#=0A=
+sub swing_left {=0A=
+    my $tree =3D shift;=0A=
+=0A=
+    my $r =3D $tree->{right};	# must exist=0A=
+    my $rl =3D $r->{left};	# might exist=0A=
+    my $rr =3D $r->{right};	# might exist=0A=
+    my $l =3D $tree->{left};	# might exist=0A=
+=0A=
+    ### get heights, an undef node has height 0=0A=
+    my $lh =3D $l && $l->{height} || 0;=0A=
+    my $rlh =3D $rl && $rl->{height} || 0;=0A=
+    my $rrh =3D $rr && $rr->{height} || 0;=0A=
+=0A=
+    if ( $rlh > $rrh ) {=0A=
+	$tree->{right} =3D move_right( $r );=0A=
+    }=0A=
+=0A=
+    return move_left( $tree );=0A=
+}=0A=
+=0A=
+# and the opposite swing=0A=
+=0A=
+sub swing_right {=0A=
+    my $tree =3D shift;=0A=
+=0A=
+    my $l =3D $tree->{left};	# must exist=0A=
+    my $lr =3D $l->{right};	# might exist=0A=
+    my $ll =3D $l->{left};	# might exist=0A=
+    my $r =3D $tree->{right};	# might exist =0A=
+=0A=
+    ### get heights, an undef node has height 0=0A=
+    my $rh =3D $r && $r->{height} || 0;=0A=
+    my $lrh =3D $lr && $lr->{height} || 0;=0A=
+    my $llh =3D $ll && $ll->{height} || 0;=0A=
+=0A=
+    if ( $lrh > $llh ) {=0A=
+	$tree->{left} =3D move_left( $l );=0A=
+    }=0A=
+=0A=
+    return move_right( $tree );=0A=
+}=0A=
+=0A=
+#########################################=0A=
+#=0A=
+# Method: $tree =3D move_left( $tree )=0A=
+#=0A=
+# Change        t       to      r=0A=
+#              / \             / \=0A=
+#             l   r           t   rr=0A=
+#                / \         / \=0A=
+#               rl  rr      l   rl=0A=
+#=0A=
+# caller has determined that t and r both exist=0A=
+#    (l can be undef, so can one of rl and rr)=0A=
+#=0A=
+sub move_left {=0A=
+    my $tree =3D shift;=0A=
+    my $r =3D $tree->{right};=0A=
+    my $rl =3D $r->{left};=0A=
+=0A=
+    $tree->{right} =3D $rl;=0A=
+    $r->{left} =3D $tree;=0A=
+    set_height( $tree );=0A=
+    set_height( $r );=0A=
+    return $r;=0A=
+}=0A=
+=0A=
+#########################################=0A=
+#=0A=
+# Method: $tree =3D move_right( $tree )=0A=
+#=0A=
+# Change        t       to      l=0A=
+#              / \             / \=0A=
+#             l   r          ll   t=0A=
+#            / \                 / \=0A=
+#           ll  lr             lr   r=0A=
+#=0A=
+# caller has determined that t and l both exist=0A=
+#    (r can be undef, so can one of ll and lr)=0A=
+#=0A=
+sub move_right {=0A=
+    my $tree =3D shift;=0A=
+    my $l =3D $tree->{left};=0A=
+    my $lr =3D $l->{right};=0A=
+=0A=
+    $tree->{left} =3D $lr;=0A=
+    $l->{right} =3D $tree;=0A=
+    set_height( $tree );=0A=
+    set_height( $l );=0A=
+    return $l;=0A=
+}=0A=
+=0A=
+#########################################=0A=
+# That's all folks ...=0A=
+#########################################=0A=
+#=0A=
+1;  # so that use() returns true=0A=
+=0A=
+
+------=_NextPart_000_0022_01C129C5.2E414490--
+

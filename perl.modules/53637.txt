@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53637
+Return-Path: <kurt@tengil.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 31950 invoked from network); 21 Mar 2007 07:15:03 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 21 Mar 2007 07:15:03 -0000
+Received: (qmail 4862 invoked by uid 225); 21 Mar 2007 07:15:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4831 invoked by alias); 21 Mar 2007 07:15:00 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from noralf.uib.no (HELO noralf.uib.no) (129.177.30.12)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 21 Mar 2007 00:14:53 -0700
+Received: from alfred.uib.no (smtp.uib.no) [129.177.30.120] 
+	by noralf.uib.no for modules@perl.org with esmtp  (Exim 4.34)
+	id 1HTv1x-0002Lz-K5; Wed, 21 Mar 2007 08:14:46 +0100
+Received: from 062016142054.customer.alfanett.no [62.16.142.54] 
+	by smtp.uib.no for modules@perl.org with esmtp (Exim 4.34)
+	id 1HTnYS-0007IL-2N; Wed, 21 Mar 2007 00:15:48 +0100
+Message-ID: <46006B4A.4020003@tengil.org>
+Date: Wed, 21 Mar 2007 00:16:26 +0100
+User-Agent: Thunderbird 1.5.0.9 (X11/20070104)
+MIME-Version: 1.0
+To:  modules@perl.org
+Subject: Question about namespace: "Apache2::ImageSupplier"
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-checked-clean: by exiscan on noralf
+X-Scanner: 961f816866b983e7365bf9829bd83416 http://tjinfo.uib.no/virus.html
+X-UiB-SpamFlag: NO UIB: 0 hits, 8.0 required
+X-UiB-SpamReport: spamassassin found;
+ nothing
+Approved: news@nntp.perl.org
+From: kurt@tengil.org (Kurt George Gjerde)
+
+Hi,
+
+I have a module called Apache2::PictureSupply which I guess would need a 
+less cutesy name for upload to cpan. Perhaps Apache2::Image::Supplier or 
+Apache::ImageSupplier or something else.
+
+It's an Apache2 response handler for images (png, jpeg, etc) which 
+modifies the image on-the-fly according to a predefined (in apache conf 
+or perl) action found in the path_info part of the url. Modified images 
+are cached so the work is only done for the first request or after the 
+source file has been updated.
+
+You only have one version of an image in your htdocs. Then ask for 
+thumbnail, medium-sized, monochrome, etc versions where needed.
+
+It uses Image::Magick and may sound a bit like Apache::ImageMagick 
+(which is a apache 1 module). But this takes a different aporoach. Where 
+AIM lets the client do whatever he wants with an image (causing possible 
+cache flood and server load), this module only allow predefined 
+modifications.
+
+It supports extension of image modifiers through plugins.
+
+
+EXAMPLE
+
+It's currently in use on the www.bernardherrmann.org site; mainly for 
+resizing but the module can do whatever Image::Magick can do.
+
+Original image
+http://www.bernardherrmann.org/articles/interviews/stromberg001/pageimage.jpg
+
+Main image for an article:
+http://www.bernardherrmann.org/articles/interviews/stromberg001/pageimage.jpg/page
+
+Thumbnail version:
+http://www.bernardherrmann.org/articles/interviews/stromberg001/pageimage.jpg/thumb
+
+Just to show something else than resize:
+http://www.bernardherrmann.org/articles/interviews/stromberg001/pageimage.jpg/thumb_bw
+
+
+Thanks,
+-Kurt.

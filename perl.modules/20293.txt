@@ -1,0 +1,125 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:20293
+Return-Path: <alexander.haderer@charite.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 66223 invoked by uid 76); 9 Apr 2003 10:41:21 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.25) with SMTP; Wed, 09 Apr 2003 03:41:21 -0700
+Received: (qmail 29046 invoked by uid 225); 9 Apr 2003 10:41:19 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 29041 invoked by uid 507); 9 Apr 2003 10:41:19 -0000
+Received: from hauptpostamt.charite.de (HELO hauptpostamt.charite.de) (193.175.66.220) by one.develooper.com (qpsmtpd/0.25) with SMTP; Wed, 09 Apr 2003 03:41:16 -0700
+Received: from localhost (localhost [127.0.0.1])	by hauptpostamt.charite.de (Postfix) with ESMTP id AA8E915C014	for <modules@cpan.org>; Wed,  9 Apr 2003 12:41:09 +0200 (CEST)
+Received: from localhost ([127.0.0.1]) by localhost (hauptpostamt.charite.de [127.0.0.1:10025]) (amavisd-new) with SMTP id 32482-01 for <modules@cpan.org>; Wed,  9 Apr 2003 12:41:08 +0200 (CEST)
+Received: from postamt1.charite.de (postamt1.charite.de [193.175.66.246])	by hauptpostamt.charite.de (Postfix) with ESMTP id 5779915C015	for <modules@cpan.org>; Wed,  9 Apr 2003 12:41:08 +0200 (CEST)
+Received: from chaplin.charite.de (chaplin.str.charite.de [192.168.202.88])	by postamt1.charite.de (Postfix) with ESMTP id 20473633B3	for <modules@cpan.org>; Wed,  9 Apr 2003 12:41:08 +0200 (CEST)
+Message-ID: <5.2.0.9.1.20030409122001.019eada8@postamt1.charite.de>
+X-Sender: afrika@postamt1.charite.de
+X-Mailer: QUALCOMM Windows Eudora Version 5.2.0.9
+Date: Wed, 09 Apr 2003 12:37:29 +0200
+To: modules@cpan.org
+Subject: Name ok for new module DBIx::FileSystem ?
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+X-Virus-Scanned: by amavisd-new
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_02_03 version=2.44
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: alexander.haderer@charite.de (Alexander Haderer)
+
+Hello,
+
+I have written a new module which I want to make public available via CPAN. 
+The module will be GPL licensed. For internal developing I choosed 
+DBIx::FileSystem as the module name. Now I would like to discuss, if this 
+name is ok before uploading the files to PAUSE.
+
+ From the README:
+
+------------ snip ------------
+The module DBIx::FileSystem offers you a filesystem like view to database 
+tables. To interact with the database tables, FileSystem implements a 
+command line shell which offers not only a subset of well known shell 
+commands to navigate, view and manipulate data in tables, but
+also gives the convenience of history, command line editing and tab 
+completion. FileSystem sees the database as a filesystem: each table is a 
+different directory with the tablename as the directory name and each row 
+in a table is a file within that directory.
+
+The motivation for FileSystem was the need for a terminal based 
+configuration interface to manipulate database entries which are used as 
+configuration data for a server process. FileSystem is neither complete nor 
+a replacement for dbish or other full-feature SQL shells
+or editors. Think of FileSystem as a replacement for a Web/CGI based 
+graphical user interface for manipulating database contents.
+
+EXAMPLE:
+--------
+
+The file pawactl shows the usage of DBIx::FileSystem. It implements
+the configure shell of a virtual package warehouse. Sample session:
+
+----------> pawactl sample session start --------->
+pawactl (/source): ls
+(dest)          acity           factory2        lcity
+(source)        bcity           generic
+(warehouse)     factory1        kcity
+pawactl (/source): cat bcity
+#
+# Settings for SourceName 'bcity' (defaults: 'generic')
+#
+# - this is a comment, comments always start in the first column.
+# - all lines begin in the first column or are blank lines
+# - a unset variable will write NULL into the database column
+# - unset variables use the default values
+#
+
+#
+# SourceID
+# Internal source idenficator (4 characters)
+#
+# default: ----
+#
+SourceID = CIB
+
+... more file contents ...
+pawactl (/source): sum bcity
+SourceID     = CIB
+Distance     = 2434
+Destination  = moon
+pawactl (/source): cd dest
+pawactl (/dest): ls
+(dest)          (warehouse)     moon            venus
+(source)        mars            neptun
+pawactl (/dest): rm venus
+rm: cannot remove: file 'venus' referenced by:
+   source/factory2
+   warehouse/sx0001
+pawactl (/dest): vi venus
+
+    ... vi session ...
+    ... save & quit ...
+
+
+
+ERROR: line 19: invalid value: valid range: (1..100)
+Do you want to edit again ('n' will abort) [y/n] ? n
+pawactl (/dest):
+<---------- pawactl sample session end <---------
+
+------------ snap ------------
+
+So, what do you think about the name DBIx::FileSystem ?
+
+If you need more info I can send you the ready-to-install module for testing.
+
+with best regards,
+
+	Alexander
+-- 
+Alexander Haderer             Charite Berlin - Germany
+

@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:38962
+Return-Path: <s0lar@gmx.li>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7212 invoked from network); 10 Mar 2005 11:24:10 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 10 Mar 2005 11:24:10 -0000
+Received: (qmail 9209 invoked by uid 225); 10 Mar 2005 11:24:10 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9181 invoked by alias); 10 Mar 2005 11:24:09 -0000
+X-Spam-Status: No, hits=-1.5 required=8.0
+	tests=BAYES_00,NO_REAL_NAME,PRIORITY_NO_NAME
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of s0lar@gmx.li designates 213.165.64.20 as permitted sender)
+Received: from imap.gmx.net (HELO mail.gmx.net) (213.165.64.20)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Thu, 10 Mar 2005 03:24:05 -0800
+Received: (qmail invoked by alias); 10 Mar 2005 11:24:02 -0000
+Received: from chello062178074213.25.11.tuwien.teleweb.at (EHLO chello062178074213.25.11.tuwien.teleweb.at) (62.178.74.213)
+  by mail.gmx.net (mp022) with SMTP; 10 Mar 2005 12:24:02 +0100
+X-Authenticated: #11445591
+Date: Thu, 10 Mar 2005 12:25:07 +0100
+Reply-To: s0lar@gmx.li
+X-Priority: 3 (Normal)
+Message-ID: <1702533869.20050310122507@gmx.li>
+To: modules@perl.org
+Subject: String::CRC32 - author email dead
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Y-GMX-Trusted: 0
+Approved: news@nntp.perl.org
+From: s0lar@gmx.li
+
+hello
+
+I modified the String::CRC32 module
+because that PerlIO_getc is really slow
+in compare to PerlIO_read.
+(About 3-4 times)
+
+the problem is all EMAILS of the author are DEAD.
+(i found 2 different ones on cpan)
+peters@simprovement.com
+peters+perl@opcenter.de
+
+there are also 2 open bug reports (doc errors)
+since a longer time.
+
+I could change that all if allowed
+
+regards solar
+
+--------------------------------
+
+#define BUFSIZE 16348
+
+U32
+getcrc_fp( PerlIO *fp, U32 crcinit )
+{
+    register U32 crc;
+    register U16 len;
+    unsigned char buf[BUFSIZE];
+
+// before:
+//    crc = crcinit^0xFFFFFFFF;
+//    while( (c=PerlIO_getc(fp)) != EOF ) {
+//        crc = ((crc>>8) & 0x00FFFFFF) ^ crcTable[ (crc^c) & 0xFF ];
+//    }
+//    return( crc^0xFFFFFFFF ); 
+      
+    crc = crcinit^0xFFFFFFFF;
+    while((len = PerlIO_read(fp, buf, BUFSIZE)) > 0 ) {
+       unsigned char * p = buf;
+       do {
+          crc = ((crc >> 8) & 0x00FFFFFF) ^ crcTable[(unsigned char)( (crc & 0xff) ^ *(p++) )];
+       } while (--len);
+    }
+    return( crc^0xFFFFFFFF );
+}
+
+

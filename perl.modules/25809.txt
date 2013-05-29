@@ -1,0 +1,69 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:25809
+Return-Path: <kragen@canonical.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16232 invoked by uid 76); 20 Jan 2004 02:21:49 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Mon, 19 Jan 2004 18:21:49 -0800
+Received: (qmail 26047 invoked by uid 225); 20 Jan 2004 02:21:46 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26042 invoked by alias); 20 Jan 2004 02:21:46 -0000
+Received: from 66-193-87-113.gen.twtelecom.net (HELO panacea.canonical.org) (66.193.87.113)  by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Mon, 19 Jan 2004 18:21:34 -0800
+Received: by panacea.canonical.org (Postfix, from userid 1004)	id 9961E3F60C; Mon, 19 Jan 2004 21:20:58 -0500 (EST)
+To: modules@perl.org
+Subject: What should I call my new SNMP module?
+Message-ID: <20040120022058.9961E3F60C@panacea.canonical.org>
+Date: Mon, 19 Jan 2004 21:20:58 -0500 (EST)
+X-Spam-Check-By: la.mx.develooper.com
+X-Spam-Status: No, hits=2.4 required=7.0 tests=CARRIAGE_RETURNS,NO_REAL_NAME,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: kragen@pobox.com
+
+My company ships a large proprietary Perl program that does a lot of
+SNMP work; it primarily uses Net::SNMP.  While Net::SNMP is an
+extremely useful module that does lots of things, it isn't perfect for
+our needs, for the following reasons. 
+
+- it's slow, about 30 times slower than net-snmp
+- it's clumsy for simple tasks
+- it has some bug-prone features
+  - translations
+  - blocking vs. nonblocking
+  - in-band error indications
+- it's somewhat inflexible
+  - hard to dissect captured SNMP packets with (although I've done it)
+  - hard to write SNMP agents with (although I've done it)
+  - hard to write a POE component with
+- large, therefore bug-prone; some of these bugs have lost us sales
+
+So I've written a new pure-Perl SNMP module, which is fast, is simple
+to use for simple tasks, has none of the Net::SNMP features that have
+introduced bugs into our software, is flexible enough for use in many
+different contexts, and is much smaller.  It even includes a skeletal
+agent implementation, which it uses for regression tests, and its
+regression tests are much more thorough than Net::SNMP's.
+
+This initial release doesn't support traps, inform-requests, GetBulk,
+SNMPv3, or MIB parsing; it doesn't fully support multiple VarBinds per
+PDU or nonblocking operation; and it doesn't have Net::SNMP's useful
+array of workarounds for common SNMP agent bugs.  But many useful SNMP
+applications don't need those features.  I plan to implement them in
+future releases, however.
+
+If there wasn't already a Net::SNMP (perish the thought!) I'd want to
+call it Net::SNMP.  Should I put it directly under Net::SNMP
+(Net::SNMP::Simple, Net::SNMP::Agent, Net::SNMP::EncodeDecode),
+somewhere else under Net (Net::FastSNMP?), in some specific place
+under Net::SNMP (Net::SNMP::Simple::*?  Net::SNMP::Lite::*?), or
+somewhere else altogether?
+
+I sympathize with the argument that it would be better to improve
+Net::SNMP rather than reinvent the wheel, but in this case, I've been
+developing our product on top of Net::SNMP for a year and a half, and
+I don't think it will ever meet our needs, so I will develop and
+distribute this software in any case.  I suspect there are other
+people who would benefit from this software, too, so I would like to
+add it to the module list.
+

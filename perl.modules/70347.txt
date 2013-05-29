@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:70347
+Return-Path: <todd.e.rinaldo@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 6222 invoked from network); 17 Mar 2010 05:03:23 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 17 Mar 2010 05:03:23 -0000
+Received: (qmail 13254 invoked by uid 225); 17 Mar 2010 05:03:23 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13246 invoked by alias); 17 Mar 2010 05:03:22 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,FREEMAIL_FROM,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-qy0-f178.google.com (HELO mail-qy0-f178.google.com) (209.85.221.178)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 16 Mar 2010 22:02:49 -0700
+Received: by qyk8 with SMTP id 8so378265qyk.4
+        for <modules@perl.org>; Tue, 16 Mar 2010 22:02:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:received:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        bh=87aKFBuEbwRT2tu9QrWJ5oL48oQTeO5gT4hE0B8n0Iw=;
+        b=OXyfHML2AGtYjq2qPyANjSo0Eds/Rx8nCeO3q3/79dlPKprcTQEgoZAKJCwG1QBTeI
+         R3662Sd5NN0TS/0mDny5BYvvtpn7RJe4YQy6SoPMqll3JW7FMiY8m1Ajjk5YMjUfU5uQ
+         BuTAfHfCJJA+9pvumeNX8+ypdgZwGXUZhaIyk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:date:x-google-sender-auth:message-id:subject
+         :from:to:cc:content-type;
+        b=C1TxCD8PjzjRAEqFWCDfCVf9pjfTXwNZ0KcPV3G7xGOwgOsUMpmej6A6axr27ZZ8n3
+         ceoXso4jbAionh56emCn/D9UgBfUfKpK+k4+Scuhx196qf0q18+TbCaPwVaWMj49lk6t
+         uQdDl99n4M1PQp4iAE1ogif/jVWZdZNoD65qE=
+MIME-Version: 1.0
+Sender: todd.e.rinaldo@gmail.com
+Received: by 10.224.43.93 with SMTP id v29mr98437qae.49.1268802156888; Tue, 16 
+	Mar 2010 22:02:36 -0700 (PDT)
+Date: Wed, 17 Mar 2010 00:02:36 -0500
+X-Google-Sender-Auth: bcc622b698b714c5
+Message-ID: <748c25c21003162202s53d3950fh8fd0ef9b6384a809@mail.gmail.com>
+Subject: Updates to Safe::Hole - v 0.11
+To: nakajima@netstock.co.jp, SEYN@cpan.org
+Cc: modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+Approved: news@nntp.perl.org
+From: todd@rinaldo.us (Todd Rinaldo)
+
+Safe::Hole will emit warnings when run in 5.10+ because it uses
+defined %hash, which is deprecated. I've provided a fix for this and
+the other RT tickets via Github:
+
+Removing the word defined has the same effect in your code as it
+returns a scalar count of keys.
+
+In order to clean this up I'd like to submit my github changes as a
+candidate for 0.11 - http://github.com/toddr/Safe-Hole
+
+It contains the following enhancements:
+
+- re-structure module to more modern directory layout. Convert to M::B
+- re-factor tests to test::more
+- pod fixes now we're testing them
+- clean up authors and generate proper META.yml
+- Fix 5.10 deprecation of defined %hash. Just use %hash to the same effect.
+
+If you do not have time, I would be happy to put this change in if
+you'll add me as a co-maintainer in http:://pause.perl.org
+
+There is only one line changed in the actual code, which fixes the
+deprecated use of defined %hash.
+
+Thanks,
+Todd Rinaldo

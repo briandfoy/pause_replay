@@ -1,0 +1,147 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:34566
+Return-Path: <root@schmorp.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17953 invoked from network); 7 Sep 2004 05:31:25 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 7 Sep 2004 05:31:25 -0000
+Received: (qmail 904 invoked by uid 225); 7 Sep 2004 05:31:25 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 897 invoked by alias); 7 Sep 2004 05:31:24 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from rain.plan9.de (HELO rain.plan9.de) (193.108.181.162)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Mon, 06 Sep 2004 22:31:19 -0700
+Received: from [10.0.0.5] (helo=mailout.schmorp.de ident=schmorp)
+	by rain.plan9.de with esmtp (Exim 4.30)
+	id 1C4YZX-0004ej-FZ
+	for modules@perl.org; Tue, 07 Sep 2004 07:31:15 +0200
+Received: from [10.0.0.1] (helo=cerebro.laendle)
+	by mailout.schmorp.de with esmtp (Exim 4.34)
+	id 1C4YZW-0001Qv-9p
+	for modules@perl.org; Tue, 07 Sep 2004 07:31:14 +0200
+Received: from root by cerebro.laendle with local (Exim 4.30)
+	id 1C4YZZ-0002uh-74
+	for modules@perl.org; Tue, 07 Sep 2004 07:31:17 +0200
+Date: Tue, 7 Sep 2004 07:31:17 +0200
+To: modules@perl.org
+Subject: Re: Module submission Linux::DVB
+Message-ID: <20040907053117.GA11039@schmorp.de>
+References: <200409060633.i866Xl5P032699@pause.perl.org> <060920041643564438%comdog@panix.com> <20040907041705.GD15861@schmorp.de> <070920040008157960%comdog@panix.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <070920040008157960%comdog@panix.com>
+X-Operating-System: Linux version 2.6.8.1 (root@cerebro) (gcc version 2.95.4 20011002 (Debian prerelease)) 
+Approved: news@nntp.perl.org
+From: pcg@goof.com (( Marc) (A.) (Lehmann ))
+
+On Tue, Sep 07, 2004 at 12:08:16AM -0500, _brian_d_foy <comdog@panix.com> wrote:
+> > > >   similar:
+> > > >     Video::Linux::V4l
+> 
+> > > why not put this in Video:: too?
+> 
+> > Just because you could also stream video with it doesn't make it a
+> > vdeo-only module. Besides, it is highly linux-specific.
+> 
+> What other sort of module might it be?
+
+No idea yet, probably Convert::DVB::somethings or so. But that is of no
+concern really as this has time until such a module (-family) evolves,
+which might or might not be near, but has nothing to do with the current
+question.
+
+> It might be linux specific now, but it might not always be.
+
+Well, if you know better, then it must be true. It's just that I cannot
+imagine that the Linux-DVB driver API will ever be non-linux specific...
+
+> > Some of the functionality, such as SI-decoding, are linux-independent, so one
+> > could also imagine the following structure:
+> > 
+> >    DVB::Linux
+> >    DVB::Decode::SI
+> 
+> 
+> > and so on, but my plans for the module do not include making it that large
+> > in the future.
+> 
+> You may not make it that large, but other people may like to.
+
+This is fine. I won't stop other people from either writing their own
+non-os-specific dvb processing modules nor from adding such modules by
+sending me patches.
+
+This has, of course, nothing to do with the fatc that Linux::DVB is and
+ever will be linux-specific.
+
+> we consider a namespace, we try to anticipate future additions and how
+> people will add their own modules.  Choosing a flexible name saves a lot
+> of future hassle.
+
+You are confused, though, the Linux namespace already exists and
+contains a lot of moduels that are linux-specific, sich as Linux::LVM,
+Linux::TunTap etc.
+
+Although some functionality might, if warranted, later become a
+non-linux-specific module, this module is and ever will be highly
+linux-specific. And even if many of these modules acre for services thate
+xist similarly on other operating systems, it simply makes no sense to
+make them generic, as they refer to an _OS-specific API_.
+
+According to your logic, we would rename Win32::MIDI to Audio::MIDI or
+similar, just because, in the future, it might be anticipated that some
+win32 midi modules might become general use, or because wine exists that
+can (probably) emulate that API.
+
+I seriously doubt that this is a service to anybody, as people would try
+to install such a generic module only to find out that you need wine and
+the windows header files (and maybe specific drivers for windows, which
+wine doesn't support anyways), and would quickly be frustrated by a lousy
+naming scheme.
+
+> I'm still not convinced of the linux only nature of the broader topic.
+> http://linuxtv.org/dvb/ says:
+
+> "Digital Television is supposed to work on every TV set independently
+> of the software and OS that runs this device. The standards that
+> guarantee this interoperability are defined by the members of the DVB."
+
+This is true. However, can you point me to the relevant DVB documents that
+describe and standardize the Linux-DVB API? I think you cannot.
+
+You confuse the people that designed the Linux-DVB API with the people who
+create the DVB standards board. You *misinterpret* the quote you made. If I
+were to argue like you do, I could just as well argue that every TV set is
+supposed to run Linux. Heck, that would be great, but it simply doesn't
+reflect reality and cannot be rad out of that quote...
+
+You also insist on "the broader topic", but nothing stops people from
+creating DVB::* or Convetr::DVB::* or whatever modules that care for DVB
+encoding.
+
+Even I might do it at one point. But these modules will _not_ be
+linux-specific, and therefore would probably not go under the Linux
+hierarchy.
+
+> > > things that people call "obvious" usually aren't.
+> > 
+> > Well, exceptions such this case exist.
+> 
+> it doesn't seem obvious to me.
+
+I think you are an exception, though. I don't know many people who equate
+Linux-DVB and DVB without at least doing some further research...
+
+-- 
+                The choice of a                              |
+      -----==-     _GNU_                                     |
+      ----==-- _       generation     Marc Lehmann         +--
+      ---==---(_)__  __ ____  __      pcg@goof.com         |e|
+      --==---/ / _ \/ // /\ \/ /      http://schmorp.de/   --+
+      -=====/_/_//_/\_,_/ /_/\_\      XX11-RIPE            |
+                                                           |

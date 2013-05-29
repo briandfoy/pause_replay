@@ -1,0 +1,134 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:3884 perl.modules:522
+Return-Path: <muir@idiom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9807 invoked from network); 14 Nov 1999 22:08:11 -0000
+Received: from idiom.com (@216.240.32.1)
+  by tmtowtdi.perl.org with SMTP; 14 Nov 1999 22:08:11 -0000
+Received: (from muir@localhost)
+	by idiom.com (8.9.3/8.9.3) id OAA02429;
+	Sun, 14 Nov 1999 14:05:01 -0800 (PST)
+Date: Sun, 14 Nov 1999 14:05:01 -0800 (PST)
+Message-ID: <199911142205.OAA02429@idiom.com>
+To: andreas.koenig@anima.de (Andreas J. Koenig)
+Cc: modules@perl.org, perl5-porters@perl.org, gsar@umich.edu,
+        Raphael_Manfredi@grenoble.hp.com
+Subject: Re: Need a module name...  Transaction support for Storable file objects
+Approved: news@nntp.perl.org
+From: muir@idiom.com (David Muir Sharnoff)
+
+
+* Andreas J Koenig says ...
+*  > On Fri, 12 Nov 1999 16:47:32 -0800 (PST), David Muir Sharnoff <muir@idiom.com> said:
+* 
+*  > I've just written a module that does transactions.
+* 
+* Great!
+* 
+*  > It works in the following environment:
+* 
+*  > 	Hash-based objects which are stored one-per file using Storable.
+* 
+*  > It's multi-user and will not deadlock.  Transactions can span objects.
+* 
+*  > What should I call it?
+* 
+* 
+*  > 	Storable::Transaction
+* 
+* This looks best to me.
+* 
+*  > 	Object::Transaction
+* 
+* If you can support multiple marshaling modules in such way as MLDBM
+* does, then this is better, of course.
+* 
+*  > 	Record
+*  > 	Record::Multiuser
+*  > 	File::MultiStorable
+* 
+* Neither Record nor File "feel" right for my understanding. They seem
+* to broad to me.
+
+
+Andreas: how about FileObject::Transaction?
+
+I've taken a look at what MLDBM does.  
+
+I could do that too, but I don't have time right now.   It would be
+much better if the multiple-marshalling problem could be solved 
+generically and then I could just use the generic solution.
+
+I took a whack at it long ago with my never-published Marshal.pm
+stuff.  Maybe someday...
+
+
+There are a couple aspects to all of this:
+
+    1.  How to choose underlying modules.  MLDBM co-opts the 
+	import method to set module-wide parameters.
+
+	I think we need a better general idiom for passing parameters
+	into a module.
+
+	How about a new package 'Customize' that does what Exporter
+	currently does but also parses out option assignments
+	in the use line:
+
+	    use MDLBM qw(Serializer=Storable)
+
+	There aren't going to be many functions with an '=' in their
+	name so this should be fairly safe.
+
+	For the module using Customize, the interface could look 
+	something like:
+		
+		package MLDBM;
+		@ISA = qw(Customize);
+		@EXPORT = qw()
+		@CUSTOMIZE = qw($Serializer=FreezeThaw $UseDB=File_SDBM $DumpMeth);
+
+	Default values set by Customize when not specified with the use
+	line and not previously specified by an earlier use of the package.
+
+	A further refinement would be to have an optional function per
+	customizable variable that is called by Customize.
+
+		sub Serializer 
+		{
+			my ($val) = @_;
+			@mySerialize::ISA = ($val);
+			require "$val.pm";
+		}
+
+		later ...
+		serialize mySerialize ($ref)
+
+    2. 	Common interfaces to all the marshalling code.   In MLDBM,
+	there is custom interface glue for each of the published 
+	marshalling modules.  The interface glue provides a common
+	interface of 'serialize' and 'deserialize'.
+
+	This interface glue varies in complexity.
+
+	I would like to propose that all of the marhsalling modules 
+	export a common set of identical interfaces.   
+
+	This should be too hard as Raphael Manfredi has already 
+	written the glue...  It "just" needs to be moved into the various
+	modules.
+
+
+I realize I'm suggesting other people do some work here.    I would be
+happy to build Customize, but only if there is some agreement that it's
+a Good Thing(TM).
+
+I'm also happy to retrofit my as-yet-unnamed 
+transactions-on-dumped-references-virtual-class package to whatever
+standard emerges.
+
+Thanks,
+
+-Dave

@@ -1,0 +1,95 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:48907
+Return-Path: <kalle@enrogue.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21450 invoked from network); 19 May 2006 15:40:08 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 19 May 2006 15:40:08 -0000
+Received: (qmail 9194 invoked by uid 225); 19 May 2006 15:40:08 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9158 invoked by alias); 19 May 2006 15:40:06 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from mxfep01.bredband.com (HELO mxfep01.bredband.com) (195.54.107.70)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 19 May 2006 08:39:49 -0700
+Received: from [192.168.1.15] ([213.114.240.82] [213.114.240.82])
+          by mxfep01.bredband.com with ESMTP
+          id <20060519153926.IHAF19930.mxfep01.bredband.com@[192.168.1.15]>
+          for <modules@perl.org>; Fri, 19 May 2006 17:39:26 +0200
+Message-ID: <446DE6AD.2080104@enrogue.com>
+Date: Fri, 19 May 2006 17:39:25 +0200
+User-Agent: Thunderbird 1.5.0.2 (Macintosh/20060308)
+MIME-Version: 1.0
+To:  modules@perl.org
+Subject: Re: SynchroEdit namespace
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: kalle@enrogue.com (Kalle Alm)
+
+Hello again,
+
+I thought it might be helpful if I sent some more details on what the 
+individual modules do, rather than a brief overview. Forgive the lengthy 
+email.
+
+There are essentially 3 separate modules...
+- One "core" module called Net::SynchroEdit::Service which provides the 
+basic functionality. This module is also used by the other two, and 
+provides functionality for connecting to a response service, perform 
+queries and retrieve results in various forms, and similar.
+- One "session" module called Net::SynchroEdit::Session which provides 
+functionality specifically for manipulating individual sessions. The 
+module is intended to represent a session on the server, and contains 
+functionality for creating new sessions, deleting sessions, or retrieve 
+information about sessions.
+- One "controller" module called Net::SynchroEdit::Controller which 
+provides extended functionality for making some often needed operations 
+easier. This module contains functionality for getting a particular 
+document's session (returned as a Net::SynchroEdit::Session instance), 
+for creating a new session based on an existing file residing on the 
+server, and so on.
+
+The Net::SynchroEdit::Service module contains the following methods:
+- connect(host, port, username, password) -- used to login to a response 
+service
+- disconnect() -- disconnect from currently connected service
+- sessions(extended) -- retrieve information about current sessions on 
+service
+- get(sid) -- get hashmap for a particular session
+- query(cmd) -- perform a query to the response service
+- fetch_result() -- fetch the results of the first pending query made as 
+a string array.
+- fetch_status() -- fetch only the first line of the first pending query
+- fetch_map() -- fetch results as a hashmap
+- shutdown(sid) -- shut a specific session down
+- fetch_info() -- fetch information about server
+
+The Net::SynchroEdit::Session module contains the following methods:
+- setting(which, toWhat) -- modify a specific setting for an existing 
+session
+- get_session_path() -- get the full path for a session (server-side 
+file path)
+- initialize() -- initialize a (new) session
+- abort() -- abort an initialized session
+- open() -- open an initialized session (allowing users to connect to 
+it, essentially)
+- shutdown() -- shut an open session down
+- get_status() -- retrieve extended status about a session
+
+The Net::SynchroEdit::Controller module contains the following methods:
+- get_document_session(document) -- retrieve a Net::SynchroEdit::Session 
+instance for a particular document
+- add_preproc(preproc, exitcode) -- add a preprocessing call to controller.
+- create_from_file(filename, documentName, from_xform) -- create a new 
+session based on the file 'filename' located on the server
+
+I'm not sure what else there is to say about it, but comments/questions 
+etc are definitely welcome.
+
+-Kalle.
+

@@ -1,0 +1,113 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:343
+Return-Path: <k@hohenstaufen.in-berlin.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19648 invoked from network); 28 Oct 1999 06:22:13 -0000
+Received: from dubravka.in-berlin.de (HELO hohenstaufen.in-berlin.de) (0@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 28 Oct 1999 06:22:13 -0000
+Received: (from k@localhost)
+	by hohenstaufen.in-berlin.de (8.9.1a/8.9.1) id IAA29720;
+	Thu, 28 Oct 1999 08:22:01 +0200
+Sender: k@hohenstaufen.in-berlin.de
+To: Joshua N Pritikin <joshua.pritikin@db.com>
+Cc: andreas.koenig@anima.de, modules@perl.org
+Subject: Re: Fwd: Re: Edit a Module
+References: <sfc4sfcfwat.fsf@hohenstaufen.in-berlin.de> <19991027152800.N7054@eq1062.wks.na.deuba.com>
+Date: 28 Oct 1999 08:22:01 +0200
+In-Reply-To: Joshua N Pritikin's message of "Wed, 27 Oct 1999 15:28:00 -0400"
+Message-ID: <sfc1zagdmye.fsf@hohenstaufen.in-berlin.de>
+Lines: 86
+User-Agent: Gnus/5.070097 (Pterodactyl Gnus v0.97) Emacs/20.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+Let's separate the issues what something should have been named and
+what something should be named after the sin. I'm not intending to
+force anybody to rename things (I cannot anyway:-).
+
+
+>>>>> On Wed, 27 Oct 1999 15:28:00 -0400, Joshua N Pritikin <joshua.pritikin@db.com> said:
+
+>> > Envy              adcf Shell utility to manage environment vars     JPRIT
+>> 
+>> We have Env.pm for ages in the core. Why wouldn't Env::Tools or
+>> something similar do? Or if it is more Shell related, why not use
+>> Shell::Something or ShellScript::Something? All these root namespaces
+>> exist and if there is not a good reason to reject them, they should
+>> really be used.
+
+ > Envy builds to a command program:
+
+I didn't know that, so it's more a by-product than a module that
+people would use?
+
+[...envy interface illustrations...]
+
+ > I'm not really willing to rename it.  I guess I don't mind if you wish
+ > to omit Envy from the module list.
+
+If it isn't of general use we *should* omit it. What's your opinion on
+the usability as a module? If the command envy needs some private
+namespace, it should use some_jprit_namespace::Envy:: to get out of
+the way.
+
+>> > ObjStore::
+>> > ::Lib::PDL        adcf Integrates PDL and ObjStore                  JPRIT
+>> 
+>> > ObjStore::
+>> > ::REP::FatTree    adcf Integrates Tree::Fat and ObjStore            JPRIT
+>> 
+>> > ObjStore::
+>> > ::REP::HashRecord adcf Optimized ObjStore records                   JPRIT
+>> 
+>> I believe the ObjStore namespace does not need propagation through the
+>> module list. Currently nobody besides you is using the ObjStore
+>> namespace, so if anybody would like to do so, they would certainly
+>> contact you.
+
+ > Oh, you mean that I own the top-level namespace under each of my
+ > top-level modules?  I didn't realize that.
+
+We are not the Internic for perl namespaces, we do not sell
+namespaces, we cannot establish property rights. What we try is to
+minimize namespace clashes, and maximize usablility by setting up a
+catalogue and influence the namespace development a little bit
+streamlined (as far as Perl People can be streamlined:-). We cannot
+guarantee to you that somebody else uses the, say, ObjStore::Rc
+namespace.
+
+Actually there are several levels of protection for your namespaces:
+the most important is the module list which actually lists and
+proclaims your namespace. The second is the first-come-first-serve
+advantage for who uploads first: that one gets indexed, but not the
+second who tries to use the same namespace (warnings should be
+emitted, but work not well yet). And the third level is the common
+sense we try to establish on CPAN that should prevent abuse.
+
+>> > Rc                adcf Perl interface for the Rc shell              JPRIT
+>> 
+>> Shell::Rc ? ShellScript::Rc ? I'm not sure that a root namespace for
+>> Rc is justified.
+
+ > Rc mimics the B API.  It gives access to the Rc abstract syntax tree.
+
+So this isn't an obvious answer why it needs a root namespace. In
+general, I see disadvantages in using root namespaces:
+
+1. They fill up the first level of directories in @INC. In Unix, due
+   to the prevailing filesystems, this actually costs time for perl
+   accessing the files
+
+2. They are less self-explanatory. Sure, Tk is a good name, but I
+   doubt Rc is as important as Tk.
+
+So Shell::Rc would have been better. But to put that to rest, I have
+Rc now in the module list.
+
+Cheers,
+-- 
+andreas

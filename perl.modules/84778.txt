@@ -1,0 +1,73 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:84778
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14475 invoked from network); 15 Feb 2013 14:38:46 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 15 Feb 2013 14:38:46 -0000
+Received: (qmail 31076 invoked by uid 225); 15 Feb 2013 14:38:46 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31070 invoked by alias); 15 Feb 2013 14:38:46 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-ob0-f174.google.com (HELO mail-ob0-f174.google.com) (209.85.214.174)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 15 Feb 2013 06:38:39 -0800
+Received: by mail-ob0-f174.google.com with SMTP id 16so3635648obc.33
+        for <modules@perl.org>; Fri, 15 Feb 2013 06:38:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=x-received:mime-version:in-reply-to:references:from:date:message-id
+         :subject:to:cc:content-type:content-transfer-encoding
+         :x-gm-message-state;
+        bh=vRSFSYRD43zPk+L/JbPOOxL5yPXWVlnNfCrbMewA2pI=;
+        b=GxhXxSqOPLTPwgSiWqwSHNZyH23kl98dA6suhe9KBmDjl0nJTfIRZIpIS5fuDklJVD
+         szLjylUDjYtefyzgFKq5P+YsFHtYIQyQydNNmgGB9eGQC/609FegyqNrt5ltmstpJShO
+         ZV9nGOT/ZAn+ECKE3BD//0scT5eSVH0ICDhKlDHZIkeVw3iFJjtW/GqCEHUfBeQXwKJ5
+         C/g6zolriMafZTmOEYFepl1S6xc++9cYGeFN9PzVMvKu68pugCXFCfEN+1gH95HYCLjL
+         RWl0lpSFkHj4bWgY4Kd3SyBOoH/Cv3PTEdqOD82e72/YJNYl59pAWeIoXEU5yUzxPP7v
+         YjZw==
+X-Received: by 10.182.146.13 with SMTP id sy13mr1874959obb.45.1360939115393;
+ Fri, 15 Feb 2013 06:38:35 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.60.4.229 with HTTP; Fri, 15 Feb 2013 06:38:05 -0800 (PST)
+In-Reply-To: <CAOeq1c_4w6RLk51xqNY3S+7ubKS0HyO-wEDVDQZPV0O_aAtRWg@mail.gmail.com>
+References: <9A9507DE-7E2C-4EE5-AD50-A34C4F206370@bowers.com>
+ <20130215043132.GF6663@newagaton.scsys.co.uk> <670370C4-86D6-4212-8AD8-D021CAB153B1@bowers.com>
+ <20130215131629.GM6663@newagaton.scsys.co.uk> <CAOeq1c_4w6RLk51xqNY3S+7ubKS0HyO-wEDVDQZPV0O_aAtRWg@mail.gmail.com>
+Date: Fri, 15 Feb 2013 09:38:05 -0500
+Message-ID: <CAOeq1c-ajMmpBOzQL6QQ-VCMcNtmhbrMXFiCSJLmj0XPV1J1wQ@mail.gmail.com>
+Subject: Re: PAUSE permissions should be case insensitive
+To: Matt S Trout <mst@shadowcat.co.uk>
+Cc: Neil Bowers <neil@bowers.com>, "modules@perl.org" <modules@perl.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Gm-Message-State: ALoCoQkZElF7VvvP068Fqx8iEFo60mpCHKkyy7mgMhi6JaI05sb7KaTMSVQ+9vChup3YxhsqJgdK
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+On Fri, Feb 15, 2013 at 9:34 AM, David Golden <xdg@xdg.me> wrote:
+>>> But I'll start getting my head around the PAUSE internals anyway.
+>>
+>> Good man :)
+>
+> From a quick skim, I'd say look at PAUSE::mldistwatch and the
+> check_for_new subroutine.  Also you should look at PAUSE::dist and
+> examine_pm.  The answer isn't there, but if you trace the flow, you'll
+> probably find where the indexing rules are.
+
+Oh, and the rules are apparently in PAUSE::package.  ack around for
+"index_status".
+
+I think the tricky thing will be to only check the existing index in a
+case insensitive way, but to leave the rest of the processing code
+using the original case.
+
+David
+
+--=20
+David Golden <xdg@xdg.me>
+Take back your inbox! =E2=86=92 http://www.bunchmail.com/
+Twitter/IRC: @xdg

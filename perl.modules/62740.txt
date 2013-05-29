@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62740
+Return-Path: <bjdean@bradtest.info>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 863 invoked from network); 18 Oct 2008 15:04:11 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 18 Oct 2008 15:04:11 -0000
+Received: (qmail 21984 invoked by uid 225); 18 Oct 2008 15:04:11 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 21978 invoked by alias); 18 Oct 2008 15:04:11 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from sapa.blit.tk (HELO bradtest.info) (72.249.126.159)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 18 Oct 2008 08:04:07 -0700
+Received: by bradtest.info (Postfix, from userid 1000)
+	id BE67E45B858A; Sat, 18 Oct 2008 16:04:03 +0100 (BST)
+Date: Sat, 18 Oct 2008 16:04:03 +0100
+To: modules@perl.org
+Subject: New module name - Die::Retry (or maybe Exception::Retry)
+Message-ID: <20081018150403.GD23955@bjdean.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.5.11
+Approved: news@nntp.perl.org
+From: bjdean@bjdean.id.au (Bradley Dean)
+
+Greetings folks,
+
+Quick question about a new module name now that my PAUSE account is up and
+running.
+
+I'd like to add this module: Die::Retry
+
+The module provides a simple way to retry executing a block of code which
+may fail (where we don't really care about the exceptions if the code
+succeeds just once). The main function (&retry) can be called like a
+builtin.
+
+And example of use would be:
+
+use Die::Retry qw( retry );
+
+...
+
+retry { some_function_that_might_fail(@args) };
+
+retry can be adjusted to delay between retries, or to change the number of
+retries that will be attempted:
+
+retry( sub { some_function_that_might_fail(@args) }
+     , times => 42
+     , delay => 1.5 );
+
+If &some_function_that_might_fail succeeds once the return value is passed
+back:
+
+my $retval = retry { ...
+
+Or if it fails too many times the die is passed on with some extra
+information:
+
+"Too many retries (${retries}) - the last exception was: $@"
+
+Matt suggested that Die::Retry was a good name but not necessarily in the
+usual namespace. I'd still quite like to use it for the following reasons:
+
+ * When I went looking for it the first thing I searched for was: retry die
+   (and then went on to searching for 'exception', but die was first)
+ 
+ * To me at least, terms such as "exception" aren't overly perlish - an
+   exception occurs in a language where an error was thrown or raised,
+   while in perl we're eval'ing for dies. Sure we're throwing exceptions,
+   but that's not what we typed. :)
+
+ * Die::Retry is a little more poetic and sounds cuter.
+
+So that's my thoughts. :) If you disagree and remain unswayed by my
+arguments I can switch to something like Exception::Retry.
+
+Cheerio,
+
+ Brad
+
+-- 
+Bradley Dean
+Software Engineer - http://bjdean.id.au/
+Email: bjdean@bjdean.id.au Skype: skype@bjdean.id.au
+Mobile(Aus): +61-413014395 Mobile(UK): +44-7846895073

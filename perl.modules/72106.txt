@@ -1,0 +1,124 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:72106
+Return-Path: <matthewt@agaton.scsys.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14426 invoked from network); 28 Jul 2010 13:22:45 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 28 Jul 2010 13:22:45 -0000
+Received: (qmail 23342 invoked by uid 225); 28 Jul 2010 13:22:44 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 23337 invoked by alias); 28 Jul 2010 13:22:44 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from jules.scsys.co.uk (HELO jules.scsys.co.uk) (217.168.153.160)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 28 Jul 2010 06:22:42 -0700
+Received: from [217.168.150.167] (helo=agaton.scsys.co.uk)
+	by jules.scsys.co.uk with esmtps (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1Oe6ah-00018a-Kj; Wed, 28 Jul 2010 13:22:35 +0000
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1Oe6ah-0007Sp-GJ; Wed, 28 Jul 2010 14:22:35 +0100
+Date: Wed, 28 Jul 2010 14:22:35 +0100
+To: xiong@cpan.org
+Cc: modules <modules@perl.org>
+Subject: Re: RFC: Smart::Comments::Any
+Message-ID: <20100728132235.GH32619@agaton.scsys.co.uk>
+References: <1279958850.25359.169.camel@oz> <20100727072915.GE32619@agaton.scsys.co.uk> <1280232612.25359.309.camel@oz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1280232612.25359.309.camel@oz>
+User-Agent: Mutt/1.5.11
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Tue, Jul 27, 2010 at 05:10:12AM -0700, Xiong Changnian wrote:
+> On Tue, 2010-07-27 at 08:29 +0100, Matt S Trout wrote:
+> 
+> > ...I'm unsure what this module gains over changing
+> > all the code from 'print STDERR' to 'print $fh{$package}' ...
+> 
+> That's about it, so far. There's more on the table and it's not quite
+> that simple. I *had* thought it would be that simple but I was wrong. 
+>
+> [snip]
+>
+> There are a number of little details like this, such as the operation
+> I've broken out into _spacer_required(). Turns out more state info is
+> needed than just $outfh. Module initialization and internal state is
+> murky (see $ID, $prev_length); and I think it's important to expose a
+> number of arbitrary "constants" to customization. There's more to do. 
+
+It seems to me that you could do a simpler refactor of the state - if
+the '###' part can be held for the filtered block I don't really see
+why the filehandle state can't be.
+
+> > ...what am I (MSTROUT) missing?
+> 
+> Perhaps the better question is: What am I (XIONG) missing? I'm not
+> completely sure that releasing this thing as a new version of S::C is
+> wise but I'm certainly soliciting comments on the question from Older
+> Heads. I'm glad to see some interest. 
+
+It just seems to me that a total rewrite (which is effectively what your
+code is) is overkill and could cause lurking bugs.
+
+I'd much rather you try and figure out how to turn this into a small
+set of patches to the current code plus a lot of extra tests - and am
+willing to brainstorm on design to do so - I'm not assuming you're wrong
+that the changes are necessary, but I'd like to feel like we've explored
+all possible alternatives before a fork.
+ 
+> This is my first CPAN upload; for me, an important reason to get it done
+> is to learn how to navigate the process. There is a
+> social/political/cultural component to this. I /assume/ that if the
+> module is to be released as a new version of Smart::Comments, then the
+> current maintainer must consent. However, CHORNY has shown no interest. 
+
+Well, doing a major rewrite to add what appears to be a minor feature is
+*usually* a sign of error - though if you've had no reply at all that's
+likely a communications failure. If you've had an explicit "not interested"
+reply that's a different matter - could you clarify?
+ 
+> Besides release as new version, I have seen support for, and criticism
+> of, some alternatives: 
+> 
+> Smart::Comments::Any
+>     * Current working title. Vague.
+
+Awful choice. ::Any modules are currently pretty much all "choose between
+N implementations depending on which one's installed" - see JSON::Any for
+a canonical example.
+
+> Smart::Comments::AnyOut
+>     * I abhor MixedCaseIdentifiers. 
+
+Poor name but MultiPartPackageNames are normally like that in perl - see
+perlstyle.pod for reference.
+
+> Smart::Comments::Log
+>     * Short == good. But module does not only print to STDLOG. 
+> 
+> Smart::Comments::File
+>     * Ditto. Perhaps better if it suggested "filehandle" as well. 
+
+Smart::Comments::LogToFile would be my first thought. ::File is ok.
+
+> Devel::Comments
+>     * May be the "correct" location. Won't be found easily in searches. 
+
+Yes, and yes, so Smart::Comments::*Something* is likely preferred even if
+technically "incorrect".
+
+-- 
+Matt S Trout - Shadowcat Systems - Perl consulting with a commit bit and a clue
+
+http://shadowcat.co.uk/blog/matt-s-trout/   http://twitter.com/shadowcat_mst/
+
+Email me now on mst (at) shadowcat.co.uk and let's chat about how our Catalyst
+commercial support, training and consultancy packages could help your team.

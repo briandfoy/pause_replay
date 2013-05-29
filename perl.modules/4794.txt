@@ -1,0 +1,76 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4794
+Return-Path: <simonm@evolution.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18380 invoked from network); 24 Mar 2001 05:18:31 -0000
+Received: from darwin.evolution.com (209.208.128.5)
+  by tmtowtdi.perl.org with SMTP; 24 Mar 2001 05:18:31 -0000
+Received: from stellar (stellar.evolution.com [209.208.128.71])
+	by darwin.evolution.com (8.9.1/8.9.1) with SMTP id AAA01140
+	for <modules@perl.org>; Sat, 24 Mar 2001 00:17:26 -0500 (EST)
+Message-ID: <200103240517.AAA01140@darwin.evolution.com>
+To: Perl Module List <modules@perl.org>
+Subject: RFC: HTML::MicroMason
+Date: Sat, 24 Mar 2001 00:18:41 -0500
+Reply-To: "M. Simon Cavalletto" <simonm@evolution.com>
+X-Mailer: by Apple MailViewer (2.106)
+Approved: news@nntp.perl.org
+From: simonm@evolution.com ("M. Simon Cavalletto")
+
+RFC: HTML::MicroMason
+
+The HTML::Mason module defines a useful syntax for embedded scripting:
+plain text (or HTML) containing occasional chunks of Perl code whose
+results are interpolated into the text when the script is "executed."
+
+However, Mason requires that scripts be stored in the file system, and
+sometimes I'd like to use this capability for lots of small text strings
+which are stored in a database table or assembled dynamically, without
+the hassle of saving them to disk first.
+
+Thus, the HTML::MicroMason module was born: it supports the core aspects
+of the HTML::Mason syntax ("<%perl>...</%perl>", "<%...%>", "%...\n",
+"%ARGS" and "$_out->()" ), and omits the features that either require
+file access (like autohandlers and "<& file &>" includes) or are less
+widely used (like "<%method foo>" blocks).
+
+I have just whipped this together in the last day or two, but it seems
+like it might be of general interest, so I am soliciting comments, with
+the intention of incorporating feedback and then posting a revised
+version to CPAN.
+
+You may well be thinking "yet another dynamic templating module?
+Sheesh!" And you'd have a good point. Nonetheless, I think this module
+occupies a useful niche: it provides a reasonable subset of HTML::Mason
+syntax in a very light-weight fashion.
+
+There certainly are a variety of templating toolkits on CPAN already,
+but from what I can find, only a few of them support both interpolated
+Perl expressions and Perl flow control: Text::Template, HTML::Mason, and
+Apache::ASP. (Please let me know if I've missed others! Maybe
+Template::Toolkit?)
+
+In comparison to these, MicroMason aims to be relatively lightweight,
+using one eval per parse, converting the template to an cacheable
+unblessed subroutine ref, eschewing method calls, omitting Safe support,
+and containing just 50-odd lines of code.
+
+Suggestions for alternate names would be welcome -- although I am using
+it in a web application, the code in this module doesn't specifically
+address HTML, and it certainly could be used to template different
+content types. (This is also the case for HTML::Mason.)
+
+This module should work with any version of Perl 5; there are no
+prerequisite modules beyond the standard distribution.
+
+To install, retrieve the distribution from the below URL, unpack it,
+and execute the standard "perl Makefile.PL", "make test", "make
+install" sequence.
+
+  http://work.evolution.com/dist/HTML-MicroMason-1.0.0.tar.gz
+
+Any feedback or suggestions you may have would be welcome.
+
+-Simon

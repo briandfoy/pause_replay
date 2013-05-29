@@ -1,0 +1,96 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:24088
+Return-Path: <gossamer@tertius.net.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 666 invoked by uid 76); 20 Oct 2003 18:51:00 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Mon, 20 Oct 2003 11:51:00 -0700
+Received: (qmail 17490 invoked by uid 225); 20 Oct 2003 18:50:55 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17486 invoked by alias); 20 Oct 2003 18:50:54 -0000
+Received: from smtp1.adl2.internode.on.net (HELO smtp1.adl2.internode.on.net) (203.16.214.181) by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Mon, 20 Oct 2003 11:50:42 -0700
+Received: from mycroft.tertius.net.au (ppp145-13.lns1.mel2.internode.on.net [150.101.145.13])	by smtp1.adl2.internode.on.net (8.12.9/8.12.9) with ESMTP id h9KIoZBE092169	for <modules@perl.org>; Tue, 21 Oct 2003 04:20:35 +0930 (CST)
+Received: by mycroft.tertius.net.au (Postfix, from userid 1000)	id 136C017800; Tue, 21 Oct 2003 04:50:35 +1000 (EST)
+Date: Tue, 21 Oct 2003 04:50:35 +1000
+To: modules@perl.org
+Subject: Date&Time in words - what namespace?
+Message-ID: <20031020185034.GA4483@tertius.net.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.1i
+X-Religion: debian perl mutt vim lynx/galeon
+X-Spam-Check-By: la.mx.develooper.com
+X-Spam-Status: No, hits=1.0 required=7.0 tests=CARRIAGE_RETURNS,RCVD_IN_MULTIHOP_DSBL,RCVD_IN_UNCONFIRMED_DSBL,SPAM_PHRASE_02_03,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: rb@tertius.net.au (Ricky Buchanan)
+
+I have two module which convert dates and times respectively to
+words, there are a couple of different detail levels in each
+module, example output for the different date functions would be
+"May Fifth", "Monday the fifth of May" and "Monday the fifth of
+may, nineteen seventy five", and analogously for time with
+different levels of detail.  I use them for a bunch of stuff
+that's output to a speech synthesizer which is crappy at
+outputting things like "9:04am", myself, but I suppose there are
+other uses too, not to mention other people who use speech synth
+in their perl programs.
+
+Example use:
+
+my $date = new XXXX-modulename-XXXX time();
+print "> " . $date->ShortDate . ".\n";
+> Monday the third of May.
+
+my $time = new XXXX-modulename-XXXX time();
+print "> " . $time->LongTime . ".\n";
+> A quater past three in the morning.
+
+
+Two questions:
+
+1.  One module or two?
+There are currently two modules, one which deals with dates and
+one which deals with times, but it would be trivial to combine
+them.  Would you advise that this should be one module or two?
+
+
+2.  What module namespace to use?
+I have examined nodes already in CPAN and it seems most modules
+related to dates and times are stored under Date:: namespace, but
+on the other hand many modules that convert things to English are
+stored under Lingua::EN:: namespsace ... and on the gripping
+hand, I have also seen modules under the Text:: namespace that
+deal with generating English text.
+
+My gut feeling is (if 1 module) Text::DateTime or (if 2 modules)
+Text::Date and Text::Time) perhaps?  I don't think it belongs in
+the Date:: namespace because Date:: seems to be related to
+manipulating dates and times rather than just outputting them.  
+
+I don't know how you decide what goes in Lingua::EN:: and Text::
+as namespaces, I have a previous module Lingua::EN::Gender whose
+namespace was cleared with this alias, but IIRC at the time the
+Text:: namespace didn't even exist!  Is the Lingua::EN::
+namespace deprecated now, and if not how do you decide what goes
+there and what goes in Text::?
+
+In short words, I'm thoroughly confused!  Please advise :)
+
+
+Please also remember, all of you modules@ people, that you hard
+work is greatly appreciated by us half-educated Perl module
+authors!  Especially ones like me who aren't totally up on what's
+what and have writte a few modules a year.
+
+
+Regards,
+Ricky
+
+-- 
+: Usual state:  (e) None of the above.
+: rb@tertius.net.au       http://tertius.net.au/~rb/
+: The algorithm to do that is extremely nasty.  You might want to
+: mug someone with it.  -- M Devine, Computer Science 340

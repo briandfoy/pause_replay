@@ -1,0 +1,102 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4661
+Return-Path: <tjmather@anidea.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1017 invoked from network); 10 Mar 2001 13:27:59 -0000
+Received: from knut.anidea.com (208.13.43.15)
+  by tmtowtdi.perl.org with SMTP; 10 Mar 2001 13:27:59 -0000
+Received: from localhost (tjmather@localhost)
+	by knut.anidea.com (8.11.0/8.11.0) with ESMTP id f2ADc2908939
+	for <modules@perl.org>; Sat, 10 Mar 2001 08:38:03 -0500
+Date: Sat, 10 Mar 2001 08:38:02 -0500 (EST)
+To: modules@perl.org
+Subject: RFC: change of maintainer for libxml-enno
+Message-ID: <Pine.LNX.4.21.0103100811410.8755-100000@knut.anidea.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: tjmather@anidea.com ("T.J. Mather")
+
+Hi,
+
+libxml-enno is a Perl distribution on CPAN that contains XML::DOM,
+XML::XQL, and XML::Checker, among others.  Enno Derksen, the original
+author of these modules, has all but disappeared, and I'm volunteering to
+take over the maintenance.  I've already applied some bug fixes, and I
+would like to know if anybody would have any objections to me assuming
+maintenance for this distribution going forward.
+
+You may download the modified version from
+http://tjmather.com/CPAN/libxml-enno-1.04pre.tar.gz
+
+I have included the CHANGES file below.  In summary, I have applied bug
+patches that users have submitted to me and posted on the perl-xml
+list.  In addition I have updated libxml-enno to work with XML::Parser
+2.30.  However, since XML::Parser's API has changed from the 2.27 release,
+libxml-enno-1.04 is incompatible with XML::Parser 2.27.  If you are using
+XML::Parser 2.27, then you should download libxml-enno-1.02 from your
+local CPAN mirror.
+
+I want to make sure that this distribution is stable before I upload it 
+to CPAN (assuming nobody has any objections) and I would appreciate any
+feedback or bug reports.
+
+-TJ
+
+Change history for libxml-enno:
+
+1.04 (tjmather)
+
+- CHK: Fixed bug in XML::Checker::Parser with the setting
+  @InterceptedHandlers (William Horka)
+- CHK: Fixed errors in test case t/chk_batch.t.  Most had to do with change
+  from "well-formed" to "well-formed (invalid token)" in error message.
+  Also, the tests in chk_batch.t for the xml file attr3 did not return any
+  errors any more, since XML::Parser >= 2.28 doesn't seem to call the entity
+  handler more than once if a entity is repeated.
+- CHK: Updated t/chk_batch.t to be independent of the order of the error
+  messages generated.  This is because the order of the error messages
+  seems to be dependent on the version of perl used (e.g. 5.005 vs. 5.6.0).
+- DOM: Fixed XML::DOM::DocumentType::replaceChild to call
+  SUPER::replaceChild instead of SUPER::appendChild (John Salmon)
+- DOM: Fixed XML::DOM::Text::splitText to use substr instead of
+  (non-existant) substring and insertBefore instead of (non-existant)
+  insertAfter (Duncan Cameron)
+- DOM: Fixed XML::DOM::Text::print to encode '>' and '"' (John Cope)
+- DOM: Added code to convert Model argument of XML::Parser::Dom::Element
+  from XML::Parser::ContentModel to string.  XML::Parser >= 2.28 passes
+  a XML::Parser::ContentModel object for the model arg of the Element handler
+  while earlier versions passed a string.  Fixed cannot find equals
+  method in XML::Parser::ContentModel in dom_extent.t.
+- DOM: Updated XML::DOM::Entity and XML::Parser::Dom::Entity to reflect
+  new Entity handler API in XML::Parser >= 2.28.  There is a new isParam
+  parameter and the name no longer starts with '%' if it is a parameter
+  entity.
+- DOM: Fixed errors in test cases t/build_dom.t t/dom_attr.t by changing
+  hair (none | blue | yellow) "yellow" to hair (none|blue|yellow) 'yellow'
+  Also fixed t/dom_jp_attr by changing equivilent japenese text.
+- DOM: Fixed errors in test cases t/dom_print.t and t/dom_jp_print.t
+  by changing <!ELEMENT doc (beavis | butthead)*> to
+  <!ELEMENT doc (beavis|butthead)*>
+- DOM: Fixed error in test 3 of t/dom_jp_attr.t under Perl 5.6.0
+  by changing $FILE->print("$name $type") in XML::DOM::AttDef::print.
+- XQL: Updated XQLParser/Makefile.PL to use yapp instead of yapp.pl
+  since yapp.pl was renamed to yapp starting with Parse::Yapp 0.30.
+  This fixed a problem where it mangled XML/XQL/Parser.pm if
+  Parse::Yapp >= 0.30 was installed.
+- XQL: Replaced '>' in __DATA__ section of t/xql_big.t with '&gt;'.
+ 
+1.03 (enno) (not released)
+- XQL: Fixed $intersect$ operator. It used to throw exception when parsing 
+  the XQL expression. Something like "xql_check method not implemented".
+  (Thanks to Tatiana <tasc@lbd.dcc.ufmg.br>)
+- XQL: Fixed q// and qq// operators. Typo in RE caused them to be unrecognized
+  by the XQL expression parser.
+- XQL: Fixed 'any' and 'all' modifiers. Typos in Parser.yp caused them to fail.
+  (Thanks to James Curran <jcurran@staff.cs.usyd.edu.au>)
+- XQL: Fixed warning on Windows when using XML::XQL, related to tput.
+- CHK: Fixed errors in test case t/chk_batch.t for Windows. Most were related
+  to differences in newlines.
+

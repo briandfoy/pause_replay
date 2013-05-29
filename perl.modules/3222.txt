@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3222
+Return-Path: <miyagawa@edge.co.jp>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26197 invoked from network); 26 Oct 2000 20:24:59 -0000
+Received: from sak.edge.co.jp (210.190.127.2)
+  by tmtowtdi.perl.org with SMTP; 26 Oct 2000 20:24:59 -0000
+Received: (qmail 28360 invoked by uid 0); 26 Oct 2000 20:24:51 -0000
+Received: from dhcp063.edge.intranet (HELO monster) (10.0.0.63)
+  by sak.edge.co.jp with SMTP; 26 Oct 2000 20:24:51 -0000
+Date: Fri, 27 Oct 2000 05:24:44 +0900
+To: andreas.koenig@anima.de (Andreas J. Koenig)
+Subject: Re: Regist me
+Cc: modules@perl.org
+In-Reply-To: <m38zrbe6tx.fsf@ak-71.mind.de>
+References: <20001026031413.1909.MIYAGAWA@edge.co.jp> <m38zrbe6tx.fsf@ak-71.mind.de>
+Message-ID: <20001027051508.E6F6.MIYAGAWA@edge.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Becky! ver. 2.00 (beta 27)
+Approved: news@nntp.perl.org
+From: miyagawa@edge.co.jp (Tatsuhiko Miyagawa)
+
+
+On 26 Oct 2000 21:32:58 +0200
+andreas.koenig@anima.de (Andreas J. Koenig) wrote:
+
+> >>>>> On Thu, 26 Oct 2000 03:34:22 +0900, Tatsuhiko Miyagawa <miyagawa@edge.co.jp> said:
+> 
+>  > 2. CGI::Upload
+>  > Name           DSLI  Description                                  Info
+>  > -------------  ----  -------------------------------------------- -----
+>  > CGI::
+>  > ::Upload       bdpO  Operation on CGI uploaded files.             MIYAGAWA
+> 
+>  > Discussion:
+>  > http://www.freeml.com/ml_view.php?ml=perl-oo&pg=164
+>  
+> Pardon me, I do not speak Japanese. Could you provide some insight why
+> this should be registered? Thanks!
+
+Sorry bout that the discussion is done almost in
+Japanese.
+
+CGI::Upload is a kind of utility to handle CGI-uploaded
+files,  using CGI.pm + MIME::Types + Mac::Macbinary +
+HTTP::BrowserDetect.
+
+1. Macintosh Internet Explorer 4.5 browser sents their
+local files to servers as "MacBinary" format. So, all
+the CGI programmers should detect whether the uploaded
+file's 'Content-Type' be 'application/x-macbinary' and
+should decode it. 
+
+With Mac::Macbinary, this module automagically decodes
+Macbinary, and with MIME::Types it tries to reconstruct
+Content-Type field via a suffix of orginal file. (Off
+course, only in case that an uploaded file's
+Content-Type equals to "application/x-macbinary")
+
+2. CGI.pm 's upload() and param() methods alreday can
+do "getting the content data and local filename". But
+you know, if the client uses Windows OS for example,
+param() returns something like:
+'C:\\Program Files\\Foo\\Bar.exe'
+
+With HTTP::BrowserDetect and File::Basename, this
+module tries to detect client OS and get approximate
+base filename of local files.
+
+
+thanks.
+
+
+
+--
+Tatsuhiko Miyagawa <miyagawa@edge.co.jp>
+
+

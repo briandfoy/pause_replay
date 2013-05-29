@@ -1,0 +1,140 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13297
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 88770 invoked by uid 76); 20 Aug 2002 14:04:02 -0000
+Received: from root@[212.40.160.59] (HELO pause.perl.org) (212.40.160.59)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Tue Aug 20 14:04:02 2002 -0000
+Received: (from nobody@localhost)
+	by pause.perl.org (8.11.6/8.11.6) id g7KE3Xr32554;
+	Tue, 20 Aug 2002 16:03:33 +0200
+Date: Tue, 20 Aug 2002 16:03:33 +0200
+Message-ID: <200208201403.g7KE3Xr32554@pause.perl.org>
+Reply-To: modules@perl.org
+Subject: Module submission FileHandle::Deluxe
+To: modules@perl.org, miko@cpan.org
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       FileHandle::Deluxe
+  DSLIP:       bdpOp
+  description: File handle with a lot of extra features
+  userid:      MIKO (Miko O'Sullivan)
+  chapterid:   21 (File_Handle_Input_Output)
+  communities:
+
+  similar:
+    FileHandle
+
+  rationale:
+
+    NAME
+
+    FileHandle::Deluxe - File handle with a lot of extra features
+
+    DESCRIPTION
+
+    FileHandle::Deluxe works like a regular FileHandle object, with the
+    addition of doing the routine file handle chores for you.
+    FileHandle::Deluxe (aka "FD") is targeted at beginning Perl users
+    who usually find those tasks intimidating and often elect to skip
+    them rather than learn how to do them. FileHandle::Deluxe defaults
+    to a set of best practices for working with file handles.
+
+    The following sections describe the practices and features
+    implemented by FD. Keep in mind as you read these descriptions that
+    every feature can be overridden if you do not want to use that
+    feature.
+
+    Security
+
+    FileHandles are the most notorious source of Perl application
+    security holes. FD implements a strict set of security rules. Rather
+    than allowing users "enough rope to hang themselves", FD forces the
+    user to either program more securely or explicitly acknowlege that
+    their program uses insecure techniques. Hopefully most FD users will
+    choose the first option.
+
+    For beginners, FD refuses to run unless either Perl is in taint
+    mode or the developer gives explicit permission for FD to run while
+    not in taint mode.
+
+    FD also dispenses with the traditional notation for indicating if a
+    file should be opened for reading, writing, etc. For example, the
+    argument "> mydata.txt" would be prohibited. Instead, to indicate
+    opening a file for writing, the command for a new file handle would
+    use the "write" option:
+
+    $fh = FileHandle::Deluxe->new($path, write=>1);
+
+    FD refuses to open any file using a tainted path. (Regular file
+    handles will open files for read using tainted paths.) Users,
+    however, frequently find the task of properly untainting paths more
+    than they want to deal with, so FD helps out. The user may indicate
+    that certain files, directories, or entire directory trees are
+    "safe". Tainted data paths may be used to open files within safe
+    locations.
+
+    FD also addresses security issues with executable files. When an FD
+    file handle is opened for piping to and from an executable, FD
+    automatically uses the more secure exec method for opening the file
+    handles. The exec method opens the executables directly, instead of
+    spawning an intermediate shell, thereby bypassing shell hacks.
+
+    File Locking
+
+    File locking is a file handle housekeeping nuisance that even
+    experienced Perl programmers often overlook. FD takes care of file
+    locking chores for you. Files that are opened as read only get a
+    shared lock. Files that are opened as writable get an exclusive
+    lock.
+
+    Resource Conservation
+
+    FD file handles are "lazy"... they do not open the files until they
+    are actually used. Furthermore, for read-only files, the file
+    handles are closed once the last line of the file is read. By using
+    these conservation features, a function can return a large number of
+    FD objects (perhaps representing all the files in a directory)
+    without using up limited system file handles.
+
+    Convenience
+
+    FD simplifies many tasks associated with working with files. For
+    beginners, FD objects stringify to the file paths, so a function can
+    return a series of FD objects that can be easily used to output file
+    names. FD handles also provide the ability to quickly slurp in the
+    entire contents of a file either as an array of pre-chomped lines or
+    as a single string.
+
+    FD also includes non-OO functions for slurping in file data without
+    having to create an object first.
+
+    Speaking of chomping, FD handles can also be set to automatically
+    chomp lines as you pull them from the file. Auto-chomping even works
+    for blank lines when looping through a file with a standard C<while
+    (<$fh>)> technique.
+
+  enteredby:   MIKO (Miko O'Sullivan)
+  enteredon:   Tue Aug 20 14:03:32 2002 GMT
+
+The resulting entry would be:
+
+FileHandle::
+::Deluxe          bdpOp File handle with a lot of extra features     MIKO
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=5f100000_57891f10364e5e28&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=5f100000_57891f10364e5e28&SUBMIT_pause99_add_mod_insertit=1

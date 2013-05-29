@@ -1,0 +1,94 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:37465
+Return-Path: <comdog@panix.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 8176 invoked from network); 5 Jan 2005 18:30:09 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 5 Jan 2005 18:30:09 -0000
+Received: (qmail 8773 invoked by uid 225); 5 Jan 2005 18:30:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8769 invoked by alias); 5 Jan 2005 18:30:09 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: 63.251.223.186 is neither permitted nor denied by domain of comdog@panix.com)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+  by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Wed, 05 Jan 2005 10:29:56 -0800
+Received: (qmail 8138 invoked by uid 515); 5 Jan 2005 18:29:54 -0000
+To: modules@perl.org, curtis_ovid_poe@yahoo.com (Ovid)
+Subject: Re: New pragma suggestion:  aka.pm
+Date: Wed, 05 Jan 2005 12:29:52 -0600
+Reply-To: modules@perl.org
+Posted-And-Mailed: yes
+Message-ID: <050120051229528442%comdog@panix.com>
+References: <040120051715123167%comdog@panix.com> <20050105012554.8329.qmail@web60803.mail.yahoo.com>
+Organization: Perl Author's Upload SErver (PAUSE)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+User-Agent: Thoth/1.5.9 (Carbon/OS X)
+X-Posted-By: 24.12.70.36
+Approved: news@nntp.perl.org
+From: comdog@panix.com (_brian_d_foy)
+
+[[ This message was both posted and mailed: see
+   the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+In article <20050105012554.8329.qmail@web60803.mail.yahoo.com>, Ovid
+<curtis_ovid_poe@yahoo.com> wrote:
+
+> --- _brian_d_foy <comdog@panix.com> wrote: 
+> > does "aka" work for those who don't prefer english?  I'd prefer
+> > a whole world.
+> 
+> Well, so far that seems to be what most people like.  I originally had
+> "class.pm".  No one has come up with suggestions that people seem to
+> really be happy with.
+> 
+> alias.pm does not work as there is already an Alias.pm on the CPAN. 
+> Perl on a case-insensitive file system will happily "use"  a file with
+> the wrong case in the name (though it will choke when you reference the
+> package name in the code after that.)
+> 
+> > Or, I think this might (might...) make more sense with the 
+> > actual alias closer to the word "alias".
+> > 
+> >    use alias 'Customer' => 'Namespace::Preferred::Customer';
+> 
+> That doesn't easily allow for:
+> 
+>   use alias 'Namespace::Preferred::Customer';
+
+sure it does: just do the same magic you did before when you get
+one argument.
+
+but, I don't really feel that strongly about it.  i was just 
+throwing my two cents in like everyone else.  
+
+> some of the problems more clear:
+> 
+>   # import also accepts a scalar if you have only one item
+>   use aka 'Long::Package::Name::For::Customer',
+>       as => 'Cust', import => [qw/foo bar/];
+
+in that case, I'd like the import list to be as close to the 
+original module name, and I'd like to just stick the alias
+stuff in front.
+
+   use 'Namespace::Preferred::Customer' qw( foo bar baz );
+
+becomes
+
+   use alias 'Customer', 'Namespace::Preferred::Customer'
+      qw( foo bar baz );
+
+by just inserting the "alias Customer".  The second argument
+is the orginal namespace, and everything past that is the 
+import list.
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+archives at http://www.xray.mpe.mpg.de/mailing-lists/modules
+please send all messages back to modules@perl.org

@@ -1,0 +1,73 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:39261
+Return-Path: <j.g.karssenberg@student.utwente.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27511 invoked from network); 24 Mar 2005 17:15:24 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 24 Mar 2005 17:15:24 -0000
+Received: (qmail 361 invoked by uid 225); 24 Mar 2005 17:15:24 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 355 invoked by alias); 24 Mar 2005 17:15:23 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pardus-larus.student.utwente.nl (HELO zoidberg.student.utwente.nl) (130.89.162.38)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 24 Mar 2005 09:15:20 -0800
+Received: from pardus-larus.student.utwente.nl (localhost.localdomain [127.0.0.1])
+	by zoidberg.student.utwente.nl (Postfix) with ESMTP id 87D08679CF
+	for <modules@perl.org>; Thu, 24 Mar 2005 18:16:50 +0100 (CET)
+Received: from 146.103.254.11
+        (SquirrelMail authenticated user pardus);
+        by pardus-larus.student.utwente.nl with HTTP;
+        Thu, 24 Mar 2005 18:16:50 +0100 (CET)
+Message-ID: <4956.146.103.254.11.1111684610.squirrel@146.103.254.11>
+In-Reply-To: <240320050801240990%comdog@panix.com>
+References: <200503220838.j2M8cvT6024311@pause.perl.org>
+    <220320052122059035%comdog@panix.com>
+    <4023.146.103.254.11.1111571327.squirrel@146.103.254.11>
+    <240320050801240990%comdog@panix.com>
+Date: Thu, 24 Mar 2005 18:16:50 +0100 (CET)
+Subject: Re: Module submission Shell::Jobs
+To: modules@perl.org
+User-Agent: SquirrelMail/1.5.1 [CVS]
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+Approved: news@nntp.perl.org
+From: j.g.karssenberg@student.utwente.nl ("Jaap Karssenberg")
+
+
+On Thu, March 24, 2005 14:01, _brian_d_foy said:
+>> Secondly, this module actually *is* a shell -really-: it contains a
+>> parser for shell script (logic lists, redirections, command substitution
+>> etc.) and it can execute jobs;
+> 
+> Is that the definition of a shell?
+
+I think the definition of a shell is something like "an interactive command interpreter"; try google define:shell or see the introduction of man bash, csh etc. for this.
+
+This module will supply the interpreter for a large part of the shell language as specified by the POSIX standard. It lacks the interactive part which is usually handled by the readline lib, which at cpan is located in the Term::ReadLine:: namespace. Since the ReadLine functionality is allready general available I see no reason to include that. All said I think that if you put ReadLine and Shell::Jobs together you will have a shell according to my understanding of the concept.
+
+>> wrapped with ReadLine and maybe a builtin command or two that makes a
+>> reasonably usable login shell :)
+> 
+> Well, you can build a shell with it, I guess, but you can build a shell
+> with a lot of things not in Shell::*
+
+I actually tried that and ended up writing all compenents from scratch. If there is one thing CPAN lacks for putting together a shell that comes close to any standard unix shell it is a module supppleing job control.
+
+> Inthe end, do you have to use this module as part of a shell, or can you
+> use it in things that are not a shell?
+
+Yes it will be useful to others. A large part of the code is allready on cpan, but as part of the Zoidberg project and therefor lives in the Zoidberg:: namespace. The whole point of making this a seperate module is to make this functionality available for other uses. (Then afterwards of course Zoidberg will depend on this module.) I started this module because various people asked me to have some standard base classes to build there own (specialezed) shells or similar programs.
+
+The functionality that this will add to CPAN is the job control facilities.
+See http://www.dbforums.com/t1117565.html for a message I send to some usenet groups with examples of the intended interface.
+
+-- Pardus
+

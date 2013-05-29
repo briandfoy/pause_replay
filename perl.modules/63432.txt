@@ -1,0 +1,76 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:63432
+Return-Path: <craig@animalhead.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 3939 invoked from network); 30 Nov 2008 22:45:54 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 30 Nov 2008 22:45:54 -0000
+Received: (qmail 11374 invoked by uid 225); 30 Nov 2008 22:45:54 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11370 invoked by alias); 30 Nov 2008 22:45:53 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from animalhead.com (HELO animalhead.com) (198.66.255.31)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 30 Nov 2008 14:45:51 -0800
+Received: from [192.168.0.8] (pool-71-116-115-15.snfcca.dsl-w.verizon.net [71.116.115.15])
+	(authenticated bits=0)
+	by animalhead.com (8.13.6.20060614/8.13.6) with ESMTP id mAUMjkQT006388
+	(version=TLSv1/SSLv3 cipher=AES128-SHA bits=128 verify=NOT)
+	for <modules@perl.org>; Sun, 30 Nov 2008 14:45:47 -0800 (PST)
+Message-ID: <52D34712-F00C-481F-8CE7-4048101C4AB2@animalhead.com>
+To: modules@perl.org
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v929.2)
+Subject: Questions
+Date: Sun, 30 Nov 2008 14:45:41 -0800
+X-Mailer: Apple Mail (2.929.2)
+Approved: news@nntp.perl.org
+From: craig@animalhead.com
+
+Hi,
+
+A while back I registered with PAUSE, and am thinking of contributing  
+2 modules to CPAN.  My working names for them are IPC::MM::Array and  
+Apache2::CloseKeepAlive.  The latter uses the the former.  Some  
+questions regarding this:
+
+1. Do I need permission from anyone to use the name IPC::MM::Array?   
+Arthur Choung contributed an IPC::MM module back in 2000 but has not  
+updated it since.  Ralf Engelschall wrote the MM library that  
+underlies both Perl modules.
+
+I started from IPC::MM but there is almost no code left from it in  
+IPC::MM::Array.  IPC::MM has mutual-exclusion problems.  I suppose I  
+should email Mr. Choung a description of these problems, but they're  
+prettty obvious and he hasn't done anything about such things in 8+  
+years.
+
+2. Do I need permission from anyone to use the name  
+Apache2::CloseKeepAlive?  It runs under mod_perl2 but there doesn't  
+seem to be a top-level CPAN namespace for mod_perl2.
+
+3. Two command-line apps are associated with Apache2::CloseKeepAlive.   
+One scans a web site and builds a database that CloseKeepAlive uses.   
+The other generates web traffic for testing CloseKeepAlive.  Can I  
+simply integrate them with the Apache2::CloseKeepAlive package (using  
+package in a more global sense than "Perl package")?  Or do I have to  
+upload them separately to the "scripts" part of CPAN?
+
+FYI, CloseKeepAlive runs as a mod_perl2 fixup handler and will post a  
+"Connection: Close" header if it looks like this is a good idea.  Thus  
+one can run Apache2 with KeepAlive on, without having many child  
+processes hanging around waiting for KeepAlive timeouts.  Without  
+something like this, the tendency of recent Mozilla and MS browsers to  
+open like 6 parallel connections seems like the death knell for the  
+HTTP KeepAlive feature.
+
+Best Regards,
+Craig MacKenna
+www.animalhead.com
+Los Gatos, CA
+

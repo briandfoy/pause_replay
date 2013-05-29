@@ -1,0 +1,49 @@
+Newsgroups: perl.ithreads,perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.ithreads:415 perl.modules:12904 perl.module-authors:459
+Return-Path: <liz@dijkmat.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 73843 invoked by uid 76); 29 Jul 2002 07:52:17 -0000
+Received: from smtpzilla2.xs4all.nl (HELO smtpzilla2.xs4all.nl) (194.109.127.138)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Mon Jul 29 07:52:17 2002 -0000
+Received: from valizo (a80-127-231-98.dial.xs4all.nl [80.127.231.98])
+	by smtpzilla2.xs4all.nl (8.12.0/8.12.0) with ESMTP id g6T7pU5f073303;
+	Mon, 29 Jul 2002 09:51:30 +0200 (CEST)
+Message-ID: <4.2.0.58.20020729093537.03feb6f0@mickey.dijkmat.nl>
+X-Sender: lm@mickey.dijkmat.nl
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.2.0.58 
+Date: Mon, 29 Jul 2002 09:38:04 +0200
+To: pdcawley@bofh.org.uk
+Subject: Re: [CAUTION] Thread-saving modules
+Cc: Ken Williams <ken@mathforum.org>, module-authors@perl.org,
+   modules@perl.org, perl-ithreads@perl.org
+In-Reply-To: <843cu59oum.fsf@despairon.bofh.org.uk>
+References: <4.2.0.58.20020722201008.01f1d4d0@mickey.dijkmat.nl>
+ <4.2.0.58.20020721195048.0270e2b0@mickey.dijkmat.nl>
+ <4.2.0.58.20020722201008.01f1d4d0@mickey.dijkmat.nl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Approved: news@nntp.perl.org
+From: liz@dijkmat.nl (Elizabeth Mattijsen)
+
+At 04:23 PM 7/27/02 +0100, pdcawley@bofh.org.uk wrote:
+>Elizabeth Mattijsen <liz@dijkmat.nl> writes:
+> > >I usually just call UNIVERSAL::isa($_[0], 'your::class::name') in 
+> these cases.
+> >    return unless UNIVERSAL::isa( $_[0],__PACKAGE__ );
+>Don't you still have a 'subclass problem? Consider some parent class
+>with children A,B,C & D. If a 'D' gets DESTROYed correctly at first and
+>then a subsequent spurious DESTROY passes an object that's morphed
+>into a 'C' then you're protection is stuffed.
+
+Indeed.  But I wouldn't know another method, short of creating a shared 
+hash for remembering which objects got destroyed already, to fix this.
+
+In any case, this is a problem in Perl 5.8.0 that needs to be fixed.  I'm 
+just suggesting a band-aid in the mean time, which stops the bleeding most 
+of the time...  ;-)
+
+
+Liz
+

@@ -1,0 +1,228 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1060
+Return-Path: <grimes@waste.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17378 invoked from network); 7 Feb 2000 01:08:00 -0000
+Received: from waste.org (209.173.204.2)
+  by tmtowtdi.perl.org with SMTP; 7 Feb 2000 01:08:00 -0000
+Received: from grimes@localhost by waste.org id <31572-14884>; Sun, 6 Feb 2000 19:07:21 -0600
+Sender: grimes@waste.org
+To:	modules@perl.org
+cc:	pete@horus.cix.co.uk
+Subject: RFD: Exception (and StackTrace) modules [long] (fwd)
+Message-ID: <Pine.LNX.3.96.1000206190250.16103C-100000@waste.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Date:	Sun, 6 Feb 2000 19:07:21 -0600
+Approved: news@nntp.perl.org
+From: bogus@nntp.perl.org (Unknown Sender)
+
+This is a CC of a message I recently posted to c.l.p.modules.
+
+I figured I'd sent it you (and just who does receive this list anyway?).
+
+I just looked in the archives (which I'd checked a while back) and it
+seems that Pete Jordan recently submitted something with same name.  Doh.
+Pete, I'm cc'ing you as well then.  I'd love to see your code.
+
+Should this go to p5p as well?  I'm afraid to post there! hehe
+
+Thanks,
+
+-Dave
+
+---------- Forwarded message ----------
+Date: Sun, 6 Feb 2000 19:01:07 -0600
+From: Peter Grimes <grimes@waste.org>
+Newsgroups: comp.lang.perl.modules
+Subject: RFD: Exception (and StackTrace) modules [long]
+
+First of all, I know about Graham Barr's Error.pm module.  Let me know lay
+out the reasons I don't want to use that first as it should head off a few
+potential threads.
+
+1.  I don't much like the syntax.  There's a lot of really wacky tricky
+stuff that was done to make it look like C++ or Java.  There's nothing
+wrong with tricky coding (and my module has some) but I personally don't
+see any need for that syntax.  You can do try/catch/finally/etc with
+native perl.
+
+2.  There's no facility for having modules 'declare' their exceptions
+other than by actually creating a package and it's associated code.  Ok,
+this is kind of like Java's:
+
+public static void foo( String foo ) throws FooException {
+
+but this I actually like (as you can see, it's all about my personal
+biases).
+
+
+That's about it.
+
+
+So what does the code I'm proposing do?
+
+Here's some sample code using it:
+
+This might go at the top of a module:
+
+package Foo;
+
+use Exception( 'FileException',
+               'FileWriteException' => { isa => 'FileException' },
+               'FooException',
+               'FooBarException' => { isa => 'FooException',
+                                      description => 'Something FUBAR happened' },
+             );
+
+This would automatically create these packages as necessary.
+
+This not preclude creating your subclasses by doing something like this:
+
+package FooException;
+
+use base qw(Exception);
+
+...
+
+This would be necessary to create additional methods for your exception
+not already present in exception.
+
+To deal with exceptions you do:
+
+# try
+
+sub throw_exception{ Exception->throw( error => 'Woah!' ); }
+
+eval { throw_exception; };
+
+if ($@)
+{
+    # Catch FooException.
+    if ($@->isa('FooException'))
+    {
+        warn "Curses, foo'd again\n";
+    }
+    # Catch BarException.
+    elsif ($@->isa('BarException'))
+    {
+        warn "A duck and a peanut walk into a bar...\n";
+    }
+    # Catch everything else
+    else
+    {
+        die $@->error, "\n";
+    }
+}
+
+As you can see, this is pretty much identical to try/catch syntax but I
+prefer it cause it's more Perlish (your mileage may vary, of course).
+
+Here are the methods provided by the Exception _class_:
+
+throw ( error => $error_message );
+do_trace - This is a class method.  If set to to true, then all objects
+created by the class will contain a StackTrace object (see below).  THis
+is a get/set method.
+
+Object methods:
+
+rethrow - just dies with the object.  Use like this:
+
+if ($@)
+{
+    # Send it up to the next level.
+    $@->rethrow unless $@->isa('FooException');
+
+    # Handle FooException
+}
+
+get methods:
+
+time - time exception was thrown
+pid, uid, euid, gid, egid
+error - error message given to throw method.  If nothing was given we use
+$! (from the time the error was thrown).
+trace - the StackTrace object that was created (if do_trace was true)
+
+description - the thought behind this is that we might want to be able to
+fetch a description for this _class_ of exceptions (as opposed to the
+description of this specific exception).  This would be useful when using
+code from other people that throws exceptions that we don't really know
+much about.  If they provide a description we can look at that for
+additional info.
+
+
+The StackTrace code I mentoined above basically provides an OO interface
+to a set of stack frames (each of which is basically like a line from
+carp()'s output).
+
+
+The feature I like best about the module I've put together is that I can
+declare exceptions at compile time via the import method of Exception via:
+
+use Exception qw(FooException);
+
+I can also create subclasses of other exceptions via:
+
+use Exception ( FooException => { isa => 'BarException' } );
+
+This code is smart enough to find circular references in it's creation
+process so it will puke on:
+
+use Exception ( Foo => { isa => 'Bar' },
+                Bar => { isa => 'Foo' } );
+
+It will also detect typos in isa (or what it thinks are typos) like:
+
+use Exception ( 'Foo', Bar => { isa => 'Fooasdlyhdslk' } );
+
+
+The one issue that is not addressed by this code is what happens if you
+attempt to 'try' something that does a 'normal' die (with a string).
+
+The problem here is that you'll then do:
+
+if ($@->isa('Something'))
+
+which will cause another error message.
+
+There are two solutions:
+
+eval all your 'catches' (this is lame).
+
+put in a signal handler to convert strings to exceptions.  Perhaps this
+could be a class method for Exception?  What issues does this raise (I'm
+sure there are some!).
+
+
+So all this is basically to start a discussion of these issues:
+
+Is this something other people would find useful (or is everyone happy
+with what is out there)? 
+
+If so, what namespace does it belong in?  Right now I have three packages
+in two files that make up the code described above.  One is called
+Exception.pm and the other StackTrace.pm (containig StackTrace &
+StackTraceFrame). 
+
+There is already some code under Exceptions.  However, this code is
+non-functional and not being maintained, though it did form the basis for
+Graham Barr's Error.pm.  If my code were to go in as Exception could this
+one be removed (it should be anyway, I think).
+
+How about StackTrace?
+
+I'm always leary about proposing modules that create a new top level
+namespace (it always seems so presumptive).
+
+
+Thoughts?
+
+
+-Dave
+
+
+

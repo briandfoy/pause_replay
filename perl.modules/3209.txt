@@ -1,0 +1,107 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3209
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14286 invoked from network); 26 Oct 2000 19:02:18 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 26 Oct 2000 19:02:18 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id VAA28908;
+	Thu, 26 Oct 2000 21:01:53 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: =?iso-8859-1?q?Bal=E1zs_Szab=F3?= <dlux@kapu.hu>
+Cc: modules@perl.org
+Subject: Re: dTemplate and TableMap namespaces (was PAUSE now Unicoded)
+References: <m3hf5zek79.fsf@ak-71.mind.de>
+Date: 26 Oct 2000 21:01:52 +0200
+In-Reply-To: andreas.koenig@anima.de's message of "26 Oct 2000 16:44:10 +0200"
+Message-ID: <m3d7gne89r.fsf@ak-71.mind.de>
+Lines: 79
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On 26 Oct 2000 16:14:26 +0200, dLux <dlux@kapu.hu> said:
+
+   > | modules@perl.org.  Whenever you  wnt to  open a  new root  namespace
+   > | you
+   > | ought  to  have a  reasonable  explanation  why the  root  namespace
+   > | would be
+   > | justified.
+
+   > Sigh.  Ok. I  understand that.  I may  misunderstood something  in the
+   > pause docs, but  I thought if I  upload something to pause,  and it is
+   > accepted, then  it is automatically  accepted as a  namespace request.
+
+Yes, this is the only practicable solution for the times when we are
+overloaded, and we do not want to take that back.
+
+   > Unfortunately  dTemplate and  TableMap  is quite  stable  now (I  have
+   > just  released TableMap  1.0 and  dTemplate  1.0), and  has some  user
+   > base. Changing  the namespace  all programs which  are based  on these
+   > needs to be rewritten.
+
+In that case it would be pretentious to insist on changing. I could
+not know that.
+
+   > Is there  any policy  how to  choose namespace for  a module?
+
+There are many policies that can coexist and some of them are
+described in the module list, some of them are in the archives of
+modules@perl.org and some of them can be drawn from the current state
+of the module list. We know its a mess and we hope to prevent that it
+becomes a complete mess. An extensive paper on that is said to be in
+the works.
+
+   > I think
+   > "dTemplate"  namespace is  very unique  and could  not conflicts  with
+   > other  module names.
+
+Any root namespace that is not yet taken is unique:-)
+
+   > That's why  I  want to  keep  it. If  I need  to
+   > categorize  this  module, then  it  is  a general  purpose  templating
+   > system  which can  be  used  in CGI,  text,  xml,  html Building.  All
+   > namespaces could be  used, but neither of that could  describe that. I
+   > think  Template::dTemplate  would  be  a  good  name,  but  "Template"
+   > namespace  is reserved  by the  Template Toolkit  (hmmm), and  I don't
+   > like  if someone  thought these  two are  in close  relation.
+
+We do not consider namespaces being reserved but as soon as somebody
+has occupied a portion of it, I understand it would not be good to
+join the club with something that is completely unrelated.
+
+   > The  two
+   > module has very  different approach. So I don't think it  is a problem
+   > if "dTemplate" remains  "dTemplate": anybody who is  searching for the
+   > word "Template"  will find it,  and I think  this is the  most perlish
+   > templating   system   available   :-)    (in   my   personal   opinion
+   > Template::Toolkit is a  very big beast which has  too many unnecessary
+   > complexity built in).
+
+Good. I've registered it now. Thanks for makeing your arguemnts so clear.
+
+   > TableMap is  another story. This  can be renamed to  DBIx::TableMap or
+   > Class::Relation (Class::DBI is alread exists).
+
+Thanks. Please choose one of those and let us know which. We really
+believe it helps making CPAN cleaner if people use the existing names.
+
+   > If I  must rename my  namespaces do you have  idea how I  can maintain
+   > compatibility with the already released versions?
+
+Much can be done with aliasing like so:
+
+*TableMap::insert = \&DBIx::insert;
+
+You need to do something like this only for published functionality,
+and you can issue a warning when TableMap.pm is being required. If you
+encounter severe problems in doing something, just let us know.
+
+-- 
+andreas

@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:82417
+Return-Path: <khedin@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 9947 invoked from network); 25 Sep 2012 18:05:27 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 25 Sep 2012 18:05:27 -0000
+Received: (qmail 18581 invoked by uid 225); 25 Sep 2012 18:05:27 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18577 invoked by alias); 25 Sep 2012 18:05:27 -0000
+X-Spam-Status: No, hits=-2.7 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-lb0-f169.google.com (HELO mail-lb0-f169.google.com) (209.85.217.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 25 Sep 2012 11:05:23 -0700
+Received: by lbok6 with SMTP id k6so646914lbo.14
+        for <modules@perl.org>; Tue, 25 Sep 2012 11:05:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:from:to:content-type:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        bh=brS60qN0HEIj7UIf4ARYulovKU2ccTK3/wUGjUhb+EY=;
+        b=ke2yBZ0OPpwfvkTToNlArlRUv+cQYVPPAo3TezZnm29/l+Oy2soiB3asUx+cj/OT1z
+         1XwSwWmMq9oYqoJI2FRELbSRyE7suuwUoBn6nCZJu6fAJSS3crfZEJ9CH/RYpymA2+gy
+         f/h671/aYSjvglRSmUzcoMsN9x+w/ceIKliVVTH8p/Mx+2kQ5EH5fCvjiErL+m3bA6yU
+         HxxBuzAlFSEg4RTD7EQpk/JRalVZw63j4/XXRdADeOUtdxzradZbFAej9OFphRJH89Ys
+         Ht6tihRLJWeKitH5uNM/+/cVoDVSY9iwONiCbHVfnTornw+DNY0v0tNgsG03WgMofmGa
+         0xUg==
+Received: by 10.152.113.165 with SMTP id iz5mr13907310lab.48.1348596317844;
+        Tue, 25 Sep 2012 11:05:17 -0700 (PDT)
+Received: from [192.168.1.2] (ppp95-165-2-38.pppoe.spdop.ru. [95.165.2.38])
+        by mx.google.com with ESMTPS id pi16sm280805lab.7.2012.09.25.11.05.15
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 25 Sep 2012 11:05:16 -0700 (PDT)
+Subject: A simplified interface for testing AnyEvent-related modules
+To: modules@perl.org
+Content-Type: text/plain; charset="UTF-8"
+Date: Tue, 25 Sep 2012 22:05:13 +0400
+Message-ID: <1348596313.25748.141.camel@lodin-pad>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.30.3 
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: khedin@gmail.com ("Konstantin S. Uvarin")
+
+Hello,
+
+  I'm CPAN user KHEDIN, and I recently came up with a module which I'd
+like to release to the public (after consulting local mailing list).
+
+  However, I'm not sure about how to name it. 
+
+Here's what I've got: 
+
+When developing (and therefore writing tests and fire-and-forget
+scripts) for AnyEvent I routinely end up with a boilerplate like this:
+
+my $cv = AnyEvent->condvar;
+my $timer = AnyEvent->timer( after => 10, cb => sub { $cv->croak("Timeout"); });
+do_something( 
+    on_success => sub{ $cv->send(@_); }, 
+    on_error => sub{ $cv->croak(shift); },
+);
+my $result = $cv->recv();
+undef $timer; 
+analyze_do_something( $result );
+
+I finally got fed up with it and wrote a module with the following
+interface:
+
+my $result = ae_recv {
+    do_something( 
+        on_success => ae_send,
+        on_error => ae_croak,
+    );
+} 10; # timeout 
+analyze_do_something( $result );
+
+The module's current name is AE::AdHoc, however it's not clear what this
+means.
+
+I wouldn't like to have Test in name because it's not only useful for
+tests, and does not test AnyEvent itself as AnyEvent::Test::* would
+imply. 
+
+The last think I came up with was AnyEvent::SendRecv - is it clear what
+it does? 
+
+I would appreciate any help here.
+
+-- 
+With best regards, Konstantin S. Uvarin
+jabber:lodin@jabber.ru
++7 (903) 266-26-25
+

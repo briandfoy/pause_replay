@@ -1,0 +1,86 @@
+Newsgroups: perl.module.build,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.module.build:929 perl.modules:56868
+Return-Path: <kenahoo@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 2458 invoked from network); 22 Sep 2007 23:30:22 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 Sep 2007 23:30:22 -0000
+Received: (qmail 6638 invoked by uid 225); 22 Sep 2007 20:48:39 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6633 invoked by alias); 22 Sep 2007 20:48:38 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VERIFIED,DK_SIGNED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from rv-out-0910.google.com (HELO rv-out-0910.google.com) (209.85.198.189)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 22 Sep 2007 13:48:29 -0700
+Received: by rv-out-0910.google.com with SMTP id l15so925896rvb
+        for <modules@perl.org>; Sat, 22 Sep 2007 13:48:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:in-reply-to:references:mime-version:content-type:message-id:cc:content-transfer-encoding:from:subject:date:to:x-mailer;
+        bh=a5y++vQuCGBB5wOHDpbQFNbvYZcC7Hg9MiKjpxqPNOw=;
+        b=KfIupQo6dnDqvbntsuA9fqaqt245khXiPSq0PbbkHA5uBYcbbqjc48nCCDER1uCEZp2IO4L7t9ORcDMMiQbDggNRGStoTHNSJkucCGgUQC6T0xWgPUvCKUj/b+12XNkno520HcVQLG93X7nQ9N2oJECPNQBlgD7bkwic1dJADxc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:in-reply-to:references:mime-version:content-type:message-id:cc:content-transfer-encoding:from:subject:date:to:x-mailer;
+        b=ox8LjRbnrkE3Y3ZmJUXNuJaE3wvCtzVeaZp/m5GxZHCMwVDns9tQ1ZxMph3UlM1oGVDLp6ZmI2ZeyVpbs1ZcYjwAjA2rc2S4nnCiOeBxTlStDTXhksxlI4I360RnwD2Rq+J1G41G1bi/Ib36fQxQuu0E0kVTrmOvjk41ZmH45o0=
+Received: by 10.141.129.14 with SMTP id g14mr337879rvn.1190494105796;
+        Sat, 22 Sep 2007 13:48:25 -0700 (PDT)
+Received: from ?192.168.0.101? ( [71.215.199.117])
+        by mx.google.com with ESMTPS id g6sm4543060rvb.2007.09.22.13.48.23
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sat, 22 Sep 2007 13:48:24 -0700 (PDT)
+In-Reply-To: <5d4beb40709220646j70f599b3l916e675367bc8d3f@mail.gmail.com>
+References: <200709211146.l8LBkj8l024169@pause.perl.org> <46F3D9C8.2080401@pobox.com> <46F3DAB2.6010707@pobox.com> <5d4beb40709220646j70f599b3l916e675367bc8d3f@mail.gmail.com>
+Mime-Version: 1.0 (Apple Message framework v752.2)
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Message-ID: <69C984BE-C860-43ED-A8C3-28A5E3B9C32F@gmail.com>
+Cc: "Michael G Schwern" <schwern@pobox.com>,
+ modules@perl.org,
+ "List - Module-Build" <module-build@perl.org>
+Content-Transfer-Encoding: 7bit
+Subject: Re: Which takes precedence, provides or no_index? (was Re: PAUSE indexer report MSCHWERN/Alien-SVN-1.4.5.2.tar.gz)
+Date: Sat, 22 Sep 2007 15:48:19 -0500
+To: "David Golden" <xdaveg@gmail.com>
+X-Mailer: Apple Mail (2.752.2)
+Approved: news@nntp.perl.org
+From: kenahoo@gmail.com (Ken Williams)
+
+
+On Sep 22, 2007, at 8:46 AM, David Golden wrote:
+
+> On 9/21/07, Michael G Schwern <schwern@pobox.com> wrote:
+>> Michael G Schwern wrote:
+>> Hmm.  I just noticed that I set 'no_index' for the src directory  
+>> which
+>> contains the SVN:: modules which brings up the interesting  
+>> question of which
+>> takes precedence, no_index or provides?
+>>
+>> Since provides is explicit, I'd say it should override the more  
+>> general no_index.
+>
+> My understanding is that these serve two different purposes.
+>
+> "provides" indicates what modules are included in the tarball so that
+> tools don't have to unpack the tarball to understand the contents.
+
+The meaning of "provides" is very specific: if a distribution  
+provides Foo::Bar and you want Foo::Bar, you can install that  
+distribution.
+
+My understanding is that "no_index" is only useful when "provides"  
+isn't there and an indexer has to guess what you provide.  When  
+"provides" is there, it should be exhaustive.  Note that the spec  
+says "indexers will usually trust the C<provides> field if it's  
+present."  That's just a recommendation from me to the owners of the  
+indexers, but I think it's one they follow.
+
+So in Schwern's case, "provides" should indeed win, and furthermore  
+you should be able to just remove "no_index" altogether.
+
+  -Ken
+

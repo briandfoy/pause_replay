@@ -1,0 +1,907 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:56166
+Return-Path: <l2ot9pa02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5277 invoked from network); 6 Sep 2007 14:57:15 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 6 Sep 2007 14:57:15 -0000
+Received: (qmail 22326 invoked by uid 225); 6 Sep 2007 14:57:15 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22318 invoked by alias); 6 Sep 2007 14:57:14 -0000
+X-Spam-Status: No, hits=-9.0 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_HI,SARE_PROLOSTOCK_SYM3
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Thu, 06 Sep 2007 07:57:00 -0700
+Received: (qmail 5245 invoked by uid 515); 6 Sep 2007 14:56:55 -0000
+To: modules@perl.org, modules@perl.org
+Message-ID: <46E01536.1020209@sneakemail.com>
+Date: Thu, 06 Sep 2007 16:56:54 +0200
+User-Agent: Thunderbird 1.5.0.10 (X11/20060911)
+MIME-Version: 1.0
+Subject: Re: Stale registrations statistics
+References: <AF57F840-E4C9-4787-80AF-485F5D4D24A5@mit.edu>	<46D7E1F0.9050402@sneakemail.com>	<310820071304209607%brian.d.foy@gmail.com>	<46D86823.6000105@sneakemail.com> <87odgkb60t.fsf@k75.linux.bogus>	<46DBCB74.7000401@sneakemail.com> <87d4wzbh0w.fsf@k75.linux.bogus>
+In-Reply-To: <87d4wzbh0w.fsf@k75.linux.bogus>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 141.52.67.61
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: l2ot9pa02@sneakemail.com (Steffen Mueller)
+
+Hi Andreas, hi modules@,
+
+(Andreas J. Koenig) wrote:
+>>>>>> On Mon, 03 Sep 2007 10:53:08 +0200, Steffen Mueller <l2ot9pa02@sneakemail.com> said:
+>   > Does the PAUSE database know when a registration was approved?
+> 
+> I think it does quite well. There is a changed_on date and this is
+> either the approval itself or a later change.
+
+[...]
+
+>   > Something along the lines of
+>   > 1) paring down the list of stale registrations manually, removing any
+>   > recent registrations,
+>   > 2) then sending mails to the authors with a script and asking them to
+>   > contact modules@perl.org telling us whether they intend to use the
+>   > namespace and whether they object to deletion of the registration.
+>   > 3) As they answer, the namespaces which the authors want to keep are
+>   > manually removed from the list.
+>   > 4) Purging the leftovers from the database in a few weeks or months
+>   > could probably be automated again.
+
+So I wrote an email-sending script which, from my limited testing, seems
+to work fine. It sends a mail to $USERID@cpan.org asking about a
+specific namespace registration and proposing a deletion three months in
+the future if the author doesn't object.
+
+The most difficult part would now be to actually remove any reasonably
+recent registrations from the list of modules-without-upload. Given a
+reduced list of that sort, I would suggest putting that list into a
+place which only the PAUSE admins can edit. Then, we can remove
+namespaces from it as authors complain about the scheduled deletion.
+
+I'm inlining the script below. It also includes a rough cut at the email
+which would be sent. And I'll include a full list as written by the
+preparation script below the mailing script, too. Comments welcome! (Or
+rather: required)
+
+Best regards,
+Steffen
+
+P.S.: The program takes a file name as argument with "Name::Space
+AUTHORID" lines.
+
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use Email::Send;
+use DateTime;
+use DateTime::Duration;
+
+my $message = <<'HERE';
+To: foo@foo.foo
+From: modules@perl.org
+Subject: THIS WILL BE REPLACED
+
+Dear CPAN contributor,
+
+we, the PAUSE administrators, are trying to tidy up the CPAN Modules
+List and are looking at namespaces that have been registered without
+ever being uploaded to PAUSE.
+
+You have registered the namespace
+
+NAMESPACE
+
+in the CPAN Modules List, but according to our databases, you have not
+uploaded any module with that name. This may be an error on our part,
+a problem with the PAUSE indexer, or you actually haven't uploaded an
+implementation.
+
+In any case, we kindly ask you to contact us via the modules@perl.org
+mailing list so we can sort out the issue. This is particularly
+important if you think you are receiving this mail in error!
+
+A simple message telling us briefly why you want to keep the
+registration even without an upload so far should suffice to get the
+namespace off our to-do list.
+
+We plan to purge the registration for the aforementioned module
+from our database somewhen after DATE if we do not receive an
+answer until then.
+
+Thank you for contributing to CPAN and your help in advance.
+
+Best regards,
+Steffen Mueller
+for the PAUSE administrators
+HERE
+
+my $sender = Email::Send->new({
+  mailer => 'SMTP',
+  mailer_args => [Host => 'smtp.example.com'],
+});
+
+#for ( qw[SMTP Sendmail Qmail] ) {
+#  $sender->mailer($_) and last if $sender->mailer_available($_);
+#}
+
+$sender->message_modifier(
+  sub {
+    my ($sender, $message, $author, $namespace) = @_;
+    $message->header_set(To => "$author\@cpan.org");
+    $message->header_set(Subject => "Old CPAN namespace registration for
+$namespace");
+
+    # insert namespace placeholder
+    my $body = $message->body();
+    $body =~ s/NAMESPACE/$namespace/g;
+
+    # insert deletion-date placeholder
+    my $date = DateTime->now() + DateTime::Duration->new(months => 3);
+    my $datestr = $date->month_name . " " . $date->day_of_month . ", " .
+$date->year;
+    $body =~ s/DATE/$datestr/g;
+
+    $message->body_set($body);
+  },
+);
+
+while (<ARGV>) {
+  chomp;
+  my ($namespace, $author) = split /\s+/, $_, 3;
+  my $result = $sender->send($message, $author, $namespace);
+  if ($result =~ /Message sent/) {
+    print "Sent mail to $author about $namespace.\n";
+  }
+  else {
+    print "WARNING: Sending mail to $author about $namespace failed.
+Reason: $result\n";
+    print "Hit <Enter> to continue\n";
+    my $tmp = <STDIN>;
+  }
+}
+
+
+
+__END__
+
+Acme::Adjudge DMUEY => Registered but never uploaded
+Acme::Elsewhere JSTOWE => Registered but never uploaded
+Acme::l33t YANICK => Registered but never uploaded
+Act BOOK => Registered but never uploaded
+ADT ABERGMAN => Registered but never uploaded
+ADT::Queue::Priority ABERGMAN => Registered but never uploaded
+AFS::Command ISAACSON => Registered but never uploaded
+AFS NOG => Registered but never uploaded
+Agent SPURKIS => Registered but never uploaded
+AI::Categorize KWILLIAMS => Registered but never uploaded
+AI::NeuralNet JBRYAN => Registered but never uploaded
+Algorithm::Munkre ANAGHAKK => Registered but never uploaded
+Alien::Dojo DOMQ => Registered but never uploaded
+Alien::scriptaculous GTERMARS => Registered but never uploaded
+Apache2::ASP::WebApp JOHND => Registered but never uploaded
+Apache2::PageKit BORISZ => Registered but never uploaded
+Apache::AccessLimitNum APML => Registered but never uploaded
+Apache::AdBlocker MPB => Registered but never uploaded
+Apache::AddrMunge MJD => Registered but never uploaded
+Apache::AnonProxy MPB => Registered but never uploaded
+Apache::ASP::Lite FERGUSOR => Registered but never uploaded
+Apache::AuthAny MPB => Registered but never uploaded
+Apache::AuthenDBI MERGL => Registered but never uploaded
+Apache::AuthenGSS DOUGM => Registered but never uploaded
+Apache::AuthenRaduis DANIEL => Registered but never uploaded
+Apache::AuthNISPlus VALERIE => Registered but never uploaded
+Apache::AuthzAge APML => Registered but never uploaded
+Apache::AuthzDBI MERGL => Registered but never uploaded
+Apache::AuthzDCE DOUGM => Registered but never uploaded
+Apache::AuthzGender MPB => Registered but never uploaded
+Apache::AuthzSSL MPB => Registered but never uploaded
+Apache::AxKit MSERGEANT => Registered but never uploaded
+Apache::BBS MKOSSATZ => Registered but never uploaded
+Apache::BlockAgent MPB => Registered but never uploaded
+Apache::Byterun DOUGM => Registered but never uploaded
+Apache::CallHandler GKNOPS => Registered but never uploaded
+Apache::Checksum MPB => Registered but never uploaded
+Apache::CmdParms APML => Registered but never uploaded
+Apache::Command APML => Registered but never uploaded
+Apache::ConfigLDAP MARKK => Registered but never uploaded
+Apache::DayLimit MPB => Registered but never uploaded
+Apache::DCELogin DOUGM => Registered but never uploaded
+Apache::DynaRPC DOUGM => Registered but never uploaded
+Apache::Forward MPB => Registered but never uploaded
+Apache::FTP PMKANE => Registered but never uploaded
+Apache::Handler APML => Registered but never uploaded
+Apache::Htaccess BDFOY => Registered but never uploaded
+Apache::LogMail MPB => Registered but never uploaded
+Apache::Log::Spread GSCHLOSS => Registered but never uploaded
+Apache::LowerCaseGETs PLISTER => Registered but never uploaded
+Apache::Magick MPB => Registered but never uploaded
+Apache::MimeDBI MPB => Registered but never uploaded
+Apache::MIME MPB => Registered but never uploaded
+Apache::MimeXML MSERGEANT => Registered but never uploaded
+Apache::ModBT CRAKRJACK => Registered but never uploaded
+Apache::MsqlProxy APML => Registered but never uploaded
+Apache::NavBar MPB => Registered but never uploaded
+Apache::ParseControl DAPATRICK => Registered but never uploaded
+Apache::PATCH MPB => Registered but never uploaded
+Apache::ProxyCache DOUGM => Registered but never uploaded
+Apache::PUT SORTIZ => Registered but never uploaded
+Apache::QuickCMS TMURRAY => Registered but never uploaded
+Apache::RobotLimit PARKER => Registered but never uploaded
+Apache::RobotRules PARKER => Registered but never uploaded
+Apache::RoleAuthz DOUGM => Registered but never uploaded
+Apache::Safe APML => Registered but never uploaded
+Apache::SawAmpersand APML => Registered but never uploaded
+Apache::Servlet IKLUFT => Registered but never uploaded
+Apache::SpeedLimit MPB => Registered but never uploaded
+Apache::State RSE => Registered but never uploaded
+Apache::StripSession MPB => Registered but never uploaded
+Apache::Sybase::DBlib BMILLETT => Registered but never uploaded
+Apache::TarGzip ZENIN => Registered but never uploaded
+Apache::TicketAccess MPB => Registered but never uploaded
+Apache::Timeit APML => Registered but never uploaded
+Apache::Upload APML => Registered but never uploaded
+Apache::VhostSandwich MARKC => Registered but never uploaded
+Apache::WatchDog DOUGM => Registered but never uploaded
+Apache::WDB JROWE => Registered but never uploaded
+Apache::WebSQL GUNTHER => Registered but never uploaded
+AppleII::DOS33 CJM => Registered but never uploaded
+AppleII::Pascal CJM => Registered but never uploaded
+Archive::Cabinet BRADD => Registered but never uploaded
+Archive::Parity FGLOCK => Registered but never uploaded
+Archive::Tar::Stream KIMMORMH => Registered but never uploaded
+Array::Heap JMM => Registered but never uploaded
+Array::Reform TBONE => Registered but never uploaded
+Array::Substr LWALL => Registered but never uploaded
+Array::Vec LWALL => Registered but never uploaded
+Array::Virtual LWALL => Registered but never uploaded
+AsciiDB::Parse MICB => Registered but never uploaded
+Asterisk::IVR::Dido QUINN => Registered but never uploaded
+Astro::SkyCoords GRIXON => Registered but never uploaded
+Async::Process DDUMONT => Registered but never uploaded
+Audio::Sox PETDANCE => Registered but never uploaded
+Authen::OTP ZEFRAM => Registered but never uploaded
+Authorizenet DLINCOLN => Registered but never uploaded
+AutoCons RIDDLE => Registered but never uploaded
+AutoReloader SHMEM => Registered but never uploaded
+BabelObjects KERMAGO => Registered but never uploaded
+BarCode::UPC JONO => Registered but never uploaded
+Bio::Affymetrix SKIPPY => Registered but never uploaded
+Bio::Genex JASONS => Registered but never uploaded
+Bio::SAGE SCOTTZED => Registered but never uploaded
+Bio SEB => Registered but never uploaded
+BizTalk SIMONJ => Registered but never uploaded
+Bleach DCONWAY => Registered but never uploaded
+B MICB => Registered but never uploaded
+BnP STBEY => Registered but never uploaded
+Boulder LDS => Registered but never uploaded
+BoxBackup PTHOMSEN => Registered but never uploaded
+Bundle::Net::SXIP::Homesite KGRENNAN => Registered but never uploaded
+Business::AllPay::Code DWUZIU => Registered but never uploaded
+Business::ISMN BDFOY => Registered but never uploaded
+Business::OnlinePayment::Cybersource PBOWEN => Registered but never uploaded
+Business::OnlinePayment::E2Payments AIDAN => Registered but never uploaded
+Business::OnlinePayment::Moneris DOWNHOM => Registered but never uploaded
+Business::OnlinePayment::VirtualNet3 ODO => Registered but never uploaded
+Business::Payroll::AU::PAYG PJF => Registered but never uploaded
+CaCORE JIANGS => Registered but never uploaded
+Calendar::Hebrew YSTH => Registered but never uploaded
+Calendar::TimeTable POUM => Registered but never uploaded
+Carp::CheckArgs GARROW => Registered but never uploaded
+Carp::Once DMUEY => Registered but never uploaded
+CFEngine::CFPerl TEODOR => Registered but never uploaded
+CfgTie RANDYM => Registered but never uploaded
+CGI::Base CGIP => Registered but never uploaded
+CGI::BasePlus CGIP => Registered but never uploaded
+CGI::CList PEARCEC => Registered but never uploaded
+CGI::DBTables FRIEDO => Registered but never uploaded
+CGI::Explorer RSAVAGE => Registered but never uploaded
+CGI::FormFactory GAVINC => Registered but never uploaded
+CGI::FormManager ANDREWF => Registered but never uploaded
+CGI::MiniSvr CGIP => Registered but never uploaded
+CGI::MxWidget RAM => Registered but never uploaded
+CGI::Query MPECK => Registered but never uploaded
+CGI::Request CGIP => Registered but never uploaded
+CGI::Session::DBI DMUEY => Registered but never uploaded
+CGI::Session::Encrypted SRIHA => Registered but never uploaded
+CGI::SimpleCache JSCH => Registered but never uploaded
+CGI::WebApp SHAWNVAN => Registered but never uploaded
+Chart::Gdchart MHEMPEL => Registered but never uploaded
+Chart::HeatMap::Simple JINKEE => Registered but never uploaded
+Chart::Pie3d EKMETT => Registered but never uploaded
+Chatbot::RiveScript KIRSLE => Registered but never uploaded
+Chess::GameClock CHESSKIT => Registered but never uploaded
+Class::Action DMUEY => Registered but never uploaded
+Class::Eroot DMR => Registered but never uploaded
+Class::Flyweight DKUBB => Registered but never uploaded
+Class::Holon GSLONDON => Registered but never uploaded
+Class::PublicInternal MIKO => Registered but never uploaded
+Class::Superclasses RENEEB => Registered but never uploaded
+Class::TOM JDUNCAN => Registered but never uploaded
+ClearCase::Base THUNDERA => Registered but never uploaded
+ClearCase BRADAPP => Registered but never uploaded
+Clips MSULLIVAN => Registered but never uploaded
+CMMi THUNDERA => Registered but never uploaded
+CMS::Mediawiki RETOH => Registered but never uploaded
+Concurrent VIPUL => Registered but never uploaded
+Config::Ini AVATAR => Registered but never uploaded
+ConfigReader AMW => Registered but never uploaded
+ControlX10::CM10 BBIRTH => Registered but never uploaded
+Convert::Base VIPUL => Registered but never uploaded
+CORBA::Python PERRAD => Registered but never uploaded
+CORBA::XPIDL PERRAD => Registered but never uploaded
+Crypt::Camellia JCDUQUE => Registered but never uploaded
+Crypt::CCTB DKS => Registered but never uploaded
+Crypt::ChaffingAndWinnowing ZANDET => Registered but never uploaded
+Crypt::ElGamal VIPUL => Registered but never uploaded
+Crypt::OpenSSL::BN IROBERTS => Registered but never uploaded
+Crypt::PGP6 AGUL => Registered but never uploaded
+Crypt::PGP AGUL => Registered but never uploaded
+Crypt::ProtectedString IDO => Registered but never uploaded
+Crypt::Rot13 AYRNIEU => Registered but never uploaded
+Crypt::Schnorr::AuthSign AGUL => Registered but never uploaded
+Crypt::Trillian3 CMORRIS => Registered but never uploaded
+Cz::Speak YENYA => Registered but never uploaded
+Data::Check KENHOLM => Registered but never uploaded
+Data::FormValidator::Upload MARKSTOS => Registered but never uploaded
+Datascope DANMQ => Registered but never uploaded
+Data::Stash HRANICKY => Registered but never uploaded
+Date::Hebrew EPSALON => Registered but never uploaded
+Date:Jalali AHMAD => Registered but never uploaded
+Date::Time TOBIX => Registered but never uploaded
+DBA::Backup::mysql SEANQ => Registered but never uploaded
+DBA::Backup SEANQ => Registered but never uploaded
+DBD::Altera DSOUFLIS => Registered but never uploaded
+DBD::FreeTDS SPANNRING => Registered but never uploaded
+DBD::Google DARREN => Registered but never uploaded
+Db::dmObject JGARRISON => Registered but never uploaded
+DBD::RDB ASTILLER => Registered but never uploaded
+DBD::Recall AGUL => Registered but never uploaded
+DBD::SQLrelay DMOW => Registered but never uploaded
+DBIx::Class::FormBuilder FLORA => Registered but never uploaded
+DBIx::Class::ResultSet::Memcache SYBER => Registered but never uploaded
+DBIx::File2do JACKB => Registered but never uploaded
+DBIx::GenerateData JACKB => Registered but never uploaded
+DBIx::QueryByExample JACKB => Registered but never uploaded
+DBIx::Safe SYBER => Registered but never uploaded
+DBIx::SchemaView MILSO => Registered but never uploaded
+DBIx::TableAdapter GED => Registered but never uploaded
+DBIx::XMLMEssage ANDREIN => Registered but never uploaded
+DCE::RPC PHENSON => Registered but never uploaded
+Deploy RMICHAUD => Registered but never uploaded
+Devel::Coverage RJRAY => Registered but never uploaded
+Devel::dbg LORDSPACE => Registered but never uploaded
+Devel::DebugAPI JHA => Registered but never uploaded
+Devel::ObjectCount TBUSCH => Registered but never uploaded
+Devel::PerlySense JOHANL => Registered but never uploaded
+Devel::Psichedb DARNOLD => Registered but never uploaded
+Devel::Strace DARNOLD => Registered but never uploaded
+Devel::Truth_Table MJCARMAN => Registered but never uploaded
+Device::LabJack::Control APLONIS => Registered but never uploaded
+Device::PLC COSIMO => Registered but never uploaded
+Device::SerialPort::Xmodem MITTI => Registered but never uploaded
+Device::SVGA SCOTTVR => Registered but never uploaded
+DTREE JWAT => Registered but never uploaded
+Dumpvalue::HTML DMUEY => Registered but never uploaded
+ElectricArc SELKOVJR => Registered but never uploaded
+Email::Fingerprint BUDNEY => Registered but never uploaded
+Email::Send::SMTP::Auth MTHURN => Registered but never uploaded
+Eng::Naval RAGRO => Registered but never uploaded
+Enom::Base JAMSHAID => Registered but never uploaded
+ePortal RUSAKOV => Registered but never uploaded
+ERG PHOENIXL => Registered but never uploaded
+EventServer::Functions JACKS => Registered but never uploaded
+EventServer::Gettimeofday JACKS => Registered but never uploaded
+EventServer::Signal JACKS => Registered but never uploaded
+Event::tcp JPRIT => Registered but never uploaded
+ex::caution YVES => Registered but never uploaded
+Exporter::Import GARROW => Registered but never uploaded
+Exporter::Options YSTH => Registered but never uploaded
+Exporter::PkgAlias JDPORTER => Registered but never uploaded
+FameHLI DAVEO => Registered but never uploaded
+Fame TRIAS => Registered but never uploaded
+Fax::DataFax GEOTIGER => Registered but never uploaded
+Fcntl::Flock ANDERS => Registered but never uploaded
+FestVox LENZO => Registered but never uploaded
+File::Atomic DMUEY => Registered but never uploaded
+File::Data RFOLEY => Registered but never uploaded
+File::ManualFlock WCATLAN => Registered but never uploaded
+File::MultiTail SGMIANO => Registered but never uploaded
+File::Queue JLAVOLD => Registered but never uploaded
+File::Size DMUEY => Registered but never uploaded
+File::sudoers CMORRIS => Registered but never uploaded
+Filesys::dfent TOMC => Registered but never uploaded
+Filesys::mntent TOMC => Registered but never uploaded
+Filesys::statfs TOMC => Registered but never uploaded
+FileSys::Tree COG => Registered but never uploaded
+Filter::Log4perl FUJIMURA => Registered but never uploaded
+Finance::Bank::Commonwealth DDICK => Registered but never uploaded
+Finance::Bank::DE::SpardaBank RMORIZ => Registered but never uploaded
+Finance::Bank::WaMu MBAAS => Registered but never uploaded
+Finance::Risk TOM => Registered but never uploaded
+Finance::Shares::Chart CPWILLMOT => Registered but never uploaded
+Finance::Shares::MySQL CPWILLMOT => Registered but never uploaded
+Finance::TechnicalAnalysis REDOX => Registered but never uploaded
+Find::File::Object NANARDON => Registered but never uploaded
+Flash::SWF SABREN => Registered but never uploaded
+Fortran::NameList SGEL => Registered but never uploaded
+FrameMaker::Control PEASE => Registered but never uploaded
+FrameMaker::FDK PEASE => Registered but never uploaded
+FrameMaker::MIF PEASE => Registered but never uploaded
+FrameMaker PEASE => Registered but never uploaded
+Freedesktop::Trash RRWO => Registered but never uploaded
+Fresco BPETH => Registered but never uploaded
+Frontier::RPC KMACLEOD => Registered but never uploaded
+Fukurama TOBIWAN => Registered but never uploaded
+Games::BlinkenSisters CAVAC => Registered but never uploaded
+Games::Diplomacy JAMESTHOM => Registered but never uploaded
+Games::FEAR::Log EVANK => Registered but never uploaded
+Games::Freelancer MALUKU => Registered but never uploaded
+Games::Go::GoPair REID => Registered but never uploaded
+Games::Hex JHKIM => Registered but never uploaded
+Games::Perlwar YANICK => Registered but never uploaded
+GD::3DBarGrapher SWARHURST => Registered but never uploaded
+GD::Gauge CCLOUTIER => Registered but never uploaded
+Gemstone YOUD => Registered but never uploaded
+Genezzo::Contrib::Clustered EROLLINS => Registered but never uploaded
+Geo:Gpx ANDYA => Registered but never uploaded
+Geo::Projection THOSPEL => Registered but never uploaded
+Getopt::EvaP LUSOL => Registered but never uploaded
+Getopt::Gnu WSCOT => Registered but never uploaded
+Getopt::Help IANPX => Registered but never uploaded
+Getopt::Long::File MOINEFOU => Registered but never uploaded
+Getopt::Long::String LEVENGLI => Registered but never uploaded
+GISI::MIFMID SORO => Registered but never uploaded
+GISI::SHAPE SORO => Registered but never uploaded
+GISI SORO => Registered but never uploaded
+Glade DMUSGR => Registered but never uploaded
+Google::Spreadsheet LPETERS => Registered but never uploaded
+Graphics::Turtle NEERI => Registered but never uploaded
+GSM::SMS JOHANVDB => Registered but never uploaded
+GSS MSHLD => Registered but never uploaded
+Gtk::Dialog ALISTAIRC => Registered but never uploaded
+GUI::Guido TBRADFUTE => Registered but never uploaded
+Hardware::1Wire DVKLEIN => Registered but never uploaded
+Hardware::Simulator GSLONDON => Registered but never uploaded
+Hardware::UPS::Perl DRULENSOT => Registered but never uploaded
+HoneyClient MITREHC => Registered but never uploaded
+HPUX::Ioscan CWHITE => Registered but never uploaded
+HtDig::Htsearch DMUEY => Registered but never uploaded
+HtDig JTILLMAN => Registered but never uploaded
+HTML::AjaxTags::Response KMCGRATH => Registered but never uploaded
+HTML::BarChart TAG => Registered but never uploaded
+HTML::Debug MRANDALL => Registered but never uploaded
+HTML::Demoroniser JDPORTER => Registered but never uploaded
+HTML::Formulate GAVINC => Registered but never uploaded
+HTML::Info JPOWERS => Registered but never uploaded
+HTML::ParseForm NMONNET => Registered but never uploaded
+HTML::Stripper CORUSCATE => Registered but never uploaded
+HTML::Widgets::DateEntry KENNEDYH => Registered but never uploaded
+HTTPD::Access LDS => Registered but never uploaded
+HTTPD::Config LDS => Registered but never uploaded
+HTTP::Server:::Brick AUFFLICK => Registered but never uploaded
+HTTP::Test RAM => Registered but never uploaded
+Image::Colorimetry JONO => Registered but never uploaded
+Image::Magick::BarChart AWESTHOLM => Registered but never uploaded
+Interface::Param SHAUNGUTH => Registered but never uploaded
+Ioctl JPRIT => Registered but never uploaded
+IO::Filter RWMJ => Registered but never uploaded
+IO::Redirect DMUEY => Registered but never uploaded
+IO::STREAMS PETDANCE => Registered but never uploaded
+IPC::Shm::Simple KCODY => Registered but never uploaded
+IPC::UPDmsg RLAUGHLIN => Registered but never uploaded
+Jeens JESSESTAY => Registered but never uploaded
+JUNOS JUNOS => Registered but never uploaded
+Language::l33t YANICK => Registered but never uploaded
+Language::ML DSPARLING => Registered but never uploaded
+Language::PGForth PETERGAL => Registered but never uploaded
+Language::Style EKMETT => Registered but never uploaded
+Language::VBParser FRETT => Registered but never uploaded
+Laszlo::Documentation BRICE => Registered but never uploaded
+Lemonldap::Federation EGERMAN => Registered but never uploaded
+Lemonldap::Portal EGERMAN => Registered but never uploaded
+Lemonolap EGERMAN => Registered but never uploaded
+Lexical::Typeglob JJORE => Registered but never uploaded
+Lingua::EN::Cardinal HIGHTOWE => Registered but never uploaded
+Lingua::EN::Ordinal HIGHTOWE => Registered but never uploaded
+Lingua::EN  => Registered but never uploaded
+Lingua::FeatureSet KAHN => Registered but never uploaded
+Lingua::JA::EDICT JKIM => Registered but never uploaded
+Lingua::KR::Hangul OKLETSGO => Registered but never uploaded
+Lingua::PT EGROSS => Registered but never uploaded
+Lingua::Zompist::Cuezi PNE => Registered but never uploaded
+Lingua::Zompist PNE => Registered but never uploaded
+Linksys::Config JTAVARES => Registered but never uploaded
+LockFile::Scheme JV => Registered but never uploaded
+Log::Check LPETERS => Registered but never uploaded
+Logfile ULPFR => Registered but never uploaded
+Log::Writer ARPADF => Registered but never uploaded
+LotusNotes CCLOUTIER => Registered but never uploaded
+LSF DXIAO => Registered but never uploaded
+Lucy CREAMYG => Registered but never uploaded
+Mac::Accessibility BOGA => Registered but never uploaded
+Mac::Apps::Seasonality::LoadICAOHistoryFromWunderground ELLIOTJS =>
+Registered but never uploaded
+Mac::Serial DIVERDI => Registered but never uploaded
+Mac::Spotlight AHOSEY => Registered but never uploaded
+Mail::DSN MMCLAGAN => Registered but never uploaded
+Mail::Freshmeat FHOXH => Registered but never uploaded
+Mail::Maildir ZEROALTI => Registered but never uploaded
+Mail::MH MRG => Registered but never uploaded
+Mail::PerlTix JJARVINEN => Registered but never uploaded
+Mail::Sieve BRONG => Registered but never uploaded
+Mail::UCEResponder CHSTROSS => Registered but never uploaded
+Mail::Vacation::LDAP RFOLEY => Registered but never uploaded
+Mail::Vacation RFOLEY => Registered but never uploaded
+Mail::VersionTracker FHOXH => Registered but never uploaded
+Mail::vpopmaild DDF => Registered but never uploaded
+MARC PERL4LIB => Registered but never uploaded
+Marpa JKEGL => Registered but never uploaded
+Math::BigIntFast STBEY => Registered but never uploaded
+Math::Fourier AQUMSIEH => Registered but never uploaded
+Math::FresnalZone DMUEY => Registered but never uploaded
+Math::Integral AQUMSIEH => Registered but never uploaded
+Math::Interpolate MATKIN => Registered but never uploaded
+Math::Interval HOLLYKING => Registered but never uploaded
+Math::LinearProg JONO => Registered but never uploaded
+Math::Logic::Ternary MHASCH => Registered but never uploaded
+Math::MatrixCplx STBEY => Registered but never uploaded
+Math::Matrix::SVD MCEGLOWS => Registered but never uploaded
+Math::Nocarry BDFOY => Registered but never uploaded
+Math::SimpleInterest BYOURTH => Registered but never uploaded
+Math::Sparse::Matrix TPEDERSE => Registered but never uploaded
+Math::Sparse::Vector TPEDERSE => Registered but never uploaded
+MIME::IO DSKOLL => Registered but never uploaded
+MIME::Latin1 DSKOLL => Registered but never uploaded
+Mirago::Search PAPILLION => Registered but never uploaded
+MMDS JV => Registered but never uploaded
+Mobile::WURFL VALDEZ => Registered but never uploaded
+Module::Include INGY => Registered but never uploaded
+Module::Install::Skip RUZ => Registered but never uploaded
+Module::MakeDist RSAVAGE => Registered but never uploaded
+Module::Test INGY => Registered but never uploaded
+Mono AMMMA => Registered but never uploaded
+MOP ORTALO => Registered but never uploaded
+MSDOS::SysCalls DMO => Registered but never uploaded
+MSSQL::DBlib SOMMAR => Registered but never uploaded
+MSSQL::Sqllib SOMMAR => Registered but never uploaded
+Multimedia::SDP WGDAVIS => Registered but never uploaded
+Music::GUIDO KARLWARD => Registered but never uploaded
+Net::Amazon::SQS JKIM => Registered but never uploaded
+Net::BitTorrent::Scrape QANTINS => Registered but never uploaded
+Net::CBQ DEEPAK => Registered but never uploaded
+Net::CDDB DSTALDER => Registered but never uploaded
+NetCDF SEMM => Registered but never uploaded
+Net::Cloud FSPEISER => Registered but never uploaded
+Net::DHCP SHADINGER => Registered but never uploaded
+Net::DNS::Zone OLAF => Registered but never uploaded
+Net::Google::Picasa CCHAMBER => Registered but never uploaded
+Net::Google::PicasaWeb ROBERTMAY => Registered but never uploaded
+Net::ICAP KJOHNSON => Registered but never uploaded
+Net::ICQ2000 SNEMAROV => Registered but never uploaded
+Net::IMIP SRL => Registered but never uploaded
+Net::IPP BIGHIL => Registered but never uploaded
+Net::ITIP SRL => Registered but never uploaded
+Net::Mac::Vendor BDFOY => Registered but never uploaded
+Net::MsgLink RAM => Registered but never uploaded
+Net::Oscar SLAFF => Registered but never uploaded
+NetServer::Compiler CHSTROSS => Registered but never uploaded
+Net::SMS::LogicSMS LENGEL => Registered but never uploaded
+Net::SSH::Cluster VVU => Registered but never uploaded
+Net::USPS MITTI => Registered but never uploaded
+Net::WSF SAMPO => Registered but never uploaded
+Neural LUKKA => Registered but never uploaded
+News::Search SUNTONG => Registered but never uploaded
+NexTrieve::Collection ELIZABETH => Registered but never uploaded
+NexTrieve::Collection::Index ELIZABETH => Registered but never uploaded
+NexTrieve::Daemon ELIZABETH => Registered but never uploaded
+NexTrieve::DBI ELIZABETH => Registered but never uploaded
+NexTrieve::Docseq ELIZABETH => Registered but never uploaded
+NexTrieve::Document ELIZABETH => Registered but never uploaded
+NexTrieve ELIZABETH => Registered but never uploaded
+NexTrieve::Hitlist ELIZABETH => Registered but never uploaded
+NexTrieve::Hitlist::Hit ELIZABETH => Registered but never uploaded
+NexTrieve::HTML ELIZABETH => Registered but never uploaded
+NexTrieve::Index ELIZABETH => Registered but never uploaded
+NexTrieve::Mbox ELIZABETH => Registered but never uploaded
+NexTrieve::Message ELIZABETH => Registered but never uploaded
+NexTrieve::MIME ELIZABETH => Registered but never uploaded
+NexTrieve::Overview ELIZABETH => Registered but never uploaded
+NexTrieve::PDF ELIZABETH => Registered but never uploaded
+NexTrieve::Query ELIZABETH => Registered but never uploaded
+NexTrieve::Querylog ELIZABETH => Registered but never uploaded
+NexTrieve::Replay ELIZABETH => Registered but never uploaded
+NexTrieve::Resource ELIZABETH => Registered but never uploaded
+NexTrieve::RFC822 ELIZABETH => Registered but never uploaded
+NexTrieve::Search ELIZABETH => Registered but never uploaded
+NexTrieve::Targz ELIZABETH => Registered but never uploaded
+NexTrieve::UTF8 ELIZABETH => Registered but never uploaded
+Nexus RDO => Registered but never uploaded
+NNTP::Server JOEHIL => Registered but never uploaded
+NT WIN32 => Registered but never uploaded
+Numbers::Base::DWIM CMO => Registered but never uploaded
+Number::Theory BARUCH => Registered but never uploaded
+Number::Theory::CFrac BARUCH => Registered but never uploaded
+Oak DRUOSO => Registered but never uploaded
+Object::Info JACKS => Registered but never uploaded
+OpenCA MADWOLF => Registered but never uploaded
+OpenOffice::UNO JOEYATES => Registered but never uploaded
+OpenSync MAGO => Registered but never uploaded
+Openview::Admin NHARALE => Registered but never uploaded
+Openview::Message LBAXTER => Registered but never uploaded
+Orac ANDYDUNC => Registered but never uploaded
+Oracle::OCI TIMB => Registered but never uploaded
+Oracle::Reporter GEOTIGER => Registered but never uploaded
+P4::Client SMEE => Registered but never uploaded
+Parallel::Cluster RJHARMON => Registered but never uploaded
+Parallel::Queue LEMBARK => Registered but never uploaded
+Parse::ABNF MATTHEWG => Registered but never uploaded
+Parse::Debian::Release HARDCODE => Registered but never uploaded
+Parse::Debian::Sources HARDCODE => Registered but never uploaded
+Parse::Debian::SourcesList HARDCODE => Registered but never uploaded
+Parse::Lexer EKMETT => Registered but never uploaded
+Parse::Syntax SHERZODR => Registered but never uploaded
+Parse::YALALR SFINK => Registered but never uploaded
+Parse::YAPP::KeyValue DIZ => Registered but never uploaded
+PDA::PilotDesktop JWIEGLEY => Registered but never uploaded
+PDA::Pilot KJALB => Registered but never uploaded
+PDF::PlainLayout STRAITJAC => Registered but never uploaded
+PDF::Render BORONK => Registered but never uploaded
+PDF::Report::Table MITTI => Registered but never uploaded
+PDL::Fit::Levmar JLAPEYRE => Registered but never uploaded
+PDL::IO::HDF5 CERNEY => Registered but never uploaded
+PDL::LAPACK HBARTEL => Registered but never uploaded
+PDL::NetCDF DHUNT => Registered but never uploaded
+PDL::Opt::NonLinear ELLIPSE => Registered but never uploaded
+PDL::Slatec PERLDL => Registered but never uploaded
+Perl6::Comments CHORNY => Registered but never uploaded
+Perl6::Doc AUTRIJUS => Registered but never uploaded
+Perl::Critic::Config::Wx ELLIOTJS => Registered but never uploaded
+PerlMenu SKUNZ => Registered but never uploaded
+PerlPoint::Package JSTENZEL => Registered but never uploaded
+Perl::Tidyview LEIF => Registered but never uploaded
+Persistence::Object VIPUL => Registered but never uploaded
+PGP PGPML => Registered but never uploaded
+PHP::MySQL_Session CARCUS => Registered but never uploaded
+Physics::Solar::VSO ONEIROS => Registered but never uploaded
+PixDraw KSB => Registered but never uploaded
+Plugin::Language::DML LEMBARK => Registered but never uploaded
+Pod::InComments ANDREWF => Registered but never uploaded
+Pod::Latex KJALB => Registered but never uploaded
+Pod::MIF JNH => Registered but never uploaded
+Pod::Pod KJALB => Registered but never uploaded
+Pod::Texinfo KJALB => Registered but never uploaded
+POE::Component::IRC::Onjoin FHOXH => Registered but never uploaded
+POE::Component::IRC::SearchEngine FHOXH => Registered but never uploaded
+POE::Component::MPG123 MCASHNER => Registered but never uploaded
+POE::Session::GladeXML MARTIJN => Registered but never uploaded
+Poetry::Vogon AMS => Registered but never uploaded
+PostScript::Barcode COLEMAN => Registered but never uploaded
+PostScript::Basic STWIGGER => Registered but never uploaded
+PQI SIMONJ => Registered but never uploaded
+Proc::ExitStatus ROSCH => Registered but never uploaded
+Proc::PID::File::Fcntl JGMYERS => Registered but never uploaded
+Proc::times TOMC => Registered but never uploaded
+Protect JDUNCAN => Registered but never uploaded
+Proxy MICB => Registered but never uploaded
+Proxy::Tk MICB => Registered but never uploaded
+Psion::Db IANPX => Registered but never uploaded
+Puppet::VcsTools::File DDUMONT => Registered but never uploaded
+Python::Err GAAS => Registered but never uploaded
+Python GAAS => Registered but never uploaded
+Quiz::Question RFOLEY => Registered but never uploaded
+Ratpoison BUU => Registered but never uploaded
+Reaction MSTROUT => Registered but never uploaded
+Reefknot::Client SRL => Registered but never uploaded
+Reefknot::Server SRL => Registered but never uploaded
+Regexp::Compost SHIELDS => Registered but never uploaded
+Regexp::Func NWIGER => Registered but never uploaded
+Religion::Package GWYN => Registered but never uploaded
+Remedy::AR RIK => Registered but never uploaded
+Resolute::RAPS CHGOETZE => Registered but never uploaded
+RFID::Alien GIFF => Registered but never uploaded
+RFID::Base GIFF => Registered but never uploaded
+RFID::EPC GIFF => Registered but never uploaded
+RFID::Matrics GIFF => Registered but never uploaded
+Riscos RISCOSML => Registered but never uploaded
+Router::Statistics SHAMROCK => Registered but never uploaded
+RPM::Headers RJRAY => Registered but never uploaded
+RTF::Base PETDANCE => Registered but never uploaded
+RTF::Generator RRWO => Registered but never uploaded
+RTF::Reader SARGIE => Registered but never uploaded
+RT JESSE => Registered but never uploaded
+Scalar::Footnote SPURKIS => Registered but never uploaded
+SDDF FIS => Registered but never uploaded
+Search::Kinosearch CREAMYG => Registered but never uploaded
+Security::LibPath JAMESODEN => Registered but never uploaded
+Sendmail::M4::Mail8 CML => Registered but never uploaded
+Sendmail::M4::Utils CML => Registered but never uploaded
+SGML::SPGrove KMACLEOD => Registered but never uploaded
+Shockwave::Lingo MARTIN => Registered but never uploaded
+SICStus CBAIL => Registered but never uploaded
+Slash CNANDOR => Registered but never uploaded
+SMIMEUtil SAMPO => Registered but never uploaded
+Smirch JNAGRA => Registered but never uploaded
+Snippets BACHMANN => Registered but never uploaded
+SOAP::Axis BWMCADAMS => Registered but never uploaded
+Solaris::Kmem ABURLISON => Registered but never uploaded
+Solaris::MIB ABURLISON => Registered but never uploaded
+Solaris::NDD ABURLISON => Registered but never uploaded
+Solaris::PerlGcc SUNCPAN => Registered but never uploaded
+Solstice MCRAWFOR => Registered but never uploaded
+SOOP GARROW => Registered but never uploaded
+Sort::PolySort DMACKS => Registered but never uploaded
+Sparky JLHOLT => Registered but never uploaded
+Splash::DB BEN => Registered but never uploaded
+Spool::Queue RAM => Registered but never uploaded
+Spreadsheet::Excel RRAWLINGS => Registered but never uploaded
+Spreadsheet::Lotus RRAWLINGS => Registered but never uploaded
+SQL::Bibliosoph MATIU => Registered but never uploaded
+SQL::Builder ZENIN => Registered but never uploaded
+SQL::Extended DARNOLD => Registered but never uploaded
+SQL::QueryBroker NRBRT => Registered but never uploaded
+SSLeay EAYNG => Registered but never uploaded
+Statistics::Sequences RGARTON => Registered but never uploaded
+String::Ruby VPARSEVAL => Registered but never uploaded
+SVG::Template RONAN => Registered but never uploaded
+SVN::Diff DMUEY => Registered but never uploaded
+SVN::Look DMUEY => Registered but never uploaded
+SWIFT::Factory::MT300 BIKER => Registered but never uploaded
+Sybase::Async WORENKD => Registered but never uploaded
+SyncSort MAGO => Registered but never uploaded
+Synergy HENKE => Registered but never uploaded
+Sys::Sysconf PETDANCE => Registered but never uploaded
+T3D GJB => Registered but never uploaded
+Template::DBI ABW => Registered but never uploaded
+Template::GD ABW => Registered but never uploaded
+Template::XML ABW => Registered but never uploaded
+Term::Control KJALB => Registered but never uploaded
+Term::Size::Heuristic YUMPY => Registered but never uploaded
+Tern::Size::Heuristic YUMPY => Registered but never uploaded
+Test::Farm JWU => Registered but never uploaded
+Test::FITesque KONOBI => Registered but never uploaded
+Test::WWW::Accessibility BDFOY => Registered but never uploaded
+TeX::Convert::Image MRTS => Registered but never uploaded
+Text::Banner LORY => Registered but never uploaded
+Text::Bib ERYQ => Registered but never uploaded
+Text::Invert NNEUL => Registered but never uploaded
+Text::Morse SCHOP => Registered but never uploaded
+Text::Normalize DMUEY => Registered but never uploaded
+Text::Parser PATM => Registered but never uploaded
+Text::Quickwrap IVANPAN => Registered but never uploaded
+Text::Record::Cleanser KIMRYAN => Registered but never uploaded
+Text::Record::Filter KIMRYAN => Registered but never uploaded
+Text::Scan IWOODHEAD => Registered but never uploaded
+Text::Stem IANPX => Registered but never uploaded
+Text::Substitute ILTZU => Registered but never uploaded
+Text::Template::Queue SILI => Registered but never uploaded
+Text::Twiddler DMUEY => Registered but never uploaded
+Text::Wigwam DJOHNSTON => Registered but never uploaded
+Text::Wrap::Hyphenate MJD => Registered but never uploaded
+Thread::Group DSUGAL => Registered but never uploaded
+Thread::IO DSUGAL => Registered but never uploaded
+Thread::Object DSUGAL => Registered but never uploaded
+Thread::Sociable DARNOLD => Registered but never uploaded
+ThreeD ADESC => Registered but never uploaded
+Tie::Assert MOLT => Registered but never uploaded
+Tie::Mem PMQS => Registered but never uploaded
+Tie::PerfectHash XERN => Registered but never uploaded
+Tie::Plural::Scalar LALLIP => Registered but never uploaded
+Tie::Quick P5P => Registered but never uploaded
+Tie::RndHash DFAN => Registered but never uploaded
+Tie::ShiftSplice LWALL => Registered but never uploaded
+Tie::WarnGlobal STEPHEN => Registered but never uploaded
+Time:Compare YAK => Registered but never uploaded
+Time::JulianDateTime AQUACADE => Registered but never uploaded
+Time::Space::Adaptive DPRICE => Registered but never uploaded
+Tivoli::AccessManager MIKFIRE => Registered but never uploaded
+Tk::DBIx XPIX => Registered but never uploaded
+Tk::FlatCheckbox SREZIC => Registered but never uploaded
+Tk::ImageButton DHICKLING => Registered but never uploaded
+Tk::Login BPOWERS => Registered but never uploaded
+Tk::Multi DDUMONT => Registered but never uploaded
+Tk::Olwm TKML => Registered but never uploaded
+Tk::OutlookBar ZABEL => Registered but never uploaded
+Tk::PhotoRotate LUSOL => Registered but never uploaded
+Tk::ProgressMeter BPOWERS => Registered but never uploaded
+Tk::ReportBox LAWGON => Registered but never uploaded
+Tk::SignOnDialog KESZLER => Registered but never uploaded
+Tk::Statusbar ZABEL => Registered but never uploaded
+Tk::Timer IVORW => Registered but never uploaded
+ToolTalk MARCP => Registered but never uploaded
+Tree::List2Tree THW => Registered but never uploaded
+Tree::Menu PSHARPE => Registered but never uploaded
+Unicode::Normal MHOSKEN => Registered but never uploaded
+Unix::Admin BDA => Registered but never uploaded
+Unix::UserAdmin JZAWODNY => Registered but never uploaded
+URI::Obfuscate DDF => Registered but never uploaded
+User::utent ROSCH => Registered but never uploaded
+UUID LZAP => Registered but never uploaded
+VCS::RCE RJRAY => Registered but never uploaded
+VCS::RCS RJRAY => Registered but never uploaded
+VDBM RAM => Registered but never uploaded
+Verilog::GetInfo ROHITM => Registered but never uploaded
+Verilog::Info ROHITM => Registered but never uploaded
+VMS::Fileutils::Root CLANE => Registered but never uploaded
+VMS::Fileutils::SafeName CLANE => Registered but never uploaded
+VMS::ICC DSUGAL => Registered but never uploaded
+VMS::Mail DNORTH => Registered but never uploaded
+VMS::Misc DSUGAL => Registered but never uploaded
+VMS::Monitor DSUGAL => Registered but never uploaded
+VMS::Persona DSUGAL => Registered but never uploaded
+VMS::Priv DSUGAL => Registered but never uploaded
+VMS::Process DSUGAL => Registered but never uploaded
+VMS::smg FRIDA => Registered but never uploaded
+VMS::SysCalls CBAIL => Registered but never uploaded
+VMS::System DSUGAL => Registered but never uploaded
+VMS::User DSUGAL => Registered but never uploaded
+W3C::LinkChecker SCOP => Registered but never uploaded
+WAP::Wbmp SAA => Registered but never uploaded
+WAP::WML SAA => Registered but never uploaded
+Watchdog::HTTPService PSHARPE => Registered but never uploaded
+Watchdog::MysqlService PSHARPE => Registered but never uploaded
+Watchdog::Service PSHARPE => Registered but never uploaded
+Web::Beacon JEREMIAH => Registered but never uploaded
+WebService::BabelFish DMUEY => Registered but never uploaded
+WebService::Sharepoint SATRAC => Registered but never uploaded
+Widget::FixedWidthFont::Input CORLISS => Registered but never uploaded
+Wiki::Toolkit::Mediawiki DPRICE => Registered but never uploaded
+Win32::AdminMisc DAVEROTH => Registered but never uploaded
+Win32API::Window TYEMQ => Registered but never uploaded
+Win32::COM JDB => Registered but never uploaded
+Win32::CreateProcess GLENSMALL => Registered but never uploaded
+Win32::FileType JENDA => Registered but never uploaded
+Win32::FUtils JOCASA => Registered but never uploaded
+Win32::GD DAVEROTH => Registered but never uploaded
+Win32::GUID ANDY => Registered but never uploaded
+Win32::Message DAVEROTH => Registered but never uploaded
+Win32::MSI PMAREK => Registered but never uploaded
+WIN32::MSI::SummaryInfo EMPI => Registered but never uploaded
+Win32::ODBC DAVEROTH => Registered but never uploaded
+Win32::Pipe DAVEROTH => Registered but never uploaded
+Win32::Process::User RPAGITSCH => Registered but never uploaded
+Win32::SDDL::ACE TOJO => Registered but never uploaded
+Win32::Share MNIKHIL => Registered but never uploaded
+Win95 WIN32 => Registered but never uploaded
+WING MICB => Registered but never uploaded
+WinNT WIN32 => Registered but never uploaded
+WWW::Akismet NIKOLAY => Registered but never uploaded
+WWW:Blogger ERMEYERS => Registered but never uploaded
+WWW::Forge FPORCHER => Registered but never uploaded
+WWW::Google::Video KENWU => Registered but never uploaded
+WWW::Lunarstorm BUMBY => Registered but never uploaded
+WWW::Lyrics CORUSCATE => Registered but never uploaded
+WWW::Mail::Hotmail HOWARD => Registered but never uploaded
+WWW::Mechanize:Frames CPANPERL => Registered but never uploaded
+WWW::RealEstate::AU::ShareHouse ALFIE => Registered but never uploaded
+WWW::Search::Excite MTHURN => Registered but never uploaded
+WWW::Search::HotBot MTHURN => Registered but never uploaded
+WWW::Search::Lycos MTHURN => Registered but never uploaded
+WWW::Search::Magellan MTHURN => Registered but never uploaded
+WWW::ShopBot XERN => Registered but never uploaded
+WWW::Statistics DUPUISARN => Registered but never uploaded
+WWW::TVguide::NL BAS => Registered but never uploaded
+WWW::Webjay SPACEMAN => Registered but never uploaded
+WWW::WordPress SENGER => Registered but never uploaded
+X11::Fvwm RJRAY => Registered but never uploaded
+X11::Toolkit KENFOX => Registered but never uploaded
+X11::Xforms MARTINB => Registered but never uploaded
+X11::XRT KENFOX => Registered but never uploaded
+xDash JWACH => Registered but never uploaded
+XML::GccXml MOLT => Registered but never uploaded
+XMLI ISTERIN => Registered but never uploaded
+XML::OCS BHANN => Registered but never uploaded
+XML::Pastor AULUSOY => Registered but never uploaded
+XML::Validator::RelaxNG PCIMPRICH => Registered but never uploaded
+XML XMLML => Registered but never uploaded
+XML::XPS MAIN => Registered but never uploaded
+Xmms::Plugin DOUGM => Registered but never uploaded
+Xpriori::XMS KWITKNR => Registered but never uploaded
+YATT HKOBA => Registered but never uploaded
+Zeta ZETA => Registered but never uploaded

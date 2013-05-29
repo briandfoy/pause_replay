@@ -1,0 +1,101 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:51677
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11750 invoked from network); 9 Nov 2006 22:08:28 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 9 Nov 2006 22:08:28 -0000
+Received: (qmail 14125 invoked by uid 225); 9 Nov 2006 22:08:28 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14090 invoked by alias); 9 Nov 2006 22:08:24 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,UNPARSEABLE_RELAY
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 09 Nov 2006 14:08:17 -0800
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by franz.ak.mind.de (8.13.8/8.13.8/Debian-2) with ESMTP id kA9M84nE009634;
+	Thu, 9 Nov 2006 23:08:04 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.8/8.13.8/Submit) id kA9M84wW009633;
+	Thu, 9 Nov 2006 23:08:04 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: Sendu Bala <bix@sendu.me.uk>
+Cc: modules@perl.org, Ewan Birney <birney@ebi.ac.uk>
+Subject: Re: Bioperl APML-style account upload failed
+References: <4541CED4.6090506@sendu.me.uk>
+	<D5704025-2C5E-4F6D-A398-8ED7DEDC2489@ebi.ac.uk>
+	<8764e5un8s.fsf@k75.linux.bogus> <454F5FCF.1050303@sendu.me.uk>
+	<87velr3odl.fsf@k75.linux.bogus> <455311D0.5020301@sendu.me.uk>
+Reply-To: modules@perl.org
+Date: Thu, 09 Nov 2006 23:08:04 +0100
+In-Reply-To: <455311D0.5020301@sendu.me.uk> (Sendu Bala's message of "Thu\, 09
+	Nov 2006 11\:32\:32 +0000")
+Message-ID: <87lkmks27v.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Thu, 09 Nov 2006 11:32:32 +0000, Sendu Bala <bix@sendu.me.uk> said:
+
+  > Andreas J. Koenig wrote:
+ >>>>>>> On Mon, 06 Nov 2006 16:16:15 +0000, Sendu Bala <bix@sendu.me.uk> said:
+ >> 
+ >> >> There should be an easy way to restore your previous permissions:
+ >> >> reindex the latest version of bioperl. So I just scheduled reindexing
+ >> >> for the thress files
+ >> >>  >> BIRNEY/bioperl-1.4.tar.gz
+ >> >> BIRNEY/bioperl-ext-1.4.tar.gz
+ >> >> BIRNEY/bioperl-run-1.4.tar.gz
+ >> >>  >> and in an hour you will have all permissions restored that
+ >> you gave up
+ >> >> yesterday. Then you can retry to pass them over to bioperlml.
+ >> 
+ >> > I think Ewan how now done this but I'm not clear that it 'worked'.
+ >> 
+ >> It seems to have worked as intended, as this URL shows:
+ >> 
+ >> https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=a&pause99_peek_perms_query=BIOPERLML&pause99_peek_perms_sub=Submit
+
+  > I've tried uploading the new version of Bioperl and ran into problems.
+  > Some, but not all, modules were indexed. Many had this this kind of
+  > problem:
+
+  >      module: Bio::Align::AlignI
+  >     version: undef
+  >     in file: bioperl-1.5.2-RC3/Bio/Align/AlignI.pm
+  >      status: Not indexed because permissions missing. Visit PAUSE and
+  >              click "View Permissions" to find the legitimate
+  >              maintainer(s).
+
+  > When I look at permissions for it I see:
+  > module	who	type
+  > Bio::Align::AlignI 	BIOPERLML 	first-come
+  > Bio::Align::AlignI 	BIRNEY 	co-maint
+
+Ahh, you did not make yourself co-maintainer. Do that and then run
+re-index and you're settled.
+
+  > Yet some worked:
+
+  >      module: Bio::Align::ProteinStatistics
+  >     version: undef
+  >     in file: bioperl-1.5.2-RC3/Bio/Align/ProteinStatistics.pm
+  >      status: indexed
+
+  > And the working ones now have a permission of:
+  > Bio::Align::ProteinStatistics  	SENDU  	first-come
+
+  > Is the latter expected, and how do I solve the former problem?
+
+The latter is expected and you should now make BIOPERLML owner and
+immediately others in the group comaintainer, so they do not face the
+same problem next time around.
+
+-- 
+andreas

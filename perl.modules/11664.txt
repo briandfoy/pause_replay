@@ -1,0 +1,145 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11664
+Return-Path: <ivan@rhythm.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 49425 invoked by uid 76); 14 May 2002 17:19:33 -0000
+Received: from ns1.rhythm.com (HELO mail.rhythm.com) (24.130.28.1)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Tue May 14 17:19:33 2002 -0000
+Received: from mailhost.rhythm.com (rhythm.com [24.130.28.102])
+	by mail.rhythm.com (8.12.1/8.12.1) with ESMTP id g4EHJVVW4032268
+	for <modules@perl.org>; Tue, 14 May 2002 10:19:31 -0700 (PDT)
+Received: from lid2102.rhythm.com (lid2102.rhythm.com [10.4.22.2])
+	by mailhost.rhythm.com (8.9.3/8.9.1) with ESMTP id KAA17828;
+	Tue, 14 May 2002 10:19:30 -0700 (PDT)
+Received: (from ivan@localhost)
+	by lid2102.rhythm.com (8.11.6/8.9.1) id g4EHJTA22220;
+	Tue, 14 May 2002 10:19:29 -0700
+Date: Tue, 14 May 2002 10:19:29 -0700
+To: modules@perl.org
+Subject: registration
+Message-ID: <20020514101929.A21975@lid2102.rhythm.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Approved: news@nntp.perl.org
+From: ivan@rhythm.com (Ivan Neulander)
+
+
+Hello,
+
+name: Ivan Neulander
+email: ivan@rhythm.com
+homepage: www.rhythm.com/~ivan
+preferred login: ivan
+  second choice: ineulander
+
+contribution:
+I've written a module that extends Getopt::Long to handle flags with
+multiple sets of whitespace-separated arguments. I didn't like having
+to repeat a flag name multiple times (or using commas without spaces)
+to specify multiple flag arguments. I also wanted syntax checking for
+the number of arguments given built into the parsing routine.
+
+Here's a sample program that uses the module (tentatively called 
+Getopt::MultiArg):
+
+test.pl:
+
+  #!/usr/bin/perl -w
+  
+  use Getopt::MultiArg;
+
+  my $parseSpec = [['beta' => 1,  1],  # exactly one
+                   ['bozo' => 0,  1],  # none or one
+                   ['exp'  => 1,  2],  # one or two
+                   ['test' => 0,  0],  # exactly none
+                   ['mail' => 1, -1]]; # one or more
+  my %args;
+  ParseFlags($parseSpec, \%args) or die "syntax error";
+
+  # show results
+  for (@$parseSpec) {
+    my $flag = $_->[0];
+    my $min  = $_->[1];
+    my $max  = $_->[2];
+    my $arg = $args{$flag};
+
+    printf "%10s (%2d..%2d) : ", $flag, $min, $max;
+    print $arg ? (scalar @$arg, " arg(s) [@$arg]\n") : "\n";
+  }
+
+  print "\nnon-flag arg(s) : ", $args{''} ? "@{$args{''}}" : '[none]';
+
+************************************************************************
+
+Sample runs:
+
+> test.pl
+      beta ( 1.. 1) :
+      bozo ( 0.. 1) :
+       exp ( 1.. 2) :
+      test ( 0.. 0) :
+      mail ( 1..-1) :
+
+non-flag arg(s) : [none]
+
+-----------------------------------------------------------------------
+
+> test.pl mainArg
+      beta ( 1.. 1) :
+      bozo ( 0.. 1) :
+       exp ( 1.. 2) :
+      test ( 0.. 0) :
+      mail ( 1..-1) :
+
+non-flag arg(s) : mainArg
+
+-----------------------------------------------------------------------
+
+> test.pl mainArg -bozo
+      beta ( 1.. 1) :
+      bozo ( 0.. 1) : 0 arg(s) []
+       exp ( 1.. 2) :
+      test ( 0.. 0) :
+      mail ( 1..-1) :
+
+non-flag arg(s) : mainArg
+
+-----------------------------------------------------------------------
+
+> test.pl -bozo jubus
+      beta ( 1.. 1) :
+      bozo ( 0.. 1) : 1 arg(s) [jubus]
+       exp ( 1.. 2) :
+      test ( 0.. 0) :
+      mail ( 1..-1) :
+
+non-flag arg(s) : [none]
+
+-----------------------------------------------------------------------
+
+> test.pl -bozo jubus gaga
+Option '-bozo' allows at most 1 argument.
+syntax error at test.pl line 12.
+
+-----------------------------------------------------------------------
+
+> test.pl mainArg1 mainArg2 -beta v1.1 -exp 01May02 08May02 -mail ivan zuzu marty -test
+      beta ( 1.. 1) : 1 arg(s) [v1.1]
+      bozo ( 0.. 1) :
+       exp ( 1.. 2) : 2 arg(s) [01May02 08May02]
+      test ( 0.. 0) : 0 arg(s) []
+      mail ( 1..-1) : 3 arg(s) [ivan zuzu marty]
+
+non-flag arg(s) : mainArg1 mainArg2
+
+-- 
+
+----------------------------------------------
+Ivan Neulander                  (310) 448-7689
+Programmer                     ivan@rhythm.com
+
+R H Y T H M    &    H U E S      S T U D I O S

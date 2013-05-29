@@ -1,0 +1,51 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17211
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 97274 invoked by uid 76); 20 Jan 2003 01:38:52 -0000
+Received: from palladium2.baremetal.com (HELO pd2.baremetal.com) (208.184.111.59) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-20 01:38:52Z
+Received: from [24.70.202.54] (h24-70-202-54.gv.shawcable.net [24.70.202.54])	by pd2.baremetal.com (8.11.6/8.11.6) with ESMTP id h0K1ePR23573	for <modules@perl.org>; Sun, 19 Jan 2003 17:40:26 -0800
+Mime-Version: 1.0
+Message-ID: <p05111b00ba50ffc8c2b0@[24.70.202.54]>
+In-Reply-To: <200301100601.h0A616N16341@pause.perl.org>
+References: <200301100601.h0A616N16341@pause.perl.org>
+Date: Sun, 19 Jan 2003 17:38:58 -0800
+To: modules@perl.org
+Subject: Re: Module submission Rosetta
+Content-Type: text/plain; charset="us-ascii"
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+I am close to uploading release 0.02 of my framework, now called "Rosetta" (pending registration).  There were numerous significant updates.  Following is a copy of my new "Abstract" documentation, which tries to explain what the framework does in as concise a way as possible.  It will appear just beneath "Name" in my POD.  Hopefully this will give you a better idea where I am heading than my previous summaries did, and what is more unique about my offering.  Thank you in advance for any feedback you can provide. -- Darren Duncan
+
+P.S. I am still doing design and documentation of the framework.  I do not know yet how much of its functionality can be done by existing CPAN modules that I can "use" (SQL parsers or generators come to mind, or extractors of schema from existing databases); note that I am already committed to DBI/DBD* for implementing the binary database connections, where possible.  I welcome any suggestions for good modules to use; in particular, any SQL parsers need to handle recursive SQL like complex selects that use subqueries, unions, derived tables, and so forth, or I would have to do that myself.
+
+----------------------------------
+
+The Rosetta framework is intended to support complex (or simple) database-using
+Perl 5 applications that are easily portable across databases because all
+common product-specific details are abstracted away.  Rosetta is designed to
+natively handle (interface to or implement) a superset of generic RDBMS product
+features, so that you can do any action that you could before, including
+standard data manipulation (including complex multi-table selects or updates
+with subqueries or stored procedure calls), and schema manipulation (tables,
+views, procedures).  At the same time, it is designed to do its work quickly
+and efficiently.  The native interface of Rosetta (RNI) is unique to itself and
+verbose, being designed to use non-ambiguous structured definitions of all
+tasks; all input is multi-dimensional data structures (or objects) having
+atomic values, rather than strings to be parsed.  It is intended primarily for
+a data-driven application programming model, where an application uses a "data
+dictionary" to control what work it is doing (whose composite values map
+directly).  For cases where you don't already have a data dictionary, Rosetta
+can scan your existing database to create one.  That said, Rosetta also
+includes emulators (which sit on RNI) for common existing database interfaces,
+so that most Perl applications can simply use Rosetta as a hot-swappable
+replacement for them; you do not have to "learn yet another language" or
+re-code your application in order for it to just work with more databases. 
+Add-on utilities are also available for the likes of copying or backing up a
+database, or editing one through a web interface (like PHPMyAdmin but for Perl
+and any RDBMS).
+

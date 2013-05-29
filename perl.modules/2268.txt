@@ -1,0 +1,117 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2268
+Return-Path: <autarch@urth.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28545 invoked from network); 27 Jun 2000 00:14:10 -0000
+Received: from urth.org (autarch@216.161.20.244)
+  by tmtowtdi.perl.org with SMTP; 27 Jun 2000 00:14:10 -0000
+Received: from localhost (autarch@localhost)
+	by urth.org (8.9.3/8.9.3) with ESMTP id TAA15436;
+	Mon, 26 Jun 2000 19:23:35 -0500
+Date: Mon, 26 Jun 2000 19:23:35 -0500 (CDT)
+To: "Andreas J. Koenig" <andreas.koenig@anima.de>
+cc: modules@perl.org
+Subject: Re: two new ones
+In-Reply-To: <m3lmzsrq66.fsf@ak-71.mind.de>
+Message-ID: <Pine.LNX.4.21.0006261909440.15069-100000@urth.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: autarch@urth.org (Autarch)
+References: <m3lmzsrq66.fsf@ak-71.mind.de>
+
+On 27 Jun 2000, Andreas J. Koenig wrote:
+
+>  > 1. StackTrace - This provides a stacktrace object very similar to what you
+> 
+> Good idea. What about Devel::StackTrace. It will be used to develop
+> code, not in other situations, so Devel:: seems appropriate.
+
+Hmm, I'm not sure I like Devel:: all that much (though I can live with
+it) because it conceivably has more use then just development.  For
+example, maybe you always want to log traces on errors no matter in
+production or not.  On the other hand, the introspection-ish nature
+(that's a word, right?) does lend it towards the Devel:: hierarchy.
+
+> Last week I suggested to Matt Sergeant for his Exception module:
+> 
+>     Maybe call it Exception::Simple, then we can recommend future
+>     implementors of Exception modules to collect their alternatives in
+>     the Exception:: namespace.
+
+I saw that (after I emailed you).  See what I mean about a read-only feed
+being useful (ref to other message from today) ;)
+
+> How would you like Exception::Class and Exception::Class::Base? I'd
+> avoid using unregistered root namespaces internally--after all
+> namespace clashes could happen there and will probably be hard to
+> diagnose.
+
+That's a good point.  I can live with those namespaces.  I kind of like
+Class::Exceptions though because the module is all about declaring
+exceptions (which is really about magically creating exception
+classes).
+
+The reason I chose BaseException is that I kind of like the Java standard
+of FooBarException style names rather than Exception::Foo::Bar.  It just
+seems more descriptive and you get the important info first (error type,
+followed by subtype(s) followed the generic fact that its an exception).  
+OTOH, its not very perlish.
+
+Back to Class::Exceptions.  If I wanted to use this and rename the
+internal class BaseException to Class::Exceptions::Base then that name
+sucks hard.
+
+The other possibility is Exception::Declare (except it really should be
+Exceptions::Declare).
+
+Ugh, this is making my brain hurt.
+
+> It isn't unlikely that if there will ever be "official" Perl
+> exceptions, then they will be in the Exception namespace. For that
+> reason I'd like to reserve that. But gathering the candidates in one
+> or a few common directory/ies seems sensible to me.
+
+I agree that this makes sense.
+
+Ok, in light of the greater good of getting all this stuff in the same
+place I'll go with
+
+Devel::StackTrace
+Exception::Class
+Exception::Class::Base
+
+I can always use whatever names I want for the magically declared ones.
+
+I'll delete the stuff I uploaded earlier today (in the other namespaces I
+originally mentioned) and send new ones in the right namespace.
+
+
+BTW, can you guys get rid of Pete Seibel's way way defunct
+Exceptions.pm?  It doesn't work at all with recent Class::MethodMaker
+releases and its kind of distracting, espcially since Error.pm does what
+Exceptions.pm used to.
+
+And also BTW, shouldn't Error.pm become Exception::TryCatch or something
+like that?  Because of the name it took me about a bazillion years or so
+(+/- 1) to find out it existed.
+
+Of course, it includes something called Error::Simple which should
+probably be Exception::Simple but Matt already has that.
+
+Anyway, all this is to say that it would be nice to have some general
+cleanup of the Exception related modules so that we could present all the
+possibilities and also work on making them work together (my declaration
+code could easily work with Error, for example, and it might be nice to
+have them cross-reference each other).
+
+
+-dave
+
+/*==================
+www.urth.org
+We await the New Sun
+==================*/
+

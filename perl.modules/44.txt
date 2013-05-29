@@ -1,0 +1,74 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:2303 perl.modules:44
+Return-Path: <mike808@my-deja.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21746 invoked from network); 14 Oct 1999 17:06:00 -0000
+Received: from mc-qout4.whowhere.com (209.185.123.18)
+  by tmtowtdi.perl.org with SMTP; 14 Oct 1999 17:06:00 -0000
+Received: from Unknown/Local ([?.?.?.?]) by my-deja.com; Thu Oct 14 10:05:25 1999
+To: modules@perl.org
+Date: Thu, 14 Oct 1999 10:05:25 -0700
+Message-ID: <EADIMANMIMOBAAAA@my-deja.com>
+Mime-Version: 1.0
+Cc: perl5-porters@perl.org
+X-Sent-Mail: on
+Reply-To: 
+X-Mailer: MailCity Service
+Subject: RE: NEW MODULE (pragma): import.pm 
+X-Sender-Ip: 207.239.112.18
+Organization: My Deja Email  (http://www.my-deja.com:80)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: mike808@my-Deja.com ("Michael King")
+
+I think everyone missed the main benefit of the module, which might be made clearer by better example usage code. As Perl stands now, I have to code like this:
+
+use com::mydomain::utility::Class1;
+use com::mydomain::utility::Class2;
+use com::mydomain::utility::Class3;
+use com::mydomain::utility::Class4;
+use com::mydomain::utility::Class5;
+use com::mydomain::utility::Class6;
+use com::mydomain::utility::Class7;
+# ...
+
+my $obj1 = com::mydomain::utility::Class1->new();
+my $obj2 = com::mydomain::utility::Class2->new();
+my $obj3 = com::mydomain::utility::Class3->new();
+my $obj4 = com::mydomain::utility::Class4->new();
+my $obj5 = com::mydomain::utility::Class5->new();
+my $obj6 = com::mydomain::utility::Class6->new();
+my $obj7 = com::mydomain::utility::Class7->new();
+# ...
+
+YUK! And I have to do cr*p like that in every new class I write for my com::mydomain::utility "package".
+And go back and add the 'use' statement to all the
+*other* classes in the package.
+
+I think this is a far better improvement to the code (both writing it and reading it):
+
+use import qw( com::mydomain::useful_objects );
+my $obj1 = Class1->new();
+my $obj2 = Class1->new();
+my $obj3 = Class1->new();
+my $obj4 = Class1->new();
+my $obj5 = Class1->new();
+
+
+That's why I wrote 'import'.
+Does that make things any clearer with a perhaps better example code to put in the synopsis?
+
+Hmmm. It just occurred to me that this might be what some perlheads refer to as "bundling" since they've already used the name "package" to refer to classes.
+But, then why choose a name for my module that makes sense to Java programmers when you can pick an arbitrary *different* one just to make things confusing and raise the learning curve.
+
+Would 'use bundle qw( some::namespace );' be better terminology for perlers? Personally, since I'm borrowing from Java, I think it should have a similar context and terminology that Java programmers are used to. Hence I picked 'import', but if consensus is it should have another name, that's ok. I can live with that.
+
+Take from the best, leave the rest.
+Mike.
+
+
+--== Sent via Deja.com http://www.deja.com/ ==--
+Share what you know. Learn what you don't.

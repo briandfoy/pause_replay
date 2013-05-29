@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:56515
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15408 invoked from network); 17 Sep 2007 21:29:12 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 17 Sep 2007 21:29:12 -0000
+Received: (qmail 32070 invoked by uid 225); 17 Sep 2007 21:29:11 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 32063 invoked by alias); 17 Sep 2007 21:29:11 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 17 Sep 2007 14:28:53 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by franz.ak.mind.de (8.13.8/8.14.1/Debian-8) with ESMTP id l8HLSmd6025058;
+	Mon, 17 Sep 2007 23:28:48 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.8/8.13.8/Submit) id l8HLSlDs025054;
+	Mon, 17 Sep 2007 23:28:48 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Steffen Mueller <l2ot9pa02@sneakemail.com>
+Cc: Steve Purkis <steve@purkis.ca>, modules@perl.org
+Subject: Re: Was: Old CPAN namespace registration for Agent
+References: <FZKMSX4ai8XKPl5GDrP0005081f@FZKMSX4.ka.fzk.de>
+	<90770122-61BE-45EC-94CF-2C016B10D9D1@purkis.ca>
+	<46EE7FBF.6050305@sneakemail.com>
+Reply-To: modules@perl.org
+Date: Mon, 17 Sep 2007 23:28:46 +0200
+In-Reply-To: <46EE7FBF.6050305@sneakemail.com> (Steffen Mueller's message of
+	"Mon\, 17 Sep 2007 15\:23\:11 +0200")
+Message-ID: <877impvv5d.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 17 Sep 2007 15:23:11 +0200, Steffen Mueller <l2ot9pa02@sneake=
+mail.com> said:
+
+  > Hi Steve,
+  > Steve Purkis wrote:
+ >> There is an Agent module - see:
+ >>=20
+ >> http://search.cpan.org/dist/Agent/
+ >>=20
+ >> Maybe there is a problem with the CPAN indexer?  See the comment here:
+ >>=20
+ >> http://cpanratings.perl.org/dist/Agent
+ >>=20
+ >> Though it is old and I am not maintaining the module anymore, I've kept
+ >> it up there because it is mentioned in Paul Barry's book:
+ >>=20
+ >> http://glasnost.itcarlow.ie/~pnb/
+ >>=20
+ >> If someone else can make better use of the namespace, I'm all ears.
+
+  > No. We're not going to take registrations away if they point to valid
+  > and working modules.
+
+  > Anyhow, that's odd. As a first measure, I'll remove this from the list
+  > of registrations to be deleted. Any further steps might require the help
+  > of Andreas K=C3=B6nig who might miss this in the current torrent of mai=
+l on
+  > modules@perl.org.
+
+I've reviewed the code in Agent.pm and I suppose the indexer didn't
+like the fact that $VERSION evals to ".":
+
+$VERSION =3D "$MAJORVERSION.$MINORVERSION$MICROVERSION";
+
+The point here is that MakeMaker's take on finding the right version
+number is by evaling this single line, not the lines before and after,
+so concludes that it is ".".
+
+--=20
+andreas

@@ -1,0 +1,441 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:26688
+Return-Path: <lab@lincolnbaxter.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10870 invoked by uid 76); 30 Jan 2004 04:57:59 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Thu, 29 Jan 2004 20:57:59 -0800
+Received: (qmail 13165 invoked by uid 225); 30 Jan 2004 04:57:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13155 invoked by alias); 30 Jan 2004 04:57:55 -0000
+Received: from [216.148.227.85] (HELO rwcrmhc12.comcast.net) (216.148.227.85)  by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Thu, 29 Jan 2004 20:57:55 -0800
+Received: from lincolnbaxter.com ([68.81.58.8])          by comcast.net (rwcrmhc12) with SMTP          id <20040130044211014005lebre>; Fri, 30 Jan 2004 04:42:11 +0000
+Received: (qmail 24508 invoked from network); 29 Jan 2004 23:42:10 -0500
+Received: from lws (192.168.0.25)  by lws with SMTP; 29 Jan 2004 23:42:10 -0500
+Subject: Sys::SigAction
+To: modules@perl.org
+Content-Type: multipart/mixed; boundary="=-VL/t0cytpSrlp314C82/"
+Message-ID: <1075437729.10090.326.camel@lws>
+Mime-Version: 1.0
+X-Mailer: Ximian Evolution 1.4.5 
+Date: Thu, 29 Jan 2004 23:42:10 -0500
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on x1.develooper.com
+X-Spam-Status: No, hits=0.1 required=8.0 tests=RCVD_IN_SORBS autolearn=no 	version=2.63
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: lab@lincolnbaxter.com ("Lincoln A. Baxter")
+
+--=-VL/t0cytpSrlp314C82/
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+I just reread http://www.cpan.org/modules/04pause.html and realized that
+while I had discussed Sys::SigAction on the module-authors list, and on
+the dbi-dev list, and submitted a registration request, I never
+discussed the module on THIS list. (I'm not even sure I have to join it
+to do so, but here goes...) 
+
+In any case, the module can be found at:  
+
+	http://search.cpan.org/~lbaxter/Sys-SigAction-0.01/
+
+And I'll probably be uploading an update in several days that includes a
+little artical I've submitted to Tim Bunce for his use (attached).  The
+module's pod is pretty self explanatory. I'd like get this module
+registered and added to the module list.
+
+The attached article talks about the problem of implementing timeouts
+with DBD-Oracle, and references this module.  This article is both a POD
+and and test script.
+
+Lincoln
+
+ 
+
+--=-VL/t0cytpSrlp314C82/
+Content-Disposition: attachment; filename=dbd-oracle-timeout.t
+Content-Type: text/x-troff; name=dbd-oracle-timeout.t; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use English;
+undef $RS;
+my $script = <DATA>;
+$script =~ s,.*#!/usr/bin/env perl\s*,,gs;
+$script =~ s/#end of test script.*//gs;
+eval $script;
+die if $@;
+exit;
+
+__END__
+
+__DATA__
+
+
+=head1 NAME
+
+dbd-oracle-timeout.t - test timing out DBD-Oracle operations with C<Sys::SigAction>
+
+=head1 DESCRIPTION
+
+Whenever one implements a real-time service that requires
+responsiveness, and well behaved resource utilization, it is
+imperative, that no operation take a long time to complete.  Generally,
+in these types of services,  timing out or failing and returning an 
+error is preferable to hanging for long periods of time and potentially
+bringing down an entire service because some resource the service uses
+is not available.
+
+My team has implemented a number of real time services using perl and the
+DBI interface using the DBD-Oracle driver.  This article is specific to
+the problems encountered with Oracle, but I believe that the problems
+we encountered on moving from perl 5.6 to perl 5.8, are generic, and
+could affect any database driver that uses a client library that makes
+restartable system calls like connect().  The techniques presented here
+can be used to solve this kind of problem with any DBD driver, or for
+any system resource that could hang, for which alarms have been used to
+break out of the call.
+
+Prior to Perl 5.8.0, it as been fairly easy to use standard perl
+signal handlers by setting code references into C<$SIG{'ALRM'}>
+which abort the operation (via die) to time out certain DBI functions 
+which can hang.  The two operations, that this author has need to 
+time out are:
+
+=over
+
+=item 1 Database Host is Down -- connect() hangs
+
+With SQL*Net, the C<DBI-E<gt>connect()> call will hang for about 4 minutes.
+Traditionally this has been solved by using a localized signal
+handler as follows:
+
+   eval {
+      local $SIG{ALRM} = sub { die "open timed out"; };
+      alarm(2); #implement 2 second time out
+      $dbh = DBI->connect("dbi:Oracle:$dbn" ... );
+      alarm(0);
+   };
+   alarm(0);
+   if ( $@ ) { print "connection to $dbn timed out\n" ; }
+
+This code restores the original C<$SIG{ALRM}> handler when the 
+eval block is exited.
+
+=item 2 Long Running Statements
+
+Long running statements can occur for a variety of reasons out
+side of the control of the script.  These are timed out, to avoid
+stacking of resources on the server on which the perl script is
+executing.  This has been handled in a way similar to the that 
+above:
+
+   eval {
+      local $SIG{ALRM} = sub { $sth->cancel(); };
+      alarm(2); #implement 2 second time out
+      $sth->execute( ... );
+      alarm(0);
+   };
+   alarm(0);
+   if ( $@ ) { print "execute timed out\n" }
+
+Again, perl restores the original C<$SIG{ALRM}> handler when the 
+eval block is exited.
+
+=back
+
+=head2 The Problem
+
+Many of us have been using perl 5.6.x for several years now, and the above
+code has worked just fine.  We understood that with perl 5.6 and prior signal
+handling was 'unsafe', and we accepted the risk that the signal handler
+could be called at an in-opportune time, causing non-reentrant system
+routines to fail, possible leading to a perl core dump. For real-time services
+this is considered an acceptable risk since failing quickly is preferable
+to hanging around without returning.  Most programmers facing this
+this problem, simply build mechanisms to restart things should a
+catastrophic failure (perl core dump) occur.
+
+When we moved to perl 5.8 or higher however, we will noticed
+that the above code (especially the connect code) no longer works.  
+Instead, it just hangs. This is because perl has change the way Unix 
+signal handlers are implemented with perl 5.8 (and later versions)
+in an attempt to make signal handling safer.  Significant changes were
+made in perl 5.8, and more changes have been made in newer versions of perl.
+
+From the perl 5.8.2 B<perlvar> man page:
+
+   The default delivery policy of signals changed in Perl 5.8.0 
+   from immediate (also known as "unsafe") to deferred, also 
+   known as "safe signals".  
+
+Unfortunately this 'safe signals' approach causes some system calls to
+be retried prior to the signal handler being called (depending on how
+the code making the system call is implemented).  The result is
+that it might never return. This is the case with the DBD-Oracle
+connect call (case 1 above).  So the 'standard' mechanism for 
+implementing time outs (above) no longer works.
+
+=head2 The Solution
+
+The workaround (documented in the B<perlvar> man page) is to use
+C<POSIX::sigaction()> which provides low level access to the POSIX 
+sigaction() system API, to install the signal handler. This (of course)
+assumes your system has sigaction(). If your system does not have 
+sigaction(), then you probably do not have the problem, as perl in this case
+only implements the original (unsafe) signal handling approach.
+With C<POSIX::sigaction()>, one gets control over both the signal mask,
+and the flags that are used to install the handler, and further, with
+perl 5.8.2 and later, a 'safe' switch is provided which can be used
+to ask for 'safe' signal handling, in which perl promises to call the
+signal handler between perl op codes.
+
+Using C<POSIX::sigaction()> does ensure that the signal handler is called
+when the signal is fired.  And if one calls die within the signal handler,
+the call will be interupted, and control will return to the perl script.
+The usage of C<POSIX::sigaction()> however is not well documented (except for
+several examples in the posix.t test in the perl core).  And in perl versions
+less than 5.8.0, while C<POSIX::sigaction()> is defined, it does not seem to work.  
+But thats OK because just setting C<$SIG{NAME}> does work.
+
+=head2 The Pain
+
+The down side of using C<POSIX::sigaction()> besides the fact that it does
+not work in perls less than 5.8 is that it requires approximately 4 or 5 lines
+of code where previously one only had to set a localized C<$SIG{ALRM}>.
+
+It looks something like this:
+
+   use POSIX ':signal_h';
+
+   my $mask = POSIX::SigSet->new( SIGALRM ); #list signals to mask in handler
+   my $action = POSIX::SigAction->new( 
+       sub { die "connect failed" ; } #the handler code ref
+      ,$mask ); #assumes we're not using an specific flags or 'safe' switch
+   my $oldaction = POSIX::SigAction->new();
+   sigaction( 'ALRM' ,$action ,$oldaction );
+   eval {
+      alarm(2); #implement 2 second time out
+      $dbh = DBI->connect("dbi:Oracle:$dbn" ... );
+      alarm(0);
+   };
+   alarm(0);
+   sigaction( 'ALRM' ,$oldaction ); #restore original signal handler
+   if ( $@ ) ....
+
+Needless to say, this is not a pretty replacement for what was 
+a single line of code in perl 5.6.x and before.  And now we have to
+make it conditional on the perl version.
+
+=head2 The Pain Reliever (Sys::SigAction)
+
+Fortunately, having been bitten by this problem, and not wishing to 
+have to replicate all that code every where, I 
+have implemented a module that makes using
+POSIX::sigaction() as easy as setting C<$SIG{ALRM}> was in perl 5.6.x
+and earlier versions.  C<Sys::SigAction> module can be retrieved from from CPAN by
+going to:
+
+   http://search.cpan.org/~lbaxter/
+
+The C<Sys::SigAction> module wraps up all of the above POSIX:: code into a single
+function call which returns an object reference.  When the object goes out of
+scope, its destructor resets the signal handler.  So the above code becomes:
+
+   use Sys::SigAction qw( set_sig_handler );
+   eval {
+      my $h = set_sig_handler( 'ALRM' ,sub { die "connect failed" ; } );
+      alarm(2); #implement 2 second time out
+      $dbh = DBI->connect("dbi:Oracle:$dbn" ... );
+      alarm(0);
+   }; #original signal handler restored here when $h goes out of scope
+   alarm(0);
+   if ( $@ ) ....
+
+And the nice thing about C<Sys::SigAction>, is that it has been implemented
+in a way works with older perls back to perl 5.005.  So, while
+POSIX::sigaction() is not fully functional in perl versions less than 5.8,
+C<Sys::SigAction> can be used with to facilitate migration to newer perls, while
+still supporting the older perls.  Thus, there is no need to write code 
+conditioned on the perl version. C<Sys::SigAction> does that for you.
+
+=head2 Sample Script 
+
+The following test script illustrates the use of C<Sys::SigAction>, with
+the DBI interface (DBD-Oracle driver) to implement time out of both connects
+to databases on hosts that are down, and long running sql statements.
+
+
+   #!/usr/bin/env perl
+   use 5.006;
+   use strict;
+   use warnings;
+   use Test::More tests => 11;
+   use Data::Dumper;
+   BEGIN { 
+      use_ok('Sys::SigAction');
+      use_ok('DBI');
+   };
+   use POSIX ':signal_h' ;
+   use Cwd;
+
+   print "hey\n"; 
+   ok( $ENV{ORACLE_USERID} ,"ORACLE_USERID (<validuser>/<passwd>@<database>) is defined\n" );
+   die "please export ORACLE_USERID=<validuser>/<passwd>@<database>\n" 
+         if not defined $ENV{'ORACLE_USERID'};
+
+   my $last_octet = 256;
+   my $got_down_host = 0;
+   my $down_host ;
+   do {
+      $last_octet--;
+      $down_host = "10.255.255.$last_octet";
+   } until $got_down_host = system( "ping -c 1 -t 1 $down_host 2>&1 > /dev/null" )
+     or $last_octet == 0;
+
+   ok( $got_down_host ,"Found IP addr ($down_host) for missing system test\n" );
+
+   #parse ORACLE_USERID
+   my $dbn='';
+   my $usr='';
+   my $pwd='';
+
+   ( $usr ,$pwd ,$dbn ) = split( /[\/\@]/ ,$ENV{'ORACLE_USERID'} );
+   ok( $usr ,"database user: '$usr' defined" );
+   ok( $pwd ,"password for $usr is defined" );
+   ok( $dbn ,"database name: '$dbn' defined" );
+
+   #I'm lazy... this stuff is unix specific...
+   #but then if you are using SigAction that is pretty unix
+   #specific too!
+   #
+   #need a locally writeable tns_admin directory
+   #so we copy it from $TNS_ADMIN and then redefine
+   #TNS_ADMIN to the local copy
+   my $save_TNS_ADMIN = $ENV{'TNS_ADMIN'};
+   die if not ok( $save_TNS_ADMIN ,'$TNS_ADMIN is defined' );
+   my $tmp_tns = cwd() . '/tmp_tns_admin' ;
+   system( "rm -rf $tmp_tns" ) if -d $tmp_tns;
+   mkdir $tmp_tns;
+   system( "cp $save_TNS_ADMIN/*.* $tmp_tns/" );
+
+   open( TNSNAMES ,">>$tmp_tns/tnsnames.ora" ) 
+      or die "could not open $tmp_tns/tnsnames.org: $!\n" ;
+   my $testdbfail = qq(testdbfail =
+     (DESCRIPTION =
+       (ADDRESS_LIST =
+         (ADDRESS = (PROTOCOL = TCP)(HOST = $down_host)(PORT = 1521))
+       )
+       (CONNECT_DATA =
+         (SERVICE_NAME = testdbfail)
+       )
+     )
+   );
+   #ok... we have a local TNS_ADMIN directory
+   $ENV{TNS_ADMIN} = $tmp_tns;
+   print "redefining TNS_ADMIN=$tmp_tns\n" ;
+   print "appending to $tmp_tns/tnsnames.ora:\n$testdbfail\n" ;
+   print TNSNAMES $testdbfail;
+   close TNSNAMES;
+
+
+   #now get set_sig_handler function from Sys::SigAction
+   use Sys::SigAction qw( set_sig_handler );
+
+   my $dbh;
+   print "trying missing host\n" ;
+   eval {
+      my $code = sub {
+            die "timed out on connect to database on missing host\n" ;
+      };
+      my $h = set_sig_handler( 'ALRM' ,$code ,{ flags=>0 ,safe=>1 } );
+      alarm(2);
+      print "opening testdbfail (missing host test)\n" ;
+      $dbh = DBI->connect("dbi:Oracle:testdbfail" ,"na" ,"na" );
+      alarm(0);
+      print "connect failed!\n" if not $dbh;
+      ok( 0 ,"after missing_host connect... how did we get here?\n" );
+   };
+   alarm(0);
+   if ( $@ )
+   {
+      ok( 1 ,"exception: $@" );
+   }
+   print "after missing_host test\n" ;
+
+
+   print "connecting to $dbn as $usr\n" ;
+   $dbh = DBI->connect(
+         "dbi:Oracle:$dbn" ,$usr ,$pwd 
+        ,{ RaiseError=>1 ,AutoCommit=>0 ,PrintError => 0 } );
+
+   ok( $dbh ,"connected" );
+
+   my $sql = qq{
+      BEGIN
+         WHILE ( 1 > 0 ) LOOP
+            NULL;
+         END LOOP;
+      END; 
+   };
+
+   print "preparing:\n$sql" ;
+   my $sth = $dbh->prepare( $sql );
+   my $canceled = 0;
+   eval {
+      my $h = set_sig_handler( 'ALRM' 
+                              ,sub { $canceled = 1; 
+                                     $sth->cancel(); 
+                                     #dont die (oracle spills its guts)
+                                     }
+                              ,{ mask=>[ qw( INT ALRM ) ] ,safe => 1 } 
+                              );
+      my $timeout =3;
+      print "\ncalling execute with $timeout second timeout\n" ;
+      alarm($timeout);
+      $sth->execute();
+      alarm(0);
+      ok( 0 ,"after execute of infinite statement (how did we get here?)\n" );
+   };
+   alarm(0);
+   if ( $@ )
+   {
+      print $@ if not $@ =~ m/DBD::Oracle/;
+      ok( $canceled ,'infinite statement timed out' );
+      $dbh->rollback();
+      $dbh->disconnect();
+      exit;
+   }
+   die 'how we we get here' ;
+
+   #end of test script
+
+=head1 AUTHOR
+
+   Lincoln A Baxter <lab@lincolnbaxter.com>
+
+=head1 COPYRIGHT
+
+   Copyright (c) 2004 by Lincoln A Baxter
+   All rights reserved.
+
+   This file may be distributed under the terms of either the GNU 
+   General Public License or the Artistic License, as specified in 
+   the Perl README file,
+
+
+=head1 SEE ALSO
+
+   perldoc perlvar 
+   perldoc POSIX
+
+=cut
+
+
+--=-VL/t0cytpSrlp314C82/--
+

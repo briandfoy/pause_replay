@@ -1,0 +1,84 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45361
+Return-Path: <saper@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 26054 invoked from network); 14 Oct 2005 09:05:05 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 14 Oct 2005 09:05:05 -0000
+Received: (qmail 5648 invoked by uid 225); 14 Oct 2005 09:05:04 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 5641 invoked by alias); 14 Oct 2005 09:05:03 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,RCVD_IN_NJABL_PROXY
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from smtp1-g19.free.fr (HELO smtp1-g19.free.fr) (212.27.42.27)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 14 Oct 2005 02:04:53 -0700
+Received: from imp5-g19.free.fr (imp5-g19.free.fr [212.27.42.5])
+	by smtp1-g19.free.fr (Postfix) with ESMTP id B5AE95E19C;
+	Fri, 14 Oct 2005 11:04:47 +0200 (CEST)
+Received: by imp5-g19.free.fr (Postfix, from userid 33)
+	id C881E230E8; Fri, 14 Oct 2005 11:02:40 +0200 (MEST)
+Received: from 80.70.42.214 ([80.70.42.214]) 
+	by imp5-g19.free.fr (IMP) with HTTP 
+	for <maddingue@212.27.48.2>; Fri, 14 Oct 2005 11:02:40 +0200
+Message-ID: <1129280560.434f7430b52b2@imp5-g19.free.fr>
+Date: Fri, 14 Oct 2005 11:02:40 +0200
+To: Graham Barr <gbarr@pobox.com>
+Cc: "Andreas J. Koenig" <andreas.koenig.gmwojprw@franz.ak.mind.de>,
+	modules@perl.org
+Subject: Re: XSLoader is not indexed
+References: <1128330668.4340f5ac8c7f8@imp3-g19.free.fr> <874q7n676b.fsf@k75.linux.bogus> <1129105797.434cc98514e21@imp6-g19.free.fr> <BD85B228-4D10-46BE-9FEA-58C3E7281588@pobox.com>
+In-Reply-To: <BD85B228-4D10-46BE-9FEA-58C3E7281588@pobox.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: Internet Messaging Program (IMP) 3.2.5
+X-Originating-IP: 80.70.42.214
+Approved: news@nntp.perl.org
+From: saper@cpan.org (=?iso-8859-1?b?U+liYXN0aWVu?= Aperghis-Tramoni)
+
+Graham Barr <gbarr@pobox.com> wrote:
+
+> On Oct 12, 2005, at 03:29 AM, Sébastien Aperghis-Tramoni wrote:
+>
+> > Aha! This explains why several modules are "hidden" from PAUSE but
+> > present on Search CPAN.
+>
+> Yes and no. You will notice that on http://search.cpan.org/~saper/
+> XSLoader-0.05/
+> XSLoader is listed under the heading Documentation. That is because
+> Search CPAN found some pod. It is not listed as a module for the same
+> reason a PAUSE not indexing it.
+
+Right. I also know that Search CPAN will list the pod as "Documentation"
+when the package name that follows the =head1 NAME does not correspond
+to the package name in the Perl source.
+
+> Adding a .pm file to your dist file that is not installed by Build.PL
+> or Makefile.PL (whichever you use) could be sufficient for PAUSE and
+> Search to locate a module. eg XSLoader-0.05/fake/XSLoader.pm could
+> just contain
+>
+> package XSLoader;
+> $VERSION=0.05;
+> 1
+[...]
+>
+> Personally I don't like overwriting. If you decide to add a SIGNATURE
+> to your dist and a test to validate it, then the test will fail
+
+I know this is not very elegant, but it currently seems to work well
+and it has the advantage of minimal changes : I only added XSLoader.pm
+in MANIFEST and the unlink() call in Makefile.PL.
+
+
+Thanks for your advice
+
+--
+Sébastien Aperghis-Tramoni
+
+Close the world, txEn eht nepO.

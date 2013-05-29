@@ -1,0 +1,61 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:28861
+Return-Path: <tv@duh.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 50514 invoked by uid 76); 25 Feb 2004 18:36:04 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Wed, 25 Feb 2004 10:36:04 -0800
+Received: (qmail 29305 invoked by uid 225); 25 Feb 2004 18:36:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29213 invoked by alias); 25 Feb 2004 18:35:40 -0000
+Received: from [208.58.1.193] (HELO boggle.pobox.com) (208.58.1.193)  by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Wed, 25 Feb 2004 10:35:40 -0800
+Received: from colander (localhost [127.0.0.1])	by boggle.pobox.com (Postfix) with ESMTP id AA1BD4A270	for <modules@perl.org>; Wed, 25 Feb 2004 13:35:38 -0500 (EST)
+Received: from jester.pobox.com (jester.pobox.com [64.71.166.114])	by boggle.pobox.com (Postfix) with ESMTP	for <modules@perl.org>; Wed, 25 Feb 2004 13:35:37 -0500 (EST)
+Received: from mail.duh.org (c-24-98-250-233.atl.client2.attbi.com [24.98.250.233])	(using TLSv1 with cipher EDH-RSA-DES-CBC3-SHA (168/168 bits))	(No client certificate requested)	by jester.pobox.com (Postfix) with ESMTP id B0E1688	for <modules@perl.org>; Wed, 25 Feb 2004 13:35:36 -0500 (EST)
+Received: from localhost (localhost [127.0.0.1])	by mail.duh.org (8.12.10/8.12.10/dsb-1.3a1) with ESMTP id i1PIYUrs008559	for <modules@perl.org>; Wed, 25 Feb 2004 13:34:31 -0500 (EST)
+Date: Wed, 25 Feb 2004 13:34:30 -0500 (EST)
+To: modules@perl.org
+Subject: Re: PAUSE indexer report TVIERLING/Mail-Milter-0.02.tar.gz
+In-Reply-To: <200402251751.i1PHpIFQ014794@pause.perl.org>
+Message-ID: <Pine.NEB.4.58.0402251331230.856@server.duh.org>
+References: <200402251751.i1PHpIFQ014794@pause.perl.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on x1.develooper.com
+X-Spam-Status: No, hits=-4.9 required=8.0 tests=BAYES_00 autolearn=ham 	version=2.63
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: tv@duh.org (Todd Vierling)
+
+On Wed, 25 Feb 2004, PAUSE wrote:
+
+: Status: Successfully indexed
+: ============================
+:
+:      module: Mail::Milter
+:     version: 0.02
+:     in file: Mail-Milter-0.02/lib/Mail/Milter.pm
+:      status: indexed
+:
+:      module: Mail::Milter::Chain
+:     version: undef
+:     in file: Mail-Milter-0.02/lib/Mail/Milter/Chain.pm
+:      status: indexed
+
+Eek, version "undef".  That's not good at all.
+
+Each of these submodules in this package use the construct:
+
+  our $VERSION = $Mail::Milter::VERSION;
+
+which works at normal runtime.  Is the indexer not smart enough to pick this
+up?  If not, is there any other method that can be used to avoid putting the
+same version number in every single module file?
+
+For convenience, I'm switching these modules to use export/import of
+$VERSION from Mail::Milter to the rest of the namespaces.  Would this also
+solve the indexer issue?
+
+-- 
+-- Todd Vierling <tv@duh.org> <tv@pobox.com>

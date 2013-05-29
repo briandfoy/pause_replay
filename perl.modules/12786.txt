@@ -1,0 +1,49 @@
+Newsgroups: perl.ithreads,perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.ithreads:337 perl.modules:12786 perl.module-authors:456
+Return-Path: <ken@mathforum.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 83700 invoked by uid 76); 22 Jul 2002 18:02:31 -0000
+Received: from support1-2.mathforum.org (HELO support1.mathforum.org) (144.118.94.12)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Mon Jul 22 18:02:31 2002 -0000
+Received: from localhost (home-1.mathforum.org [144.118.94.17])
+	by support1.mathforum.org (8.11.6/8.11.6/The Math Forum, $Revision: 1.7  primary) with ESMTP id g6MI21O22160;
+	Mon, 22 Jul 2002 14:02:01 -0400
+Date: Tue, 23 Jul 2002 04:03:24 +1000
+Subject: Re: [CAUTION] Thread-saving modules
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Mime-Version: 1.0 (Apple Message framework v482)
+Cc: module-authors@perl.org, modules@perl.org, perl-ithreads@perl.org
+To: Elizabeth Mattijsen <liz@dijkmat.nl>
+In-Reply-To: <4.2.0.58.20020721195048.0270e2b0@mickey.dijkmat.nl>
+Message-ID: <50D0F8A6-9D9D-11D6-97A6-003065F6D85A@mathforum.org>
+Content-Transfer-Encoding: 7bit
+X-Mailer: Apple Mail (2.482)
+Approved: news@nntp.perl.org
+From: ken@mathforum.org (Ken Williams)
+References: <4.2.0.58.20020721195048.0270e2b0@mickey.dijkmat.nl>
+
+
+On Monday, July 22, 2002, at 04:22  AM, Elizabeth Mattijsen wrote:
+> You should therefore _always_ check the validity of the first value 
+> passed to DESTROY and make sure it is what you expect it to be.  If you 
+> don't, you're looking at indeterminate (strange) execution errors or 
+> segfaults.
+>
+> The check could be as simple as:
+>
+>   return if ref($_[0]) ne 'your::class::name';
+>
+> Please note that you cannot use the isa() method, as you may not be 
+> dealing with an object anymore at this stage.  So this makes it tough 
+> for sub-classes.  So maybe:
+>
+>   return unless ref($_[0]);
+
+I usually just call UNIVERSAL::isa($_[0], 'your::class::name') in these 
+cases.
+
+
+  -Ken
+

@@ -1,0 +1,127 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:24909
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24628 invoked by uid 76); 7 Dec 2003 23:16:31 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Sun, 07 Dec 2003 15:16:31 -0800
+Received: (qmail 27964 invoked by uid 225); 7 Dec 2003 23:16:29 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27954 invoked by alias); 7 Dec 2003 23:16:29 -0000
+Received: from mail09.svc.cra.dublin.eircom.net (HELO mail09.svc.cra.dublin.eircom.net) (159.134.118.25) by la.mx.develooper.com (qpsmtpd/0.27-dev) with SMTP; Sun, 07 Dec 2003 15:16:17 -0800
+Received: (qmail 33840 messnum 244618 invoked from network[213.94.228.233/unknown]); 7 Dec 2003 23:16:13 -0000
+Received: from unknown (HELO dansat.data-plan.com) (213.94.228.233)  by mail09.svc.cra.dublin.eircom.net (qp 33840) with SMTP; 7 Dec 2003 23:16:13 -0000
+Received: from dansat.data-plan.com (localhost [127.0.0.1])	by dansat.data-plan.com (8.12.9/8.12.9) with ESMTP id hB7NGFmo098295;	Sun, 7 Dec 2003 23:16:15 GMT	(envelope-from timbo@dansat.data-plan.com)
+Received: (from timbo@localhost)	by dansat.data-plan.com (8.12.9/8.12.9/Submit) id hB7NGFbR098294;	Sun, 7 Dec 2003 23:16:15 GMT
+Date: Sun, 7 Dec 2003 23:16:15 +0000
+To: modules@perl.org
+Cc: phli@cpan.org
+Subject: Re: Module submission WWW::Nextbus
+Message-ID: <20031207231615.GB98245@dansat.data-plan.com>
+References: <200312060702.hB672O8s015317@pause.perl.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200312060702.hB672O8s015317@pause.perl.org>
+User-Agent: Mutt/1.4i
+X-Spam-Check-By: la.mx.develooper.com
+X-Spam-Status: No, hits=-2.7 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+It's accessing a web service so
+
+	WebService::Nextbus
+
+would be a better name.
+
+Tim.
+
+On Sat, Dec 06, 2003 at 08:02:24AM +0100, Perl Authors Upload Server wrote:
+> 
+> The following module was proposed for inclusion in the Module List:
+> 
+>   modid:       WWW::Nextbus
+>   DSLIP:       cdpOr
+>   description: OO Interface to Nextbus public transit GPS
+>   userid:      PHLI (Peter H. Li)
+>   chapterid:   15 (World_Wide_Web_HTML_HTTP_CGI)
+>   communities:
+> 
+>   similar:
+> 
+>   rationale:
+> 
+>     *The Impetus Nextbus provides GPS solutions to public transit
+>     agencies. Access to their GPS and stop ETA times data is only
+>     available to freelance programmers through their website,
+>     www.nextbus.com.
+> 
+>     * The Program WWW::Nextbus would provide two major services: 1)
+>     Simple interface for getting the typical train/bus position and stop
+>     ETA data from the website given the correct GET arguments. 2) A
+>     stroll down the website tree of possible GET arguments for a
+>     particular agency, thus supplying the programmer with an object that
+>     knows how to make a particular query given information less formal
+>     than the actual GET arguments.
+> 
+>     For example, once the object had completed its stroll, it would be
+>     able to translate the names of stops like "Duboce and Fillmore" into
+>     the correct GET argument (which happens to be "DF" for the sf-muni
+>     agency).
+> 
+>     WWW::Nextbus would probably be a LWP::UserAgent. This would be able
+>     to get the pages and stroll through to parse the desired data.
+> 
+>     WWW::Nextbus::Agency is a helper class that implements the
+>     suggested stop decoding, etc., once it has been given the results of
+>     the GET stroll to store. Alternatively, Agency could be a
+>     WWW::Nextbus and get the data itself. Then WWW::Nextbus is basically
+>     just a superclass that is not really instantiated directly.
+> 
+>     I have also made WWW::Nextbus::Agency::SFMUNI, which ISA
+>     WWW::Nextbus::Agency. This is just a helpful subclass that already
+>     knows the GET stroll and other info relevant to the particular
+>     agency sf-muni. It is basically just a premade instance of Agency
+>     (but when the manual instantiation takes hundreds of lines that
+>     could be useful). This would provide an alternative for programmers:
+>     either use a hard coded helper subclass for the agency of interest,
+>     or instantiate Agency with just the name of the agency you want and
+>     send it to out inform itself.
+> 
+>     As people use Agency to build GET trees for other agencies, they
+>     could easily make up similar helper subclasses to help other people
+>     interested in that agency. I'm only interested in sf-muni for now...
+> 
+>     *The Progress Hope that's clear. Anyway I'm using the Agency and
+>     SFMUNI classes already to implement my AIM->Nextbus interface.
+>     Putting in the Nextbus superclass with some useful methods and an
+>     internal Agency object should be pretty simple, but may be time
+>     consuming. And then I have to learn POD. Maybe better to upload
+>     Agency first since that's almost done and pretty useful by itself.
+>     But should keep the Nextbus namespace open above it.
+> 
+>     *The Namespace I chose WWW because I see a few other similar
+>     website specific info grabbers in this root.
+> 
+>   enteredby:   PHLI (Peter H. Li)
+>   enteredon:   Sat Dec  6 07:02:24 2003 GMT
+> 
+> The resulting entry would be:
+> 
+> WWW::
+> ::Nextbus         cdpOr OO Interface to Nextbus public transit GPS   PHLI
+> 
+> 
+> Thanks for registering,
+> -- 
+> The PAUSE
+> 
+> PS: The following links are only valid for module list maintainers:
+> 
+> Registration form with editing capabilities:
+>   https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=cf500000_f7d60f61f9aef0ea&SUBMIT_pause99_add_mod_preview=1
+> Immediate (one click) registration:
+>   https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=cf500000_f7d60f61f9aef0ea&SUBMIT_pause99_add_mod_insertit=1

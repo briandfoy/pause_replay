@@ -1,0 +1,95 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:47183
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15094 invoked from network); 2 Feb 2006 05:41:32 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 2 Feb 2006 05:41:32 -0000
+Received: (qmail 12953 invoked by uid 225); 2 Feb 2006 05:41:32 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12946 invoked by alias); 2 Feb 2006 05:41:30 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO k75.linux.bogus) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 01 Feb 2006 21:41:25 -0800
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.13.5/8.13.5/Debian-3) with ESMTP id k125fCUD019740;
+	Thu, 2 Feb 2006 06:41:12 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.5/8.13.5/Submit) id k125fBoj019736;
+	Thu, 2 Feb 2006 06:41:11 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: Carl Franks <fireartist@gmail.com>
+Cc: modules@perl.org
+Subject: Re: distribution file structure
+References: <4f352aae0602010654i7c7616d8l@mail.gmail.com>
+Reply-To: modules@perl.org
+Date: Thu, 02 Feb 2006 06:41:11 +0100
+In-Reply-To: <4f352aae0602010654i7c7616d8l@mail.gmail.com> (Carl Franks's
+	message of "Wed, 1 Feb 2006 14:54:11 +0000")
+Message-ID: <87bqxq2u88.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Wed, 1 Feb 2006 14:54:11 +0000, Carl Franks <fireartist@gmail.com> said:
+
+  > Hi,
+  > You may have seen mention of "vanillaPerl" after Adam Kennedy's recent
+  > beer reward/challenge
+  > ( see http://use.perl.org/~Alias/journal/28427 )
+
+  > It's a simple distribution for MS Windows which bundles perl, gcc and
+  > some other tools required to get perl running on windows, and able to
+  > install XS modules using CPAN.pm
+
+  > I plan on making a new version available as each new version of perl
+  > is released (both stable and blead).
+  > Because of the large filesize of the actual installers (>15MB), would
+  > cpan be suitable for distribution? (If not, I'd probably just register
+  > another project at sf.net)
+
+This size should not be a problem.
+
+  > I also plan on bundling the documentation and scripts required for
+  > anyone to build this distribution. I'd like to make this available
+  > through cpan, and hopefully available through a "distributions" search
+  > on search.cpan.org
+  > I have named the package file vanillaPerl5.8.7.tar.gz
+  > I have created a file named vanillaPerl.pod and a README file in the
+  > top-level of the package.
+  > Would this be sufficient for the cpan indexer to list the package?
+
+Distribution via CPAN (the network) would work in any case.
+
+I'm pretty sure (but only Graham knows exactly), that search.cpan.org
+will display it in any case.
+
+But the indexer on PAUSE should NOT index a binary distribution of
+perl. It indexes modules, not binary perl distributions. In fact, it
+would lead to major complaints from users when the CPAN indexer
+suggested them to download a new perl. Much more would be people upset
+if they got a binary distribution then.
+
+To communicate the existance of a new vanillaPerl distro to your
+users, you/we would have to invent a new mechanism. Maybe the bundle
+mechanism or a module that acts as a proxy via dependencies could
+achieve something, I have no clear picture what *should* be achieved.
+
+  > I initially named the project "vanillaPerl" because it only bundles
+  > core modules.
+  > Any suggestions for a more appropriate name would be considered.
+
+You would help the PAUSE indexer to recognize this file as a binary
+distribution by including the string "-bin-" in the filename. Such
+distros are skipped without the risk that something get indexed
+erroneously.
+
+-- 
+andreas

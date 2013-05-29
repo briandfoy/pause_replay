@@ -1,0 +1,57 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:57384
+Return-Path: <john.peacock@havurah-software.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 28200 invoked from network); 25 Oct 2007 10:26:46 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 25 Oct 2007 10:26:46 -0000
+Received: (qmail 18082 invoked by uid 225); 25 Oct 2007 10:26:46 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18070 invoked by alias); 25 Oct 2007 10:26:45 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail.adatshalom.net (HELO stetl.adatshalom.net) (216.207.67.5)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Thu, 25 Oct 2007 03:26:43 -0700
+Received: (qmail 2293 invoked from network); 25 Oct 2007 06:27:01 -0400
+Received: from pool-72-83-136-110.washdc.fios.verizon.net (HELO [192.168.1.4]) (72.83.136.110)
+  (smtp-auth username john.peacock@adatshalom.net, mechanism cram-md5)
+  by stetl.adatshalom.net (qpsmtpd/0.33-dev) with (AES256-SHA encrypted) ESMTP; Thu, 25 Oct 2007 06:27:01 -0400
+Message-ID: <47206F72.8090102@havurah-software.org>
+Date: Thu, 25 Oct 2007 06:26:58 -0400
+User-Agent: Thunderbird 1.5.0.8 (X11/20060911)
+MIME-Version: 1.0
+To: "Andreas J. Koenig" <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+CC:  modules@perl.org
+Subject: Re: Failed: PAUSE indexer report JPEACOCK/version-0.74.tar.gz
+References: <200710250048.l9P0mrBi020097@pause.perl.org>	<471FEF59.3040403@havurah-software.org> <87tzogudsk.fsf@k75.linux.bogus>
+In-Reply-To: <87tzogudsk.fsf@k75.linux.bogus>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: john.peacock@havurah-software.org (John Peacock)
+
+Andreas J. Koenig wrote:
+> It says that you are not owning the package "warnings".
+
+Oh, duh...
+
+> in this file I find
+> 
+> eval "use warnings";
+> if ($@) {
+>     eval '
+>         package warnings;
+>         sub enabled {return $^W;}
+>         1;
+>     ';
+> }
+
+It seems like your regex for scanning for packages needs to be a little smarter.
+ I've got that in there so that Perl 5.005 can "use warnings" and still DTRT
+(for some value of "right").
+
+John

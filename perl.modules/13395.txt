@@ -1,0 +1,123 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13395
+Return-Path: <luke@madstop.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 35405 invoked by uid 76); 24 Aug 2002 00:53:36 -0000
+Received: from [207.65.26.13] (HELO pixie.madstop.com) (207.65.26.13)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Sat Aug 24 00:53:36 2002 -0000
+Received: from localhost (luke@localhost)
+	by pixie.madstop.com (8.11.6+Sun/8.11.6) with ESMTP id g7O0qsm23487
+	for <modules@perl.org>; Fri, 23 Aug 2002 19:52:54 -0500 (CDT)
+Date: Fri, 23 Aug 2002 19:52:53 -0500 (CDT)
+X-Sender: luke@pixie
+To: modules@perl.org
+Subject: registration and namespace
+Message-ID: <Pine.GSO.4.10.10208231926140.23414-100000@pixie>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: luke@madstop.com ("Luke A. Kanies")
+
+Hi helpful and hard-working module maintainers, I am interested in
+registering as a module developer and I also have some namespace
+questions.
+
+First, the registration:
+
+Name:  Luke A. Kanies
+Email: luke@madstop.com
+Home page: http://pixie.madstop.com
+Preferred UID: LOOSIFER (all uppercase? yuck)
+
+Description: I plan on contributing some LDAP-related code to start with,
+but I also plan on contributing code related to Isconf (see
+http://www.infrastructures.org), which is system automation tool.  I have
+rewritten it in perl and plan on providing that code.
+
+Both of those topics bring up namespace issues, though.  First, the
+easyish one:
+
+I have written an interactive ldap shell
+(http://madstop.com/index.pl?node=ldapsh) and would like to contribute it
+to CPAN.  Nearly all of the code is in modules, and I currently have all
+of those modules under Net::LDAP::Shell, because Graham Barr (the worthy
+developer of Net::LDAP, among many other things) recommended that I not
+attempt to use new namespace.  I am fine with that as the root of the
+shell itself, and would be willing to accept it as the root of everything,
+but I would like some advice on an optimal course.
+
+The reason I hesitate to use that root for all of the modules involved is
+that I am including what I consider to be some quite useful modules that
+have existed far longer than ldapsh has and that I consider to really be
+more useful than ldapsh is.  For instance:
+
+I have a Config module which allows me to store a number of things about
+various ldap servers, such as a server list (for failover), the search
+base, any default authentication info, and whether server prefers or
+requires SSL.  It is expandable to support far more info.
+
+There is also a Connect module which takes advantage of the Config module
+to simplify authentication to an ldap server or list of servers.  You just
+tell it which ldap source you want to connect to, and it returns an ldap
+object to you.  You can override any of the Config settings (especially
+the dn and password settings) in this module.
+
+I have a CLI module which takes care of CLI tools which need to interact
+with LDAP.  It prompts for the username and password, converts the uid
+into a full DN if necessary, and then caches the DN with the name of the
+LDAP source so that you are not asked that info again.
+
+Finally, there is a Description module, which I use to store the
+descriptions of ldap attributes.  This is useful for converting ldap
+attributes to more human-readable names; 'sn' becomes 'Last Name',
+'givenname' becomes 'First Name', etc.  It is especially useful for web
+development, but anything which requires you to display an attribute can
+and probably should take advantage of this module.
+
+I also have a couple of useful routines in a Util module, but that's
+basically a debug and error routine at this point, and I should probably
+just find a better way to do that.
+
+It's not that I'm particularly opposed to having those modules under the
+Net::LDAP::Shell tree, it's just that they are quite useful without the
+shell, and in fact have all existed for about two or three years in some
+form or another, whereas the shell has only existed for a couple of
+months.  I have probably 20 or 30 scripts which use these modules in some
+form, and they certainly save me lots of time.
+
+So, I am merely asking for advice on what to do.
+
+As to Isconf, it is currently divided into what I consider two parts, and
+as currently developed starts at Isconf.  The first and easiest part is
+Isconf.pm itself, which is a utility module which many scripts written to
+work with Isconf use.  This provides some basic routines for checking the
+return status of commands, and debugging and error checking.  It is
+important that these are consistent across Isconf code, for somewhat
+obvious reasons.
+
+Under that is Isconf::File and its submodules.  They are used to parse
+Isconf config files (make-like, but with some other stuff).
+
+Steve Traugott will also be a developer with me on this toolset, and I
+expect that both he and I will be adding other modules as the product
+matures in its perl incarnation (it is already in version 3, but this is
+the first perl version).
+
+Steve mentioned that he thought there should be an overall IS:: top level,
+for Infrastructure stuff, and I have also thought about sticking this
+under Unix::, although this could be used for non-Unix OSes (but is not
+currently).  The code is available at
+http://madstop.com/index.pl?node=isconf if anyone wants to peruse it.
+
+So, any advice on these namespace issues would be greatly appreciated.
+
+Thank you,
+Luke Kanies
+
+-- 
+"The optimist proclaims that we live in the best of all possible worlds,
+and the pessimist fears that this is true."
+                -- James Branch Cabell 1879-1958
+

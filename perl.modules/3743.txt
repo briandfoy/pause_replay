@@ -1,0 +1,84 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3743
+Return-Path: <barries@jester.slaysys.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9626 invoked from network); 1 Dec 2000 14:09:38 -0000
+Received: from adsl-151-201-19-72.pittpa.adsl.bellatlantic.net (HELO jester.slaysys.com) (151.201.19.72)
+  by tmtowtdi.perl.org with SMTP; 1 Dec 2000 14:09:38 -0000
+Received: (from barries@localhost)
+	by jester.slaysys.com (8.9.3/8.9.3) id JAA05604;
+	Fri, 1 Dec 2000 09:09:28 -0500
+Date: Fri, 1 Dec 2000 09:09:28 -0500
+To: Ken MacLeod <ken@bitsko.slc.ut.us>
+Cc: perl-xml@ActiveState.com, modules@perl.org
+Subject: Re: XML::Driver::Elemental?  XML::Filter::Validator?
+Message-ID: <20001201090928.A5455@jester.slaysys.com>
+References: <20001130141616.A1433@jester.slaysys.com> <x77l5lghgf.fsf@bitsko.slc.ut.us>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <x77l5lghgf.fsf@bitsko.slc.ut.us>; from ken@bitsko.slc.ut.us on Thu, Nov 30, 2000 at 05:37:04PM -0600
+Approved: news@nntp.perl.org
+From: barries@slaysys.com (barries)
+
+On Thu, Nov 30, 2000 at 05:37:04PM -0600, Ken MacLeod wrote:
+> 
+> Just wanted to note that SAX2 modules should go in the namespaces
+> SAXDriver::*, SAXFilter::*, and SAXHandler::*.
+
+Thanks.  Is there any doc of the differences between the Orchard/SAX2
+vs. PerlSAX/SAX1 APIs?  I just got Orchard-c and it's perlif built,
+and may be changing over to that as our default XML development
+environment here soon, so I'm inclined to go that way.
+
+> Otherwise the modules look great.  I didn't see mention of reference
+> to XML::Writer, which also has a nice script interface for generating
+> XML
+
+XML::ValidWriter and XML::AutoWriter are meant to be almost
+pure supersets of the XML::Writer API.  Meaning that the underlying
+primitives are startTag, endTag, characters, etc., but with added
+entry points like dataElement( $tag, $content, attr1 => $val1, ... )
+and the DTD-based convenience methods & exported functions named
+after elements declared in the DTD.  The exported functions are for
+packages spending most of their statements writing to a "default"
+XML file or string.
+
+Both croak if you try to emit non-well-formed or invalid XML, though
+the validity checking is not complete (it doesn't check fancy attribute
+constraints like enumerations, for instance, though missing required
+attributes are caught).
+
+> XML::Writer with
+> SAX2 output would likely be what you're thinking of with
+> XML::Driver::Elemental.
+
+XML::Writer + SAX{1,2} + methods-named-after-elements, I was thinking.
+Leaning towards SAX2 now.
+
+> A feature you might want consider, to more easily support namespaces,
+> is to let the caller register prefixes for method and attribute names
+> (like 'prefix_local_name'), then output the declarations on the first
+> element or as they are defined, and then substitute ':' for the first
+> underscore in the element or attribute name.
+
+That sounds like an ideal way to do it, thanks. I don't need it right
+away, so it'll have to wait for a bit, but it is upward compatible,
+and people can always fall back to using startTag/endTag/dataElement
+with colons in tag & attr names if there's a collision between a prefix
+and a tag name.
+
+I pondered mapping between Perls' "::" namespace operator and XML's ":"
+namespace operator (for lack of a better word), and quickly decided
+that the pollution of Perl's namespaces would be ugly.  But emitting
+a namespaced tag like
+
+   DBML::table( $text, attr1 => val1, .... )
+   $writer->DBML::table( $text, attr1 => val1, .... )
+
+would be cute.
+  
+- Barrie

@@ -1,0 +1,177 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9272
+Return-Path: <deven@ties.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5681 invoked by uid 76); 12 Dec 2001 21:55:39 -0000
+Received: from root@escher.ties.org (HELO escher.ties.org) (216.68.160.218)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Wed Dec 12 21:55:39 2001 -0000
+Received: from localhost (deven@localhost)
+	by escher.ties.org (8.9.3/8.9.3) with ESMTP id QAA19157
+	for <modules@perl.org>; Wed, 12 Dec 2001 16:55:36 -0500
+X-Authentication-Warning: escher.ties.org: deven owned process doing -bs
+Date: Wed, 12 Dec 2001 16:55:36 -0500 (EST)
+To: modules@perl.org
+Subject: Tie::File module
+Message-ID: <Pine.LNX.4.10.10112121652180.19122-100000@escher.ties.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Approved: news@nntp.perl.org
+From: deven@ties.org ("Deven T. Corzine")
+
+I sent the message below to Andreas, two weeks ago, when I sent my original
+query to the perl-modules list.  I'm sending the detailed version to the
+full list now, since I don't know how else to petition for the "Tie::File"
+module name to be released so that I can use it...
+
+Thanks,
+Deven
+
+P.S. I'd still suggest that some general policy is probably worth having,
+regardless of how this particular module name is resolved...
+
+---------- Forwarded message ----------
+Message-ID: <Pine.LNX.4.10.10111281814040.8908-100000@escher.ties.org>
+From: Deven T. Corzine <deven@ties.org>
+To: Andreas König <andreas.koenig@anima.de>
+Date: Wed, 28 Nov 2001 18:21:09 -0500 (EST)
+Subject: Tie::File module
+Return-Receipt-To: deven@ties.org
+
+Andreas,
+
+I wrote the message below 4.5 years ago, and never received any response at
+all from Andrew Wilcox.  I copied you at that time, so you would be aware
+of the situation.
+
+Now, as then, Andrew Wilcox still has a claim on "Tie::File" in the Perl
+modules list, yet has never uploaded such a module to CPAN.  I wrote an
+initial implementation in 2 hours, yet in 4.5 years, Mr. Wilcox has never
+gotten around to releasing a module under the name he's claimed as his own.
+
+I would like to petition for the prior claim to be vacated as an abandoned
+claim on the namespace, and for the "Tie::File" module name to be assigned
+to me, so that I can release this module under its most natural name.
+
+What is the procedure for addressing abandoned claims on the namespace?
+
+Deven
+
+---------- Forwarded message ----------
+From: Deven T. Corzine <deven@escher.fuse.net>
+To: Andrew Wilcox <awilcox@world.std.com>
+Cc: Andreas Koenig <andreas.koenig@franz.ww.TU-Berlin.DE>
+Date: Thu, 29 May 1997 19:59:21 -0400
+Subject: Tie::File module
+Return-Receipt-To: deven@ties.org
+
+-----BEGIN PGP SIGNED MESSAGE-----
+
+[A copy of this message is being sent to Andreas Koenig as the CPAN archive
+maintainer, for informational purposes.]
+
+Hi there...
+
+Although there is no released "Tie::File" module on CPAN, you are listed as
+the author of such a module, presumably under development.  Since I was not
+aware of this module listing, I have just implemented a "Tie::File" module
+myself.  When I was ready to release it, I found you already had a claim on
+the module name.  (Mea culpa!)
+
+Since I have a "Tie::File" module ready to be released, I'm writing to ask
+you what the status is of such a module on your end.  Do you actually have
+something implemented, or was it more of a plan?  If you have implemented
+something already, what can you tell me about it?  Are you near release?
+
+Most importantly, would you consider releasing the "Tie::File" module name
+to me if I can convince you that I have a worthwhile implementation?
+
+If you do indeed have an implementation or a good start on one, maybe we can
+compare the two to see which is better, and maybe extend that one based on
+the good points of the other one?
+
+Here's what happened on my end...
+
+Yesterday, I was contemplating the File::Slurp module, and it occurred to me
+that a more natural perl interface for reading/writing whole files was to use
+a tied hash instead of function calls.  On the spur of the moment, I decided
+to try implementing it myself, since it seemed fairly straightforward.
+
+I wrote the initial implementation in under 2 hours, and spent several hours
+more debugging and refining it.  It's working pretty well now, and the tied
+hash interface I implemented is fairly complete.  I'd like to comment the
+code a bit and add more thorough tests, but otherwise I think it's ready for
+an alpha release now.
+
+It was after I finished creating the entire module that I discovered there
+was already a "Tie::File" entry in the modules list, with you listed as the
+author.  I think my implementation follows the basic idea suggested by the
+name "Tie::File" -- it turns all files in a directory into virtual hash
+elements in a tied hash.
+
+I believe my implementation is very robust.  It implements the full tied
+hash interface, so all of the following functions have reasonable behavior:
+exists($hash{$file}), defined($hash{$file}), keys(%hash), values(%hash),
+each(%hash), delete($hash{$file}), undef(%hash).
+
+Since such casually overwriting and deleting files is obviously dangerous,
+there are flags for the following access modes: ReadOnly, Create, Overwrite,
+ClearDir.  (Create is the default, which doesn't allow overwrite/delete.)
+
+I use anonymous globs (created by the Symbol package) for filehandles, so
+multiple tied hashes using Tie::File won't conflict with each other, even
+with parallel each() iterations active.  (An anonymous glob is saved in the
+object (a hash ref) to use as the dirhandle for FIRSTKEY() and NEXTKEY().)
+
+Directories, files and non-regular files will return true for "exists", but
+only regular files will return true "defined".  (Caveat: "defined" will still
+read the entire file into memory, even if it's discarded after the test...)
+Empty regular files return "", not undef.
+
+Symbolic links are considered non-regular files.  That is, the code does not
+follow symbolic links.  (Symlinks to directories will, of course, be followed
+by the OS as usual if followed with "/".)
+
+Presently, keys/values/each will use the directory contents (minus . and ..)
+as the list of keys for the hash.  The key values returned by keys() or each()
+will have a trailing "/" appended for directories, to make it easy to scan for
+subdirectories.  (@subdirs = grep {s/\/$//} keys %hash;)
+
+I have a number of ideas for possible future enhancements to Tie::File, such
+as some subclasses (e.g. Tie::File::gz for magic compression/decompression,
+Tie::File::tar to access files inside a tar-format file, etc.), extensions
+to make it easier to manipulate directory trees, implementing a search path,
+allowing glob references to read/write filehandles, possibly returning and
+maybe copying non-regular files and file stats (I'm not sure how), optional
+cache mode, perhaps a fake write mode (don't really write, but pretend to),
+and a few other options and features...
+
+
+That's where things are right now.  I have something worth releasing, and
+ideas for future improvements.  I'd rather not rename the module, since the
+"Tie::File" name makes the most sense.  I'd like to adopt the module name if
+possible, since there's no existing release with that name.
+
+Of course, if you have already invested any significant time in this module,
+you might have work you don't want to throw away; in that case maybe we can
+merge the two versions, or enhance on based on the other.  What to do about
+future releases would still be a question to be answered in that case...
+
+So, where do we go from here?
+
+Deven
+
+-----BEGIN PGP SIGNATURE-----
+Version: 2.6.2
+
+iQCVAwUBM44YQ+I+P/WmEJcdAQFUzgP9GIHaqWclk9B9qmY+Fdo1e16/hWUHscuf
+SkAwU4Y6vrjlfFeELT7sHT7WxN/v4PgYtsHQAuGsQizZwc97YoZJLQ7TyCJFDgQR
+P595+YwX1kCZETgQ0bXEg+4raD9nYcc8g/mXQi2R6MabWcA+BQuzXUjfvcZJvRx9
+qhwkxIJAJ0A=
+=En+h
+-----END PGP SIGNATURE-----
+
+
+

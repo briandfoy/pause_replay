@@ -1,0 +1,155 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3518
+Return-Path: <dan@mealtips.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30032 invoked from network); 13 Nov 2000 04:04:19 -0000
+Received: from smtp2.cybersurf.net (209.197.145.112)
+  by tmtowtdi.perl.org with SMTP; 13 Nov 2000 04:04:19 -0000
+Received: from cr935632-b.mealtips.com ([209.148.247.69]) by
+          smtp2.cybersurf.net (Netscape Messaging Server 4.15) with ESMTP
+          id G3Y3AE00.SRD; Sun, 12 Nov 2000 21:03:50 -0700 
+Message-ID: <5.0.1.2.0.20001112194048.00a01110@mealtips.com>
+X-Sender: dan%mealtips.com@mealtips.com
+X-Mailer: QUALCOMM Windows Eudora Version 5.0.1.2 (Beta)
+Date: Sun, 12 Nov 2000 20:12:23 -0800
+To: modules@perl.org
+Subject: Re: CPAN User ID Application
+Cc: andreas.koenig@anima.de (Andreas J. Koenig)
+In-Reply-To: <m366lttp2a.fsf@ak-71.mind.de>
+References: <Dan Kubb's message of "Sat, 11 Nov 2000 02:44:47 -0800">
+ <5.0.1.2.0.20001111021012.009fe7a0@mealtips.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Approved: news@nntp.perl.org
+From: dan@mealtips.com (Dan Kubb)
+
+At 03:19 AM 12/11/00, you wrote:
+
+Hi Andreas,
+
+>>>>>> On Sat, 11 Nov 2000 02:44:47 -0800, Dan Kubb <dan@mealtips.com> said: 
+> > **NOTE: I have not yet finalized the name of the module, 
+> > I am leaning towards CGI::Tree, CGI::Transform, or 
+> > CGI::MultiDimensional.  CGI::State was originally
+>
+>CGI::Tree sounds good but IIRC, CGI isn't able to transport trees, a
+>hash of arrys is the maximum depth, right? If so, then also MultiDim
+>is an overstatement. 
+
+You're right.  By itself CGI can transport the equivalent of
+a regular hash, or a hol (hash of lists), but nothing else.
+
+My module basically defines a naming convention for CGI 
+parameters, that allows the module to reconstruct a 
+multi-dimensional hash once the request is received and
+parsed.  You can use it to create a hol, a hoh, a
+holol data structure, or anything else, any number
+of levels deep.  The only limitation is that the first
+level must be a hash, not a list.
+
+Given that definition, Tree and MultiDim aren't that
+far off.  But I do think there must be a more descriptive
+name, given what the module does.  Here's the module 
+description, along with a real-world example from it's
+POD:
+
+.. SNIP ..
+
+=head1 DESCRIPTION
+
+This module was originally written because I always hated
+receiving CGI parameters, putting them into a hash, and have
+this hash contain 20 or 30 elements.  I think it is messy,
+and very tedious writing code to group related items
+together.  I wanted parameters to be put into a
+"multi-dimensional" data structure automatically for me.
+
+This module takes incoming CGI form variables, and translates
+them into a multi-dimensional data structure.  It can recreate
+a hash of hashes, a hash of lists, a hash of lists of hashes 
+etc, any number of levels deep.
+
+A downfall to CGI and HTML is their inability to naturally
+group together submitted variables.  For example, you
+can't have someone fill in an order form and have all
+their contact and item information grouped separate from
+each other in the data structure, until now.
+
+.. SNIP ..
+
+=head1 EXAMPLE USAGE
+
+One major advantage to grouping parameters together in a
+multi-dimensional data structure is that you have
+everything "map" into your database cleanly.
+
+For example, let's say that I have a relational table
+called  "Contact", which stores Contact information
+about a customer.  Inside this table there are three
+columns called first_name, last_name, and email.
+
+Imagine there is a form where customer information
+is collected, such as the following:
+
+    <form action="save_customer.cgi">
+      <input type="text" name="Contact.first_name" />
+      <input type="text" name="Contact.last_name" />
+      <input type="text" name="Contact.email"  />
+    </form>
+
+When this form is submitted, we create a CGI.pm object
+to capture the data, then pass this object off to
+CGI::State->state, which returns a hash reference:
+
+    my $cgi   = CGI->new;           #Create the CGI Object
+    my $state = CGI::State( $cgi ); #$state is a hash reference
+
+Assuming that I submit the form, the hash reference
+would look like this, as shown by Data::Dumper:
+
+    $state = {
+               Contact => {
+                            first_name => 'Dan',
+                            last_name  => 'Kubb'
+                            email      => 'dan@mealtips.com'
+                          },
+    };
+
+With this structure, it would be rather easy just
+to pass off $state->{Contact} to a subroutine
+that inserts Contact information into a database.
+There's no sorting, grouping or hard-coding the
+column names anywhere in your code!  I am a firm
+believer that the database table and column names
+should dictate the HTML form parameter names, and
+perl hash element names.  This module helps enforce
+that and make it easier to write code that will
+"map" HTML forms into a database with minimal effort.
+
+.. SNIP ..
+
+
+>Transform is too neutral, so State seems not a bd
+>choice among what you offer. 
+
+CGI::State is ok.  I just didn't want to step on anyone's
+toes who might be working on a CGI based State machine,
+or something else more centered around maintaining
+state across CGI executions.  I will consider it if
+no one objects.
+
+
+>Another name that comes to mind is CGI::Struct.
+
+Hmm, I like that name.  I will look at the other *::Struct
+modules on CPAN to see if mine falls under the same 
+general idea.
+
+Thanks,
+
+Dan
+
+
+

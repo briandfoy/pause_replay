@@ -1,0 +1,175 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21441
+Return-Path: <nobody@pause.x.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 56245 invoked by uid 76); 2 Jun 2003 21:03:23 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Mon, 02 Jun 2003 14:03:22 -0700
+Received: (qmail 25433 invoked by uid 225); 2 Jun 2003 21:03:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25420 invoked by uid 507); 2 Jun 2003 21:03:12 -0000
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Mon, 02 Jun 2003 14:03:11 -0700
+Received: from pause.perl.org (IDENT:nobody@localhost [127.0.0.1])	by pause.perl.org (8.12.9/8.12.9) with ESMTP id h52L38tQ011533;	Mon, 2 Jun 2003 23:03:08 +0200
+Received: (from nobody@localhost)	by pause.perl.org (8.12.9/8.12.9/Submit) id h52L38YP011532;	Mon, 2 Jun 2003 23:03:08 +0200
+Date: Mon, 2 Jun 2003 23:03:08 +0200
+Message-ID: <200306022103.h52L38YP011532@pause.perl.org>
+Subject: Module submission Locale::KeyedText
+Reply-To: modules@perl.org
+To: modules@perl.org, duncand@cpan.org
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.x.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Locale::KeyedText
+  DSLIP:       cdpOp
+  description: Refer to user messages in programs by keys
+  userid:      DUNCAND (Darren Duncan)
+  chapterid:   13 (Internationalization_Locale)
+  communities:
+    modules@perl.org
+
+  similar:
+    Locale::gettext, Locale::PGetText, others
+
+  rationale:
+
+    Many times during a program's operation, the program (or a module
+    it uses) will need to display a message to the user, or generate a
+    message to be shown to the user. Often this is an error message of
+    some kind, but it could also be a prompt message for interactive
+    systems.
+
+    Modern programs or database systems often refer to an error
+    condition by an internal code which is guaranteed to be unique for a
+    situation, and this is mapped to a user-readable message at some
+    point. For example, Oracle databases often have error codes in a
+    format like 'ORA-03542'. Any application receiving such a code can
+    identify it easily in its conditional logic, using a simple
+    'equals', and then the application can "do the right thing". No
+    parsing or ambiguity involved. By contrast, if a program simply
+    returned words for the user, such as 'error opening file', programs
+    would have a harder time figuring out the best way to deal with it.
+    But for displaying to users, easy messages are better. Also,
+    different users have their own languages, and users with either
+    different skill levels or different security privileges, should be
+    shown different messages for the same error conditions. Developers
+    get more details, joe public gets very little.
+
+    I have found that when it comes to getting the most accurate, the
+    most accurate program text for users, we still get the best results
+    by having a human being write out that text themselves.
+
+    What my module does is associate a set of key-codes, which are
+    hard-coded into your application or module, each with one or more
+    text strings to show human users. This association would normally be
+    stored in a Perl file that defines and returns an anonymous hash
+    definition. While it is obvious that people who would be writing the
+    text would have to know how to edit Perl files, this shouldn't be a
+    problem because my module is only meant to be used with user text
+    that is associated with hard-coded program conditions. In other
+    words, this user text is *part of the program*, and not the
+    program's users' own data. At the same time, this information is in
+    separate resource files used by the program, so that if you wanted
+    to upgrade or localize what text the user sees, you only have to
+    update said separate resource files, and not change your main
+    program.
+
+    I was inspired to have this organization partly by how Mac OS X
+    manages its resources. It is the standard practice for Mac OS X
+    programs, including the operating system itself, to have the user
+    language data in separate files (usually XML files I think) from the
+    main program binary. Each user language is in a separate file, and
+    adding a localization to a Mac OS X program is as simple as adding a
+    language file to the program package. No recompilation necessary.
+    This is something that end users could do, although program package
+    installers usually do it. An os-level preference / control-panel
+    displays a list of all the languages your programs do or might have,
+    and lets you arrange the list in order of preference. When you open
+    a program, it will search for language files specific to the program
+    in the order you chose so to pick a supported language closest to
+    your preference. Presumably the messages in these files are looked
+    up by the program using keys. Mac OS X (and the previous non-Unix
+    Mac OS) handles lots of other program resources as data files as
+    well, making them easy to upgrade.
+
+    My module aims to bring this sort of functionality to Perl modules
+    or programs. Your module or program can be distributed with one or
+    more resource files containing text for users, and your program
+    would use associated keys internally.
+
+    It is strongly suggested (but not required) that each Perl module
+    which uses this would come up with keys which are unique across all
+    Perl modules (perhaps the key name can start with the module name?).
+    An advantage of this is that, for example, your module could come
+    with a set of user messages, but another module or program which
+    uses yours may wish to override some of your messages, showing other
+    messages instead which are more appropriate to the context in which
+    they are using your module. One can override simply by using the
+    same key code with a new user message in one of their own resource
+    files. At some appropriate place, usually in the main program, my
+    module can be given input that says what resource files it should
+    use and in what order they should be consulted. When my module is
+    told to fetch the user message for a certain code, it returns the
+    first one it finds. This also works for the multiple language or
+    permissions issue; simply order the files appropriately in the
+    search list. The analogy is similar to inheriting from multiple
+    modules which have the same method names as you or each other, or
+    having multiple search directories in your path that modules could
+    be installed in.
+
+    Generally, when a program module would return a code-key to
+    indicate a condition, often it will also provide some variable
+    values to be interpolated into the user strings; my module would
+    also handle this.
+
+    My module never outputs anything by itself to the user, and only
+    implements deterministic functionality, returning its results.
+
+    One of the main distinctions of my approach over similar modules is
+    that text is always looked up by a key which is not meant to be
+    meaningful for a user. Whereas, with the other modules it looks like
+    you are supposed to pass in english text and they translate it,
+    which could produce ambiguous results or associations. Or
+    alternately, the other modules require your text data to be stored
+    in a format other than Perl files. Or alternately they have a
+    compiled C component or otherwise have external dependencies; my
+    module has no external dependencies (it is very simple). There are
+    other differences.
+
+    I know that Tim Bunce recently suggested that this new module idea
+    of mine could be quite popular, implying something like it didn't
+    exist yet. Or perhaps he was just talking about my distributing a
+    predefined set of error messages that could be used with any
+    database-using module. I'm not sure.
+
+    In any event, I welcome any feedback as to whether what I describe
+    seems to be already implemented, or not. Or alternately, whether you
+    have trouble understanding what I am proposing. But this is meant to
+    be a simple module in any event, and a small module.
+
+  enteredby:   DUNCAND (Darren Duncan)
+  enteredon:   Mon Jun  2 21:03:07 2003 GMT
+
+The resulting entry would be:
+
+Locale::
+::KeyedText       cdpOp Refer to user messages in programs by keys   DUNCAND
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=5a400000_e6b45ee0b9055fa1&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=5a400000_e6b45ee0b9055fa1&SUBMIT_pause99_add_mod_insertit=1

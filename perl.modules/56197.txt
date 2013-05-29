@@ -1,0 +1,86 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:56197
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29838 invoked from network); 7 Sep 2007 21:59:17 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 7 Sep 2007 21:59:17 -0000
+Received: (qmail 30164 invoked by uid 225); 7 Sep 2007 21:59:16 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30154 invoked by alias); 7 Sep 2007 21:59:16 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 07 Sep 2007 14:58:57 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by franz.ak.mind.de (8.13.8/8.14.1/Debian-8) with ESMTP id l87LXYMl031834;
+	Fri, 7 Sep 2007 23:33:34 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.8/8.13.8/Submit) id l87LXYjg031833;
+	Fri, 7 Sep 2007 23:33:34 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Scott Lanning <lannings@who.int>
+Cc: modules@perl.org
+Subject: Re: PAUSE namespace indexer incorrectly parsing VERSION
+References: <Pine.LNX.4.64.0709071032540.5244@localhost.localdomain>
+Reply-To: modules@perl.org
+Date: Fri, 07 Sep 2007 23:33:33 +0200
+In-Reply-To: <Pine.LNX.4.64.0709071032540.5244@localhost.localdomain> (Scott
+	Lanning's message of "Fri\, 7 Sep 2007 10\:45\:35 +0200 \(CEST\)")
+Message-ID: <87bqce6tzm.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Fri, 7 Sep 2007 10:45:35 +0200 (CEST), Scott Lanning <lannings@who.int> said:
+
+  > [Not sure if this is the right place to send this,
+  > but the address was in the message.]
+
+  > I got this error from PAUSE:
+
+  >   Status: Version parsing problem
+  >   ===============================
+
+  >      module: Ogre::ExampleFrameListener
+  >     version: undef
+  >     in file: Ogre-0.25/Ogre/ExampleFrameListener.pm
+  >      status: The PAUSE indexer was not able to parse the following line
+  >              in that file: C< if (eval { require OIS && $OIS::VERSION >=
+  >              0.03 }) { > Note: the indexer is running in a Safe
+  >              compartement and cannot provide the full functionality of
+  >              perl in the VERSION line. It is trying hard, but sometime
+  >              it fails. As a workaround, please consider writing a proper
+  >              META.yml that contains a 'provides' attribute (currently
+  >              only supported by Module::Build) or contact the CPAN admins
+  >              to investigate (yet another) workaround against "Safe"
+  >              limitations.)
+
+  > Note that 'OIS' ne 'Ogre::ExampleFrameListener'.
+
+  > I don't really "care" and might add 'provides' as it suggests
+  > if I can automate it.
+  > Just thought I'd point out the underly smart smart behavior.
+
+Phew.
+
+The parser is built into ExtUtils::MakeMaker and you can test your
+files by running MakeMaker's parse_version against it. An example is
+on CPAN/modules/04pause.html. Instead of using META.yml you can also
+just specify $VERSION in a line before the line you're citing. I
+blieve this is would be the quickest solution.
+
+  > Does http://module-build.sourceforge.net/META-spec.html
+  > specify a "proper META.yml"?
+
+I think the canonical place for it at the moment is:
+
+http://svn.perl.org/modules/Module-Build/trunk/website/META-spec.pod
+
+-- 
+andreas

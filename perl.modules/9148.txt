@@ -1,0 +1,401 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9148
+Return-Path: <john.clutterbuck@sbs.siemens.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 33994 invoked by uid 76); 5 Dec 2001 13:44:14 -0000
+Received: from cs2.siemens.co.uk (HELO bnls902a) (194.42.253.18)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Wed Dec  5 13:44:14 2001 -0000
+Received: by bnls205a.sni.co.uk with Internet Mail Service (5.5.2653.19)
+	id <YJDXVQV4>; Wed, 5 Dec 2001 13:44:07 -0000
+Message-ID: <795A55FFA6E5D2118F7A0020AF87DA8B075045@gbcwhe201a.sni.co.uk>
+To: "'modules@perl.org'" <modules@perl.org>
+Subject: PROPOSAL: Devel::ObjectTracker - Track object life to aid memory 
+	leak detection
+Date: Wed, 5 Dec 2001 13:43:58 -0000 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Approved: news@nntp.perl.org
+From: john.clutterbuck@sbs.siemens.co.uk ("Clutterbuck, John")
+
+Further to my recent PAUSE registration request and postings on
+comp.lang.perl.modules I am proposing a new module to track perl object life
+to help detect memory leaks in perl programs/modules (not perl itself)
+
+Here is the pod documentation which will hopefully explain what it will do -
+all comments welcome:
+
+NAME
+       Devel::ObjectTracker - Track object life to aid memory
+       leak detection
+
+SYNOPSIS
+         perl5 -d:ObjectTracker test.pl
+
+DESCRIPTION
+       Debug module to find where perl objects (or arrays, hashes
+       and globs) are created by checking for objects passed to
+       and/or returned from subs, and monitoring when they are
+       destroyed via destructor subs.  This can help detect
+       memory leaks caused by objects being left behind in your
+       programs when they shouldn't be.
+
+       The main output is stored in a file which logs the first
+       time a memory reference is seen with datetime, current
+       session number (starts at 1), object type, call stack
+       etc., and whether the object was first seen returned from
+       a sub or passed as an argument.  Details are also logged
+       whenever an object is destroyed. This includes the
+       datetime, session and call stack when the object was
+       created.
+
+       The subroutine Devel::ObjectTracker::output_details
+       outputs details on the currently existing objects on
+       demand.  These details contain date/time, session, call
+       stack, etc. when the object was created.
+
+EXAMPLES
+       When started ObjectTracker will output all object
+       creation/destruction in the log file ObjectTracker.log
+       with a session ID of 1.
+
+       At a suitable point in your prog the sub
+       Devel::ObjectTracker::output_details should be called
+       which will output a list of all current objects to a file
+       ObjectTracker_details_1.txt and then it will increment the
+       session ID to 2.
+
+       You should then carry out the operations being studied.
+       All object creation/destruction will now be recorded in
+       the log file with session ID of 2.
+
+       After the operation you should call
+       Devel::ObjectTracker::output_details again.  This will
+       output a list of all current objects to a file
+       ObjectTracker_details_2.txt and then it will increment the
+       session ID to 3.
+
+       A look at the details file ObjectTracker_details_2.txt
+       will show any objects that were created during sessions 1
+       and 2.  From the date/time, session and call stack you can
+       see when and where they were created.  This can highlight
+       objects which are still in existence and shouldn't be.
+
+       Multiple sessions can be used to good effect in complex
+       programs either with output each time as above or
+       separately incremented using the sub
+       Devel::ObjectTracker::increment_session
+
+OPTIONS
+       ObjectTracker has some variables which can be used during
+       your script to affect what gets tracked.
+
+       o   To track hashes, arrays and globs as well as true
+           objects set $Devel::ObjectTracker::objects_only to 0.
+           The default is 1, i.e. only true objects.
+
+       o   By default it will look for new objects in all subs.
+           $Devel::ObjectTracker::sub_pattern can be used to
+           defined a subroutine name pattern within which to look
+           for new objects. Note it will always check for
+           destructors (=~ /DESTROY$/).
+
+       o   The output to STDOUT can be adjusted by changing
+           $Devel::ObjectTracker::verbose as follows:
+
+            0 = print nothing
+            1 = print file creation, session ID etc.   (default)
+            2 = print summary details upon object creation/destruction
+            3 = print subroutine calls as well as object details
+
+       o   The log file name can be changed by setting
+           $Devel::ObjectTracker::log_file.  The default is
+           ObjectTracker.log in the current directory.
+
+       o   The details file name can be changed by setting
+           $Devel::ObjectTracker::details_file.  The token <NN>
+           will be replaced by the current session number (before
+           it is incremented).  The default is
+           ObjectTracker_details_<NN>.txt in the current
+           directory.
+
+       o   Object monitoring can be switched on and off in your
+           programs by $Devel::ObjectTracker::enable.  The
+           default is 1 (on).
+
+       o   The whether a file header is printed is controlled by
+           $Devel::ObjectTracker::print_header.  The default is 1
+           (yes).
+
+       o   The output file beginning of line is set by
+           $Devel::ObjectTracker::bol.  The default is nothing.
+           Set to "\"" for csv format.
+
+       o   The output file value seperator is set by
+           $Devel::ObjectTracker::delim.  The default is tab
+           (\t). Set to "\",\"" for csv format.
+
+       o   The output file end of line  is set by
+           $Devel::ObjectTracker::eol.  The default is a single
+           newline (\n).  Set to "\"\n" for csv format.
+
+       o   The stack format line is set by
+           $Devel::ObjectTracker::stack_format.  This can contain
+           tokens of <LEVEL>, <PACK>, <FILE>, <LINE>, <CALLSUB>,
+           <SUBNAME>, <HASARGS>, <WANTARRAY> which are replaced
+           as follows:
+
+              LEVEL     = the call level (starts at 0)
+              PACK      = package
+              FILE      = file name
+              LINE      = line number
+              CALLSUB   = the calling sub
+              SUBNAME   = the called sub
+              HASARGS   = as for caller()
+              WANTARRAY = as for caller()
+
+           The default is "<FILE>(<SUBNAME>) l=<LINE>".
+
+       o   The stack seperator is set by
+           $Devel::ObjectTracker::stack_delim.  The default is ";
+           ".
+
+       These variables can be put in a file called .objecttracker
+       in the current directory as in the following example:
+
+           $Devel::ObjectTracker::objects_only = 0;
+           $Devel::ObjectTracker::sub_pattern  = "^Mysubs::";
+           $Devel::ObjectTracker::log_file     = "mylogfile";
+           $Devel::ObjectTracker::details_file = "mydetails_<NN>.txt";
+
+       will set ObjectTracker to track hashes, arrays and globs
+       as well as objects but only in subroutines that match
+       pattern ^Mysubs::.  The log output will be in mylogfile
+       and details will be output to mydetails_1.txt,
+       mydetails_2.txt, etc.
+
+NOTES
+       o   Memory references/Objects are often seen first in
+           unexpected places.  For example as hash arguments to
+           subs which are called within the constructor or after
+           unpacking by Storable::thaw etc.
+
+           See also Exists as similarly objects are often seen
+           seemingly for the first time when called below
+           destructors.
+
+       o   A sub UNIVERSAL::DESTROY is defined to catch destroys
+           of objects which do not have destructors defined
+           themselves.  If the program defines this sub itself
+           then this should get overridden however this could
+           produce confusing results.
+
+       o   It uses the debug hook DB::sub to look for memory
+           references returned from subroutine calls, passed as
+           arguments and checks for destructors.
+
+       o   Enabling/disabling monitoring and using subroutine
+           patterns only affects checking for new objects.
+           Destruction is always monitored.
+
+       o   As every subroutine call is being intercepted and the
+           arguments and return values being analysed it
+           obviously adds a performance overhead.  Furthermore it
+           is using considerable amounts of memory keeping track
+           of the object memory details.  Expect performance to
+           be at least 3 times as slow depending on your platform
+           and size of program.
+
+           Note also that the output files can be huge.
+
+       o   Tied hashes produce confusing results.
+
+       o   ObjectTracker has been tested on perl 5.6.1 and 5.5005
+           on SGI Irix and Win32 (using SiePerl)
+
+       See also BUGS below
+
+FUNCTIONS
+       output_details()
+
+       This subroutine outputs details on the currently existing
+       objects.  It creates files in the current directory named
+       (by default) ObjectTracker_details_1.txt,
+       ObjectTracker_details_2.txt, etc.  according to the
+       current session number.  This function increments the
+       session number after each call (via increment_session)
+
+       This should be called at suitable points in your program
+       and the resultant files can be checked to see if there are
+       any objects which shouldn't still be in existence.  It
+       will show the date/time, session ID and the call stack
+       when the object was created.
+
+       increment_session()
+
+       This can be used to independently increment the session ID
+       which is used to record details in the main log file and
+       name the output_details files.
+
+FILE FORMATS
+       The output file formats are designed to be used in a
+       spreadsheet.  By default they have a single header line
+       followed by data with values are separated by tab (\t)
+       with a single newline (\n) at the end of each line.
+
+       ObjectTracker.log
+
+       This file logs the details of object creation and
+       destruction. The fields are as follows:
+
+       ObjectNo
+           The sequence number of the object (starts at 1).  Only
+           set for new objects where Source ne DES.
+
+       DateTime
+           The local date/time the object is first seen or
+           destroyed.
+
+       Session
+           current session number (starts at 1)
+
+       Sub The subroutine called.
+
+           Will be set to NO_DESTRUCTOR if the test program has
+           no destructor for the object concerned.
+
+       Source
+           Where the object is seen as follows:
+
+             Ret = first seen returned from a sub.
+             Arg = first seen as an arg.
+             DES = the sub is a destructor.
+
+           See also Exists as objects can sometimes be seen when
+           called from within destructors
+
+       Position
+           The argument or return value position (1=first)
+
+       Class
+           Object Class or HASH, ARRAY or GLOB
+
+       Ref The memory address of the object.
+
+       Exists
+           Object existance info as follows:
+
+       Y        the object/ref has been seen before. Only applies
+                to Source=DES
+
+       N        the object/ref has not been seen before. Only
+                applies to Source=DES
+
+       de       the call stack contains a destructor subroutine
+                (sub =~  /DESTROY$/)
+
+       Stack
+           The current call stack.  See OPTIONS for content.
+
+       CrDateTime
+           The local date/time the object was first seen. Only
+           output where Source=DES.
+
+       CrDateTime
+           The datetime when object first seen. Only output where
+           Source=DES.
+
+       CrSession
+           The session when object first seen. Only output where
+           Source=DES.
+
+       CrStack\n
+           The call stack when object first seen. Only output
+           where Source=DES.
+
+       ObjectTracker_details_<NN>.txt
+
+       This file is produced on demand by the subroutine
+       Devel::ObjectTracker::output_details.  In the file name
+       <NN> is replaced by the current session number which
+       starts at 1.
+
+       The fields are as follows, see desciptions under
+       ObjectTracker.log for full details:
+
+       CrObjectNo
+           The creation number of the object.
+
+       CrDateTime
+           The local date/time the object was first seen.
+
+       CrSession
+           Session number when object first seen.
+
+       CrSub
+           Subroutine name called when object first seen.
+
+       CrSource
+           The source when object first seen.
+
+       Position
+           The argument or return value position when object
+           first seen.
+
+       CrClass
+           Object Class when object first seen.
+
+       CrRef
+           The memory address of the object when first seen.
+
+       CrStack
+           Call stack when object first seen.
+
+INSTALLATION
+       The usual:
+
+             perl Makefile.PL
+             make
+             make test
+             make install
+
+       Should install fine via the CPAN module.
+
+BUGS
+       See also NOTES above
+
+       Probably many. Certainly early versions purported to show
+       objects in existence when they did'nt (and vice-versa)
+       although I think it is more accurate now. You need to
+       validate the results yourself to be sure.
+
+       If the sub matches /DESTROY$/ it assumes the first
+       argument is the object being destroyed.
+
+       There is no record kept of whether memory references are
+       reused. It is possible that refs/objects are seen again in
+       subroutines called from within a destructor. To help
+       overcome this the field Exists contains de if a destructor
+       is seen in the call stack.
+
+       Occasionally it produces 'Attempt to free unreferenced
+       scalar' messages but these seem benign.
+
+COPYRIGHT
+       etc. etc.
+
+AUTHOR
+       John Clutterbuck, john.clutterbuck@sbs.siemens.co.uk
+
+SEE ALSO
+       perl(1).
+
+       perldoc perldebug.
+
+
+---
+John Clutterbuck
+Siemens Business Services, UK

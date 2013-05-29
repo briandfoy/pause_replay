@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62781
+Return-Path: <matthewt@agaton.scsys.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 883 invoked from network); 21 Oct 2008 17:48:18 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 21 Oct 2008 17:48:18 -0000
+Received: (qmail 14150 invoked by uid 225); 21 Oct 2008 17:48:17 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14146 invoked by alias); 21 Oct 2008 17:48:17 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from de007061.idaq.com (HELO jules.scsys.co.uk) (217.168.153.160)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 21 Oct 2008 10:48:14 -0700
+Received: from [217.168.150.167] (helo=agaton.scsys.co.uk)
+	by jules.scsys.co.uk with esmtp (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1KsLKw-0004Lm-CU; Tue, 21 Oct 2008 18:48:06 +0100
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1KsLKw-0003HT-A5; Tue, 21 Oct 2008 18:48:06 +0100
+Date: Tue, 21 Oct 2008 18:48:06 +0100
+To: Igor Gariev <gariev@hotmail.com>
+Cc: Steffen Mueller <wyp3rlx02@sneakemail.com>, nothingmuch@woobling.org,
+	modules@perl.org
+Subject: Re: New module Google::ProtocolBuffers
+Message-ID: <20081021174806.GM18876@agaton.scsys.co.uk>
+References: <200810210844.m9L8iS2F019188@pause.perl.org> <BLU109-W23A647999D9AC911DAC6ADC12E0@phx.gbl> <20081021151126.GG18876@agaton.scsys.co.uk> <48FDFBFD.2010208@sneakemail.com> <BLU109-W26F215691053BDAE49EC65C12E0@phx.gbl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BLU109-W26F215691053BDAE49EC65C12E0@phx.gbl>
+User-Agent: Mutt/1.5.11
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Tue, Oct 21, 2008 at 08:48:17PM +0400, Igor Gariev wrote:
+> As for the the official project leaded by Brad, I was rather dissapointed that 
+> 1) the project started in July has no documentation, 
+
+Well, you clearly do ok at writing documentation - why not contribute some?
+
+> 2) in September it has perfomance problems to the state that (to quote Brad) "maybe we need to do a without-Moose rewrite" and
+
+Brad is wrong. See below.
+
+> Yuval, 
+> what is going on with protobuf project?
+> Will you do the code rewrite?  Will you keep these heavy Moose backbone?
+
+If you look at that thread it clearly shows that there are about four
+subroutines that are "expensive" and that these can all be easily optimised.
+
+Moose done right can be considered heavy in terms of -startup- overhead
+but runtime is normally fast - and if startup is the issue then Mouse can
+be used instead at the cost of the introspection features.
+
+So no code rewrite is required, just somebody willing to spend about a day
+doing some optimisation tweaking.
+
+> There are differences between my work and the protobuf project (e.g. mine doesn't need installed protoc compliler, it can parse proto on its own; it allows data access both via accessors and plain hash access). 
+
+Moose objects allow plain hash access.
+
+I think code to allow the protobuf-perl project to fuynction without protoc
+would be a very good idea.
+
+> How do you think, is it possible to merge the code?
+
+Keep your parser, throw away the Class::Accessor parts since C::A is old,
+limited and actually slower than properly optimised Moose code by some way,
+and do some quick optimisation on the protobuf stuff so it performs properly.
+
+-- 
+      Matt S Trout       Need help with your Catalyst or DBIx::Class project?
+   Technical Director                    http://www.shadowcat.co.uk/catalyst/
+ Shadowcat Systems Ltd.  Want a managed development or deployment platform?
+http://chainsawblues.vox.com/            http://www.shadowcat.co.uk/servers/

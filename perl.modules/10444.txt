@@ -1,0 +1,94 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10444
+Return-Path: <ethan@r220-1.rz.RWTH-Aachen.DE>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10693 invoked by uid 76); 3 Mar 2002 21:20:35 -0000
+Received: from r220-1.rz.rwth-aachen.de (HELO r220-1.rz.RWTH-Aachen.DE) (134.130.3.31)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Sun Mar  3 21:20:35 2002 -0000
+Received: from r220-1.rz.RWTH-Aachen.DE (relay2.RWTH-Aachen.DE [134.130.3.1])
+	by r220-1.rz.RWTH-Aachen.DE (8.10.1/8.11.3-2) with ESMTP id g23LKUj23625
+	for <modules@perl.org>; Sun, 3 Mar 2002 22:20:30 +0100 (MET)
+Received: from ethan (p5085934B.dip.t-dialin.net [80.133.147.75])
+	by r220-1.rz.RWTH-Aachen.DE (8.10.1/8.11.3/6) with ESMTP id g23LKTq23621
+	for <modules@perl.org>; Sun, 3 Mar 2002 22:20:29 +0100 (MET)
+Received: from ethan by ethan with local (Exim 3.33 #1 (Debian))
+	id 16hdPB-000134-00
+	for <modules@perl.org>; Sun, 03 Mar 2002 22:20:29 +0100
+Date: Sun, 3 Mar 2002 22:20:29 +0100
+To: modules@perl.org
+Subject: Namespace question for caching autoloader
+Message-ID: <20020303222029.A4021@post.rwth-aachen.de>
+Reply-To: tassilo.parseval@post.rwth-aachen.de
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.23i
+Sender: Tassilo von Parseval <ethan@r220-1.rz.RWTH-Aachen.DE>
+Approved: news@nntp.perl.org
+From: tassilo.parseval@post.rwth-aachen.de (Tassilo von Parseval)
+
+Hi everyone,
+
+I already sent this message as a posting to clpm.modules but thought
+here might also be the right place to ask:
+
+I am currently writing on a little module implementing a cached
+autoloading of methods as described by Mark Jason Dominus in
+
+    http://plover.perl.com/yak/tricks/slide073.html
+
+Short example:
+
+A little class:
+
+    package Test;
+    
+    use base qw(Autoloader::Cache);
+    use Autoloader::Cache 
+        method1 => q{ 
+                    sub { 
+                        my ($self, $arg) = @_;
+                        $self->{arg} = $arg;
+                    }},
+        method2 => q{
+                    sub {
+                        return shift->{arg};
+                    }};
+                    
+    sub new { bless { }, shift }
+    
+Program instantiating this class:
+
+    package main;
+    
+    use Test;
+
+    my $obj = new Test;
+    
+    # dynamically created via Autoloader::Cache::AUTOLOAD
+    # method is compiled and diddled into the caller's namespace
+    $obj->method1("argument");
+    print $obj->method2;
+
+    # second call to a method already previously called:
+    # quicker since no longer the need for the autoloader
+    print $obj->method2;
+    
+
+The above also works with an arbitrary number of classes inheriting from
+this module, methods and classes aren't mixed up due to a mapping
+between methods and classes inside Autoloader::Cache.
+
+Now the question for the namespace: As it can be seen, I have named it
+Autoloader::Cache as for yet. Is this appropriate? My main concern is
+whether I can just put a module under the top-level namespace of
+Autoloader since there is actually only one module of that name so I am
+not even sure whether that's a valid top-level namespace.
+
+Tassilo
+-- 
+$_=q!",}])(tsuJ[{@"tnirp}3..0}_$;//::niam/s~=)]3[))_$-3(rellac(=_$({
+pam{rekcahbus;})(rekcah{lrePbus;})(lreP{rehtonabus;})(rehtona{tsuJbus!;
+$_=reverse;s/sub/(reverse"bus").chr(32)/xge;tr~\n~~d;eval;

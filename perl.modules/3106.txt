@@ -1,0 +1,47 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3106
+Return-Path: <epa98@doc.ic.ac.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23668 invoked from network); 16 Oct 2000 17:59:30 -0000
+Received: from duck.doc.ic.ac.uk (exim@146.169.1.46)
+  by tmtowtdi.perl.org with SMTP; 16 Oct 2000 17:59:30 -0000
+Received: from sync13.doc.ic.ac.uk ([146.169.49.13] ident=epa98)
+	by duck.doc.ic.ac.uk with esmtp (Exim 3.16 #7)
+	id 13lEXo-0000VV-00
+	for modules@perl.org; Mon, 16 Oct 2000 18:59:28 +0100
+Date: Mon, 16 Oct 2000 18:59:28 +0100 (BST)
+To: modules@perl.org
+Subject: Simple text progress bars
+Message-ID: <Pine.LNX.4.21.0010161855200.32651-100000@sync13.doc.ic.ac.uk>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: epa98@doc.ic.ac.uk (Edward Avis)
+
+If you use Linux, you may have seen the progress bar printed by
+'rpm -Uvh'.  It is a sequence of fifty hash marks.
+
+I've written a module to do the same in Perl:
+
+use Console::ProgressBar;
+my $bar = new Console::ProgressBar 'doing things', 100;
+foreach (0 .. 100 - 1) {
+    # do thing
+    update $bar;
+}
+
+Output:
+doing things: ##################
+
+The bar grows in proportion to the number of things done, so that when 
+everything has been done fifty hash marks have been printed.
+
+Is the name Console::ProgressBar okay?  It is just ASCII text, no cursor
+movement or other trickery.
+
+-- 
+Ed Avis
+epa98@doc.ic.ac.uk
+

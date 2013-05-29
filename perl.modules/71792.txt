@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:71792
+Return-Path: <smueller@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23594 invoked from network); 1 Jul 2010 16:25:37 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 1 Jul 2010 16:25:37 -0000
+Received: (qmail 27538 invoked by uid 225); 1 Jul 2010 16:25:37 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27532 invoked by alias); 1 Jul 2010 16:25:36 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from caiajhbdcbef.dreamhost.com (HELO homiemail-a26.g.dreamhost.com) (208.97.132.145)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 01 Jul 2010 09:25:35 -0700
+Received: from homiemail-a26.g.dreamhost.com (localhost [127.0.0.1])
+	by homiemail-a26.g.dreamhost.com (Postfix) with ESMTP id B7C55B807B;
+	Thu,  1 Jul 2010 09:25:31 -0700 (PDT)
+Received: from [10.12.0.119] (krlh-5f7374e0.pool.mediaWays.net [95.115.116.224])
+	(Authenticated sender: catch-all@steffen-mueller.net)
+	by homiemail-a26.g.dreamhost.com (Postfix) with ESMTPA id F12E0B8079;
+	Thu,  1 Jul 2010 09:25:30 -0700 (PDT)
+Message-ID: <4C2CC178.5010500@cpan.org>
+Date: Thu, 01 Jul 2010 18:25:28 +0200
+Reply-To: "modules@perl.org >> \"modules-perl.org\"" <modules@perl.org>
+User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
+MIME-Version: 1.0
+Followup-To: modules@perl.org
+To: Avi Kak <kak@purdue.edu>
+CC: modules@perl.org
+Subject: Re: [Fwd: Failed: PAUSE indexer reportAVIKAK/Algorithm-KMeans-1.1.1.tar.gz]
+References: <1277862072.22907.118.camel@localhost.localdomain>
+In-Reply-To: <1277862072.22907.118.camel@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: smueller@cpan.org (Steffen Mueller)
+
+Hi,
+
+Avi Kak wrote:
+>   I just uploaded the file
+> 
+>         Algorithm-KMeans-1.1.1.tar.gz
+> 
+>   My module file clearly shows the version number as 1.1.1
+> 
+>   However, I got the attached report back from the indexer
+>   indicating failure in indexing.
+> 
+>   It says the indexing failed because of the decreasing
+>   version number.  And it shows the following version
+>   number for the uploaded module:
+> 
+>        1.001001
+> 
+>   I am puzzled.  How could the version number 1.1.1 turn
+>   into 1.001001 ?
+
+version numbers in perl are... tricky at best.
+
+Executive summary: Never mix multi-part (X.Y.Z or even more .'s) version 
+numbers with floating point (X.Y) version numbers.
+
+Due to a number of historic accidents, an X.Y.Z(...) style version 
+number can be converted to a float by assuming three digits per part: 
+XXX.YYY.ZZZ => XXX.YYY.ZZZ. If you previously uploaded a version 1.1, 
+you now have:
+
+1.001001
+
+and previously uploaded
+
+1.1
+
+Unfortunately, 1.1 is larger. Even more unfortunately, there is so much 
+code relying on this that we cannot ever change it. You will need to 
+decide on whether you want float-versions or multi-part versions and 
+stick to it to prevent this from happening. (1.1.0 is fine)
+
+Then, upload either 1.11 (or bigger) or 1.100.1 or 2.0.0 (or bigger). 
+All of those are > 1.1.
+
+Best regards,
+Steffen

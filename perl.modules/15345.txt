@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:15345
+Return-Path: <bennopmbp@hotmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3684 invoked by uid 1012); 16 Nov 2002 02:41:19 -0000
+Message-ID: <20021116024119.3683.qmail@onion.perl.org>
+To: modules@perl.org
+Subject: Modules with hash arguments
+Date: Fri, 15 Nov 2002 18:41:10 -0800
+Lines: 77
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Newsreader: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Posted-By: 63.87.1.244
+Approved: news@nntp.perl.org
+From: bennopmbp@hotmail.com ("Ben Nospam")
+
+I am implementing a module and have run into some trouble...
+
+Here's a piece of test code:
+
+my %test_hash = ("Command" => "Inquiry");
+BTSP::SendHCICommand(\%test_hash);
+
+BTSP is the name of the module I'm developing.  Elsewhere:
+
+sub SendHCICommand
+{
+    if(@_ == 1)
+    {
+        print "This should be a hash: ".$_[0]."\n";
+        return BTSP_SendHCICommand($_[0]);
+    }
+    if(@_ == 2)
+    {
+        print "This should be a hash: ".$_[1]."\n";
+        return BTSP_SendHCICommand_MT( $_[0], $_[1] );
+    }
+    croak "BTSP::SendHCICommand called with invalid parameters\n";
+}
+
+When I run the test script, I see the following output:
+
+This should be a hash: HASH(0x1a72e68)
+
+So far so good...  But the output which immediately follows is:
+
+command_hash is not of type const HVPtr at rel\blib\lib/BTSP.pm line 138.
+
+BTSP.pm line 138 is shown above in sub SendHCICommand:
+return BTSP_SendHCICommand($_[0]);
+
+Not so good...  Can someone tell me what I'm doing wrong?  In the
+corresponding BTSPGlue.xs, I have:
+
+int
+BTSP_SendHCICommand(command_hash)
+    const HV* command_hash
+    PROTOTYPE: \%
+    CODE:
+        RETVAL = BTSP_SendHCICommand(command_hash);
+    OUTPUT:
+        RETVAL
+
+by the way, const HV* is in my typemap:
+const char * T_PV
+const HV * T_HVREF
+
+I tried switching to using an HV* (omitting the const) instead of a const
+HV*, but that did not solve the problem.
+
+And just to complete the picture, in BTSP.h:
+int BTSP_SendHCICommand(const HV* command_hash);
+
+And in BTSPInterface.cpp:
+int
+BTSP_SendHCICommand(const HV* command_hash)
+{
+    // $$$ once the calling problems are resolved, pass through to OO
+framework
+    printf("BTSP_SendHCICommand(%08X)\n",command_hash);
+    return 1;
+}
+
+Any help would be appreciated...  Also appreciated would be if someone is
+responding to this, in addition to posting back to perl.modules, please also
+send direct email to bennopmbp@hotmail.com
+
+Thanks in advance,
+Brian
+
+
+
+

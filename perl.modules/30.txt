@@ -1,0 +1,53 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:30
+Return-Path: <jdporter@min.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12939 invoked from network); 14 Oct 1999 15:21:41 -0000
+Received: from min.net (jdporter@208.222.210.19)
+  by tmtowtdi.perl.org with SMTP; 14 Oct 1999 15:21:41 -0000
+Received: (from jdporter@localhost)
+	by min.net (8.9.3/8.9.3) id LAA04732;
+	Thu, 14 Oct 1999 11:21:39 -0400 (EDT)
+Date: Thu, 14 Oct 1999 11:21:39 -0400
+To: "Redford, John" <John.Redford@fmr.com>
+Cc: modules@perl.org
+Subject: Re: NameSpace module
+Message-ID: <19991014112138.D25407@min.net>
+References: <C139F4D49384D2118EB60008C7A4337B57848B@MSGBOS675NTS.fmr.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.1us
+In-Reply-To: <C139F4D49384D2118EB60008C7A4337B57848B@MSGBOS675NTS.fmr.com>; from Redford, John on Thu, Oct 14, 1999 at 10:46:37AM -0400
+Approved: news@nntp.perl.org
+From: jdporter@min.net ("'John Porter'")
+
+Redford, John wrote:
+> $ns = new NameSpace();    # The current package's namespace.
+> $ns = new NameSpace("Foo::Bar");    # The named package's namespace. 
+> 
+> $value = $ns->get("SomeFunction", "CODE");
+> $ns->set("MyFunction", $value);
+
+Non-OO interface:
+
+	# use current package's namespace:
+	$value = NameSpace::get("SomeFunction", "CODE");
+	NameSpace::set("MyFunction", $value);
+
+	# use specified namespace:
+	$value = NameSpace::get("Foo::Bar", "SomeFunction", "CODE");
+	NameSpace::set("Foo::Bar", "MyFunction", $value);
+
+This interface actually seems quite a bit more obvious to me.
+
+By the way, this module bears a strong resemblance to an
+existing one, Andreas' Devel::Symdump -- the main difference
+being, AFAICT, that yours is geared more toward modifying
+the symtable, rather than simply inspecting it.
+Have you looked at Devel::Symdump?
+
+-- 
+John Porter
+

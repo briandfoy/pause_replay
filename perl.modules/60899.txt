@@ -1,0 +1,101 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60899
+Return-Path: <derek@ximbiot.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 14329 invoked from network); 20 Jun 2008 16:52:00 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 20 Jun 2008 16:52:00 -0000
+Received: (qmail 25896 invoked by uid 225); 20 Jun 2008 16:51:59 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25884 invoked by alias); 20 Jun 2008 16:51:59 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail.ximbiot.com (HELO lois.ximbiot.com) (66.93.3.72)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 20 Jun 2008 09:51:48 -0700
+Received: from [10.42.0.218] (unknown [10.42.0.218])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by lois.ximbiot.com (Postfix) with ESMTPSA id 8A09F1A357E5;
+	Fri, 20 Jun 2008 12:51:47 -0400 (EDT)
+Message-ID: <485BE01D.6090002@ximbiot.com>
+Date: Fri, 20 Jun 2008 12:51:41 -0400
+User-Agent: Thunderbird 2.0.0.14 (Windows/20080421)
+MIME-Version: 1.0
+To: modules@perl.org
+CC: dprice@cpan.org
+Subject: Re: Module submission Text::MediawikiFormat
+References: <200806181525.m5IFPoK7002739@pause.perl.org> <200620081039476934%brian.d.foy@gmail.com>
+In-Reply-To: <200620081039476934%brian.d.foy@gmail.com>
+X-Enigmail-Version: 0.95.6
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: derek@ximbiot.com (Derek Price)
+
+brian d foy wrote:
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+> 
+> In article <200806181525.m5IFPoK7002739@pause.perl.org>, Perl Authors
+> Upload Server <upload@pause.perl.org> wrote:
+> 
+>> The following module was proposed for inclusion in the Module List:
+>>
+>>   modid:       Text::MediawikiFormat
+>>   DSLIP:       Rdpfp
+>>   description: Format Mediawiki text markup for output
+> 
+> 
+> Would this be better named Text::Mediawiki, or even just MediaWiki
+> (thinking about namespaces like HTML, XML, Pod, and so on). 
+> 
+> Mediawiki seems like a big project, so maybe it deserves a top-level
+> namespace. Maybe it should be like Pod::Simple and have a parser and
+> many output convertors. :)
+
+First off, after checking the PHP MediaWiki project's online 
+documentation, I would say "MediaWiki" is preferable to "Mediawiki" 
+(note the CamelCase) in any of the suggested names.
+
+Secondly, either of your suggestions would otherwise be fine with me.  I 
+derived the module from Text::WikiFormat, which is why I originally 
+chose the name, but it retains no dependencies on that module.  Also, as 
+I have begun implementing some optional MediaWiki extensions, like the 
+"<ref>" and "<references />" tags, I have been thinking about 
+implementing a more configurable plugin-style architecture for enabling 
+these extensions, similar to MediaWiki's plugin architecture, and the 
+higher-level namespace would also be more convenient for storing plugin 
+modules.
+
+Finally, a top-level namespace would be a more convenient place to put 
+my MediaWiki DB accessors (currently in 
+Wiki::Toolkit::Store::Mediawiki).  Then MediaWiki::Database could 
+provide an abstraction that is more specific to the MW DB format and 
+W:T:S::Mediawiki could just convert the API and call the new accessors. 
+  This would be a much cleaner design than the current W:T:S:Mediawiki, 
+which mashes the API conversion together with SQL composition and DB calls.
+
+The more I think about this idea, the more I like it.  Really, working 
+in the W:T space has hampered me more than anything.  Since their 
+default DB backend and formatter are nothing like MW's, I've had to 
+reimplement 9/10 of what they had and add a bunch of other features that 
+require bypassing their generic API entirely since MW is significantly 
+more featureful.  Again, for anyone else using it, W:T:[FS]:MW could 
+still be maintained as thin API converters over the modules in the new 
+MediaWiki namespace, a significantly cleaner design.
+
+Regards,
+
+Derek
+-- 
+Derek R. Price
+Solutions Architect
+Ximbiot, LLC <http://ximbiot.com>
+Get CVS and Subversion Support from Ximbiot!
+
+v: +1 248.835.1260
+f: +1 248.246.1176

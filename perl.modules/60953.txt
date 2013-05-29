@@ -1,0 +1,136 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60953
+Return-Path: <matt@tnpi.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 24185 invoked from network); 22 Jun 2008 22:15:11 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 22 Jun 2008 22:15:11 -0000
+Received: (qmail 2371 invoked by uid 225); 22 Jun 2008 22:15:10 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2366 invoked by alias); 22 Jun 2008 22:15:10 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_SIGNED,DK_VERIFIED,SPF_HELO_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail.theartfarm.com (HELO mail.theartfarm.com) (208.75.177.101)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 22 Jun 2008 15:15:06 -0700
+Received: (qmail 19165 invoked by uid 89); 22 Jun 2008 22:15:01 -0000
+Received: by simscan 1.2.0 ppid: 19131, pid: 19147, t: 0.0702s
+         scanners: attach: 1.2.0 clamav: 0.93/m:46
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=default; d=tnpi.net;
+  b=mVLUi3UKv8WK46LuVcZHhkDqkwJ0tycsr+qZ9Gvv2Ni6BtX7x6b0YHyO59i7mdK522MBcHN6o8Ix76IAqz2v0SZHYqrLJ8CIKKzLbTgTvpvrbeDGrVddTIStEy9aAJRP  ;
+Received: from unknown (HELO imac24w.simerson.net) (matt@tnpi.biz@24.19.46.17)
+  by 127.0.0.6 with ESMTPA; 22 Jun 2008 22:15:00 -0000
+Message-ID: <5DCF60F4-CA4F-4783-98CF-5B59C815C204@tnpi.net>
+To: modules@perl.org
+In-Reply-To: <220620081221140052%brian.d.foy@gmail.com>
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Apple Message framework v924)
+Subject: Re: Module submission unix::provision
+Date: Sun, 22 Jun 2008 15:14:59 -0700
+References: <200806220256.m5M2uRxv030661@pause.perl.org> <220620081221140052%brian.d.foy@gmail.com>
+X-Mailer: Apple Mail (2.924)
+Approved: news@nntp.perl.org
+From: matt@tnpi.net (Matt Simerson)
+
+
+On Jun 22, 2008, at 10:21 AM, brian d foy wrote:
+
+> [[ This message was both posted and mailed: see
+>   the "To," "Cc," and "Newsgroups" headers for details. ]]
+>
+> In article <200806220256.m5M2uRxv030661@pause.perl.org>, Perl Authors
+> Upload Server <upload@pause.perl.org> wrote:
+>
+>> The following module was proposed for inclusion in the Module List:
+>>
+>>  modid:       unix::provision
+>>  DSLIP:       cdpOp
+>>  description: provisioning unix services
+>>  userid:      MSIMERSON (Matt Simerson)
+>>  chapterid:   23 (Miscellaneous_Modules)
+>
+> The all-lowercase names are reserved for Perl as pragmas.
+
+Must have been a short circuit between my brain and fingers last  
+night. PEBKAC.
+
+> How about Provision::Unix? Maybe someone will like your idea and can
+> follow your example for other operating systems. :)
+
+I currently have the modules set up like this:
+
+Unix::Provision
+Unix::Provision::DNS
+Unix::Provision::DNS::Bind
+Unix::Provision::DNS::Tinydns
+Unix::Provision::DNS::Nictool
+Unix::Provision::User
+Unix::Provision::User::FreeBSD
+Unix::Provision::User::Linux
+Unix::Provision::User::Darwin
+Unix::Provision::Mail
+Unix::Provision::Mail::Sendmail
+Unix::Provision::Mail::Qmail
+Unix::Provision::Mail::Vpopmail
+Unix::Provision::Mail::Zimbra
+Unix::Provision::Web::Apache
+Unix::Provision::Web::Lighttpd
+Unix::Provision::VirtualOS
+Unix::Provision::VirtualOS::FreeBSD::Jail
+Unix::Provision::VirtualOS::Linux
+Unix::Provision::VirtualOS::Linux::OpenVZ
+Unix::Provision::VirtualOS::Linux::Xen
+Unix::Provision::VirtualOS::Solaris::Container
+
+The top level modules do some basic stuff like setting up error  
+handling and dispatching the request to the appropriate module. In  
+this way, the suite can be easily extended. The naming convention  
+makes it quite easy to determine what each module does and it is  
+obvious where someone would insert code to extend it.
+
+Your suggestion got me thinking. The pattern doesn't require the  
+Unix:: prefix at all. While unix-like OSes are the only thing I'm  
+concerned with, someone else may well want to extend it to support  
+Windows. If I got rid of the Unix:: prefix, they need only to follow  
+the existing examples and extend the class as follows:
+
+Provision::User::Win32
+Provision::User::Vista
+Provision::Mail::Exchange
+Provision::Mail::Mdaemon
+Provision::Mail::Kerio
+Provision::Web::IIS
+Provision::Web::Apache::Win32
+
+etc...
+
+The Provision::Unix name isn't bad. I'm not just sure how much sense  
+it makes to have this:
+
+Provision::Unix::Apache
+Provision::Win32::Apache
+
+Provision::Unix::Mysql
+Provision::Win32::MySQL
+
+I would expect to have very few tangible differences between those  
+pairs. So few that one could strongly argue they should be the same  
+module sprinkled with a few "if ($OSNAME eq 'win32')" conditionals.
+
+OTOH, a positive effect of using Provision::Unix would be that when  
+someone does hack up some Windows support, they'll be doing it in  
+Provision::Win32 and it won't require any effort on my part. But  
+neither will they have a framework already built to plug in their  
+hacks, reducing the likelihood of it ever happening.
+
+Go ahead and assign whichever namespace you think best, Provision, or  
+Provision::Unix.  Either will suite my needs. You are a better judge  
+than I which is likely to be a more valuable name for the community.
+
+Matt

@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:64802
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4534 invoked from network); 7 Mar 2009 10:28:30 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 7 Mar 2009 10:28:30 -0000
+Received: (qmail 22515 invoked by uid 225); 7 Mar 2009 10:28:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22511 invoked by alias); 7 Mar 2009 10:28:29 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 07 Mar 2009 02:28:27 -0800
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-6) with ESMTP id n27AN7D9012037;
+	Sat, 7 Mar 2009 11:23:07 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id n27AN7gG012036;
+	Sat, 7 Mar 2009 11:23:07 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Arthur Corliss <corliss@digitalmages.com>
+Cc: modules@perl.org
+Subject: Re: PAUSE indexer reports
+References: <Pine.LNX.4.64.0903040655300.5332@AncHm-1.nevaeh-linux.org>
+Reply-To: modules@perl.org
+Date: Sat, 07 Mar 2009 11:23:07 +0100
+In-Reply-To: <Pine.LNX.4.64.0903040655300.5332@AncHm-1.nevaeh-linux.org>
+	(Arthur Corliss's message of "Wed\, 4 Mar 2009 07\:00\:38 -0900 \(AKST\)")
+Message-ID: <87fxhpy6lw.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/22.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Wed, 4 Mar 2009 07:00:38 -0900 (AKST), Arthur Corliss <corliss@digitalmages.com> said:
+
+  > Greetings:
+  > Like an idiot I must have added a few modules into CVS with -r0.1 rather
+  > than with -r0.01, and now that the revs have increased from .9 to .10 I'm
+  > getting a warning from PAUSE that those modules have not been indexed.
+  > Luckily, these are modules that are merely part of the distribution, but not
+  > the ones that the distro version number is taken from.
+
+  > My question is this:  is this something that I should address immediately,
+  > or can I safely ignore this with no adverse impacts?  I'd have to have to
+  > upload yet another version with no real changes just for that.
+
+Pause is agnostic but your users maybe not. Let's see how they might see it:
+
+cpan[3]> d CORLISS/Paranoid/Paranoid-0.20.tar.gz
+Distribution id = C/CO/CORLISS/Paranoid/Paranoid-0.20.tar.gz
+    CPAN_USERID  CORLISS (Arthur Corliss <corliss@digitalmages.com>)
+    CONTAINSMODS Paranoid::Debug Paranoid::Log::Template Paranoid::Process
+    UPLOAD_DATE  2008-08-28
+
+
+cpan[4]> d CORLISS/Paranoid/Paranoid-0.21.tar.gz
+Distribution id = C/CO/CORLISS/Paranoid/Paranoid-0.21.tar.gz
+    CONTAINSMODS Paranoid Paranoid::Args Paranoid::BerkeleyDB Paranoid::Filesystem Paranoid::Input Paranoid::Lockfile Paranoid::Log Paranoid::Log::Buffer Paranoid::Log::Email Paranoid::Log::File Paranoid::Log::Syslog Paranoid::Module Paranoid::Network
+    UPLOAD_DATE  2009-03-04
+
+
+cpan[5]> install Paranoid
+Paranoid is up to date (0.21).
+
+cpan[6]> r /Paranoid/
+
+Package namespace         installed    latest  in CPAN file
+Paranoid::Debug                0.11       0.9  CORLISS/Paranoid/Paranoid-0.20.tar.gz
+
+
+So the CPAN shell recommends them to upgrade to 0.20 to get a
+newer Paranoid::Debug. This is probably irritating for them.
+
+If you delete 0.20 from PAUSE this strange effect would disappear.
+
+-- 
+andreas

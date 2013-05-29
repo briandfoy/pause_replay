@@ -1,0 +1,140 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9790
+Return-Path: <jeff@vpservices.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 63427 invoked by uid 76); 21 Jan 2002 05:54:50 -0000
+Received: from mx.spiritone.com (HELO mx.spiritone.com) (216.99.221.5)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Mon Jan 21 05:54:50 2002 -0000
+Received: (qmail 9141 invoked from network); 21 Jan 2002 05:54:45 -0000
+Received: (ofmipd 216.99.195.90); 21 Jan 2002 05:54:23 -0000
+Date: 20 Jan 2002 21:50:35 -0800
+Message-ID: <3C4BAC2B.B610B4D3@vpservices.com>
+To: modules@perl.org
+Cc: "Wiedmann, Jochen" <jochen.wiedmann@softwareag.com>
+Organization: -
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+Subject: Change in maintainers for DBD::CSV
+Content-Type: multipart/mixed;
+ boundary="------------8FD8903F7199F4D97B9B72F2"
+Approved: news@nntp.perl.org
+From: jeff@vpservices.com ("Jeff Zucker")
+
+--------------8FD8903F7199F4D97B9B72F2
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Dear keepers of the modules,
+
+As per the discussion below on the dbi-dev listserv, I will be
+maintaining DBD::CSV from now on and will be uploading a new version
+shortly into the ...J/JZ/JZUCKER directory.
+
+Jeff Zucker wrote:
+> 
+> "Wiedmann, Jochen" wrote:
+> >
+> > Hi, Jeff,
+> >
+> > Even more, I'd be happy, if you could offer to take
+> > maintenance of DBD::CSV to your hands.
+> 
+> Ok, done. I'll maintain it.
+
+-- 
+Jeff
+--------------8FD8903F7199F4D97B9B72F2
+Content-Type: message/rfc822
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+Return-Path: <dbi-dev-return-706-jeff=vpservices.com@perl.org>
+Received: from mx1b.mts.net ([205.200.16.58]) by msg1.mts.net
+          (Netscape Messaging Server 4.15) with ESMTP id GQ9BMA00.N5J for
+          <jeff@vpservices.com>; Sun, 20 Jan 2002 15:56:34 -0600 
+Received: from onion.perl.org (onion.valueclick.com [209.85.157.220])
+	by mx1b.mts.net (8.11.4/8.11.3) with SMTP id g0KLuXN18062
+	for <jeff@vpservices.com>; Sun, 20 Jan 2002 15:56:33 -0600 (CST)
+Received: (qmail 6304 invoked by uid 1005); 20 Jan 2002 21:56:32 -0000
+Mailing-List: contact dbi-dev-help@perl.org; run by ezmlm
+Precedence: bulk
+List-Post: <mailto:dbi-dev@perl.org>
+List-Help: <mailto:dbi-dev-help@perl.org>
+List-Unsubscribe: <mailto:dbi-dev-unsubscribe@perl.org>
+List-Subscribe: <mailto:dbi-dev-subscribe@perl.org>
+Delivered-To: mailing list dbi-dev@perl.org
+Received: (qmail 6288 invoked by uid 76); 20 Jan 2002 21:56:31 -0000
+Received: from mx.spiritone.com (HELO mx.spiritone.com) (216.99.221.5)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Sun Jan 20 21:56:31 2002 -0000
+Received: (qmail 17236 invoked from network); 20 Jan 2002 21:51:05 -0000
+Received: (ofmipd 216.99.195.90); 20 Jan 2002 21:50:43 -0000
+Date: 20 Jan 2002 13:46:58 -0800
+Message-ID: <3C4B3AD2.A13A95D6@vpservices.com>
+From: "Jeff Zucker" <jeff@vpservices.com>
+To: "Wiedmann, Jochen" <jochen.wiedmann@softwareag.com>
+Cc: dbi-dev@perl.org
+Organization: -
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+Subject: Re: Blobs and Empty Strings in SQL::Statement
+References: <6B2492D663ECD4119EB70008C7E6F6730237F9BE@daemsg01.software-ag.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Mozilla-Status2: 00000000
+
+"Wiedmann, Jochen" wrote:
+> 
+> Hi, Jeff,
+> 
+> > 1. The new SQL::Statement will allow manipulation of blobs, but only
+> > with placeholders:
+> >
+> >   This only works in the XS version of SQL::Statement:
+> >
+> >            $dbh->do("INSERT INTO foo VALUES( $blob )");
+> >
+> >   But this works in both versions:
+> >
+> >         $dbh->do("INSERT INTO foo VALUES( ? )",undef,$blob);
+> 
+> what's the actual difference? 
+
+In the first case SQL::Parser has to know how to parse a statement SQL
+containing a blob and in the second case it can just allow
+SQL::Statement to insert the blob without having to parse it within the
+context of the SQL statement.
+
+> And what does "blob" precisely
+> mean in terms of SQL::Statement?
+
+In this case it means a string that can contain unescaped single quote
+characters whereas other stings can not.
+
+> In the case of DBD::CSV, I see a good reason to drop the
+> distinction between NULL and ''. In other cases this would
+> be different, of course. Again, you should specify more
+> details.
+
+Ok, I'll think about it.
+
+> DBD::CSV should run with SQL::Statement out of the box.
+> So I will happily accept patches. It would be nice,
+> though, if you could make the decision for "pass" or
+> not based on the backing version of SQL::Statement.
+
+Sure, that sounds good.
+
+> Even more, I'd be happy, if you could offer to take
+> maintenance of DBD::CSV to your hands.
+
+Ok, done. I'll maintain it.
+
+-- 
+Jeff
+
+--------------8FD8903F7199F4D97B9B72F2--
+

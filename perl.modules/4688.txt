@@ -1,0 +1,66 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4688
+Return-Path: <ben@rhumba.pair.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32709 invoked from network); 14 Mar 2001 18:34:13 -0000
+Received: from relay1.pair.com (209.68.1.20)
+  by tmtowtdi.perl.org with SMTP; 14 Mar 2001 18:34:13 -0000
+Received: (qmail 27491 invoked from network); 14 Mar 2001 18:33:31 -0000
+Received: from ignition-gw.customer.dsl.alter.net (HELO ?10.100.100.31?) (206.66.205.2)
+  by relay1.pair.com with SMTP; 14 Mar 2001 18:33:31 -0000
+X-pair-Authenticated: 206.66.205.2
+User-Agent: Microsoft-Outlook-Express-Macintosh-Edition/5.02.2022
+Date: Wed, 14 Mar 2001 10:31:38 -0800
+Subject: Re: Repost: Namespace registration: IO::Buffer
+To: <modules@perl.org>
+Message-ID: <B6D4F90A.86DD%ben@rhumba.pair.com>
+In-Reply-To: <15023.30729.791451.350672@phoenix.squirrel.nl>
+Mime-version: 1.0
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+Approved: news@nntp.perl.org
+From: ben@rhumba.pair.com (Benjamin Trott)
+References: <15023.30729.791451.350672@phoenix.squirrel.nl>
+
+> Somehow this doesn't look IO related to me.
+
+Yes, you're perhaps right.
+
+How about Data::Buffer? Any other suggestions?
+
+>> All of the I<get_*> and I<put_*> methods respect the
+>> internal offset state in the buffer object. This means
+>> that, for example, if you call I<get_int16> twice in a
+>> row, you can be ensured that you'll get the next two
+>> 16-bit integers in the buffer.> Does that mean that
+> 
+> $buf->put_int16(24);
+> $buf->put_int32(1233455);
+> $buf->put_int16(99);
+> 
+> $buf->get_int16   # 24
+> $buf->get_int16   # 99
+> $buf->get_int32   # 1233455
+
+No, sorry to be unclear. The get_* methods have to respect the order in
+which data was placed into the buffer by the put_* methods. So, for example,
+this is true:
+
+    $buf->put_int16(24);
+    $buf->put_int32(1233455);
+    $buf->put_int16(99);
+
+    $buf->get_int16   # 24
+    $buf->get_int32   # 1233455
+    $buf->get_int16   # 99
+
+In other words, the last two lines in your code should be swapped. Data
+comes out in the same order in which it went in to the buffer.
+
+I'll give a better example in the docs (ie. like this example).
+
+bye,
+Ben
+

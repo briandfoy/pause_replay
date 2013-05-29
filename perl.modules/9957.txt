@@ -1,0 +1,101 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9957
+Return-Path: <cbrooks@carescout.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 43820 invoked by uid 76); 1 Feb 2002 13:22:50 -0000
+Received: from 187.muab.bstn.bstnmaco.dsl.att.net (HELO biloxi.carescout.com) (12.101.192.187)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Fri Feb  1 13:22:50 2002 -0000
+Received: (qmail 13369 invoked from network); 1 Feb 2002 13:22:19 -0000
+Received: from unknown (HELO carescout.com) (192.168.1.46)
+  by 0 with SMTP; 1 Feb 2002 13:22:19 -0000
+Message-ID: <3C5A968B.5898559B@carescout.com>
+Date: Fri, 01 Feb 2002 08:22:19 -0500
+X-Mailer: Mozilla 4.72 [en] (WinNT; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: Namespace feedback requested
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: cbrooks@carescout.com (Chris Brooks)
+
+Good morning,
+
+In the absence of anyone else making comments about this proposed
+namespace, I thought that I would weigh in (again).
+
+While HTTP::TestEngine seemed like the perfect name a couple of months
+ago, it now seems a bit non-intuitive to me.  What the heck is a
+TestEngine anyway?  Furthermore, it seems like most mod_perl handlers
+get released under the Apache:: namespace.  Apache::Recorder seems a
+more appropriate name.
+
+HTTP::SessionConfig also seems problematic.  I like HTTP as the top
+level namespace, as it acts as an interface for other modules which live
+under HTTP, Monkeywrench and (soon) WebTest.  (I also considered the
+Test namespace, but those modules are more testing methodologies than
+implementations of a particular type of test.)  However, SessionConfig
+is too generic a name -- knowing nothing about it, I would guess that it
+allowed you to configure a user's session in some way.  Perhaps
+HTTP::RecordedSession might be a better name.
+
+use HTTP::RecordedSession;
+my ( $session ) = new HTTP::RecordedSession();
+
+Seems intuitive and a more accurate description of what the module
+actually does.
+
+So, I would like to get feedback on the namespace Apache::Recorder (aka
+HTTP::TestEngine) and HTTP::RecordedSession (aka HTTP::SessionConfig).
+
+Apologies for not going through this process before posting the first
+time.
+
+Thanks,
+Chris
+
+>From: Chris Brooks <cbrooks@carescout.com>
+>To: modules@perl.org
+>Date: Mon, 28 Jan 2002 23:47:01 -0500
+>Message-ID: <3C562945.7BB5EF80@carescout.com>
+
+>--------------------------------------------------------------------------------
+
+>Good morning,
+
+>I would like to get some feedback on namespace for two modules that I
+>would like to submit to CPAN: HTTP::TestEngine and HTTP::SessionConfig.
+
+>HTTP::TestEngine is a mod_perl handler which acts like a macro
+recorder,
+>writing details about each request during a user's http session to a
+>file on the filesystem.  There is a short cgi script included with
+>HTTP::TestEngine which that sets a cookie to maintain state.
+
+>HTTP::SesssionConfig takes the file written by HTTP::TestEngine and
+>formats it into a data structure suitable for use with
+>HTTP::Monkeywrench. (HTTP::Monkeywrench, which is already available on
+>CPAN, recreates an http session by reading a configuration file.  This
+>configuration file currently must be written by hand -- these two
+>modules automate the process so that a user can simply click their way
+>through a session that they would like to reproduce in the future.)  My
+
+>intent is that HTTP::SessionConfig will support other http test
+>harnesses such as HTTP::WebTest in the future.
+
+>So, I'd like to hear feedback on namespace, as well as packaging of the
+
+>cgi script mentioned in HTTP::TestEngine above.
+
+>If anyone would like to see the current version, it is available at
+>http://sourceforge.net/projects/http-recorder/
+
+>Thanks for your help.
+>-Chris
+
+
+
+

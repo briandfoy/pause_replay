@@ -1,0 +1,117 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45520
+Return-Path: <rob.kinyon@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29026 invoked from network); 25 Oct 2005 12:35:49 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 25 Oct 2005 12:35:49 -0000
+Received: (qmail 5977 invoked by uid 225); 25 Oct 2005 12:35:48 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 5971 invoked by alias); 25 Oct 2005 12:35:47 -0000
+X-Spam-Status: No, hits=-1.0 required=8.0
+	tests=BAYES_00,DK_SIGNED,DK_VERIFIED,RCVD_IN_BL_SPAMCOP_NET,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of rob.kinyon@gmail.com designates 72.14.204.204 as permitted sender)
+Received: from qproxy.gmail.com (HELO qproxy.gmail.com) (72.14.204.204)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 25 Oct 2005 05:35:41 -0700
+Received: by qproxy.gmail.com with SMTP id f10so709397qba
+        for <modules@perl.org>; Tue, 25 Oct 2005 05:35:37 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=sUDsNc7KTuW2VTc4//v/ro1VEieObaZGtRcAKWFv0EHyKnvv7wI65YcWFrB6jcNtWU9A3GaVuwqipEk+8zeYvsWeseaO1swxKGvvU1/u7hnwXiLcymfySJeWnBZNGwkP0WA0u1fwFyzlvZQNZIIbEi+sMNV3Ax8vauInXtasEPc=
+Received: by 10.65.22.20 with SMTP id z20mr3744245qbi;
+        Tue, 25 Oct 2005 05:35:37 -0700 (PDT)
+Received: by 10.64.201.20 with HTTP; Tue, 25 Oct 2005 05:35:37 -0700 (PDT)
+Message-ID: <70384420510250535s31ae24bdhe90558c62f810cd7@mail.gmail.com>
+Date: Tue, 25 Oct 2005 08:35:37 -0400
+To: Adam Kennedy <cpan@ali.as>
+Subject: Re: Registration of distribution/modules names
+Cc: modules@perl.org, Stevan Little <stevan.little@iinteractive.com>
+In-Reply-To: <435DEA9F.7000801@ali.as>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+References: <70384420510240845n5d41ed9apf8ed6775177121f0@mail.gmail.com>
+	 <435DEA9F.7000801@ali.as>
+Approved: news@nntp.perl.org
+From: rob.kinyon@gmail.com (Rob Kinyon)
+
+On 10/25/05, Adam Kennedy <cpan@ali.as> wrote:
+> http://cpants.dev.zsi.at/dist/Tree-Binary
+>
+> Moving Tree::Binary in is fine, if it breaks compatibility that is the
+> authors perogative, and it's up to him to make the call on incompatible
+> API changes. You may wish to make sure you add in a check in the
+> installer for copies of the module prior to the critical changeover and
+> stop, or warn them of the change. Changing an API for Tree::Binary
+> sounds like something that would badly hurt the code of anyone using it.
+>
+> Also, you are aware that it contains half a dozen classes other than
+> Tree::Binary right? Will all those stay compatible? And I presume you'll
+> need to hande Tree::Visualize as well.
+
+Stevan has been a driving force behind the design for Forest and has
+been reviewing the code as time permits. All of these concerns will be
+addressed before the 1.00 release.
+
+> The two points that concern me a bit is your us of a "brand name" module
+> without actually implementing anything there (Forest.pm consumes another
+> top level namespace while not providing anything of value, code or
+> otherwise) and your use of the top level Tree.pm.
+>
+> Firstly, while branded distributions are normal, they tend to stick to
+> their own branded namespace, and deal with specific issues... Maypole,
+> Catalyst, etc etc.
+>
+> Branding the distribution and not actually using the branded namespace
+> is not something we want to encourage.
+
+I understand the concern about using the name "Forest" and not
+actually having anything under the TLN "Forest". Maybe, "Forest"
+should really be called "Bundle::Tree", and that's fair. This would
+split the distribution up a bit, into Tree and Tree::Persist.
+
+> Secondly, Tree:: as it stands now is a flat namespace. Everything uses
+> Tree::Something as there is no particularly obvious candidate to become
+> a logical parent for the entire namespace.
+>
+> We already have Tree::Nary, and Tree.pm seems like an alternative
+> implementation of a generic N-ary tree. While alternative modules are
+> just fine, is there anything in particular that you think warrants
+> elevating your Tree.pm to be at the top of a namespace containing
+> several hundred classes, when nobody to date (including SCWERN) has
+> considered they have something that deserves to be called Tree.pm
+
+Part of the design of Forest is that it is meant to eventually contain
+an implementation of nearly every type of tree someone would want to
+use and to provide useful meta-behaviors for all of them using a
+simple events system.
+
+The first meta-behavior is transparent persistence.
+
+my $persistence =3D Tree::Persist->connect({
+    stuff here
+});
+my $tree =3D $persistence->tree;
+
+At this point, any changes you make to $tree are automatically
+reflected in the datastore you loaded $tree from. It doesn't matter
+what kind of Tree it is. In fact, it could be an N-ary tree that has
+children of a different class. It could be your own Tree sub-class.
+Whatever. They're all transparently backed to the datastore. And, the
+user of $tree has no idea this is going on, nor does he care.
+
+Tree is designed in such a way that it permits the ability to create
+any other kind of tree. The API is smaller than all the other options
+out there. (Tree::NAry, Tree::DAG_Node, Tree::Simple, etc.) Put
+another way - Tree implements the minimal API that all other API's can
+be compat'ed against. No other tree module can say that. As such, I
+would argue that it deserves the Tree.pm name, and all that comes with
+that.
+
+Thanks,
+Rob

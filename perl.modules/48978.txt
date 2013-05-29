@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:48978
+Return-Path: <adam@phase-n.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29250 invoked from network); 22 May 2006 22:28:32 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 May 2006 22:28:32 -0000
+Received: (qmail 16282 invoked by uid 225); 22 May 2006 22:28:32 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 16272 invoked by alias); 22 May 2006 22:28:31 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from alfred.isp.net.au (HELO alfred.isp.net.au) (202.1.117.1)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 22 May 2006 15:28:14 -0700
+Received: from gatekeeper.isp.net.au (gatekeeper.isp.net.au [203.31.238.1])
+	by alfred.isp.net.au (Postfix) with ESMTP id C63AECD9216;
+	Tue, 23 May 2006 08:28:02 +1000 (EST)
+Received: from localhost (localhost.isp.net.au [127.0.0.1])
+	by gatekeeper.isp.net.au (Postfix) with ESMTP id 0B4793E326D;
+	Tue, 23 May 2006 08:28:08 +1000 (EST)
+X-Virus-Scanned: by amavisd-new at isp.net.au
+Received: from gatekeeper.isp.net.au ([127.0.0.1])
+	by localhost (gatekeeper.isp.net.au [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id A5-C7o6pkRQ9; Tue, 23 May 2006 08:28:07 +1000 (EST)
+Received: from [192.168.0.18] (adsl-1096.isp.net.au [203.31.239.96])
+	by gatekeeper.isp.net.au (Postfix) with ESMTP id 328E23E32D9;
+	Tue, 23 May 2006 08:28:00 +1000 (EST)
+Message-ID: <44723A43.2020208@phase-n.com>
+Date: Tue, 23 May 2006 08:25:07 +1000
+User-Agent: Thunderbird 1.5.0.2 (Windows/20060308)
+MIME-Version: 1.0
+To: "Lenk, Steve (S.G.)" <slenk@visteon.com>
+CC: "'cpan@ali.as'" <cpan@ali.as>, 
+ "'modules@perl.org'" <modules@perl.org>
+Subject: Re: Bio::Pet32a withdrawn
+References: <CA12516684747740916DB8CF145B43BF03C04782@vistex113.vlgdc.visteon.com>
+In-Reply-To: <CA12516684747740916DB8CF145B43BF03C04782@vistex113.vlgdc.visteon.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: adam@phase-n.com (Adam Kennedy)
+
+
+
+Lenk, Steve (S.G.) wrote:
+> I'd like to withdraw Bio::Pet32a as a proposed name.
+> 
+> Adam Kennedy made some good suggestions. Also it is mostly a data file. 
+> I'll come up with a better idea. Maybe Bio::Data::PlasmidVector, or 
+> Bio::Data::Plasmid::Vector (since all plasmids *may* not be vectors - 
+> not really sure there).
+> 
+> An interface like plasmid_vector (  plasmid_name, references to plasmid 
+> details maybe as a hash function reference )
+> Then the module can handle all the details of finding the plasmid data
+> The MCPrimers solver has very general potential - I am trying to 
+> decouple it from plasmid data access
+> 
+> All I am really trying to do is to make the data access to vector data 
+> be separate from my solver engine.
+
+Not to toot my own horn, but if this is a package for data, then you may 
+want to look at writing it as a subclass of Data::Package.
+
+The Data::Package API was created specifically for providing an 
+abstraction between using some data and the actual implementation 
+required to find and load it.
+
+It might help you.
+
+The other issue I'm a little unsure or is the sort of volume we're 
+talking about with this stuff. BioInf work can use a LOT of data, and 
+I'm not sure how big all this data is going to be.
+
+If the data is relatively compact and will be reused it's not a problem 
+at all. If it's larger and there's going to be a lot of these things, it 
+may be better to store the actual data somewhere more appropriate and 
+have your Makefile.PL for the data package fetch it from that 
+more-appropriate location as needed.
+
+Just some thoughts.
+
+Adam K

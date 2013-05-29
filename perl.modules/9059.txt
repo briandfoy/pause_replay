@@ -1,0 +1,63 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9059
+Return-Path: <mike@blakeley.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22769 invoked by uid 76); 30 Nov 2001 05:35:29 -0000
+Received: from qmails@shell4.tdl.com (HELO shell4.tdl.com) (206.180.224.45)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Fri Nov 30 05:35:29 2001 -0000
+Received: (qmail 16427 invoked by alias); 30 Nov 2001 05:35:25 -0000
+Received: from unknown (HELO ) (206.180.236.179)
+  by blakeley.com with SMTP; 30 Nov 2001 05:35:25 -0000
+Mime-Version: 1.0
+X-Sender: postmaster@localhost
+Message-ID: <p05101005b7f3956b0663@blakeley.com>
+Date: Thu, 29 Nov 2001 21:22:33 -0800
+To: modules@perl.org
+Subject: module name for load testing harness?
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: mike@blakeley.com (Michael Blakeley)
+
+I'm thinking about cleaning up Deluge <http://deluge.sf.net/> for 
+inclusion in PAUSE/CPAN. Deluge is a recording proxy server and load 
+testing harness that uses Perl and LWP to create user scenarios and 
+then uses those scenarios to perform load testing.
+
+There's an existing module called HTTP::WebTest, but it's oriented 
+toward functional testing and web site coverage. The author and I 
+agreed that these are essentially different tasks, and should remain 
+so.
+
+Two questions, then:
+
+a) Should Deluge change its base name? LoadTest might be clearer, for 
+example. I'd like to keep the original name, since I didn't name the 
+project myself, but if it's clear that the existing name is too 
+confusing, I'll try to convince the original developer.
+
+b) What area should Deluge go under? I've thought of Benchmark::, 
+HTTP::, LWP::, Net::, Perf::, Test::, and Server:: - others?
+
+Benchmark tends to hold timing-oriented measurement modules, while 
+Deluge is a multi-client test harness. HTTP may be a little too 
+restrictive, as Deluge already supports HTTP and HTTPS, and can 
+support all the LWP protocols, since it's built on LWP.
+
+So why not put it under LWP? That seems implementation-oriented to 
+me, which seems like a bad classification for a test tool. Net might 
+be too broad, and it's already a very big category.
+
+Perf seems promising, but the category description seems oriented at 
+developer tools, rather than capacity planning tools. Test seems 
+oriented to QA-style tests. As for Server - well, Deluge isn't a 
+server: it's a tool for load-testing servers.
+
+Thanks in advance for any ideas.
+
+-- Mike
+
+-- 
+Michael Blakeley       mike@blakeley.com     <http://www.blakeley.com/>
+             Performance Analysis for Internet Technologies

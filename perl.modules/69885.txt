@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:69885
+Return-Path: <matthewt@agaton.scsys.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21692 invoked from network); 16 Feb 2010 16:22:16 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 16 Feb 2010 16:22:16 -0000
+Received: (qmail 14939 invoked by uid 225); 16 Feb 2010 16:22:16 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14935 invoked by alias); 16 Feb 2010 16:22:15 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from jules.scsys.co.uk (HELO jules.scsys.co.uk) (217.168.153.160)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 16 Feb 2010 08:21:41 -0800
+Received: from [217.168.150.167] (helo=agaton.scsys.co.uk)
+	by jules.scsys.co.uk with esmtps (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1NhQAv-0001nJ-PS; Tue, 16 Feb 2010 16:21:25 +0000
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1NhQAv-0002JA-GL; Tue, 16 Feb 2010 16:21:25 +0000
+Date: Tue, 16 Feb 2010 16:21:25 +0000
+To: Lionel Cons <lionel.cons@cern.ch>
+Cc: modules@perl.org
+Subject: Re: Name Conflicts & Case Sensitivity
+Message-ID: <20100216162125.GK15270@agaton.scsys.co.uk>
+References: <20100216103623.bd9e.abe10f7e5afbbb3a79ce619739541149@cern.ch>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20100216103623.bd9e.abe10f7e5afbbb3a79ce619739541149@cern.ch>
+User-Agent: Mutt/1.5.11
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Tue, Feb 16, 2010 at 10:56:50AM +0100, Lionel Cons wrote:
+> I officially registered Net:STOMP two weeks ago (see
+> http://www.xray.mpe.mpg.de/mailing-lists/modules/2010-02/msg00012.html).
+> 
+> Although the co-existence of both modules (Net:STOMP and Net:Stomp) is
+> fine in most environments, it is problematic in others (e.g. Debian).
+> Some CPAN tools even break on this, for instance:
+>  - https://rt.cpan.org/Public/Dist/Display.html?Name=Net-STOMP
+>    -> shows "Active bugs for Net-Stomp"
+>  - http://www.cpantesters.org/distro/N/Net-STOMP.html
+>    -> also includes Net::Stomp information
+> 
+> Fortunately, the Net:Stomp owner (L?on Brocard) kindly gave me
+> maintainership of the Net::Stomp namespace on CPAN so this problem is
+> being solved. Given the API difference, my preference is to mark
+> Net::Stomp as obsolete and keep only Net::STOMP in the future.
+
+That preference is insane. Net::Stomp is already significantly used in
+production - see
+
+http://cpants.perl.org/dist/used_by/Net-Stomp
+
+for a list of things you're going to break.
+
+> However, to prevent future problems, it would probably help to clearly
+> document that package names must be different in a case insensitive
+> way. It would also be good if PAUSE tools could detect/block such name
+> conflicts.
+
+You're absolutely right. PAUSE should have refused to let you upload
+Net::STOMP since it's obviously going to be broken on any system with
+a case insensitive fs - Win32 and default OS X included.
+
+In the mean time, the only way you can avoid gratuitously breaking people's
+production code is to either maintain the Net::Stomp API or to rename your
+distribution to something saner and put a deprecation notice on Net::Stomp
+that points to it.
+
+If you don't wish to maintain Net::Stomp then please assign the namespace to
+me and I'll ensure it gets loved.
+
+-- 
+        Matt S Trout         Catalyst and DBIx::Class consultancy with a clue
+     Technical Director      and a commit bit: http://shadowcat.co.uk/catalyst/
+ Shadowcat Systems Limited
+  mst (@) shadowcat.co.uk        http://shadowcat.co.uk/blog/matt-s-trout/

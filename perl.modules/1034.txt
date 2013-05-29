@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1034
+Return-Path: <gbarr@gbarr.demon.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3646 invoked from network); 2 Feb 2000 10:00:25 -0000
+Received: from unknown (HELO gbarr.demon.co.uk) (root@195.224.126.69)
+  by tmtowtdi.perl.org with SMTP; 2 Feb 2000 10:00:25 -0000
+Received: (from gbarr@localhost)
+	by gbarr.demon.co.uk (8.9.3/8.9.3/SuSE Linux 8.9.3-0.1) id JAA01889;
+	Wed, 2 Feb 2000 09:59:07 GMT
+Date: Wed, 2 Feb 2000 09:59:07 +0000
+To: "Owens, Mike" <Mike.Owens@state.nm.us>
+Cc: "'modules@perl.org'" <modules@perl.org>
+Subject: Re: Proposed Module - Net::FTP::JES
+Message-ID: <20000202095907.K390@pobox.com>
+Mail-Followup-To: "Owens, Mike" <Mike.Owens@state.nm.us>,
+	"'modules@perl.org'" <modules@perl.org>
+References: <83FC3C78A4D5D211A0250008C7F4CFE6055DAE@ex3.state.nm.us>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3i
+In-Reply-To: <83FC3C78A4D5D211A0250008C7F4CFE6055DAE@ex3.state.nm.us>
+Approved: news@nntp.perl.org
+From: gbarr@pobox.com (Graham Barr)
+
+Net::FTP uses classes under the Net::FTP:: namespace, so I am
+not sure that is a good place for this module. Also it would
+seem that this module does not "extend" Net::FTP or get used by
+Net::FTP like all other modules under that namespace.
+
+Also I would suspect that anyone looking for this module on CPAN is not
+likely to look for it under Net::FTP, but instead under a namespace
+that is related to MVS or JES. I would suggest something like
+MVS::JESFTP
+
+Graham.
+
+On Tue, Feb 01, 2000 at 05:01:28PM -0700, Owens, Mike wrote:
+> I am working on a module that I'd like to contribute to CPAN. Following 
+> the guidelines in the CPAN Perl 5 Module List, I'd like to call this
+> module Net::FTP::JES.
+> 
+> This module submits JCL jobstreams to MVS systems through FTP.
+> 
+> IBM mainframe MVS systems accept job input through the Job Entry
+> Subsystem (JES). This input is in the form of 80-byte card images that
+> correspond to the punch cards of ancient times. The new releases of MVS
+> can accept this input via FTP to the MVS internal reader (equivalent
+> to the physical card readers of older systems).
+> 
+> This module basically wraps the ``Net::FTP'' module into an abbreviated
+> interface for the sole purpose of submitting a jobstream file to an MVS
+> system.
+> 
+> The basic methods are:
+> 
+> 	$jes = Net::FTP::JES->open($host, $logonid, $password);
+> 
+> 		This method creates a connection to the MVS system JES at
+> $host,
+> 		using FTP logon ID $logonid and password $password. If the
+> 		connection is made, ``open'' returns a reference $jes to the
+> JES
+> 		connection; otherwise ``open'' returns `undefined'.
+> 
+> 	$jes->submit($job);
+> 
+> 		This method submits the jobstream contained in the file
+> $job. If
+> 		the submission is successful, ``submit'' returns true;
+> otherwise
+> 		``submit'' returns ``undefined''.
+> 
+> 	$jes->quit;
+> 
+> 		This method closes the connection to JES. It is just the
+> 		Net::FTP ``quit'' method.
+> 
+> 
+> Is Net::FTP::JES suitable for the module name?
+> 
+> -----
+> Michael Owens
+> mike.owens@state.nm.us
+> (505) 827-2154

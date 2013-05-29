@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:37411
+Return-Path: <david@hyperbolic.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21456 invoked from network); 4 Jan 2005 04:04:56 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 4 Jan 2005 04:04:56 -0000
+Received: (qmail 8635 invoked by uid 225); 4 Jan 2005 04:04:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8629 invoked by alias); 4 Jan 2005 04:04:56 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from janus.hyperbolic.net (HELO janus.hyperbolic.net) (216.254.103.204)
+  by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 03 Jan 2005 20:04:54 -0800
+Received: from [216.254.103.204] (janus.hyperbolic.net [216.254.103.204])
+	(authenticated bits=0)
+	by janus.hyperbolic.net (8.13.1/8.12.11) with ESMTP id j0444kAi026837
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <modules@perl.org>; Mon, 3 Jan 2005 23:04:50 -0500
+Message-ID: <41DA15DE.2080401@hyperbolic.net>
+Date: Mon, 03 Jan 2005 23:04:46 -0500
+User-Agent: Mozilla Thunderbird 0.9 (X11/20041127)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: Module submission Test::Float
+References: <200412270254.iBR2sODR010115@pause.perl.org> <200412290803.iBT834nW027624@janus.hyperbolic.net> <41D2C488.8070407@hyperbolic.net> <030120051758516224%comdog@panix.com>
+In-Reply-To: <030120051758516224%comdog@panix.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: david@hyperbolic.net ("David A. Golden")
+
+_brian_d_foy wrote:
+>>>>The following module was proposed for inclusion in the Module List:
+>>>>
+>>>> modid:       Test::Float
+>>>> DSLIP:       Rdpfp
+>>>> description: Compare if two numbers are equal within a sp
+> 
+>>>how about Test::Precision ?
+> 
+>>I don't think that "Precision" captures what the test is about.
+> 
+> Indeed: "Number" can be in there too.  It could be
+> 
+>    Test::Number::Precision
+>    Test::Number::Epsilon
+>    Test::Number::Delta
+> 
+> "Float" isn't really a good descriptor though.  Perl doesn't
+> have a float data type.  Your module can easily test any
+> numbers to see if they are within a certain precision of
+> each other.
+> 
+> It would be nice if your test function had an optional
+> parameter for the precision, too.  Right now you have it
+> as part of the import.
+
+OK. The "float" argument you make is persuasive -- generalizing to 
+number makes sense.  Of the variations you present, I think that 
+Test::Number::Delta is the most evocative of what the module does: it 
+checks that the difference (delta) is within a tolerance.  I think the 
+module name should represent what the test is about, too, and "delta" is 
+  sufficient.  Creating a Test::Number namespace isn't too bad, either, 
+as it hints where to put other things to do with numbers.  (E.g. 
+Test::Number::Format, perhaps? Or Test::Number::LooksLike ?)
+
+I'll re-release Test::Float as Test::Number::Delta and resubmit.
+
+On the interface, I'm leery of another optional parameter when I'm 
+trying to match the style of other test functions.  The test name is 
+already optional, I wouldn't want to shift to named parameters since the 
+other test functions don't use them, and I'd prefer to avoid hackery 
+around testing for three or four parameters and then testing if the 
+third one looks like a number or not.
+
+Since we're moving away from the word "float", how about if I replace 
+"cmp_float" with these two functions:
+
+	delta_ok( $a, $b, 'test with default precision' )
+	delta_within( $a, $b, $precision, 'test specific precision' );
+
+Thanks for the feedback,
+
+David

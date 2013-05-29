@@ -1,0 +1,54 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4585
+Return-Path: <george@xorgate.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14664 invoked from network); 2 Mar 2001 05:11:50 -0000
+Received: from mta4.rcsntx.swbell.net (151.164.30.28)
+  by tmtowtdi.perl.org with SMTP; 2 Mar 2001 05:11:50 -0000
+Received: from p936329 ([208.191.98.137]) by mta4.rcsntx.swbell.net
+ (Sun Internet Mail Server sims.3.5.2000.01.05.12.18.p9)
+ with SMTP id <0G9K002YG0GBY4@mta4.rcsntx.swbell.net> for modules@perl.org;
+ Thu,  1 Mar 2001 22:57:48 -0600 (CST)
+Date: Thu, 01 Mar 2001 22:55:54 -0600
+Subject: Re: [OT] security!
+In-reply-to: <3A9E8FA0.AA0E17D8@ifour.com.br>
+X-Sender: george@mail.xorgate.com (Unverified)
+To: Gustavo Vieira Goncalves Coelho Rios <gustavo@ifour.com.br>
+Cc: modules@perl.org
+Message-ID: <0G9K002YI0GCY4@mta4.rcsntx.swbell.net>
+MIME-version: 1.0
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.0
+Content-type: text/plain; charset="us-ascii"
+Approved: news@nntp.perl.org
+From: george@xorgate.com (George Sanderson)
+References: <3A9E8FA0.AA0E17D8@ifour.com.br>
+
+At 06:06 PM 3/1/2001 +0000, you wrote:
+>After some time playing with modperl, i realized some problem (that's
+>the way i call them) related with modperl!
+>
+>By looking the way modperl works today, it's clearly it were not
+>desgined to SECURELY support a multi-user environment. For instance: Any
+>user can write a script that will be able to read any file owned by the
+>httpd server, in a multi-user environment it should not be allowed. A
+>gentle way to prevent this would be not to allow a script read a file
+>whose owner id is not the same from the script owner id, isn't it?
+>
+Security depends on the requirements.
+In this case the requirement is to allow users (web masters) create web
+pages that have access to the Apache API (maybe) but not have access to
+other users' script files from within their URI space .  The requirements
+need to be used to set up the boundary conditions.
+For example, suppose the requirement is to "not allow" user A to have
+access to user B's files within user A's URI access (boundaries).  This
+would have to include the @INC and etc..  There would have to be an
+internal security boundary check mechanism to enforce the boundary
+conditions.  Perhaps some of the Java sand box concepts could be utilized.  
+Security is tricky stuff, because there is nothing that prevents user A
+from getting into user B's URL space (just like any other external
+request), therefor, user B has to setup their own internal-external
+boundaries.
+
+

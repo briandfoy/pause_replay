@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:22990
+Return-Path: <tovod-everett@alascom.att.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 60184 invoked by uid 76); 21 Aug 2003 05:58:40 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Wed, 20 Aug 2003 22:58:40 -0700
+Received: (qmail 13167 invoked by uid 225); 21 Aug 2003 05:58:38 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13155 invoked by uid 507); 21 Aug 2003 05:58:38 -0000
+Received: from almso2.att.com (HELO almso2.proxy.att.com) (192.128.166.71) by one.develooper.com (qpsmtpd/0.27-dev) with SMTP; Wed, 20 Aug 2003 22:58:33 -0700
+Received: from attrh2i.attrh.att.com ([135.37.94.56])	by almso2.proxy.att.com (AT&T IPNS/MSO-5.0) with ESMTP id h7L5vlV5015755	for <modules@perl.org>; Thu, 21 Aug 2003 01:58:29 -0400
+Received: from ALASCOMPUBA.alascom.att.com (135.78.0.38) by attrh2i.attrh.att.com (6.5.032)        id 3F3FA7D5000A734C for modules@perl.org; Thu, 21 Aug 2003 01:57:32 -0400
+Received: from alascomexa1.alascom.att.com ([135.78.0.40]) by ALASCOMPUBA.alascom.att.com with Microsoft SMTPSVC(5.0.2195.5329);	 Wed, 20 Aug 2003 21:58:29 -0800
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Subject: Where does MaskManipulation fit in the hierarchy?  Scripts in module directories?
+Date: Wed, 20 Aug 2003 21:58:28 -0800
+Message-ID: <DB64562F87DC754ABCB54578FD995AD60B4902@alascomexa1.alascom.att.com>
+Thread-Topic: Class::SelfModules 1.01 released
+Thread-Index: Ab8AncEngum/jmunEdOxQgBgsDxNzg==
+To: <modules@perl.org>
+X-OriginalArrivalTime: 21 Aug 2003 05:58:29.0029 (UTC) FILETIME=[3E629D50:01C367A9]
+X-SMTPD: qpsmtpd/0.27-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_02_03,SUPERLONG_LINE version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: tovod-everett@alascom.att.com ("Ovod-Everett, Toby")
+
+I developed a module to make interacting with masks more pleasant (both =
+generating masks from a list of constants, breaking the mask back into =
+constants, and explaining the mask in terms of a minimal list of =
+constants).  It was originally developed for use under Win32, so I named =
+it Win32::MaskManipulation.  I'd like to release the code, but it occurs =
+to me that there is nothing in it that is actually dependent upon Win32 =
+- the code is 100% Perl and the concepts and approach apply equally well =
+to any platform that uses constant masks that fit inside a Perl integer. =
+ With that in mind, are there any suggestions for where it might fit =
+cleanly in the module hierarchy?
+
+Also, I'm working on a set of modules to be termed Win32::Security.  I =
+grew frustrated with poorly-optimized or memory-leaking modules for =
+doing work with permissions under WinNT/2K/XP, so I started developing =
+my own.  I'm sticking to pure Perl code, using Win32::API to do all of =
+my API work.  All of these modules (Win32::Security::DACL, =
+Win32::Security::File, Win32::Security::Raw, and Win32::Security::SID) =
+were developed to support a very useful utility for doing permissions =
+enumeration on Win2K/XP machines.  It supports distinguishing between =
+inherited and explicit permissions, as well as detecting situations in =
+which the static permissions model has resulted in the inherited =
+permission getting out of whack.  I'd really like to distribute the =
+script with the module (since it serves both as excellent sample code =
+and as a useful utility), and if it were a Unix module, I'd simply stick =
+it in a Samples directory.  The problem is that most Win32 people use =
+PPM to download modules, and that is only going to install code that =
+goes into the INST_LIBDIR.  What I'm proposing is to stick PermEnum.pl =
+into the Win32\Security directory.  I realize this isn't the proper way =
+to do this, but it would make the script available to people who have =
+installed the module via PPM without them having to go find the module =
+on CPAN, find a copy of gunzip and tar, etc.  Thoughts?
+
+--Toby Ovod-Everett
+  TEVERETT
+(wondering if this message will get rejected because my e-mail address =
+has changed and PAUSE seems to be down so I can't update things)

@@ -1,0 +1,238 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3493
+Return-Path: <stevegt@roton.terraluna.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12979 invoked from network); 12 Nov 2000 09:20:31 -0000
+Received: from scramjet-bk.terraluna.org (HELO roton.terraluna.org) (38.244.98.5)
+  by tmtowtdi.perl.org with SMTP; 12 Nov 2000 09:20:31 -0000
+Received: from roton.terraluna.org (localhost.TerraLuna.Org [127.0.0.1])
+	by roton.terraluna.org (8.8.5/8.8.5) with ESMTP id BAA05467
+ 	for <modules@perl.org>; Sun, 12 Nov 2000 01:20:35 -0800
+Message-ID: <200011120920.BAA05467@roton.terraluna.org>
+To: modules@perl.org
+Subject: RFD: MH Mailbox API
+Date: Sun, 12 Nov 2000 01:20:34 -0800
+Approved: news@nntp.perl.org
+From: stevegt@TerraLuna.Org (Steve Traugott)
+
+I've got an API module for interacting with MH mail folders via a tied
+hash -- it's attached for reference.
+
+Question is name -- which of the following do folks prefer?
+
+	Mail::Tie::mh
+	Mail::TieMH
+	Tie::MH
+	...any others?
+
+Steve
+
+
+package Mail::Tie::mh;
+
+require 5.005_62;
+use strict;
+use warnings;
+use Carp;
+use Mail::Internet;
+use File::Temp qw/ tempfile /;
+
+require Exporter;
+
+our @ISA = qw(Exporter);
+
+# Items to export into callers namespace by default. Note: do not export
+# names by default without a very good reason. Use EXPORT_OK instead.
+# Do not simply export all your public functions/methods/constants.
+
+# This allows declaration	use Mail::Tie::mh ':all';
+# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
+# will save memory.
+our %EXPORT_TAGS = ( 'all' => [ qw(
+	
+) ] );
+
+our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+
+our @EXPORT = qw(
+	
+);
+our $VERSION = '0.01';
+
+=head1 NAME
+
+Mail::Tie::mh - Tied hash interface for mh mail folders
+
+=head1 SYNOPSIS
+
+  use Mail::Tie::mh;
+  tie (%inbox, 'Mail::Tie::mh', '/home/fred/Mail/inbox');
+
+  # get list of all message IDs in folder
+  @messageIDs = keys (%inbox);
+
+  # fetch message by ID 
+  $msg = $inbox{'9287342.2138749@foo.com'};
+
+=head1 DESCRIPTION
+
+Mail::Tie::mh implements a tied hash interface to the mh folder
+format.
+
+=cut
+
+sub TIEHASH
+{
+  my ($class, $folder) = @_;
+  my $self={};
+  $self->{'folder'} = $folder;
+  bless $self, $class;
+
+  # BUG -- FIRSTKEY/NEXTKEY won't work if you do a packf after TIEHASH
+  open(SCAN, "scan +$folder -width 9999 -format '%(msg) %{message-id}' |") || die $!;
+  my ($num, $id);
+  while(<SCAN>)
+  {
+    chomp;
+    ($num, $id) = split;
+    $self->id2num($id,$num);
+    $self->num2id($num,$id);
+    $self->{'firstnum'} = $num unless $self->{'firstnum'};
+    $self->{'lastnum'} = $num;
+  }
+  return $self;
+}
+
+sub FETCH
+{
+  my ($self,$id) = @_;
+  chomp($id);
+  my $folder = $self->{'folder'};
+  my $cmd = "pick +$folder --message-id '$id' 2> /dev/null ";
+  # warn $cmd;
+  chomp(my $msgnum = `$cmd`);
+  # warn "\n\n$?\n\n";
+  # warn "$id $msgnum\n";
+  return undef if $? >> 8;
+  return undef unless $msgnum;
+  open(MSG, "show -nohead -noshowproc +$folder $msgnum |") || die $!;
+  # my $msg = join('',<MSG>);
+  my $msg = new Mail::Internet \*MSG;
+  return undef unless $msg;
+  chomp(my $testid = $msg->head->get('Message-Id'));
+  # warn "\n$id $testid\n";
+  return undef unless $id eq $testid;
+  $self->id2num($id,$msgnum);
+  $self->num2id($msgnum,$id);
+  return $msg;
+}
+
+sub FIRSTKEY
+{
+  my ($self) = @_;
+  my $id = $self->num2id($self->{'firstnum'});
+  return $id;
+}
+
+sub NEXTKEY
+{
+  my ($self,$id) = @_;
+  chomp($id);
+  my $nextid;
+  for(my $num=$self->id2num($id) + 1; $num <= $self->{'lastnum'}; $num++)
+  {
+    # warn $num;
+    last if ($nextid = $self->num2id($num))
+  }
+  return $nextid;
+}
+
+sub EXISTS
+{
+  my ($self,$id) = @_;
+  chomp($id);
+  return $self->FETCH($id);
+}
+
+# $h{'new'} to create new
+# $h{$id} to overwrite
+sub STORE
+{
+  my ($self,$oldid,$msg) = @_;
+  my $oldmsg;
+  chomp($oldid);
+  chomp(my $newid = $msg->head->get('Message-Id'));
+  return undef unless $oldid eq $newid || $oldid eq 'new';
+  if ($self->EXISTS($newid))
+  {
+    return undef if $oldid eq 'new';
+    $oldmsg = $self->DELETE($newid); 
+  }
+  my ($tmpfh, $tmpname) = tempfile();
+  print $tmpfh $msg->as_string();
+  close $tmpfh;
+  my $folder = $self->{'folder'};
+  `inc +$folder -silent -file $tmpname`;
+  die if $? >> 8;
+  unlink($tmpname) || die $!;
+  $msg = $self->FETCH($newid);
+  die unless $msg;
+  return $oldmsg if $oldmsg;
+  return $msg;
+}
+
+sub DELETE
+{
+  my ($self,$id) = @_;
+  chomp($id);
+  my $folder = $self->{'folder'};
+  my $msg = $self->FETCH($id);
+  return undef unless $msg;
+  my $num = $self->id2num($id);
+  die unless $num;
+  `rmm +$folder $num`;
+  die if $? >> 8;
+  $self->id2num($id,0);
+  $self->num2id($num,"");
+  return $msg;
+}
+
+sub num2id
+{
+  my $self=shift;
+  my $num=shift;
+  my $id=shift;
+  chomp($id) if $id;
+  $self->{'num2id'}{$num} = $id if $id;
+  $id = $self->{'num2id'}{$num};
+  return $id;
+}
+
+sub id2num
+{
+  my $self=shift;
+  my $id=shift;
+  my $num=shift;
+  chomp($id);
+  $self->{'id2num'}{$id} = $num if $num;
+  $num = $self->{'id2num'}{$id};
+  return $num;
+}
+
+=head1 AUTHOR
+
+Steve Traugott, stevegt@TerraLuna.Org
+
+=head1 SEE ALSO
+
+perltie(1)
+
+=cut
+
+1;
+
+__END__
+
+

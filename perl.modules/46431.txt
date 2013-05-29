@@ -1,0 +1,86 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46431
+Return-Path: <cpan@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12559 invoked from network); 15 Dec 2005 05:54:23 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 15 Dec 2005 05:54:23 -0000
+Received: (qmail 6734 invoked by uid 225); 15 Dec 2005 05:54:23 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6728 invoked by alias); 15 Dec 2005 05:54:22 -0000
+X-Spam-Status: No, hits=-4.4 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Wed, 14 Dec 2005 21:54:15 -0800
+Received: (qmail 12547 invoked by uid 515); 15 Dec 2005 05:54:12 -0000
+To: modules@perl.org, Kenneth Ingham <ingham@i-pi.com>
+Message-ID: <43A1048C.6000104@ali.as>
+Date: Thu, 15 Dec 2005 16:52:12 +1100
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+CC: modules@perl.org
+Subject: Re: Proposed namespace for IDS testing framework
+References: <43A09C08.2090706@i-pi.com>
+In-Reply-To: <43A09C08.2090706@i-pi.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 202.90.48.125
+Approved: news@nntp.perl.org
+From: cpan@ali.as (Adam Kennedy)
+
+Don't use ::Source, it's a bad idea.
+
+Source is such a generic word, that unless the previous namespace refers 
+to a specific noun, it doesn't work.
+
+Thing::Source kind of just works, System::Source doesn't.
+
+I actually made the same mistake in Algorithm::Dependency, which has 
+Alg::Dep::Source as "data source" and with hindsight it was wrong.
+
+I probably should have used ::Data instead, and I'd recommend the same 
+in your case, use IDS::Data or IDS::DataSource.
+
+In the Algorithm::Dependency rewrite, when it finally happens, there 
+won't be a ::Source class.
+
+Adam K
+
+Kenneth Ingham wrote:
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+> 
+> One part of my PhD work is comparing various intrusion detection
+> algorithms.  I have a framework running, and I have a PAUSE ID.  The
+> test framework has two parts, a data source, and a learning/testing
+> algorithm (most of the testing I am doing is with anomaly detection
+> algorithms, hence the learning part).
+> 
+> I propose the following namespace:
+> IDS::Test - the test framework itself.
+> IDS::Source - the base of the IDS data source hierarchy.  I will be
+> providing IDS::Source::HTTP, and possibly some generic sources as well.
+> IDS::Algorithm - the base of the IDS algorithm hierarchy.  I will be
+> providing several of these, such as IDS::Algorithm::DFA,
+> IDS::Algorithm::HMM, IDS::Algorithm::Length, etc.
+> 
+> The idea of the framework is that any algorithm should work with any
+> data source.  I have it running on my machine now, with four functioning
+> algorithms, and several more in varying stages of completion.
+> 
+> Any objections or modifications to the proposed hierarchy?
+> 
+> Kenneth Ingham
+> -----BEGIN PGP SIGNATURE-----
+> Version: GnuPG v1.4.2 (GNU/Linux)
+> Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+> 
+> iEYEARECAAYFAkOgnAcACgkQvBdLXm3WPsUCegCfWpzXurGyUklQKI6yJM7qtBL4
+> 5rIAnR3VciubCB+0fIt5zU4WaFtjhQ3B
+> =KI0w
+> -----END PGP SIGNATURE-----

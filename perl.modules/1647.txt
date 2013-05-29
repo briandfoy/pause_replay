@@ -1,0 +1,76 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1647
+Return-Path: <pcg@goof.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4977 invoked from network); 17 Apr 2000 11:07:08 -0000
+Received: from binky.de.uu.net (192.76.144.28)
+  by tmtowtdi.perl.org with SMTP; 17 Apr 2000 11:07:08 -0000
+Received: from cerebro (pec-90-123.tnt4.s2.uunet.de [149.225.90.123])
+	by binky.de.uu.net (5.5.5/5.5.5) with ESMTP id NAA27088;
+	Mon, 17 Apr 2000 13:06:26 +0200 (MET DST)
+Received: from root by cerebro with local (Exim 3.03 #1)
+	id 12h8sZ-0000Mh-00; Mon, 17 Apr 2000 12:35:43 +0200
+Date: Mon, 17 Apr 2000 12:35:43 +0200
+To: "Andreas J. Koenig" <andreas.koenig@anima.de>, modules@perl.org
+Subject: Re: Module update for App::Manager
+Message-ID: <20000417123543.B821@cerebro.laendle>
+References: <200004102259.AAA22876@p11.speed-link.de> <m3og7etfvx.fsf@ak-71.mind.de> <20000415233004.C3432@cerebro.laendle> <m3zoqtqkrx.fsf@ak-71.mind.de> <20000417094307.E986@pobox.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20000417094307.E986@pobox.com>; from gbarr@pobox.com on Mon, Apr 17, 2000 at 09:43:07AM +0100
+X-Operating-System: Linux version 2.2.14 (root@cerebro) (gcc version 2.95.1 19990816 (release)) 
+Approved: news@nntp.perl.org
+From: pcg@goof.com (Marc Lehmann)
+
+On Mon, Apr 17, 2000 at 09:43:07AM +0100, Graham Barr <gbarr@pobox.com> wrote:
+> On Mon, Apr 17, 2000 at 08:55:14AM +0200, Andreas J. Koenig wrote:
+> > Grrrrr. So now I read the README and cannot find a sentence that
+> > justifies App:: namespace.
+
+Hmm.. now I see it myself.. (that's why I sent everything to the
+modulelist ;)
+
+> >           This module traces any dynamically linked program for
+> >           filesystem-modifying calls such as rename, open64, unlink, remove
+> >           etc. It will save all the files before they were modified. It can
+> >           then undo and redo the changes as often as you want.
+> 
+> This module sounds very much like something you would probbaly only
+> use during development of an application. So Devel:: would seem to fit
+
+I think Devel would be another total misnomer :( Where would you put RPM
+into? I guess RPM is certainly more an archiver than a devel tool.
+
+The problem with that module is that, at the moment, it is just some kind
+of installation manager: you can install a new version of a program,
+test it, and then revert the installation completely (unfortunately you
+need glibc-2.1 at the moment, although it worked with almost any elf
+system _except_ glibc2.1 some time ago. Given more bug-reports this would
+certainly be fixed ;)
+
+It might be that, in the distant future, it would become something like
+ltrace (library call tracer), which might justify a rename, but it is very
+far from that.
+
+Just to clarify, you do:
+
+# cd ~/sources/gimp
+# appman -v install gimp make install
+(test, uh-oh it's borken, restore the older version)
+# appman -v swap gimp
+(get rid of that broken new gimp)
+# appman delete gimp
+
+I am not entirely happy with File:: as well, but it might be better (at
+the moment) than App:: indeed.
+
+-- 
+      -----==-                                             |
+      ----==-- _                                           |
+      ---==---(_)__  __ ____  __       Marc Lehmann      +--
+      --==---/ / _ \/ // /\ \/ /       pcg@opengroup.org |e|
+      -=====/_/_//_/\_,_/ /_/\_\       XX11-RIPE         --+
+    The choice of a GNU generation                       |
+                                                         |

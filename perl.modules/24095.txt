@@ -1,0 +1,99 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:24095
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 76045 invoked by uid 76); 20 Oct 2003 23:16:29 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Mon, 20 Oct 2003 16:16:29 -0700
+Received: (qmail 24080 invoked by uid 225); 20 Oct 2003 23:16:27 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24075 invoked by uid 507); 20 Oct 2003 23:16:27 -0000
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Mon, 20 Oct 2003 16:15:56 -0700
+Received: from pause.perl.org (localhost [127.0.0.1])	by pause.perl.org (8.12.3/8.12.3/Debian-6.6) with ESMTP id h9KNFJ5c017807;	Tue, 21 Oct 2003 01:15:19 +0200
+Received: (from nobody@localhost)	by pause.perl.org (8.12.3/8.12.3/Debian-6.6) id h9KNFJIs017805;	Tue, 21 Oct 2003 01:15:19 +0200
+Date: Tue, 21 Oct 2003 01:15:19 +0200
+Message-ID: <200310202315.h9KNFJIs017805@pause.perl.org>
+Subject: Module submission CGI::Path
+Reply-To: modules@perl.org
+To: modules@perl.org, earl@cpan.org
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.8 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       CGI::Path
+  DSLIP:       bdpOp
+  description: aids in traversing one or more paths
+  userid:      EARL (Earl Cahill)
+  chapterid:   15 (World_Wide_Web_HTML_HTTP_CGI)
+  communities:
+
+  similar:
+    CGI::Application
+
+  rationale:
+
+    This module came from rewriting the signup process at my work.
+
+    We needed to be able to jump in at various parts of the path, go
+    forwards and backwards, be able to change information along the way,
+    remember everything that users entered, do sometimes complex
+    validation, do third party api validation along the way, work in
+    secure, keep track of entered information for later page prints,
+    etc. Also had to be able to potentially override how each step might
+    act.
+
+    CGI::Path was written to achieve these goals. By default CGI::Path
+    uses Apache::Session for handling session, XML::Simple for
+    validation references, Embperl::Form::Validate for client and server
+    side validation using the xml references, Template Template for
+    displaying results. However each of the above is (hopefully) modular
+    enough to change. Like, using your own conf format instead of xml,
+    or your own validation system, or Embperl for templating.
+
+    The user defines a sequence of steps for their path, .htm files
+    (template toolkit'able files), and .val files which explain the
+    validation needed for each step.
+
+    CGI::Path contains a series of hooks, and using cans, tests to see
+    if the user has written their own methods for their hooks. Such a
+    system means the user only write what he really needs to have
+    different. I have found that many paths can rely on the default
+    methods to gather the data, then a simple method to do something
+    with the data at the end of the path. A simple path where the user
+    enter information for an email, confirms the email and then sends
+    the email, can be handled with just a couple of subs written, along
+    with the htm and val files.
+
+    We have been using this system on our live system for several
+    months. We have received millions of hits and processed hundreds of
+    thousands signups. Using the system I have been able to rather
+    easily maintain a rather complex signup process. Once the series of
+    hooks is understood, it is an easy thing to determine where a new
+    thing would go, add the sub in the appropriate place and have it
+    just start working.
+
+  enteredby:   EARL (Earl Cahill)
+  enteredon:   Mon Oct 20 23:15:18 2003 GMT
+
+The resulting entry would be:
+
+CGI::
+::Path            bdpOp aids in traversing one or more paths         EARL
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=fb400000_4682f125ea12be95&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=fb400000_4682f125ea12be95&SUBMIT_pause99_add_mod_insertit=1

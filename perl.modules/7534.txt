@@ -1,0 +1,183 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7534
+Return-Path: <jvromans@squirrel.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 85276 invoked from network); 15 Sep 2001 10:50:05 -0000
+Received: from smtp8.xs4all.nl (194.109.127.134)
+  by onion.valueclick.com with SMTP; 15 Sep 2001 10:50:05 -0000
+Received: from phoenix.squirrel.nl (sioban.squirrel.nl [213.84.56.213])
+	by smtp8.xs4all.nl (8.9.3/8.9.3) with ESMTP id MAA21736
+	for <modules@perl.org>; Sat, 15 Sep 2001 12:49:46 +0200 (CEST)
+Received: by phoenix.squirrel.nl (Postfix, from userid 501)
+	id 8940257583; Sat, 15 Sep 2001 12:49:46 +0200 (CEST)
+Resent-Message-ID: <15267.12874.526146.537749@phoenix.squirrel.nl>
+Resent-Date: Sat, 15 Sep 2001 12:49:46 +0200
+Resent-To: modules@perl.org
+X-From-Line: rgraham@lsil.com  Sat Sep 15 03:20:22 2001
+Delivered-To: jvromans@squirrel.nl
+X-Xs4ALL-To: <jvromans@xs4all.nl>
+X-Gnus-Mail-Source: directory:~/Lists/Incoming/
+Message-ID: <3BA2AC85.FA9F36FD@lsil.com>
+Organization: LSI Logic
+X-Mailer: Mozilla 4.75 [en] (X11; U; SunOS 5.7 sun4u)
+X-Accept-Language: en
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Uidl: _uCQ.ayqo7.maildrop7.xs4all.nl
+Lines: 145
+Xref: phoenix.squirrel.nl spam.spam3:1669
+To: jvromans@squirrel.nl
+Subject: Concerning 'Dir' namespace
+Date: Fri, 14 Sep 2001 18:19:01 -0700
+Content-Transfer-Encoding: 7bit
+Resent-From: jvromans@squirrel.nl (Johan Vromans)
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: rgraham@lsil.com (Ray Graham)
+
+
+I've recently written a module that I have titled "Dir::TreeBuild" and
+would like to contribute it to CPAN.  Its functionality definately would
+belong in the 'Dir' namespace, so I wanted to converse with you to see
+if you'd be interested in allowing me to do so, since I assume 'Dir' is
+your namespace.
+
+For your inconvenience, here is the current POD documentation:
+
+<SNIPPET>
+
+NAME
+    Dir::TreeBuild - Perl extension for creating directory trees
+
+SYNOPSIS
+    use Dir::TreeBuild;
+
+    %tree = ( 'level1' => { 'down1a' => {}, 'down1b' => { 'down2a' =>
+{},
+    'down2b' => {} }, 'down1c' => {} }, 'level2' => {} );
+
+    $tree = Dir::TreeBuild->new(struct => \%tree, top => $path );
+
+    $tree = new Dir::TreeBuild;
+
+    $tree->top($path);
+
+    $top = $tree->top;
+
+    $tree->struct(\%tree);
+
+    %tree = $tree->struct;
+
+    $tree->umask($octal);
+
+    $tree->build;
+
+    $tree->deltree;
+
+DESCRIPTION
+    Dir::TreeBuild provides the capabilities of easily creating a
+directory
+    tree.
+
+    new
+
+    Constructor for the Dir::TreeBuild object. Accepts the following
+    options:
+
+    *struct* - hash reference that defines the desired directory
+structure
+
+    *top* - the directory that the desired directory structure is to be
+    created in. The current directory is the default.
+
+    A 'Dir::TreeBuild' object is returned.
+
+    top
+
+    Accessor method to read/write the top level directory in a
+    Dir::TreeBuild object.
+
+    To read the value: $tree->top;
+
+    To write the value: $tree->top($value);
+
+    struct
+
+    Accessor method to read/write the directory structure in a
+    Dir::TreeBuild object.
+
+    To read the value: $tree->struct;
+
+    To write the value: $tree->struct(\%tree);
+
+    umask
+
+    Accessor method to read/write the current umask value for the
+specified
+    Dir::TreeBuild object (see the umask manpage). When the object is
+built
+    (see the build method), it is built using this umask; upon
+completion of
+    the build, the original process umask is reverted to.
+
+    To read the value: $tree->umask;
+
+    To write the value: $tree->umask($octal);
+
+    build
+
+    Once a Dir::TreeBuild object has been created and initialized (with
+at
+    least a structure), the build method is responsible for actually
+    creating the directory tree.
+
+    The permissions of each directory in the tree are rwxrwxrwx (0777)
+by
+    default, but the current umask of the process is used to mask out
+the
+    undesired bits. The umask can be set with the umask method.
+
+    $tree->build;
+
+    deltree
+
+    Once a directory has been created, it can be deleted with the
+deltree
+    method. If the directory is not empty, it will not be deleted; the
+    deltree command will continue until all directories described in the
+    Dir::TreeBuild structure have been traversed.
+
+    This execution method does not accept any parameters.
+
+    $tree->deltree;
+
+  EXPORT
+
+    None.
+
+AUTHOR
+    Ray Graham, Jr., <rayg@ieee.org>
+
+</SNIPPET>
+
+I've been using Perl for years, but have not produced anything that I've
+felt has been worthy enough of submitting to CPAN until maybe now --
+this Dir::TreeBuild module being one of them.  Would you be willing to
+colaborate with me on this?
+
+Thanks!
+
+-- 
+          +---------------------------------------------------+
+          | Ray Graham, Jr.         | LSI Logic Corporation   | 
+          | Design Engineer         | 1551 McCarthy Blvd      |
+          | rgraham@lsil.com        | MS G-780                |
+          | O: 408-433-8005         | Milpitas, CA 95035      |
+          | M: 650-270-9563         | http://www.lsilogic.com |
+          +---------------------------------------------------+
+
+
+
+

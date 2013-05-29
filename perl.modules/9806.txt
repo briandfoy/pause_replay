@@ -1,0 +1,101 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9806 perl.module-authors:268
+Return-Path: <markdilger@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 74054 invoked by uid 76); 22 Jan 2002 03:50:31 -0000
+Received: from web21008.mail.yahoo.com (HELO web21008.mail.yahoo.com) (216.136.227.62)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Tue Jan 22 03:50:31 2002 -0000
+Message-ID: <20020122035027.94653.qmail@web21008.mail.yahoo.com>
+Received: from [64.145.244.2] by web21008.mail.yahoo.com via HTTP; Mon, 21 Jan 2002 19:50:27 PST
+Date: Mon, 21 Jan 2002 19:50:27 -0800 (PST)
+Subject: Seeking advice on possible module Map::Hash, etc.
+To: modules@perl.org, module-authors@perl.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: markdilger@yahoo.com (Mark Dilger)
+
+Hello,
+
+I have written modules for mapping certain complex
+data structures by value to scalars.  I am looking for
+input on whether I have duplicated another class, or
+worse, perl built in functionality of which I am not
+aware.
+
+The classes I have written are tentatively named
+Map::Hash, Map::Set, Map::Bag, and Map::List.  They
+fulfill the same purpose as a perl built-in hash,
+except that they accept more interesting keys such as
+lists, hashes, sets (represented as perl lists), and
+bags (also represented as perl lists).
+
+For instance:
+
+    use Map::Hash;
+
+    my $map = new Map::Hash();
+    $map->set( { "Randall" => "Schwartz",
+                 "Larry" => "Wall",
+                 "Tom" => "Christiansen" },
+               "perl authors" );
+
+    $map->set( { "Jon" => "Swartz" },
+               "mason" );
+
+    $map->set( { "foo" => 1 } );
+
+    my $a = $map->get( { "Jon" => "Swartz" } );
+
+would result in $a being assigned "mason", even though
+the hash reference used in method get() is not the
+same reference as the one used in method set().  This
+is what I mean by "by value".  These two distinct
+references are considered equal because they represent
+equal hashes.
+
+To give an idea why this might be useful:  I often
+loop, calling a function which returns a list or hash,
+and want to easily check if the list or hash I'm
+getting back is one I have seen already. The following
+doesn't work:
+
+   my %seen;
+   while(1)
+      {
+      my @list = some_func();
+      die if($seen{\@list});
+      $seen{\@list} = 1;
+      }
+
+However, this does:
+
+   my $seen = new Map::List();
+   while(1)
+      {
+      my @list = some_func();
+      die if($seen->get(\@list));
+      $seen->set(\@list,1);
+      }
+
+Map::List, Map::Hash, Map::Set, and Map::Bag all have
+similar interfaces.  They differ in how they determine
+equality.
+
+Thanks for any advice, including advice on whether I
+should consider renaming these classes.
+
+I will post a more detailed explanation of these
+modules if the response I get indicates that these
+might be a unique contribution to CPAN.
+
+Mark Dilger
+dilger@perl.org
+
+
+__________________________________________________
+Do You Yahoo!?
+Send FREE video emails in Yahoo! Mail!
+http://promo.yahoo.com/videomail/

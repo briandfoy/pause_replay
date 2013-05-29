@@ -1,0 +1,96 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11715
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 78061 invoked by uid 76); 16 May 2002 20:59:27 -0000
+Received: from root@dubravka.kbx.de (HELO pause.perl.org) (212.40.160.59)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Thu May 16 20:59:27 2002 -0000
+Received: (from nobody@localhost)
+	by pause.perl.org (8.9.3/8.9.3) id WAA26222;
+	Thu, 16 May 2002 22:59:22 +0200
+Date: Thu, 16 May 2002 22:59:22 +0200
+Message-ID: <200205162059.WAA26222@pause.perl.org>
+Reply-To: modules@perl.org
+Subject: Module submission Devel::Profiler
+To: modules@perl.org, samtregar@cpan.org
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Devel::Profiler
+  DSLIP:       adpfp
+  description: a Perl profiler compatible with dprofpp
+  userid:      SAMTREGAR (Sam Tregar)
+  chapterid:    3 (Development_Support)
+  communities:
+    none yet
+
+  similar:
+    Devel::DProf, Devel::AutoProfiler
+
+  rationale:
+
+    DESCRIPTION
+
+    This module implements a Perl profiler that outputs profiling data
+    in a format compatible with C<dprofpp>,
+    L<Devel::DProf|Devel::DProf>'s profile analysis tool. It is meant to
+    be a drop-in replacement for Devel::DProf.
+
+    RATIONAL
+
+    I created this module because I desperately needed a profiler to
+    optimize a large Apache/mod_perl application. Devel::DProf, however,
+    insisted on seg-faulting on every request. I spent many days trying
+    to fix Devel::DProf, but eventually I had to admit that I wasn't
+    going to be able to do it. Devel::DProf's virtuoso creater, Ilya
+    Zakharevich, was unable to spend the time to fix it. Game over.
+
+    My next stop brought me to Devel::AutoProfiler by Greg London. This
+    module is a pure-Perl profiler. Reading the code convinced me that
+    it was possible to write profiler without going the route that led
+    to Devel::DProf's extremely difficult code. Devel::AutoProfiler is a
+    good module but I found several problems.
+
+    First, Devel::AutoProfiler doesn't output data in the format used
+    by C<dprofpp>. I like C<dprofpp> - it has every option I could want
+    and the C<tmon.out> format is well designed and concise. In
+    contrast, Devel::AutoProfiler stores its profiling data in memory
+    and then dumps its data to STDOUT all in one go.
+
+    Second, Devel::AutoProfiler is a heavy user of memory. It creates
+    an entirely new code block with eval(STRING) for each subroutine it
+    instruments. Also, storing profile data in memory could result in
+    significant problems on long runs.
+
+    Finally, Devel::AutoProfiler has some (seemingly) arbitrary
+    limitations. It won't profile subroutines in Data::Dumper or
+    Time::HiRes and if a subroutine begins with "__" it won't be
+    profiled either.
+
+    Thus, Devel::Profiler was born - an attempt to create a
+    dprofpp-compatible profiler that avoids Devel::DProf's most
+    debilitating bugs.
+
+  enteredby:   SAMTREGAR (Sam Tregar)
+  enteredon:   Thu May 16 20:59:20 2002 GMT
+
+The resulting entry would be:
+
+Devel::
+::Profiler        adpfp a Perl profiler compatible with dprofpp      SAMTREGAR
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=4b100000_aea71d8f7e05ca24&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=4b100000_aea71d8f7e05ca24&SUBMIT_pause99_add_mod_insertit=1

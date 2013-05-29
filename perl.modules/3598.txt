@@ -1,0 +1,67 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3598
+Return-Path: <jeff@vpservices.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5142 invoked from network); 17 Nov 2000 17:27:55 -0000
+Received: from granger.mail.mindspring.net (207.69.200.148)
+  by tmtowtdi.perl.org with SMTP; 17 Nov 2000 17:27:55 -0000
+Received: from vpservices.com (pool-63.50.107.111.rlgh.grid.net [63.50.107.111])
+	by granger.mail.mindspring.net (8.9.3/8.8.5) with ESMTP id MAA19565;
+	Fri, 17 Nov 2000 12:27:34 -0500 (EST)
+Message-ID: <3A156A37.59A23CF5@vpservices.com>
+Date: Fri, 17 Nov 2000 09:26:15 -0800
+Organization: -
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Tim Bunce <Tim.Bunce@ig.co.uk>
+CC: modules@perl.org
+Subject: Re: DBD::RAM.pm, DBD::AnyData.pm, and AnyData.pm
+References: <3A12D811.D7C8F140@vpservices.com> <20001116122900.D8961@ig.co.uk> <3A14215F.12888CD7@vpservices.com> <20001117100032.D20355@ig.co.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: jeff@vpservices.com (Jeff Zucker)
+
+Tim Bunce wrote:
+> 
+> On Thu, Nov 16, 2000 at 10:03:11AM -0800, Jeff Zucker wrote:
+> > Tim Bunce wrote:
+> > >
+> > > On Wed, Nov 15, 2000 at 10:38:09AM -0800, Jeff Zucker wrote:
+> > >>
+> > >> The namespace would look like this:
+> > >>
+> > >> DBD/AnyData.pm               DBI access to in-memory & file-based data
+> > >> AnyData.pm                   access & convert many data formats
+> > >> AnyData/Parser/CSV.pm        parser for CSV (comma separated values)
+> > >> AnyData/Parser/XML.pm        parser for XML data & files
+> > >> AnyData/Parser/Ini.pm        parser for Ini style config data & files
+> > >> AnyData/Parser/FixedWidth.pm parser for fixed-width records
+> > >> AnyData/Parser/*.pm          parsers for other data formats
+> > >> AnyData/Storage/RAM.pm       storage manager for in-memory tables
+> > >> AnyData/Storage/File.pm      storage manager for file-based tables
+> > >> AnyData/Storage/Tie.pm       storage manager for tied structures
+> > >> AnyData/Storage/*.pm         other types of storage managers
+> > >
+> 
+> So perhaps AnyData/Record/*.pm would be more descriptive of their role.
+
+I could certainly live with that if you think it best.
+
+My hesitations are a) some data formats will possibly need to be parsed
+a table at a time, rather than a record at a time; b) some data accessed
+via the non-DBI portion will consist of single hash of key-values (e.g.
+a simple config file) so the concept of "record" is a bit misleading; c)
+the non-DBI portion also provides methods to create, convert, or access
+strings which might be done totally out of a "table/record" context; d)
+"Parser" is parallel to "Storage" whereas "Record" is not.
+
+Perhaps AnyData/Format/*.pm?  (Although the use of "format" as a verb
+would be less descriptive of its role than its use as a noun).  Or
+AnyData/DataParser/*.pm to distinguish them from SQL parsers?
+
+-- 
+Jeff

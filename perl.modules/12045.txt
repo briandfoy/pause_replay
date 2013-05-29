@@ -1,0 +1,146 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12045
+Return-Path: <pop@tigrincs.technomat.hu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 41388 invoked by uid 76); 8 Jun 2002 15:15:09 -0000
+Received: from ns.technomat.hu (HELO technomat.hu) (193.91.64.241)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Sat Jun  8 15:15:09 2002 -0000
+Received: from localhost (localhost [127.0.0.1])
+  (uid 605)
+  by technomat.hu with local; Sat, 08 Jun 2002 17:14:43 +0200
+To: modules@perl.org
+Subject: PAUSE ID Request - and... request for comments on naming conventions...
+Date: Sat, 08 Jun 2002 17:14:43 +0200
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed; charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-ID: <courier.3D021F63.00002907@technomat.hu>
+Approved: news@nntp.perl.org
+From: pop@technomat.hu (Peter Popovics)
+
+Hi PAUSE Maintainers, 
+
+In the very close future (next week), I'll have some modules to upload: 
+
+name :             Peter Popovics
+email address :    pop@technomat.hu
+homepage :         http://www.technomat.hu
+preferred user-ID: OSTRICH 
+
+a short description: 
+
+***
+Please, if possible help me out with finding the right, non confusing
+and non-conflicting namespaces for them as well...
+***
+ ---------------------------------------------------------------------------- 
+
+OAI - Implements Open Archives Initiative Protocol for
+     Metadata Harvesting version 1.0, 1.1 and 2.0
+     client (OAI::Harvester) and server side (OAI::Repository),
+     together with some base classes, like OAI::Error,
+     OAI::Request, OAI::Response... 
+
+     The namespace maybe... should be OAI::PMH?
+     or OAI_PMH instead? Or?
+ ---------------------------------------------------------------------------- 
+
+XML::Record - A simple aproach for record like XML Documents.
+     Does not support mixed element types, therefore it's
+     much more comfortable to use than XML::Dom, and much
+     faster than XML::XPath. It is used by the OAI module. 
+
+     There is one XML::Records object, not at all the same aproach I did... 
+
+     Maybe a good idea would be to call this Record::XML, because some
+     of the earlier versions of this object allowed to import/export
+     data from/to GRS-1 and MARC as well. These things are widely
+     used in the Digital library area. I would be very happy to find another
+     name instead of "Record"... 
+
+ ---------------------------------------------------------------------------- 
+
+Distributed
+Distributed::SOAP
+Distributed::PRPC 
+
+
+     A "funny package", provides something like MS DCOM for COM objects -
+     in this case for perl objects and classes. 
+
+     I think it's easier to illustrate: 
+
+# -------------------------------------------------------
+#
+# This is going to call a PRPC server, to execute
+#
+#  Test->new($name, other  => [$a,$b,$c]);
+# 
+
+my $t = new Distributed::Test
+   (
+    PRPC => {Server     => 'remote.host',
+            Port        => '9999',
+            secret      => 'password',
+            compress    => 1,
+        },
+    $arg1,
+    other  => [$a,$b,$c],
+                                );
+# As this is a class constructor, it's going to return a blessed
+# reference to a Test object, which, when it's returned to the
+# caller, is going to be reblessed "Distributed::Test2", and
+# a special hash or array element is inserted,
+# in order to hide the connection information. So $t is a
+# Distributed::Test now. Then, simply call it as it would be a
+# local object: 
+
+$t->Hello; 
+
+# This is going to transfer the object back, rebless it as Test,
+# call the method, return the results...
+# By default all values returned (as retval, or parameter) is
+# checked for blessed references: so if the procedure call ended
+# up in creating a objects server side, they are going to be returned
+# with this Distributed:: prefix, disregarding the class...
+#
+# The same with SOAP: 
+
+my $t = new Distributed::Test
+   (
+    SOAP => {uri_base => 'http://soap.server.com:80/',
+             proxy    => 'http://soap.server.com:80/soap',
+         },
+    $name,
+    other  => [$a,$b,$c]); 
+
+
+# ------------------------------------------------------- 
+
+     The Distributed class is only responsible for stealing
+     the method calls, and do the preparations
+     for serialization, deserialization,
+     and can have multiple underlying
+     communication driver, like SOAP, or PRPC (see later). 
+
+     Please, help me to find a name for this module as well! 
+
+ ----------------------------------------------------------------------------
+PRPC
+    A Very simple RPC protocol, including PRPC::Client,
+    PRPC::Server, an arbitrary Data::Serializer as
+    serializer, and Net::Server or Apache at
+    server side. 
+
+ ----------------------------------------------------------------------------
+Combine
+    A V2 of Netlab's combine system - a complex web harvesting solution
+    with oo aproach now... The submission of this package is going to take
+    a while... 
+
+
+That's all for now, and thanks in advance: 
+
+P.Peter 

@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:57396
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23601 invoked from network); 25 Oct 2007 20:34:06 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 25 Oct 2007 20:34:06 -0000
+Received: (qmail 24848 invoked by uid 225); 25 Oct 2007 20:34:06 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24840 invoked by alias); 25 Oct 2007 20:34:05 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 25 Oct 2007 13:34:04 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by franz.ak.mind.de (8.13.8/8.14.1/Debian-8) with ESMTP id l9PKXpsG023417;
+	Thu, 25 Oct 2007 22:33:51 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.8/8.13.8/Submit) id l9PKXpOH023416;
+	Thu, 25 Oct 2007 22:33:51 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: modules@perl.org
+Cc: john.peacock@havurah-software.org (John Peacock)
+Subject: Re: Failed: PAUSE indexer report JPEACOCK/version-0.74.tar.gz
+References: <200710250048.l9P0mrBi020097@pause.perl.org>
+	<87tzogudsk.fsf@k75.linux.bogus>
+	<47206F72.8090102@havurah-software.org>
+	<251020071228504053%brian.d.foy@gmail.com>
+Reply-To: modules@perl.org
+Date: Thu, 25 Oct 2007 22:33:51 +0200
+In-Reply-To: <251020071228504053%brian.d.foy@gmail.com> (brian d. foy's
+	message of "Thu\, 25 Oct 2007 12\:28\:50 -0500")
+Message-ID: <87fxzzue6o.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Thu, 25 Oct 2007 12:28:50 -0500, brian d foy <brian.d.foy@gmail.com> said:
+
+  > [[ This message was both posted and mailed: see
+  >    the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+  > In article <47206F72.8090102@havurah-software.org>, John Peacock
+  > <john.peacock@havurah-software.org> wrote:
+
+ >> Andreas J. Koenig wrote:
+
+ >> > in this file I find
+ >> > 
+ >> > eval "use warnings";
+ >> > if ($@) {
+ >> >     eval '
+ >> >         package warnings;
+ >> >         sub enabled {return $^W;}
+ >> >         1;
+ >> >     ';
+ >> > }
+ >> 
+ >> It seems like your regex for scanning for packages needs to be a little
+ >> smarter.
+
+  > I don't see how it can be smarter. It won't ever know why you are doing
+  > that.
+
+Especially as long as it's documented that PAUSE is using MakeMaker
+through a layer of Safe.pm:-/
+
+  > Can you mark that as "no_index" in META.yml?
+
+Or split the words 'package' and 'warnings' on two lines like
+
+   package    # newline to smuggle me past the PAUSE indexer
+     warnings;
+
+Or write a proper META.yml with the 'provides' keyword.
+
+-- 
+andreas

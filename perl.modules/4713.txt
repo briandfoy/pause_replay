@@ -1,0 +1,64 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4713
+Return-Path: <ben@rhumba.pair.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4205 invoked from network); 16 Mar 2001 17:46:36 -0000
+Received: from relay1.pair.com (209.68.1.20)
+  by 209.85.3.25 with SMTP; 16 Mar 2001 17:46:36 -0000
+Received: (qmail 22898 invoked from network); 16 Mar 2001 17:46:06 -0000
+Received: from c1350621-a.ptlum1.sfba.home.com (HELO ?65.5.31.92?) (65.5.31.92)
+  by relay1.pair.com with SMTP; 16 Mar 2001 17:46:06 -0000
+X-pair-Authenticated: 65.5.31.92
+User-Agent: Microsoft-Outlook-Express-Macintosh-Edition/5.02.2022
+Date: Fri, 16 Mar 2001 09:44:16 -0800
+Subject: Re: Repost: Namespace registration: IO::Buffer
+To: <modules@perl.org>
+Message-ID: <B6D790F0.878E%ben@rhumba.pair.com>
+In-Reply-To: <15026.8447.263723.349299@phoenix.squirrel.nl>
+Mime-version: 1.0
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+Approved: news@nntp.perl.org
+From: ben@rhumba.pair.com (Benjamin Trott)
+References: <15026.8447.263723.349299@phoenix.squirrel.nl>
+
+>> No, sorry to be unclear. The get_* methods have to respect the order in
+>> which data was placed into the buffer by the put_* methods. So, for example,
+>> this is true:
+> 
+> But what happens if I call the functions out of order?
+
+Then you get incorrect data. Which is, perhaps, not the best way of doing
+things, at least all the time. In certain circumstances, though--where both
+users of the buffer have agreed upon a certain protocol--it's exactly what
+you want. An example is Net::SSH::Perl, which is where this module
+originally came from; I just thought it could have general purpose use, so I
+broke it out. The idea with Net::SSH::Perl is that the client and server
+both *know*--based on the type of the packet sent--what every buffer
+contains, and in what order. That's part of the protocol.
+
+So in that case, there's really no need for additional information. But I
+can see that it might be nice, at certain times, for the buffer to "know"
+what's inside of it.
+
+I could introduce an optional feature that would fill the first couple of
+bytes with information about the data contained in the rest of the buffer,
+and in what order the data must be retrieved. And then perhaps a 'get_all'
+method, which would read the buffer information bytes, then extract
+*everything* out of the buffer and return it. Something like this, maybe:
+
+    my $buffer = Data::Buffer->new(info_header => 1);
+    $buffer->put_int32(39299);
+    $buffer->put_str("foo");
+
+    ... later ...
+
+    my($int32, $str) = $buffer->get_all;
+
+Thoughts?
+
+bye,
+Ben
+

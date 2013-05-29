@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46207
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14024 invoked from network); 1 Dec 2005 05:43:16 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 1 Dec 2005 05:43:16 -0000
+Received: (qmail 31576 invoked by uid 225); 1 Dec 2005 05:43:16 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31562 invoked by alias); 1 Dec 2005 05:43:15 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO k75.linux.bogus) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 30 Nov 2005 21:43:08 -0800
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.13.5/8.13.5/Debian-1) with ESMTP id jB15g7iM002070;
+	Thu, 1 Dec 2005 06:42:07 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.5/8.13.5/Submit) id jB15g7NQ002067;
+	Thu, 1 Dec 2005 06:42:07 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: "ivan" <ivan@420.am>
+Cc: modules@perl.org,
+        "Andreas J. Koenig" <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Subject: Re: minor version parsing bug in CPAN indexer, was: Re: PAUSE indexer report IVAN/DBIx-DBSchema-0.28.tar.gz
+References: <200511301848.jAUImkii023830@pause.perl.org>
+	<20051130215732.GR27565@420.am>
+Reply-To: modules@perl.org
+Date: Thu, 01 Dec 2005 06:42:06 +0100
+In-Reply-To: <20051130215732.GR27565@420.am> (ivan@420.am's message of "Wed,
+	30 Nov 2005 13:57:33 -0800")
+Message-ID: <873bld4bm9.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Wed, 30 Nov 2005 13:57:33 -0800, "ivan" <ivan@420.am> said:
+
+  > Hi, 
+  > I'm just reporting what seems to be a minor bug parsing module versions 
+  > in the CPAN indexer.
+
+  > The module that was parsed incorrectly was DBIx::DBSchema::DBD::Pg.  The 
+  > version was parsed as "1".  The actual version is "0.10".
+
+ >> module: DBIx::DBSchema::DBD::Pg
+ >> version: 1
+ >> in file: DBIx-DBSchema-0.28/DBSchema/DBD/Pg.pm
+ >> status: indexed
+
+  > Perhaps the parser was tripped up by this funky code at the beginning 
+  > of the file:
+
+  >   die "DBD::Pg version 1.32 or 1.41 (or later) required--".
+  >       "this is only version $DBD::Pg::VERSION\n"
+  >     if $DBD::Pg::VERSION != 1.32 && $DBD::Pg::VERSION < 1.41;
+
+Yes, this code breaks the indexer. May I ask you to move that code
+further down after your own $VESION declaration? Alternatively break
+it up differently until it passes this test to your satisfaction:
+
+    perl -MExtUtils::MakeMaker -le 'print MM->parse_version(shift)' DBSchema/DBD/Pg.pm 
+
+There may still be cases where this test succeeds and the indexer
+chokes (Safe.pm is added into the equation), but these are rare.
+
+  > Please let me know if there's a better place to report this (an 
+  > rt.cpan.org queue for the indexer or something?) or if there's any other 
+  > information I can provide.  Obviously its not a huge deal, just thought 
+  > it might be useful to have this on record.
+
+Thanks, for now this place is good, I'll get an appropriate RT queue
+when I release PAUSE.pm, which I promised years ago:-(
+
+-- 
+andreas

@@ -1,0 +1,101 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:23493
+Return-Path: <gmaxia@mclink.it>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 94012 invoked by uid 76); 11 Sep 2003 08:51:47 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Thu, 11 Sep 2003 01:51:47 -0700
+Received: (qmail 27626 invoked by uid 225); 11 Sep 2003 08:51:43 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27621 invoked by uid 507); 11 Sep 2003 08:51:43 -0000
+Received: from mail2.mclink.it (HELO mail2.mclink.it) (195.110.128.53) by one.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Thu, 11 Sep 2003 01:51:40 -0700
+Received: from host196-217.pool80181.interbusiness.it (host196-217.pool80181.interbusiness.it [80.181.217.196])	by mail2.mclink.it (8.12.6p2/8.12.3) with ESMTP id h8B8pUtF022435;	Thu, 11 Sep 2003 10:51:32 +0200 (CEST)	(envelope-from gmaxia@mclink.it)
+Subject: Re: Module submission DBIx::Xtab
+To: modules@perl.org
+Cc: Tim Bunce <Tim.Bunce@pobox.com>
+In-Reply-To: <20030909234529.GA46601@dansat.data-plan.com>
+References: <200309092215.h89MFlwi002913@pause.perl.org> 	<20030909234529.GA46601@dansat.data-plan.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/1.0.2-5mdk 
+Date: 11 Sep 2003 10:46:55 +0200
+Message-ID: <1063270020.2784.9.camel@LTGmax>
+Mime-Version: 1.0
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-1.0 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_02_03 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: gmaxia@mclink.it (Giuseppe Maxia)
+
+Thanks for your advice.
+I am making a separate module to handle the output.
+About the zeroes and NULLs, I'll fix it. They are actually
+interchangeable for this purpose only, but it's better to make a clear
+distinction.
+
+By the time it's ready for CPAN, the name will probably change into
+DBIx::SQLCrosstab.
+
+Giuseppe
+
+
+On Wed, 2003-09-10 at 01:45, Tim Bunce wrote:
+> On Wed, Sep 10, 2003 at 12:15:47AM +0200, Perl Authors Upload Server wrote:
+> > 
+> > The following module was proposed for inclusion in the Module List:
+> > 
+> >   modid:       DBIx::Xtab
+> >   DSLIP:       bdpOp
+> >   description: creates server-side multi-level DB crosstabs
+> >   userid:      GMAX (Giuseppe Maxia)
+> >   chapterid:    7 (Database_Interfaces)
+> >   communities:
+> > 
+> >   similar:
+> >     Data::Pivot does one level only - none does server-side and
+> >     multi-level xtab
+> > 
+> >   rationale:
+> > 
+> >     DBIx::Xtab creates server-side multi-level cross tabulation
+> >     reports. Given some parameters, it creates the appropriate query to
+> >     get the crosstab, fetches the records and returns the output in raw
+> >     format, HTML or XML. Unlike spreadsheet pivot tables, all the
+> >     calculation is done on the server side, and in addition the query is
+> >     not limited to one table only. I am writing the documentation and
+> >     creating the installation tests In the meantime, you can see the
+> >     code, some docs and a few colorful examples at this link:
+> >     http://gmax.oltrelinux.com/xtab/xtab.html Any comments would be
+> >     welcome.
+> 
+> Cool.
+> 
+> Seems like nulls and zeros are not distinguished well. For example:
+>     remove_zeroes
+>             Remove from the record set all the columns where all
+>             values are zero or NULL.
+> Nulls and zeros are not always so interchangable. And I don't see any
+> examples in the docs where missing data appears as blank cells but
+> zeros appear as zeros.
+> 
+> Also, I think the formating of the output table should be delegated
+> to a separate module. There are several on CPAN already. If none
+> do the 'straddled' rows and columns you feature then perhaps you
+> could extend one of them or extract your formatting code into a new
+> modules.
+> 
+> >     I am not sure about the DBIx:: namespace. The rationale behind my
+> >     choice is that the module is - potentially - database independent,
+> >     so it can really be a DBI extension.
+> 
+> It generates and executes queries via the DBI and is fairly abstract
+> in nature (not application specific) so DBIx::* seems fine to me.
+> 
+> Would be good to indicate the server-side nature of the module though.
+> So perhaps something like DBIx::ServerXtab or DBIx::SQLCrossTab.
+> 
+> Tim.
+> 
+
+

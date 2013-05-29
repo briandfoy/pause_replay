@@ -1,0 +1,129 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:47628
+Return-Path: <brendan@hollyking.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 30970 invoked from network); 1 Mar 2006 03:40:43 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 1 Mar 2006 03:40:43 -0000
+Received: (qmail 31967 invoked by uid 225); 1 Mar 2006 03:40:43 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31962 invoked by alias); 1 Mar 2006 03:40:42 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from baldrick.midgard.org (HELO hollyking.org) (64.81.169.35)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 28 Feb 2006 19:40:36 -0800
+Received: from [192.168.0.4] (c-24-21-232-112.hsd1.or.comcast.net [24.21.232.112])
+	(using TLSv1 with cipher RC4-SHA (128/128 bits))
+	(No client certificate requested)
+	by hollyking.org (Postfix) with ESMTP id 3D28470031;
+	Thu,  2 Mar 2006 15:49:49 +0000 (UTC)
+In-Reply-To: <440408A5.80304@sneakemail.com>
+References: <200602280310.k1S3AkSR017282@pause.perl.org> <440408A5.80304@sneakemail.com>
+Mime-Version: 1.0 (Apple Message framework v746.2)
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Message-ID: <58D72694-9360-475E-A4A9-46FBB6B6AC6B@hollyking.org>
+Cc: modules@perl.org,
+ hollyking@cpan.org
+Content-Transfer-Encoding: 7bit
+Subject: Re: Module submission Math::Interval
+Date: Tue, 28 Feb 2006 19:40:26 -0800
+To: Steffen Mueller <uleobeh02@sneakemail.com>
+X-Mailer: Apple Mail (2.746.2)
+Approved: news@nntp.perl.org
+From: brendan@hollyking.org (Brendan Leber)
+
+Steffen and all,
+
+On Feb 28, 2006, at 12:24 AM, Steffen Mueller wrote:
+>
+> How is this different from Number::Interval? See http:// 
+> search.cpan.org/~tjenness/Number-Interval-0.01/Interval.pm
+>
+> I was going to suggest using Number::Interval when I found it it  
+> already exists.
+>
+> For integers, there's also Set::Window.
+
+Both of these modules are for manipulating an range on the number  
+line.  I'm writing Math::Interval to support Interval Computations  
+which define a new type of number called an interval.  Sadly the term  
+interval is overloaded and confusing because of the more common use.   
+I'll use the term Interval for the new number type to differentiate  
+it from intervals on the number line.  So these two modules are  
+conceptually different and have different design needs.  For one,  
+Set::Window works with integers and Intervals are floating-point  
+numbers.
+
+>
+> What does this do that Number::WithError doesn't? It's differs  
+> quite a bit in implementation, of course, but can it do anything  
+> different?
+
+Number::WithError represents a number with an amount of error.   
+Math::Interval represents a number that has an upper and lower bound,  
+that can be interpreted as an amount of error.  The result of  
+calculations with the two modules are different.  For example here's  
+a computation with Number::WithError
+
+$a = Number::WithError->new(1, 2);
+$b = Number::WithError->new(1, 2);
+print ($a - $a) . "\n";
+print ($a - $b) . "\n";
+
+The output from this fragment is:
+
+1.0e+00 +/- 2.0e+00
+1.0e+00 +/- 2.0e+00
+
+Performing the same calculations with Math::Interval is:
+
+$a = Math::Interval->interval(1, 2);
+$b = Math::Interval->interval(1, 2);
+print ($a - $a) . "\n";
+print ($a - $b) . "\n";
+
+And the result is:
+
+[0; 0]
+[-1; 1]
+
+The different answer in the $a - $b case comes from the fact that the  
+Interval represents the entire range of numbers between its two  
+bounds.  In one extreme we evaluate 1 - 2 and at the other we  
+evaluate 2 - 1.  Intervals do not have an additive or multiplicative  
+inverse.  In other words there is no Interval such that x + -x = 0 or  
+x * y = [1; 1].  Also the distributive law doesn't hold so (a + b)x  
+is not equal to ax + bx.
+
+> Would you consider working with the author of Number::Interval to  
+> improve it? Otherwise, having both Math::Interval and  
+> Number::Inverval might be a bad idea. (Think of somebody who looks  
+> for a module that deals with intervals. How should he decide which  
+> suits him better by the name?)
+
+As I hope I've shown there is a difference between Number::Interval  
+and Math::Interval.  I chose Math::Interval for a name because  
+Math::Complex exists and Intervals have some similarities to complex  
+numbers.  Confusion between my module and Number::Interval is going  
+to be an issue I hope to alleviate through documentation and education.
+
+> Otherwise, your module is a good idea.
+
+Thank you.  I'm rather excited about it.  ;)
+
+Brendan
+
+-- 
+Brendan Leber
+brendan@hollyking.org
+
+Love is omni-inclusive, progressively exquisite, understanding and  
+tender and compassionately attuned to other than self.  -- R.  
+Buckminster Fuller
+
+

@@ -1,0 +1,49 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4336
+Return-Path: <ben@rhumba.pair.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25423 invoked from network); 25 Jan 2001 20:11:38 -0000
+Received: from relay1.pair.com (209.68.1.20)
+  by tmtowtdi.perl.org with SMTP; 25 Jan 2001 20:11:38 -0000
+Received: (qmail 23056 invoked from network); 25 Jan 2001 20:11:10 -0000
+Received: from ignition-gw.customer.dsl.alter.net (HELO ?10.100.100.31?) (206.66.205.2)
+  by relay1.pair.com with SMTP; 25 Jan 2001 20:11:10 -0000
+X-pair-Authenticated: 206.66.205.2
+User-Agent: Microsoft-Outlook-Express-Macintosh-Edition/5.02.2022
+Date: Thu, 25 Jan 2001 12:09:49 -0800
+Subject: Re: Perl SSH Client
+To: "Kurt D. Starsinic" <kstar@cpan.org>
+CC: <modules@perl.org>
+Message-ID: <B695C80D.7543%ben@rhumba.pair.com>
+In-Reply-To: <20010125144525.A21199@sri.net>
+Mime-version: 1.0
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+Approved: news@nntp.perl.org
+From: ben@rhumba.pair.com (Benjamin Trott)
+References: <20010125144525.A21199@sri.net>
+
+> How about coordinating with the author of Net::SSH, and integrating
+> both your codebases?
+
+This is an option. Some of the downsides:
+
+* Since the current Net::SSH on CPAN is basically a wrapper around the ssh
+command line client, and mine is a Perl implementation of an ssh client, the
+code bases are *drastically* different. There is no overlap whatsoever, so I
+can't see it being anything more than a namespace takeover.
+
+* Despite the fact that I think a Perl Net::SSH is very useful and
+beneficial, I think there still is a place for a wrapper around the client.
+Things like Rhosts/RSA authentication (which require read access to the
+server host key, readable only by root) are trickier when using a Perl
+module than when using the ssh client, which is setuid root.
+
+I will get in touch w/ the author of the current Net::SSH to determine what
+he feels about this, though.
+
+bye,
+Ben
+

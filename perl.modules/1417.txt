@@ -1,0 +1,76 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1417
+Return-Path: <sb@sdm.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31731 invoked from network); 29 Mar 2000 12:31:23 -0000
+Received: from world1.sdm.de (root@192.76.162.229)
+  by tmtowtdi.perl.org with SMTP; 29 Mar 2000 12:31:23 -0000
+Received: by world1.sdm.de (MTA) via esmtp
+	from muccpu1.muc.sdm.de ([193.102.180.11]) 
+	id 12aHd2-0000iT-00; Wed, 29 Mar 2000 14:31:20 +0200
+Received: by muccpu1.muc.sdm.de (Sendmail 8.9.3+Sun)
+	id OAA14270; Wed, 29 Mar 2000 14:31:21 +0200 (MET DST)
+Message-ID: <200003291231.OAA14270@muccpu1.muc.sdm.de>
+Subject: Re: Need additional namespace for Date::Calc
+In-Reply-To: <20000329131726.I552@pobox.com> from Graham Barr at "Mar 29, 2000
+ 01:17:26 pm"
+To: Graham Barr <gbarr@pobox.com>
+Date: Wed, 29 Mar 2000 14:31:21 +0200 (MET DST)
+CC: Steffen Beyer <sb@sdm.de>, modules@perl.org
+Reply-To: sb@sdm.de (Steffen Beyer)
+X-No-Archive: yes
+X-Disabled: Return-Receipt-To: sb@sdm.de
+X-W3-Page: http://www.engelschall.com/u/sb/download/
+X-Mailer: ELM [version 2.4ME+ PL61 (25)]
+Approved: news@nntp.perl.org
+From: sb@sdm.de (Steffen Beyer)
+References: <20000329131726.I552@pobox.com>
+
+Hello Graham Barr, in a previous mail you wrote:
+> 
+> Is Date::Calc object-oriented ?
+
+No. Therefore I need the new wrapper, Date::Object!
+
+And I don't want to put the OO frontend right into Date::Calc (which is
+technically possible), because the module is already quite large as it is,
+and its man page even more so.
+
+Moreover, maybe some people don't want to use the OO frontend, so there
+is no point in forcing them to load it anyway whenever they want to use
+Date::Calc.
+
+> If not you could fool Carp.pm into
+> doing what you want by setting @ISA, although that is ugly. It seems
+
+Sounds ugly indeed... :-)
+
+> a shame to add a complete new module for this. But if a new module
+> is require I would suggest a name under Carp::
+
+Something like Carp::Date?
+
+> I suspect the package is quite simple too.
+
+The changes are quite minimal. Maybe one could change the Carp.pm in
+the CORE so that "croak" and "carp" etc. would accept an additional
+parameter or flag (or configuration global) to instruct Carp.pm to skip
+certain packages; either the named package hierarchy, or the caller's
+package hierarchy.
+
+> > All "Date::*" modules can use and profit from this module.
+> So can others
+
+Yes, if one could change this into a more general solution, as described
+above. Certainly.
+
+> Graham.
+
+Regards,
+-- 
+    Steffen Beyer <sb@engelschall.com>
+    http://www.engelschall.com/u/sb/whoami/ (Who am I)
+    http://www.engelschall.com/u/sb/gallery/ (Fotos Brasil, USA, ...)
+    http://www.engelschall.com/u/sb/download/ (Free Perl and C Software)

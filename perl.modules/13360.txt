@@ -1,0 +1,62 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13360
+Return-Path: <jimbox@doubleprecision.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18766 invoked by uid 76); 22 Aug 2002 22:38:56 -0000
+Received: from adsl-66-124-88-42.dsl.snfc21.pacbell.net (HELO nsr250.hooligans.org) (66.124.88.42)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Thu Aug 22 22:38:56 2002 -0000
+Received: (qmail 28012 invoked by uid 114); 22 Aug 2002 22:37:57 -0000
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 22 Aug 2002 22:37:57 -0000
+Date: Thu, 22 Aug 2002 15:37:57 -0700 (PDT)
+X-Sender: jimbox@localhost
+To: modules@perl.org
+Subject: PAUSE ID request
+Message-ID: <Pine.BSF.4.10.10208182341160.88892-100000@localhost>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: jimbox@doubleprecision.com (James Mikusi)
+
+
+your name: jimi mikusi
+your email address: jimbox-cpan@doubleprecision
+your homepage if you have one: none
+your preferred user-ID on CPAN: jimbox
+
+i've finally written a module i think might have global apeal.  it's
+tentatively called "DynamicDB."  so many of my projects include some
+custom db code i've tried to implement a module that eases that tedium,
+re-uses code, and makes the code more readable. it uses a tied MLDBM hash
+(with FreezeThaw) and goes something like this:
+
+use MLDBM::DynamicDB;  # name space undetermined as of yet (help?)
+
+@VALID_KEYS = qw(NEWKEY ANOTHERKEY SOMEKEY THISKEY);
+$db = new MLDBM::DynamicDB("file");
+$entry = $db->newEntry("db_hash_key");
+
+# $entry is actually in the namesapce MLDBM::DynamicDB::Entry
+
+$entry->putNewkey_array(@array);
+$entry->putAnotherkey_arrayref($array_ref);
+$entry->putSomekey_scalar($scalar);
+$entry->putThiskey_scalarref($scalar_ref);
+
+$db->save($entry);
+
+__END__
+##########
+
+as you might've guessed- all the work here is done by AUTOLOAD.
+@VALID_KEYS gives some loose structure, but essentially you can use
+'get...' and 'put...' to create arbitrarily complex data structures as
+keys for for the anonymous hash that is the DB_File's _value_. FreezeThaw
+nicely strigifies everything for storage as the tied hash's value.
+
+and to pre-answer possibly inquiries: yes i use h2xs and yes i include
+documentation. ;)
+
+

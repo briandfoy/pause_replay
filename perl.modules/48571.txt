@@ -1,0 +1,143 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:48571
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17123 invoked from network); 28 Apr 2006 12:12:29 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 28 Apr 2006 12:12:29 -0000
+Received: (qmail 5504 invoked by uid 225); 28 Apr 2006 12:12:29 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 5500 invoked by alias); 28 Apr 2006 12:12:28 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 28 Apr 2006 05:11:36 -0700
+Received: from pause.perl.org (localhost.localdomain [127.0.0.1])
+	by pause.perl.org (8.13.4/8.13.4/Debian-3sarge1) with ESMTP id k3SCAuB4016265;
+	Fri, 28 Apr 2006 14:10:56 +0200
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.4/8.13.4/Submit) id k3SCAt9D016264;
+	Fri, 28 Apr 2006 14:10:55 +0200
+Date: Fri, 28 Apr 2006 14:10:55 +0200
+Message-ID: <200604281210.k3SCAt9D016264@pause.perl.org>
+Subject: Module submission Class::CodeStyler
+Reply-To: modules@perl.org
+To: modules@perl.org, gaffie@cpan.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Class::CodeStyler
+  DSLIP:       bdpOg
+  description: Code generation code formatting class module
+  userid:      GAFFIE (Mario Gaffiero)
+  chapterid:   6 (Data_Type_Utilities)
+  communities:
+
+  similar:
+
+  rationale:
+
+    Class::CodeStyler is an object oriented API to be used by
+    code-gererators in producing formatted code (Perl, C, other). The
+    produced code file can also be syntax checked, displayed with line
+    numbers, executed, and eval'd. Code can be inserted anywhere in the
+    generated program using a system of bookmarks and jumps. Requires
+    Class::STL::Containers.
+
+    Synopsis
+
+    use Class::CodeStyler;
+
+    # Create a new Perl program codestyle object... my $p2 =
+    Class::CodeStyler::Program::Perl->new(); $p2->code("sub
+    function_operator"); $p2->open_block(); $p2->code("my \$self =
+    shift;"); $p2->code("my \$arg1 = shift;"); $p2->code("my \$arg2 =
+    shift;"); $p2->code("return \$arg1->eq(\$arg2);");
+    $p2->close_block();
+
+    # prepare() will produce the text for the program...
+    $p2->prepare();
+
+    # print will return the produced text... print $p2->print();
+
+    # Create another Perl program codestyle object... my $p =
+    Class::CodeStyler::Program::Perl->new (program_name => 'testing.pl',
+    tab_size=>4); $p->open_block(); $p->code("package MyBinFun;");
+
+    # Set the bookmark 'subs'... $p->bookmark('subs');
+    $p->indent_off(); # The following comment line will appear
+    un-indented... $p->comment("Some comment line..."); $p->indent_on();
+
+    # Add the code from $p2 object to $p codestyle object...
+    $p->add($p2); # and anther codestyle object... my $p3 =
+    Class::CodeStyler::Program::Perl->new(); $p3->code("sub
+    function_operator_2"); $p3->open_block(); $p3->code("my \$self =
+    shift;"); $p3->code("my \$arg1 = shift;"); $p3->code("my \$arg2 =
+    shift;"); $p3->code("return \$arg1->eq(\$arg2);");
+    $p3->close_block(); # Jump to the bookmark position 'subs'...
+    $p->jump('subs'); # Add the code from $p3 codestyle object to $p #
+    object at the bookmark position... $p->add($p3);
+
+    # Return to the last position prior to last jump... $p->return();
+
+    # Add a divider line... $p->divider();
+
+    # Add a comment line... $p->comment('Next function follows...'); my
+    $p4 = Class::CodeStyler::Program::Perl->new(); $p4->code("sub
+    function_operator_3"); $p4->open_block(); $p4->code("my \$self =
+    shift;"); $p4->code("my \$arg1 = shift;"); $p4->code("my \$arg2 =
+    shift;"); $p4->code("return \$arg1->eq(\$arg2);");
+    $p4->close_block(); $p->add($p4); $p->close_block(); # Process the
+    $p codestyle object to produce # the code text... $p->prepare();
+
+    # Print the produced code text... print $p->print();
+
+    # The following is displayed to stdout...
+
+    >{ > package MyBinFun; > sub function_operator_2 > { > my $self =
+    shift; > my $arg1 = shift; > my $arg2 = shift; > return
+    $arg1->eq($arg2); > } > # BOOKMARK ---- subs >#Some comment line...
+    > sub function_operator > { > my $self = shift; > my $arg1 = shift;
+    > my $arg2 = shift; > return $arg1->eq($arg2); > } >
+    ----------------------------------------------------------------------
+    > #Next function follows... > sub function_operator_3 > { > my $self
+    = shift; > my $arg1 = shift; > my $arg2 = shift; > return
+    $arg1->eq($arg2); > } >}
+
+    # display() will output the code text with # line numbers prefixed
+    on each line... $p->display();
+
+    # Save the code text in the program_file... $p->save();
+
+    # Run the syntax checker for the produced program text...
+    $p->syntax_check();
+
+    # execute the generated program file, passing # on any stdin...
+    $p->exec();
+
+  enteredby:   GAFFIE (Mario Gaffiero)
+  enteredon:   Fri Apr 28 12:10:55 2006 GMT
+
+The resulting entry would be:
+
+Class::
+::CodeStyler      bdpOg Code generation code formatting class module GAFFIE
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=0ec00000_154f22e9446a070a&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=0ec00000_154f22e9446a070a&SUBMIT_pause99_add_mod_insertit=1

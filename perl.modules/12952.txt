@@ -1,0 +1,77 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12952
+Return-Path: <robin@knowscape.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 76660 invoked by uid 76); 30 Jul 2002 16:55:49 -0000
+Received: from kno1.xcite.net (HELO mail.knowscape.net) (216.169.111.140)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Tue Jul 30 16:55:49 2002 -0000
+Received: from morgaine (m85.net81-65-128.noos.fr [81.65.128.85])
+	by mail.knowscape.net (8.10.0/8.10.0) with SMTP id g6UHeUc32720;
+	Tue, 30 Jul 2002 13:40:30 -0400
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Reply-To: robin@knowscape.com
+Organization: Knowscape ://
+To: modules@perl.org, ascope@cpan.org
+Subject: Re: Module submission Apache::SAX::ConsumerObject
+Date: Tue, 30 Jul 2002 18:59:15 +0200
+X-Mailer: KMail [version 1.2]
+References: <200207301556.g6UFudV27445@pause.perl.org>
+In-Reply-To: <200207301556.g6UFudV27445@pause.perl.org>
+MIME-Version: 1.0
+Message-ID: <02073018591505.00819@morgaine>
+Content-Transfer-Encoding: 8bit
+Approved: news@nntp.perl.org
+From: robin@knowscape.com (Robin Berjon)
+
+On Tuesday 30 July 2002 17:56, Perl Authors Upload Server wrote:
+>     I am not at all wed to the suggested package name, but I couldn't
+>     dream up anything better.
+>
+>     The package simply provides a valid consumer object to allow
+>     XML::SAX::Writer to print to STDOUT inside a mod_perl handler.
+>
+>     By default, if no "output" widget is passed to XML::SAX::Writer, it
+>     will print to STDOUT. This doesn't seem to work in a mod_perl
+>     context, which means you have to create a scalar and fill it up with
+>     stuff before printing it at the browser.
+>
+>     my $output = Apache::SAX::ConsumerObject->new($r); my $writer =
+>     XML::SAX::Writer->new(Output=>$output);
+
+There was talk at OSCon about XML::SAX::Writer consumer extensions. I don't 
+know if any of those will happen, but the general idea was that they would go 
+under the XML::SAX::Writer namespace. In this case that'd make it something 
+along the lines of XML::SAX::Writer::ApacheConsumer.
+
+I'm uncertain of whether that would be a good idea or not and am merely 
+suggesting it as a possible alternative, for discussion. One downside is that 
+it's a long name, one upside is that it's more descriptive (imho) of what it 
+does than Apache::SAX::ConsumerObject.
+
+Another option might be Apache::SAX::WriterConsumer. I think that's more 
+explicit as it points out the link to XSW and doesn't include the "Object" 
+part which is more of an implementation detail.
+
+Finally, it may be possible to borgify that straight into XSW. If provided a 
+$r object it could use that as its consumer (more dwimmery there, and imho 
+generic enough to be worth including). If you think that's a good idea, I'll 
+include it with the next release.
+
+>     Matt Sergeant has already written a similar package for AxPoint,
+>     but it would nice to have a simple bare bones consumer that does not
+>     require installing all the stuff used by AxPoint.
+
+There also was talk of making the Consumer-selection code more open to the 
+outside world so that packages like AxPoint would not need to reimplement it. 
+If you have any suggestion in that area, please send them to me (in personal 
+mail as this is not the place) and I'll incorporate them into what is already 
+there.
+
+-- 
+Robin Berjon <robin@knowscape.com>
+  For every complex problem, there is a solution that is simple, neat
+and wrong.
+  -- H.L. Mencken(1880-1956)

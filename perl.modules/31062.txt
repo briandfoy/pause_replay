@@ -1,0 +1,118 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:31062
+Return-Path: <nospam@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 76105 invoked from network); 22 Apr 2004 07:32:00 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by onion.develooper.com with SMTP; 22 Apr 2004 07:32:00 -0000
+Received: (qmail 23372 invoked by uid 225); 22 Apr 2004 07:32:00 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 23363 invoked by alias); 22 Apr 2004 07:31:59 -0000
+X-Spam-Status: No, hits=1.8 required=7.0
+	tests=FORGED_YAHOO_RCVD,HTML_MESSAGE,RCVD_FAKE_HELO_DOTCOM
+X-Spam-Check-By: la.mx.develooper.com
+Received: from ld3.estpak.ee (HELO MXR-7.estpak.ee) (194.126.101.102)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Thu, 22 Apr 2004 00:31:57 -0700
+Received: from localhost (localhost [127.0.0.1])
+	by MXR-7.estpak.ee (Postfix) with ESMTP id 183DB2ADD7
+	for <modules@perl.org>; Thu, 22 Apr 2004 10:31:45 +0300 (EEST)
+Received: from MXR-7.estpak.ee ([127.0.0.1])
+	by localhost (Relay7 [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 22318-05 for <modules@perl.org>;
+	Thu, 22 Apr 2004 10:31:44 +0300 (EEST)
+Received: from yahoo.com (213-35-132-194-dsl.trt.estpak.ee [213.35.132.194])
+	by MXR-7.estpak.ee (Postfix) with ESMTP id 8F4F42A1D3
+	for <modules@perl.org>; Thu, 22 Apr 2004 10:31:44 +0300 (EEST)
+Message-ID: <408774DE.6030208@yahoo.com>
+Date: Thu, 22 Apr 2004 10:31:42 +0300
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.6) Gecko/20040413 Debian/1.6-5
+X-Accept-Language: et, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: Module submission TeX::Picture
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: by amavisd-new-20030616-p7 (Debian) at neti.ee
+X-Spam-Rating: onion.develooper.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: nospam@yahoo.com (No Spam For Me)
+
+> The following module was proposed for inclusion in the Module List:
+> 
+>   modid:       TeX::Picture
+
+>   rationale:
+> 
+>     TeX::Picture converts LaTeX code to images.
+
+> If I just see the name, I would guess that this module somehow
+> deals with the LaTeX picture environment. Can you tell us a bit
+> more about the module?
+
+Input: LaTeX code, usually a one-line formula.
+The process:
+1) md5_hex hash of the code will be calculated.
+    If a file with that hash already exists, its path will be
+    returned, if not, the hash will be used for filenames
+    hereafter and
+2) a .tex file containing LaTeX header, footer and the code
+    will be created in the tempdir,
+3) the .tex will be converted to a .dvi using latex,
+4) the .dvi will be converted to a trimmed picture using
+    Image::Magick and saved to the user-specified directory,
+    it's path will be returned.
+
+Future versions will let users choose the conversion engine 
+(e.g. mimeTeX converts oneliners to GIFs directly, but as it 
+has some issues and its install-base is smaller, it will not 
+be used as the default).
+
+In case something remained unclear, let me illustrate:
+
+# ------- example.pl ------
+use TeX::Picture;
+
+# path - where to store the pictures,
+# webpath - relative path to the pics to be used in webpages
+# there are a lot of other options, but the defaults are 
+more or less sane
+my $pic = new TeX::Picture(
+                 path => '/var/www/test/pics',
+                 webpath => '/pics' );
+
+print '<html><p>According to the following formula
+        <img src="'.
+       $pic->to_webpic('\[ \lim_{x \to a} f(x) = C\]').
+       '" />, there exists a sequence such as 
+...</p></html>'."\n";
+# ------- example.pl ------
+
+$ ./example.pl
+<html><p>According to the following formula
+        <img 
+src="/pics/cc1a92b6d67b94fa759e2f02ca421334.png" />, there 
+exists a sequence such as ...</p></html>
+
+> Is there a way that you can say that this module converts LaTeX
+> to an image format, perhaps in a way that makes room for other
+> similar modules that might convert TeX to other things (HTML,
+> text, and so on).
+
+TeX::Converter::Picture?
+
+I probably need to subclass it though and this looks rather 
+ugly:
+TeX::Converter::Picture::ImageMagick
+TeX::Converter::Picture::MimeTeX
+TeX::Converter::Picture::GhostScript
+
+If you feel the latter doesn't look too ugly I'll use
+TeX::Converter::Picture and/or the mentioned subclasses 
+instead of TeX::Picture.
+
+Regards,
+Mart
+
+

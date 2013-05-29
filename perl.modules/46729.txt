@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46729
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17452 invoked from network); 4 Jan 2006 23:32:21 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 4 Jan 2006 23:32:21 -0000
+Received: (qmail 3580 invoked by uid 225); 4 Jan 2006 23:32:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3575 invoked by alias); 4 Jan 2006 23:32:20 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO k75.linux.bogus) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 04 Jan 2006 15:32:12 -0800
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.13.5/8.13.5/Debian-3) with ESMTP id k04NVs3a016335;
+	Thu, 5 Jan 2006 00:31:54 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.5/8.13.5/Submit) id k04NVrPH016332;
+	Thu, 5 Jan 2006 00:31:53 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: jerome@dreamfrequency.com (\"Mr. J. McKean\")
+Cc: modules@perl.org
+Subject: Re: Net::ICQ::On
+References: <43BAEF44.80008@dreamfrequency.com>
+	<040120060008173763%brian.d.foy@gmail.com>
+Reply-To: modules@perl.org
+Date: Thu, 05 Jan 2006 00:31:53 +0100
+In-Reply-To: <040120060008173763%brian.d.foy@gmail.com> (brian d. foy's
+	message of "Wed, 04 Jan 2006 00:08:17 -0800")
+Message-ID: <87y81vh8nq.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Wed, 04 Jan 2006 00:08:17 -0800, brian d foy <brian.d.foy@gmail.com> said:
+
+  > [[ This message was both posted and mailed: see
+  >    the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+  > In article <43BAEF44.80008@dreamfrequency.com>, Mr. J. McKean
+  > <jerome@dreamfrequency.com> wrote:
+
+ >> My namespace has been registered for around three months yet my module 
+ >> does not show in the CPAN search.
+
+  > Which module is it? Have you uploaded anything? Have you tried
+  > re-indexing it?
+
+Brian, he's talking about:
+
+cpan> m Net::ICQ::On 
+Module id = Net::ICQ::On
+    DESCRIPTION  ICQ Online Status Tester
+    CPAN_USERID  JEROMEMCK (Jerome K Maule McKean <jerome@dreamfrequency.com>)
+    CPAN_VERSION undef
+    CPAN_FILE    J/JE/JEROMEMCK/Net-ICQ-On-1.9.1.tar.gz
+    UPLOAD_DATE  2006-01-03
+    DSLI_STATUS  Rdpf (released,developer,perl,functions)
+    INST_FILE    (not installed)
+
+The CPAN_VERSION of undef looks suspicious.
+
+Aha. A tar file with nothing but a single pm file in it, without a
+Makefile.PL or Build.PL and without a README and without a $VERSION
+and without tests. Not in its own directory.
+
+All this is quite non-standard packaging and it's very likely that
+some part of search tripped over it.
+
+I'd suggest, try to write a Makefile.PL, a README, add a $VERSION,
+write a test, make your own directory. Then use 'make dist' to make
+the tarball and see if it helps.
+
+Hope this helps,
+-- 
+andreas

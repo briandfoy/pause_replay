@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:20014
+Return-Path: <juerd@c3.convolution.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25351 invoked by uid 76); 30 Mar 2003 18:06:29 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.25) with SMTP; Sun, 30 Mar 2003 10:06:29 -0800
+Received: (qmail 14557 invoked by uid 225); 30 Mar 2003 18:06:28 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14551 invoked by uid 507); 30 Mar 2003 18:06:28 -0000
+Received: from c3.convolution.nl (HELO c3.convolution.nl) (217.71.121.90) by one.develooper.com (qpsmtpd/0.25) with SMTP; Sun, 30 Mar 2003 10:06:27 -0800
+Received: (qmail 27791 invoked by uid 1000); 30 Mar 2003 18:06:24 -0000
+Resent-From: juerd@c3.convolution.nl
+Resent-Date: Sun, 30 Mar 2003 20:06:24 +0200
+Resent-Message-ID: <20030330180624.GI29079@c3.convolution.nl>
+Resent-To: modules@perl.org
+Date: Sun, 30 Mar 2003 20:06:10 +0200
+To: Autrijus Tang <autrijus@autrijus.org>
+Subject: Re: Module submission again
+Message-ID: <20030330180610.GH29079@c3.convolution.nl>
+References: <200303251042.h2PAgXF21184@pause.perl.org> <20030330130910.GD29079@c3.convolution.nl> <20030330170832.GA3081@not.autrijus.org> <20030330172248.GG29079@c3.convolution.nl> <20030330174725.GB3568@not.autrijus.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030330174725.GB3568@not.autrijus.org>
+User-Agent: Mutt/1.5.3i
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-1.6 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,NO_REAL_NAME,QUOTED_EMAIL_TEXT,REFERENCES,RESENT_TO,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: juerd@c3.convolution.nl
+
+On Mon, Mar 31, 2003 at 01:47:25AM +0800, Autrijus Tang wrote:
+> On Sun, Mar 30, 2003 at 07:22:48PM +0200, juerd@c3.convolution.nl wrote:
+> > In my opinion, again is more perlish. Especially because of its
+> > pragma-like name (compare C<use if>, C<use only>, C<use again>).
+> It is also confusing:
+>     use Module::Name;
+>     use again 'Module::Name';
+> If I know nothing about your module, I'd expect line two to reload
+> Module::Name unconditionally.  But maybe it's just me.  Arthur?
+
+As the POD says, C<< use again 'Module::Name' >> loads Module::Name if:
+
+- it has not been loaded with C<use again> before
+
+... or ...
+
+- it has been changed since the last time C<use again> loaded it.
+
+
+Missing in the POD is that C<< use again 'Module::Name' >> is equivalent
+to:
+    BEGIN {
+        require_again 'Module::Name';
+        Module::Name->import() if Module::Name->can('import');
+    }
+
+Just like how C<< use Module::Name >> is equivalent to:
+    BEGIN {
+        require Module::Name;
+        Module::Name->import() if Module::Name->can('import');
+    }
+
+__
+
+'again' can indeed be confusing, but
+'if_not_loaded_before_or_changed_since_last_use' simply is too long :)
+
+The POD explains what it does in detail.
+
+(And if even that is not detailed enough, feel free to read its source.
+It's very readable and simple)
+
+
+Juerd

@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:22841
+Return-Path: <simonm@cavalletto.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 62437 invoked by uid 76); 12 Aug 2003 19:03:59 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Tue, 12 Aug 2003 12:03:59 -0700
+Received: (qmail 12582 invoked by uid 225); 12 Aug 2003 19:03:55 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12577 invoked by uid 507); 12 Aug 2003 19:03:55 -0000
+Received-SPF: unknown (domain of sender simonm@cavalletto.org does not designate mailers: NXDOMAIN)
+Received: from mail1.panix.com (HELO mail1.panix.com) (166.84.1.72) by one.develooper.com (qpsmtpd/0.27-dev) with SMTP; Tue, 12 Aug 2003 12:03:53 -0700
+Received: from mailspool2.panix.com (mailspool2.panix.com [166.84.1.79])	by mail1.panix.com (Postfix) with ESMTP	id 7BE7848719; Tue, 12 Aug 2003 15:03:48 -0400 (EDT)
+Received: from cavalletto.org (unknown [207.18.115.52])	by mailspool2.panix.com (Postfix) with ESMTP	id E09DC36DE0; Tue, 12 Aug 2003 15:03:47 -0400 (EDT)
+Date: Tue, 12 Aug 2003 15:03:46 -0400
+Subject: Re: [RFC] SQL::AST (SQL Abstract Syntax Tree) - DBI related
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Mime-Version: 1.0 (Apple Message framework v552)
+Cc: modules@perl.org, poop-group@lists.sourceforge.net
+To: Darren Duncan <darren@DarrenDuncan.net>
+In-Reply-To: <p05200f00bb5ed42ab54f@[24.108.166.215]>
+Message-ID: <B33C920E-CCF7-11D7-905E-003065AFEA5E@cavalletto.org>
+Content-Transfer-Encoding: 7bit
+X-Mailer: Apple Mail (2.552)
+X-SMTPD: qpsmtpd/0.27-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-2.3 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,SPAM_PHRASE_00_01,USER_AGENT_APPLEMAIL version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: simonm@cavalletto.org (Matthew Simon Cavalletto)
+References: <p05200f00bb5ed42ab54f@[24.108.166.215]>
+
+On Tuesday, August 12, 2003, at 02:06  PM, Darren Duncan wrote:
+
+> Part of my reasoning for asking about a separate C module name is that 
+> I intend for the C module to be useable with any programming language, 
+> through a binding layer (XS in Perl 5's case, ? in Parrot's case), 
+> much as GD or libXML are.  So, are there any pure C modules that have 
+> ':' in their names?  Or that could be a non-issue.  For that matter, 
+> are C library names usually the same as their compiled file names?  If 
+> I used SQL::ObjectModel for the Perl name, then SQLObjModel perhaps 
+> might work for a C name?
+
+I believe the convention is for the portable C library to be named 
+something short like libSQLOM, with the Perl code either in 
+SQL::ObjectModel or a related namespace like SQL::ObjectModelXS or 
+SQL::ObjectModel::libSQLOM.
+
+> What if I were to keep the previous name (not yet registered) of 
+> 'SQL::ObjectModel' for the module itself, and use 'Abstract Syntax 
+> Tree' in the description?
+
+Consider this guidance from perlmodlib: "Generally the name should 
+reflect what is special about what the module does rather than how it 
+does it."
+
+The name you pick should focus on the distinct purpose of the module -- 
+ie, providing a static representation of various kinds of SQL 
+statements.
+
+The fact that your module is implemented as a tree of objects, rather 
+than as functions which operate on nested hash-refs or whatever, is an 
+implementation detail. In practice, many of the modules on CPAN are 
+based on some kind of "object model," but don't use it in their class 
+names -- for example, think of the many distributions that could have 
+been named "XML::ObjectModel."
+
+-Simon
+

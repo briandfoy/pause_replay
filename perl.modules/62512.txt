@@ -1,0 +1,192 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62512
+Return-Path: <matthewt@agaton.scsys.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 31691 invoked from network); 4 Oct 2008 11:30:14 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 4 Oct 2008 11:30:14 -0000
+Received: (qmail 30240 invoked by uid 225); 4 Oct 2008 11:30:14 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30234 invoked by alias); 4 Oct 2008 11:30:13 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from de007061.idaq.com (HELO jules.scsys.co.uk) (217.168.153.160)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 04 Oct 2008 04:30:08 -0700
+Received: from [217.168.150.167] (helo=agaton.scsys.co.uk)
+	by jules.scsys.co.uk with esmtp (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1Km5KO-00048M-KG; Sat, 04 Oct 2008 12:29:40 +0100
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1Km5KO-0000V7-Hd; Sat, 04 Oct 2008 12:29:40 +0100
+Date: Sat, 4 Oct 2008 12:29:40 +0100
+To: Chris Marshall <chm@alum.mit.edu>
+Cc: pdl-porters <pdl-porters@jach.hawaii.edu>, wyp3rlx02@sneakemail.com,
+	Bob Free <bfree@graphcomp.com>, modules@perl.org
+Subject: Re: [Pdl-porters] Module submission PDL::Graphics::POGL
+Message-ID: <20081004112940.GM16741@agaton.scsys.co.uk>
+References: <48DADFAF.1000706@alum.mit.edu> <48E572A5.7050005@alum.mit.edu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <48E572A5.7050005@alum.mit.edu>
+User-Agent: Mutt/1.5.11
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Thu, Oct 02, 2008 at 09:17:25PM -0400, Chris Marshall wrote:
+> Based on feedback received on the module namespace and
+> my experience with reworking the existing PDL::Graphics::TriD
+> to use OpenGL rather than PDL::Graphics::OpenGL, I plan to
+> request the following:
+> 
+> (1) use namespace PDL::Graphics::POGL
+
+Please don't. Of all 7 options presented in the mail you quoted, this is
+the one which makes the least sense and will minimise the chances of people
+finding your module and maximise the likelihood of confusion and accidental
+reinvention.
+
+"POGL" means absolutely nothing to somebody who isn't already aware of the
+existence of other /POGL/ modules, of which there aren't any - just a
+reference in OpenGL.pm (at least according to search.cpan.org)
+
+I'd suggest you either go for ::OpenGL::POGL or ::PerlOpenGL - I prefer the
+latter but if you like the POGL name then the former is probably equally
+good in terms of clarity of naming.
+
+Experience says the author of a module is often the last person you want
+naming it - I can happily say that the modules of mine that other people
+have named are all better named than the ones I named myself :)
+ 
+> Chris Marshall wrote:
+> >In the process of registering PDL::Graphics::POGL,
+> >it was suggested that some alternatives would be
+> >better descriptive or helpful to users.  Thanks
+> >to Steffen Mueller for the ideas.  Here is an
+> >expanded set of alternatives with some thoughts:
+> >
+> >
+> >(1) PDL::Graphics::POGL
+> >    * the requested name space
+> >    * indicates PDL::Graphics stuff
+> >    * parallel with PDL::Graphics::TriD
+> >    * POGL is Perl OpenGL
+> >      * replaces PDL::Graphics::OpenGL
+> >      * refactoring of TriD
+> >
+> >
+> >
+> >(2) PDL::Graphics::OpenGL::POGL
+> >    * indicates PDL::Graphics::OpenGL stuff
+> >    * parallel with PDL::Graphics::OpenGL:OO
+> >    * POGL is Perl OpenGL
+> >      * replaces PDL::Graphics::OpenGL
+> >      * not so clear on the TriD connection
+> >
+> >
+> >
+> >(3) PDL::Graphics::OpenGL::PP
+> >    * indicates PDL::Graphics::OpenGL stuff
+> >    * parallel with PDL::Graphics::OpenGL:OO
+> >    * PP might cause confusion with PDL::PP
+> >
+> >
+> >
+> >(4) PDL::Graphics::OpenGL::Perl
+> >    * indicates PDL::Graphics::OpenGL stuff
+> >    * parallel with PDL::Graphics::OpenGL:OO
+> >    * Perl is not bad, but POGL seems better and more
+> >        specific: this is PDL::Graphics::OpenGL stuff
+> >        using POGL (i.e. Perl OpenGL bindings)
+> >
+> >
+> >
+> >(5) PDL::Graphics::POpenGL
+> >    * indicates PDL::Graphics stuff
+> >    * parallel with PDL::Graphics::TriD
+> >    * I prefer POGL better than POpenGL
+> >
+> >
+> >
+> >(6) PDL::Graphics::PerlOpenGL
+> >    * indicates relation to PDL::Graphics::OpenGL
+> >    * may be difficult to get CaMeLcAsE right
+> >    * I still prefer POGL to PerlOpenGL
+> >
+> >
+> >
+> >(7) PDL::Graphics::TriD::POGL
+> >    * does not parallel existing PDL::Graphics name spaces
+> >    * POGL supports 2D graphics and interactive, not just 3D
+> >    * has TriD and POGL in it (two potential sources of confusion)
+> >
+> >
+> >After looking at them all, I actually think I
+> >may now prefer (2) to the original suggestion for
+> >because the main thrust of the initial TriD work
+> >*is* to use POGL to replace PDL::Graphics::OpenGL
+> >functionality.
+> >
+> >I would appreciate your thoughts on this matter
+> >since I would like the new name space to best
+> >represent PDL excellence.
+> >
+> >--Chris
+> >-------- Original Message --------
+> >Subject: 	Re: Module submission PDL::Graphics::POGL
+> >Date: 	Wed, 24 Sep 2008 19:58:56 +0200
+> >From: 	Steffen Mueller <wyp3rlx02@sneakemail.com>
+> >To: 	modules@perl.org
+> >CC: 	chm@cpan.org
+> >References: 	<200809241343.m8ODhTfH017664@pause.perl.org>
+> >
+> >
+> >
+> >Hi,
+> >
+> >Perl Authors Upload Server wrote:
+> >  
+> >>The following module was proposed for inclusion in the Module List:
+> >>
+> >>  modid:       PDL::Graphics::POGL
+> >>  DSLIP:       cdhhp
+> >>  description: PDL interface to Perl OpenGL
+> >>  userid:      CHM (Chris Marshall)
+> >>  chapterid:   18 (Images_Pixmaps_Bitmaps)
+> >>  communities:
+> >>    pdl-porters mailing list
+> >>
+> >>  similar:
+> >>    PDL::Graphics::OpenGL OpenGL
+> >>    
+> >
+> >I'm willing to register the namespace for you as is, but I thought maybe
+> >any of the following would be significantly more descriptive. What do
+> >you think? The namespaces aren't *that* long.
+> >
+> >PDL::Graphics::OpenGL::Perl
+> >PDL::Graphics::OpenGL::PP (for "pure-perl" -- maybe not)
+> >PDL::Graphics::POpenGL
+> >PDL::Graphics::PerlOpenGL
+> >
+> >Let me know whether any one of those is acceptable or whether you
+> >absolutely prefer your originally requested name.
+> >
+> >Best regards,
+> >Steffen
+> >
+> >
+> >  
+> 
+
+-- 
+      Matt S Trout       Need help with your Catalyst or DBIx::Class project?
+   Technical Director                    http://www.shadowcat.co.uk/catalyst/
+ Shadowcat Systems Ltd.  Want a managed development or deployment platform?
+http://chainsawblues.vox.com/            http://www.shadowcat.co.uk/servers/

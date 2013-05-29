@@ -1,0 +1,103 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:22948
+Return-Path: <wyrd@nospam.wyrdwright.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 72280 invoked by uid 76); 19 Aug 2003 13:48:35 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Tue, 19 Aug 2003 06:48:35 -0700
+Received: (qmail 16111 invoked by uid 225); 19 Aug 2003 13:48:27 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 16105 invoked by uid 507); 19 Aug 2003 13:48:26 -0000
+Received-SPF: unknown (domain of sender wyrd@nospam.wyrdwright.com does not designate mailers: NXDOMAIN)
+Received: from thror.wyrdwright.com (HELO thror.wyrdwright.com) (216.194.67.94) by one.develooper.com (qpsmtpd/0.27-dev) with SMTP; Tue, 19 Aug 2003 06:48:17 -0700
+Received: from nospam.wyrdwright.com (dsl-205-210-52-17.kingston.net [205.210.52.17])	(authenticated bits=0)	by thror.wyrdwright.com (8.12.3/8.12.3/Debian-6.4) with ESMTP id h7JDkZw7020816	(version=TLSv1/SSLv3 cipher=DES-CBC3-SHA bits=168 verify=NO)	for <modules@perl.org>; Tue, 19 Aug 2003 13:46:37 GMT
+Date: Tue, 19 Aug 2003 09:46:33 -0400
+Mime-Version: 1.0 (Apple Message framework v552)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Subject: Appropriateness for CPAN
+To: modules@perl.org
+Content-Transfer-Encoding: 7bit
+Message-ID: <8BA40C83-D24B-11D7-9E4F-000393CB1848@nospam.wyrdwright.com>
+X-Mailer: Apple Mail (2.552)
+X-MailScanner: Found to be clean
+X-SMTPD: qpsmtpd/0.27-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-1.0 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02,USER_AGENT_APPLEMAIL version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: wyrd@nospam.wyrdwright.com (Barry King)
+
+
+Hello, maintainers:
+
+For the past year, I've been developing a GPL-ed framework out of my 
+code libraries which allows for rapid development of perl-driven web 
+sites on Apache in an object-oriented way.  I did this since Mason and 
+PHP were too restrictive for my needs.  I find it useful enough that 
+I'd like to make it available to other perl users as soon as it's 
+stable enough to be post-able and I've written up the documentation.
+
+At the core is a handler, a sort of data-storage object, and a base 
+object which parses the HTML text it is handed, recursively spawning 
+new objects as they are represented in HTML.  For example, the HTML 
+snippet:
+
+<Wyrd::Lattice>
+	<Wyrd::Query type="cgi">
+		select b.title as title, b.description as description
+			from authors a, books b
+			where a.id=b.author_id and a.id=$:author_id;
+	</Wyrd::Query>
+	<Wyrd::Lattice::Header>
+		<tr><th>Books by
+			<Wyrd::Lookup type="cgi" query="select name from authors where 
+id=$:author_id"><b>$:name</b></Wyrd::Lookup>
+		</th></tr>
+	</Wyrd::Lattice::Header>
+	<Wyrd::Lattice::Grid>
+		<tr><td>$:title?:description{-- $:description}
+	</Wyrd::Lattice::Grid>
+</Wyrd::Lattice>
+
+Will extract an author id from the CGI environment (via 
+Apache::Request) and use it to perform two queries, returning an HTML 
+table with the phrase "Books by <said author>", their titles, and, if 
+provided, the description.  This table will be embedded at this point 
+on the HTML page returned to the browser.
+
+Also featured in this framework are conditional phrases (like the 
+?:description element above), a DBI hook for DBA interface, an 
+encrypted cookie-authentication module, a search engine indexing 
+engine, a search engine, a very robust multiple-page forms processing 
+object, intelligent forms elements (inputs, etc.), and so on.
+
+The beauty of it is that for different virtual sites, a different set 
+of derived classes can be used, so that Wyrd::Lattice (a table creation 
+object) becomes a NewSite::Lattice, different only in some hook-in 
+methods as to how it is formatted in HTML.  This way the same 
+functionality is preserved, but with whatever tweaks are appropriate to 
+the virtual server's site.
+
+The ugliness of it is that it is heavily interdependent.  It comes as a 
+lump without a great deal of independent usefulness.  For example, the 
+Wyrd::Interfaces::GetUser class depends on the Wyrd::Handler class and 
+the Wyrd::DBL class for information on the logged-in user, and the 
+Wyrd::Services::Auth and Wyrd::Services::TicketPad class to handle the 
+pre-access authentication.  You can derive a new Auth object to handle 
+authentication in a slightly different way for example, but the GetUser 
+object will still expect all of it's methods to be available.  Yuk.
+
+Additionally, there is the ugliness of derived classes which mimic the 
+Wyrd framework (e.g. Newsite::XXXX objects) pollute the local namespace 
+of the server.  In the intended application, this is not a problem 
+since it's the sysadmin's duty to control the local namespace, but if 
+new frameworks are derived from the Wyrd framework for distribution 
+elsewhere, they might pollute CPAN namespace.  Double yuk.
+
+So, is CPAN an appropriate place to distribute this framework?  If so, 
+I would like to do so under the namespace WO or Wyrd.
+
+Barry King
+Wyrdwright, Inc.
+

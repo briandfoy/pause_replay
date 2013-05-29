@@ -1,0 +1,66 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60797
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27538 invoked from network); 9 Jun 2008 19:54:47 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 9 Jun 2008 19:54:47 -0000
+Received: (qmail 17023 invoked by uid 225); 9 Jun 2008 19:54:47 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17019 invoked by alias); 9 Jun 2008 19:54:46 -0000
+X-Spam-Status: No, hits=1.5 required=8.0
+	tests=WEIRD_PORT
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 09 Jun 2008 12:54:42 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-1) with ESMTP id m59Jsbw4029796;
+	Mon, 9 Jun 2008 21:54:37 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id m59JsaLO029790;
+	Mon, 9 Jun 2008 21:54:36 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Steffen Mueller <wyp3rlx02@sneakemail.com>
+Cc: modules@perl.org
+Subject: Re: lib.pm indexing problem
+References: <20080609132123.18185.qmail@lists.develooper.com>
+Date: Mon, 09 Jun 2008 21:54:36 +0200
+In-Reply-To: <20080609132123.18185.qmail@lists.develooper.com> (Steffen
+	Mueller's message of "Mon\, 09 Jun 2008 15\:21\:22 +0200")
+Message-ID: <874p82idtv.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 09 Jun 2008 15:21:22 +0200, Steffen Mueller <wyp3rlx02@sneakemail.com> said:
+
+  > Hi Andreas, hi modules@,
+  > I recently uploaded a CPAN distribution of lib.pm. I have co-maintenance
+  > permissions. However, the indexer didn't pick it up (at all). I.e. I
+  > only received two mails from the indexer.
+
+  > Maybe it's related to that I (have to) generate lib.pm only at make time?
+
+Without even looking I can say, yes, if you generate lib.pm at
+runtime, the indexer cannot index it. Would you be able to provide a
+META.yml with the provides field? The intent was: if this is there,
+then the indexer does not get triggered at all and the META.yml wins.
+
+I sse you're using MakeMaker which does not provide support for "provides".
+
+I remember that there is a workaround around this limitation. I used it here:
+
+              ($ExtUtils::MakeMaker::VERSION >= 6.3002 ?
+               (EXTRA_META => <<EMETA,
+repository: "https://pause.perl.org:5460/svn/cpanpm/trunk"
+EMETA
+               ) : ()),
+
+Ugly as hell, but works. I took it from RT ticket 30098.
+
+-- 
+andreas

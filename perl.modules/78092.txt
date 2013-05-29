@@ -1,0 +1,66 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:78092
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29848 invoked from network); 19 Oct 2011 16:02:38 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 19 Oct 2011 16:02:38 -0000
+Received: (qmail 29735 invoked by uid 225); 19 Oct 2011 16:02:38 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29731 invoked by alias); 19 Oct 2011 16:02:37 -0000
+X-Spam-Status: No, hits=0.5 required=8.0
+	tests=DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-vx0-f169.google.com (HELO mail-vx0-f169.google.com) (209.85.220.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 19 Oct 2011 09:02:36 -0700
+Received: by vcbfk1 with SMTP id fk1so2493537vcb.14
+        for <modules@perl.org>; Wed, 19 Oct 2011 09:02:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=autopragmatic.com; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date
+         :x-google-sender-auth:message-id:subject:to:cc:content-type
+         :content-transfer-encoding;
+        bh=XDFqBB5a52NFRHsSUFLfEDLnSZ+V2BZRYLDldTX1moY=;
+        b=J6lrV6w8bbzzRJAManR/VxlIGrK6KLZ9y6i1ESEp+Nov2F2vUYvhuslNjS9Y2I2znV
+         EkENzLBj4Cee/Wa4HAIvZpeWuZGrUx39ISQ2f2d2om9PEg5i7XWvZq01Ds8aYz5vWmnF
+         7X7CfRrHaMDjW0dOSw58xDksE1uRhyWCkU0YQ=
+Received: by 10.220.153.12 with SMTP id i12mr541414vcw.7.1319040152161; Wed,
+ 19 Oct 2011 09:02:32 -0700 (PDT)
+MIME-Version: 1.0
+Sender: david@autopragmatic.com
+Received: by 10.220.182.201 with HTTP; Wed, 19 Oct 2011 09:02:12 -0700 (PDT)
+In-Reply-To: <CAPAD24umzjV85K_B_9MSyQDGpJQYqv6XcBgZzpqkS4=0XmT3DQ@mail.gmail.com>
+References: <201110191500.p9JF06GC000746@pause.fiz-chemie.de> <CAPAD24umzjV85K_B_9MSyQDGpJQYqv6XcBgZzpqkS4=0XmT3DQ@mail.gmail.com>
+Date: Wed, 19 Oct 2011 12:02:12 -0400
+X-Google-Sender-Auth: a4kScf9l_ExGXpJXHPGJ85AtBf0
+Message-ID: <CAOeq1c9aw4DScp_R8pNFMc2ZoKzNDByTf7yH2a7MZEb75G5Ygg@mail.gmail.com>
+Subject: Re: Failed: PAUSE indexer report AYOUNG/Dist-Zilla-Plugin-Test-Kwalitee-2.03.
+ tar.gz
+To: Alan Young <alansyoungiii@gmail.com>
+Cc: modules@perl.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: xdaveg@gmail.com (David Golden)
+
+On Wed, Oct 19, 2011 at 11:05 AM, Alan Young <alansyoungiii@gmail.com> wrot=
+e:
+> I'm not sure how to fix this ... this was a submitted test. =C2=A0Any
+> pointers on how to go about handling this? Can I just ignore it?
+
+PAUSE is trying to index modules in the 'corpus' directory.  You need
+the MetaNoIndex plugin and set the corpus directory as 'no_index' in
+your dist.ini.  E.g. here's what I use to cover as many bases as
+possible:
+
+[MetaNoIndex]       ; sets 'no_index' in META
+directory =3D t
+directory =3D xt
+directory =3D examples
+directory =3D corpus
+package =3D DB
+
+Regards,
+David

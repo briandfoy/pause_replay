@@ -1,0 +1,88 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:55680
+Return-Path: <fperron@cydone.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 7227 invoked from network); 3 Aug 2007 19:29:05 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 3 Aug 2007 19:29:05 -0000
+Received: (qmail 28176 invoked by uid 225); 3 Aug 2007 19:29:05 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28170 invoked by alias); 3 Aug 2007 19:29:05 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,DKIM_POLICY_SIGNSOME,DK_POLICY_SIGNSOME,SPF_NEUTRAL
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from simmts8-qfe0.srvr.bell.ca (HELO simmts8-srv.bellnexxia.net) (206.47.199.166)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 03 Aug 2007 12:29:02 -0700
+Received: from slush.sodium.selfip.org ([65.93.129.226])
+          by simmts8-srv.bellnexxia.net
+          (InterMail vM.5.01.06.13 201-253-122-130-113-20050324) with ESMTP
+          id <20070803192857.CEZP11648.simmts8-srv.bellnexxia.net@slush.sodium.selfip.org>
+          for <modules@perl.org>; Fri, 3 Aug 2007 15:28:57 -0400
+Received: from [192.168.0.4] (helo=[127.0.0.1])
+	by slush.sodium.selfip.org with esmtp (Exim 4.63)
+	(envelope-from <fperron@cydone.com>)
+	id 1IH2bj-0008EP-BG
+	for modules@perl.org; Fri, 03 Aug 2007 15:14:43 -0400
+Message-ID: <46B381F5.6020902@cydone.com>
+Date: Fri, 03 Aug 2007 15:28:53 -0400
+Reply-To:  fxfx@cydone.com
+Organization: Cydone Solutions Inc.
+User-Agent: Thunderbird 1.5.0.12 (Windows/20070509)
+MIME-Version: 1.0
+To:  modules@perl.org
+Subject: Re: Module submission Integrator::Module::Build
+References: <200707301516.l6UFGYcl026615@pause.perl.org> <310720071308023629%brian.d.foy@gmail.com> <46B258DD.7020405@cydone.com> <030820071157283516%brian.d.foy@gmail.com>
+In-Reply-To: <030820071157283516%brian.d.foy@gmail.com>
+X-Enigmail-Version: 0.94.3.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: fperron@cydone.com (Francois Perron)
+
+> That sounds like a subclass, especially when you say "is a" :)
+>
+
+;)
+
+> Should this be Module::Build::<Foo>, where Foo describes the additional
+> feature?
+
+Well, yes... I truly got it all reversed...
+
+Considering that Integrator::Module::Build comes bundled with two other
+modules (Integrator::Test::ConfigData and
+Integrator::Test::TAP::Model::Patch), I thought it would be nice and
+clean to group the whole thing under Integrator.
+
+But it now looks like I would have to go with:
+
+Module::Build::Integrator
+Test::ConfigData
+Test::TAP::Model::Integrator
+
+But then, what I did with Integrator::Test::TAP::Model::Patch is nothing
+to be proud of. I should probably have asked for a patch with an
+activation switch in the code and rely on a fresh version in my
+'requires' for Module::Build::Integrator. Do you believe this is
+something that would be possible/good/welcomed ?
+
+Test::ConfigData is not much better: it is a blatant hack to pass serial
+numbers, measurements and files into TAP format, something I perceived
+to be in violation of the design intent of the brave folks who brought
+TAP to existence. Plus, ConfigData was another serious case of an
+overnight hack that survived far more than expected/desired but I use it
+*a lot* now. I don't really see this one fly anytime soon... What do you
+think ?
+
+All in all, it comes clear that I took the 'sweep it under the rug'
+approach. But then the ideas in Integrator::Module::Build are now mature
+and will stick around for a while (the Integrator framework is
+definitely getting traction now), so I feel that there is a case for
+putting things in the right format anyway...
+
+FX
+

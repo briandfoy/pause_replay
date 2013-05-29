@@ -1,0 +1,91 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:2298 perl.modules:38
+Return-Path: <mjd@plover.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17938 invoked from network); 14 Oct 1999 16:10:16 -0000
+Received: from plover.com (nunya088@209.152.195.2)
+  by tmtowtdi.perl.org with SMTP; 14 Oct 1999 16:10:16 -0000
+Received: (qmail 12271 invoked by uid 119); 14 Oct 1999 16:10:07 -0000
+Message-ID: <19991014161007.12270.qmail@plover.com>
+To: "Redford, John" <John.Redford@fmr.com>
+cc: modules@perl.org, perl5-porters@perl.org, mjd@plover.com
+Subject: Re: NEW MODULE (pragma): import.pm 
+In-reply-to: Your message of "Thu, 14 Oct 1999 11:57:01 EDT."
+             <C139F4D49384D2118EB60008C7A4337B578490@MSGBOS675NTS.fmr.com> 
+Date: Thu, 14 Oct 1999 12:10:07 -0400
+Approved: news@nntp.perl.org
+From: mjd@plover.com (Mark-Jason Dominus)
+References: <C139F4D49384D2118EB60008C7A4337B578490@MSGBOS675NTS.fmr.com>
+
+> Once I get my namespace manipulation module approved by modules@perl.org
+> <mailto:modules@perl.org> , I would be happy to create it. Then you could
+> write a bundling module, like this:
+> 
+> 
+> 		package MyCompany::CGIBundle;
+> 		use MyCompany::CGI::BobsCode::Foo;
+> 		use MyCompany::CGI::Test::Bar;
+> 		use MyCompany::CGI::BobsBetterCode::Foo2;
+> 		....
+> 		use NameSpace::Transitive;
+> 
+> And then people could just write:
+> 
+> 		use MyCompany::CGIBundle;
+> 
+> to get all the symbols that were exported into MyCompany::CGIBundle
+> re-exported into their own namespace.
+
+I wrote something like this back in February.  Then, just as I was
+finishing up, I thought of some reason why it was useless, and there
+was a better way to do the same thing without the special budling
+module, so I never bothered to release it.  Unfortunately, I no longer
+remember what the better way was.
+
+I'm mentioning it here because I seem to remember that the better was
+was actually pretty obvious, and I'm hoping someone on the mailing
+list will be able to think of it.
+
+Here's the pod from my February work:
+
+=head1 NAME
+
+ModuleBundle - Combine several other modules into one package
+ 
+=head1 SYNOPSIS
+
+Create a package that blooks like this:
+
+        package XYZ;
+        use X;
+        use Y;
+        use Z;
+        use ModuleBundle;
+        @ISA = 'ModuleBundle;
+        1;
+
+Now if you say
+
+        use XYZ;
+
+that is the same as saying
+
+        use X;
+        use Y;
+        use Z;
+
+=head1 DESCRIPTION
+
+See the SYNOPSIS.
+
+=head1 AUTHOR
+
+Mark-Jason Dominus (mjd-perl-bundle@plover.com)
+
+=cut
+
+
+----------------------------------------------------------------
+

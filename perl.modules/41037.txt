@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:41037
+Return-Path: <comdog@panix.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10621 invoked from network); 15 Jun 2005 14:26:54 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 15 Jun 2005 14:26:54 -0000
+Received: (qmail 4073 invoked by uid 225); 15 Jun 2005 14:26:54 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4066 invoked by alias); 15 Jun 2005 14:26:53 -0000
+X-Spam-Status: No, hits=-5.9 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: 63.251.223.186 is neither permitted nor denied by domain of comdog@panix.com)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Wed, 15 Jun 2005 07:26:49 -0700
+Received: (qmail 10612 invoked by uid 515); 15 Jun 2005 14:26:45 -0000
+To: modules@perl.org, ondr@mail.ru (Andrian Zubko)
+Subject: Re: Module submission personal
+Date: Wed, 15 Jun 2005 09:26:44 -0500
+Reply-To: modules@perl.org
+Posted-And-Mailed: yes
+Message-ID: <150620050926445699%comdog@panix.com>
+References: <007801c5713d$81b677d0$0100a8c0@ondr>
+Organization: Perl Author's Upload SErver (PAUSE)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+User-Agent: Thoth/1.5.9 (Carbon/OS X)
+X-Posted-By: 24.12.70.36
+Approved: news@nntp.perl.org
+From: comdog@panix.com (_brian_d_foy)
+
+[[ This message was both posted and mailed: see
+   the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+In article <007801c5713d$81b677d0$0100a8c0@ondr>, Andrian Zubko
+<ondr@mail.ru> wrote:
+
+> > brian d foy:
+> > Which problem are you trying to solve? Can you say more about that
+> > or point to some discussions?
+> 
+> the problem:
+> 
+> http://perl.apache.org/docs/1.0/guide/porting.html#Name_collisions_with_Modu
+> les_and_libs
+> 
+> there we can see 3 solutions:
+
+they don't mention fixing the real problem: relative paths in @INC.
+If you fix that, most of that problem is fixed.
+
+The other problem is when a user wants to load the same module
+name, but from another location. Technology isn't going to fix
+that problem. Don't choose names of modules that already exist
+for your own, use a namespace that separates your modules from
+everyone else's, or load the module by filename. That last one
+is especially important: if you know that's the one you want
+and that you don't want others, you have to make sure that's
+the one you get. You can't rely on @INC to find one that has
+a matching name.
+
+Besides all this, I don't think "personal" is a name that 
+describes what you are actually doing. Even with a good name,
+you have to tailor a bunch of code to use it, which means you
+could have just done the other fixes the mod_perl traps
+suggests, I think.
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+archives at http://www.xray.mpe.mpg.de/mailing-lists/modules
+please send all messages back to modules@perl.org

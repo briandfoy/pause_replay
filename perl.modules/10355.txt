@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10355
+Return-Path: <arnaud@underlands.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2929 invoked by uid 76); 26 Feb 2002 14:17:07 -0000
+Received: from aboukir-101-1-12-jfbobin.adsl.nerim.net (HELO cruncher.Foo.COM) (62.212.100.56)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Tue Feb 26 14:17:07 2002 -0000
+Received: (from arnaud@localhost)
+	by cruncher.Foo.COM (8.11.6/8.11.6) id g1QEGxo23760
+	for modules@perl.org; Tue, 26 Feb 2002 15:16:59 +0100
+Date: Tue, 26 Feb 2002 15:16:59 +0100
+To: modules@perl.org
+Subject: NameSpace query
+Message-ID: <20020226151659.A21312@cruncher.underlands.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+Approved: news@nntp.perl.org
+From: arnaud@cruncher.underlands.org (ASSAD Arnaud)
+
+Hi,
+
+I'd like to upload a module to assist during the debugging phase,
+nothing really new :
+
+the module will provide :
+
+* a watch() function to carp a message on every
+access to the variable.
+Yes the idea is borrowed from the monitor package described in
+'Advanced programming in Perl' from Sriram Srinivasan, but I've tried to
+simplify its use : 'watch($x)' is all you have to do (compare to
+'monitor(\$x, "x")') and I'd like to make it more cutomizable (by
+allowing to set the messages carped, or choose the output...)
+* a wait() function which will carp/croak when a var reach a predefined
+value
+* an assert() function which will die if the cond isn't verified on the
+current line (Yes I know Carp::Assert exists)
+* a print() function (see below for why I redefine it)
+
+* some other useful functions (yet to be determined :-)
+
+
+I know all of this already exist, but AFAIK there isn't any module with
+all this features available, and they are necessary to me for an efficient
+debug.
+
+Furthermore, and I won't hide it's the main Idea behind this module,
+all these functions are called through a special interface :
+
+every function is called throught comments !
+
+use MyDebug;
+
+my $a; # watch($a)
+my $b; # wait($b,==,2)
+
+The main advantage to my mind (let apart it gives me a good reason to
+play with Filter::Simple ;-) is that I can bring code from test
+to prod environement with only one line to comment out
+(the 'use Mydebug;' line)
+I prefer this over the usual $DEBUG var triggering debug code beccause
+the Filter approach allow me to 'hide' more the debugging code.
+Furthermore the Filter's use helps to simplify things for the user by
+hiding all the technicals details...
+Only the program logic remains with no 'debugging noise'
+
+A lot of people pointed me to to others way to do it (Attributes...)
+but I'd really like to explore this way.
+(That doesn't mean that your comments aren't welcome !)
+
+So what name could I use for this module, as it's  more or less an
+experiment I'd prefer a low-profile name (let's avoid 'Debug'  :-)
+If anyone has an Idea which can suggest the use of the 'stealth'
+interface, please feel free to tell it.
+
+Yet I only came up with 
+Filter::Debug (but T'm not satisfied with it as it seems to suggest
+Debugging the Filter module...)
+or
+MyDebug
+
+
+TIA
+
+Arnaud ASSAD
+
+PS: As I already said any comment is welcome (why it's stupid/good,
+suggestion for other useful functions...)

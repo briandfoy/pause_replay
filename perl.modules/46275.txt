@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46275
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9162 invoked from network); 6 Dec 2005 05:04:20 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 6 Dec 2005 05:04:20 -0000
+Received: (qmail 29583 invoked by uid 225); 6 Dec 2005 05:04:19 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29578 invoked by alias); 6 Dec 2005 05:04:19 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO k75.linux.bogus) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 05 Dec 2005 21:04:07 -0800
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.13.5/8.13.5/Debian-3) with ESMTP id jB653sVD022482;
+	Tue, 6 Dec 2005 06:03:54 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.5/8.13.5/Submit) id jB653r3s022479;
+	Tue, 6 Dec 2005 06:03:53 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: "Ivan Nanev" <cyber_indian@hotmail.com>
+Cc: modules@perl.org
+Subject: Re: PAUSE indexer report CYBER/mGen-1.01.tar.gz
+References: <BAY104-F24178E29EBF2FDCF67EFDCFA410@phx.gbl>
+Reply-To: modules@perl.org
+Date: Tue, 06 Dec 2005 06:03:53 +0100
+In-Reply-To: <BAY104-F24178E29EBF2FDCF67EFDCFA410@phx.gbl> (Ivan Nanev's
+	message of "Mon, 05 Dec 2005 16:36:06 -0500")
+Message-ID: <87psoan7eu.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 05 Dec 2005 16:36:06 -0500, "Ivan Nanev" <cyber_indian@hotmail.com> said:
+
+  > Dear colleague,
+  > I've uploaded my module Bio::mGen into cpan, but can't figure out why
+  > it doesn't pop up in the
+  > http://www.cpan.org/modules/01modules.index.html list - can you help
+  > me ?
+
+Maybe I'm missing somethng but maybe you just do not understand the
+hierarchical namespace concept of perl. You registered Bio::mGen but
+then you distributed mGen. This is not the same.
+
+You must fix your distribution, best bet would be to add a testfile
+that passes a test like the following:
+
+  BEGIN {
+      print "1..1\n";
+  }
+  use strict;
+  use Bio::mGen;
+  print "ok 1\n";
+
+--or--
+
+  use Test::More tests => 1;
+  use_ok("Bio::mGen");
+
+(I wonder how you are using your own module. The manpage state 'use
+Bio::mGen' would be appropriate, but you have no orresponding package
+'Bio:mGen'. Something is fishy here.)
+
+Then please rename your Makefile.pl to Makefile.PL and your README.txt
+to README and make a new release.
+
+Please refrain from uploading both a .zip and a .tar.gz file. Even if
+the files are small, it serves nobody and uses space on the CPAN.
+
+Thanks and good luck,
+-- 
+andreas

@@ -1,0 +1,98 @@
+Newsgroups: perl.cpan.discuss,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.cpan.discuss:165 perl.modules:46584
+Return-Path: <tylerm@ActiveState.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 29878 invoked from network); 24 Dec 2005 01:50:19 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 24 Dec 2005 01:50:19 -0000
+Received: (qmail 22821 invoked by uid 225); 24 Dec 2005 01:50:18 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22811 invoked by alias); 24 Dec 2005 01:50:18 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from shawidc-mo1.cg.shawcable.net (HELO pd2mo1so.prod.shaw.ca) (24.71.223.10)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 23 Dec 2005 17:50:15 -0800
+Received: from pd3mr7so.prod.shaw.ca (pd3mr7so-qfe3.prod.shaw.ca [10.0.141.23])
+ by l-daemon (Sun ONE Messaging Server 6.0 HotFix 1.01 (built Mar 15 2004))
+ with ESMTP id <0IRZ003MUBQ07VA0@l-daemon>; Fri,
+ 23 Dec 2005 18:49:12 -0700 (MST)
+Received: from pn2ml3so.prod.shaw.ca ([10.0.121.147])
+ by pd3mr7so.prod.shaw.ca (Sun ONE Messaging Server 6.0 HotFix 1.01 (built Mar
+ 15 2004)) with ESMTP id <0IRZ0099YBQ0CTI0@pd3mr7so.prod.shaw.ca>; Fri,
+ 23 Dec 2005 18:49:12 -0700 (MST)
+Received: from crackerjack ([24.87.44.213])
+ by l-daemon (Sun ONE Messaging Server 6.0 HotFix 1.01 (built Mar 15 2004))
+ with ESMTP id <0IRZ00DI0BQ07OC0@l-daemon>; Fri,
+ 23 Dec 2005 18:49:12 -0700 (MST)
+Received: from faraway by crackerjack with local (Exim 4.60)
+	(envelope-from <tylerm@ActiveState.com>)	id 1EpySC-00006I-Hz; Fri,
+ 23 Dec 2005 17:44:12 -0800
+Date: Fri, 23 Dec 2005 17:44:12 -0800
+Subject: Re: Module submission Test::CPAN
+In-reply-to: <200512231731.jBNHV0W2057748@smtp8.activestate.com>
+To: modules@perl.org, comdog@panix.com, module-build-discuss@lists.cpan.org,
+ cpan-discuss@perl.org
+Cc: highinbc@gmail.com
+Message-ID: <20051224014408.GA32711@yi.org>
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii
+Content-disposition: inline
+References: <200512220118.jBM1I5Ks023025@pause.perl.org>
+ <221220050919259657%comdog@panix.com> <20051222175705.GA4741@yi.org>
+ <200512231731.jBNHV0W2057748@smtp8.activestate.com>
+User-Agent: Mutt/1.5.11
+Approved: news@nntp.perl.org
+From: tylerm@ActiveState.com (Tyler MacDonald)
+
+> >  Actually, I just looked over Test::Prereq, and it does look like we
+> > are doing different things (albeit to check a similar result). The primary
+> > motivation behind Test::CPAN is to test distributions where the Makefile.PL
+> > (or Build.PL) itself depends on a package being installed;
+> 
+> I'm not sure what that really means (perhaps an example would help), but
+> I don't think CPAN really matters for the problem (that just happens to
+> be where the modules are). 
+
+	This is my overall goal for this module: Seeing how CPAN.pm reacts
+when it tries to unpack and build your module.
+
+	Right now, it just sees if your CPAN.pm manages to get to the point
+of making a "Makefile" to glean your dependancies. I would also like to add
+tests to see if it manages to get into a position to build at all, as well
+as create a cpan "simulator" script where you do something like:
+
+	cpanemu /path/to/my/module
+
+	Which would run the "distdir" action on your module and fool CPAN.pm
+into thinking it has just downloaded your module from CPAN and unpacked it
+there.
+
+	The important thing here is that it's testing CPAN's reaction to
+your module -- the important *task* I created this first really dirty alpha
+of it for, is to see if CPAN realizes that you depend on other modules. The
+important reason for that is the case where your Makefile.PL or Build.PL
+makes use of another module. In my case, I have a database module I want to
+release on CPAN, which provides a Module::Build subclass that installs
+schema files into the correct directory. I havent released it on CPAN yet,
+but I'd like to... but then, the Module::Build subclass will be used by
+other distributions that make use of my module, to install *their* schemas.
+So when me or anybody else releases a distribution with that behaviour, I'd
+like the Module::Build logic to find the appropriate subclass to be
+testable.
+
+> >From the name, I think Test::CPAN would test CPAN. You're testing
+> something else, though, so I think that should be in the name. :)
+
+	So as you can see I'm testing CPAN :-) I understand your reluctance
+to allow the module to register since it's a pretty "core" sounding name,
+but I intend to flesh out its functionality further, and would love it of
+other people contributed as well.
+
+	Cheers,
+		Tyler
+

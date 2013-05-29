@@ -1,0 +1,126 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:4599 perl.modules:675
+Return-Path: <Raphael.Manfredi@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12651 invoked from network); 8 Dec 1999 08:56:52 -0000
+Received: from beta.st.com (HELO beta.dmz-eu.st.com) (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 8 Dec 1999 08:56:52 -0000
+Received: from eux100.sgp.st.com (eux100.sgp.st.com [164.129.225.7])
+	by beta.dmz-eu.st.com (Postfix) with ESMTP id 7977425FE
+	for <modules@perl.org>; Wed,  8 Dec 1999 08:56:09 +0000 (GMT)
+Received: from lod23.gnb.st.com (lod28.gnb.st.com [164.129.116.152])
+	by eux100.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id JAA26073;
+	Wed, 8 Dec 1999 09:56:09 +0100 (MET)
+To: perl5-porters@perl.org, modules@perl.org
+Subject: ANNOUNCE: Released LockFile-Simple-0.2.0
+X-Mailer: NMH [version 1.0.1]
+Organization: ST Microelectronics, Grenoble, France
+Date: Wed, 08 Dec 1999 09:57:03 +0100
+Message-ID: <27097.944643423@lod23.gnb.st.com>
+Sender: manfredi@lod23.gnb.st.com
+Approved: news@nntp.perl.org
+From: Raphael.Manfredi@st.com (Raphael Manfredi)
+
+I have released version 0.2 of the LockFile::Simple locking scheme.
+
+It's backward compatible with version 0.1, but the architecture of
+the module has been rethought completely. It should be now easier
+for implementers to add new locking schemes to the LockFile:: family,
+yet with no application changes on the "lock release" part, and only
+a small change for the "lock taking" part, when the OO interface is not
+used.
+
+NOTE to modules@perl.org: This module implicitely reserves the
+LockFile::Lock:: namespace for all locking schemes, and grabs
+the LockFile::Manager name.
+
+This changes slightly from my initial request sent to modules@perl.org
+(<12235.943448779@lod23.gnb.st.com> from 24/11/1999).
+
+Appended is the README file for the module.
+
+Raphael
+
+------------------------------------------------------------------------
+                        LockFile::Simple 0.2
+              Copyright (c) 1998-1999, Raphael Manfredi
+
+------------------------------------------------------------------------
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the Artistic License, a copy of which can be
+    found with perl.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    Artistic License for more details.
+------------------------------------------------------------------------
+
+       *** This is alpha software -- use at your own risks ***
+
+Name           DSLI  Description                                  Info
+-----------    ----  -------------------------------------------- -----
+LockFile::           Application-level locking facilities
+::Simple       adpr  Simple file locking mechanism                RAM
+::Lock::       ----  Lock handles created by LockFile::* schemes  RAM
+::Manager      ----  Records locks created by LockFile::*         RAM
+
+SYNOPSIS
+
+	#
+	# The simple way
+	#
+
+	use LockFile::Simple qw(lock unlock);
+
+	lock("file") || die "Can't lock file\n";
+	open(FILE, ">>file") || die "Can't append to file: $!\n";
+	....
+	close FILE;
+	unlock("file");
+
+	#
+	# The more elaborated way
+	#
+
+	use LockFile::Simple;
+
+	my $scheme = LockFile::Simple->make(
+		-autoclean => 1,
+		-format => "%f.lck");
+
+	$scheme->lock($0, "/var/run/%F.%p") || die "already running";
+
+	my $lock = $sheme->lock("file");
+	open(FILE, ">>file") || die "Can't append to file: $!\n";
+	....
+	close FILE;
+	$lock->release;
+
+DESCRIPTION
+
+The LockFile::Simple extension provides simple file locking, of
+the advisory kind, i.e. it requires cooperation between applications
+wishing to lock the same files.
+
+It is meant to be used in quick-and-dirty scripts or more elaborated
+programs that want a simple locking scheme, yet with a reasonable
+level of configuration.
+
+This code comes from the mailagent-3.0 package and retains most
+of its configuration abilities.
+
+I do not intend to leave this simple scheme as-is forever. The code is
+designed to be extended to offer other locking schemes, such as
+MTA locking--usually a combination of this simple scheme and flock().
+
+Despite being flagged as simple and not bullet proof all over the
+place, locking is good enough in practice for simple applications
+wishing to protect against concurrent actions.
+
+There is an embeded POD manual page in Simple.pm.
+
+-- Raphael Manfredi <Raphael_Manfredi@pobox.com>
+

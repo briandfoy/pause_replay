@@ -1,0 +1,61 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21061
+Return-Path: <jgorman@webbysoft.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22935 invoked by uid 76); 12 May 2003 18:09:05 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Mon, 12 May 2003 11:09:05 -0700
+Received: (qmail 10117 invoked by uid 225); 12 May 2003 18:09:04 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10112 invoked by uid 507); 12 May 2003 18:09:04 -0000
+Received: from nx.eastlink.ca (HELO mx1.eastlink.ca) (24.222.0.30) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Mon, 12 May 2003 11:09:02 -0700
+Received: from localhost.localdomain ([24.222.6.16]) by mx1.eastlink.ca (iPlanet Messaging Server 5.2 HotFix 1.12 (built Feb 13 2003)) with ESMTP id <0HES005RTD1N36@mx1.eastlink.ca> for modules@perl.org; Mon, 12 May 2003 15:08:12 -0300 (ADT)
+Date: Mon, 12 May 2003 15:08:11 -0300
+Subject: Re: Module testing question
+To: modules@perl.org
+Cc: "Sean M. Burke" <sburke@cpan.org>
+Message-ID: <1052762892.8615.1370.camel@webian>
+MIME-version: 1.0
+X-Mailer: Ximian Evolution 1.0.5
+Content-type: text/plain
+Content-transfer-encoding: 7BIT
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: jgorman@webbysoft.com (John Gorman)
+
+Hi Sean
+
+Since no one answered I will answer myself.  It turns out
+that if we let the automated test fail for any reason,
+the CPAN.pm method of installation will crash and burn:
+
+# perl -MCPAN -e shell
+cpan> install DBIx::BabelKit
+... Download, test fails, install fails.
+
+This means that test.pl should contain something
+simple like this which succeeds if the required
+modules are present and if our module compiles:
+
+#!/usr/bin/env perl
+
+use Test;
+BEGIN { plan tests => 1 };
+use DBI;
+use DBIx::BabelKit;
+ok(1); # If we made it this far, we're ok.
+
+I moved my regression test script to:
+
+$ ./regression.test
+
+Cheers, John
+
+John Gorman
+jgorman@webbysoft.com
+Senior Database Architect
+

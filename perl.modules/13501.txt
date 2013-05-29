@@ -1,0 +1,282 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13501
+Return-Path: <clkao@portege.clkao.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11074 invoked by uid 76); 30 Aug 2002 16:46:26 -0000
+Received: from msr92.hinet.net (HELO msr.hinet.net) (168.95.4.192)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Fri Aug 30 16:46:26 2002 -0000
+Received: from portege.clkao.org (61-223-25-195.HINET-IP.hinet.net [61.223.25.195])
+	by msr.hinet.net (8.9.3/8.9.3) with ESMTP id AAA03593
+	for <modules@perl.org>; Sat, 31 Aug 2002 00:47:30 +0800 (CST)
+Resent-From: clkao@portege.clkao.org
+Received: by portege.clkao.org (Postfix, from userid 1000)
+	id B3D49BAA; Sat, 31 Aug 2002 00:45:15 +0800 (CST)
+Resent-Date: Sat, 31 Aug 2002 00:45:15 +0800
+Resent-Message-ID: <20020830164515.GA49896@portege.clkao.org>
+Resent-To: modules@perl.org
+Date: Sat, 31 Aug 2002 00:41:26 +0800
+To: modules@perl.org
+Cc: dgsupport@wadsack-allen.com, mgjv@tradingpost.com.au
+Subject: GD::Graph cylinder support
+Message-ID: <20020830164126.GA49690@portege.clkao.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="s/l3CgOIzMHHjg/5"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.1i
+Approved: news@nntp.perl.org
+From: clkao@clkao.org (Chia-liang Kao)
+
+--s/l3CgOIzMHHjg/5
+Content-Type: multipart/mixed; boundary="2fHTh5uZTiUOsy+g"
+Content-Disposition: inline
+
+
+--2fHTh5uZTiUOsy+g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+Hi,
+
+I worked out cylinder support for GD::Graph a while ago. while it
+requires some patches to modules provided by GD::Graph3d, which seems
+not being maintained for a while. any suggestion about how i could
+publish the cylinder module for people who need it?
+
+Cheers,
+CLK
+
+--2fHTh5uZTiUOsy+g
+Content-Type: message/rfc822
+Content-Disposition: inline
+
+Date: Thu, 15 Aug 2002 22:42:32 +0800
+From: Chia-liang Kao <clkao@clkao.org>
+To: dgsupport@wadsack-allen.com
+Cc: mgjv@tradingpost.com.au, Autrijus Tang <autrijus@autrijus.org>
+Subject: GD::Graph::bars3d rotate_chart support and cylinder support
+Message-ID: <20020815144231.GA89764@portege.clkao.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="1LKvkjL3sHcu1TtY"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.1i
+
+
+--1LKvkjL3sHcu1TtY
+Content-Type: multipart/mixed; boundary="gKMricLos+KVdGMg"
+Content-Disposition: inline
+
+
+--gKMricLos+KVdGMg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+hi Jeremy,
+
+attached are patch to make the bars3d module friendly to the
+rotate_chart option, and the module for drawing cylinder charts.
+
+also the lines3d module around line 415 does not have boundary
+condition checking and may cause divide by zero. i haven't got time to
+fix it and just comment them out.
+
+maybe things should eventually consolidate to the GD::Graph module
+when the 3d option is enabled.
+
+Cheers,
+CLK
+
+--gKMricLos+KVdGMg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="bars3d.diff"
+Content-Transfer-Encoding: quoted-printable
+
+--- /usr/local/lib/perl5/site_perl/5.6.1/GD/Graph/bars3d.pm	Fri Dec  7 07:4=
+5:08 2001
++++ bars3d.pm	Tue Aug 13 19:42:28 2002
+@@ -89,18 +89,20 @@
+ 	my $zero =3D $self->{zeropoint};
+=20
+ 	my $i;
+-	for $i (0 .. $self->{_data}->num_points()) {
++	my @iterate =3D  (0 .. $self->{_data}->num_points());
++	for $i ($self->{rotate_chart} ? reverse(@iterate) : @iterate) {
+ 		my ($xp, $t);
+ 		my $overwrite =3D 0;
+ 		$overwrite =3D $self->{overwrite} if defined $self->{overwrite};
+ 	=09
+ 		my $j;
+-		for $j (1 .. $self->{_data}->num_sets()) {
++		my @iterate =3D (1 .. $self->{_data}->num_sets());
++		for $j (($self->{rotate_chart} && $self->{cumulate} =3D=3D 0) ? reverse(=
+@iterate) : @iterate) {
+ 			my $value =3D $self->{_data}->get_y( $j, $i );
+ 			next unless defined $value;
+=20
+ 			my $bottom =3D $self->_get_bottom($j, $i);
+-				$value =3D $self->{_data}->get_y_cumulative($j, $i)
++			$value =3D $self->{_data}->get_y_cumulative($j, $i)
+ 				if ($self->{cumulate});
+=20
+ 			# Pick a data colour, calc shading colors too, if requested
+@@ -128,7 +130,6 @@
+=20
+ 			# get coordinates of top and center of bar
+ 			($xp, $t) =3D $self->val_to_pixel($i + 1, $value, $j);
+-
+ 			# calculate offsets of this bar
+ 			my $x_offset =3D 0;
+ 			my $y_offset =3D 0;
+@@ -141,23 +142,45 @@
+=20
+ 			# calculate left and right of bar
+ 			my ($l, $r);
++			if ($self->{rotate_chart}) {
++			    $l =3D $bottom;
++			    ($r) =3D $self->val_to_pixel($i + 1, $value, $j);
++			}
++
+ 			if( (ref $self eq 'GD::Graph::mixed') || ($overwrite >=3D 1) )
+ 			{
++			    if ($self->{rotate_chart}) {
++				$bottom =3D $t + $self->{x_step}/2 - $bar_s + $x_offset;
++				$t =3D $t - $self->{x_step}/2 + $bar_s + $x_offset;
++			    }
++			    else {
+ 				$l =3D $xp - $self->{x_step}/2 + $bar_s + $x_offset;
+ 				$r =3D $xp + $self->{x_step}/2 - $bar_s + $x_offset;
++			    }
+ 			}
+ 			else
+ 			{
++			    if ($self->{rotate_chart}) {
++				warn "base is $t";
++				$bottom =3D $t - $self->{x_step}/2
++				    + ($j) * $self->{x_step}/$self->{_data}->num_sets()
++					+ $bar_s + $x_offset;
++				$t =3D $t - $self->{x_step}/2
++				    + ($j-1) * $self->{x_step}/$self->{_data}->num_sets()
++					- $bar_s + $x_offset;
++				warn "top bottom is ($t, $bottom)";
++			    }
++			    else {
+ 				$l =3D $xp=20
+-					- $self->{x_step}/2
++				    - $self->{x_step}/2
+ 					+ ($j - 1) * $self->{x_step}/$self->{_data}->num_sets()
+-					+ $bar_s + $x_offset;
++					    + $bar_s + $x_offset;
+ 				$r =3D $xp=20
+-					- $self->{x_step}/2
++				    - $self->{x_step}/2
+ 					+ $j * $self->{x_step}/$self->{_data}->num_sets()
+-					- $bar_s + $x_offset;
++					    - $bar_s + $x_offset;
++			    }
+ 			}
+-
+ 			if ($value >=3D 0) {
+ 				# draw the positive bar
+ 				$self->draw_bar( $g, $l, $t, $r, $bottom-$y_offset, $dsci, $brci, 0 )
+
+--gKMricLos+KVdGMg
+Content-Type: application/x-perl
+Content-Disposition: attachment; filename="cylinder.pm"
+Content-Transfer-Encoding: quoted-printable
+
+# $File: //depot/RG/rg/lib/RG/lib/GD/Graph/cylinder.pm $ $Author: autrijus =
+$=0A# $Revision: #3 $ $Change: 370 $ $DateTime: 2002/07/17 20:38:38 $=0A=0A=
+package GD::Graph::cylinder;=0A=0Ause strict;=0A=0Ause GD::Graph::axestype3=
+d;=0Ause GD::Graph::utils qw(:all);=0Ause GD::Graph::colour qw(:colours);=
+=0A=0Ause base qw/GD::Graph::bars3d/;=0A$GD::Graph::cylinder::VERSION =3D '=
+0.1';=0A=0Amy %Defaults =3D (=0A	# Spacing between the bars=0A	bar_spacing =
+	=3D> 0,=0A=0A	# The 3-d extrusion depth of the bars=0A	bar_depth =3D> 10,=
+=0A);=0A=0Asub initialise=0A{=0A	my $self =3D shift;=0A=0A	my $rc =3D $self=
+->SUPER::initialise();=0A	$self->set(correct_width =3D> 1);=0A=0A	while( my=
+($key, $val) =3D each %Defaults ) { =0A		$self->{$key} =3D $val =0A	} # end=
+ while=0A=0A	return $rc;=0A} # end initialise=0A=0Asub draw_bar_h {=0A    m=
+y $self =3D shift;=0A    my $g =3D shift;=0A    my( $l, $t, $r, $b, $dsci, =
+$brci, $neg ) =3D @_;=0A    my $fnord =3D $g->colorAllocate(0,0,0);=0A=0A  =
+  my $depth =3D $self->{bar_depth};=0A=0A    my ($lighter, $darker) =3D ($d=
+sci, $dsci);=0A    if ($self->{'3d_shading'}) {=0A	$lighter =3D $self->{'3d=
+_highlights'}[$dsci];=0A	$darker =3D $self->{'3d_shadows'}[$dsci];=0A    }=
+=0A    $g->line($l+$depth, $t+1, $r+$depth, $t+1, $dsci);=0A    $g->line($l=
++$depth, $b, $r+$depth, $b, $dsci);=0A    $g->arc($r+$depth, ($t+$b)/2, $de=
+pth*2, ($b-$t), 270, 90, $dsci);=0A    $g->arc($l+$depth, ($t+$b)/2, $depth=
+*2, ($b-$t), 90, 270, $dsci);=0A    # find border=0A    my $foo =3D $l+$dep=
+th;=0A    --$foo=0A	until $foo =3D=3D $l || $g->getPixel($foo, $t+($b-$t)/5=
+) =3D=3D $dsci;=0A    my $bar =3D $foo+1;=0A    ++$bar=0A	until $bar =3D=3D=
+ $foo || $g->getPixel($bar, $t+($b-$t)/5) =3D=3D $dsci;=0A    $g->line($foo=
+, $t+($b-$t)/5, $bar, $t+($b-$t)/5, $dsci);=0A    $g->line($foo, $b-($b-$t)=
+/5, $bar, $b-($b-$t)/5, $dsci);=0A    $g->fillToBorder($l+$depth, ($t+$b)/2=
+, $dsci, $dsci);=0A    $g->arc($l+$depth, ($b+$t)/2, $depth*2, ($b-$t), 90,=
+ 270, $dsci);=0A    if ($foo < $bar + 3) {=0A	$g->fillToBorder(($l+$r)/2+$d=
+epth, $t+($b-$t)/5-1, $dsci, $lighter)=0A	    unless $g->getPixel(($l+$r)/2=
++$depth, $t+($b-$t)/5-1) =3D=3D $dsci;=0A	$g->fillToBorder(($l+$r)/2+$depth=
+, $b-($b-$t)/5+1, $dsci, $darker)=0A	    unless $g->getPixel(($l+$r)/2+$dep=
+th, $b-($b-$t)/5+1) =3D=3D $dsci;=0A	$g->fillToBorder(($l+$r)/2, ($t+$b)/2,=
+ $dsci, $dsci);=0A    }=0A    $g->arc($l+$depth, ($b+$t)/2, $depth*2, ($b-$=
+t), 90, 270, $brci);=0A    $g->arc($r+$depth, ($b+$t)/2, $depth*2, ($b-$t),=
+ 0, 360, $brci);=0A    $g->line($l+$depth, $t+1, $r+$depth, $t+1, $brci);=
+=0A    $g->line($l+$depth, $b, $r+$depth, $b, $brci);=0A    $g->fillToBorde=
+r($r+$depth, ($b+$t)/2, $brci, $dsci);=0A}=0A=0Asub draw_bar {=0A	my $self =
+=3D shift;=0A	return $self->draw_bar_h(@_) if $self->{rotate_chart};=0A	my =
+$g =3D shift;=0A	my( $l, $t, $r, $b, $dsci, $brci, $neg ) =3D @_;=0A	my $fn=
+ord =3D $g->colorAllocate(0,0,0);=0A=0A	my $depth =3D $self->{bar_depth};=
+=0A=0A	my ($lighter, $darker) =3D ($dsci, $dsci);=0A	if ($self->{'3d_shadin=
+g'}) {=0A	    $lighter =3D $self->{'3d_highlights'}[$dsci];=0A	    $darker =
+=3D $self->{'3d_shadows'}[$dsci];=0A	}=0A=0A	$g->line($l+1, $t-$depth, $l+1=
+, $b-$depth, $dsci);=0A	$g->line($r, $t-$depth, $r, $b-$depth, $dsci);=0A=
+=0A	$g->arc(($l+$r)/2, $t-$depth, ($r-$l), $depth*2, 180, 360, $dsci);=0A	$=
+g->arc(($l+$r)/2, $b-$depth, ($r-$l), $depth*2, 0, 180, $dsci);=0A	# find b=
+order=0A	my $foo =3D $b-$depth+1;=0A	++$foo=0A	    until $foo =3D=3D $b || =
+$g->getPixel($l+($r-$l)/5,$foo) =3D=3D $dsci;=0A	my $bar =3D $foo-1;=0A	--$=
+bar=0A	    until $bar =3D=3D $foo || $g->getPixel($l+($r-$l)/5,$bar) =3D=3D=
+ $dsci;=0A	$g->line($l+($r-$l)/5, $bar, $l+($r-$l)/5, $foo, $dsci);=0A	$g->=
+line($r-($r-$l)/5, $bar, $r-($r-$l)/5, $foo, $dsci);=0A	$g->fillToBorder(($=
+l+$r)/2, $t-$depth, $dsci, $dsci);=0A	$g->arc(($l+$r)/2, $b-$depth, ($r-$l)=
+, $depth*2, 0, 180, $dsci);=0A	if ($foo > $bar + 3) {=0A	    $g->fillToBord=
+er($l+($r-$l)/5-1, ($foo+$bar)/2, $dsci, $lighter)=0A		unless $g->getPixel(=
+$l+($r-$l)/5-1, ($foo+$bar)/2) =3D=3D $dsci;=0A	    $g->fillToBorder($r-($r=
+-$l)/5+1, ($foo+$bar)/2, $dsci, $darker)=0A		unless $g->getPixel($r-($r-$l)=
+/5+1, ($foo+$bar)/2) =3D=3D $dsci;=0A	    $g->fillToBorder(($l+$r)/2, ($t+$=
+b)/2, $dsci, $dsci);=0A	}=0A	$g->arc(($l+$r)/2, $b-$depth, ($r-$l), $depth*=
+2, 0, 180, $brci);=0A	$g->arc(($l+$r)/2, $t-$depth, ($r-$l), $depth*2, 0, 3=
+60, $brci);=0A	$g->line($l+1, $t-$depth, $l+1, $b-$depth, $brci);=0A	$g->li=
+ne($r, $t-$depth, $r, $b-$depth, $brci);=0A	$g->fillToBorder(($l+$r)/2, $t-=
+$depth, $brci, $dsci);=0A}=0A=0A1;=0A=0A
+--gKMricLos+KVdGMg--
+
+--1LKvkjL3sHcu1TtY
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (FreeBSD)
+Comment: For info see http://www.gnupg.org
+
+iD8DBQE9W73Xk1XldlEkA5YRAi/7AJ41F8YFApkMZmIKZaZd9yFvwCl5JQCfbaKo
+jI1k1i+RTE+f0rUmLb7LR9A=
+=Uoxw
+-----END PGP SIGNATURE-----
+
+--1LKvkjL3sHcu1TtY--
+
+--2fHTh5uZTiUOsy+g--
+
+--s/l3CgOIzMHHjg/5
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.7 (FreeBSD)
+
+iD8DBQE9b6A1k1XldlEkA5YRAhA4AJ9YpUEyRGfWYuqPsackEpB0pP5S4ACdHRNz
+ozRJ83ZpCHOkozOGCuv5vgA=
+=cqO0
+-----END PGP SIGNATURE-----
+
+--s/l3CgOIzMHHjg/5--

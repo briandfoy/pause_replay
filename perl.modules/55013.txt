@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:55013
+Return-Path: <mark@aufflick.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 3667 invoked from network); 22 Jun 2007 17:23:26 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 Jun 2007 17:23:26 -0000
+Received: (qmail 5124 invoked by uid 225); 22 Jun 2007 17:23:26 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 5117 invoked by alias); 22 Jun 2007 17:23:25 -0000
+X-Spam-Status: No, hits=0.7 required=8.0
+	tests=BAYES_50,DKIM_POLICY_SIGNSOME,DK_POLICY_SIGNSOME,SPF_NEUTRAL
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from an-out-0708.google.com (HELO an-out-0708.google.com) (209.85.132.244)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 22 Jun 2007 10:23:21 -0700
+Received: by an-out-0708.google.com with SMTP id c25so176378ana
+        for <modules@perl.org>; Fri, 22 Jun 2007 10:23:15 -0700 (PDT)
+Received: by 10.100.123.9 with SMTP id v9mr1822265anc.1182532995603;
+        Fri, 22 Jun 2007 10:23:15 -0700 (PDT)
+Received: by 10.100.140.3 with HTTP; Fri, 22 Jun 2007 10:23:15 -0700 (PDT)
+Message-ID: <7076b53f0706221023i3b7e2101id365e1c306faf8ac@mail.gmail.com>
+Date: Sat, 23 Jun 2007 03:23:15 +1000
+To: modules@perl.org
+Subject: Yet another simple http daemon module (YASHDM)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Approved: news@nntp.perl.org
+From: mark@aufflick.com ("Mark Aufflick")
+
+Hi,
+
+I am polishing off a module I wrote to make web app/service
+prototyping easier (well it seems easier for me anyway).
+
+The gist of it is a module that lets you create a server and mount
+code refs to uris, much like Ruby's WEBrick. In fact that was the
+inspiration for the name:
+
+HTTP::Server::Brick
+
+HTTP::Server::Brick is not a clone of WEBrick - it's "in the style of"
+WEBrick like
+those movies in the discount VHS bin are "in the style of Lassie": The good guys
+get saved, the bad guys get rounded up, but the dog's never quite as
+well trained...
+
+Anyway, I thought I should check if there were any objections to the name etc.
+
+I know it's a somewhat 'polluted' area with many similar modules, but
+nothing that quite hits the spot. HTTP::Daemon and
+HTTP::Server::Simple aren't as simple/terse and HTTP::Daemon::App is
+geared towards a single app mounted at root. A very short synopsis is:
+
+my $server = HTTP::Server::Brick->new( port => 8888 );
+
+$server->mount( '/foo/bar' => { path => '/some/path/htdocs' }  );
+
+$server->mount( '/test/proc' => {
+	handler => sub {
+	    my ($req, $res) = @_;
+	    $res->add_content("<h1>Foo</h1><p>$req->{path_info}</p>");
+	    1;
+        },
+        wildcard => 1,
+});
+$server->mount( '/favicon.ico' => {
+	handler => sub { RC_NOT_FOUND },
+});
+
+Cheers.
+
+-- 
+Mark Aufflick
+  contact info at http://mark.aufflick.com/about/contact

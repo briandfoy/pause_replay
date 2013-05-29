@@ -1,0 +1,110 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:38217
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18204 invoked from network); 8 Feb 2005 00:19:13 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 8 Feb 2005 00:19:13 -0000
+Received: (qmail 17011 invoked by uid 225); 8 Feb 2005 00:19:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17006 invoked by alias); 8 Feb 2005 00:19:12 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 07 Feb 2005 16:19:10 -0800
+Received: from pause.perl.org (localhost [127.0.0.1])
+	by pause.perl.org (8.12.3/8.12.3/Debian-7.1) with ESMTP id j180J664015338
+	for <modules@perl.org>; Tue, 8 Feb 2005 01:19:06 +0100
+Received: (from nobody@localhost)
+	by pause.perl.org (8.12.3/8.12.3/Debian-7.1) id j180J6hB015336;
+	Tue, 8 Feb 2005 01:19:06 +0100
+Date: Tue, 8 Feb 2005 01:19:06 +0100
+Message-ID: <200502080019.j180J6hB015336@pause.perl.org>
+Subject: Module submission IPC::Shm::Simple
+Reply-To: modules@perl.org
+To: modules@perl.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       IPC::Shm::Simple
+  DSLIP:       adpOp
+  description: String data in SysV shared memory.
+  userid:      KCODY (K Cody)
+  chapterid:    5 (Networking_Devices_IPC)
+  communities:
+
+  similar:
+    IPC::ShareLite
+
+  rationale:
+
+    This class is the spawn of another, broader IPC::Shm project, which
+    aims to provide complete and intuitive access to PERL data shared
+    (or bequeathed) between processes.
+
+    That project originally used IPC::ShareLite as its lowest-level
+    interface to SysV shared memory. As the code progressed,
+    inadequacies in IPC::ShareLite's API became apparent:
+
+    1) Can only use ipckey's. No ability to attach to a shmid from
+    PERL, even though the C implementation itself does so. This results
+    in severe pollution of a 32-bit integer namespace... unfriendly
+    territory to begin with.
+
+    2) The existence of a sharelite_unlock() synonym at this layer
+    caused a major bug in sharelite_lock(LOCK_EX) to go undiscovered.
+
+    3) Redundant constructor arguments (create,exclusive).
+
+    4) Obtuse segment removal interface.
+
+    Of course, actually tearing through all the code revealed a few
+    more implementation shortcomings:
+
+    1) No real validation that IPC::ShareLite actually created the
+    shared memory segment it attached to, just the number '1' in the
+    segment header.
+
+    2) Inconsistent / broken error reporting. Even when the C code
+    appears to check error conditions, somehow only -EAGAIN ever gets
+    back to PERL.
+
+    3) The sharelite_version code doesn't seem to do anything about
+    wraparound, and it was coded as an unsigned int.
+
+    IPC::Shm::Simple aims to solve all of these issues, and provide a
+    clean and consistent API for IPC::Shm to complete.
+
+    Some of the changes will, of course, break existing IPC::ShareLite
+    users, thus are being made in a new module. At some later date, if
+    demand arises, a compatibility class would be trivial.
+
+    Namespace rationale: The usefulness of this (and the prior) module
+    is to store simple (string or numeric) data in SysV shared memory.
+
+  enteredby:   KCODY (K Cody)
+  enteredon:   Tue Feb  8 00:19:05 2005 GMT
+
+The resulting entry would be:
+
+IPC::Shm::
+::Simple          adpOp String data in SysV shared memory.           KCODY
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=2d800000_9cc2131048fe3812&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=2d800000_9cc2131048fe3812&SUBMIT_pause99_add_mod_insertit=1

@@ -1,0 +1,54 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2503
+Return-Path: <B.Ingerson@epixtech.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1824 invoked from network); 21 Jul 2000 20:38:31 -0000
+Received: from hq4.epixtech.com (192.206.159.158)
+  by tmtowtdi.perl.org with SMTP; 21 Jul 2000 20:38:31 -0000
+Subject: RFC for namespace "Inline"
+To: modules@perl.org
+Bcc: 
+X-Mailer: Lotus Notes Release 5.0.2a (Intl) 23 November 1999
+Message-ID: <OF9FB03D33.5C5CD53F-ON87256923.00716DE3@epixtech.com>
+Date: Fri, 21 Jul 2000 13:44:08 -0700
+X-MIMETrack: Serialize by Router on HQ4/Amlibs(Release 5.0.4 |June 8, 2000) at 07/21/2000
+ 02:43:21 PM
+MIME-Version: 1.0
+Content-type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: B.Ingerson@epixtech.com
+
+
+I am writing a module called Inline.pm. It uses source filtering to pull
+out pieces of C (for now) source code from within perl code. It then
+compiles the code into a shared object (unless one already exists) and
+DynaLoads the module. Inline will also create all of the parameter-stack
+bindings for simple typemaps, just like XS (but without the mess :-)
+
+It is meant to be a resonable alternative to XS. Does "Inline" seem like a
+reasonable name?
+
+SYNOPSIS
+   package Foo;
+   use Inline;
+
+   print "2 + 2 = ", add(2, 2), "\n";
+
+   INLINE :C {
+   long add(long a, long b) {
+       return a + b;
+   }
+   }
+
+   INLINE :COBOL {
+   ...
+   }
+   __END__
+
+
+
+
+
+

@@ -1,0 +1,94 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:58145 perl.module-authors:6113
+Return-Path: <Tim.Bunce@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 27718 invoked from network); 10 Dec 2007 11:08:13 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 10 Dec 2007 11:08:13 -0000
+Received: (qmail 22163 invoked by uid 225); 10 Dec 2007 11:08:11 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22144 invoked by alias); 10 Dec 2007 11:08:10 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from a-sasl-quonix.sasl.smtp.pobox.com (HELO sasl.smtp.pobox.com) (208.72.237.25)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 10 Dec 2007 03:07:56 -0800
+Received: from a-sasl-quonix (localhost [127.0.0.1])
+	by a-sasl-quonix.pobox.com (Postfix) with ESMTP id E14E82B40;
+	Mon, 10 Dec 2007 06:07:45 -0500 (EST)
+Received: from timac.local (159-134-96-9.b-ras1.lmk.limerick.eircom.net [159.134.96.9])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by a-sasl-quonix.pobox.com (Postfix) with ESMTP id BC47E2B3F;
+	Mon, 10 Dec 2007 06:07:40 -0500 (EST)
+Date: Mon, 10 Dec 2007 11:07:38 +0000
+To: module-authors@perl.org, modules@perl.org
+Cc: Tim Bunce <Tim.Bunce@pobox.com>, Patrick Galbraith <patg@patg.net>
+Subject: Re: Naming convention for thin wrappers around C lib<foo>.so ?
+Message-ID: <20071210110738.GD2856@timac.local>
+References: <20071206221132.GB682@timac.local> <D2F46975-4C9A-48DD-B50C-D4CBD1C9FBC6@free.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <D2F46975-4C9A-48DD-B50C-D4CBD1C9FBC6@free.fr>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+
+On Sat, Dec 08, 2007 at 06:38:50PM +0100, Sébastien Aperghis-Tramoni wrote:
+> Tim Bunce wrote:
+>
+>> If there's a libfoo.so and I want to create a perl module/distribution
+>> that's just a very thin wrapper around libfoo, what should I call it?
+>>
+>>     LibFoo
+>>     Lib::Foo
+>>     Lib::foo
+>>     Lib::libfoo
+>>     libfoo
+>>     SomeCategory::Libfoo
+>>     ???
+>
+> Following the "Category::Foo" scheme:
+>  [...]
+>
+> Following the top-level namespace "Foo" scheme:
+>  [...]
+
+It's clear the "Category::Foo" scheme has the greater number of distributions.
+It's also clear there's no firmly established best practice here.
+
+I wanted to discuss the issue in the abstract first because the actual
+library/module is in a category/namespace with it's own set of problems.
+
+I'm looking to build a very thin wrapper around libmemcached
+(http://tangent.org/552/libmemcached.html)
+a high-performance feature-rich interface to memcached.
+
+The natural category would be Cache:: but that namespace is a bit of a mess.
+There are two big distributions (Cache and Cache::Cache) that have
+different APIs. Each ships with a bunch of cache modules (Cache::Memory
+vs Cache::MemoryCache). Then there are lots of other Cache::*
+distributions and modules that may or may not conform to one or the
+other API.
+
+Since the extension I want to implement would not itself implement
+either the Cache or Cache::Cache API I'm reluctant to put it into the
+Cache:: namespace.
+
+I was thinking in terms of a low-level 'thin' extension called
+Lib::libmemcached with separate pure-perl modules implementing the Cache
+and Cache::Cache interfaces.
+
+So, here's the point: does anyone have any good objections to my
+establishing a new precident by using the Lib:: namespace for this?
+(Or perhaps CLib:: or SysLib:: or ...)
+
+Or should I just add to the general mess in the Cache:: namespace?
+
+Tim.

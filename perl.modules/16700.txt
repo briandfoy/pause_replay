@@ -1,0 +1,123 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16700
+Return-Path: <MZSanford@aol.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 91979 invoked by uid 76); 6 Jan 2003 14:51:38 -0000
+Received: from imo-r09.mx.aol.com (HELO imo-r09.mx.aol.com) (152.163.225.105) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-06 14:51:38Z
+Received: from MZSanford@aol.com	by imo-r09.mx.aol.com (mail_out_v34.13.) id u.75.671608e (5709);	Mon, 6 Jan 2003 09:50:29 -0500 (EST)
+Received: from  aol.com ([10.0.30.13]) by air-id04.mx.aol.com (v89.12) with ESMTP id MAILINID42-0106095029; Mon, 06 Jan 2003 09:50:29 -0500
+Message-ID: <3E1997BF.4070208@aol.com>
+Date: Mon, 06 Jan 2003 09:50:39 -0500
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.1b) Gecko/20020721
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: gaa@ulticom.com
+CC: mzsanford@cpan.org, comdog@panix.com, modules@perl.org
+Subject: Re: Your Image::OrgChart vs my GD::OrgChart
+References: <3E1608CB.4000401@ulticom.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: Unknown (No Version)
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: mzsanford@aol.com (Matt Sanford)
+
+Hello,
+
+    Sorry it took me so long to get back to you, but my home machine was 
+unwell. Image::OrgChart was written as a Joke/Comment after my companys 
+third re-org in as many months. Based off of Image::Timeline, I have 
+never been too happy with the code. After checking out GD::OrgChart, I 
+think it is a better module. I will see if  I can come up with a patch 
+for GD::OrgChart that will allow it to draw horizontal-based Org Charts 
+like Image::OrgChart, thus combining the two. If i am able to do this, I 
+will upload a new version of Image::OrgChart which notes it a 
+depreciated in favor of GD::OrgChart. I will let you know if/when i 
+complete the patch.
+
+Thanks;
+  -- Matt Sanford
+
+gaa@ulticom.com wrote:
+
+> Matt:
+>
+> Hello, I was looking for a perl package to draw corporate org charts 
+> like:
+> [this was done manually for illustration purposes. I can send PNGs 
+> upon request]
+>
+>                                Gary
+>                             Home Owner
+>                                 |
+>              +------------------+------------------+
+>              |                                     |
+>             Tex                                 Dudley
+>          VP Backyard                          VP Frontyard
+>              |                                     |
+>        +-----+-----+                     +---------+---------+
+>        |           |                     |                   |
+>     Ophelia     Cinnamon                Jax                Maisie
+>   Gate Watcher  Deck Sitter       Bay Window Watcher    Door Watcher
+>
+> I first looked at yours, which would produce something more like:
+>         Gary
+>          +-- Dudley
+>          |     +-- Jax
+>          |     +-- Maisie
+>          +-- Tex
+>                +-- Cinnamon
+>                +-- Ophelia
+>
+> So, I sat down one weekend and wrote one myself.  (Actually took almost a
+> week of spare time to get it _working_, but...).
+>
+> The primary difference I needed was to have a manager centered above 
+> his/her
+> subordinates.  In addition I wanted to be able to put arbitrary text in
+> the boxes so that a title could be included, etc.
+>
+> I then picked up a book on submitting modules to the CPAN (_Writing Perl
+> Modules for CPAN_ by Sam Tregar) and followed the guidelines there and
+> tried to register the module namespace as "GD::OrgChart".  I did
+> upload it, however, so it is available at:
+>     http://search.cpan.org/author/GALGIER/GD-OrgChart-0.01/
+>
+> I have since then received some feedback and the latest is:
+>     _brian_d_foy wrote:
+>     > That sounds likw Image::OrgChart is a subset of GD::OrgChart.  can
+>     > the two of you get together to make one module that does both?
+>
+> So, here I am.
+>
+> The primary differences I see between our modules are:
+>     Image::OrgChart                     GD::OrgChart
+>     ---------------                     ------------
+>     One line per box                    Multiple lines per box
+>     Drawn along left edge               Drawn with subordinates 
+> centered below
+>     No limit on drawing depth           Simple maxdepth argument
+>     Only can use GD built-in fonts      Only can use GD truetype fonts
+>     The box is as it is                 A call-back is available to 
+> augment
+>     Sorts the input                     Draws it as presented
+> Also, the "tree" as submitted to your module uses a different structure
+> from mine.
+>
+> Do you want to work on combining these two modules?
+>
+> Personally I see the following issues:
+>     1) Your data structure won't support my needs.  I want to allow
+>        the user to store arbitrary data in the structure in addition
+>        to the node names.  We would need two different sets of method
+>        calls.
+>     2) The algorithm to draw your chart has different needs as to 
+> calculations
+>        of spacing, box size, etc. from mine.  Again, this would need two
+>        different sets of methods.
+>
+> Do you have any comments or suggestions?
+>
+

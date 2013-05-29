@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:67983
+Return-Path: <david_v_wright@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 17782 invoked from network); 8 Oct 2009 06:30:56 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 8 Oct 2009 06:30:56 -0000
+Received: (qmail 25993 invoked by uid 225); 8 Oct 2009 06:30:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25984 invoked by alias); 8 Oct 2009 06:30:55 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=DK_POLICY_TESTING,DK_SIGNED,DK_VERIFIED
+X-Spam-Check-By: la.mx.develooper.com
+Received: from web31804.mail.mud.yahoo.com (HELO web31804.mail.mud.yahoo.com) (68.142.207.67)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Wed, 07 Oct 2009 23:30:49 -0700
+Received: (qmail 70155 invoked by uid 60001); 8 Oct 2009 06:30:44 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s1024; t=1254983444; bh=GYzhlQZEwsP/jI8iCFwIdqkEiFUmgkrFa9Bdjkry6uU=; h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Subject:To:Cc:MIME-Version:Content-Type; b=UAP+HAu9XlMVqQsJA7bNaGIrCWWtKfCDTDyPQg3AWhC2xS+RvyIR+3lPtubCh4fCl1IiEjtGn5i67ChmjHKBAtgxmg9xUKvFGuyE9Hbt6MROzhgKoBZTDj7OhXfcPFFoio/fFUUWumolqsrjHwK6DMtcxCUaT9LGa2D+UPXfxRI=
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Subject:To:Cc:MIME-Version:Content-Type;
+  b=s0Jb7sXp8OsFi0mlaLMoEUPvdb2JGDyVjUyub4QMiE/HQ1CtgMxfdLcUZOYWhyhzJLvZ6i/R92SFKJMmBsMbj2Pgr5UFvO+LGcUnLZ0W1RpGMoYMYgSapUpQmIY0cKod3APwzfYWt1K2KYwfeHtKU5KccnIMSrgaOLhJDEEPcHQ=;
+Message-ID: <363153.69608.qm@web31804.mail.mud.yahoo.com>
+X-YMail-OSG: 9EGh.XgVM1m8RVWck2nq8LHPTygPagOI6PZf_HWjRwNoPhMUQypCrExsk4Ul220M7Fjd8yLwb7O_leFMTKr2PNK9aNEzrYM3Z7aQdviMb5wikE5av9c7udUhlIhr.Vq19KLvzx.3xO2TLeG9S5UA.Zw58x782zWQ8qnE4ckMc3ooE4BpJ4Yzo_jr_96bxnVKrgmnN5NpPRT3UcUp7uwRdOwplQ6qDnpMOQIO2yvZDC9MWmQ6KfxFi5BzhN.hJ8redMIP1i9_.cDXn1rla2GZwXEohYHns.Stxd4ANnudQVWNPMo.49B_5j4YSUAcTEg7P4oCQ3xm7v3ghJjMo5kvovRhjinllc5fFFEh4xPUNBlg8.UEooRskWnmibcYgKYk0t6GKK990XBA8gjK66fQ60u.iW7byXzLTT90INW7goGlfuxyaShPKaRIs7DoIw--
+Received: from [76.102.212.114] by web31804.mail.mud.yahoo.com via HTTP; Wed, 07 Oct 2009 23:30:44 PDT
+X-Mailer: YahooMailRC/182.10 YahooMailWebService/0.7.361.3
+Date: Wed, 7 Oct 2009 23:30:44 -0700 (PDT)
+Subject: Namespace feedback request for new module
+To: modules@perl.org
+Cc: Tyler Riddle <triddle@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: david_v_wright@yahoo.com (david wright)
+
+Greetings,
+
+I would like to get feedback on a potential/appropriate namespace for a module I am developing.
+
+The goal of this module is to extract specific content from wikiquote.
+
+For instance, I wish to be able to display all the proverbs from http://en.wikiquote.org/wiki/Zen_proverbs
+
+I am using Parse::MediaWikiDump to parse wikiquote data (xml) dumps (I am not crawling the site :)
+
+Parse::MediaWikiDump gets me close but does not provide api access to the specific entries (nor should it be expected to) within <page><revision><text></text></revision></page> which is what I'm after.
+
+The name I am leaning towards is: Parse::MediaWikiDump::ExtractText, or for the above example, Parse::MediaWikiDump::ExtractText::WikiQuote::Proverbs
+
+Reasoning:
+
+Using the existing namespace, Parse::MediaWikiDump makes sense.
+
+Adding the namespace 'ExtractText' seems to make sense since it's descriptive of what the module does
+
+Adding the namespace 'WikiQuote' seems to make sense because, there are other sites that use the mediawiki format, so in case someone wants to Parse::MediaWikiDump::ExtractText::SlickyDuds, or even Parse::MediaWikiDump::ExtractNamespaces::SlickyDuds it would continue to be a well organized namespace.
+
+Adding the namespace 'Proverbs' seems to make sense because, for instance, after I finish 'Proverbs' I will probably do another category, such as 'Films'. Parse::MediaWikiDump::ExtractText::WikiQuote::Films
+
+Interface wise, I'm thinking something such as:
+
+use aliased 'Parse::MediaWikiDump::ExtractText::WikiQuote::Proverbs' => 'PMET';
+
+my $ep = PMET->new( { file => 'enwikiquote-20090901-pages-articles.xml' } );
+
+$ep->category;
+$ep->page_title;
+$ep->attribution;
+$ep->proverb;
+
+or:
+
+$ep->extract;
+
+foreach my $pg ($ep->pages){
+  isa_ok $pg, 'Parse::MediaWikiDump::ExtractText';
+  $pg->category;
+  $pg->page_title;
+  $pg->attribution;
+  $pg->proverb;
+}
+
+The conclusions I reach above make sense to me, thought I'd try to solicit confirmation/contradiction/opinions.
+
+
+Many Thanks,
+David

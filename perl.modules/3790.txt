@@ -1,0 +1,312 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3790
+Return-Path: <chris@savantnet.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10552 invoked from network); 6 Dec 2000 22:36:42 -0000
+Received: from smtp.savantnet.com (root@208.184.41.2)
+  by tmtowtdi.perl.org with SMTP; 6 Dec 2000 22:36:42 -0000
+Received: from savantnet.com (zeno.savantnet.com [208.184.41.21])
+	by smtp.savantnet.com (8.10.2/8.10.2) with ESMTP id eB6MadE23367
+	for <modules@perl.org>; Wed, 6 Dec 2000 17:36:39 -0500
+Message-ID: <3A2EBFA6.3ED3458C@savantnet.com>
+Date: Wed, 06 Dec 2000 17:37:27 -0500
+Organization: Savant Solutions
+X-Mailer: Mozilla 4.7 [en] (WinNT; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: registration
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: chris@savantnet.com (Chris Rigby)
+
+
+Name: Chris Rigby
+Email: chris@savantnet.com
+Preferred User ID: rigbyc
+
+Hi there.  I have written a small Apache module which allows
+a web developer to embed SNMP get statements directly into
+HTML code.  It uses the current SNMP perl module from CPAN,
+parses an HTML document, performs the necessary SNMP
+connections, and returns the dynamic information, all from a
+plain HTML page.  I would like to post it to the archive to see
+if there is any interest in it, as well as to get any critical feedback
+and ideas concerning its development.
+
+I have tentatively named the module WebSNMP.
+
+Here is the README file:
+---------------- start README
+-------------------------------------------
+WebSNMP is a perl module for Apache Web Servers that allows
+a web developer to easily insert snmp functionality into web
+pages with simple html tags.  Please use
+        perldoc Apache::WebSNMP
+for a detailed description.
+
+PLEASE NOTE:  This module REQUIRES the perl SNMP module, which
+can be downloaded from :
+www.cpan.org
+
+To install the module, simply do the usual:
+
+perl Makefile.PL
+make
+make install
+
+After this, you must add the following entry to your httpd.conf
+file:
+
+<Location /directory_name>
+        SetHandler perl-script
+        PerlHandler Apache::WebSNMP
+</Location>
+
+where "directory_name" is the location in your DocumentRoot
+where you wish to put all of your snmp web documents.  Then
+simply restart your web server and you are ready to go!
+
+Please direct any questions or comments to:
+websnmp@ecomm.savantnet.com
+
+Thanks for trying WebSNMP!
+---------------------- end README ----------------------------------
+
+
+I have also written the beginnings of a perldoc for it:
+
+-----------------------begin perldoc
+------------------------------------
+
+NAME
+       Apache::WebSNMP - Allows for SNMP calls to be embedded in
+       HTML
+
+SYNOPSIS
+        <html>
+        <body>
+        <snmp>
+               host=zoom.google.org
+               community=public
+               connect
+               interface=ifDescr
+               extension(interface)=2
+               mac=ifPhysAddress
+               extension(mac)=2
+               query
+        </snmp>
+        The interface <b>descriptor</b> for the ethernet card is <snmp>
+print(interface) </snmp>
+               and its <b>mac address</b> is <snmp> print(mac) </snmp>
+        </body>
+        </html>
+
+
+DESCRIPTION
+       The WebSNMP module allows one to embed SNMP commands
+       directly into HTML code.
+
+REQUIRES
+       This module requires the perl SNMP module, available at
+       the CPAN site.
+
+USAGE
+       The module allows for three different kinds of statements,
+       surrounded by <snmp> and </snmp> html tags.  The three
+       types of statements consist of configurations, variable
+       assignments, and commands.  A brief description of each
+       type of statement follows:
+
+Configuration
+       The configuration statements allow the user the set which
+       host to poll for SNMP information, as well as the SNMP
+       community that the get statements will draw from.  This
+       essentially takes the form of assigning values to the
+       reserved variables host and community.  All variables are
+       assigned with the following syntax:
+            varible_name=value
+       Note: there must not be any intervening whitespace between
+       the '=' and the name and value.  Thus to set the SNMP host
+       to machine.domain.net, we would issue the configuration
+       statement:
+
+               <snmp>host=machine.domain.net</snmp>
+
+       If not specified, the default host is localhost, and the
+       default community is public.
+
+Variable Assignments
+       Variables are used as temporary holding locations for
+       information returned from SNMP calls.  The decision to use
+       variables was made to obviate the necessity of making a
+       different SNMP get call for each separate piece of
+       information.  Variable assignments follow the simple
+       format listed above, where the variable and the value,
+       this time the symbolic name of a SNMP object identifier,
+       are separated only by an equals sign (no whitespace).  For
+       example:      description=ifDescr The OIDs currently
+       implemented are a subset of the IETF Management MIB.
+       Support is available for the system, interface, ip, tcp,
+       udp, icmp, and at modules.  A list of the currently
+       supported OIDs, and their symbolic equivalents, is given
+       below:
+
+                       # system
+                       'sysDescr'      => "1.3.6.1.2.1.1.1",
+                       'sysObjectID'   => "1.3.6.1.2.1.1.2",
+                       'sysUpTime'     => "1.3.6.1.2.1.1.3",
+                       'sysContact'    => "1.3.6.1.2.1.1.4",
+
+                                    . . . . . . . .
+
+                       'icmpOutTimeExcds' => '1.3.6.1.2.1.5.17',
+                       'icmpOutParmProbs' => '1.3.6.1.2.1.5.18',
+                       'icmpOutSrcQuenchs' => '1.3.6.1.2.1.5.19',
+                       'icmpOutRedirects' => '1.3.6.1.2.1.5.20',
+                       'icmpOutEchos'  => '1.3.6.1.2.1.5.21',
+                       'icmpOutEchoReps' => '1.3.6.1.2.1.5.22',
+                       'icmpOutTimestampsReps' => '1.3.6.1.2.1.5.23',
+                       'icmpOutTimestampsReps' => '1.3.6.1.2.1.5.24',
+                       'icmpOutAddrMasks' => '1.3.6.1.2.1.5.25',
+                       'icmpOutAddrMaskReps' => '1.3.6.1.2.1.5.26',
+
+       For example, to get the number of outbound and inbound
+       errors on an ethernet interface, we would assign the
+       ifOutErrors and ifInErrors OIDs to variables.  Thus:
+
+               <snmp> errorin=ifInErrors errorout=ifOutErrors </snmp>
+
+       Note that more than one command can be nested inside a
+       single set of <snmp> tags, as long as they are separated
+       by whitespace.
+
+Commands
+       The following command statements are currently available:
+
+       connect initiates a connection with the SNMP host defined
+       with the host configuration statement.  This statement can
+       be can be utilized multiple times in order to connect to
+       several different machines, however any queries sent will
+       be sent to the current connection.
+
+       query actually initiates the SNMP get for the information
+       you have requested in your variables, contacting the host
+       defined by the host configuration command, and storing the
+       data in the proper variable.
+       extension(variable_name) adds an extension to the OID
+       named by variable_name.  Most OIDs require some form of
+       extension (for example, the 'system' OIDs usually require
+       an extension of 0, while interface OIDs require the
+       interface number as an extension).  The extension is
+       merely appended to the OID value contained in the named
+       variable.
+
+       print(variable_name) simply prints the information
+       returned to a variable after a query command.
+
+EXAMPLE
+       To put all this together, let us take a simple example:
+       we wish to retrieve information concerning the ethernet
+       interface on a host named 'host.domain.net'.  Primarily we
+       are concerned with the administrative status, mac address,
+       and bytes transferred in and out of the interface.  We
+       would begin with the following block:
+
+               <snmp>
+                       host=host.domain.net
+                       community=public
+                       connect
+               </snmp>
+
+       This block defines the host and the SNMP community, and
+       actually makes the connection to the host.  This block can
+       be placed anywhere within your HTML document, as long as
+       it comes before your SNMP queries.  Next, we must define
+       the information that we wish to obtain:
+
+               <snmp>
+                       description=ifDescr
+                       extension(description)=2
+                       mac=ifPhysAddress
+                       extension(mac)=2
+                       inbytes=ifInOctets
+                       extension(inbytes)
+                       outbytes=ifOutOctets
+                       extension(outbytes)
+                       query
+               </snmp>
+
+       This block instantiates four variables: description, mac,
+       inbytes, and outbytes, in which the information we wish to
+       obtain will be stored.  The extension commands tell the
+       program that we are interested in interface 2.  Finally,
+       the query statement performs the SNMP get on the connected
+       host.  All that remains is to print out our data.  Let us
+       put it in tabular format:
+
+               <table>
+                       <tr>
+                               <td>
+                                       Description
+                               </td>
+                               <td>
+                                       Mac Address
+                               </td>
+                               <td>
+                                       Bytes In
+                               </td>
+                               <td>
+                                       Bytes Out
+                               </td>
+                       </tr>
+                       <tr>
+                               <td>
+                                       print(description)
+                               </td>
+                               <td>
+                                       print(mac)
+                               </td>
+                               </td>
+                               <td>
+                                       Bytes In
+                               </td>
+                               <td>
+                                       Bytes Out
+                               </td>
+                       </tr>
+                       <tr>
+                               <td>
+                                       print(description)
+                               </td>
+                               <td>
+                                       print(mac)
+                               </td>
+                               <td>
+                                       print(inbytes)
+                               </td>
+                               <td>
+                                       print(outbytes)
+                               </td>
+                       </tr>
+               </table>
+       This block merely prints out our information as an HTML table.
+Mission accomplished.
+
+
+AUTHOR
+       Chris Rigby
+-------------------------------- end perldoc
+----------------------------------------------------------------
+
+
+Please let me know if this would be of interest.
+
+Look forward to hearing from you.
+Thanks,
+Chris Rigby
+
+

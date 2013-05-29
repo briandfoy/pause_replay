@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7684
+Return-Path: <pasha@yahoo-inc.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 67888 invoked from network); 21 Sep 2001 18:14:48 -0000
+Received: from mrout2.yahoo.com (216.145.54.172)
+  by onion.valueclick.com with SMTP; 21 Sep 2001 18:14:48 -0000
+Received: from pasha (pasha.corp.yahoo.com [172.21.40.98])
+	by mrout2.yahoo.com (8.11.6/8.11.6/y.out) with SMTP id f8LIEY936460;
+	Fri, 21 Sep 2001 11:14:34 -0700 (PDT)
+To: "Kirrily Robert" <skud@infotrope.net>, <modules@perl.org>
+Subject: RE: Request for new account
+Date: Fri, 21 Sep 2001 11:14:52 -0700
+Message-ID: <NEBBIPJPBMMMDNHELFELGENBCLAA.pasha@yahoo-inc.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
+In-Reply-To: <E15kGFm-0005oN-00@tanqueray.infotrope.net>
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: pasha@yahoo-inc.com ("Pasha Sadri")
+References: <E15kGFm-0005oN-00@tanqueray.infotrope.net>
+
+> What does XBX stand for?  It seems like a pretty unintuitive name to me,
+> and doesn't tell me anything about what the module does.
+>
+
+It stands for XML By eXample.  The reason behind that name: the
+configuration file for parsing the XML document into a perl data structure
+is structurally identicial to the XML that needs to be parsed, in other
+words, the module looks at an example to figure out what to do with the
+data.  Here is very simple example:
+
+XML that we want to parse:
+
+<?xml version="1.0"?>
+<data>
+   <person>
+      <name>John</name>
+      <age>26</age>
+      <address1>123 Main Street</address1>
+      <city>San Jose</city>
+      <state>California</state>
+      <country>US</country>
+   </person>
+   ...
+</data>
+
+Data structure that we want to parse it into:
+
+$VAR = {
+        name => 'John',
+        age  => 26,
+        address => {
+               address1 => '123 Main Street',
+               city => 'San Jose',
+               state => 'California',
+               country => 'US'
+        }
+}
+
+You could would use a configuration file like this:
+
+<?xml version="1.0"?>
+<xbx version="1.0">
+  <data>
+    <person>
+      <name>name</name>
+      <age>age</age>
+      <address1>address:address1</address1>
+      <city>address:city</city>
+      <state>address:state</state>
+      <country>address:country</country>
+    </person>
+  </data>
+</xbx>
+
+As you can see, with the exception of the <xbx> tags, the configuration is
+identical in strucuture to the XML document we want to process.  Does this
+make sense?
+
+I am of course open to suggestions :)
+
+Pasha
+

@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:56742
+Return-Path: <l2ot9pa02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3081 invoked from network); 20 Sep 2007 07:41:52 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 20 Sep 2007 07:41:52 -0000
+Received: (qmail 28394 invoked by uid 225); 20 Sep 2007 07:41:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28386 invoked by alias); 20 Sep 2007 07:41:51 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from fzkmail5.ka.fzk.de (HELO fzkmail5.ka.fzk.de) (141.52.32.10)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 20 Sep 2007 00:41:34 -0700
+Received: from /spool/local
+	by fzkmail5.ka.fzk.de with XMAIL
+	for <modules@perl.org> from <l2ot9pa02@sneakemail.com>;
+	Thu, 20 Sep 2007 09:42:17 +0200
+Received: from FZKMSX4.ka.fzk.de [[141.52.92.4]]
+	by fzkmail5.ka.fzk.de with XMAIL;
+	Thu, 20 Sep 2007 09:42:14 +0200
+Received: from [141.52.67.61] ([141.52.67.61]) by FZKMSX4.ka.fzk.de with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 20 Sep 2007 09:41:10 +0200
+Message-ID: <46F22417.2040901@sneakemail.com>
+Date: Thu, 20 Sep 2007 09:41:11 +0200
+User-Agent: Thunderbird 1.5.0.10 (X11/20060911)
+MIME-Version: 1.0
+To: =?ISO-8859-1?Q?Fran=E7ois_PERRAD?= <francois.perrad@gadz.org>
+CC:  modules@perl.org
+Subject: Re: Old CPAN namespace registration for CORBA::XPIDL
+References: <FZKMSX4CTp2hFOWd8T400050844@FZKMSX4.ka.fzk.de> <5.1.0.14.2.20070919200341.02c44298@pop.besancon.parkeon.com>
+In-Reply-To: <5.1.0.14.2.20070919200341.02c44298@pop.besancon.parkeon.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 20 Sep 2007 07:41:10.0946 (UTC) FILETIME=[9D15C820:01C7FB59]
+Approved: news@nntp.perl.org
+From: l2ot9pa02@sneakemail.com (Steffen Mueller)
+
+Hi Francois,
+
+François PERRAD wrote:
+> At 11:00 17/09/2007 +0200, you wrote:
+>> CORBA::XPIDL
+
+[and CORBA::Python]
+
+> I've uploaded 2 versions :
+> http://search.cpan.org/~perrad/CORBA-XPIDL-0.02/        18 May 2004
+> http://search.cpan.org/~perrad/CORBA-XPIDL-0.03/         07 Jun 2004
+> and the following query finds this module :
+> http://search.cpan.org/search?query=CORBA-XPIDL&mode=dist
+> 
+> so, I think that it's an error.
+
+Somewhat. It's an error in that the registration is valid (and will
+stay). However, you registered those namespaces but never actually
+uploaded an implementation of them. That would have meant there is a
+file named lib/CORBA/Python.pm (lib/CORBA/XPIDL.pm) or just Python.pm
+with at least a "package CORBA::Python;" (or ...XPIDL; respectively)
+statement inside. Lacking this, the CORBA-Python distribution is not
+installable via "cpan CORBA::Python" since it's not indexed under that
+name. If you look at your search.cpan.org author page, you'll find that
+the link for these two registrations under "Registered Modules" is dead
+because the indexer couldn't find an implementation for the namespaces.
+
+Now, there is two things you can do: Ignore this, which is just fine, or
+include an almost-empty* placeholder module in the next release so it
+can be indexed.
+
+Best regards,
+Steffen
+
+* almost-empty means that it needs at least the package statement and a
+true return value. Plus possibly any documentation you would like to
+have in there.

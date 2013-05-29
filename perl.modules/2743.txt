@@ -1,0 +1,182 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2743
+Return-Path: <hasant@trabas.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9021 invoked from network); 27 Aug 2000 19:56:31 -0000
+Received: from server.trabas.co.id (202.159.35.69)
+  by tmtowtdi.perl.org with SMTP; 27 Aug 2000 19:56:31 -0000
+Received: from borg.intern.trabas.co.id (ip-bdg-035.indo.net.id [202.159.48.165])
+	by server.trabas.co.id (8.9.3/8.9.3) with ESMTP id CAA01502
+	for <modules@perl.org>; Mon, 28 Aug 2000 02:54:28 +0700
+Received: from borg.intern.trabas.co.id (borg.intern.trabas.co.id [192.168.2.33])
+	by borg.intern.trabas.co.id (8.9.3/8.9.3) with ESMTP id DAA01702
+	for <modules@perl.org>; Mon, 28 Aug 2000 03:06:26 +0700
+Date: Mon, 28 Aug 2000 03:06:26 +0700 (JAVT)
+Sender: hasant@trabas.co.id
+Reply-To: Hasanuddin Tamir <hasant@trabas.com>
+To: modules@perl.org
+Subject: Proposing BaseLib module
+Message-ID: <Pine.LNX.4.21.0008280153130.1563-100000@borg.intern.trabas.co.id>
+Organization: TRABAS
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: hasant@trabas.com (Hasanuddin Tamir)
+
+Hi,
+
+My CPAN id is HASANT.
+I'm currently developing a module called BaseLib, but I'm not so
+sure if that's a good name(space). Other name I can think of is
+Lib::Base.
+
+Short Introduction
+
+BaseLib includes a private library path of a certain *application
+directory tree* to @INC. So, when a script says,
+
+    use BaseLib qw(BASEDIR LIBDIR);
+
+it always refers to `/path/to/BASEDIR/LIBDIR' -- `/path/to' can be
+arbitrary installation/deployment path where BASEDIR is put under
+-- wherever the script is run from, as long as BASEDIR and LIBDIR
+remain unchanged.
+
+So there's no need to change use() statement when the whole dir
+tree moves to somewhere else. I know there are many alternatives
+to this way, such as environment variables (PERL5LIB, PERLLIB, or
+any custome ones), and the standard lib.pm. I have some examples
+and comparison that shows the advantage of using BaseLib over the
+other alternatives at,
+
+    http://www.zp.f2s.com/perl/modules/BaseLib.examples
+
+should anyone interested. The module package itself is (still) at,
+
+    http://www.zp.f2s.com/perl/modules/BaseLib-0.01.tar.gz
+
+Module Listing
+
+Name       DSLI   Description                       Info
+----------------------------------------------------------
+BaseLib    adpf   manipulate @INC for independent   HASANT
+                  installation path
+
+Discussion
+
+I've discussed this module at clp.misc and bandung.pm.org mailing
+list (my local PM group). Folks at the NG tended to provide other
+solutions which none of them fulfilled my need. I got two responds
+in the milist. One offered the usage of ENV. But soon after I pointed
+out the weakness, he accepted the BaseLib solution. Another responder
+has even tested the module and reported that it worked.
+
+Longer Description
+
+I also enclose longer description below to complement the short
+introduction above.
+
+
+TIA,
+san
+
+================================================================
+[WARNING: The module name is still subjected to change]
+
+BaseLib provides a simple and straightforward mechanism to
+include private library path of an application set to @INC
+independent of installation path.  It optionally takes two
+arguments, which also happen to be the keywords of this
+module: BASEDIR and LIBDIR.
+
+This module is intended for a set of application with certain
+file and directory structure, not for ordinary single script
+at general. The typical structure could be:
+
+    mail2sms/  -> base directory of the application
+     scripts/  -> where the scripts located, this directory
+                  might have so many nested directories
+     libdir/   -> path of the private modules
+     others/   -> other directory
+
+The usage is similiar to lib.pm,
+
+    use BaseLib qw(BASEDIR LIBDIR);
+
+In the absence of the arguments, BaseLib will use the default
+values: `appl_root' (subjected to change) and `lib' respectively.
+
+For example, the structure is put under `/installation/path'.
+Using lib.pm, all scripts need to say,
+
+    use lib '/installation/path/mail2sms/libdir';
+
+What happens when the application is moved to, for example,
+`/new/installation/path'?  Of course, in order for it to work,
+all scripts must be modified to refer to the new pat,
+
+    use lib '/new/installation/path/mail2sms/libdir';
+
+OK, one may use environment variables, either the built in
+ones (PERL5LIB and PERLLIB), or customized one, say, PRIVLIBDIR.
+The scripts only need to say once,
+
+    use lib "$ENV{PRIVLIBDIR}";
+
+or nothing at all if PERL5LIB/PERLLIB is used.  But then
+someone must be responsible to maintain the content of the
+environment variables, either via global profile (assumming
+unices), or, via web server conf (and don't forget to reload
+or restart the server :-), each time the installation path
+changes (Thanks to Steven Haryanto for providing this
+examples.)
+
+And what if during the development process, there are more
+than one version at the same machine? Or there are multiple
+developers with their own environment? So many changes need
+to be done.  Beside PERL5LIB and PERLLIB don't work with -T
+switch.
+
+This when BaseLib comes to rescue. All the scripts have to
+say is,
+
+    use BaseLib qw(mail2sms libdir);
+
+And no further tweaking is necessary, no matter how many
+environments the application will run in. The scripts will
+always be able to lookup to the right path to mail2sms/libdir
+without having to care where mail2sms is put under. Well, as
+long as no change on mail2sms and/or libdir.
+
+As addition, BaseLib has a global package variable $BaseDir,
+contains full path to the, unsuprisingly, base directory of
+the application. This is not exported, so it must be qualified
+with the package name to use it, e.g. $BaseLib::BaseDir.
+
+
+The module is currently available from URL,
+
+   http://www.zp.f2s.com/perl/modules/BaseLib-0.01.tar.gz
+
+At this very early stage, BaseLib lacks of many things:
+
+    * portability support
+    * checking the existence of the path in @INC
+    * include standard hierarchy style under LIBDIR
+    * more accommodative regex when untainting
+    * potentially broken if same name as base dir exists
+    * might be broken in mod_perl environment
+    * proper documentation
+    * good testing (only tested it few times myself)
+================================================================
+
+-- 
+trabasLabs * hasant@trabas.com * http://www.trabas.com
+Zero Point * hasant@zp.f2s.com * http://www.zp.f2s.com
+------------------------------------------------------
+...bahkan daunpun butuh waktu
+untuk jatuh dan menyatu dengan tanah
+  --Di Antara Kita, Apr96
+

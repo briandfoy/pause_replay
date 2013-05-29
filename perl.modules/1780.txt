@@ -1,0 +1,108 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1780
+Return-Path: <clay@panix.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13017 invoked from network); 10 May 2000 04:12:04 -0000
+Received: from mail1.panix.com (166.84.0.212)
+  by tmtowtdi.perl.org with SMTP; 10 May 2000 04:12:04 -0000
+Received: from panix.com (mail2.panix.com [166.84.0.213])
+	by mail1.panix.com (Postfix) with ESMTP
+	id 3149630EC6; Wed, 10 May 2000 00:12:00 -0400 (EDT)
+Received: from panix.com (skech226.skechers.com [207.238.255.226])
+	by panix.com (Postfix) with ESMTP
+	id 15E251B20F; Wed, 10 May 2000 00:11:58 -0400 (EDT)
+Message-ID: <3918E29A.E2F13AA8@panix.com>
+Date: Wed, 10 May 2000 00:16:26 -0400
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: martin rosenblatt <mrosenblatt@socal.rr.com>
+Cc: modules@perl.org
+Subject: Re: Cumulative Normal Distribution Module
+References: <000b01bfba31$da2cdbc0$e63ea018@socal.rr.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: clay@panix.com (Clay Irving)
+
+martin rosenblatt wrote:
+
+> I hope this isn't a dumb question, but I have not been able to find 
+> a module or any example of a Perl script that uses the standard Normal
+> Distribution function or the Cumulative Normal Distribution function.
+> 
+> I have searched the obvious places with no success, can you help me.
+
+Are you referring to the Math::CDF module?
+
+ NAME
+
+Math::CDF - Generate probabilities and quantiles from several 
+statistical probability functions
+
+SYNOPSIS
+
+use Math::CDF;
+
+$prob = &Math::CDF::pnorm(1.96);
+
+if( not defined($z = &Math::CDF::qnorm(0.975)) ) {
+    die "qnorm() failed"; }
+
+or
+
+use Math::CDF qw(:all);
+
+$prob = pnorm(1.96);
+
+DESCRIPTION
+
+This module provides a perl interface to the DCDFLIB. See the section on
+DCDFLIB for more information.
+
+Functions are available for 7 continuous distributions (Beta,
+Chi-square, F, Gamma, Normal, Poisson and T-distribution) and for 
+two discrete distributions (Binomial and Negative Binomial). Optional
+non-centrality parameters are available for the Chi-square, F and 
+T-distributions. Cumulative probabilities are available for all 9 
+distributions and quantile functions are available for the 7 continuous 
+distributions.
+
+All cumulative probability function names begin with the character "p".
+They give the probability of being less than or equal to the given value
+[ P(X <= x) ]
+
+All quantile function names begin with the character q. They give a value
+of x such that P(X <= x) = p where the value of p is provided to the
+function.
+
+Non-centrality parameters are always the last function argument when
+available. You do not need to supply the non-centrality parameter in which
+case it will be assumed to be 0.
+
+All functions will return an undefined value if the function fails 
+(probably due to parameters being out of allowed range) but will not
+otherwise generate an error message. The user should check for valid output
+from the Math::CDF functions with the defined() function as demonstrated in
+the SYNOPSIS section.
+
+FUNCTION DESCRIPTIONS
+
+In all, 16 functions are available via Math::CDF:
+
+    pbeta(), qbeta()          [Beta Distribution]
+    pchisq(), qchisq()        [Chi-square Distribution]
+    pf(), qf()                [F Distribution]
+    pgamma(), qgamma()        [Gamma Distribution]
+    pnorm(), qnorm()          [Standard Normal Dist]
+    ppois(), qpois()          [Poisson Distribution]
+    pt(), qt()                [T-distribution]
+    pbinom()                  [Binomial Distribution]
+    pnbinom()                 [Negative Binomial Distribution]
+[...]
+
+--
+Clay Irving
+clay@panix.com

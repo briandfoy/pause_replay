@@ -1,0 +1,62 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:22706
+Return-Path: <bigj@kamelfreund.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 46255 invoked by uid 1012); 5 Aug 2003 07:14:28 -0000
+To: modules@perl.org
+Subject: Re: Module submission DBI::Simple
+Date: Tue, 05 Aug 2003 09:15:53 +0200
+User-Agent: Pan/0.13.3 (That cat's something I can't explain)
+Message-ID: <pan.2003.08.05.07.15.53.408043@kamelfreund.de>
+References: <200308042317.h74NHqso004754@pause.perl.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: 8bit
+X-Posted-By: 172.181.137.227
+Approved: news@nntp.perl.org
+From: bigj@kamelfreund.de ("Janek Schleicher")
+
+Perl Authors Upload Server wrote at Tue, 05 Aug 2003 01:17:52 +0200:
+
+> 
+> The following module was proposed for inclusion in the Module List:
+> 
+>   modid:       DBI::Simple
+>   DSLIP:       bdpOg
+>   description: Simple DBI connection and query execution.
+>   userid:      SMCMURRAY (Sean McMurray)
+>   chapterid:    7 (Database_Interfaces)
+>   communities:
+> 
+>   similar:
+
+There is already a
+DBIx::Simple
+module.
+
+>   rationale:
+> 
+>     I named it 'Simple' because it reduces DBI to two calls: new and
+>     execute. e.g.:
+> 
+>     $db = new DBI::Simple 'mysql.conf'; if (@rows =
+>     $db->execute("select id from emp where name='Bill'")){ foreach
+>     (@rows){ $db->execute("delete from emp where id=?", $_); } }
+>     $db->execute("insert into emp(name) values('Bill')");
+> 
+>     I think this module belongs in the DBI namespace because it spans
+>     DBD modules. The conf file is a small XML file that holds the name
+>     of your DBD, and whatever parameters you wish to pass to that DBD.
+
+No, if it would be a DBD module,
+it should fit into the DBD::* namespace.
+If it is an extension (also a reduce is an extension),
+it should be under the DBIx::* namespace
+unless it has a very strong relation to the DBI module, e.g. like
+DBI::Shell
+
+
+Greetings,
+Janek

@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:41969
+Return-Path: <cpan@kript.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18925 invoked from network); 25 Jul 2005 08:36:35 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 25 Jul 2005 08:36:35 -0000
+Received: (qmail 25227 invoked by uid 225); 25 Jul 2005 08:36:34 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25222 invoked by alias); 25 Jul 2005 08:36:33 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from mta07-winn.ispmail.ntl.com (HELO mta07-winn.ispmail.ntl.com) (81.103.221.47)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 25 Jul 2005 01:36:30 -0700
+Received: from aamta09-winn.ispmail.ntl.com ([81.103.221.35])
+          by mta07-winn.ispmail.ntl.com with ESMTP
+          id <20050725083623.YCYW27585.mta07-winn.ispmail.ntl.com@aamta09-winn.ispmail.ntl.com>
+          for <modules@perl.org>; Mon, 25 Jul 2005 09:36:23 +0100
+Received: from [192.168.1.20] (really [80.4.6.193])
+          by aamta09-winn.ispmail.ntl.com with ESMTP
+          id <20050725083623.WYIR19483.aamta09-winn.ispmail.ntl.com@[192.168.1.20]>
+          for <modules@perl.org>; Mon, 25 Jul 2005 09:36:23 +0100
+Date: Mon, 25 Jul 2005 09:36:21 +0100 (BST)
+X-X-Sender: john@john.ddns.teaparty.net
+To: modules@perl.org
+Subject: Mozilla::Mork RFC
+Message-ID: <Pine.LNX.4.61.0507250925310.30848@john.ddns.teaparty.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Approved: news@nntp.perl.org
+From: cpan@kript.net (John Constable)
+
+
+New author (go easy on me  :-); I'm thinking of uploading the following 
+module, please let me know if you don't think its a good idea;
+
+        Mozilla::Mork - Perl extension for reading Mork hash database file such
+        as are used in the Mozilla Address Book and History files.
+
+SYNOPSIS
+                use Mozilla::Mork;
+                $file = $ARGV[0];
+                unless ($file) { die "Useage: $0 <filename>\n"; }
+                #get a reference to an array of hash's
+                my $MorkDetails = Mozilla::Mork->new($file);
+                my $results = $MorkDetails->ReturnReferenceStructure();
+                #process those results
+                # for each line in the database
+                my %array = %{ $results->[0] };
+                my @field_names = sort(keys(%array));
+                #my @field_names = $MorkDetails->ListHeaders();
+                map { print "Field Names: $_\n"; } @field_names;
+                print "\ndone!\n";
+
+DESCRIPTION
+        New
+
+        Sets up the OO stuff.   Returns a pointer to a data structure, loads
+        the mork database into a in-memory hash (array of hashes of hashes,
+        actually.)
+
+        ReturnReferenceStructure
+
+        Returns the reference to the array containing the hash's of the data.
+        Each element in the array is a seperate record in the 'database'.  The
+        record headers are usually the first record (see ListHeaders() below).
+
+        ListHeaders
+
+        Dumps the record headers.  returns  an array of the record headers.  It
+        assumes that the first record contains all the headers.  So far this
+        assumption has proved true..
+
+        EXPORT
+
+        None by default.
+
+
+-- 
+John Constable 
+Email: john@kript.net
+web: http://www.kript.net
+blog: http://cgi.kript.net/blosxom.cgi

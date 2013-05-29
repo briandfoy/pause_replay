@@ -1,0 +1,76 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:139
+Return-Path: <mike808@mo.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3905 invoked from network); 21 Oct 1999 06:22:24 -0000
+Received: from mail.mvp.net (209.96.20.11)
+  by tmtowtdi.perl.org with SMTP; 21 Oct 1999 06:22:24 -0000
+Received: from mo.net (DialIP2-21.mvp.net [209.96.12.21])
+	by mail.mvp.net (8.9.0/8.9.0) with ESMTP id BAA16764;
+	Thu, 21 Oct 1999 01:27:00 -0500 (CDT)
+Message-ID: <380EB048.D7D97AC4@mo.net>
+Date: Thu, 21 Oct 1999 01:18:48 -0500
+X-Mailer: Mozilla 4.7 [en] (WinNT; I)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org, andreas.koenig@anima.de, gibreel@pobox.com,
+        robin@knowscape.com
+Subject: Re: CSS1 parser module - what to call it?
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: mike808@mo.net (Michael King)
+
+>I've cc'd Robin, perhaps we should just discuss it between the two of
+>us.  Would CSS:CSS1::Parser be too long/complex/ugly?
+
+Now, now. Short, simple, pretty namespaces don't have any good reasons
+to be used, from all the yelling I got over this topic from p5p.
+
+Would you guys be interested in writing to a common interface,
+say CSS::CSS1, CSS::CSS2, etc. and feel free to use my namespace 
+aliasing module (new name Import::ShortName) to pull longer/more 
+complex/uglier names into short, simple, pretty ones? :)
+
+I see this as maybe helping out over in the Text::Template /
+template-processing areas as well.
+
+The "real" name of Robin's module might be CSS::CSS1::ROBIN (or whatever
+your PAUSEID is) and Steve's CSS:CSS1::STEVE (or whatever). They
+_both_ could use the CSS:CSS1 namespace alias, as you probably wouldn't
+use both modules at the same time. Just like someone who uses EmbPerl
+is probably unlikely to be using Apache::ASP or HTML::Mason.
+
+Just throwing the idea out there.
+
+PS - it also lets you overlay multiple modules onto the same namespace
+to sort-of get inheritance (and bypassing dereferencing lookups through
+@ISA
+for a speed win - don't know how much, though).
+
+e.g.
+
+use Import::ShortName qw( CSS::CSS1::STEVE      CSS::CSS1 );
+use Import::ShortName qw( CSS::CSS1::ROBIN      CSS::CSS1 );
+use Import::ShortName qw( CSS::CSS1::Custom     CSS::CSS1 );
+use Import::ShortName qw( CSS::CSS1::Extensions CSS::CSS1 );
+
+This would overlay everything into the CSS::CSS1 namespace.
+(Or I could just slap them into CSS if I didn't care whether it was 1, 2,
+or whatever).
+
+Obviously, last one wins in overlapping symbol/method names, so I don't
+see people going hog wild with it, but it does allow for TMTOWTDI and
+(multiple) inheritance.
+
+I ran into this use when thinking about how "class A extends B" and
+"class A implements (interface) B" in Java should get ported in Perl.
+I opted for the normal 'use B; @ISA = ("B");' approach. BTW, interfaces
+just do a 'die "Unimplemented";' for all the methods. They'll throw an 
+exception if used, just like Java would. Except in Perl, you won't
+find out until you use the method, one of the darker sides of late-binding
+language implementations.
+
+Mike.

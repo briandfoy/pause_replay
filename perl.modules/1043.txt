@@ -1,0 +1,77 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1043
+Return-Path: <sisk@mojotoad.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9764 invoked from network); 3 Feb 2000 09:26:24 -0000
+Received: from vpop.hypercon.com (198.64.248.249)
+  by tmtowtdi.perl.org with SMTP; 3 Feb 2000 09:26:24 -0000
+Received: from mojotoad.com (31.244.nas1.ippool.hypercon.com [198.64.244.31])
+	by vpop.hypercon.com (8.9.3/8.8.7) with ESMTP id DAA00659;
+	Thu, 3 Feb 2000 03:25:43 -0600
+Sender: sisk@vpop.hypercon.com
+Message-ID: <3898F5A6.8B002638@mojotoad.com>
+Date: Thu, 03 Feb 2000 03:27:34 +0000
+Organization: The Toadstool
+X-Mailer: Mozilla 4.5 [en] (X11; U; Linux 2.1.132 i586)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: jhi@iki.fi
+CC: modules@perl.org
+Subject: Re: new bundle: Finance-QuoteHist
+References: <3898E7EC.4CB1AC47@mojotoad.com> <14489.16900.880314.263736@beta.hut.fi>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: sisk@mojotoad.com (Matt Sisk)
+
+Hello again, Jarkko!
+
+Jarkko Hietaniemi wrote:
+> I don't much like the idea of encoding the names of communication
+> endpoints to class names.  Net::FTP::GatekeeperDecCom, HTTP::SlashdotOrg,
+> what next?  The knowledge of how to contact/parse the "session" of
+> a service is *data* (however complex, it's still data), not code.
+> And a class name is (usually) much closer to data, in my mind.
+
+Well, I can't say I'm entirely comfortable with it myself, and I'm open
+to suggestions.
+
+To me, the three issues are this:
+
+  1) Each site represents it's data in a particular way -- yes, this is
+still just data, as you point out, but there needs to be a practical way
+to represent the "bag of tricks" necessary for that particular data
+source in a consistent, expandable way (by other people besides just
+me).
+
+  2) The "lineup" of the data sources (sites) that have been implemented
+should be arbitrary and configurable on a per-application basis.  By
+"lineup" I refer to the failover redundancy list of these specific
+classes that each class supports. If the first class fails, it trys the
+next data source, and so on down the line.
+
+  3) It would be nice if user-contributed site-specific expansions were
+available to the rest of us, even without my having to include it in the
+main bundle.
+
+If I were distributing an application, rather than modules, my first
+instinct would be to distribute some sort of configuration data file
+that described the characteristics of each site, although this does not
+adequately address point #3. At least in this way, however, users could
+add sites without having to add classes.
+
+I suppose I took my queue from Finance::YahooQuote, which provides stock
+quotes specifically from Yahoo.
+
+Does anyone have any thoughts on how to best encapsulate the three
+points I mention above without using source-specific classes? I'm all
+for it. I might add, the primary function of the site-specific classes
+is to override the urls() method of the generic class -- so whatever
+solutions are proposed should be able to adequately (and safely) produce
+code for that method.
+
+Thanks,
+Matt Sisk
+sisk@mojotoad.com

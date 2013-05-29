@@ -1,0 +1,104 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2230
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13333 invoked from network); 26 Jun 2000 08:16:36 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 26 Jun 2000 08:16:36 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id KAA29597;
+	Mon, 26 Jun 2000 10:16:27 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: Ben Lilley <bdlilley@hawaii.rr.com>
+Cc: modules@perl.org
+Subject: Re: Win32API - Joystick-1.01 REGISTRATION
+References: <3.0.6.32.20000622194014.0079eb30@pop-server>
+Date: 26 Jun 2000 10:16:27 +0200
+In-Reply-To: Ben Lilley's message of "Thu, 22 Jun 2000 19:40:14 -1000"
+Message-ID: <m3ituwvov8.fsf@ak-71.mind.de>
+Lines: 76
+User-Agent: Gnus/5.0806 (Gnus v5.8.6) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Thu, 22 Jun 2000 19:40:14 -1000, Ben Lilley <bdlilley@hawaii.rr.com> said:
+
+ > Hi,
+ > I would like to register a Win32API::Joystick ,which I recently uploaded to
+ > pause (user BDLILLEY) - the filename is Joystick-1.01.zip
+
+ >  The module is used to get joystick information via Win32 API calls.
+
+ > Name           DSLI  Description                                   Info
+ > -------------  ----  --------------------------------------------  -----
+ > Joystick       adpO  Allows input from game controllers
+
+If it is Win32API::Joystick, it cannot be Joystick at the same time.
+What you released, was a unholy mixture:
+
+  # unzip .....
+    inflating: Makefile.pl             
+    inflating: README.TXT              
+    inflating: README                  
+    inflating: Install.txt             
+    inflating: Install                 
+     creating: html/
+    inflating: html/Joystick.html      
+     creating: lib/
+     creating: lib/Win32API/
+    inflating: lib/Win32API/Joystick.pm  
+
+Please construct your package in a way that is established practice on
+public archives: do not clutter the current directory.
+
+And please name your Makefile.pl Makefile.PL.
+
+  # grep package lib/Win32API/Joystick.pm 
+  package Joystick;
+
+Please fix that: package Joystick is not the same as package
+Win32API::Joystick.
+
+  # md5sum README*
+  4923ca5335f94d267ed52868c1a79b97  README
+  4923ca5335f94d267ed52868c1a79b97  README.TXT
+
+And please do not distribute two identical files under two different
+names.
+
+  # md5sum Install*
+  4923ca5335f94d267ed52868c1a79b97  Install
+  7caca3dd095fdb71579d2a1b39fd47c6  Install.txt
+
+And please do not install two *different* files that indicate to be
+relevant for installation.
+
+  # perl Makefile.pl 
+
+  Win32API::Joystick
+  VERSION 1.01
+
+  No 'Makefile' will be created!
+  Install with: perl install.pl
+  Test with: perl test.pl
+
+
+  Creating new test.pl
+  Creating new install.pl
+
+
+This is the most evil distribution I ever saw on CPAN. Stop that
+nonsense, it is not acceptable. Please do not distribute packages that
+do not conform in *any* way.
+
+Others might follow your example. ***Please*** ***stop***
+
+
+Thanks,
+-- 
+andreas

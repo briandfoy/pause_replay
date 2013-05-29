@@ -1,0 +1,107 @@
+Newsgroups: perl.dbi.users,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.dbi.users:24189 perl.modules:34993
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21698 invoked from network); 18 Sep 2004 19:17:50 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 18 Sep 2004 19:17:50 -0000
+Received: (qmail 4921 invoked by uid 225); 18 Sep 2004 19:17:44 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4899 invoked by alias); 18 Sep 2004 19:17:38 -0000
+X-Spam-Status: No, hits=-4.8 required=8.0
+	tests=BAYES_00,RCVD_IN_SORBS_DUL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from palladium2.baremetal.com (HELO pd2.baremetal.com) (208.184.111.59)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Sat, 18 Sep 2004 12:17:34 -0700
+Received: from [24.108.166.215] (S0106000393c33758.gv.shawcable.net [24.108.166.215])
+	by pd2.baremetal.com (8.12.10/8.12.9) with ESMTP id i8IJ2If2013976;
+	Sat, 18 Sep 2004 12:02:19 -0700
+Mime-Version: 1.0
+Message-ID: <p05200f03bd72353d718c@[24.108.166.215]>
+In-Reply-To: <6.1.2.0.2.20040918102735.02798c00@shell2.webquarry.com>
+References: <p05200f01bd717acdf5c6@[24.108.166.215]>
+ <6.1.2.0.2.20040918102735.02798c00@shell2.webquarry.com>
+Date: Sat, 18 Sep 2004 12:17:23 -0700
+To: modules@perl.org, poop-group@lists.sourceforge.net, dbi-users@perl.org,
+        victoria-pm@pm.org
+Subject: Re: [RFC] naming a module for SQL routines
+Cc: Darren Duncan <darren@DarrenDuncan.net>
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+X-Scanned-By: MIMEDefang 2.36
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Thanks to Peter Scott for being the first to reply.
+
+Just to make clear, the module I'm asking to have named today is just 
+a container that defines actions which can be done against a 
+database, but it does not actually talk to any databases or otherwise 
+execute the definitions.
+
+Therefore, "[dbms-related-thingy]::Mechanize" might be a good name 
+for another module which uses mine and performs the actions, but not 
+for my module itself.  AFAIK, WWW::Mechanize actually "does" the 
+stuff that it models.
+
+I also want to head-off any false impressions I may have caused when 
+I said "it is not exactly SQL".  That comment was more of a reference 
+to fringe cases such as older or non-standard databases, or services 
+that want to be used like databases, that don't use SQL.  In fact I 
+expect that most uses of my module will be in connection with 
+databases that do understand SQL, and SQL will be generated from my 
+module's objects to be their input.  For the other cases, think of my 
+module as a better attempt to bring SQL to those that know it not.
+
+I do not feel that the "DBIx" namespace is appropriate because that 
+namespace is for modules that explicitly extend and/or depend on the 
+DBI library, and this module of mine does not.  It can be used with 
+DBI, where external code provides the bridge, but it doesn't have to 
+be.  I also consider that DBIx modules are usually all "doer" modules.
+
+I appreciate your suggestions, though; they may get used elsewhere.
+
+For everyone's information, after I've given this more thought, I'm 
+currently leaning towards one specific name, which is "SQL::Routine". 
+I decided not to worry about the perception of "represents one vs 
+many".  People could think of that name as conceptually being "not 
+just one SQL statement but a whole bunch".
+
+Do any of you think that "SQL::Routine" can work best, or do you 
+favor something else?
+
+Thanks in advance. -- Darren Duncan
+
+At 10:29 AM -0700 9/18/04, Peter Scott wrote:
+>At 12:04 AM 9/18/2004, Darren Duncan wrote:
+>>The main reason concerns a revisiting of one of the module's main 
+>>intended uses, which was to support the idea of any 
+>>database-related activity being representable by a SQL routine or 
+>>imitation thereof. An implementation of a SQL routine that my 
+>>module describes/models/defines could either be stored in a 
+>>database schema (eg: as a SQL stored procedure, function, or 
+>>trigger), or it could be stored on the client/application side (eg: 
+>>as a fusion of Perl code and DBI calls).  But from the 
+>>application's point of view, the routine simply exists in a locally 
+>>addressable space and can be invoked more or less like a Perl 
+>>routine (function or procedure), regardless of whether it is 
+>>actually in the database or on the client.
+>>
+>>A routine is quite generic in scope and can hold complete 
+>>instructions for any kind of database activity, including 
+>>arbitrarily complex select queries, DML, schema creation or 
+>>manipulation, user management, transactions, and connections. 
+>>Therefore, saying that my module supports or models routines means 
+>>that it supports and models all types of SQL.  It was also designed 
+>>in the hindsight of SQL-2003, and is not limited to SQL-1992.
+>
+>This is a bit off the wall, but after giving this considerable 
+>thought, what comes to mind is SQL::Mechanize, after WWW::Mechanize.
+>
+>>But while my module can represent SQL effectively, it is not 
+>>exactly the same as SQL, and can be used with both databases or 
+>>applications that don't want to talk SQL.  Hence, calling it a 
+>>"SyntaxModel" is somewhat archaic.
+>
+>Given this, perhaps DBIx::Mechanize would be more appropriate.  YMMV.

@@ -1,0 +1,121 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45350
+Return-Path: <gbarr@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22951 invoked from network); 13 Oct 2005 18:00:28 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 13 Oct 2005 18:00:28 -0000
+Received: (qmail 12274 invoked by uid 225); 13 Oct 2005 18:00:28 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12270 invoked by alias); 13 Oct 2005 18:00:27 -0000
+X-Spam-Status: No, hits=-1.4 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO,SPF_NEUTRAL
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: 67.19.103.170 is neither permitted nor denied by domain of gbarr@pobox.com)
+Received: from 170.67-19-103.reverse.theplanet.com (HELO mail.goingon.net) (67.19.103.170)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 13 Oct 2005 11:00:12 -0700
+Received: from [192.168.252.98] (cust207.fchtwr.frvwtx.dfwair.net [63.249.42.207])
+	by mail.goingon.net (Postfix) with ESMTP id 44DCC482CB;
+	Thu, 13 Oct 2005 13:00:06 -0500 (CDT)
+In-Reply-To: <1129105797.434cc98514e21@imp6-g19.free.fr>
+References: <1128330668.4340f5ac8c7f8@imp3-g19.free.fr> <874q7n676b.fsf@k75.linux.bogus> <1129105797.434cc98514e21@imp6-g19.free.fr>
+Mime-Version: 1.0 (Apple Message framework v734)
+Content-Type: text/plain; charset=ISO-8859-1; delsp=yes; format=flowed
+Message-ID: <BD85B228-4D10-46BE-9FEA-58C3E7281588@pobox.com>
+Cc: "Andreas J. Koenig" <andreas.koenig.gmwojprw@franz.ak.mind.de>,
+	modules@perl.org
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: XSLoader is not indexed
+Date: Thu, 13 Oct 2005 13:00:04 -0500
+To: =?ISO-8859-1?Q?S=E9bastien_Aperghis-Tramoni?= <saper@cpan.org>
+X-Mailer: Apple Mail (2.734)
+Approved: news@nntp.perl.org
+From: gbarr@pobox.com (Graham Barr)
+
+On Oct 12, 2005, at 03:29 AM, S=E9bastien Aperghis-Tramoni wrote:
+>>> Hello,
+>>> It appears that although I already uploaded two stable releases of
+>>> XSLoader, it is currently not indexed by PAUSE. Could this be fixed
+>>> so the module can be installed using the CPAN and CPANPLUS shells?
+>>>
+>>
+>> Over the years I get the impression, this needs to be put into some
+>> FAQ. Something like this (and the whole text is subject to radical
+>> changes if needed and if alternative means via META.yml evolve):
+>>
+>> To satisfy the CPAN indexer, it's necessary to distribute one or more
+>> *.pm files.
+>>
+>
+> Aha! This explains why several modules are "hidden" from PAUSE but
+> present on Search CPAN.
+
+Yes and no. You will notice that on http://search.cpan.org/~saper/=20
+XSLoader-0.05/
+XSLoader is listed under the heading Documentation. That is because =20
+Search CPAN
+found some pod. It is not listed as a module for the same reason a =20
+PAUSE not
+indexing it.
+
+>> If your distro contains no *.pm file, because for example,
+>> your Foo.pm is written by a script during the execution of 'perl
+>> Makefile.PL', then you need to take precautions if you want to be
+>> acknowledged by the indexer. The META.yml by MakeMaker doesn't help.
+>> There are several possible solutions:
+>>
+>> 1. Write a different file on the fly, say Foo/Local.pm and have that
+>>    be required by Foo.pm and let Foo.pm be just
+>>
+>>    package Foo;
+>>    $VERSION =3D "2.26";
+>>    require Foo::Local;
+>>
+>> 2. Write only a few configuration variables into some Foo/Config.pm
+>>    and the common logic into Foo.pm. This is really the same thing as
+>>    above.
+>>
+>
+> As XSLoader is a core module that was CPAN-ized, I'm not really
+> supposed to modify it for gratuitous reasons. I took maintainership
+> of this module because nobody else wanted to :-)
+
+Adding a .pm file to your dist file that is not installed by Build.PL =20=
+
+or Makefile.PL
+(whichever you use) could be sufficient for PAUSE and Search to =20
+locate a module. eg
+XSLoader-0.05/fake/XSLoader.pm could just contain
+
+package XSLoader;
+$VERSION=3D0.05;
+1
+
+>> 3. I have not yet enough experience with Module::Build instead of
+>>    MakeMaker. M:B writes a bigger META.yml file that would be parsed
+>>    by the indexer. That would be an interesting approach but would
+>>    probably need some more support on the PAUSE side.
+>>
+>> 4. The least intrusive to you as an author would probably be to let
+>>    Makefile.PL care for the distribution of a bare minimum of Foo.pm
+>>    and overwrite it during installation. This approach is the
+>>    trickiest and thus probably least maintainable one. But it is
+>>    conceptually possible and is therefore mentioned as an =20
+>> alternative.
+>>    An actual implementation is left as an exercixe to the reader:-)
+>>
+>
+> I'll probably use that solution, as it's the one that need less
+> modifications: I'll just ship a generated XSLoader.pm with the
+> distribution and unlink it from Makefile.PL. Advantage being that
+> it doesn't touch any files being in core.
+
+Personally I don't like overwriting. If you decide to add a SIGNATURE =20=
+
+to your
+dist and a test to validate it, then the test will fail
+
+Graham.
+

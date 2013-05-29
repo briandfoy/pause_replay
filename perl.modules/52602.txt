@@ -1,0 +1,122 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:52602
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 25061 invoked from network); 14 Jan 2007 10:25:51 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 14 Jan 2007 10:25:51 -0000
+Received: (qmail 32447 invoked by uid 225); 14 Jan 2007 10:25:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 32435 invoked by alias); 14 Jan 2007 10:25:50 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 14 Jan 2007 02:25:45 -0800
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by franz.ak.mind.de (8.13.8/8.13.8/Debian-2) with ESMTP id l0EANWc5004882;
+	Sun, 14 Jan 2007 11:23:52 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.8/8.13.8/Submit) id l0EANUBk004881;
+	Sun, 14 Jan 2007 11:23:30 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Adam Kennedy <cpan@ali.as>
+Cc: modules@perl.org
+Subject: Re: Request a co-maint bit for Template.pm
+References: <20070114090205.8991.qmail@lists.develooper.com>
+Reply-To: modules@perl.org
+Date: Sun, 14 Jan 2007 11:23:30 +0100
+In-Reply-To: <20070114090205.8991.qmail@lists.develooper.com> (Adam Kennedy's
+	message of "Sun\, 14 Jan 2007 20\:00\:04 +1100")
+Message-ID: <871wlxykil.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Sun, 14 Jan 2007 20:00:04 +1100, Adam Kennedy <cpan@ali.as> said:
+
+  > My intent is to do an incremental version with ONLY the version change
+  > and a small change to the tests to allow them to pass properly on
+  > Win32.
+
+Your request comes just in time for talking about a new option we have
+on CPAN when the next CPAN.pm comes out. Unfortunately it's not yet
+ready for a release but with 1.88_69 everything works quite well.
+
+The new option is to put a patch on CPAN. CPAN.pm can be configured to
+apply a patch to a distribution with the following steps:
+
+- install the patch program
+- set the config variable 'prefs_dir'
+- install YAML (works also with Data::Dumper or Storable but is less fun with these)
+
+Then a the YAML file that applies the patch looks like so:
+
+  ---
+  match:
+    distribution: "^MSERGEANT/DBIx-AnyDBD-2\.01\.tar\.gz"
+  patches:
+    - "ANDK/patches/DBIx-AnyDBD-2.01-ANDK-01.patch.gz"
+
+And, of course, somebody has to upload the patch to CPAN.
+
+Now I'd be interested in hearing your opinion if this way of working
+around AWOL seems acceptable. Of course, it requires more cooperation
+from the user than that simple emergency release you intend to do. But
+it has the advantage of leaving the source where it is and whenever a
+patch is controversial, the end user has the last say what he prefers.
+RT would be the ideal place to publish the such YAML snippets.
+
+In the CPAN.pm distro you find already this:
+
+  --- 
+  comment: |
+
+    The patch is a reaction to
+    http://rt.cpan.org/Ticket/Display.html?id=20807 ; for the options
+    you would probably prefer setting TT_* commandline args
+
+  match:
+    distribution: "^ABW/Template-Toolkit-2.15"
+  pl: 
+    args:
+      - TT_EXTRAS=no
+    expect:
+      - "Do you want to build the XS Stash module"
+      - "n\n"
+      - "Do you want to install these components"
+      - "n\n"
+      - "Installation directory"
+      - "\n"
+      - "URL base for TT2 images"
+      - "\n"
+      - "Do you want to build the HTML documentation"
+      - "\n"
+      - "Do you want to use the Splash! library"
+      - "\n"
+      - "Enter name of colour scheme"
+      - "\n"
+      - "Do you want to build the HTML example pages"
+      - "\n"
+      - "."
+      - "\n"
+      - "."
+      - "\n"
+  patches:
+    - ANDK/patches/Template-Toolkit-2.15-ANDK-01.patch.gz
+  ---
+  comment: "Prohibit working with 2.14"
+  match:
+    distribution: "^ABW/Template-Toolkit-2.14"
+  disabled: 1
+
+
+WDYT?
+-- 
+andreas

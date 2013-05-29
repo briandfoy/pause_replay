@@ -1,0 +1,96 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:20634
+Return-Path: <autrijus@aut.dyndns.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 60209 invoked by uid 76); 23 Apr 2003 18:00:33 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Wed, 23 Apr 2003 11:00:33 -0700
+Received: (qmail 1748 invoked by uid 225); 23 Apr 2003 18:00:32 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1743 invoked by uid 507); 23 Apr 2003 18:00:31 -0000
+Received: from 232.c210-85-16.ethome.net.tw (HELO aut.dyndns.org) (210.85.16.232) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Wed, 23 Apr 2003 11:00:25 -0700
+Received: from aut.dyndns.org (localhost [127.0.0.1])	by aut.dyndns.org (8.12.7/8.12.7) with ESMTP id h3NI0Rbw085884;	Thu, 24 Apr 2003 02:00:27 +0800 (CST)	(envelope-from autrijus@aut.dyndns.org)
+Received: from localhost (localhost [[UNIX: localhost]])	by aut.dyndns.org (8.12.7/8.12.7/Submit) id h3NI0Q7B085883;	Thu, 24 Apr 2003 02:00:26 +0800 (CST)
+Date: Thu, 24 Apr 2003 02:02:35 +0800
+To: imacat <imacat@mail.imacat.idv.tw>
+Cc: Autrijus Tang <autrijus@autrijus.org>, Arthur Bergman <sky@nanisky.com>,   modules@perl.org, imacat@cpan.org
+Subject: Re: Module submission Locale::Maketext::Gettext
+Message-ID: <20030423180235.GB650@not.autrijus.org>
+References: <5BE8160A-757A-11D7-9FF0-000393CB5BC4@nanisky.com> <20030423110006.GA83935@aut.dyndns.org> <20030423225606.03ED.IMACAT@mail.imacat.idv.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=big5
+Content-Disposition: inline
+In-Reply-To: <20030423225606.03ED.IMACAT@mail.imacat.idv.tw>
+X-Copyright: Copyright 2003 by Autrijus Tang. All rights reserved.
+X-Public-Key: http://autrijus.org/pubkey.asc
+X-Notice: Forwarding of this mail prohibited without written consent.
+User-Agent: Mutt/1.5.1i
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-2.0 required=7.0 tests=CARRIAGE_RETURNS,GAPPY_TEXT,IN_REP_TO,QUOTED_EMAIL_TEXT,RCVD_IN_RFCI,REFERENCES,SPAM_PHRASE_00_01,TO_LOCALPART_EQ_REAL,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: autrijus@autrijus.org (Autrijus Tang)
+
+On Wed, Apr 23, 2003 at 10:56:12PM +0800, imacat wrote:
+>     I believe L::M::L::G can benefit from my L::M::G code, but that's
+> not my purpose.  L::M::L::G's interface doesn't make sense.  It runs at
+> a pre-processed stage, which is not reasonable, and is not easy for a
+> lot of users.
+
+This is incorrect.  To wit:
+
+    require Locale::Maketext::Lexicon;
+    Locale::Maketext::Lexicon->import({
+	de => [ Gettext => 'hello_de.po' ],
+	fr => [ Gettext => 'hello_fr.po' ],
+    });
+
+Is, of course, run-time instead of BEGIN stage.
+
+> L::M::L's interface itself simply doesn't work.  It tries to serve the
+> variety, in the cost of simplicity and efficiency.
+
+A wrapper around the ->import interface is easy to write, FWIW.
+
+> Application authors have to read the PO file in a BEGIN
+> block, at least as currently documented.
+
+I'd be happy to modify my documentation to indicate the ->import
+convention.
+
+>     In my L::M::G, methods like bindtextdomain, textdomain are
+> implemented.  The encoding method will have significant meaning to the
+> output.
+
+*nod* That's among my TODOs.  I'd be happy to see your implementation.
+
+>     Sorry the documentation is not ready yet.  It was finished about 12
+> hrs ago, but I have to rewrite it entirely now for the new OO methods. 
+> Although the coding is nearly finished.  I think the above infomation
+> should be enough to explain the existence of a new L::M::G.
+
+I'm ambivalent.   Sean, any opinions?
+
+>     By the way, can anyone that remind me a module that can tell the
+> best default encoding (and all possible encodings) for a language tag?
+> For ex, zh-tw -> Big5, zh-cn -> GB2312, ja -> Shift-JIS, en-us ->
+> US-ASCII.  I18N::LangTags doesn't seem to help.  Maybe I had missed
+> something.
+
+You missed that there is no canonical source for that sort of
+information.  For example, 'zh-cn' most probably should not map
+to GB2312 -- their national standard is GB18030, and the de facto
+encoding is GBK.  Also, most en-us documents are written with ISO-8859-1
+(or ISO-8859-15) in mind, not us-ascii.  Also, Shift-JIS shares the
+usage with EUC-JP, neither are 'best default encoding' in all contexts.
+
+>     Another thing:  Autrijus, I had written to you a couple of days
+> before about your ngettext patch to Locale::gettext.  I haven't heard
+> from you yet.  Any news?  I'm still waiting.
+
+It's already sent.  I was without network connection for a few days.
+
+Thanks,
+/Autrijus/

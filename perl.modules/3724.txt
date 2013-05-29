@@ -1,0 +1,62 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3724
+Return-Path: <briani@ActiveState.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9920 invoked from network); 30 Nov 2000 23:12:25 -0000
+Received: from gw.activestate.com (HELO ActiveState.com) (209.17.183.249)
+  by tmtowtdi.perl.org with SMTP; 30 Nov 2000 23:12:25 -0000
+Received: from smtp3.ActiveState.com (smtp3.ActiveState.com [192.168.3.19])
+	by ActiveState.com (8.11.1/8.11.0) with ESMTP id eAUNBww11418
+	for <modules@perl.org>; Thu, 30 Nov 2000 15:11:58 -0800
+Received: from activestate.com (ingy@thebrain.activestate.com [192.168.3.113])
+	by smtp3.ActiveState.com (8.11.1/8.11.0) with ESMTP id eAUNBwP28407
+	for <modules@perl.org>; Thu, 30 Nov 2000 15:11:58 -0800
+Sender: ingy@ActiveState.com
+Message-ID: <3A26DF80.630A8380@activestate.com>
+Date: Thu, 30 Nov 2000 15:15:12 -0800
+X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.13 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: RFC for new module Inline::CPR
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Filtered-By: PerlMx makes it fast and easy.  See http://www.ActiveState.com/Products/PerlMx/Header
+Approved: news@nntp.perl.org
+From: briani@ActiveState.com (Brian Ingerson)
+
+Inline.pm makes it easy to *extend* Perl with C. But what about
+embedding Perl in C? As I thought about this problem I came up with an
+entirely new programming language: CPR (C Perl Run). CPR is just like C
+except that you have access to the entire internals of Perl using either
+the Perl5 API, or the CPR API. Here is a 'Hello World' program in CPR:
+
+-----------------------------------8<----------------------------------------
+#!/usr/bin/cpr
+
+int main(void) {
+    printf("Hello World, I'm running under Perl version %s\n",
+           CPR_eval("use Config; $Config{version}"));
+    return 0;
+}
+-----------------------------------8<---------------------------------------- 
+
+Yup, you guessed it, run the code under the CPR interpreter (hashbang
+style or not) and your C code gets compiled/run seamlessly just like
+with Inline!
+
+This is embedding turned inside out. You run 'cpr' which execs 'perl'
+which uses 'Inline::CPR' which binds and invokes 'main'. So your whole C
+program is really just a Perl extension. By rights, this gives you full
+access to the Perl5 API. And if you wrap that with a nice clean 'CPR_'
+set of macros, you kind of get a new language. Don't you? :-)
+
+I wish to distribute this as Inline::CPR. Here is the DSLI info:
+
+Inline::CPR  adpO  Simple way to embed Perl in C ala Inline  INGY
+
+-- 
+perl -le 'use Inline C=>q{SV*JAxH(char*x){return newSVpvf
+("Just Another %s Hacker",x);}};print JAxH+Perl'

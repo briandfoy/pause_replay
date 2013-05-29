@@ -1,0 +1,111 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11800
+Return-Path: <rob@roobik.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 34904 invoked by uid 76); 23 May 2002 16:03:12 -0000
+Received: from [63.108.71.201] (HELO mail.roobik.com) (63.108.71.201)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Thu May 23 16:03:12 2002 -0000
+Received: by mail.roobik.com (Postfix, from userid 500)
+	id DF2114CE; Thu, 23 May 2002 10:04:44 -0600 (MDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.roobik.com (Postfix) with ESMTP
+	id DC58B495; Thu, 23 May 2002 10:04:44 -0600 (MDT)
+Date: Thu, 23 May 2002 10:04:44 -0600 (MDT)
+To: <modules@perl.org>
+Cc: <cpan-testers@perl.org>, <perl_test@logicalchaos.org>,
+	<Jost.Krieger+smokeback@ruhr-uni-bochum.de>, <bbb@cpan.org>,
+	<liraz@cpan.org>, <brucek@cpan.org>
+Subject: Wrong IO::Multiplex version
+In-Reply-To: <20020523094735.5966.qmail@sunu991.rz.ruhr-uni-bochum.de>
+Message-ID: <Pine.LNX.4.33.0205230934560.15158-100000@rox.roobik.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: rob@roobik.com (Rob Brown)
+References: <20020523094735.5966.qmail@sunu991.rz.ruhr-uni-bochum.de>
+
+These compile errors are happening because IO::Multiplex
+is still out of date on the cpan list:
+
+http://cpan.org/modules/01modules.index.html
+
+You can get the latest version (1.02) from
+
+http://search.cpan.org/search?dist=IO-Multiplex
+
+I've been trying to maintain IO::Multiplex,
+but I cannot contact LIRAZ (liraz_siri@usa.net)
+who has control over the module.  I always get
+bad email errors like the following:
+
+---------
+Hi. This is the qmail-send program at onion.perl.org.
+I'm afraid I wasn't able to deliver your message to the following addresses.
+This is a permanent error; I've given up. Sorry it didn't work out.
+
+<liraz_siri@usa.net>:
+165.212.8.32 does not like recipient.
+Remote host said: 550 <liraz_siri@usa.net>... User not known
+Giving up on 165.212.8.32.
+---------
+
+<liraz_siri@usa.net>: host mxpool01.netaddress.usa.net[165.212.8.32] said: 550 <liraz_siri@usa.net>... User not known
+
+---------
+
+I've also been trying to work with Bruce Keeler
+(BRUCEK) who has contributed to IO::Multiplex
+as well, but I'm not sure there is much he can
+do either.  To fix this problem, I believe
+that either LIRAZ must be contacted, or the
+control should be changed to someone that is
+willing to take over.  Can modules@perl.org
+help?
+
+Rob Brown
+CPANID: BBB
+
+PS: I have IO::Multiplex in my CVS server if you'd
+like to checkout the latest source or verify the
+history logs or provide patches or whatever:
+
+cvs -d :pserver:anonymous@cvs.roobik.com.:/usr/local/cvsroot/freeware co IO-Multiplex
+
+On 23 May 2002, Several Testers wrote:
+> To: cpan-testers@perl.org
+> Cc: BBB@cpan.org
+> Subject: FAIL Net-DNAT-0.05 [...]
+>
+> This distribution has been tested as part of the cpan-testers
+> effort to test as many new uploads to CPAN as possible.  See
+> http://testers.cpan.org/
+>
+> Please cc any replies to cpan-testers@perl.org to keep other
+> test volunteers informed and to prevent any duplicate effort.
+>
+> --
+> This is an error report generated automatically by CPANPLUS.
+> Below is the error stack during 'make test':
+>
+> PERL_DL_NONLAZY=1 /usr/bin/perl -Iblib/arch -Iblib/lib -I/usr/lib/perl5/5.6.1/i386-linux -I/usr/lib/perl5/5.6.1 -e 'use Test::Harness qw(&runtests $verbose);
+> $verbose=(eval(chr(36).q(|=1))-1); runtests @ARGV;' t/*.t
+> t/100_load_Net.......IO::Multiplex version 1.01 required--this is only version 0.1 at /usr/local/src/cpanplus/build/Net-Server-0.82/blib/lib/Net/Server/Multiplex.pm line 24.
+> BEGIN failed--compilation aborted at /usr/local/src/cpanplus/build/Net-Server-0.82/blib/lib/Net/Server/Multiplex.pm line 24.
+> Compilation failed in require at blib/lib/Net/DNAT.pm line 6.
+> BEGIN failed--compilation aborted at blib/lib/Net/DNAT.pm line 6.
+> Compilation failed in require at t/100_load_Net.t line 11.
+> BEGIN failed--compilation aborted at t/100_load_Net.t line 11.
+> dubious
+>         Test returned status 255 (wstat 65280, 0xff00)
+> DIED. FAILED test 1
+>         Failed 1/1 tests, 0.00% okay
+> t/110_load_Apache....ok
+> Failed Test      Stat Wstat Total Fail  Failed  List of Failed
+> -------------------------------------------------------------------------------
+> t/100_load_Net.t  255 65280     1    1 100.00%  1
+> Failed 1/2 test scripts, 50.00% okay. 1/2 subtests failed, 50.00% okay.
+> make: *** [test_dynamic] Error 29
+
+

@@ -1,0 +1,73 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:68799
+Return-Path: <smueller@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26517 invoked from network); 3 Dec 2009 10:52:00 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 3 Dec 2009 10:52:00 -0000
+Received: (qmail 12863 invoked by uid 225); 3 Dec 2009 10:52:00 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12856 invoked by alias); 3 Dec 2009 10:51:59 -0000
+X-Spam-Status: No, hits=-4.0 required=8.0
+	tests=RCVD_IN_DNSWL_MED
+X-Spam-Check-By: la.mx.develooper.com
+Received: from spam1.fzk.de (HELO spam1.fzk.de) (141.52.32.63)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 03 Dec 2009 02:51:57 -0800
+X-Scan-Signature: 7396dfe3ba188afdcaa011a0c410d9a2
+X-Scan-Server: spam1.fzk.de
+X-SCC-Spam-Level: --
+X-Spam-Level: --
+X-Spam-SCC-Status: no, hits=-2.6 required=5.0
+X-Spam-Report: -2.6 BAYES_00               BODY: Bayesian spam probability is 0 to 1%
+	[score: 0.0000]
+Received: from fzkmsx7.ka.fzk.de ([141.52.92.58])
+	by spam1.fzk.de with esmtp (Exim 4.69)
+	(envelope-from <smueller@cpan.org>)
+	id 1NG9Ho-0003B1-B7; Thu, 03 Dec 2009 11:51:52 +0100
+Received: from [141.52.67.210] ([141.52.67.210]) by FZKMSX7.ka.fzk.de with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 3 Dec 2009 11:51:23 +0100
+Message-ID: <4B17982A.40803@cpan.org>
+Date: Thu, 03 Dec 2009 11:51:22 +0100
+User-Agent: Thunderbird 2.0.0.23 (X11/20090817)
+MIME-Version: 1.0
+To: JT Smith <jt@plainblack.com>
+CC: modules@perl.org
+Subject: Re: namespace conflict
+References: <69F8D4CA-D660-41A2-B6C1-1A0580098829@plainblack.com>
+In-Reply-To: <69F8D4CA-D660-41A2-B6C1-1A0580098829@plainblack.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 03 Dec 2009 10:51:23.0363 (UTC) FILETIME=[8DF32B30:01CA7406]
+X-Old-Spam-Status: no, hits=-2.6 required=5.0
+Approved: news@nntp.perl.org
+From: smueller@cpan.org (Steffen Mueller)
+
+Hi,
+
+JT Smith wrote:
+> In my author tests I have a fake class called Foo.pm, that is only used 
+> for testing. However, PAUSE is trying to index it and reports an error. 
+> Is there any way I can make it not index the author.t folder? Should I 
+> just ignore the error?
+
+No, you shouldn't ignore it.
+
+I see you're using ExtUtils::MakeMaker. What you want to do is modify 
+the defaults of the "no_index" property of the distributions META.yml in 
+order to tell the PAUSE indexer that it shouldn't be indexing the 
+testing directory.
+
+There is the META_MERGE property of ExtUtils::MakeMaker in recent 
+versions. Try adding the following to your WriteMakefile call if Foo.pm 
+lives in t/:
+
+META_MERGE => {
+   no_index => {
+     directory => 't',
+   },
+},
+
+Cheers,
+Steffen

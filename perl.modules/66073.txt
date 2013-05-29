@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:66073
+Return-Path: <ryan@bluejag.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 32052 invoked from network); 26 May 2009 23:06:45 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 26 May 2009 23:06:45 -0000
+Received: (qmail 7885 invoked by uid 225); 26 May 2009 23:06:45 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7879 invoked by alias); 26 May 2009 23:06:45 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail.cardweb.com (HELO mail.cardweb.com) (216.127.153.181)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 26 May 2009 16:06:39 -0700
+Received: from localhost (unknown [192.168.0.200])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.cardweb.com (Postfix) with ESMTP id 27A83AC4041;
+	Tue, 26 May 2009 19:06:35 -0400 (EDT)
+Date: Tue, 26 May 2009 19:06:34 -0400
+To: brad@bradchoate.com, bchoate@cpan.org, modules@perl.org
+Subject: Text::Textile patch
+Message-ID: <20090526230634.GJ31096@ender.hundredworlds>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="5vNYLRcllDrimb99"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Approved: news@nntp.perl.org
+From: ryan@cardtrak.com (Ryan McGuigan)
+
+--5vNYLRcllDrimb99
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+Brad,
+
+I hope you will apply the following patch for Text/Textile.pm so
+Text::Textile will stop clobbering $_.
+
+If you're no longer interested in maintaining Text::Textile, could you
+please make arrangements to have someone else maintain it?
+
+Regards,
+Ryan
+
+-- 
+
+Ryan McGuigan
+P:800.874.8999x108
+F:800.821.4627
+ryan@cardtrak.com
+
+
+--5vNYLRcllDrimb99
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="Textile.pm.patch"
+
+--- Textile.pm       2005-09-22 14:40:05.000000000 -0400
++++ Textile.pm-      2008-02-14 10:20:52.000000000 -0500
+@@ -754,7 +754,7 @@
+ 
+     # cleanup-- restore preserved blocks
+     my $i = scalar(@repl);
+-    $out =~ s!(?:<|&lt;)textile#$i(?:>|&gt;)!$_!, $i-- while $_ = pop @repl;
++    $out =~ s!(?:<|&lt;)textile#$i(?:>|&gt;)!$_!, $i-- while local $_ = pop @repl;
+ 
+     # scan for br, hr tags that are not closed and close them
+     # only for xhtml! just the common ones -- don't fret over input
+@@ -833,7 +833,7 @@
+     $result =~ s/\001/\n/g;
+ 
+     my $i = scalar(@repl);
+-    $result =~ s|<textile#$i>|$_|, $i-- while $_ = pop @repl;
++    $result =~ s|<textile#$i>|$_|, $i-- while local $_ = pop @repl;
+ 
+     # quotalize
+     if ($self->{do_quotes}) {
+@@ -1031,7 +1031,7 @@
+ 
+     # Restore replacements done earlier:
+     my $i = scalar(@repl);
+-    $text =~ s|<textile#$i>|$_|, $i-- while $_ = pop @repl;
++    $text =~ s|<textile#$i>|$_|, $i-- while local $_ = pop @repl;
+ 
+     # translate entities to characters for highbit stuff since
+     # we're using utf8
+
+--5vNYLRcllDrimb99--

@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13013
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 49695 invoked by uid 76); 2 Aug 2002 20:33:56 -0000
+Received: from mail01.svc.cra.dublin.eircom.net (HELO mail01.svc.cra.dublin.eircom.net) (159.134.118.17)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Fri Aug  2 20:33:56 2002 -0000
+Received: (qmail 96494 messnum 118335 invoked from network[159.134.166.176/p688.as1.limerick1.eircom.net]); 2 Aug 2002 20:33:01 -0000
+Received: from p688.as1.limerick1.eircom.net (HELO dansat.data-plan.com) (159.134.166.176)
+  by mail01.svc.cra.dublin.eircom.net (qp 96494) with SMTP; 2 Aug 2002 20:33:01 -0000
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id g72KX9c28668;
+	Fri, 2 Aug 2002 21:33:09 +0100 (BST)
+	(envelope-from timbo)
+Date: Fri, 2 Aug 2002 21:33:09 +0100
+To: Stas Bekman <stas@stason.org>
+Cc: Tim Bunce <Tim.Bunce@pobox.com>, modules@perl.org
+Subject: Re: Module submission Debug::SIGSEGVTrace
+Message-ID: <20020802213309.M23836@dansat.data-plan.com>
+References: <200208020313.g723D0v29182@pause.perl.org> <20020802121108.D23836@dansat.data-plan.com> <3D4A6DA9.30602@stason.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <3D4A6DA9.30602@stason.org>; from stas@stason.org on Fri, Aug 02, 2002 at 07:31:53PM +0800
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+On Fri, Aug 02, 2002 at 07:31:53PM +0800, Stas Bekman wrote:
+> > 
+> > I think the name shouldn't contain SEGV since that's just one of the
+> > causes of a core. Another fairly common one is a Bus Error.
+> 
+> What signals result in the core dump? BUS SEGV PIPE ABRT? any others?
+
+On FreeBSD:
+$ man 2 sigaction | grep core
+     SIG_DFL.  The defaults are process termination, possibly with core dump;
+     SIGQUIT         create core image       quit program
+     SIGILL          create core image       illegal instruction
+     SIGTRAP         create core image       trace trap
+     SIGABRT         create core image       abort(3) call (formerly SIGIOT)
+     SIGEMT          create core image       emulate instruction executed
+     SIGFPE          create core image       floating-point exception
+     SIGBUS          create core image       bus error
+     SIGSEGV         create core image       segmentation violation
+     SIGSYS          create core image       non-existent system call invoked
+
+> Currently the module traps only SIGSEGV, hence the name. Can you really 
+> fork and fire up gdb on SIGBUS and other SIGs?
+
+I don't see why not.
+
+> > How about Debug::CoreStackTrace?
+> 
+> The point of this module is that there is no core involved here ;)
+
+Debug::NoCoreStackTrace  :)
+
+> But I guess it's fine, assuming that the module gets extended to other
+> signals as well.
+
+How about Debug::OnFaultTrace, or Debug::AutoFaultTrace?
+
+> The module also includes Debug::SIGSEGVFault which dereferences a NULL 
+> pointer and causes SIGSEGV. how should it be renamed then? 
+> Debug::CoreDump? I guess I could release it separately. I bundled it up 
+> because it's needed to test Debug::SIGSEGVTrace. What do you think?
+
+You can probably drop it.  The dump() builtin also triggers a core dump:
+$ perldoc -f dump | grep core
+This causes an immediate core dump. [...]
+
+From memory dump() basically sends the process a SIGABRT signal.
+Just arrange to catch that and you're done.
+
+> BTW, meanwhile I put it on CPAN here:
+> http://search.cpan.org/search?mode=module&query=SIGSEGVTrace
+> 
+> > Have you looked at the sigtrap module? Your work may be a natutral
+> > extension to that.
+> 
+> It cannot be used, because the sighandler must be assigned on the C 
+> level. If you do it on the perl level, under 5.8.0 it won't work because 
+> of the way the signals handling is delayed in 5.8.0.
+
+Ah. Okay.
+
+Tim.

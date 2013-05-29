@@ -1,0 +1,64 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3725
+Return-Path: <ken@bitsko.slc.ut.us>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13350 invoked from network); 30 Nov 2000 23:37:17 -0000
+Received: from c941885-a.west1.ia.home.com (HELO jess.bitsko.slc.ut.us) (@24.2.246.129)
+  by tmtowtdi.perl.org with SMTP; 30 Nov 2000 23:37:17 -0000
+Received: (from ken@localhost)
+	by jess.bitsko.slc.ut.us (8.9.1/8.9.1) id RAA05462;
+	Thu, 30 Nov 2000 17:37:06 -0600 (CST)
+X-Authentication-Warning: jess.bitsko.slc.ut.us: ken set sender to ken@bitsko.slc.ut.us using -f
+To: perl-xml@ActiveState.com
+Cc: modules@perl.org
+Subject: Re: XML::Driver::Elemental?  XML::Filter::Validator?
+References: <20001130141616.A1433@jester.slaysys.com>
+Date: 30 Nov 2000 17:37:04 -0600
+In-Reply-To: barries's message of "Thu, 30 Nov 2000 14:16:16 -0500"
+Message-ID: <x77l5lghgf.fsf@bitsko.slc.ut.us>
+Lines: 37
+User-Agent: Gnus/5.0807000000000002 (Gnus v5.8.7) Emacs/20.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: ken@bitsko.slc.ut.us (Ken MacLeod)
+
+barries <barries@slaysys.com> writes:
+
+> Also planning to writing XML::Filter::Validator, to do the same
+> validation as XML::ValidWriter, unless someone's got one (also
+> searched CPAN for that).  <plug>Throwing a validation step on the
+> XML output chain has been quite useful to us in development,
+> highlighting glitches in DTDs or code.</plug>
+
+Just wanted to note that SAX2 modules should go in the namespaces
+SAXDriver::*, SAXFilter::*, and SAXHandler::*.  This gives them a
+consistent new home, and also helps to distinguish them from SAX1
+modules already under XML::*.
+
+Summarizing past discussion: the Perl module list maintainers
+recommended multiple top-levels for this particular type of naming (so
+populating the top-level namespace in this way is intentional).  And
+they specifically recommended against three-level naming of modules
+that go on a module list (thus deprecating any type of
+SAX::*::ModuleName or XML::*::ModuleName scheme).
+
+(XML specific notes follow.)
+
+Otherwise the modules look great.  I didn't see mention of reference
+to XML::Writer, which also has a nice script interface for generating
+XML, and excellent well-formedness checking too.  XML::Writer with
+SAX2 output would likely be what you're thinking of with
+XML::Driver::Elemental.
+
+A feature you might want consider, to more easily support namespaces,
+is to let the caller register prefixes for method and attribute names
+(like 'prefix_local_name'), then output the declarations on the first
+element or as they are defined, and then substitute ':' for the first
+underscore in the element or attribute name.
+
+  -- Ken
+
+Cc'd to modules@perl.org just to make sure that's still the case ;-)

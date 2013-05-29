@@ -1,0 +1,67 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1713
+Return-Path: <nick@ing-simmons.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18334 invoked from network); 28 Apr 2000 16:28:44 -0000
+Received: from mserv1b.u-net.net (195.102.240.137)
+  by tmtowtdi.perl.org with SMTP; 28 Apr 2000 16:28:44 -0000
+Received: from ni-s.u-net.com ([193.119.182.90] helo=bactrian.ni-s.u-net.com)
+	by mserv1b.u-net.net with esmtp (Exim 2.10 #63)
+	id 12lDdA-0007Ce-00
+	for modules@perl.org; Fri, 28 Apr 2000 17:28:40 +0100
+Content-Type: text/plain
+Content-Disposition: inline
+Mime-Version: 1.0
+X-Mailer: tkmail-0.011/Perl5 Mail::Internet v1.32
+Subject: Name space for "make executable from script"
+To: modules@perl.org
+Sender: Nick Ing-Simmons <nick@ing-simmons.net>
+Reply-To: Nick Ing-Simmons <nick@ing-simmons.net>
+Message-ID: <E12lDdA-0007Ce-00@mserv1b.u-net.net>
+Date: Fri, 28 Apr 2000 17:28:40 +0100
+Approved: news@nntp.perl.org
+From: nick@ing-simmons.net (Nick Ing-Simmons)
+
+
+As I mentioned on p5p earlier I am working on a low-tech way of bundling 
+script + modules into one executable. 
+
+e.g.
+
+perl -MSerial ../foo > foo      # produce one script which has all perl code in
+perl foo                        # just like ../foo but no @INC access
+scipt2c foo                     # produces foo.exe
+foo.exe                         # just like ../foo but no perl needed
+
+Remaining snag is how to convert ..../Tk.so etc. into non-shared objects 
+so that foo.exe is truely self contained.
+
+foo.exe is straight forward  embedded perl executable with a big 
+
+char script[] = ".................";
+
+and does 
+  argv[1] = "-e";
+  argv[2] = script;
+
+It mostly works (Solaris/Linux).
+
+There are two potential module names - one for what is 'Serial' 
+above which does equivalent job to -MO=... i.e. arranges for END/CHECK
+block to save the things that %INC shows we need.
+
+The other is the runtime module which does
+*CORE::GLOBAL::require = \&reload;
+and supplies eval's the text of the "file".
+
+The name 'Serial' was just because it was originally going to serialized 
+the execution. That turned out to be harder than I thought so now 
+it just builds a hash of the file contents instead - but that makes 
+name misleading (and it was not that good to start with).
+
+The other module's working name is 'Reload'.
+-- 
+Nick Ing-Simmons
+

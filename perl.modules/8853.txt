@@ -1,0 +1,181 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8853
+Return-Path: <heuel@ipb.uni-bonn.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4169 invoked by uid 76); 20 Nov 2001 17:10:21 -0000
+Received: from node23.rhrz.uni-bonn.de (HELO f2node23.rhrz.uni-bonn.de) (131.220.14.223)
+  by onion.perl.org (qpsmtpd/0.04) with SMTP; Tue Nov 20 17:10:21 2001 -0000
+Received: from kuzorra.ipb.uni-bonn.de ([131.220.233.133])
+	by f2node23.rhrz.uni-bonn.de (8.9.3/8.9.3) with ESMTP id SAA26872
+	for <modules@perl.org>; Tue, 20 Nov 2001 18:10:15 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <15354.36503.899758.124209@kuzorra.ipb.uni-bonn.de>
+Date: Tue, 20 Nov 2001 18:10:47 +0100
+To: modules@perl.org
+Subject: Requesting ID: Geometric Reasoning in Perl
+X-Mailer: VM 6.96 under 21.1 (patch 14) "Cuyahoga Valley" XEmacs Lucid
+Reply-To: stephan@heuel.org
+Approved: news@nntp.perl.org
+From: heuel@ipb.uni-bonn.de (Stephan Heuel)
+
+
+Name:         Stephan Heuel
+E-mail:       stephan@heuel.org
+Homepage:     http://www.heuel.org
+Preferred ID: HEUEL
+
+Description:  
+
+OVERVIEW
+--------
+
+  I'm a PhD student working in the field of computer vision and recently
+  used Perl for doing my research.
+
+  I implemented a geometrical toolbox called SUGR[1] for constructing
+  and testing points, lines, planes and transformations in 2D and 3D.
+  The toolbox is based on projective geometry and a simple but effective
+  uncertainty model, though one can use the tool without statistics,
+  too. See BACKGROUND section for more details
+  
+  There is already a preview version of my library, it also
+  includes a special shell (based on the pdlshell) and a simple markup
+  language for offline computations. This is available from
+  http://www.ipb.uni-bonn.de/SUGR.html
+
+
+  Footnotes: 
+  [1]  SUGR is an acronym for "Statistically Uncertain Geometric
+       Reasoning"
+
+CATEGORY
+--------
+  
+  Currently, SUGR is not categorized to any toplevel name. IMHO there
+  are several possibilities, I'd suggest (in this very order)
+     1. AI
+     2. Geometry
+     3. Statistics
+
+BACKGROUND
+----------
+
+  The difference to existing solutions is the fact that it uses simple
+  statistical description (second moments). This is helpful if you are
+  not 100% sure about the exact values of your points, lines and planes.
+  For example if you measure the length of your notebook with a simple
+  ruler, you will never know the length in - say - Angstrom (=1
+  hundred-millionth of a centimeter), so you will always have some
+  uncertainty about the correct length.
+  
+  Using simple statistics has several advantages: (i) you can propagate
+  the uncertainty to new geometrical objects. (ii) you get rid of the
+  "choosing-the-epsilon-problem"[2] when testing geometrical relations
+  such as "Does point X lie on the 3D-line L?". (iii) you can do a
+  weighted least-squares estimation to do _any_ kind of constructions
+  involving points, lines and planes in 2D and 3D.
+
+
+  Footnotes:
+  [2] The "Choosing-the-epsilon-problem" appears for example when you
+      want to test whether a number is zero. It is usually not really
+      zero, but close to it - so you choose a special small number
+      called epsilon and test if your number is smaller than epsilon.
+
+INTERFACE
+---------
+
+             # create a new 3D point, with an homogeneous 4-vector and
+             # a homogeneous 4x4 covariance matrix
+             $X = new SUGR::Point([0,1,1,1],
+                                  [[0.01,0   ,0   ,0],
+                                   [0   ,0.01,0   ,0],
+                                   [0   ,0   ,0.01,0],
+                                   [0   ,0   ,0   ,0]]);
+
+             # create two other points with
+             # the same covariance matrix as the first point
+             $Y = new SUGR::Point([0,2,3,1],$X->cov);
+             $Z = new SUGR::Point([2,2,0,1],$X->cov);
+
+             # construct a new 3D line using $X and $Y,
+             # including error propagation
+             $L = new SUGR::Line($X,$Y);
+
+             # and a plane with the third point $Z
+             $A = new SUGR::Plane($L,$Z);
+
+             # create a projective camera $P with given
+             # projection center $X0 (as a SUGR point!),
+             # rotation matrix $R and focal length $c with its
+             # variance $c_var
+             $X0 = new SUGR::Point([10,10,10,1],$X->cov);
+             $R  = new PDL::Matrix([[0,1,0],[1,0,0],[0,0,1]]);
+             $P  = sugr_ProjectiveCamera({ "X0"    => $X0,
+                                           "R"     => $R,
+                                           "c"     => 1,
+                                           "c_var" => 0.001,
+                                         });
+
+             # construct a new 2D point as an image of $X with
+             # the projective camera $P
+             $x = new SUGR::Point2d($X,$P);
+
+FILES
+-----
+
+       SUGR::Scene
+           A class for a set of SUGR objects
+
+       SUGR::Scene::GXF
+           Definition if a SUGR scene using an  ASCII file, which
+           is in the format GXF(sugr)
+
+       SUGR::Point2d
+           A class for 2D points.
+
+       SUGR::Line2d
+           A class for 2D lines.
+
+       SUGR::Point
+           A class for 3D points.
+
+       SUGR::Line
+           A class for 3D lines.
+
+       SUGR::Plane
+           A class for 3D planes.
+
+       SUGR::ProjectiveCamera
+           A class for a projective camera modelling the classic
+           pin-hole camera with 11 parameters.
+
+       SUGR::Relation
+           A class providing hypotheses tests for relations
+           between geometric objects.
+
+       SUGR::Estimation
+           A module providing a generic estimation for a large
+           set of geometric problems.
+
+PREREQUISITES
+-------------
+
+    'PREREQ_PM'         => { 
+                            'ExtUtils::F77'    => 1.13,
+                            'Math::Random'     => 0.61,
+                            'PDL'              => "2.3",
+                           }
+
+
+
+-- 
+Stephan Heuel                                 fon: +49 228 73 2711
+Institute for Photogrammetry                  fax: +49 228 73 2712
+University of Bonn, Nussallee 15          mailto:stephan@heuel.org
+53115 Bonn - GERMANY             http://www.ipb.uni-bonn.de/~steve
+

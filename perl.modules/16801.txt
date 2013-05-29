@@ -1,0 +1,55 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16801
+Return-Path: <eric@myxa.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 92151 invoked by uid 76); 8 Jan 2003 18:56:13 -0000
+Received: from extgate.myxa.com (HELO extgate.myxa.com) (192.65.202.2) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-08 18:56:13Z
+Received: from verne.myxa.com (verne.myxa.com [172.26.1.9])	by extgate.myxa.com (8.12.2/8.12.1) with ESMTP id h08IuBCa021329	for <modules@perl.org>; Wed, 8 Jan 2003 13:56:11 -0500 (EST)
+Received: from orwell.myxa.com (orwell [172.26.1.7])	by verne.myxa.com (8.11.6+Sun/8.10.2) with ESMTP id h08IuAU27164	for <modules@perl.org>; Wed, 8 Jan 2003 13:56:10 -0500 (EST)
+Received: (from eric@localhost)	by orwell.myxa.com (8.10.2+Sun/8.10.2) id h08IuAq12502	for modules@perl.org; Wed, 8 Jan 2003 13:56:10 -0500 (EST)
+Date: Wed, 8 Jan 2003 13:56:10 -0500
+To: modules@perl.org
+Subject: Re: Module submission Readonly
+Message-ID: <20030108185610.GU13608@orwell.myxa.com>
+Reply-To: modules@perl.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <070120031652487147%comdog@panix.com>
+User-Agent: Mutt/1.4i
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: eric@myxa.com (Eric Roode)
+References: <070120031652487147%comdog@panix.com>
+
+
+In article <070120031652487147%comdog@panix.com>, brian d foy wrote:
+>> The following module was proposed for inclusion in the Module List:
+>>
+>>   modid:       Readonly
+>
+>>   similar:
+>>     constant
+>
+>i don't have a problem with this name, but should it be a pragma
+>instead of a "normal" module?
+
+I don't think so, because pragmas generally control the compilation
+environment rather than the runtime environment, and one of the
+features of Readonly is that you can make a variable read-only with a
+value computed at runtime.  Pragmas also generally have a blanket
+effect on the program ("use constant" is an exception), and don't
+introduce functions as Readonly does.
+
+I'm not closed to the idea; it just doesn't seem to me that a pragma
+is a good fit for this.  I do plan to experiment with attributes,
+something like "my $foo : Readonly ('somevalue');", but at this point
+I don't have any idea whether that'll work well or not.
+
+-- 
+Eric J. Roode                                              eric@myxa.com
+Senior Software Engineer, Myxa Corporation
+tr j, j ,j for @japh = (qw b lre h, uJ p, ekca tona, ts reh b, $/.r);
+print scalar reverse sort @japh;

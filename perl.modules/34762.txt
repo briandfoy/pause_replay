@@ -1,0 +1,122 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:34762
+Return-Path: <gabriel.guillon@c-s.fr>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29871 invoked from network); 14 Sep 2004 08:52:32 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 14 Sep 2004 08:52:32 -0000
+Received: (qmail 8044 invoked by uid 225); 14 Sep 2004 08:52:32 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8040 invoked by alias); 14 Sep 2004 08:52:31 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pegase1.c-s.fr (HELO pegase1.c-s.fr) (194.2.40.7)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Tue, 14 Sep 2004 01:52:29 -0700
+Received: from localhost (localhost [127.0.0.1])
+	by localhost (Postfix) with SMTP id A8C181E09A1
+	for <modules@perl.org>; Tue, 14 Sep 2004 10:50:09 +0100 (WEST)
+Received: from hermes18.si.c-s.fr (hermes18.si.c-s.fr [192.168.25.40])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 9DA301E0A18
+	for <modules@perl.org>; Tue, 14 Sep 2004 09:55:46 +0100 (WEST)
+Received: from [172.17.103.153] (localhost [127.0.0.1]) by
+          hermes18.si.c-s.fr (Netscape Messaging Server 4.15) with ESMTP
+          id I40U2400.Z47 for <modules@perl.org>; Tue, 14 Sep 2004 09:56:28 +0200 
+Message-ID: <4146A42B.7030104@c-s.fr>
+Date: Tue, 14 Sep 2004 09:56:27 +0200
+User-Agent: Mozilla Thunderbird 0.7.1 (X11/20040626)
+X-Accept-Language: fr, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: Module submission Log::Funlog
+References: <414588A6.2010409@c-s.fr> <130920041040560105%comdog@panix.com> <4145C443.9010308@c-s.fr> <130920041252095372%comdog@panix.com>
+In-Reply-To: <130920041252095372%comdog@panix.com>
+X-Enigmail-Version: 0.84.2.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Approved: news@nntp.perl.org
+From: gabriel.guillon@c-s.fr ("GUILLON Gabriel")
+
+
+
+_brian_d_foy a écrit :
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+> 
+> In article <4145C443.9010308@c-s.fr>, GUILLON Gabriel
+> <gabriel.guillon@c-s.fr> wrote:
+> 
+> 
+>>Okay... I just had a look, I didn't know the Acme::* things...
+>>But... my module can bu used as a real module! I plan to make a Makefile 
+>>to make it 'politicaly correct': build a pm without any reference at the 
+>>fun 'things'
+>>By default it do not write any funny things... Does it is still an Acme 
+>>thing??
+> 
+> 
+> What does it do, then?  The name doesn't give it away. ;)
+> 
+
+I choosed the name (Funlog) when I decided to put it on cpan. At first, 
+it was 'just' a log routine whith fun inside (actually: with fin inside 
+_if you want_) For my job, I do not specify fun. But I do for my 
+personnal scripts.
+What does it do? It just provide a parametrable and easy to use log 
+routine with verbose level management
+An example?
+--------------------------------------------------------------------
+use Log::Funlog;
+use Getopt::Long;
+&GetOptions("verbose=i",\$verbose);
+$verbose=3 if (not defined $verbose);
+*Log=Log::Funlog->new(levelmax => 5,    #Loglevel max: 5
+     file => "set_pf2.log",      #name of the file
+     verbose => $verbose,        #verbose
+     daemon => 0,           	#I am not a daemon, so write to standard  error
+     date => 1,     		#and the date too
+     cosmetic => 'x'    		#crosses for the level
+);
+Log(1,"One");
+Log(2,"Two");
+Log(3,"Three");
+Log(3,"Three again");
+Log(4,"Four");
+Log(5,"Five");
+---------------------------------------------
+
+gab@moustache:/tmp$ perl plop.pl
+Tue Sep 14 09:50:56 2004 [ x     ] One
+Tue Sep 14 09:50:56 2004 [ xx    ] Two
+Tue Sep 14 09:50:56 2004 [ xxx   ] Three
+Tue Sep 14 09:50:56 2004 [ xxx   ] Three again
+gab@moustache:/tmp$ perl plop.pl  --verbose 5
+Tue Sep 14 09:51:01 2004 [ x     ] One
+Tue Sep 14 09:51:01 2004 [ xx    ] Two
+Tue Sep 14 09:51:01 2004 [ xxx   ] Three
+Tue Sep 14 09:50:56 2004 [ xxx   ] Three again
+Tue Sep 14 09:51:01 2004 [ xxxx  ] Four
+Tue Sep 14 09:51:01 2004 [ xxxxx ] Five
+gab@moustache:/tmp$ perl plop.pl  --verbose 0
+gab@moustache:/tmp$ perl plop.pl  --verbose 2
+Tue Sep 14 09:51:12 2004 [ x     ] One
+Tue Sep 14 09:51:12 2004 [ xx    ] Two
+
+You can tell the module, at initializations, the headers you want to see 
+(date, name of the progs, calling stack, ...)
+
+As you see, I didn't specify any fun. So the module will act as standard 
+module, with no weird things in your logs.
+
+-- 
+"Everything is funny, if you wait long enough"
+
+Gab
+
+La puissance ne consiste pas à frapper fort ou souvent, mais à frapper 
+juste.
+- Honoré de Balzac -
+

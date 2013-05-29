@@ -1,0 +1,122 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46528
+Return-Path: <edmund.vonderburg@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20821 invoked from network); 21 Dec 2005 09:45:26 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 21 Dec 2005 09:45:26 -0000
+Received: (qmail 15844 invoked by uid 225); 21 Dec 2005 09:45:26 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15838 invoked by alias); 21 Dec 2005 09:45:25 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_SIGNED,DK_VERIFIED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of edmund.vonderburg@gmail.com designates 64.233.162.197 as permitted sender)
+Received: from zproxy.gmail.com (HELO zproxy.gmail.com) (64.233.162.197)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 21 Dec 2005 01:45:20 -0800
+Received: by zproxy.gmail.com with SMTP id n1so113693nzf
+        for <modules@perl.org>; Wed, 21 Dec 2005 01:45:13 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=V/11G2dkiF990h8l/KsHZgVOZtpH6kO0jQyFv+r6+BSCBciZFhKqw/cuwDVtyEREG9oxb6GBv3kLBek5R4mQHEf3mPac/zd45gqY1b3Nc+qZOY/Jh2LwJoAzzSz4treaH362L+JALsw9ivqwBTNn4n1lCqWUdhgB/xHNsWB/awk=
+Received: by 10.37.13.16 with SMTP id q16mr491018nzi;
+        Wed, 21 Dec 2005 01:45:13 -0800 (PST)
+Received: by 10.36.129.13 with HTTP; Wed, 21 Dec 2005 01:45:11 -0800 (PST)
+Message-ID: <f0145aa60512210145o4c20cd35y@mail.gmail.com>
+Date: Wed, 21 Dec 2005 09:45:11 +0000
+Reply-To: evdb@ecclestoad.co.uk
+To: modules@perl.org
+Subject: Re: Module submission Module::API
+In-Reply-To: <201220052125290809%comdog@panix.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+References: <200512210024.jBL0ONjY019443@pause.perl.org>
+	 <201220052125290809%comdog@panix.com>
+Approved: news@nntp.perl.org
+From: edmund.vonderburg@gmail.com (Edmund von der Burg)
+
+Hmm.. Maybe Module::API is not the best name, but I'm slightly stumped
+as to what would be better. Here are my thoughts:
+
+What it does:
+  The module lets you easily create ways for other code to access your
+functionality, be that in the same process or over a network. In a
+sense it is like an RPC. It deals with all the encoding of the data
+and transporting it back and forth. It has some basic support for
+session tokens so that state can be maintained. It also defines how
+plugins should be written to process the actual API calls.
+
+How it does it:
+  Encoding is done via plugins, so if you don't like the ones provided
+you can easily create your own. Transport is done internally if no
+server is specified, or by HTTP requests (both blocking and
+non-blocking). Once the request has been recieved another set of
+plugins are searched through to find one that can handle the request
+and the response is then returned.
+
+Audience:
+  The target audience for this module are developers. On its own the
+module can do very little. Once it has been use as a base class though
+it pretty much instantly lets you start writing the plugins to process
+the requests.
+
+Keywords:
+  Client/Server, API, RPC
+
+I think that the 'Module::*' namespace is correct. As to what it could
+be called in that namespace I though 'API' was the simplest and so
+went with that.
+
+Any suggestions welcome, this initial release
+(http://search.cpan.org/~evdb/Module-API-0.01/) is meant to shake out
+problems like these.
+
+Cheers,
+  Edmund.
+
+PS. I take it that once a name has been decided on I resubmit a
+request for it on pause.perl.org?
+
+
+On 21/12/05, _brian_d_foy <comdog@panix.com> wrote:
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+>
+> In article <200512210024.jBL0ONjY019443@pause.perl.org>, Perl Authors
+> Upload Server <upload@pause.perl.org> wrote:
+>
+> > The following module was proposed for inclusion in the Module List:
+> >
+> >   modid:       Module::API
+> >   DSLIP:       bdpOp
+> >   description: Easy API interfacing to you code
+> >   userid:      EVDB (Edmund von der Burg)
+> >   chapterid:   2 (Language_Extensions)
+> >   communities:
+> >
+> >   similar:
+> >     Froody
+> >
+> >   rationale:
+> >
+> >     Module::API lets you create code that can be accessed over an API
+> >     easily. It provides both the clint and server code need for the
+> >     communication
+>
+> I think you have a too-narrow definition of API. Perhaps your
+> name should say something about clients and servers?
+>
+> --
+> brian d foy (one of many PAUSE admins), http://pause.perl.org
+> archives at http://www.xray.mpe.mpg.de/mailing-lists/modules
+> please send all messages back to modules@perl.org
+>
+
+
+--
+In reality I'm evdb@ecclestoad.co.uk - http://ecclestoad.co.uk

@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:77628
+Return-Path: <dbmolester@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 12942 invoked from network); 11 Sep 2011 20:55:34 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 11 Sep 2011 20:55:34 -0000
+Received: (qmail 9989 invoked by uid 225); 11 Sep 2011 20:55:34 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9985 invoked by alias); 11 Sep 2011 20:55:34 -0000
+X-Spam-Status: No, hits=-0.8 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_PASS,T_TO_NO_BRKTS_FREEMAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-gy0-f169.google.com (HELO mail-gy0-f169.google.com) (209.85.160.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 11 Sep 2011 13:55:31 -0700
+Received: by gya6 with SMTP id 6so2967865gya.14
+        for <modules@perl.org>; Sun, 11 Sep 2011 13:55:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=jkmNQhj+13zAqevYMIo1wFMJnbnM+urLVHmzBZPnKm4=;
+        b=jTqM2nrr8wnRtLDEMDExgwaDzg5HngV7K2LZp+NnFprKKwffFS5Ku101mcaS80IUwp
+         5cFNBgja119YPHl+JUrneJyxCUtU4ZKXyNK9IWodm5UQE8MOQkNafL+XR/XsEoi3M66u
+         gvGyWoOp73d4ibYVjcX8g2a5r9YW2nLvG/qs8=
+MIME-Version: 1.0
+Received: by 10.236.181.165 with SMTP id l25mr2126589yhm.109.1315774527831;
+ Sun, 11 Sep 2011 13:55:27 -0700 (PDT)
+Received: by 10.236.103.162 with HTTP; Sun, 11 Sep 2011 13:55:27 -0700 (PDT)
+Date: Sun, 11 Sep 2011 15:55:27 -0500
+Message-ID: <CAEf1W3wrjpYaSD=HHqnak7n_k+ZgHP+75vHJ3zdMo7hif0aR-w@mail.gmail.com>
+Subject: uploading new modules, please help with module name
+To: modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+Approved: news@nntp.perl.org
+From: dbmolester@gmail.com (y s)
+
+Hi Monks,
+
+I've created some modules that'll enable me to do simple file
+operations between the local machine and a remote MS Sharepoint server
+(http or https via SOAP), and I need help naming my modules.  As it
+stands, the modules come in three parts:
+
+Copy::GenericServiceProviderCopy
+Copy::LocalFileOp
+SharePoint::SPSOAP
+
+When I was first writing my module, it was simply SharePoint::SPSOAP.
+But then I realized that a lot of copy operations can be generic (my
+copy function is very analogous to the linux cp -rf), whether it's an
+operation on localhost or on Sharepoint.  Therefore, I moved all the
+generic copy steps into Copy::GenericServiceProviderCopy, and
+separated location specific connector methods into Copy::LocalFileOp
+and SharePoint::SPSOAP.  The advantage of this is that when anyone
+comes up with a entirely different proprietary server, all I have to
+do is write a different connector module that provides methods for
+some very basic copy functions, and Copy::GenericServiceProviderCopy
+will handle the rest.
+
+To clarify it more, by basic functions I mean file test / dir test,
+single file retrieve, single file post, single file delete, and dir
+creation.  From these 'basic' functions,
+Copy::GenericServiceProviderCopy can provide more complicated
+operations like copying a directly to a directory, files and
+directories into directories, file into a different file name (i.e. a
+move operation), so on and so forth.  Theoretically, Copy::LocalFileOp
+is redundant - the file tests are the same as -f and -d in perl.  I
+wrote these functions into a module so that everything under
+Copy::GenericServiceProviderCopy uses the same method names.
+
+I'm sure this module will be obsolete as soon as the writers of
+nautilus / konquerer come up with their own mounting mechanism for
+Sharepoint services, but in the mean time, it's how I automate file
+transfers, and I'm sure it will benefit a lot of sysadmins who are
+policy forced to use sharepoint as an enterprise tool.
+
+I'm looking forward to some feedback about my (in)decision in
+namespace, and I welcome any comments, including mockery and disdain
+for supporting proprietary vendors.  If I could write a module that'll
+make managers choose open source, trust me, I would.

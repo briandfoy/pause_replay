@@ -1,0 +1,144 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:553
+Return-Path: <xomina@bitstream.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23284 invoked from network); 17 Nov 1999 23:29:54 -0000
+Received: from exodus.bitstream.net (HELO bitstream.net) (204.73.77.87)
+  by tmtowtdi.perl.org with SMTP; 17 Nov 1999 23:29:54 -0000
+Received: from marley.bitstream.net (marley.bitstream.net [204.73.77.85])
+	by bitstream.net (8.9.2/8.9.2) with SMTP id RAA07915
+	for <modules@perl.org>; Wed, 17 Nov 1999 17:29:47 -0600 (CST)
+Date: Wed, 17 Nov 1999 17:29:47 -0600 (CST)
+Reply-To: trampolining ermine <xomina@bitstream.net>
+To: modules@perl.org
+Subject: registration request -- DatabaseBroker.pm
+Message-ID: <Pine.GSO.3.96.991117162957.28148F-200000@marley.bitstream.net>
+MIME-Version: 1.0
+Content-Type: MULTIPART/MIXED; BOUNDARY="-559023410-851401618-942881387=:10092"
+Approved: news@nntp.perl.org
+From: xomina@bitstream.net (trampolining ermine)
+
+---559023410-851401618-942881387=:10092
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+
+request for registration:
+
+Name:         ryan mcleish
+Email:        xomina@bitstream.net
+Homepage:     http://www.ochlopoet.net  (temporarily offline)
+CPAN ID:      xomina
+
+
+Module List Format:
+
+Name            DSLI  Description
+--------------  ----  --------------------------------------------
+DatabaseBroker  bdpO  Affords a nice OO interface to DBI databases
+
+
+Long Description:
+
+This Perl module provides a cleaner and more manageable API to use for 
+interaction with DBI-compatible databases.  Queries, updates, inserts,
+counts, deletions, and even arbitrary SQL statements can be executed in
+one line of top-level code, rather than the usual three or four that
+contain the ugly ->prepare() and ->execute() clutter.  SELECT row results
+may be retrieved either all at once or incrementally.  It is also possible
+to print debugging messages (the raw SQL statements) to any valid handle.
+See appended SYNOPSIS for API syntax.
+
+[no public discussion yet]
+
+------------
+
+SYNOPSIS:
+
+  use DatabaseBroker;
+
+  $db  =  DatabaseBroker->new( $DBI_driver_name, $database, $hostname, 
+$port, $user, $password );
+
+  $db  =  DatabaseBroker->new( );
+  $db->set_db_handle( $classic_dbi_handle );
+  $classic_dbi_handle  =  $db->get_db_handle( );
+
+  $db->debug_on( \*DEBUG_OUTPUT_HANDLE );
+  $db->debug_off( );
+
+  @query_results  =  $db->select( \@desired_fields, \@desired_tables, 
+$stipulations, $hash_or_not );
+  @query_results  =  $db->select( \@desired_fields, $desired_table, 
+$stipulations, $hash_or_not );
+
+  @query_results  =  $db->select_all( \@desired_tables, $stipulations, 
+$hash_or_not );
+
+  $db->select_incrementally( \@desired_fields, \@desired_tables, 
+$stipulations );
+  $db->select_all_incrementally( \@desired_tables, $stipulations );
+
+  $next_row_ref  =  $db->get_next_row( $hash_or_not );
+
+  $number_of_rows  =  $db->count( $desired_table, $stipulations );
+
+  $a_single_value  =  $db->select_one( $desired_field, $desired_table, 
+$stipulations );
+
+  @scalar_query_results  =  $db->select_one_field( $desired_field, 
+\@desired_tables, $stipulations );
+
+  $db->delete( $desired_table, $stipulations );
+  $db->delete_all( $desired_table );
+
+  $db->insert( $desired_table, \%new_data );
+  $db->update( $desired_table, \%new_data, $stipulations );
+
+  $db->use_db( "another_database" );
+
+  $db->execute_sql( $some_raw_sql );
+
+  $db->finish( );
+
+
+---559023410-851401618-942881387=:10092
+Content-Type: TEXT/PLAIN; charset=US-ASCII; name="DatabaseBroker.SYNOPSIS"
+Content-Transfer-Encoding: BASE64
+Content-ID: <Pine.GSO.3.96.991117172947.10092A@marley.bitstream.net>
+Content-Description: 
+
+ICB1c2UgRGF0YWJhc2VCcm9rZXI7DQoNCiAgJGRiICA9ICBEYXRhYmFzZUJy
+b2tlci0+bmV3KCAkREJJX2RyaXZlcl9uYW1lLCAkZGF0YWJhc2UsICRob3N0
+bmFtZSwgJHBvcnQsICR1c2VyLCAkcGFzc3dvcmQgKTsNCg0KICAkZGIgID0g
+IERhdGFiYXNlQnJva2VyLT5uZXcoICk7DQogICRkYi0+c2V0X2RiX2hhbmRs
+ZSggJGNsYXNzaWNfZGJpX2hhbmRsZSApOw0KICAkY2xhc3NpY19kYmlfaGFu
+ZGxlICA9ICAkZGItPmdldF9kYl9oYW5kbGUoICk7DQoNCiAgJGRiLT5kZWJ1
+Z19vbiggXCpERUJVR19PVVRQVVRfSEFORExFICk7DQogICRkYi0+ZGVidWdf
+b2ZmKCApOw0KDQogIEBxdWVyeV9yZXN1bHRzICA9ICAkZGItPnNlbGVjdCgg
+XEBkZXNpcmVkX2ZpZWxkcywgXEBkZXNpcmVkX3RhYmxlcywgJHN0aXB1bGF0
+aW9ucywgJGhhc2hfb3Jfbm90ICk7DQogIEBxdWVyeV9yZXN1bHRzICA9ICAk
+ZGItPnNlbGVjdCggXEBkZXNpcmVkX2ZpZWxkcywgJGRlc2lyZWRfdGFibGUs
+ICRzdGlwdWxhdGlvbnMsICRoYXNoX29yX25vdCApOw0KDQogIEBxdWVyeV9y
+ZXN1bHRzICA9ICAkZGItPnNlbGVjdF9hbGwoIFxAZGVzaXJlZF90YWJsZXMs
+ICRzdGlwdWxhdGlvbnMsICRoYXNoX29yX25vdCApOw0KDQogICRkYi0+c2Vs
+ZWN0X2luY3JlbWVudGFsbHkoIFxAZGVzaXJlZF9maWVsZHMsIFxAZGVzaXJl
+ZF90YWJsZXMsICRzdGlwdWxhdGlvbnMgKTsNCiAgJGRiLT5zZWxlY3RfYWxs
+X2luY3JlbWVudGFsbHkoIFxAZGVzaXJlZF90YWJsZXMsICRzdGlwdWxhdGlv
+bnMgKTsNCg0KICAkbmV4dF9yb3dfcmVmICA9ICAkZGItPmdldF9uZXh0X3Jv
+dyggJGhhc2hfb3Jfbm90ICk7DQoNCiAgJG51bWJlcl9vZl9yb3dzICA9ICAk
+ZGItPmNvdW50KCAkZGVzaXJlZF90YWJsZSwgJHN0aXB1bGF0aW9ucyApOw0K
+DQogICRhX3NpbmdsZV92YWx1ZSAgPSAgJGRiLT5zZWxlY3Rfb25lKCAkZGVz
+aXJlZF9maWVsZCwgJGRlc2lyZWRfdGFibGUsICRzdGlwdWxhdGlvbnMgKTsN
+Cg0KICBAc2NhbGFyX3F1ZXJ5X3Jlc3VsdHMgID0gICRkYi0+c2VsZWN0X29u
+ZV9maWVsZCggJGRlc2lyZWRfZmllbGQsIFxAZGVzaXJlZF90YWJsZXMsICRz
+dGlwdWxhdGlvbnMgKTsNCg0KICAkZGItPmRlbGV0ZSggJGRlc2lyZWRfdGFi
+bGUsICRzdGlwdWxhdGlvbnMgKTsNCiAgJGRiLT5kZWxldGVfYWxsKCAkZGVz
+aXJlZF90YWJsZSApOw0KDQogICRkYi0+aW5zZXJ0KCAkZGVzaXJlZF90YWJs
+ZSwgXCVuZXdfZGF0YSApOw0KICAkZGItPnVwZGF0ZSggJGRlc2lyZWRfdGFi
+bGUsIFwlbmV3X2RhdGEsICRzdGlwdWxhdGlvbnMgKTsNCg0KICAkZGItPnVz
+ZV9kYiggImFub3RoZXJfZGF0YWJhc2UiICk7DQoNCiAgJGRiLT5leGVjdXRl
+X3NxbCggJHNvbWVfcmF3X3NxbCApOw0KDQogICRkYi0+ZmluaXNoKCApOw0K
+DQo=
+---559023410-851401618-942881387=:10092--

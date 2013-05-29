@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3234
+Return-Path: <Tim.Bunce@ig.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12493 invoked from network); 27 Oct 2000 10:45:38 -0000
+Received: from anchor-post-32.mail.demon.net (194.217.242.90)
+  by tmtowtdi.perl.org with SMTP; 27 Oct 2000 10:45:38 -0000
+Received: from ignite.demon.co.uk ([158.152.8.99] helo=oink)
+	by anchor-post-32.mail.demon.net with smtp (Exim 2.12 #1)
+	id 13p70x-000Pce-0W; Fri, 27 Oct 2000 11:45:36 +0100
+Received: from toad by oink with SMTP (PP) id <08844-0@oink>;
+          Tue, 27 Oct 1970 11:45:22 +0100
+Received: by toad.ig.co.uk (8.8.8+Sun/SMI-SVR4) id LAA06145;
+          Fri, 27 Oct 2000 11:45:16 +0100 (BST)
+Date: Fri, 27 Oct 2000 11:45:15 +0100
+To: "Andreas J. Koenig" <andreas.koenig@anima.de>
+Cc: plonka@doit.wisc.edu, "Kurt D. Starsinic" <kstar@chapin.edu>, 
+    modules@perl.org
+Subject: Re: Net::Patricia vs Tree::Patricia, advice? (was "Re: 
+         Net::Patricia/PatriciaTrie namespace request")
+Message-ID: <20001027114515.V4456@ig.co.uk>
+References: <20001016121942.A3746@doit.wisc.edu> <20001016174308.B11883@O2.chapin.edu> <20001017090750.B26613@doit.wisc.edu> <m3k8avcn0e.fsf@ak-71.mind.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3i
+In-Reply-To: <m3k8avcn0e.fsf@ak-71.mind.de>; from Andreas J. Koenig on Thu, Oct 26, 2000 at 11:26:25PM +0200
+Organization: Paul Ingram Group, Software Systems, +44 1 483 862800
+Approved: news@nntp.perl.org
+From: Tim.Bunce@ig.co.uk (Tim Bunce)
+
+On Thu, Oct 26, 2000 at 11:26:25PM +0200, Andreas J. Koenig wrote:
+> >>>>> On Tue, 17 Oct 2000 09:07:50 -0500, Dave Plonka <plonka@doit.wisc.edu> said:
+> 
+>  > Kurt, thanks for the feedback.
+>  > Considering Net::Patricia vs. Tree::Patricia...
+> 
+>  > On Mon, Oct 16, 2000 at 05:43:08PM -0400, Kurt D. Starsinic wrote:
+> >> On Mon, Oct 16, 2000 at 12:19:42PM -0500, Dave Plonka wrote:
+>  > <snip>
+> >> > I think it belongs in the Net namespace because it requires that the
+> >> > search keys must consist of IP addresses and netmasks, and the
+> >> > underlying C code on which it is based requires that as well.  I.e.
+> >> > this module is not a general Trie implementation like Text::Trie or
+> >> > Tree::Trie.
+> >> 
+> >> It seems to me that it would be more appropriate as, e.g.,
+> >> Tree::Patricia.  It doesn't implement network protocols, rather it
+> >> manipulates data structures.  The fact that the elements of the
+> >> data structure _can_ obviously be interpreted as CIDR addresses and
+> >> netmasks doesn't prevent one from coming up with more dastardly uses
+> >> for the module.
+> 
+>  > I agree with the assessment that Patricia is a data structure not
+>  > network protocol.  However, there are precedents such as Net::Netmask
+>  > and Net::IPv4Addr of which one could say the same.
+>  > Do those modules not belong in Net? [rhetorical]
+> 
+> Bad precedent is ubiquitous on CPAN:-/
+
+Sad but true.
+
+>  > I'm not against the Patricia module being in Tree::Patricia, but there
+>  > are other complications...  The C code on which the module is based
+>  > looks like networking code in that it currently uses inet_addr(3) and
+>  > therefore requires "<arpa/inet.h>" and "-lnsl".  I could follow
+>  > Socket.pm's lead and reimplement a private/static inet_addr within to
+>  > eliminate that requirement, but avoiding the system-provided library
+>  > routines in these way could make it harder to maintain, esp. when I
+>  > pass-thru IPv6 addr support to the perl API.
+> 
+> Strong arguments.
+
+I'd also remind folks that names should be based on what functionality
+a module offers, not how it's implemented.
+
+>  > At the moment, I'm still leaning toward Net::Patricia because of the
+>  > underlying networking requirements.
+> 
+> We are all starting to react allergically against Net:: because it
+> becomes a bit basket, it's crowded there. But I see you arguments in
+> favor and I see you have uploaded version 1.009. I tend to accept
+> Net:: based on your arguments.
+
+Joining the ubiquitous bad precedents ;-)
+
+Tim.
+
+p.s. I don't feel very strongly about this, just wanted to remind folks
+about the 'ignore implementation issues' line of reasoning for the future.

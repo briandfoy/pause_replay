@@ -1,0 +1,189 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10661
+Return-Path: <rhanson@blast.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 35679 invoked by uid 76); 16 Mar 2002 11:50:45 -0000
+Received: from fireball.blast.net (HELO fireball.blast.net) (207.162.131.33)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Sat Mar 16 11:50:45 2002 -0000
+Received: from 529cd01 (WH14-127.blast.net [207.162.148.127])
+	by fireball.blast.net (8.11.6/8.11.6) with SMTP id g2GBoG542843
+	for <modules@perl.org>; Sat, 16 Mar 2002 06:50:16 -0500 (EST)
+	(envelope-from rhanson@blast.net)
+To: <modules@perl.org>
+Subject: MOD IDEA: A Singleton Registry
+Date: Sat, 16 Mar 2002 06:54:31 -0500
+Message-ID: <CGELLOHICNBOBNEOEILBEEPDCLAA.rhanson@blast.net>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Approved: news@nntp.perl.org
+From: rhanson@blast.net ("Robert Hanson")
+
+This is something I have been putting together for a project and I didn't
+see anything comparable on CPAN.  Looking for comments, suggestions, and any
+existing modules that may duplicate the functionality.  Samples of the
+current development release available on request.
+
+Thanks.
+
+Rob
+
+=head1 NAME
+
+Class::Singleton::Registry - A class to register and create singleton class
+instances
+
+=head1 SYNOPSIS
+
+ use Class::Singleton::Registry;
+
+ my $dbh = Class::Singleton::Registry->getInstance('dbconn');
+ my $err = Class::Singleton::Registry->lastError('dbconn');
+
+=head1 DESCRIPTION
+
+Inspired by brian d foy's article on implementing a singleton in Perl (The
+Pearl Review) and "Design Patterns, Elements of Reusable Object-Oriented
+Software" this module implements a singleton registry.  Singleton classes
+are loaded at runtime based on the contents of a registry.ini file which
+makes it easy to maintain configuration information (i.e. db
+usernames/passwords) for a given project.  Singletons are loaded by the
+registry via eval(), so only those singleton libraries actually used will be
+loaded, no matter how many are listed in the registry.ini file.  The default
+registry.ini file will be pulled from your @INC, so you can make singletons
+global for your installation, or you can set the .ini path via the use line
+for project or single script use.
+
+=head1 EXAMPLES
+
+>>>>>>>>>> sample.pl <<<<<<<<<<<
+#!c:/perl/bin/perl
+
+use strict;
+use FindBin qw/$Bin/;
+use Class::Singleton::Registry "$Bin/reg.ini"; # specify config file
+
+# getInstance(<name>) will cause the name to be looked up in the registry,
+# if the name exists, the getInstance() method of the registered class will
+be
+# called and returned.  The lastError() is provided because some modules
+# like DBI store their error in a global variable, and since the registry is
+# supposed to be hiding the real class behind the call, you wouldn't
+normally
+# know where to get the error from.
+
+my $dbh = Class::Singleton::Registry->getInstance('dbconn')
+    or die Class::Singleton::Registry->lastError('dbconn');
+
+# After retrieving the object, use it like normal.
+print "COUNT: ", $dbh->selectrow_array("Select Count(*) From Regions"),
+"\n";
+
+# This is not really needed, and shouldn't be done in most cases. The point
+of
+# the singleton is that the object is to be shared, so disconnecting at the
+wrong
+# time will only cause problems.  The singleton DBI will be created so that
+it
+# will close the connection in the DESTROY method, so the explicit
+disconnect
+# shouldn't be necessary.
+$dbh->disconnect;
+>>>>>>>>>> END <<<<<<<<<<<
+
+>>>>>>>>>>> reg.ini <<<<<<<<<<<<
+[dbconn]
+CLASS=Class::Singleton::Registry::DBI
+CONNSTR=dbi:mysql:database=lotemaps;host=localhost
+USER=
+PASS=
+>>>>>>>>>> END <<<<<<<<<<<
+
+=head1 NOTES
+
+=item Registry
+
+Registry entries must contain a [section] head which will be the name
+entered into the registry, a CLASS value which is the module to load for
+that name, and any other values which are required by that module.  When a
+class is loaded by the registry, which is triggered by the first creation of
+an instance, the init() method of the loaded module will be called, and all
+params in the .ini will be passed to it as a hash.
+
+=item Memoization
+
+All classes loaded by the registry may optionally allow multiple instances
+of an object to be created.  For example a singleton DBI would allow a
+single DBI instance to be shared throughout an application, but what if you
+wanted two different instances for two different databases?  This is
+accomplished by the registry passing the registered name to the singleton
+class in the init() and getInstance() calls.  Modules that allow multiple
+instances will probably store the cached objects in a hash with the
+registered name as the key.
+
+=item What's the point?
+
+(this should probably have been first)  The point is that we want a way to
+share an object like a DBI connection or an Apache::Session object, but we
+want to avoid using global variables and multiple instance of the object.  A
+singleton class is created to handle this object management.  In a simple
+case a singleton object will create an object (i.e. db connection) when it
+is first called and store the object in a lexical variable, and on
+subsequent calls it will return this already created object.  In more
+complex systems the singleton class may cache multiple instances of an
+object and return any that aren't actively busy, or perhaps it will cache
+multiple instances based on parameters (i.e. Apache::DBI).  ...The point is
+once your program uses the singleton class you can enhance the singleton
+without having to change your code.
+
+This solves most of the problem but it doesn't allow you to subclass a
+singleton object.  Take this bit of code for instance:
+
+ use Singleton::Foobar;
+ $obj = Singleton::Foobar->instance();
+
+What if you decided that you need to subclass Foobar at some later point,
+and that your code needs to use the subclass?  Well you end up needing to
+change a lot of code.  So the point of the registry is to create a layer
+between the singleton and the calling code so that subclasses can be entered
+into the system seamlessly without any pain.
+
+So what you end up with is the ability to share instances of an object
+throughout your application.  You get the ability to easily subclass to swap
+out certain classes with others and don't need to change the calling code.
+On top of all of that you also get the ability to store application and site
+wide configuration information in a single place to save you maintenance
+headaches in the future.  I dunno, that sounds like a good thing to me which
+is why I built it..
+
+=item Current/Planned Registry Singletons
+
+Class::Singleton::Registry::DBI - A DBI singleton, supports multiple
+instances based on name (currently in development).
+
+Class::Singleton::Registry::Session - A singleton based on Apache::Session,
+it will support multiple instances. Has not yet been started.
+
+Class::Singleton::Registry::AppSession - A singleton based on
+Apache::Session, it will support multiple instances. Has not yet been
+started.
+
+=item Creating Singletons
+
+Creating a singleton that can be used with the registry is very
+straightforward and simple.  It must have an init() method, a getInstance()
+method, and a lastError() method.  The type of object returned, the caching
+mechanism, and all other details are up to the singleton class author.
+
+=head1 AUTHOR
+
+Robert Hanson <rhanson@blast.net>
+

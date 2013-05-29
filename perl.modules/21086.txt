@@ -1,0 +1,146 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21086
+Return-Path: <nobody@pause.x.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 64498 invoked by uid 76); 13 May 2003 23:37:08 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Tue, 13 May 2003 16:37:08 -0700
+Received: (qmail 15661 invoked by uid 225); 13 May 2003 23:37:06 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15653 invoked by uid 507); 13 May 2003 23:37:05 -0000
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Tue, 13 May 2003 16:37:00 -0700
+Received: from pause.perl.org (IDENT:nobody@localhost [127.0.0.1])	by pause.perl.org (8.12.9/8.12.9) with ESMTP id h4DNatI3026975;	Wed, 14 May 2003 01:36:55 +0200
+Received: (from nobody@localhost)	by pause.perl.org (8.12.9/8.12.9/Submit) id h4DNatIu026974;	Wed, 14 May 2003 01:36:55 +0200
+Date: Wed, 14 May 2003 01:36:55 +0200
+Message-ID: <200305132336.h4DNatIu026974@pause.perl.org>
+Subject: Module submission MGP::Preprocessor
+Reply-To: modules@perl.org
+To: modules@perl.org, yumpy@cpan.org
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.x.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       MGP::Preprocessor
+  DSLIP:       bdpfp
+  description: Preprocessor for Magicpoint presentations
+  userid:      YUMPY (Tim Maher)
+  chapterid:   11 (String_Lang_Text_Proc)
+  communities:
+    SPUG, Seattle Perl Users Group
+
+  similar:
+    POE::Preprocessor
+
+  rationale:
+
+    Magicpoint, aka MGP after its file extension, provides a very basic
+    platform for creating and delivering X11-based presentations. In
+    doing so, it defines a small command language, which deals with
+    fonts, colors, line-centering and filling, point sizes, and little
+    else.
+
+    But unlike the markup notations used in HTML or POD, there's no
+    easy way to say embolden or italicize a word. Unlike troff, or
+    include there's no way to say include another file at this point
+    (although it *has* a %include directive, it's not for arbitrary
+    use). Nor is there a general way to run an arbitrary series of
+    commands and reap their output that works the way I want.
+
+    Moreover, there's no way to define a particular heading style, and
+    have it applied every time you refer to it. There's no way to say
+    "whenever I tell you to slurp in a source-code file, expand its
+    tabs, and render all its comments in a particular color and a
+    particular font"
+
+    There's no easy way to say "I want half-spacing for a while", or
+    "skip the next 10 lines, and then start processing again. Or to say
+    "show page numbers at the top of each line".
+
+    Or any way to say "let me leave the %pause directives in my file,
+    but ignore them this time so I can proofread the pages in one
+    glance". Nor is there any way to say "this is a table, render it as
+    one".
+
+    Don't get me wrong, I'm very fond of Magicpoint. Especially because
+    it's driven by a text file, that can easily be preprocessed. And if
+    there was ever an application in dire need of a macro facility and
+    preprocessor, this is the Mother of All Such applications.
+
+    So what I've done is write a set of functions that can be used to
+    implement a custom preprocessor that provides the features whose
+    absence I lamented above (except the tables, which are still under
+    development).
+
+    This is all done behind the back of Magicpoint, which simply
+    interprets and renders a *.mgp file as always.
+
+    Some of the functions process new "directives", such as code% and
+    include% (yep, mine have trailing %s, not leading ones, like MGP
+    itself). Others provide support for the creation and application of
+    macros, allowing the user to associate any angle-bracketed symbol
+    with a series of native mgp-requests. For example,
+
+    It's time to <BIG_AND_BOLD>Make Money Fast<REGULAR>, you gullible
+    pauper.
+
+    Or given an "undo" definition for BIG_AND_BOLD as <REGULAR>, the
+    following is equivalent:
+
+    It's time to <BIG_AND_BOLD Make Money Fast>, you gullible pauper.
+
+    So that's what and idea of what I've got, and I think lots of
+    people are going to want to use it.
+
+    But I'm not sure what Namespace this module belongs in. It does
+    have its own "markup language" (more troff-ish than anything else),
+    so perhaps it belongs alongside HTML:: or PDF:: or XML:: at the root
+    level.
+
+    But it's such a wimpy markup language that it seems unlikely to
+    become a standard, as HTML:: and even RTF:: have. But then again,
+    one could say the same for POD, which definitely *has* caught on.
+    Who knows, with the addition of this preprocessor, the MGP
+    application might really corner the market, leading to a host of
+    other MGP-related tools. Or not! 8-}
+
+    Or perhaps it belongs in an application-extensions namespace, such
+    as Applications::MGP::Preprocessor, next to
+    Applications::StarOfficeImpress::Preprocessor, etc. But on that
+    basis, people would be led to look for PDF::Whatever under
+    Applications::Acrobat::PDF::Whatever, and fail to find it.
+
+    And given my recent experience in tempting the Carpal Tunnel
+    Syndrome gods via Shell::POSIX::Select, I'm currently down on
+    three-part names. So my vote is for MGP::Preprocess. It's not
+    taxonomically ideal, perhaps, but it parallels the precedents
+    offered by all those modules under RTF::, HTML::, PDF::, and I think
+    people will easily find it there.
+
+    What do you folks think? (and *Simon*, please be nice 8-} )
+
+  enteredby:   YUMPY (Tim Maher)
+  enteredon:   Tue May 13 23:36:55 2003 GMT
+
+The resulting entry would be:
+
+MGP::
+::Preprocessor    bdpfp Preprocessor for Magicpoint presentations    YUMPY
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=be300000_5359ab829f988c9b&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=be300000_5359ab829f988c9b&SUBMIT_pause99_add_mod_insertit=1

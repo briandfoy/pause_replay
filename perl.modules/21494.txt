@@ -1,0 +1,134 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21494
+Return-Path: <nobody@pause.x.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12889 invoked by uid 76); 4 Jun 2003 11:08:54 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Wed, 04 Jun 2003 04:08:54 -0700
+Received: (qmail 3799 invoked by uid 225); 4 Jun 2003 11:08:47 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3781 invoked by uid 507); 4 Jun 2003 11:08:45 -0000
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Wed, 04 Jun 2003 04:08:42 -0700
+Received: from pause.perl.org (IDENT:nobody@localhost [127.0.0.1])	by pause.perl.org (8.12.9/8.12.9) with ESMTP id h54B8ctQ015135;	Wed, 4 Jun 2003 13:08:38 +0200
+Received: (from nobody@localhost)	by pause.perl.org (8.12.9/8.12.9/Submit) id h54B8ciO015134;	Wed, 4 Jun 2003 13:08:38 +0200
+Date: Wed, 4 Jun 2003 13:08:38 +0200
+Message-ID: <200306041108.h54B8ciO015134@pause.perl.org>
+MIME-Version: 1.0
+Subject: Module submission Class::Declare
+Content-Type: Text/Plain; Charset=ISO-8859-1
+Reply-To: modules@perl.org
+To: modules@perl.org, ibb@cpan.org
+Content-Transfer-Encoding: 8bit
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.x.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Class::Declare
+  DSLIP:       RdpOp
+  description: Classes with method/attribute access control
+  userid:      IBB (Ian Brayshaw)
+  chapterid:    6 (Data_Type_Utilities)
+  communities:
+    comp.lang.perl.modules
+
+  similar:
+    Class::ArrayObjects Class::Contract
+
+  rationale:
+
+    I am not 100% happy with the choice of Class::Declare, even though
+    it describes the module and how it's used: you declare the
+    attributes and methods and you declare how they are to be accessed
+    (public, private, protected, etc). Having run the name past
+    comp.lang.perl.modules as well as privately amoungst fellow
+    developers I've received no other suggestions.
+
+    Class::Declare offers a clean, Perl-ish interface, that would be
+    familiar to developers more accustomed to C++ and Java classes. It
+    also provides complete data encapsulation: the only way to access
+    object and class data is through the object and class accessors.
+
+    From the README:
+
+    NAME
+        Class::Declare - Declare classes with public, private and protected
+        attributes and methods.
+
+    SYNOPSIS       package My::Class;
+
+          use strict;       use warnings;
+          use base qw( Class::Declare );
+
+          __PACKAGE__->declare( public    => { public_attr    => 42         } ,
+                                private   => { private_attr   => 'Foo'      } ,
+                                protected => { protected_attr => 'Bar'      } ,
+                                class     => { class_attr     => [ 3.141 ]  }
+                                static    => { static_attr    => { a => 1 } } ,
+                                shared    => { shared_attr    => \'string'  } ,
+                                friends   => 'main::trustedsub'               ,
+                                init      => sub { # object initialisation
+                                                ...
+                                                1;
+                                             }                                ,
+                                strict    => 0
+                              );
+
+          sub publicmethod {
+            my $self = __PACKAGE__->public( shift );
+            ...       }
+
+    The motivation behind the module was to provide a robust and
+    relatively secure framework for generating classes that supported
+    access control through standard OO relationships of public, private
+    and protected. Class::Declare objects are blessed scalar references,
+    helping to ensure access to object and class internals occurs only
+    through accessors (unlike using a blessed hash reference, where the
+    user can access the hash directly).
+
+    This type of class representation and construction is perhaps more
+    familiar to those coming from a Java or C++ background, and would
+    make porting of applications written in those languages more
+    straight forward. Class::Declare supports public, private and
+    protected instance and class methods and attributes.
+
+    I have used this approach (a predecessor to Class::Declare) in
+    large applications, and found the access control mechanisms (which
+    may be disabled in a production environment on a per-module basis to
+    accelerate the code execution) to be a great asset during
+    development.
+
+    Class::Declare supports multiple inheritance, as well as
+    serialisation via Storable. It also provides a number of helper
+    routines, such as automatic processing and validation of named
+    parameters, and a dump() routine for pretty-printing object and
+    class attributes while obeying the access control mechanisms. (Since
+    there is no way to access the internal hash in which Class::Declare
+    stores the object attribute values, Data::Dumper cannot give
+    meaningful output for Class::Declare objects.)
+
+  enteredby:   IBB (Ian Brayshaw)
+  enteredon:   Wed Jun  4 11:08:37 2003 GMT
+
+The resulting entry would be:
+
+Class::
+::Declare         RdpOp Classes with method/attribute access control IBB
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=eb400000_e441d45ade440093&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=eb400000_e441d45ade440093&SUBMIT_pause99_add_mod_insertit=1

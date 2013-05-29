@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:37418
+Return-Path: <david@hyperbolic.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6435 invoked from network); 4 Jan 2005 12:14:17 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 4 Jan 2005 12:14:17 -0000
+Received: (qmail 2979 invoked by uid 225); 4 Jan 2005 12:14:16 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2974 invoked by alias); 4 Jan 2005 12:14:16 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from janus.hyperbolic.net (HELO janus.hyperbolic.net) (216.254.103.204)
+  by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 04 Jan 2005 04:14:04 -0800
+Received: from [216.254.103.204] (janus.hyperbolic.net [216.254.103.204])
+	(authenticated bits=0)
+	by janus.hyperbolic.net (8.13.1/8.12.11) with ESMTP id j04CDmDa011360
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 4 Jan 2005 07:13:52 -0500
+Message-ID: <41DA887B.2010704@hyperbolic.net>
+Date: Tue, 04 Jan 2005 07:13:47 -0500
+User-Agent: Mozilla Thunderbird 0.9 (X11/20041127)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Jarkko Hietaniemi <jhi@iki.fi>, modules@perl.org
+Subject: Re: Module submission Test::Float
+References: <200412270254.iBR2sODR010115@pause.perl.org> <200412290803.iBT834nW027624@janus.hyperbolic.net> <41D2C488.8070407@hyperbolic.net> <030120051758516224%comdog@panix.com> <41DA15DE.2080401@hyperbolic.net> <41DA2A06.6050305@iki.fi>
+In-Reply-To: <41DA2A06.6050305@iki.fi>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: david@hyperbolic.net ("David A. Golden")
+
+Jarkko Hietaniemi wrote:
+> You can have a default module-wide delta specified by either as a part
+> of the compile-time import or via a runtime setting, but you really need
+> to allow giving your own delta for single tests since the delta depends
+> on the operations and the operands.  For example, a delta of 1e-9 is
+> fine for many operations for operands of, say, magnitude 1e1..1e2 but
+> for operands of magnitude 1e9..1e12 a delta like that would be quite
+> ambitious.
+
+Jarkko,
+
+Thanks for the feedback.  In my initial need that inspired the module, I 
+was working with a set of numbers in the same order of magnitude and 
+just needed a single precision so wrote to that spec.  I completely 
+agree with the need for a test-specific one, but I just disagreed with 
+brian's quick suggestion of an additional optional parameter -- I felt 
+it had too much potential for confusion and user-error.  It's addressed 
+in the new Test::Number::Delta by having a more specific version of the 
+function:
+
+     delta_within( $a, $b, $precision, $test_name )
+
+compared to
+
+     delta_ok( $a, $b, $test_name )
+
+which uses the module-wide default.
+
+Regards,
+David
+

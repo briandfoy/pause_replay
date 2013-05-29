@@ -1,0 +1,167 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:74989
+Return-Path: <xdaveg@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2718 invoked from network); 2 Mar 2011 11:43:05 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 2 Mar 2011 11:43:05 -0000
+Received: (qmail 13664 invoked by uid 225); 2 Mar 2011 11:43:04 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13660 invoked by alias); 2 Mar 2011 11:43:04 -0000
+X-Spam-Status: No, hits=1.7 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,FREEMAIL_REPLY,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-ww0-f45.google.com (HELO mail-ww0-f45.google.com) (74.125.82.45)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 02 Mar 2011 03:43:02 -0800
+Received: by wwa36 with SMTP id 36so4285161wwa.26
+        for <modules@perl.org>; Wed, 02 Mar 2011 03:42:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type:content-transfer-encoding;
+        bh=RcXfYErLli0okSzvTts4ncWIAkinijQCif8W838OVok=;
+        b=CTOuyWQJ2lG2msLzfK82jZcaVHdH9tGc4aAUn2TJcNhHZaqEfMgcqgKXW3CD6grH47
+         iv2KUPhFaTGHENN7lKGrkTcb1z4Td0i28waQTYf3+oGpdiyeLZWH6VH2eG1z1sDp6d2C
+         k92sGS55CxCDvyfvBZilGLTSO1G1k4ofNUzOw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:content-transfer-encoding;
+        b=fbd6x3070lmaXl3YYYGmII8zH32n+6LADWqmaLzKonLU8NF/xheSSn3Dh7L9ET6o3r
+         zIWAA06PWMG9e4jtEoXMp6nN/JR591YR8lVzRvrqFpa+JGFwJSuchI6ZIJdhEhlwGIgi
+         lhdOJFyGhY/R3I17yCXXBDwSslH4ifkxtYFU0=
+Received: by 10.216.17.3 with SMTP id i3mr509463wei.80.1299066176107; Wed, 02
+ Mar 2011 03:42:56 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.216.242.13 with HTTP; Wed, 2 Mar 2011 03:42:36 -0800 (PST)
+In-Reply-To: <132097.67122.qm@web33007.mail.mud.yahoo.com>
+References: <201103020428.p224S4WE020846@pause.fiz-chemie.de> <132097.67122.qm@web33007.mail.mud.yahoo.com>
+Date: Wed, 2 Mar 2011 06:42:36 -0500
+Message-ID: <AANLkTikuAq7um+ss6XBmUYFfVC9-SQhi2H_SjTPhMpC1@mail.gmail.com>
+Subject: Re: List of existing namesapces (Re: PAUSE indexer report JASALOMON/UNLreport-1.02.tar.gz)
+To: Jacob Salomon <jakesalomon@yahoo.com>
+Cc: modules@perl.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: xdaveg@gmail.com (David Golden)
+
+Hi, Jacob.
+
+Generally speaking, namespace registration is getting rarer as people
+seem to find modules via search at search.cpan.org or other places
+rather than the namespace tables.
+
+That said, the convention of a good namespace prefix still holds
+whether or not you formally register and helps people find modules
+they otherwise might miss.  I did a quick search for "column report"
+and saw things like "Text::Report", "Data::Report", "Data::CTable" and
+"Data::Presenter".  From that sample, "Data::" is probably a good
+prefix, but I think "Text::" is also a good option since your modules
+focuses on the output more than the input.
+
+I would encourage you to consider a more descriptive name than
+"UNLreport" -- since I don't know what "UNL" means.  The
+module-authors@perl.org list is a good place to ask for feedback on
+names, as is perlmonks.org.
+
+If you do add a prefix, you'd move your module file to (for example)
+"lib/Data/UNLReport.pm" and change the package line to "package
+Data::UNLReport".  Then it would be loaded via:
+
+    use Data::UNLReport;
+
+While you may "fear" that extra length, it's very typical for CPAN
+modules to have a prefix.  While there is no rule against a
+"top-level" namespace, people are usually encouraged to avoid it
+unless their work represents an entire project or family of modules.
+C.f "Moose".
+
+Regards,
+David Golden
+
+On Wed, Mar 2, 2011 at 1:12 AM, Jacob Salomon <jakesalomon@yahoo.com> wrote=
+:
+> I was about to request a namespace so that my new module could be more
+> easily found in a search.
+>
+> The application page suggests I "try to suggest a nested namespace that i=
+s
+> based on an existing root namespace".=C2=A0 All fine and well but I seem =
+to be
+> unable to find a list of existing namespaces.=C2=A0 Looking at the list o=
+f
+> modules under 'String_Language_Text_Processing" I could hazard a guess th=
+at
+> my module could fit under "Data::", although I have not defined it as suc=
+h -
+> it was written to stand on its own. i.e. use UNLreport;
+>
+> My main question is: Where do I find a list of existing namespaces so tha=
+t I
+> can see where to shoehorn my module?
+> The secondary question might be: If I do request a namespace like
+> Data::UNLreport, how will users access it?
+> use UNLreport;=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # As I hav=
+e it written now
+> or
+> use DATA::UNLreport?=C2=A0=C2=A0 # As I fear (well, a strong word) it mig=
+ht become
+> required
+>
+> Thank you for clarifying this for me
+>
+> - Jacob Salomon
+>
+> ________________________________
+> From: PAUSE <upload@pause.perl.org>
+> To: jakesalomon@yahoo.com; andreas.koenig.gmwojprw+pause@franz.ak.mind.de
+> Sent: Tue, March 1, 2011 11:28:04 PM
+> Subject: PAUSE indexer report JASALOMON/UNLreport-1.02.tar.gz
+>
+> The following report has been written by the PAUSE namespace indexer.
+> Please contact modules@perl.org if there are any open questions.
+> =C2=A0 Id
+>
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 User: JASALOMON (Jacob S=
+alomon)
+> =C2=A0 Distribution file: UNLreport-1.02.tar.gz
+> =C2=A0 =C2=A0 Number of files: 7
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 *.pm files: 1
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 README: UNLreport-1.02/README
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 META.yml: UNLreport-1.02/META.yml
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 YAML-Parser: YAML::XS 0.32
+> =C2=A0 META-driven index: no
+> =C2=A0 Timestamp of file: Wed Mar=C2=A0 2 04:26:29 2011 UTC
+> =C2=A0 Time of this run: Wed Mar=C2=A0 2 04:28:04 2011 UTC
+>
+> Status of this distro: OK
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+>
+> The following packages (grouped by status) have been found in the distro:
+>
+> Status: Successfully indexed
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+>
+> =C2=A0 =C2=A0 module: UNLreport
+> =C2=A0 =C2=A0 version: 1.02
+> =C2=A0 =C2=A0 in file: UNLreport-1.02/lib/UNLreport.pm
+> =C2=A0 =C2=A0 status: indexed
+>
+> =C2=A0 =C2=A0 module: UNLreport::Line
+> =C2=A0 =C2=A0 version: 1.02
+> =C2=A0 =C2=A0 in file: UNLreport-1.02/lib/UNLreport.pm
+> =C2=A0 =C2=A0 status: indexed
+>
+> =C2=A0 =C2=A0 module: UNLreport::_util
+> =C2=A0 =C2=A0 version: 1.02
+> =C2=A0 =C2=A0 in file: UNLreport-1.02/lib/UNLreport.pm
+> =C2=A0 =C2=A0 status: indexed
+>
+> __END__
+>
+>

@@ -1,0 +1,65 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13339
+Return-Path: <stas@stason.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 96855 invoked by uid 76); 22 Aug 2002 08:13:01 -0000
+Received: from smtp15.singnet.com.sg (HELO smtp15.singnet.com.sg) (165.21.6.35)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Thu Aug 22 08:13:01 2002 -0000
+Received: from stason.org (bb-203-125-7-72.singnet.com.sg [203.125.7.72])
+	by smtp15.singnet.com.sg (8.12.5/8.12.5) with ESMTP id g7M8COxX019370;
+	Thu, 22 Aug 2002 16:12:25 +0800
+Received: from stason.org (localhost.localdomain [127.0.0.1])
+	by stason.org (Postfix) with ESMTP
+	id 37A463150F; Thu, 22 Aug 2002 16:12:15 +0800 (SGT)
+Message-ID: <3D649CDF.5010304@stason.org>
+Date: Thu, 22 Aug 2002 16:12:15 +0800
+Organization: Hope, Humanized
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020510
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Arthur Bergman <arthur@contiller.se>
+Cc: modules@perl.org
+Subject: Re: The Env::C namespace
+References: <66A20FB2-B5A3-11D6-B52B-003065D64CBE@contiller.se>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: stas@stason.org (Stas Bekman)
+
+Arthur Bergman wrote:
+> 
+> On torsdag, augusti 22, 2002, at 05:40 , Stas Bekman wrote:
+> 
+>>
+>>     Sometimes Perl invokes modules with underlaying C APIs which rely on
+>>     certain environment variables to be set, if these variables are 
+>> set in
+>>     Perl and the glue code doesn't worry to set them on the C level, 
+>> these
+>>     variables might not be seen by the C level. This module shows what
+>>     really the C level sees.
+>>
+>>
+> 
+> Shouldn't the gluecode really do this?
+
+Do what? Set env vars? Of course it should... if it's safe. But as you 
+can see from the recent mod_perl thread about Oracle DBD not working 
+with mod_perl 2.0 when %ENV was set in the registry script, since %ENV 
+isn't tied to environ, because it's not thread safe. I wrote this module 
+to debug the case, since I don't have Oracle to test with.
+
+This module was only needed for getenv() and dumpenv() so those who 
+don't know C can at least debug things. But I've generalized it and 
+added setenv() and unsetenv() while I was at it.
+
+
+
+__________________________________________________________________
+Stas Bekman            JAm_pH ------> Just Another mod_perl Hacker
+http://stason.org/     mod_perl Guide ---> http://perl.apache.org
+mailto:stas@stason.org http://use.perl.org http://apacheweek.com
+http://modperlbook.org http://apache.org   http://ticketmaster.com
+

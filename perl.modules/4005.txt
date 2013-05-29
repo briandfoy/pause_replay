@@ -1,0 +1,84 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4005
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16285 invoked from network); 28 Dec 2000 20:48:26 -0000
+Received: from palladium.baremetal.com (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 28 Dec 2000 20:48:26 -0000
+Received: from localhost (darren@localhost)
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id MAA11930;
+	Thu, 28 Dec 2000 12:40:32 -0800
+Date: Thu, 28 Dec 2000 12:40:32 -0800 (PST)
+X-Sender:  <darren@palladium.baremetal.com>
+To: <modules@perl.org>, Gunther Birznieks <gunther@extropia.com>
+cc: Darren Duncan <darren@DarrenDuncan.net>
+Subject: Re: RFC: WebsiteGenerator, etc.
+In-Reply-To: <5.0.0.25.2.20001228163423.02612d20@mail.clark.net>
+Message-ID: <Pine.LNX.4.30.0012281202060.7965-100000@palladium.baremetal.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+References: <5.0.0.25.2.20001228163423.02612d20@mail.clark.net>
+
+This RFC is concerned mainly with what to name my modules so that they fit
+into the appropriate name-spaces.  Any help is appreciated.  Also, when
+one has a set of related modules, should I have a separate RFC letter for
+each, or one for all?
+
+On Thu, 28 Dec 2000, Gunther Birznieks wrote:
+> You should be careful as to what modules you've created solve a problem in
+> a particular way that you enjoy using and which ones are truly
+> generic.  Some of the following was unclear in your email explanation of
+> the modules.
+
+I was trying to be brief with my email without bogging down in details;
+those were in the ReadMe and POD.
+
+To my knowledge, all of my modules are
+unique; some have functionality that nothing else on CPAN that I could
+find have, and those with common functionality are implemented differently
+and/or have different interfaces, making them more useful in some cases.
+
+In the latter case, I made these because I enjoy them better than the
+alternatives, and I made them as "flexible" as possible while filling that
+role for the express purpose of being useful to more people than myself.
+Likewise, I try to make them as independant from each other as possible,
+so if you want to use one but not another, it is easier to do so.
+
+> I am worried that some of your CGI::* modules have taken a hold of a
+> generic namespace when they should belong either somewhere else in CPAN or
+> under CGI::WPM.
+>
+> you are relying on be under a totally different tree? And also what are you
+> using CGI::SequentialFile for? It's a bit unclear as to the relationship there.
+
+These are very valid concerns.  And in fact I would like to have different
+names for the CGI::* modules, but my previous questions to the modules
+list were unanswered.
+
+I put them in CGI:: for now because the
+higher-level modules that made use of them are web/cgi related.  In fact,
+HashOfArrays is a semi-generic data structure, SequentialFile and
+EventCountFile are semi-generic file interfaces.  WebUserIO is
+specifically for the web, however, although I question calling it "CGI"
+because it also works under mod_perl (but CGI first).
+
+Now, the CGI::WPM::Globals and CGI::WPM::Base are the cornerstones of a
+specific methodology that makes embeddable modules out of web
+applications.  All of the other CGI::WPM::* modules are examples of
+applets that use the methodology.  Whereas, everything outside of
+CGI::WPM:: is not tied to this methodology and can be used in very
+different ways; that is why they were kept out of CGI::WPM::
+(Incidentally, Globals inherits from CGI::WebUserIO and HTML::PageMaker,
+so their functionality is part of its functionality.)
+
+> Of course, I should be one to talk... I've never uploaded anything to CPAN
+> yet (although I've got an ID now... ). Congrats on taking that step forward. :)
+
+Thank you,
+
+// Darren Duncan
+

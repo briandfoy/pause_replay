@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:33810
+Return-Path: <amirkargerweb@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32746 invoked from network); 27 Jul 2004 19:02:03 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by onion.develooper.com with SMTP; 27 Jul 2004 19:02:03 -0000
+Received: (qmail 9801 invoked by uid 225); 27 Jul 2004 19:02:03 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9797 invoked by alias); 27 Jul 2004 19:02:03 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from web40711.mail.yahoo.com (HELO web40711.mail.yahoo.com) (66.218.78.168)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with SMTP; Tue, 27 Jul 2004 12:01:59 -0700
+Message-ID: <20040727190158.73089.qmail@web40711.mail.yahoo.com>
+Received: from [155.94.62.221] by web40711.mail.yahoo.com via HTTP; Tue, 27 Jul 2004 12:01:58 PDT
+Date: Tue, 27 Jul 2004 12:01:58 -0700 (PDT)
+Subject: Namespace for Z-machine module
+To: modules@perl.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Spam-Rating: onion.develooper.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: amirkargerweb@yahoo.com (Amir Karger)
+
+Oh, Pause, the Great and Terrible:
+
+I've written a module that parses Z-machine files and translates them
+into executable Perl scripts.  In the future, it'll be translating to
+other languages: first on the list is PIR.  I'd like to CPAN-ify it,
+and wanted to ask about namespace.
+
+Possible names:
+
+* Language::Zcode - makes sense, but a Z-file contains more than just
+  Z-code commands
+
+* Language::Zmachine - makes more sense, except that Z-machine isn't
+  technically a language
+
+* Games::Zmachine - well, Z-machine isn't technically just for games.
+  I say "technically" because the most "useful" Z-machine program I've
+  seen is a Befunge interpreter.  But this module is really doing more
+  munging than gaming.
+
+* Zmachine - cute, in that it's like Sun:: or MacOS::, but it's
+  starting a new top-level namespace, which is probably not considered
+  cool. Especially since there probably won't be more than a couple
+  modules ever written for this namespace.
+
+* Perl6::Zmachine - just kidding. But Dan Sugalski's slide saying
+     parrot -b:zmachine zork1.dat
+  *was* the original impetus for my writing this.
+
+I'm definitely leaning towards Language::something - maybe
+Language::Zmachine since Z-machine is a more well-known term - but I
+wanted to know what others thought.  Any better suggestions?
+
+Existing modules:
+
+* Games::Rezrov is an interpreter for Z-machine files.  It allows you
+  to actually play said games.  I've stolen a bunch of its code, but
+  my module is definitely doing different stuff, so it wouldn't make 
+  sense as a sub-namespace of G::R.  (If the author had called it
+  Games::Zmachine::Rezrov, then maybe I could've done
+  Games::Zmachine::Parser/Translator or something.)
+
+Thanks,
+
+-Amir Karger
+akarger@cpan.org
+
+* For those unfamiliar with the Z-machine, it's a virtual machine that
+was used for the Infocom text adventure games, and is now used by
+games made with the Inform interactive fiction programming language.
+Files for the Z-machine contain some header information, tables
+containing game data (objects in the game, etc.), text strings to
+print, and a bunch of commands in Z-code. Z-code is Z-machine machine
+language, which is made super-compact (in case you're curious) by
+using as few bits as possible for each command and argument. Which
+makes it even harder to read than regular machine language.
+
+
+
+		
+__________________________________
+Do you Yahoo!?
+New and Improved Yahoo! Mail - Send 10MB messages!
+http://promotions.yahoo.com/new_mail 

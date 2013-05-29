@@ -1,0 +1,104 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:34563
+Return-Path: <root@schmorp.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 8047 invoked from network); 7 Sep 2004 04:24:31 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 7 Sep 2004 04:24:31 -0000
+Received: (qmail 14217 invoked by uid 225); 7 Sep 2004 04:24:31 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14210 invoked by alias); 7 Sep 2004 04:24:30 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from rain.plan9.de (HELO rain.plan9.de) (193.108.181.162)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Mon, 06 Sep 2004 21:24:27 -0700
+Received: from [10.0.0.5] (helo=mailout.schmorp.de ident=schmorp)
+	by rain.plan9.de with esmtp (Exim 4.30)
+	id 1C4XWe-0004OC-27
+	for modules@perl.org; Tue, 07 Sep 2004 06:24:12 +0200
+Received: from [10.0.0.2] (helo=fuji.laendle)
+	by mailout.schmorp.de with esmtp (Exim 4.34)
+	id 1C4XWd-0000qW-I1
+	for modules@perl.org; Tue, 07 Sep 2004 06:24:11 +0200
+Received: from root by fuji.laendle with local (Exim 4.30)
+	id 1C4XPl-0004Ct-Qc
+	for modules@perl.org; Tue, 07 Sep 2004 06:17:05 +0200
+Date: Tue, 7 Sep 2004 06:17:05 +0200
+To: modules@perl.org
+Subject: Re: Module submission Linux::DVB
+Message-ID: <20040907041705.GD15861@schmorp.de>
+References: <200409060633.i866Xl5P032699@pause.perl.org> <060920041643564438%comdog@panix.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <060920041643564438%comdog@panix.com>
+X-Operating-System: Linux version 2.4.25 (root@fuji) (gcc version 2.95.4 20011002 (Debian prerelease)) 
+Approved: news@nntp.perl.org
+From: pcg@goof.com (( Marc) (A.) (Lehmann ))
+
+On Mon, Sep 06, 2004 at 04:43:57PM -0500, _brian_d_foy <comdog@panix.com> wrote:
+> > The following module was proposed for inclusion in the Module List:
+> > 
+> >   modid:       Linux::DVB
+> 
+> >   similar:
+> >     Video::Linux::V4l
+> 
+> why not put this in Video:: too?
+
+Just because you could also stream video with it doesn't make it a
+vdeo-only module. Besides, it is highly linux-specific.
+
+Video::Capture::V4l (the name was wrong, sorry) is indeed also a misnomer
+in my opinion, but not as much, because even though it also supports data
+services it will decode this data out of the video stream, so video is
+always involved, unlike DVB, where you can have data-only transponders and
+streams that have nothing to do with video (or audio).
+
+Some of the functionality, such as SI-decoding, are linux-independent, so one
+could also imagine the following structure:
+
+   DVB::Linux
+   DVB::Decode::SI
+
+and so on, but my plans for the module do not include making it that large
+in the future. It's more or less a quick hack that allows people to read
+and sometimes decode DVB streams using the Linux-DVB API.
+
+> >   rationale:
+> > 
+> >     "DVB" should be obvious,
+> 
+> things that people call "obvious" usually aren't.
+
+Well, exceptions such this case exist.
+
+> >     "Linux" was chosen to emhpasize that this is a linux-specific
+> >     module that will not work on other opertaing systems.
+> 
+> this doesn't work on things with a linux compatibility mode?
+
+I don't think such things exist, except in vmware. Besides, "linux
+compatbility mode" exists solely for the purpose of running linux-specific
+programs, so even if there were emulations for the linux-dvb interface the
+name would be correct, also, as it simpy says "linux is required".
+
+It would not run, for example, on freebsd even if it's linux emulation
+layer would support the dvb driver api.
+
+> are they sure that it will never be avialable for other platforms?
+
+This hasn't happened in the past with os-specific interfaces, so it's not
+likely to happen in the future.
+
+-- 
+                The choice of a                              |
+      -----==-     _GNU_                                     |
+      ----==-- _       generation     Marc Lehmann         +--
+      ---==---(_)__  __ ____  __      pcg@goof.com         |e|
+      --==---/ / _ \/ // /\ \/ /      http://schmorp.de/   --+
+      -=====/_/_//_/\_,_/ /_/\_\      XX11-RIPE            |
+                                                           |

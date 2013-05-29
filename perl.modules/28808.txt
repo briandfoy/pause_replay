@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:28808
+Return-Path: <steve.hay@uk.radan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 93468 invoked by uid 76); 24 Feb 2004 10:57:15 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Tue, 24 Feb 2004 02:57:15 -0800
+Received: (qmail 30613 invoked by uid 225); 24 Feb 2004 10:57:14 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 30427 invoked by alias); 24 Feb 2004 10:56:48 -0000
+Received: from [217.205.167.84] (HELO styx.radan.com) (217.205.167.84)  by la.mx.develooper.com (qpsmtpd/0.27-dev) with SMTP; Tue, 24 Feb 2004 02:56:48 -0800
+Received: from unknown(217.205.167.82) by styx.radan.com via csmap 	 id 85441e24_66b8_11d8_92f0_0002b3cb43e0_9428;	Tue, 24 Feb 2004 10:59:30 +0000 (GMT)
+Organisation: Radan Computational Ltd., Bath, UK.
+Phone: +44 1225 320320   Fax: +44 1225 320311
+Web: http://www.radan.com/
+Received: from uk.radan.com (tangaroa.uk.radan.com [172.16.50.61])	by sockeye.uk.radan.com (8.9.1b+Sun/8.9.1) with ESMTP id KAA01298;	Tue, 24 Feb 2004 10:54:56 GMT
+Message-ID: <403B2E68.9040506@uk.radan.com>
+Date: Tue, 24 Feb 2004 10:58:48 +0000
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.4) Gecko/20030624 Netscape/7.1 (ax)
+X-Accept-Language: en-gb, en, en-us
+MIME-Version: 1.0
+To: Autrijus Tang <autrijus@autrijus.org>
+CC: Graham Barr <gbarr@pobox.com>, modules@cpan.org
+Subject: Re: How to get "License" field filled in on search.cpan.org?
+References: <403B166E.6060309@uk.radan.com> <B3BF1ECE-66B1-11D8-837F-0003937E19DE@pobox.com> <20040224101718.GA44130@aut.dyndns.org>
+In-Reply-To: <20040224101718.GA44130@aut.dyndns.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-NAIMIME-Disclaimer: 1
+X-NAIMIME-Modified: 1
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on x1.develooper.com
+X-Spam-Status: No, hits=-4.9 required=8.0 tests=BAYES_00 autolearn=ham 	version=2.63
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: steve.hay@uk.radan.com (Steve Hay)
+
+Autrijus Tang wrote:
+
+>On Tue, Feb 24, 2004 at 10:10:41AM +0000, Graham Barr wrote:
+>  
+>
+>>On 24 Feb 2004, at 09:16, Steve Hay wrote:
+>>    
+>>
+>>>   http://search.cpan.org/~shay/Win32-SharedFileOpen-3.16/
+>>>   http://search.cpan.org/~shay/Win32-UTCFileTime-1.30/
+>>>      
+>>>
+>>You need to have a license entry in your META.yml file, see
+>>
+>>http://search.cpan.org/src/GBARR/Module-Install-InstallDirs-0.01/ 
+>>META.yml
+>>    
+>>
+>
+>Right.  These are generated either by using Module::Install to write
+>your Makefile.PL instead of ExtUtils::MakeMaker, so one can say
+>
+>    use inc::Module::Install;	# drop-in replacement
+>    license('perl');
+>    WriteMakefile( ... );
+>
+Oh, so that's the secret!
+
+I had just recently looked at using Module::Install, but I had a problem 
+with abstract_from() not working (see 
+https://rt.cpan.org/Ticket/Display.html?id=5402) so I was holding off 
+for now.  I was also looking at replacing the WriteMakefile() call 
+completely, but hadn't figured out how to do the equivalent of what my 
+"dist" options have.
+
+Anyway, I just tried out the above and it works OK (although I had to 
+delete the existing META.yml first, otherwise it didn't get regenerated, 
+and the new inc/ files weren't automatically added to the MANIFEST - 
+should they have been?)
+
+Why doesn't EU::MM write an appropriate META.yml?  Does Schwern know 
+about this?
+
+>
+>Or switch to Module::Build.
+>
+I look at that too, but wanted to retain EU::MM support as well to avoid 
+a dependency on M::B.  It seems, after some discussion on the M::B 
+mailing list, that EU::MM and M::B don't live together very well with XS 
+builds.
+
+- Steve
+
+
+
+------------------------------------------------
+Radan Computational Ltd.
+
+The information contained in this message and any files transmitted with it are confidential and intended for the addressee(s) only.  If you have received this message in error or there are any problems, please notify the sender immediately.  The unauthorized use, disclosure, copying or alteration of this message is strictly forbidden.  Note that any views or opinions presented in this email are solely those of the author and do not necessarily represent those of Radan Computational Ltd.  The recipient(s) of this message should check it and any attached files for viruses: Radan Computational will accept no liability for any damage caused by any virus transmitted by this email.
+

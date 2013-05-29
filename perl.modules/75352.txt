@@ -1,0 +1,79 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:75352
+Return-Path: <awohld@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 32083 invoked from network); 27 Mar 2011 05:53:02 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 27 Mar 2011 05:53:02 -0000
+Received: (qmail 18870 invoked by uid 225); 27 Mar 2011 05:53:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18866 invoked by alias); 27 Mar 2011 05:53:01 -0000
+X-Spam-Status: No, hits=-0.7 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_PASS,T_TO_NO_BRKTS_FREEMAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-pw0-f41.google.com (HELO mail-pw0-f41.google.com) (209.85.160.41)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 26 Mar 2011 22:52:59 -0700
+Received: by pwi10 with SMTP id 10so550474pwi.14
+        for <modules@perl.org>; Sat, 26 Mar 2011 22:52:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:from:date
+         :x-google-sender-auth:message-id:subject:to:content-type;
+        bh=Lz9lx1VVaSByyPzTWrhQU6TXn5WGPY8ELW3PdYWuKBU=;
+        b=roWqn6fjEijuz1GhX/pqouIystEpZi0BnmfyuwqI0p61hL8JdGbAQeoXXlstteq52E
+         CcyC9i3W71HrNEqWr1ytpVwJFcrwgU+C2iwltWkRMD1fSr8lAJMcr+9B6tEMJxIBv6r2
+         g+vFAYOOEw8as3FNXsr27SGavmpd/rZ1mG+8A=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:from:date:x-google-sender-auth:message-id
+         :subject:to:content-type;
+        b=L1aFxyQVlDSG2G+aIZXv595LOSEzsUr3dqLTpRdwUZLwn6PRvafuFt5kj43aWWppoE
+         WhnJqzvF05526mRvKsRe9si1zl0/0cWp/oeaL9Rm0DpBT+QKTIHeDy51QNyD8kRQzM2/
+         o54xzDUn+9jg7seDQYBb+mpEICUmU1p+tkO6Y=
+Received: by 10.142.187.13 with SMTP id k13mr310017wff.288.1301205176158; Sat,
+ 26 Mar 2011 22:52:56 -0700 (PDT)
+MIME-Version: 1.0
+Sender: awohld@gmail.com
+Received: by 10.142.234.20 with HTTP; Sat, 26 Mar 2011 22:52:36 -0700 (PDT)
+Date: Sun, 27 Mar 2011 00:52:36 -0500
+X-Google-Sender-Auth: 2aRFEYOg-MwCDPX2rUapoihGOQI
+Message-ID: <AANLkTinDgqr1giw=M1n7Ua7Aiwyc4=rV-uoDpuQz2o6U@mail.gmail.com>
+Subject: Proposed Module: Date::FromToday
+To: modules@perl.org
+Content-Type: text/plain; charset=UTF-8
+Approved: news@nntp.perl.org
+From: adam@spatialsystems.org (Adam)
+
+I'm proposing a module named "Date::FromToday".
+
+It is used to calculate the date in the future/past from the localtime
+the object was created.  I use it for calculating file names based off
+of timespan from today.  Does this namespace look valid?
+
+
+Simple usage with defaults
+my $date = Date::FromToday->new( move => -1 );
+my $date_string = $date->date_string;
+#  $date_string = '03_26_2011'
+
+
+
+#  usage with defaults exposed
+my $date = Date::FromToday->new(
+    move => -1,  # get yesterday's date
+    leading_zeros => 1, # add a leading zero to the month and day, default = 1
+    date_string_format => '{Y}-{M}-{D}', # formats day as 2011-Mar-27,
+default = {M}_{D}_{Y}
+    year_digits => 4, #  show year as 2011, not 11.  Default = 4
+    month_translator => [qw{ Jan Feb Mar April May June July Aug Sept
+Oct Nov Dec} ],  #translate months from array default = undef
+    # force_date => '01_01_2000' # used to force todays date.
+);
+
+my $month = $date->month;
+my $day = $date->day;
+my $year = $date->year;
+my $date_string = $date->date_string;

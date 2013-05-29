@@ -1,0 +1,130 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1540
+Return-Path: <jmac@jmac.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12212 invoked from network); 5 Apr 2000 04:29:46 -0000
+Received: from undef.jmac.org (216.227.134.8)
+  by tmtowtdi.perl.org with SMTP; 5 Apr 2000 04:29:46 -0000
+Received: from [10.10.2.2] (shimatta.jmac.org [10.10.2.2])
+	by undef.jmac.org (8.8.7/8.8.7) with SMTP id AAA19600
+	for <modules@perl.org>; Wed, 5 Apr 2000 00:40:21 -0400
+Date: Wed, 05 Apr 2000 00:29:33 -0400
+Subject: Account request: JMAC / DBIx::Schema
+To: modules@perl.org
+Message-ID: <MailDrop1.2d7j-PPC.1000405002933@[10.10.2.2]>
+X-Authenticated: <jmac@jmac.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII
+Approved: news@nntp.perl.org
+From: jmac@mint.net (Jason McIntosh)
+
+Dear CPAN,
+
+I'm wondering what my chances may be like with the following resgistration
+request:
+
+name: Jason McIntosh
+email: jmac@jmac.org
+homepage: http://www.jmac.org
+preferred CPAN ID: JMAC
+
+Name           DSLI  Desc
+-------------  ----  --------------------------------------------
+DBIx::Schema   adpO  Database schema abstraction via DBI
+
+What follows is an RFC describing this module which I posted to
+comp.lang.perl.modules several days ago, to no response. Please advise if
+there aare other venues I should try to further investigate possible public
+interest; other than this, it might be worth noting that this module is in use
+by several developers at my current place of employment.
+
+I am writing a module to help abstract the process of working with complex
+schemas of relational SQL database tables. DBIx::Schema (working title,
+better suggestions welcome), which I started developing as part of a much
+larger project for my employers, lets you work with data a row at a time,
+as with DBI, but gives you the extra ability to, with a single method
+call, reach across and grab rows of related data from tables located
+elsewhere in your database, without having to construct an SQL join clause
+youself. The 'distance' from the originating table and the related one can
+be arbitrarily long, so long as they are related in some way -- i.e.,
+could both return data through a single (though perhaps quite lengthy) SQL
+query joining them together.
+
+A few snippets of code using its interface, which is based on that of
+DBIx::Abstract (written by my friend and cow orker Andy Turner and
+available from CPAN) should demonstrate the sorts of things one can do
+with it. The following excerpt works on a database with a 'product' table,
+a 'color' table with which it has a one-to-many relationship, and a
+'category' table which shares a many-to-many relationship (via a linking
+table) with 'product'.
+
+####
+my $schema = DBIx::Schema->connect({db=>'mydb',
+                                    user=>'me',
+                                    password=>'foobar'});
+
+my $sth = $schema->select({key_table=>'product',
+                           where=>{'product.id'=>['<',6]}});
+
+while (my $row = $sth->fetchrow()) {
+
+  print $row->{'name'}." costs \$".$row->{'price'}.".\n";
+
+  if (my $color = $row->color->{'name'}) {
+    print "It is colored $color.\n";
+  } else {
+    print "It has no specified color.\n";
+    }
+  if ($row->category->rows) {
+    print "It may be found in these categories:\n";
+    while (my $cat_row = $row->category->fetchrow()) {
+      print $cat_row->{'name'}."\n";
+    }
+  } else {
+    print "It is not in any category.\n";
+  }
+
+}
+####
+
+Output:
+
+Thingy costs $30.50.
+It is colored green.
+It is not in any category.
+Doohickey costs $3.50.
+It is colored green.
+It may be found in these categories:
+Widgets
+Tools
+Whatzit costs $3.75.
+It is colored red.
+It may be found in these categories:
+New Stuff
+
+In the above example, I could have tossed an extra key-value pair of
+'product.color'=>'green' into the statement handle's 'where' key, and the
+red-colored Whatzit would have been excluded from the output.
+
+DBIx::Schema's prerequisites include, besides the obvious DBI and the
+aforementioned DBIx::Abstract modules, construction of metadata tables of
+a certain format in one's SQL database. I do have a script that can help
+build and maintain these, but I would anticipate this requirement being
+the module's biggest hangup, since people who use their own data
+dictionaries undoubtedly build theirs differently than I do mine; the
+module ought to be configurable enough to work with any tables that
+provide the information about relationships it needs.
+
+As I write, it works well enough to run on production servers (and indeed
+it does, where I work), but needs several more features before I'll
+consider it complete, the most important of which is internal caching:
+when used in a loop, its current incarnation has no bones about
+investigating the same pathways over and over again.
+
+--
+
+    J McIntosh               jmac@jmac.org
+Waterville, ME, USA       http://www.jmac.org
+

@@ -1,0 +1,62 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:85897
+Return-Path: <perl@froods.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 13972 invoked from network); 6 May 2013 23:47:45 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 6 May 2013 23:47:45 -0000
+Received: (qmail 17940 invoked by uid 225); 6 May 2013 23:47:45 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17936 invoked by alias); 6 May 2013 23:47:45 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from ns2.lightspeed.ca (HELO ns2.lightspeed.ca) (206.12.82.4)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 06 May 2013 16:47:33 -0700
+Received: from 69-50-167-197.westerncable.ca ([69.50.167.197] helo=etheridge.ca)
+	by ns2.lightspeed.ca with esmtp (Exim 4.72)
+	(envelope-from <perl@froods.org>)
+	id 1UZV7w-00057p-Uj
+	for modules@perl.org; Mon, 06 May 2013 16:47:29 -0700
+Date: Mon, 6 May 2013 16:47:28 -0700
+To: modules@perl.org
+Subject: Re: Strange detection of modules to index (i.e. Failed: PAUSE indexer report ETHER/Package-Variant-1.001004.tar.gz)
+Message-ID: <20130506234728.GA55763@tequila.vs.shawcable.net>
+References: <20130505051435.GA77892@tequila.etheridge.ca> <060520131353224049%brian.d.foy@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <060520131353224049%brian.d.foy@gmail.com>
+User-Agent: Mutt/1.4.2.3i
+X-Spam-Score: 0.0
+X-Spam-Score-Int: 0
+X-Spam-Bar: /
+X-Spam-Report: (no report template found)
+X-ACL-Warn: !authenticated  = *
+X-SA-Exim-Connect-IP: 69.50.167.197
+X-SA-Exim-Mail-From: perl@froods.org
+X-SA-Exim-Scanned: No (on ns2.lightspeed.ca); SAEximRunCond expanded to false
+Approved: news@nntp.perl.org
+From: perl@froods.org (Karen Etheridge)
+
+On Mon, May 06, 2013 at 01:53:23PM -0500, brian d foy wrote:
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+> 
+> In article <20130505051435.GA77892@tequila.etheridge.ca>, Karen
+> Etheridge <perl@froods.org> wrote:
+> 
+> > This is pretty odd... I don't see where PAUSE is seeing a 'string' module
+> > in this dist.
+> 
+> PAUSE indexes based on a static analysis, so it runs no code. I'm
+> guessing that it sees "package string" in your croak() statement and is
+> tripped up by that.
+
+A ha! I didn't realize the code was being scanned so simply -- I think we
+can likely improve this, so I've filed an issue at
+https://github.com/andk/pause/issues/48 for further discussion.
+

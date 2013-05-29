@@ -1,0 +1,337 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:6625
+Return-Path: <byourth@tampabay.rr.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9688 invoked from network); 18 Jul 2001 06:24:30 -0000
+Received: from smtp-server1.cfl.rr.com (HELO smtp-server1.tampabay.rr.com) (65.32.2.68)
+  by onion.valueclick.com with SMTP; 18 Jul 2001 06:24:30 -0000
+Received: from bradyour (24129168hfc61.tampabay.rr.com [24.129.168.61])
+	by smtp-server1.tampabay.rr.com (8.11.2/8.11.2) with SMTP id f6I6OSt10129
+	for <modules@perl.org>; Wed, 18 Jul 2001 02:24:28 -0400 (EDT)
+Message-ID: <001501c10f51$ed2b73a0$3da88118@tampabay.rr.com>
+To: <modules@perl.org>
+Subject: Simple Interest Module
+Date: Wed, 18 Jul 2001 02:21:47 -0400
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0011_01C10F30.65506920"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.3018.1300
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.3018.1300
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: byourth@tampabay.rr.com ("Brad Yourth")
+
+------=_NextPart_000_0011_01C10F30.65506920
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_001_0012_01C10F30.65506920"
+
+
+------=_NextPart_001_0012_01C10F30.65506920
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hello:
+I wish to contribute a module for Simple Interest calculations.
+The file Simpint.pm is attached.
+Brad Yourth
+yourthb@spjc.edu
+I have no home page
+My preferred user-id is B-YOURTH
+Module description...Math::Simpint
+My module is an extension of the Math:: module.
+It provides 12 functions/subroutines for computing
+interest, interest rate, time/dates, present value and future value.
+The module was created with h2xs and is POD documented.
+Thanks,
+Brad Yourth
+
+------=_NextPart_001_0012_01C10F30.65506920
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META content=3D"text/html; charset=3Diso-8859-1" =
+http-equiv=3DContent-Type>
+<META content=3D"MSHTML 5.00.3018.900" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT size=3D2>Hello:</FONT></DIV>
+<DIV><FONT size=3D2>I wish to contribute a module for Simple Interest=20
+calculations.</FONT></DIV>
+<DIV><FONT size=3D2>The file Simpint.pm is attached.</FONT></DIV>
+<DIV><FONT size=3D2>Brad Yourth</FONT></DIV>
+<DIV><FONT size=3D2><A=20
+href=3D"mailto:yourthb@spjc.edu">yourthb@spjc.edu</A></FONT></DIV>
+<DIV><FONT size=3D2>I have no home page</FONT></DIV>
+<DIV><FONT size=3D2>My preferred user-id is B-YOURTH</FONT></DIV>
+<DIV><FONT size=3D2>Module description...Math::Simpint</FONT></DIV>
+<DIV><FONT size=3D2>My module is an extension of the Math:: =
+module.</FONT></DIV>
+<DIV><FONT size=3D2>It provides 12 functions/subroutines for=20
+computing</FONT></DIV>
+<DIV><FONT size=3D2>interest, interest rate, time/dates, present value =
+and future=20
+value.</FONT></DIV>
+<DIV><FONT size=3D2>The module was created with h2xs and is POD=20
+documented.</FONT></DIV>
+<DIV><FONT size=3D2>Thanks,</FONT></DIV>
+<DIV><FONT size=3D2>Brad Yourth</FONT></DIV></BODY></HTML>
+
+------=_NextPart_001_0012_01C10F30.65506920--
+
+------=_NextPart_000_0011_01C10F30.65506920
+Content-Type: text/html;
+	name="Simpint.pm"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="Simpint.pm"
+
+##    Copyright (c) 2001 by Brad Yourth
+##    All rights reserved.
+##
+##    This package is free software; you can redistribute it
+##    and/or modify it under the same terms as Perl itself.
+
+package Math::Simpint;
+
+use 5.006;
+use strict;
+use warnings;
+
+require Exporter;
+use Date::Calc qw/Date_to_Days Add_Delta_Days/;
+
+our @ISA =3D qw(Exporter);
+
+our %EXPORT_TAGS =3D ( 'all' =3D> [ qw(
+=09
+) ] );
+
+our @EXPORT_OK =3D ( @{ $EXPORT_TAGS{'all'} } );
+
+our @EXPORT =3D qw(
+	int_yrs
+ 	int_dates
+	rate_yrs
+ 	rate_dates
+ 	principal_yrs
+  	time_days
+   	time_yrs
+    time_date
+  	fv_yrs
+   	fv_dates
+    pv_yrs
+    pv_dates
+);
+
+our $VERSION =3D '0.01';
+
+sub int_yrs {
+	 $_[0] * $_[1] * $_[2] * 0.01;
+}
+
+sub int_dates {
+	my $t =3D dates_to_yrs( $_[2],$_[3] );
+	$_[0] * $_[1] * .01 * $t;
+}
+
+sub	rate_yrs {
+	$_[1] / $_[0] / $_[2] * 100;
+}
+
+sub rate_dates {
+	my $t =3D dates_to_yrs( $_[2],$_[3] );
+	100 * $_[1] / $_[0] * $t;=09
+}
+
+sub	principal_yrs {
+	$_[0] / $_[1] / $_[2];
+}
+
+sub	time_days {
+	365 * 100 * $_[1] / $_[0] / $_[2];
+}
+
+sub	time_yrs {
+	100 * $_[1] / $_[0] / $_[2];
+}
+
+sub time_date {
+	my $days =3D 365 * 100 * $_[1] / $_[0] / $_[2];
+ 	$_[3] =3D~ /(\d+)\/(\d+)\/(\d+)/;
+ 	join("/", Add_Delta_Days( $1,$2,$3,$days));
+}
+  =09
+sub fv_yrs {
+	 $_[0] + $_[0] * $_[1] * $_[2] * 0.01;
+}
+
+sub fv_dates {
+	my $t =3D dates_to_yrs( $_[2],$_[3] );
+	$_[0] + $_[0] * $_[1] * .01 * $t;
+}
+
+sub pv_yrs {
+	 $_[0] / ( 1 +  $_[1] * $_[2] * 0.01 );
+} =20
+   =09
+sub pv_dates {
+	my $t =3D dates_to_yrs( $_[2],$_[3] );
+	$_[0] /( 1 + $_[1] * .01 * $t );
+}
+
+sub dates_to_yrs {
+	$_[0] =3D~ /(\d{4})\/(\d+)\/(\d+)/;
+ 	my $d1 =3D Date_to_Days($1,$2,$3);
+	$_[1] =3D~ /(\d{4})\/(\d+)\/(\d+)/;=20
+ 	my $d2 =3D Date_to_Days($1,$2,$3);
+	($d2 - $d1)/365;
+}=20
+=09
+1;
+
+__END__
+
+=3Dhead1 NAME
+
+	Math::Simpint - Perl extension to Math:: for Simple Interest
+
+=3Dhead1 PREFACE
+
+	Math::Simpint contains subroutines for simple interest
+	calculations. Subroutines are provided for these formulas
+
+	I =3D Prt		S =3D P(1 + rt)		P =3D S / (1 + rt)
+	t =3D I/Pr	r =3D I/Pt		P =3D I/rt
+
+	and include the use of calendar date strings thanks to=20
+	several subroutines from Steffen Bryer's Date::Calc
+	module (which is required).
+
+=3Dhead1 SYNOPSIS
+
+	use Math::Simpint;
+
+=3Dhead1 FUNCTIONS
+
+=3Dhead2 int_yrs
+
+C<$interest =3D int_yrs( $prin, $rate, $years );>
+
+Implements I =3D Prt where $years is in years.
+Returns amount of interest. $rate is a percent, NOT a decimal.
+
+=3Dhead2 int_dates
+
+C<$interest =3D int_dates( $prin, $rate, "yyyy/mm/dd","yyyy/mm/dd" );>
+
+For I =3D Prt given two date strings as shown. First date string is =
+start date.
+Returns interest earned. $rate is a percent, NOT a decimal.
+
+=3Dhead2 rate_yrs
+
+C<$rate =3D rate_yrs( $prin, $int, $years );>
+
+Returns the annual interest rate as a percent, given $years in years.
+
+=3Dhead2 rate_dates
+
+C<$rate =3D rate_dates( $prin, $int, "yyyy/mm/dd","yyyy/mm/dd" );>
+
+Returns rate % that yields $int interest on $prin between two dates.
+First date string is start date.
+
+=3Dhead2 principal_yrs
+
+C<$prin =3D principal_yrs( $int, $rate, $years );>
+
+For P =3D I/rt. $rate is a %, NOT a decimal. Returns principal needed.
+
+=3Dhead2 time_days
+
+C<$days =3D time_days( $int, $prin, $rate );>
+
+Returns number of days needed for $prin to earn $int at $rate %.
+
+=3Dhead2 time_yrs
+
+C<$yrs =3D time_yrs( $prin, $int, $rate );>
+
+Returns time in years needed for $prin to earn $int at $rate %.
+
+=3Dhead2 time_date
+
+C<$datestring =3D time_date( $prin, $int, $rate, "yyyy/mm/dd" );>
+
+Returns date at which $prin will earn $int at $rate %. $datestring is in =
+format "yyyy/mm/dd".
+
+=3Dhead2 fv_yrs
+
+C<$futurevalue =3D fv_yrs( $prin, $rate, $years );>
+
+Implements S =3D P( 1 + rt ). $rate is a per cent. $years is in years.
+
+=3Dhead2 fv_dates
+
+C<$futurevalue =3D fv_dates( $prin, $rate, ""yyyy/mm/dd","yyyy/mm/dd" =
+);>
+
+Implements S =3D P( 1 + rt ) between two given dates. First date string =
+is start date.
+
+=3Dhead2 pv_yrs
+
+C<$prin =3D pv_yrs( $futurevalue, $rate, $years );>
+
+Implements P =3D S /( 1 + rt ) given $years in years. $rate is a per =
+cent.
+
+=3Dhead2 pv_dates
+
+C<$prin =3D pv_dates( $futurevalue, $rate, ""yyyy/mm/dd","yyyy/mm/dd" =
+);>
+
+Implements P =3D S /( 1 + rt ) given two dates. First date is start =
+date. $rate is a per cent.
+
+=3Dhead2 dates_to_yrs
+
+C<$yrs =3D dates_to_yrs( "yyyy/mm/dd","yyyy/mm/dd" );>
+
+Computes number of years between two dates for some subs above. Intended =
+primarily for internal use of other functions.
+
+=3Dhead1 EXPORT
+
+	None by default.
+
+=3Dhead1 AUTHOR
+
+	Brad Yourth
+
+I<yourthb@spjc.edu>
+
+=3Dhead1 SEE ALSO
+
+	Date::Calc for Date_to_Days and Add_Delta_Days functions
+
+=3Dhead1 DISCLAIMER
+
+This package is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+=3Dcut
+
+------=_NextPart_000_0011_01C10F30.65506920--
+

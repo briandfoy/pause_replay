@@ -1,0 +1,80 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:2478 perl.modules:93
+Return-Path: <k@hohenstaufen.in-berlin.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4014 invoked from network); 18 Oct 1999 06:27:28 -0000
+Received: from dubravka.in-berlin.de (HELO hohenstaufen.in-berlin.de) (0@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 18 Oct 1999 06:27:28 -0000
+Received: (from k@localhost)
+	by hohenstaufen.in-berlin.de (8.9.1a/8.9.1) id IAA03422;
+	Mon, 18 Oct 1999 08:27:14 +0200
+Sender: k@hohenstaufen.in-berlin.de
+To: "Michael King" <mike808@my-Deja.com>
+Cc: "Jan Dubois" <jand@activestate.com>, perl5-porters@perl.org,
+        modules@perl.org
+Subject: Re: [p5p] Re: (Fwd) NEW MODULE (pragma): import.pm
+References: <EEGGFEMOBNHIAAAA@my-deja.com>
+Date: 18 Oct 1999 08:27:14 +0200
+In-Reply-To: "Michael King"'s message of "Sun, 17 Oct 1999 12:35:12 -0700"
+Message-ID: <sfcd7udnpz1.fsf@hohenstaufen.in-berlin.de>
+Lines: 52
+User-Agent: Gnus/5.070097 (Pterodactyl Gnus v0.97) Emacs/20.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Sun, 17 Oct 1999 12:35:12 -0700, "Michael King" <mike808@my-Deja.com> said:
+
+ > On Sat, 16 Oct 1999 02:36:22   Jan Dubois wrote:
+>> On Fri, 15 Oct 1999 22:53:35 +0000 (GMT), mike808@mo.net wrote:
+>>> Can I have the namespace or not?
+>> The "pragma" namespace (all modules starting with a lowercase letter) is
+>> already "owned" by the perl5-porters, so you cannot have it.
+
+>> Why don't you just start with e.g. the "Import" namespace instead (or
+>> maybe something like "Exporter::Import").  If it proves to be popular it
+>> can still be included in a future version of Perl as a standard pragma.
+
+ > Fine by me.
+
+ > Question for modules@perl.org:
+
+ > Can I have the "Import" namespace for my CPAN module?
+
+I'd prefer a name below Exporter:: or Alias:: and not a root level
+namespace, either Exporter::Import or Exporter::Importer. Or I'd even
+prefer to have it split into two modules with one doing the aliasing,
+maybe Alias::Package and the other one does the globbing in @INC,
+maybe Alias::Package::WholeSale or some such (the latter being meant
+ironic but without a smiley).
+
+If you'd split it into two, I'd expect, people would be less annoyed
+by the invention. I personally regard only the wholesale directory
+importing stuff as misguided, but I'm not going to repeat the
+arguments that have already been said about that.
+
+ > However, I think "Exporter::Import" is a bit weird, not to mention
+ > confusing - does it export or does it import?
+
+This question always arises when somebody exports or when somebody
+imports, so I'd like to keep Exporter as the top level.
+
+ > And it really has
+ > nothing to do with the normally used "Exporter" module, so I don't
+ > see the point of including it with those modules.
+
+We are not talking about including, we are talking about namespace
+sharing which is quite a normal thing in the perl world.
+
+ > Also, the
+ > former-Java programmers most interested in (the newly-renamed)
+ > Import.pm would probably not think to look under the "Exporter"
+ > namespace for an "import" function.
+
+I believe this doesn't count as a strong argument.
+
+-- 
+andreas

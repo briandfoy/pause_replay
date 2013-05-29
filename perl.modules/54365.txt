@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:54365
+Return-Path: <adamk@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 27827 invoked from network); 11 May 2007 01:40:28 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 11 May 2007 01:40:28 -0000
+Received: (qmail 27470 invoked by uid 225); 11 May 2007 01:40:28 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27464 invoked by alias); 11 May 2007 01:40:28 -0000
+X-Spam-Status: No, hits=-0.6 required=8.0
+	tests=BAYES_00,DKIM_POLICY_SIGNSOME,DK_POLICY_SIGNSOME,KARMA_CONNECT_NEGATIVE,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Thu, 10 May 2007 18:40:25 -0700
+Received: (qmail 7736 invoked by uid 515); 10 May 2007 20:13:42 -0000
+Message-ID: <20070510201342.7735.qmail@lists.develooper.com>
+To: modules@perl.org
+Date: Fri, 11 May 2007 06:11:39 +1000
+User-Agent: Thunderbird 1.5.0.10 (Windows/20070221)
+MIME-Version: 1.0
+Subject: Re: Module submission Test::Email
+References: <200705090422.l494M1E4020252@pause.perl.org>
+In-Reply-To: <200705090422.l494M1E4020252@pause.perl.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 124.188.112.122
+Approved: news@nntp.perl.org
+From: adamk@cpan.org (Adam Kennedy)
+
+Perl Authors Upload Server wrote:
+> The following module was proposed for inclusion in the Module List:
+> 
+>   modid:       Test::Email
+>   DSLIP:       adpOp
+>   description: Test Email via POP3
+>   userid:      JAMES (James Tolley)
+>   chapterid:   3 (Development_Support)
+>   communities:
+> 
+>   similar:
+>     Test::Builder
+> 
+>   rationale:
+> 
+>     Hi,
+> 
+>     I was surprised to see that there's nothing yet to help create
+>     automated tests for email delivery and arrival. Test::Mail exists,
+>     but isn't tied into Test::Builder, and so seems less likely to be as
+>     widely useful. Test::Email will use Test::Builder to provide
+>     something like this:
+> 
+>     my $pop = Test::Email->new($host); # ISA Net::POP3
+>     $pop->login($user,$pass);
+> 
+>     # wait until 3 messages arrive... or timeout
+>     ok($pop->wait_for($count,$timeout) == $count,"got 'em"); $pop->ok({
+>     subject => qr/thanks/i, },'got the thanks message'); # auto-deleted
+>     from server $pop->ok({ headers => { 'X-Test-Email', 'application
+>     form', # msg id ok? }, attachment => { name => $name, # right
+>     filename? mime_type => $type, # right MIME type? content =>
+>     $filename, # is this the right file? }, },'got the application
+>     form'); # auto-deleted
+> 
+>     # similar search configurations for headers, body, etc
+> 
+>     # get the email to check it by hand... my $email =
+>     $pop->get_email($same_config_as_above);
+> 
+>     # ISA MIME::Entity ok($email->parts() == 3,'it has three parts');
+> 
+>     ok($pop->delete_all() == 0,'no other messages waiting');
+>     $pop->quit();
+> 
+>     I could also see naming it Test::POP3, but since it's not testing
+>     POP3, I thought it would be clearer as Test::Email.
+
+Test::Email is overly general, Test::POP3 is as you say not quite right...
+
+Test::MailServer?
+
+Adam K

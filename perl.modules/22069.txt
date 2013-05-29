@@ -1,0 +1,74 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:22069
+Return-Path: <pprasadb@planet-save.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 70226 invoked by uid 76); 26 Jun 2003 22:00:56 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Thu, 26 Jun 2003 15:00:56 -0700
+Received: (qmail 14284 invoked by uid 225); 26 Jun 2003 22:00:53 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14279 invoked by uid 507); 26 Jun 2003 22:00:53 -0000
+Received: from sitemail3.everyone.net (HELO omta01.mta.everyone.net) (216.200.145.37) by one.develooper.com (qpsmtpd/0.26) with SMTP; Thu, 26 Jun 2003 15:00:51 -0700
+Received: from sitemail.everyone.net (dsnat [216.200.145.62])	by omta01.mta.everyone.net (Postfix) with ESMTP id 5E23B1C4052	for <modules@perl.org>; Thu, 26 Jun 2003 15:00:46 -0700 (PDT)
+Received: by sitemail.everyone.net (Postfix, from userid 99)	id 22ACB4B8A; Thu, 26 Jun 2003 15:00:46 -0700 (PDT)
+Content-Type: text/plain
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: MIME-tools 5.41 (Entity 5.404)
+Date: Thu, 26 Jun 2003 15:00:45 -0700 (PDT)
+To: modules@perl.org
+Subject: New module X12::Parser
+Reply-To: pprasadb@planet-save.com
+X-Originating-Ip: [199.73.1.1]
+Message-ID: <20030626220046.22ACB4B8A@sitemail.everyone.net>
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.8 required=7.0 tests=CARRIAGE_RETURNS,RCVD_IN_BL_SPAMCOP_NET,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: pprasadb@planet-save.com (Prasad Poruporuthan)
+
+I am in the process of completing the work on a parser for 
+parsing ANSI X12 data/transaction files.
+
+I have named the parser X12::Parser.
+
+Since there are various ANSI X12 data formats, I have comeup with a config file specification. The user defines this file for the X12 format he wants to parse.
+The X12::Cf module reads this config file. The X12::Cf module is used in X12::Parser. (The module X12::Cf is provided with X12::Parser).
+
+Here's the methods that I am providing with this module.
+
+use X12::Parser;
+
+# Create a parser object
+my $p = new X12::Parser;
+
+# Parse a data file based on the configuration file
+$p->parse ( file => '837.txt',	        # <--- file to parse
+            conf => '837_004010X098.cf' # <--- user created config file
+           );
+
+# Step through the file
+while ( my $loop = $p->get_next_loop ) {
+   my @loop = $p->get_loop_segments ($loop);
+}
+
+# or use this method instead
+while ( my ($pos, $loop) = $p->get_next_pos_loop ) {
+   my @loop = $p->get_segments ($pos);
+}
+
+# dump the file to stdout, 
+$p->print_tree
+
+Pls offer your suggestions on using 
+the namespace X12::Parser and X12::Cf.
+
+Thanks,
+Prasad
+
+_____________________________________________________________
+Save rainforest for free with a Planet-Save.com e-mail account:
+http://www.planet-save.com

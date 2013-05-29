@@ -1,0 +1,220 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:15108
+Return-Path: <muir@idiom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24450 invoked by uid 76); 8 Nov 2002 23:03:05 -0000
+Received: from root@idiom.com (HELO idiom.com) (216.240.32.1) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-11-08 23:03:05Z
+Received: from idiom.com (localhost [127.0.0.1])	by idiom.com (8.12.6/8.12.6) with ESMTP id gA8N33dw035528	for <modules@perl.org>; Fri, 8 Nov 2002 15:03:03 -0800 (PST)	(envelope-from muir@idiom.com)
+Received: (from muir@localhost)	by idiom.com (8.12.6/8.12.6/Submit) id gA8N333U035527	for modules@perl.org; Fri, 8 Nov 2002 15:03:03 -0800 (PST)	(envelope-from muir)
+Date: Fri, 8 Nov 2002 15:03:03 -0800 (PST)
+Message-ID: <200211082303.gA8N333U035527@idiom.com>
+To: modules@perl.org
+Subject: Tie::LookupAsFunction
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: muir@idiom.com (David Muir Sharnoff)
+
+
+I would like to allocate a module name: Tie::LookupAsFunction.
+
+Nothing fancy, but I couldn't find anyone else who had released it
+as a module...
+
+Here's the readme and the code.  The module is ready to go as soon
+as the name is approved.
+
+Thanks,
+
+-Dave
+
+NAME
+    Tie::LookupAsFunction - tie functions to the the read side of hashes
+
+SYNOPSIS
+            use Tie::LookupAsFunction;
+            use Tie::LookupAsFunction qw(%thoucomma %nothoucomma %addcents %q_shell %round %sprintf);
+
+            tie %array, 'Tie::LookupAsFunction', \&function;
+
+EXAMPLES
+            use Tie::LookupAsFunction;
+
+            tie %double, 'Tie::LookupAsFunction', 
+                    sub {
+                            my ($key) = @_;
+                            return $key * 2 if $key != 0;
+                            return $key.$key;
+                    };
+
+            print "2 * 2 is $double{2}\n";
+
+            use Tie::LookupAsFunction qw(%thoucomma %addcents);
+
+            tie %mymoney, 'Tie::LookupAsFunction',
+                    sub {
+                            my ($key, $underlying_array) = @_;
+                            return "\$$thoucomma{$addcents{$underlying_array->{$key}}";
+                    };
+
+            $mymoney{joe} = 7000;
+            print "$mymoney{joe}\n" # prints $7,000.00
+
+DESCRIPTION
+    Tie::LookupAsFunction provides a simple method to tie a function to a
+    hash.
+
+    The function is passed two arguments: the key used to access the array
+    and a reference to a hash that is used for all non-read accesses to the
+    array.
+
+PREDEFINED BINDINGS
+    The following hashes are bound and can be imported from
+    Tie::LookupAsFunction.
+
+    %thoucomma
+        Adds commas to numbers. "7000.32" becomes "7,000.32"
+
+    %nothoucomma
+        Removes commas from numbers. "7,000.32" becomes "7000.32"
+
+    %addcents
+        Make sure that numbers end two places to the right of the decimal.
+        "7000" becomes "7000.00" and "7000.149" becomes "7000.15".
+
+    %q_shell
+        Quotes filenames quoted for use on a command line with the bourne
+        shell. This will sometimes put 'single quotes' around the filename
+        and other times it will leave it bare.
+
+    %round
+        This will round a number to the nearest integer. If you want a
+        different rounding-point, use a pseudo-two dimensional lookup to
+        provide a scale. Use "0.01" to round to the nearest penny and "1000"
+        to round to the nearest thousand. For example: $round{38.7, 10} will
+        round up to 40.
+
+    %sprintf
+        Use a comma to do a psudo-multi-dimensial lookup to specifiy both a
+        format and arguments. Obviouly, none of the arguments can have the
+        ascii character that is equal to the perl $; variable. Example:
+        $sprintf{"%07d", 82} will interpolate to "0000082".
+
+LICENSE
+    Copyright (C) 2002 David Muir Sharnoff. This module may be used, copied,
+    modified and redistributed under the same terms as perl. Please send
+    usefule changes to muir@idiom.com.
+
+
+package Tie::LookupAsFunction;
+
+@ISA = qw(Tie::StdHash Exporter);
+@EXPORT_OK = qw(%thoucomma %nothoucomma %addcents %q_shell %round %sprintf);
+
+require Tie::Hash;
+require Exporter;
+use Carp;
+
+$VERSION = 1.0;
+
+use strict;
+
+our %thoucomma;
+our %nothoucomma;
+our %addcents;
+our %q_shell;
+our %round;
+our %sprintf;
+
+tie %q_shell, 'Tie::LookupAsFunction',
+	sub {
+		my ($file) = @_;
+		return $file if $file =~ /^[-_\.+=:\/0-9a-zA-Z]+$/;
+		$file =~ s/'/'\\''/g;
+		return "'$file'";
+	};
+
+
+tie %sprintf, 'Tie::LookupAsFunction',
+	sub {
+		my ($format, @args) = split($; , $_[0]);
+		return sprintf($format, @args);
+	};
+
+tie %round, 'Tie::LookupAsFunction',
+	sub {
+		my ($amount, $scale) = split($; , $_[0]);
+		require POSIX;
+		$scale = 1 unless $scale;
+		# scale = .01 for cents
+		# scale = 1000 for thousands
+		$amount /= $scale;
+		$amount += .5;
+		$amount = POSIX::floor($amount);
+		$amount *= $scale;
+		return $amount;
+	};
+
+my %decomma;
+tie %decomma, 'Tie::LookupAsFunction',
+	sub {
+		my ($f) = @_;
+		$f =~ s/,//g;
+		return $f;
+	};
+
+tie %nothoucomma, 'Tie::LookupAsFunction',
+	sub {
+		my ($number) = @_;
+		$number =~ s/(\A|\D)(\d\d?\d?)(,\d\d\d)+(\D|\z)/$1$2$decomma{$3}$4/g;
+		return $number;
+	};
+
+tie %thoucomma, 'Tie::LookupAsFunction', 
+	sub {
+		my ($number) = @_;
+		1 while ($number =~ s/(?<![\d.])(\d+)(\d\d\d)(?!\d)/$1,$2/g);
+		return $number;
+	};
+
+tie %addcents, 'Tie::LookupAsFunction',
+	sub {
+		my ($money) = @_;
+		1 while ($money =~ s/(?<![\d.])(\d+)([^\d,.]|\z|,(?!\d))/$1.00$2/);
+		1 while ($money =~ s/(?<![\d.])(\d+\.)([^\d,]|\z|,(?!\d))/${1}00$2/);
+		1 while ($money =~ s/(?<![\d.])(\d+\.\d)([^\d,]|\z|,(?!\d))/${1}0$2/);
+		$money =~ s/(\d+\.\d\d\d+)([^\d,]|\z|,(?!\d))/$sprintf{'%.2f', $1}$2/g;
+		$money =~ s/(\d[\d,]+\.\d\d\d+)([^\d,]|\z|,(?!\d))/$thoucomma{$sprintf{'%.2f', $nothoucomma{$1}}}$2/g;
+		return $money;
+	};
+
+# -------------------------------
+
+sub TIEHASH
+{
+	my ($pkg, $func, @args) = @_;
+	return bless [
+		$func, 
+		[@args],
+		{},
+	];
+}
+
+sub FETCH
+{
+	my ($self, $lookup) = @_;
+	return &{$self->[0]}($lookup, $self->[2], @{$self->[1]});
+}
+
+sub STORE    { $_[0]->[2]{$_[1]} = $_[2] }
+sub FIRSTKEY { my $a = scalar keys %{$_[0]->[2]}; each %{$_[0]->[2]} }
+sub NEXTKEY  { each %{$_[0]->[2]} }
+sub EXISTS   { exists $_[0]->[2]{$_[1]} }
+sub DELETE   { delete $_[0]->[2]{$_[1]} }
+sub CLEAR    { %{$_[0]->[2]} = () }
+
+
+
+1;
+

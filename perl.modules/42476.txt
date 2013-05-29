@@ -1,0 +1,1002 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:42476
+Return-Path: <Christian.Malter@end2endmobile.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4005 invoked from network); 10 Aug 2005 13:17:30 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 10 Aug 2005 13:17:30 -0000
+Received: (qmail 12148 invoked by uid 225); 10 Aug 2005 13:17:29 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12125 invoked by alias); 10 Aug 2005 13:17:28 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,HTML_MESSAGE
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from bambi.end2endwirefree.com (HELO vwsrv01.end2endwirefree.com) (193.108.190.10)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 10 Aug 2005 06:17:19 -0700
+Received: from aaliitnt02.pre-tel.dk ([10.2.30.17]) by vwsrv01.end2endwirefree.com with InterScan Messaging Security Suite; Wed, 10 Aug 2005 15:13:13 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C59DAC.C1C000EE"
+Subject: General questions concerning module upload, namespace conflicts ...
+Date: Wed, 10 Aug 2005 15:09:36 +0200
+Message-ID: <9738AE057585E44695C4C9F2CB55843E3D11A6@aaliitnt02.pre-tel.dk>
+Thread-Topic: General questions concerning module upload, namespace conflicts ...
+Thread-Index: AcWdrM3tTiDDU5JsRRK3BTUSrIY2Rg==
+To: <modules@perl.org>
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: Christian.Malter@end2endmobile.com ("Christian Malter")
+
+------_=_NextPart_001_01C59DAC.C1C000EE
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Hello guys here comes 'the brief story' ...
+
+After having read the information on
+http://www.cpan.org/modules/00modlist.long.htm I decided to ask you
+before
+actually making a contribution (and accidentally causing problems).
+
+My employer End2End Germany is a division of End2End, Europe's leading
+B2B managed service
+solution provider for mobile data services and content.
+
+Currently we are developing a new service called MRS which stands for
+'MSISDN Resolver Service'.
+With the help of the 'MRS' service mobile application developers are
+able to obtain detailed information
+about a given MSISDN - a mobile phone number.
+
+This returned information includes the MCC (mobile country code), the
+MNC (mobile netework code) and detailed information
+concerning the mobile's current status, location and more ...
+
+To provide a Perl interface in order to use this service we developed a
+Perl module 'MRS.pm' that we are now planning to
+publish/contribute to the Perl community. ...
+
+
+Well, here are my questions:
+
+Is the namespace OK? (We are planning on making further releases for our
+promessaging platform that's why the
+Module's namespace should look like promessaging::next_Release. Or here
+promessaging::MRS )
+
+Is the information provided in the README file & POD sufficient?
+
+If I upload the module can I upload 'promessaging-MRS-1.01.tar.gz' and
+the README file is still usable for providing information?
+
+Are there any other hints you can provide?
+
+
+Thanks for your help any advice is highly appreciated since I'm pretty
+new to CPAN and have never published a module before.
+
+Best regards,
+
+Christain Malter
+
+
+
+
+(Below is the module's README file.)
+
+
+
+promessaging-MRS version 1.01
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+
+GENERAL INFORMATION
+
+MRS.pm provides the capibility to resolve the MCC (Mobile Country Code)
+and MNC (Mobile Network Code)
+for a given MSISDN (Mobile Station International ISDN Number, see E.164)
+of a mobile subscriber. Based upon
+information the service also delivers detailed data about the name of
+the home operator, country, timezone
+and other data.
+
+Also additional information about the on/offline status of the mobile
+subscriber and its current location
+(on country basis) can be retrieved depending on the provisioned service
+profile.
+
+TECHNICAL REALISATION
+
+The service (MSISDN Resolver Service) is built as a client/server
+achitecture based on the Simple Object Access
+Protocol (SOAP), the client exchanges with the server XML-encapsulated
+data transfered via HTTP.
+
+The MRS client submits a request to the server and in return receives
+the needed information or a exception if a failure
+or error occurs.
+
+The MRS server will process the query and try to lookup the subscriber
+via its direct SS7 access to MNOs
+(Mobile Network Operator) worldwide. If the subscriber does exist the
+MRS server will send the data back to the
+client or an exception if the subscriber is unknown or not reachable for
+other reasons.
+
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+SOAP::Lite & XML::Simple
+
+COPYRIGHT AND LICENCE
+
+Ask hotline@end2endmobile.com about license details.
+
+The MRS.pm module is property of End2End Denmark (E2E). Copyright
+End2End Denmark.
+All rights reserved.
+
+
+
+
+
+
+(Below is the module's embeddded POD.)
+
+
+
+
+
+
+NAME
+       promessaging::MRS - promessaging MRS SOAP client module
+
+SYNOPSIS
+         use promessaging::MRS;
+
+         $mrs_object =3D promessaging::MRS->new();
+         $result =3D $mrs_object->MSISDNResolve($userid,
+                                              $password,
+                                              $serviceprofile,
+                                              $msisdn);
+
+         $servererror =3D $mrs_object->getError();
+
+MRS class methods
+       The following methods are provided by the promessag-
+       ing::MRS class:
+
+       "new"
+           $mrs_object =3D promessaging::MRS->new();
+
+           Creates and returns a new MRS-object. Returns 0 if an
+           error occured.
+
+       "MSISDNResolve"
+             $result =3D $mrs_object->MSISDNResolve($userid,
+                                                  $password,
+                                                  $serviceprofile,
+                                                  $msisdn);
+
+             $result =3D $mrs_object->MSISDNResolve($userid,
+                                                  $password,
+                                                  $serviceprofile,
+                                                  $msisdn,
+                                                  $retries,
+                                                  $interval_timeout,
+                                                  $interval_na);
+
+           Performs a SOAP-request.
+
+           Parameter description:
+            - $userid: promessaging user-id (required)
+            - $password: promessaging password (required)
+            - $serviceprofile: promessaging service-profile
+           (required)
+            - $msisdn: GSM number (required)
+           - $retries: number of retries if request fails
+           (optional, default
+              is zero)
+            - $interval_timeout: seconds between retries if the
+           error
+              is a timeout on server-side (optional, default is
+           zero)
+            - $interval_na: seconds between retries if the ser-
+           vice is not
+              available (optional, default is 300)
+
+           MSISDNResolve returns:
+            - a hash if the SOAP-request was successful:
+              $return->{"response"} if subscriber is available or
+              $return->{"faultcode"} and $return->{"faultstring"}
+           if the
+              server returned a fault
+            - a number less than zero if a transport/server-error
+           occured.
+
+       "getError"
+           $errstr =3D $mrs_object->getError();
+
+           Returns a string which describes the trans-
+           port/server-error.
+
+       "get_xml_request"
+           $xml =3D $mrs_object->get_xml_request();
+
+           Returns the XML which was sent to the SOAP-server.
+
+       "get_xml_response"
+           $xml =3D $mrs_object->get_xml_response();
+
+           Returns the XML which was received by the SOAP-server.
+
+DESCRIPTION
+       MRS.pm provides the capibility to resolve the MCC (Mobile
+       Country Code) and MNC (Mobile Network Code) for a given
+       MSISDN (Mobile Station International ISDN Number, see
+       E.164) of a mobile subscriber. Based upon information the
+       service also delivers detailed data about the name of the
+       home operator, country, timezone and other data.
+
+       Also additional information about the on/offline status of
+       the mobile subscriber and its current location (on country
+       basis) can be retrieved depending on the provisioned ser-
+       vice profile.
+
+TECHNICAL REALISATION
+       The service (MSISDN Resolver Service) is built as a
+      client/server achitecture based on the Simple Object
+       Access Protocol (SOAP), the client exchanges with the
+       server XML-encapsulated data transfered via HTTP.
+
+       The MRS client submits a request to the server and in
+       return receives the needed information or a exception if a
+       failure or error occurs.
+
+       The MRS server will process the query and try to lookup
+       the subscriber via its direct SS7 access to MNOs (Mobile
+       Network Operator) worldwide. If the subscriber does exist
+       the MRS server will send the data back to the client or an
+       exception if the subscriber is unknown or not reachable
+       for other reasons.
+
+ERROR CODES aka SOAP EXCEPTIONS
+           ERROR CODE (integer) | Description (returned string) |
+                Long description
+
+           21 | Missing parameter ID |
+               Missing promessaging userid
+
+           22 | Missing parameter PW |
+               Missing promessaging password
+
+(... cut for brevity ...)
+
+           99 | Service not available |
+               The MRS service is not available at the moment
+
+COPYRIGHT
+       The MRS.pm module is property of End2End Denmark (E2E).
+       Copyright End2End Denmark.  All rights reserved.
+
+AUTHOR
+       Support & Information
+
+       hotline@end2endmobile.com for general/technical enquiries
+       or search http://www.end2endmobile.com
+
+       MRS.pm    by Peter Friedrich
+
+       POD  by Christian Malter
+
+
+
+perl v5.8.3         i586-linux-thread-multi::promessaging::MRS(3)
+
+------_=_NextPart_001_01C59DAC.C1C000EE
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version =
+6.5.7226.0">
+<TITLE>General questions concerning module upload, namespace conflicts =
+...</TITLE>
+</HEAD>
+<BODY>
+<!-- Converted from text/rtf format -->
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Hello guys here comes 'the brief story' =
+...</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">After having read the information on =
+</FONT><A =
+HREF=3D"http://www.cpan.org/modules/00modlist.long.htm"><U><FONT =
+COLOR=3D"#0000FF" SIZE=3D2 =
+FACE=3D"Arial">http://www.cpan.org/modules/00modlist.long.htm</FONT></U><=
+/A><FONT SIZE=3D2 FACE=3D"Arial"> I decided to ask you before</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">actually making a contribution (and =
+accidentally causing problems).</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">My employer End2End Germany is a =
+division of End2End, Europe&#8217;s leading B2B managed service</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">solution provider for mobile data =
+services and content.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Currently we are developing a new =
+service called MRS which stands for 'MSISDN Resolver Service'.</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">With the help of the 'MRS' service =
+mobile application developers are able to obtain detailed =
+information</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">about a given MSISDN - a mobile phone =
+number.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">This returned information includes the =
+MCC (mobile country code), the MNC (mobile netework code) and detailed =
+information</FONT></P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">concerning the mobile's current status, =
+location and more ...</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">To provide a Perl interface in order to =
+use this service we developed a Perl module 'MRS.pm' that we are now =
+planning to</FONT></P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">publish/contribute to the Perl =
+community. ...</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Well, here are my questions:</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Is the namespace OK? (We are planning =
+on making further releases for our promessaging platform that's why =
+the</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">Module's namespace should look like =
+promessaging::next_Release. Or here promessaging::MRS )</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Is the information provided in the =
+README file &amp; POD sufficient?</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">If I upload the module can I upload =
+'promessaging-MRS-1.01.tar.gz' and the README file is still usable for =
+providing information?</FONT></P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Are there any other hints you can =
+provide?</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Thanks for your help any advice is =
+highly appreciated since I'm pretty new to CPAN and have never published =
+a module before.</FONT></P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Best regards,</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Christain Malter</FONT>
+</P>
+<BR>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">(Below is the module's README =
+file.)</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">promessaging-MRS version 1.01</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">GENERAL INFORMATION</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">MRS.pm provides the capibility to =
+resolve the MCC (Mobile Country Code) and MNC (Mobile Network =
+Code)</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">for a given MSISDN (Mobile Station =
+International ISDN Number, see E.164) of a mobile subscriber. Based =
+upon</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">information the service also delivers =
+detailed data about the name of the home operator, country, =
+timezone</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">and other data.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Also additional information about the =
+on/offline status of the mobile subscriber and its current =
+location</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">(on country basis) can be retrieved =
+depending on the provisioned service profile.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">TECHNICAL REALISATION</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">The service (MSISDN Resolver Service) =
+is built as a client/server achitecture based on the Simple Object =
+Access</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">Protocol (SOAP), the client exchanges =
+with the server XML-encapsulated data transfered via HTTP.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">The MRS client submits a request to the =
+server and in return receives the needed information or a exception if a =
+failure</FONT></P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">or error occurs.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">The MRS server will process the query =
+and try to lookup the subscriber via its direct SS7 access to =
+MNOs</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">(Mobile Network Operator) worldwide. =
+If the subscriber does exist the MRS server will send the data back to =
+the</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">client or an exception if the =
+subscriber is unknown or not reachable for other reasons.</FONT>
+</P>
+<BR>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">INSTALLATION</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">To install this module type the =
+following:</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp; perl Makefile.PL</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp; make</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp; make test</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp; make install</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">DEPENDENCIES</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">This module requires these other =
+modules and libraries:</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">SOAP::Lite &amp; XML::Simple</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">COPYRIGHT AND LICENCE</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">Ask hotline@end2endmobile.com about =
+license details.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">The MRS.pm module is property of =
+End2End Denmark (E2E). Copyright End2End Denmark.</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">All rights reserved.</FONT>
+</P>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">(Below is the module's embeddded =
+POD.)</FONT>
+</P>
+<BR>
+<BR>
+<BR>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">NAME</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+promessaging::MRS - promessaging MRS SOAP client module</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">SYNOPSIS</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use =
+promessaging::MRS;</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+$mrs_object =3D promessaging::MRS-&gt;new();</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $result =
+=3D $mrs_object-&gt;MSISDNResolve($userid,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+$password,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+$serviceprofile,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+$msisdn);</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+$servererror =3D $mrs_object-&gt;getError();</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">MRS class methods</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+The following methods are provided by the promessag-</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+ing::MRS class:</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&quot;new&quot;</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; $mrs_object =3D promessaging::MRS-&gt;new();</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; Creates and returns a new MRS-object. Returns 0 if an</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; error occured.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&quot;MSISDNResolve&quot;</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp; $result =3D $mrs_object-&gt;MSISDNResolve($userid,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; $password,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; $serviceprofile,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; $msisdn);</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp; $result =3D $mrs_object-&gt;MSISDNResolve($userid,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; $password,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; $serviceprofile,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; $msisdn,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; $retries,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; $interval_timeout,</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; $interval_na);</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; Performs a SOAP-request.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; Parameter description:</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp; - $userid: promessaging user-id (required)</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp; - $password: promessaging password (required)</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp; - $serviceprofile: promessaging service-profile</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; (required)</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp; - $msisdn: GSM number (required)</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; - $retries: number of retries if request fails</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; (optional, default</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; is zero)</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp; - $interval_timeout: seconds between retries if the</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; error</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; is a timeout on server-side (optional, default =
+is</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; zero)</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp; - $interval_na: seconds between retries if the ser-</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; vice is not</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; available (optional, default is 300)</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; MSISDNResolve returns:</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp; - a hash if the SOAP-request was successful:</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; $return-&gt;{&quot;response&quot;} if subscriber is =
+available or</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; $return-&gt;{&quot;faultcode&quot;} and =
+$return-&gt;{&quot;faultstring&quot;}</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; if the</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp; server returned a fault</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp; - a number less than zero if a transport/server-error</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; occured.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&quot;getError&quot;</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; $errstr =3D $mrs_object-&gt;getError();</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; Returns a string which describes the trans-</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; port/server-error.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&quot;get_xml_request&quot;</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; $xml =3D $mrs_object-&gt;get_xml_request();</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; Returns the XML which was sent to the SOAP-server.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&quot;get_xml_response&quot;</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; $xml =3D $mrs_object-&gt;get_xml_response();</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; Returns the XML which was received by the SOAP-server.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">DESCRIPTION</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+MRS.pm provides the capibility to resolve the MCC (Mobile</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+Country Code) and MNC (Mobile Network Code) for a given</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+MSISDN (Mobile Station International ISDN Number, see</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+E.164) of a mobile subscriber. Based upon information the</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+service also delivers detailed data about the name of the</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+home operator, country, timezone and other data.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+Also additional information about the on/offline status of</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+the mobile subscriber and its current location (on country</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+basis) can be retrieved depending on the provisioned ser-</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+vice profile.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">TECHNICAL REALISATION</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+The service (MSISDN Resolver Service) is built as a</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+client/server achitecture based on the Simple Object</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+Access Protocol (SOAP), the client exchanges with the</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+server XML-encapsulated data transfered via HTTP.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+The MRS client submits a request to the server and in</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+return receives the needed information or a exception if a</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+failure or error occurs.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+The MRS server will process the query and try to lookup</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+the subscriber via its direct SS7 access to MNOs (Mobile</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+Network Operator) worldwide. If the subscriber does exist</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+the MRS server will send the data back to the client or an</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+exception if the subscriber is unknown or not reachable</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+for other reasons.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">ERROR CODES aka SOAP EXCEPTIONS</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; ERROR CODE (integer) | Description (returned string) |</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Long description</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; 21 | Missing parameter ID |</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; Missing promessaging userid</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; 22 | Missing parameter PW |</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; Missing promessaging password</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">(&#8230; cut for brevity =
+&#8230;)</FONT>
+</P>
+
+<P><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p; 99 | Service not available |</FONT>
+
+<BR><FONT SIZE=3D2 =
+FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; The MRS service is not available at the =
+moment</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">COPYRIGHT</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+The MRS.pm module is property of End2End Denmark (E2E).</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+Copyright End2End Denmark.&nbsp; All rights reserved.</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">AUTHOR</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+Support &amp; Information</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+hotline@end2endmobile.com for general/technical enquiries</FONT>
+
+<BR><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+or search </FONT><A HREF=3D"http://www.end2endmobile.com"><U><FONT =
+COLOR=3D"#0000FF" SIZE=3D2 =
+FACE=3D"Arial">http://www.end2endmobile.com</FONT></U></A>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+MRS.pm&nbsp;&nbsp;&nbsp; by Peter Friedrich</FONT>
+</P>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+POD&nbsp; by Christian Malter</FONT>
+</P>
+<BR>
+<BR>
+
+<P><FONT SIZE=3D2 FACE=3D"Arial">perl =
+v5.8.3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+i586-linux-thread-multi::promessaging::MRS(3)</FONT>
+</P>
+
+</BODY>
+</HTML>
+------_=_NextPart_001_01C59DAC.C1C000EE--

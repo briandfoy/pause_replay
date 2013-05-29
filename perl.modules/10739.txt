@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10739
+Return-Path: <matthewg@zevils.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 8662 invoked by uid 76); 21 Mar 2002 06:25:15 -0000
+Received: from ool-18b8de79.dyn.optonline.net (HELO zevils.com) (24.184.222.121)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Thu Mar 21 06:25:15 2002 -0000
+Received: from allevil.dhcp.zevils.com ([192.168.7.3] ident=mail)
+	by zevils.com with esmtp (Exim 3.35 #1 (Debian))
+	id 16nw0c-00010s-00
+	for <modules@perl.org>; Thu, 21 Mar 2002 01:25:10 -0500
+Received: from matthewg by allevil.dhcp.zevils.com with local (Exim 3.35 #1 (Debian))
+	id 16nw0c-0001pC-00
+	for <modules@perl.org>; Thu, 21 Mar 2002 01:25:10 -0500
+Date: Thu, 21 Mar 2002 01:25:10 -0500
+To: modules@perl.org
+Subject: Module Idea - CPAN::Auto
+Message-ID: <20020321062510.GA6552@allevil.dhcp.zevils.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.27i
+Sender: Matthew Sachs <matthewg@allevil.dhcp.zevils.com>
+Approved: news@nntp.perl.org
+From: matthewg@zevils.com (Matthew Sachs)
+
+(CC replies, I'm not subscribed to this list.)
+
+I was thinking of how to solve the problem of installing modules
+from CPAN for non-technical users, especially ones that don't have
+root access.  I had the following design requirements:
+	-Must work with at least perl 5.6 and 5.5, preferrably 5.4
+	   too
+	-Must be as simple as possible - perl -MCPAN -e shell, even
+	   for people with root, asks too many questions
+
+I wrote a script for one of my projects, getmodules, that does much
+of this:
+	http://www.zevils.com/cgi-bin/viewcvs.cgi/*checkout*/imirc/getmodules
+(The main modification I'd like to make to it is to have it fill
+in defaults for CPAN config for everything except mirror selection;
+and for mirror selection, pick a random mirror in the user's
+country.)
+
+The way it would work would be that you distribute a program
+and have it "use CPAN::Auto" as the first use statement.
+You include CPAN/Auto.pm with your program, and maybe
+do some BEGIN jujitsu to make sure that dirname($0) is in @INC.
+Then it detects when you try to use a module that isn't present.
+(Would overriding "use" via sub work for that?)  Probably
+also have some way to specify that certain modules are optional
+and shouldn't be auto-installed if they're not present...
+
+Anyway, when it sees that you're trying to use something that
+isn't there, it'll go and install it from CPAN, and then
+load it.
+
+You would also be able to, say, put -MCPAN::Auto in PERL5OPT
+to do this magic for all scripts.
+
+Any thoughts on this?
+
+-- 
+Matthew Sachs   <matthewg@zevils.com>  <matthewg@wombatbanana.com>
+http://www.zevils.com/ * GPG key: 0x600A0342 * PGP key: 0x93EA1151
+#The original nonstandard deviant# (((T^E)%(PQ))^D)%(PQ) = RSA-NOP

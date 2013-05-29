@@ -1,0 +1,107 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:36421
+Return-Path: <simonm@cavalletto.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11748 invoked from network); 16 Nov 2004 18:07:47 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 16 Nov 2004 18:07:47 -0000
+Received: (qmail 22368 invoked by uid 225); 16 Nov 2004 18:07:47 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22359 invoked by alias); 16 Nov 2004 18:07:46 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail3.panix.com (HELO mail3.panix.com) (166.84.1.74)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Tue, 16 Nov 2004 10:07:38 -0800
+Received: from mailspool3.panix.com (mailspool3.panix.com [166.84.1.78])
+	by mail3.panix.com (Postfix) with ESMTP id E38E79823F
+	for <modules@perl.org>; Tue, 16 Nov 2004 13:07:25 -0500 (EST)
+Received: from cavalletto.org (unknown [207.18.115.52])
+	by mailspool3.panix.com (Postfix) with ESMTP id 01EF822722C
+	for <modules@perl.org>; Tue, 16 Nov 2004 13:07:24 -0500 (EST)
+Date: Tue, 16 Nov 2004 13:07:47 -0500
+Mime-Version: 1.0 (Apple Message framework v553)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Subject: RFC: Class::MixinFactory
+To: modules@perl.org
+Content-Transfer-Encoding: 7bit
+Message-ID: <6B966700-37FA-11D9-B48A-003065AFEA5E@cavalletto.org>
+X-Mailer: Apple Mail (2.553)
+Approved: news@nntp.perl.org
+From: simonm@cavalletto.org (Matthew Simon Cavalletto)
+
+Hello,
+
+I've developed a new module and am seeking feedback on the name and 
+interface before uploading it to CPAN.
+
+   Source:     http://www.evoscript.org/Class-MixinFactory/
+   HTML Doc:   http://www.evoscript.org/Class-MixinFactory/htmldoc/
+   Perl Monks: http://perlmonks.org/index.pl?node_id=408039
+
+The new module provides a class factory that creates new packages that 
+inherit from multiple classes, and includes a method to allow mixin 
+methods to redispatch to the base class functionality.
+
+I've tentatively named it "Class::MixinFactory" in hopes of capturing 
+the salient details -- it generates new classes by assembling mixins -- 
+but would welcome alternate suggestions.
+
+A simple use might look the following:
+
+   package MyClass;
+   use Class::MixinFactory -hasafactory;
+   sub new { ... }
+   sub foo { return "Foo Bar" }
+
+   package MyClass::Logging;
+   sub foo { warn "Calling foo"; (shift)->NEXT('foo', @_) }
+
+   package MyClass::UpperCase;
+   sub foo { uc( (shift)->NEXT('foo', @_) ) }
+
+   package main;
+
+   # Generates MyClass::AUTO::Logging_UpperCase with multiple inheritance
+   my $class = MyClass->class( 'Logging', 'UpperCase' );
+
+   # Creates a new instance of our mixed class
+   my $object = $class->new();
+
+   # Calls MyClass::Logging::foo, MyClass::UpperCase::foo, MyClass::foo
+   print $object->foo();
+
+There are a number of related modules on CPAN, but none with quite the 
+same set of functionality:
+- I've looked at mixin, Class::Mixin, and Spiffy, but they don't seem 
+to have a configurable factory object or support run-time mixin 
+selection.
+- The Class::Mix and Class::Mutator modules do provide run-time class 
+generation with multiple inheritance, but don't provide a configurable 
+factory object or a redispatch technique.
+- The Class::Factory module has a factory interface but doesn't support 
+multiple inheritance.
+- The NEXT module provides a backtracking equivalent to SUPER similar 
+to the NEXT method included here, but I decided to avoid using AUTOLOAD 
+in that way.
+- There are also a number of packages which are addressing a similar 
+area of concern, but don't use mixins, including: Class::Role, 
+Class::Roles, Class::Trait, and Aspect.
+
+Taking the closest choices from above, I guess you could view this 
+package as a combination of Class::Factory, Class::Mix, and NEXT, all 
+designed to work together.
+
+Feedback would be welcome; some of the questions I'm considering are:
+- Does the package name seem appropriate?
+- Does the public interface seem reasonable?
+- Are there other modules out there that do this same thing?
+- Does the documentation manage to explain why someone might want to do 
+such a thing?
+
+Thanks in advance for any feedback you may have,
+
+-Simon
+

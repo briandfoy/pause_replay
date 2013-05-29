@@ -1,0 +1,188 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:211
+Return-Path: <marcus@harnisch.isdn.cs.tu-berlin.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17580 invoked from network); 24 Oct 1999 15:55:42 -0000
+Received: from mail.cs.tu-berlin.de (root@130.149.17.13)
+  by tmtowtdi.perl.org with SMTP; 24 Oct 1999 15:55:42 -0000
+Received: from harnisch.isdn.cs.tu-berlin.de (harnisch.isdn.cs.tu-berlin.de [130.149.148.126])
+	by mail.cs.tu-berlin.de (8.9.1/8.9.1) with SMTP id RAA02461
+	for <modules@perl.org>; Sun, 24 Oct 1999 17:50:51 +0200 (MET DST)
+Received: (qmail 9119 invoked from network); 24 Oct 1999 15:50:34 -0000
+Received: from unknown (192.168.111.2)
+  by 192.168.111.1 with QMQP; 24 Oct 1999 15:50:34 -0000
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="V0msw7hBK+"
+Content-Transfer-Encoding: 7bit
+Message-ID: <14355.11184.173175.813573@harnisch.isdn.cs.tu-berlin.de>
+Date: Sun, 24 Oct 1999 17:54:24 +0200 (CEST)
+To: modules@perl.org
+Subject: Again: new syslog module
+X-Mailer: VM 6.72 under 21.1 (patch 7) "Biscayne" XEmacs Lucid
+X-Face: 9LaBG,eEW^IB);=a+ebK4!}.:,ah"Uj-<y\;(Yf8~Vp'sXocHMA?%H2~"Tz(@^WorQa_ZU^
+ qv39dn7?U6/!;Qe`+I)l}&5Ll8:*$3`M)m7/+Z%5\Hw=*(+bub|J2}JV*y7Qr_N~@&M4Hv_%uJ.fLJ
+ h'HmEO5)L>_AmwCi<f1UNJR|V:+~edphM@'ch#jpf`5R}&5@Zwj9)A8=CB_%^*tjU`*~Le$W}ykO7l
+ g1NYfUo"7K?e`&l
+Approved: news@nntp.perl.org
+From: marcus@harnisch.isdn.cs.tu-berlin.de (Marcus Harnisch)
+
+--V0msw7hBK+
+Content-Type: text/plain; charset=us-ascii
+Content-Description: message body and .signature
+Content-Transfer-Encoding: 7bit
+
+Hi Experts,
+
+browsing through the modules mailing list archive I found a message of
+mine unanswered (I was not even flamed ;-)
+
+I repost it with the same question:
+
+> It seems that I finished documentaion of my Perl module *::Syslog which is
+> a libc-based syslog interface rather than the network-based of
+> Sys::Syslog. IMHO the module should be named Unix::Syslog as it requires
+> the syslog functions in a C-library.
+> 
+> Are there any suggestions for submitting the module or the
+> namespace?
+
+There are indeed some people that are interested in that module based
+on XSUBs. One of which is the current maintainer of the Linux sysklogd
+package.
+
+To make things I attached the README file (I used `Unix::Syslog' as a
+placeholder for whatever you suggest).
+
+Thanks for help,
+       Marcus
+-- 
+	  Some operating systems are called `user friendly',
+		  UNIX however is `expert friendly'.
+
+    Marcus Harnisch <mailto:marcus@harnisch.isdn.cs.tu-berlin.de>
+
+
+--V0msw7hBK+
+Content-Type: text/plain
+Content-Description: README for Unix::Syslog
+Content-Disposition: inline;
+	filename="README"
+Content-Transfer-Encoding: 7bit
+
+       Unix::Syslog -- Perl interface to the UNIX system logger
+       ========================================================
+
+Copyright (C) 1999 Marcus Harnisch <marcus@harnisch.isdn.cs.tu-berlin.de>
+
+Introduction
+============
+
+This Module provides access to the system logger available on most
+UNIX system via Perl's XSUBs (Perl's C interface).
+
+I wrote this module because of some features I missed in Sys:Syslog
+(see FAQ below) and also to do my first steps into the secrets of
+Perl's XSUBs.
+
+Copyright and distribution
+==========================
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the Artistic License. A copy of the license (see
+file Artistic in this directory) must be included in the package.
+
+Installation
+============
+
+Unix::Syslog is a Perl module that makes use of XSUBs and hence
+requires a working C compiler and library. Execute the following
+commands to install this package (`make test' prints the results of a
+test suite. Execute `make install' only if the required tests finished
+successfully or if you know what you are doing):
+
+perl Makefile.PL
+make test
+make install
+
+Note: Some tests may fail because the respective constants are not
+available on certain systems. You should be able to distinguish these
+tests from those that fail because of a malfunction by carefully
+reading the output of the test routines.
+
+OS dependent behaviour and portability
+======================================
+
+This package uses system specific functions. Programs that uses this
+package may not be portable in any case. If you plan to write portable
+code using this package, please consult the manuals of the systems you
+wish to run the software on. Then modify your program accordingly.
+
+Known bugs
+==========
+
+OS	Description				Workaround
+---------------------------------------------------------------------------
+Linux	On systems using glibc2, setting the    None possible.
+	log mask does not change the behaviour
+	of syslog() as expected until recent
+	versions of glibc (> version 2.1)
+
+
+Frequently Asked Questions
+==========================
+
+1. What is the benefit I get from using this module instead of
+   Sys::Syslog?
+
+   Sys::Syslog always opens a network connection to the syslog
+   service. At least on Linux systems this leads into some trouble,
+   because
+
+   - Linux syslogd (from package sysklogd) does not listen to the
+     network by default. Most people working on stand-alone machines
+     (including me) don't see any reason to enable this option just to
+     make a single application work. Others don't enable it for
+     security reasons.
+
+   - By default Linux syslogd doesn't forward messages to other log
+     hosts which have already been received from the network. There
+     are reasons not to enable this option unless it is really 
+     neccessary. Looping messages resulting from a faulty
+     configuration may break down your (log-)system.
+
+   - The interface resembles that of the syslog(3) routines.
+
+2. Is there any reason to use Sys:Syslog any longer?
+
+   Yes! In contrary to Unix::Syslog, Sys::Syslog works even if you are
+   not running a syslog daemon on your system as long as you are
+   connected to a log host via a network and have access to the
+   syslog.h header file of your log host to generate the header files
+   for Sys::Syslog (see Sys::Syslog(3) for details). Unix::Syslog only
+   logs to your local syslog daemon which in turn may be configured to
+   distribute the message over the network.
+
+3. Are calls to the functions provided by Unix::Syslog compatible to
+   those of Sys::Syslog?
+
+   Currently not. Sys::Syslog requires strings to specify many of the
+   arguments to the functions, while Unix::Syslog uses numeric constants
+   accessed via macros as defined in syslog.h. Although the strings
+   used by Sys::Syslog are also defined in syslog.h, it seems that most
+   people got used to the numeric arguments. I will implement
+   the string based calls if there are enough people ($min_people >
+   10**40) complaining about the lack of compatibility. However,
+   patches are welcome.
+
+Comments, Bug reports and Suggestions
+=====================================
+
+Please direct anything you wish to tell me about this package to the
+address given below.
+
+Have fun,
+     Marcus Harnisch <marcus@harnisch.isdn.cs.tu-berlin.de>
+
+--V0msw7hBK+--

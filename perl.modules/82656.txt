@@ -1,0 +1,139 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:82656
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27042 invoked from network); 10 Oct 2012 23:33:00 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 10 Oct 2012 23:33:00 -0000
+Received: (qmail 4901 invoked by uid 225); 10 Oct 2012 23:33:00 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4897 invoked by alias); 10 Oct 2012 23:32:59 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.fiz-chemie.de) (195.37.231.65)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 10 Oct 2012 16:32:56 -0700
+Received: from pause.fiz-chemie.de (localhost.localdomain [127.0.0.1])
+	by pause.fiz-chemie.de (8.13.8/8.13.8/Debian-3) with ESMTP id q9ANWo23012428
+	for <modules@perl.org>; Thu, 11 Oct 2012 01:32:50 +0200
+Received: (from nobody@localhost)
+	by pause.fiz-chemie.de (8.13.8/8.13.8/Submit) id q9ANWoHm012427;
+	Thu, 11 Oct 2012 01:32:50 +0200
+Date: Thu, 11 Oct 2012 01:32:50 +0200
+Message-ID: <201210102332.q9ANWoHm012427@pause.fiz-chemie.de>
+MIME-Version: 1.0
+Subject: Module submission DBIx::Table::TestDataGenerator
+Content-Type: Text/Plain; Charset=ISO-8859-1
+Reply-To: modules@perl.org
+To: modules@perl.org
+Content-Transfer-Encoding: 8bit
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       DBIx::Table::TestDataGenerator
+  DSLIP:       bdpO2
+  description: Automatic test data creation, cross DBMS
+  userid:      JDS (José Diaz Seng)
+  chapterid:   7 (Database_Interfaces)
+  communities:
+    http://grokbase.com/t/sc/dbix-class/129vmkksqg/candidate-name-dbix-table-testdatagenerator-for-a-cpan-module-readable-version
+    http://www.nntp.perl.org/group/perl.dbi.dev/2012/08/msg7012.html
+    http://www.nntp.perl.org/group/perl.modules/2012/08/msg81608.html
+    http://perlmonks.org/?node_id=983419
+
+  similar:
+    DBIx::GenerateData DBIx::CopyRecord
+
+  rationale:
+
+    There is often the need to create (mass) test data in database
+    tables, e.g. to test database client performance. If such a target
+    table has a lot of constraints, it may become tedious to devise a
+    way to fill it up.
+
+    The current module inspects the tables' constraints and adds a
+    desired number of records. The values of the fields either come from
+    the table itself (possibly incremented to satisfy uniqueness
+    constraints) or from tables referenced by foreign key constraints.
+    The choice of the copied values is random for a number of runs the
+    user can choose, afterwards the values are chosen randomly from a
+    cache (reducing database traffic for performance reasons). The user
+    can define seeds for the randomization to be able to reproduce a
+    run.
+
+    Currently, the module executes the inserts immediately but
+    following a suggestion I want to give the user the choice to store
+    the insert commands as text. I will also follow the suggestion to
+    allow configuring the number of inserts in a transaction in case the
+    statements are being executed.
+
+    Often, one has a self-reference in a table, i.e. an fkey of the
+    table to itself (e.g. a field "parent_id" referencing a field
+    "child_id", the latter being the primary key of the table). In this
+    case, the records naturally form a tree structure and we had the
+    need to have a balanced structure to get realistic test data. (Think
+    of a GUI displaying a navigation tree.) The growth of such trees can
+    be controlled by setting some parameters (maximum depth of new
+    nodes, minimal number of children, minimal number of roots) and the
+    nodes are added in a depth-first manner.
+
+    A main goal of the module is to reduce configuration to the
+    absolute minimum. The configuration parameters available are only
+    there to be able to influence the outcome and the performance.
+    Another goal is to support as many DBMSs as possible. Currently
+    Oracle is fully supported (there are still corner cases to handle,
+    e.g. date fields in uniqueness constraints) and there is a class
+    called TableProbe which handles some of the database (meta-)data
+    querying itself and has some methods which cannot be handled
+    uniformly for all DBMSs and which need to be implemented by objects
+    of classes derived from TableProbe (currently there is only one,
+    namely DBIx::Table::TestDataGenerator::TableProbe::Oracle). I will
+    try to handle all DBMSs having an information schema (see
+    http://en.wikipedia.org/wiki/Information_schema), i.e. MySQL,
+    Postgresql, SQLite and MSSQL uniformly. The module can be extended
+    to other DBMSs by writing appropriate TableProbe children.
+
+    I have discussed the naming of the module in the threads mentioned
+    before and received a lot of valuable feedback. The current name of
+    the module came from Tim Bunce (thanks!) and I think it fits very
+    well. It surely belongs in DBIx, "Table" makes it clear that the
+    target is a single table and "Generator" will be fitting when the
+    inserts can also be stored for later execution (see above) (in fact
+    the execution if the inserts is a small part which possibly could
+    have been left out from the module).
+
+    I searched for similar modules for a long while and the only ones I
+    could find were DBIx::GenerateData (this name has been registered,
+    but there is no code) and DBIx::CopyRecord, which (if I understood
+    the documentation correctly, please correct me if I am wrong) allows
+    to copy a single record to be specified by primary key, and
+    constraints and referenced tables have to be indicated explicitely
+    by the caller.
+
+  enteredby:   JDS (José Diaz Seng)
+  enteredon:   Wed Oct 10 23:32:45 2012 GMT
+
+The resulting entry would be:
+
+DBIx::Table::
+::TestDataGenerator bdpO2 Automatic test data creation, cross DBMS     JDS
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=90a00000_efec3bd19e4c7c9a&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=90a00000_efec3bd19e4c7c9a&SUBMIT_pause99_add_mod_insertit=1
+Peek at the current permissions:
+  https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=me&pause99_peek_perms_query=DBIx%3A%3ATable%3A%3ATestDataGenerator

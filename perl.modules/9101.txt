@@ -1,0 +1,67 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9101
+Return-Path: <schwern@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 72937 invoked by uid 76); 1 Dec 2001 21:35:48 -0000
+Received: from ool-182f12e9.dyn.optonline.net (HELO ool-18b93024.dyn.optonline.net) (24.47.18.233)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Sat Dec  1 21:35:48 2001 -0000
+Received: by ool-18b93024.dyn.optonline.net (Postfix, from userid 1000)
+	id E89608086; Sat,  1 Dec 2001 16:35:39 -0500 (EST)
+Date: Sat, 1 Dec 2001 16:35:39 -0500
+To: modules@perl.org
+Subject: Remove module index author protection, please
+Message-ID: <20011201163539.O11543@blackrider>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.23i
+Approved: news@nntp.perl.org
+From: schwern@pobox.com (Michael G Schwern)
+
+I just spoke with Tels, the author of Math::BigInt.  He was puzzled
+why 02packages.details.txt.gz was reporting Math::BigInt version 0.01
+inside perl to be the latest version.
+
+Digging around a little inside 03modlist.data.gz, it seems CPAN thinks
+it's owned by MARKB.  There is no MARKB, however he owns Math::BigInt,
+Math::BigFloat and Math::BigRat.  Math::BigFloat has the same problem
+as Math::BigInt, 02packages points to 0.02 inside perl.  Math::BigRat
+I can't find anywhere.
+
+I've come upon this problem so often, the CPAN index pointing at weird
+versions of modules.  I have a feeling it's a symptom of CPAN trying
+to protect module ownership.  TELS doesn't "own" Math::BigInt, so it
+won't display his "rogue" release.  Unfortunately, CPAN is often wrong
+about who owns a module.  Either the transfer of ownership wasn't made
+officially via PAUSE, or something got corrputed along the way.
+
+This ownership protection is supposed to prevent an unofficial version
+of a module from appearing on the CPAN index in the event of two
+authors quarreling over a namespace.  Worse, it's *causing* the very
+problem it's trying to prevent!  I've had trouble with this myself
+numerous times (and still am with certain modules).
+
+I believe the problem of rogue versions to be a non-problem.  I've
+never had a problem.  I've never heard of there being a problem.
+The only times I know of there being a problem it was either a
+mistake/oversight or the two authors resolved it amongst themselves
+(without having to wait in line at modules@perl.org court).
+
+
+So just junk it.  Just pick the highest numbered (preferably non-core)
+release.  Its simpler, its easier to understand, its right more often
+than the current system, and perhaps most importantly, conflicts can
+be resolved without them waiting for the CPAN cabal to get around to
+fixing it.
+
+
+-- 
+
+Michael G. Schwern   <schwern@pobox.com>    http://www.pobox.com/~schwern/
+Perl Quality Assurance	    <perl-qa@perl.org>	       Kwalitee Is Job One
+Summer sun beats down
+I sigh and wait for winter
+warm paste enemas.
+	-- mjd

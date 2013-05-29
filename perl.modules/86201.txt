@@ -1,0 +1,104 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:86201
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21690 invoked from network); 27 May 2013 02:51:30 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 27 May 2013 02:51:30 -0000
+Received: (qmail 13044 invoked by uid 225); 27 May 2013 02:51:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13040 invoked by alias); 27 May 2013 02:51:30 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-qe0-f41.google.com (HELO mail-qe0-f41.google.com) (209.85.128.41)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 26 May 2013 19:51:23 -0700
+Received: by mail-qe0-f41.google.com with SMTP id b4so3566915qen.28
+        for <modules@perl.org>; Sun, 26 May 2013 19:51:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:content-transfer-encoding:x-gm-message-state;
+        bh=86JUbwhdohIFDJYnQ+EQj2HMT56RJq3vqv1IGZ6Dd5g=;
+        b=F0ew2BczWu3erIG1Rkg6px0S0UMI1FExw6a7thGS8uOFynsF94NodAiCQAZNxyirYW
+         eOBn4YpMuNlX62K4Ur9AFaWx28H4dLSs01qYQ0k44akt9MSI2udOiwigVfQcPwsMEisS
+         1bFmvjgqJCFalPO1EUN2TYYuhGupeQsOoULl/RWHb/hKk2RBCgWqQvKrW16VZ0d8WMqd
+         Jvk8ooLHYK7hjixhY+6JBGX7+acgPYfhZ4GEioG2EKWWKZz+TeLD6VOZ2k0qm8cBEZtO
+         llL1uOw3JWt8C2dMXTqZ5GPagRiVJJIK1LSU9FhSZwVNrclpbkrE/U1JBREDLwAAJhNF
+         /NVQ==
+X-Received: by 10.49.130.131 with SMTP id oe3mr29313939qeb.24.1369623079297;
+ Sun, 26 May 2013 19:51:19 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.49.4.98 with HTTP; Sun, 26 May 2013 19:50:49 -0700 (PDT)
+In-Reply-To: <CABe4FJA0XYJozW+G8wkgjhKRTwKaq60zuBXFSBW4nJ0Q6MyhSQ@mail.gmail.com>
+References: <CABe4FJDmvOKE54Uxr6VPk870hhTteca18iAtLVC+PCjbGxzoTg@mail.gmail.com>
+ <CABe4FJA0XYJozW+G8wkgjhKRTwKaq60zuBXFSBW4nJ0Q6MyhSQ@mail.gmail.com>
+Date: Sun, 26 May 2013 22:50:49 -0400
+Message-ID: <CAOeq1c9RLsYMvmgb8+apesvv-Dx3YeP8rqYNkidopZvPcxSWkQ@mail.gmail.com>
+Subject: Re: How to delete old versions of a distribution that were uploaded
+ by someone else?
+To: Gabor Szabo <gabor@szabgab.com>
+Cc: "modules@perl.org" <modules@perl.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Gm-Message-State: ALoCoQmjNgjA7evKUBshj7jSu9zoxpIEvkmf0tvcvMsWNW8bqE4TrKrYz4zV5fzT6JnJqg9SFeYT
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+Gabor -- you appear to have permissions on the legacy modules that are
+showing up as 0.02.
+
+Syntax::Highlight::Engine::Kate::BaseTest,HANJE,f
+Syntax::Highlight::Engine::Kate::BaseTest,SZABGAB,c
+Syntax::Highlight::Engine::Kate::BaseTestchild,HANJE,f
+Syntax::Highlight::Engine::Kate::BaseTestchild,SZABGAB,c
+
+If you add stub .pm files (with a higher version number) and release,
+the old index entries will be overwritten.
+
+Alternatively, email ANDK and just ask him to delete those from the
+index.  (I don't think there's a way to do it from PAUSE -- it takes
+direct DB access.) You have co-maint so I don't see why he would
+object.
+
+I.e. That would remove from them from *index* but not *delete* the
+original tarball.
+
+I agree with brian that someone else's files should be left alone.
+
+David
+
+
+
+On Fri, May 24, 2013 at 1:22 AM, Gabor Szabo <gabor@szabgab.com> wrote:
+> Hi,
+>
+> I am the current maintainer of the module Syntax::Highlight::Engine::Kate
+> I got a bug report https://rt.cpan.org/Ticket/Display.html?id=3D85463
+> requesting to remove the old version of the distribution, but I don't hav=
+e
+> the rights to that as they were not uploaded by me.
+>
+> The  author was not responsive a few years ago already when I wanted to t=
+ake
+> over the module so I doubt he will be now.
+>
+> How can I remove those distributions?
+>
+> Actually this can be a more generic question. What happens to the old
+> distributions on CPAN
+> that were uploaded by the author or a previous maintainer if they
+> disappear and after
+> there is a new maintainer?
+>
+> regards
+>    Gabor
+
+
+
+--=20
+David Golden <xdg@xdg.me>
+Take back your inbox! =E2=86=92 http://www.bunchmail.com/
+Twitter/IRC: @xdg

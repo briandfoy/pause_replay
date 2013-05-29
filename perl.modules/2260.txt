@@ -1,0 +1,77 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2260
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26120 invoked from network); 26 Jun 2000 23:14:15 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 26 Jun 2000 23:14:15 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id BAA26916;
+	Tue, 27 Jun 2000 01:14:09 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: Autarch <autarch@urth.org>
+Cc: modules@perl.org
+Subject: Re: two new ones
+References: <Pine.LNX.4.21.0006260942440.5094-100000@urth.org>
+Date: 27 Jun 2000 01:14:09 +0200
+In-Reply-To: Autarch's message of "Mon, 26 Jun 2000 10:08:21 -0500 (CDT)"
+Message-ID: <m3lmzsrq66.fsf@ak-71.mind.de>
+Lines: 49
+User-Agent: Gnus/5.0806 (Gnus v5.8.6) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 26 Jun 2000 10:08:21 -0500 (CDT), Autarch <autarch@urth.org> said:
+
+ > I'll be uploading two new modules to CPAN that I'd like to register if
+ > possible (CPAN id DROLSKY).
+
+ > 1. StackTrace - This provides a stacktrace object very similar to what you
+ > get from confess or cluck but you don't have to actually issue a
+ > warning.  Plus you can step through the stack and examine the information
+ > in it (it has all the info caller() provides for each stack level).  This
+ > is primarily used by the next module I'm uploading but has the potential
+ > to be useful on its own, particularly if you just want to pass around the
+ > stack for some reason.
+
+Good idea. What about Devel::StackTrace. It will be used to develop
+code, not in other situations, so Devel:: seems appropriate.
+
+ > 2. Class::Exceptions (also includes the class BaseException internally but
+ > I don't want to register that).  This module lets you 'declare' a
+ > hierarchical set of exception objects (with any root, not just
+ > BaseException) at compile time via the 'use' command.  It does not
+ > implement any sort of try/catch syntax as this is already covered
+ > elsewhere and I don't like it anyway dammit.  It could probably be used
+ > with G. Barr's Error module if you want that stuff.
+
+Last week I suggested to Matt Sergeant for his Exception module:
+
+    Maybe call it Exception::Simple, then we can recommend future
+    implementors of Exception modules to collect their alternatives in
+    the Exception:: namespace.
+
+How would you like Exception::Class and Exception::Class::Base? I'd
+avoid using unregistered root namespaces internally--after all
+namespace clashes could happen there and will probably be hard to
+diagnose.
+
+ > I emailed way back when about these modules but the exception module had a
+ > different name (Exception) and didn't hear back.  I don't feel comfortable
+ > trying to claim that namespace anyway and this one seems a lot more
+ > reasonable.  With the StackTrace namespace, I think that even though its
+ > top level this implementation is fairly reasonable as _the_
+ > implementation.  OTOH, I could always change it later if you want.
+
+It isn't unlikely that if there will ever be "official" Perl
+exceptions, then they will be in the Exception namespace. For that
+reason I'd like to reserve that. But gathering the candidates in one
+or a few common directory/ies seems sensible to me.
+
+-- 
+andreas

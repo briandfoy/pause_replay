@@ -1,0 +1,111 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5895
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20471 invoked from network); 30 May 2001 20:50:14 -0000
+Received: from dubravka.kbx.de (HELO pause.perl.org) (root@212.40.160.59)
+  by onion.valueclick.com with SMTP; 30 May 2001 20:50:14 -0000
+Received: (from nobody@localhost)
+	by pause.perl.org (8.9.3/8.9.3) id WAA22860;
+	Wed, 30 May 2001 22:50:12 +0200
+Date: Wed, 30 May 2001 22:50:12 +0200
+Message-ID: <200105302050.WAA22860@pause.perl.org>
+Reply-To: modules@perl.org
+Subject: Module submission Attribute::Util
+To: modules@perl.org, marcel@cpan.org
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Attribute::Util
+  DSLIP:       RdpOp
+  description: A selection of general-utility attributes
+  userid:      MARCEL (Marcel Grunauer)
+  chapterid:    2 (Perl_Core_Modules)
+  communities:
+    comp.lang.perl.modules, vienna.pm list, london.pm list
+
+  similar:
+    Attribute::Handler Attribute::Memoize Attribute::Abstract Memoize
+
+  rationale:
+
+    This module provides four universally accessible attributes of
+    general interest:
+
+    Memoize This attribute makes it slightly easier (and modern) to
+    memoize a function by providing an attribute, `:Memoize' that makes
+    it unnecessary for you to explicitly call `Memoize::memoize()'.
+    Options can be passed via the attribute per usual (see the
+    `Attribute::Handlers' manpage for details, and the `Memoize' manpage
+    for information on memoizing options):
+
+    sub f :Memoize(NORMALIZER => 'main::normalize_f') {...}
+
+    However, since the call to `memoize()' is now done in a different
+    package, it is necessary to include the package name in any function
+    names passed as options to the attribute, as shown above.
+
+    Abstract
+
+    Declaring a subroutine to be abstract using this attribute causes a
+    call to it to die with a suitable exception. Subclasses are expected
+    to implement the abstract method. Using the attribute makes it
+    visually distinctive that a method is abstract, as opposed to
+    declaring it without any attribute or method body, or providing a
+    method body that might make it look as though it was implemented
+    after all.
+
+    Alias
+
+    If you need a variable or subroutine to be known by another name,
+    use this attribute. Internally, the attribute's handler assigns
+    typeglobs to each other. As such, the `Alias' attribute provides a
+    layer of abstraction. If the underlying mechanism changes in a
+    future version of Perl (say, one that might not have the concept of
+    typeglobs anymore :), a new version of this module will take care of
+    that, but your `Alias' declarations are going to stay the same.
+
+    Note that assigning typeglobs means that you can't specify a
+    synonym for one element of the glob and use the same synonym for a
+    different target name in a different slot. I.e.,
+
+    sub color :Alias(colour) { ... } my $farbe :Alias(colour);
+
+    doesn't make sense, since the sub declaration aliases the whole
+    `colour' glob to `color', but then the scalar declaration aliases
+    the whole `colour' glob to `farbe', so the first alias is lost.
+
+    SigHandler
+
+    When used on a subroutine, this attribute declares that subroutine
+    to be a signal handler for the signal(s) given as options for this
+    attribute. It thereby frees you from the implementation details of
+    defining sig handlers and keeps the handler definitions where they
+    belong, namely with the handler subroutine.
+
+    This module deprecates Attribute::Memoize and Attribute::Abstract.
+
+  enteredby:   MARCEL (Marcel Grunauer)
+  enteredon:   Wed May 30 20:50:11 2001 GMT
+
+The resulting entry would be:
+
+Attribute::
+::Util            RdpOp A selection of general-utility attributes    MARCEL
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=b9000000_1f3794feb43d77fa&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=b9000000_1f3794feb43d77fa&SUBMIT_pause99_add_mod_insertit=1

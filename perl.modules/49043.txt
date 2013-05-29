@@ -1,0 +1,267 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:49043
+Return-Path: <cpan@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1337 invoked from network); 26 May 2006 14:55:30 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 26 May 2006 14:55:30 -0000
+Received: (qmail 18697 invoked by uid 225); 26 May 2006 14:55:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18692 invoked by alias); 26 May 2006 14:55:29 -0000
+X-Spam-Status: No, hits=-4.4 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Fri, 26 May 2006 07:54:58 -0700
+Received: (qmail 1236 invoked by uid 515); 26 May 2006 14:54:52 -0000
+Message-ID: <20060526145450.1235.qmail@lists.develooper.com>
+To: modules@perl.org
+Date: Sat, 27 May 2006 00:51:51 +1000
+User-Agent: Thunderbird 1.5.0.2 (Windows/20060308)
+MIME-Version: 1.0
+Subject: Re: proposed new CPAN namespace, Organize::
+References: <20060525232036.44dfbbda.he@reclaimedcomputers.ca>
+In-Reply-To: <20060525232036.44dfbbda.he@reclaimedcomputers.ca>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 203.31.239.96
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: cpan@ali.as (Adam Kennedy)
+
+Hi Hugh
+
+Looking through that list of modules, I think I see where you are trying 
+to go, and I'd say that I for one would be in favour in-principle of a 
+top-level namespace.
+
+But personal I find Organize not particularly great. For one, it's very 
+generic. One can "organize" pretty much anything, and "organize" is also 
+spelled with the relatively little used American dialect of English, 
+rather than the more common British English, so it certainly scrapes 
+against my brain even more uncomfortably.
+
+I'd also note that some of your specific modules belong in other places...
+
+For example, "Federal" isn't required, generally we would do something 
+like...
+
+Politics::Campaign
+Politics::US::
+Politics::US::NY::
+
+etc etc
+
+Other things might need to go in other places...
+
+Things that aren't specific to either Non-Profit/Community work in 
+general, or Politics specifically (for example) might belong in Business::
+
+So I'm thinking maybe you need two or three namespaces if you want to 
+spread your wings over such a large area.
+
+Business:: (existing) for general things which are usable in business or 
+non-profit scenarios.
+
+Politics:: (which I think is clean and specific) for things that are 
+very specific to political activities (such as the VoteDB namespace I 
+see there)
+
+And for the rest, well LegisTrack is a brand name and could go directly 
+under, say, Politics.
+
+The Registration:: stuff is tricky, it looks almost more like a product 
+that a namespace.
+
+And your Treasurer stuff will be hard too, because as with most things 
+financial it is very hard to do things in a way that works across 
+various countries and legal systems...
+
+So in summary, erm...
+
+I'd be very happy to have a Politics:: to firewall off the stuff that is 
+highly specific to politics (electoral, lobbying, etc) as long as you 
+remain strongly resistant to US-bias (which has damaged other namespaces).
+
+Anything with a specific branding, like LegisTrack is fine directly in 
+the top level. Anything generic you probably want to put under a 
+country-specific second-level.
+
+Politics::US::...
+
+Fortunately, I think your international experience should stand you in 
+better stead that some of the people that don't realise the rest of the 
+world uses Perl as well :)
+
+But still, if you going to throw up a module as Politics::Campaign, be 
+aware that it's going to potentially need to be used by a lot of people 
+in a lot of places.
+
+And I think you are most certainly going to need to forget the idea of a 
+namespace quite as wide as you envisage Organize.
+
+Politics is obvious, parts of what you have there will fit into 
+Business::, and as for the remains... I think it's worth discussing them 
+on a case be case basis here to find the best fit.
+
+In any large endeavour, you'll find modules tend to be spread around and 
+rarely exist all in one place.
+
+Adam K
+
+Hugh Esco wrote:
+> Greetings:
+> 
+> With all due respect to the many fine folks that are
+> developing in php on the drupal / deanspace / civicspace /
+> civiCRM / civiMail line of development, but there are also
+> those of us who are developing tools for community
+> and electoral organizing in perl.  And I assert that we
+> need our own home where we can work together.  
+> 
+> I formerly served as staff to the Georgia (usa) Green
+> Party, helped organize a Code Weavers Network for US Green
+> Party activists who contribute their IT skills to the
+> Party's efforts, have consulted in two countries on IT
+> development to support electoral organizing and am now a
+> part of a commercial venture, CampaignFoundations.com,
+> offering online tools to support winning campaigns on the
+> issues and at the polls.  
+> 
+> I write to ask that the cpan leadership bless the creation
+> of a new top level namespace within the archives.  The
+> astricks (*) indicate those modules which I and
+> others I've worked with already have done development work
+> for. 
+> 
+> Here below is what I imagine, including some wrappers to
+> make this code base work with existing systems that can
+> serve the needs of community organizers and electoral
+> activists, like SQLegder, for instance.  
+> 
+> Obviously there is room in this heirarchy for writing a lot
+> of new code.  And usuable scripts and modules have already
+> been developed to address many of the function hinted at
+> below. With a CPAN namespace like Organize::, this code
+> could have a home where its public accessibility could
+> serve a broader audience.  And having such a home, could
+> motivate the refactoring of some of this older code to make
+> it suitable for public consumption.  
+> 
+> Your advice and consideration is appreciated.  
+> 
+> -- Hugh
+> 
+> Organize
+> 
+> Organize::CRM
+> 
+> Organize::Fundraising 
+> Organize::Fundraising::Canvas
+> Organize::Fundraising::Events
+> Organize::Fundraising::Phonebank
+> Organize::Fundraising::Merchandise
+> Organize::Fundraising::Online::DonorForm *
+> Organize::Fundraising::Online::DonorForm::Backend
+> 
+> Organize::Supporters *
+> Organize::Supporters::Donor *
+> Organize::Supporters::Volunteer *
+> Organize::Supporters::Subscribe *
+> Organize::Supporters::Merchandise
+> Organize::Supporters::Referral *
+> Organize::Supporters::Reports *
+> 
+> Organize::Membership
+> Organize::Membership::Vote *
+> Organize::Membership::Elections
+> Organize::Membership::Elections::STVCounter *
+> Organize::Membership::Subscriber
+> Organize::Membership::Services
+> Organize::Membership::Renewal
+> 
+> Organize::Community
+> Organize::Community::Mapper *
+> Organize::Community::Events 
+> Organize::Community::Online
+> Organize::Community::Online::Wiki
+> Organize::Community::Online::Blog
+> Organize::Community::Online::CRM
+> 
+> Organize::Workplace
+> 
+> Organize::Electoral
+> Organize::Electoral::pclSupport *
+> Organize::Electoral::pclSupport::CallLists *
+> Organize::Electoral::pclSupport::WalkLists *
+> Organize::Electoral::pclSupport::GOTV
+> Organize::Electoral::petVerify *
+> Organize::Electoral::VoteDB
+> Organize::Electoral::VoteDB::History *
+> Organize::Electoral::VoteDB::Partisan *
+> 
+> Organize::LegisTrack
+> Organize::LegisTrack::Members
+> Organize::LegisTrack::Committee
+> Organize::LegisTrack::Legislation * 
+> Organize::LegisTrack::LegAction
+> Organize::LegisTrack::Position
+> Organize::LegisTrack::WWW::Mechanize
+> Organize::LegisTrack::WWW::Mechanize::USCongress
+> Organize::LegisTrack::WWW::Mechanize::GaGenAssy * 
+> Organize::LegisTrack::Lobby
+> Organize::LegisTrack::Lobby::CallWriteFax
+> Organize::LegisTrack::Lobby::Feedback
+> Organize::LegisTrack::Coalition
+> Organize::LegisTrack::Coalition::Organizations
+> Organize::LegisTrack::Coalition::Volunteers
+> Organize::LegisTrack::Coalition::Supporters
+> 
+> Organize::Media
+> Organize::Media::MediaDB
+> Organize::Media::DistroPrsRls *
+> Organize::Media::MailingLists *
+> Organize::Media::Newsletter
+> Organize::Media::CMS
+> 
+> Organize::Registration
+> Organize::Registration::Db * 
+> Organize::Registration::Cfg 
+> Organize::Registration::Log
+> Organize::Registration::Event
+> Organize::Registration::Event::Registrant
+> Organize::Registration::Event::Transportation
+> Organize::Registration::Event::Catering
+> Organize::Registration::Event::Accommodations
+> Organize::Registration::Event::Payment::Verisign
+> Organize::Registration::Admin
+> Organize::Registration::Admin::Reports
+> Organize::Registration::Admin::Reports::Accommodations
+> Organize::Registration::Admin::Reports::AuditFormTraffic
+> Organize::Registration::Admin::Reports::Catering
+> Organize::Registration::Admin::Reports::CredentialsCommittee
+> Organize::Registration::Admin::Reports::NameTags
+> Organize::Registration::Admin::Reports::Nightly
+> Organize::Registration::Admin::Reports::NotYetRegistered
+> Organize::Registration::Admin::Reports::RegistrationDesk
+> Organize::Registration::Admin::Reports::Treasurer
+> Organize::Registration::Admin::Reports::Weekly
+> Organize::Registration::WWW::RegForm *
+> Organize::Registration::WWW::Admin *
+> Organize::Registration::WWW::htmlgui *
+> 
+> Organize::Treasurer::SQL-Ledger 
+> Organize::Treasurer::Reports 
+> Organize::Treasurer::Reports::Board
+> Organize::Treasurer::Reports::Members
+> Organize::Treasurer::Reports::Merchandise
+> Organize::Treasurer::Reports::Tax
+> Organize::Treasurer::Reports::Tax::Federal::<bycountry>
+> Organize::Treasurer::Reports::Tax::Province::<byprov>
+> Organize::Treasurer::Reports::Campaign
+> Organize::Treasurer::Reports::Campaign::Federal::<bycountry>
+> Organize::Treasurer::Reports::Campaign::Province::<byprov>
+> 

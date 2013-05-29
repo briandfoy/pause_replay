@@ -1,0 +1,129 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3239
+Return-Path: <Tim.Bunce@ig.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11917 invoked from network); 27 Oct 2000 14:36:06 -0000
+Received: from anchor-post-32.mail.demon.net (194.217.242.90)
+  by tmtowtdi.perl.org with SMTP; 27 Oct 2000 14:36:06 -0000
+Received: from ignite.demon.co.uk ([158.152.8.99] helo=oink)
+	by anchor-post-32.mail.demon.net with smtp (Exim 2.12 #1)
+	id 13pAc0-000Nr8-0W; Fri, 27 Oct 2000 15:36:04 +0100
+Received: from toad by oink with SMTP (PP) id <10680-0@oink>;
+          Tue, 27 Oct 1970 15:35:50 +0100
+Received: by toad.ig.co.uk (8.8.8+Sun/SMI-SVR4) id PAA08501;
+          Fri, 27 Oct 2000 15:35:44 +0100 (BST)
+Date: Fri, 27 Oct 2000 15:35:43 +0100
+To: Dave Plonka <plonka@doit.wisc.edu>
+Cc: modules@perl.org, Tim Bunce <Tim.Bunce@ig.co.uk>, 
+    "Andreas J. Koenig" <andreas.koenig@anima.de>, 
+    "Kurt D. Starsinic" <kstar@chapin.edu>
+Subject: Re: Net::Patricia vs Tree::Patricia, advice? (was "Re: 
+         Net::Patricia/PatriciaTrie namespace request")
+Message-ID: <20001027153543.B8159@ig.co.uk>
+References: <20001016121942.A3746@doit.wisc.edu> <20001016174308.B11883@O2.chapin.edu> <20001017090750.B26613@doit.wisc.edu> <m3k8avcn0e.fsf@ak-71.mind.de> <20001027114515.V4456@ig.co.uk> <20001027084447.A20263@doit.wisc.edu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3i
+In-Reply-To: <20001027084447.A20263@doit.wisc.edu>; from Dave Plonka on Fri, Oct 27, 2000 at 08:44:47AM -0500
+Organization: Paul Ingram Group, Software Systems, +44 1 483 862800
+Approved: news@nntp.perl.org
+From: Tim.Bunce@ig.co.uk (Tim Bunce)
+
+On Fri, Oct 27, 2000 at 08:44:47AM -0500, Dave Plonka wrote:
+> On Fri, Oct 27, 2000 at 11:45:15AM +0100, Tim Bunce wrote:
+> > On Thu, Oct 26, 2000 at 11:26:25PM +0200, Andreas J. Koenig wrote:
+> > > >>>>> On Tue, 17 Oct 2000 09:07:50 -0500, Dave Plonka <plonka@doit.wisc.edu> said:
+
+> > >  > I'm not against the Patricia module being in Tree::Patricia, but there
+> > >  > are other complications...  The C code on which the module is based
+> > >  > looks like networking code in that it currently uses inet_addr(3) and
+> > >  > therefore requires "<arpa/inet.h>" and "-lnsl".  I could follow
+> > >  > Socket.pm's lead and reimplement a private/static inet_addr within to
+> > >  > eliminate that requirement, but avoiding the system-provided library
+> > >  > routines in these way could make it harder to maintain, esp. when I
+> > >  > pass-thru IPv6 addr support to the perl API.
+> > > 
+> > > Strong arguments.
+> > 
+> > I'd also remind folks that names should be based on what functionality
+> > a module offers, not how it's implemented.
+> 
+> In the case of a module named such that it must implement its
+> functionality by a specific data structure and algorithm, the
+> functionality and implementation are necessarily intertwined.
+> 
+> For Net::Patricia, if the functionality I was attempting to provide did
+> not have performance implications, I might have called it Find::Prefix
+> or some such thing.  Actually, if that were case we wouldn't be having
+> this discussion because Net::Netmask's order-of-magnitude slower
+> sequential search would have been sufficient.
+> 
+> It was the Right Thing for us to consider Tree::Patricia as Kurt
+> suggested.  I did that, and I discussed it with other perl hackers.  As
+> he pointed out, this module *could* be used for other key values that
+> have the same syntax (and nearly the same semantics).  Specifically he
+> said:
+> 
+>    [Net::Patricia's API] doesn't prevent one from coming up with more
+>    dastardly uses for the module.
+> 
+> When a programmer finds a *dastardly use* for a standard API, we
+> usually call it a kludge.  In which case it is almost preferable that
+> that API seems inappropriate for that use.  I.e. if someone use
+> Net::Patricia to lookup something weird, perhaps machine language
+> op-code prefixes or something, the code should look weird so that
+> maintainers say "Why is this program using Net::Patricia"?
+> 
+> So CPAN allowing me to advertise my module as Net::Patricia is useful
+> to me as the author,
+
+It shouldn't be and points to problems in how the namespace is perceived.
+
+> and it suggests that perl hackers only use it as
+> intended and to be very careful using it for other purposes.
+
+That's overloading the namespace with distracting issues. The name
+'Patricia' itself may suffice, else perhaps 'Tree::PatriciaIP'.
+
+> While I'm
+> all for reuse, all bets are off if you don't use Net::Patricia for IP
+> addresses and netmasks.
+
+So just say that in the docs.
+
+> > >  > At the moment, I'm still leaning toward Net::Patricia because of the
+> > >  > underlying networking requirements.
+> > > 
+> > > We are all starting to react allergically against Net:: because it
+> > > becomes a bit basket, it's crowded there. But I see you arguments in
+> > > favor and I see you have uploaded version 1.009. I tend to accept
+> > > Net:: based on your arguments.
+> > 
+> > Joining the ubiquitous bad precedents ;-)
+> 
+> When someone writes the more ambitious general PATRICIA trie (as is
+> apparently described in Sedgewick, I don't even have the book), it can
+> be called Tree::Patricia.  If and when that happens, I think we'll all
+> be glad that Net::Patricia is where it is now because Tree::Patricia
+> will be more general, but will probably perform more slowly upon keys
+> in the IP address space, so the need for both remains.
+
+If those assumptions prove true. But that also applies to Tree::PatriciaIP
+or similar names.
+
+> > Tim.
+> > 
+> > p.s. I don't feel very strongly about this, just wanted to remind folks
+> > about the 'ignore implementation issues' line of reasoning for the future.
+> 
+> Understood, I just don't think Net::Patricia is the poster boy for that
+> cause.  Believe it or not, I spent weeks (on and off) on the namespace
+> issue which is apparently more time than many have either the
+> motivation or the luxury of expending.  So we're glad the modules list
+> participants to help out.
+
+I wish more people thought we were here to help! :-/
+
+Tim.

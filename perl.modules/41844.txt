@@ -1,0 +1,74 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:41844
+Return-Path: <brad@danga.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6538 invoked from network); 22 Jul 2005 03:23:21 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 Jul 2005 03:23:21 -0000
+Received: (qmail 23834 invoked by uid 225); 22 Jul 2005 03:23:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 23830 invoked by alias); 22 Jul 2005 03:23:20 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from danga.com (HELO danga.com) (66.150.15.140)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 21 Jul 2005 20:23:18 -0700
+Received: from localhost (localhost [127.0.0.1])
+	by danga.com (Postfix) with ESMTP id D86C63BC0AB
+	for <modules@perl.org>; Thu, 21 Jul 2005 20:23:13 -0700 (PDT)
+Received: from danga.com ([127.0.0.1])
+	by localhost (danga.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 08415-09 for <modules@perl.org>;
+	Thu, 21 Jul 2005 20:23:13 -0700 (PDT)
+Received: by danga.com (Postfix, from userid 1000)
+	id 4F8863BC0AA; Thu, 21 Jul 2005 20:23:13 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by danga.com (Postfix) with ESMTP id 0610E87C0EE
+	for <modules@perl.org>; Thu, 21 Jul 2005 20:23:13 -0700 (PDT)
+Date: Thu, 21 Jul 2005 20:23:12 -0700 (PDT)
+X-X-Sender: bradfitz@danga.com
+To: modules@perl.org
+Subject: need a module name for a webserver / load balancer
+Message-ID: <Pine.LNX.4.58.0507212016220.6597@danga.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at example.com
+Approved: news@nntp.perl.org
+From: brad@danga.com (Brad Fitzpatrick)
+
+Hello Perl People,
+
+I have a Perl library to do high-performance web load balancing and static
+web serving (GET, PUT, DELETE...) based on the Danga::Socket event loop
+and socket class.
+
+It's a proper library (currently Perlbal.pm) and a whole suite of
+submodules under the Perlbal:: namespace... Perlbal::ClientProxy,
+Perlbal::ClientHTTP, Perlbal::ClientHTTPBase, Perlbal::BackendHTTP, etc...
+
+The actual load balancer / webserver is all in a tiny file called
+"perlbal" which just uses Perlbal and pipes a config file into
+Perlbal.pm's management interface parser.
+
+Also, our company has a distributed filesystem (google: MogileFS) written
+in Perl, which depends on Perlbal.pm.  There are a number of
+high-load sites using both Perlbal and MogileFS.
+
+We've paid a Debian developer to make packages for all the parts and
+dependencies, but we're also wondering whether this should go into CPAN.
+
+If so, I think it might be dirty uploading it as "Perlbal".  But it's
+known/used as that so much, I'm also reluctant to change it.
+
+Can I just upload it to my homedir on CPAN and not register the namespace?
+
+Or rename at least the front-end module to be "HTTPD::Perlbal"?
+
+Any suggestions welcome!
+
+Thanks,
+Brad
+

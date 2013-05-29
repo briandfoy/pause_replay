@@ -1,0 +1,250 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:20775
+Return-Path: <kclark@logsoft.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27222 invoked by uid 76); 28 Apr 2003 18:52:36 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Mon, 28 Apr 2003 11:52:36 -0700
+Received: (qmail 31465 invoked by uid 225); 28 Apr 2003 18:52:33 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31460 invoked by uid 507); 28 Apr 2003 18:52:33 -0000
+Received: from 12-238-134-65.client.attbi.com (HELO oakhill.homeip.net) (12.238.134.65) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Mon, 28 Apr 2003 11:52:30 -0700
+Received: from localhost (kclark@localhost)	by oakhill.homeip.net (8.11.6/8.11.6) with ESMTP id h3SIlqm17275	for <modules@perl.org>; Mon, 28 Apr 2003 13:47:52 -0500
+X-Authentication-Warning: oakhill.homeip.net: kclark owned process doing -bs
+Date: Mon, 28 Apr 2003 13:47:52 -0500 (CDT)
+X-X-Sender: kclark@oakhill.homeip.net
+To: modules@perl.org
+Subject: New module: Text::RecordParser
+Message-ID: <Pine.LNX.4.50.0304281341160.16696-100000@oakhill.homeip.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.3 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01,USER_AGENT_PINE,X_AUTH_WARNING version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: kclark@logsoft.com ("Ken Y. Clark")
+
+All,
+
+I'm seeking advice on a module I'd like to contribute to CPAN.  I'm
+calling it "Text::RecordParser" right now.  It was inspired by
+Text::xSV (which itself was an extension of Text::CSV), so it seems to
+fit well enough under the "Text::" namespace.  It's designed to read
+record-oriented data (where records aren't limited to
+comma-and-newline-delimited type), so I thought about "RecordParser."
+I don't really see adding the write capabilities of something like
+DBD::CSV (even if I did steal many other ideas for my module from
+DBI), so I think it's safe to just call it a "parser."  I'll append
+the POD to give you an idea of what it does so far.
+
+ky
+
+NAME
+    Text::RecordParser - read character separated files
+
+SYNOPSIS
+      use Text::RecordParser;
+      my $csv = Text::RecordParser->new;
+      $csv->filename('foo.csv') or die $csv->error;
+
+      # Split records on Micro$oft newlines
+      $csv->record_separator("\r\n");
+
+      # Split fields on tabs
+      $csv->field_separator("\t");
+
+      # Use the fields in the first line as column names
+      $csv->bind_header;
+
+      # Get a list of the header fields (in order)
+      my @columns = $csv->field_list;
+
+      # Extract a particular field from the next row
+      my ( $name, $age ) = $csv->extract( qw[name age] );
+
+      # Return all the fields from the next row
+      my @fields = $csv->fetchrow_array;
+
+      # Return all the fields from the next row as a hashref
+      my $record = $csv->fetchrow_hashref;
+      print $record->{'name'};
+
+DESCRIPTION
+    This module is for reading token-separated data. The most common example
+    is comma-separated, but many file use tabs, colons, or other characters
+    to delimit field data. Additionally, some files may use something other
+    than newlines to separate records. This module gracefully handles all of
+    these possibilities and offers a convenient interface for extracting the
+    data with many DBI-like methods.
+
+    This code was initially inspired by the 0.05 CPAN release of Text::xSV
+    by Benjamin Tilly.
+
+METHODS
+  new
+    This is the constructor. It takes a hash of optional arguments. Each
+    argument can also be set through the method of the same name.
+
+    * filename
+        The path to the file being read. If the filename is passed and the
+        fh is not, then it will open a filehandle on that file and sets "fh"
+        accordingly.
+
+    * fh
+        The filehandle of the file to read.
+
+    * field_separator
+        The field separator (default is comma).
+
+    * record_separator
+        The record separator (default is newline).
+
+    * field_filter
+        A callback through which the fields will be passed as they are read.
+        This is useful for stripping off "\r," and for stripping out things
+        like Microsoft smart quotes at the source.
+
+    * header_filter
+        A callback applied to the column names.
+
+  bind_fields
+    Takes an array of field names, memorizes the field positions for later
+    use. "bind_headers" is preferred.
+
+      $csv->bind_fields( qw[ name rank serial_number ] );
+
+  bind_header
+    Reads a row from the file as a header line and memorizes the positions
+    of the fields for later use. File formats that carry field information
+    tend to be far more robust than ones which do not, so this is the
+    preferred function.
+
+      $cvs->bind_header;
+      my $name = $csv->extract( 'name' );
+
+  extract
+    Extracts a list of fields out of the last row read. The field names must
+    correspond to the field names bound either via "bind_fields" or
+    "bind_header".
+
+      my ( $foo, $bar, $baz ) = $csv->extract( qw[ foo bar baz ] );
+
+  fetchrow_array
+    Reads a row from the file and returns an array or (arrayref) of the
+    fields.
+
+      my @values = $csv->fetchrow_array;
+
+  fetchrow_hashref
+    Reads a line of the file and returns it as a hash reference. The keys of
+    the hashref are the field names bound via "bind_fields" or
+    "bind_header".
+
+      my $record = $csv->fetchrow_hashref;
+      print "Name = ", $record->{'name'}, "\n";
+
+  fetchall_arrayref
+    Like DBI's fetchall_arrayref, returns an arrayref of arrayrefs. Also
+    accepts optional "{ Columns => {} }" argument to return an arrayref of
+    hashrefs.
+
+      my $records = $csv->fetchall_arrayref;
+      for my $record ( @$records ) {
+          print "Name = ", $record->[0], "\n";
+      }
+
+      my $records = $csv->fetchall_arrayref( { Columns => {} } );
+      for my $record ( @$records ) {
+          print "Name = ", $record->{'name'}, "\n";
+      }
+
+  fetchall_hashref
+    Like DBI's fetchall_hashref.
+
+      my $records = $csv->fetchall_hashref('id');
+      for my $id ( keys %$records ) {
+          my $record = $records->{ $id };
+          print "Name = ", $record->{'name'}, "\n";
+      }
+
+  fh
+    Gets or sets the filehandle of the file being read.
+
+      open my $fh, "<./data.csv";
+      $csv->fh( $fh );
+
+  field_compute
+    A callback applied to the fields identified by position (or field name
+    if "bind_headers" was called).
+
+      $csv->field_compute( 0, sub {} );
+
+  field_list
+    Returns the fields bound via "bind_fields" (or "bind_header").
+
+      $csv->bind_fields( qw[ foo bar baz ] );
+      my @fields = $csv->field_list;
+      print join(', ', @fields); # prints "foo, bar, baz"
+
+  field_positions
+    Returns the field positions bound via "bind_fields" (or "bind_header").
+
+  filename
+    Gets or sets the complete path to the file to be read. If a file is
+    already opened, then the handle on it will be closed and a new one
+    opened on the new file.
+
+      $csv->filename('/path/to/file.dat') or die $csv->error;
+
+  field_filter
+    A callback which is applied to each field. Here's an example that
+    removes the leading and trailing spaces from each field:
+
+      $csv->field_filter( sub { $_ = shift; s/^\s+|\s+$//g; $_ } );
+
+  header_filter
+    A callback applied to column header names. Here's an example that
+    collapses spaces into a single underscore and lowercases the letters:
+
+      $csv->header_filter( sub { $_ = shift; s/\s+/_/g; lc $_ } );
+
+  record_separator
+    Gets and sets the token to use as the record separator. The default is a
+    newline ("\n").
+
+    To read a file that looks like this:
+
+      field1
+      field2
+      field3
+      //
+      data1
+      data2
+      data3
+      //
+
+    Set the record and field separators like so:
+
+      $csv->record_separator("\n//\n");
+      $csv->field_separator("\n");
+
+  field_separator
+    Gets and sets the token to use as the field delimiter. The default is a
+    comma.
+
+      $csv->field_separator("\t"); # splits fields on tabs
+      $csv->field_separator('::'); # splits fields on double colons
+
+      my $sep = $csv->field_separator; # returns the current separator (or comma)
+
+AUTHOR
+    Ken Y. Clark <kclark@cpan.org>
+
+COPYRIGHT
+    Copyright (c) 2003 Ken Y. Clark
+
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+

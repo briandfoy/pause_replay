@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:48623
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12975 invoked from network); 1 May 2006 15:54:09 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 1 May 2006 15:54:09 -0000
+Received: (qmail 22914 invoked by uid 225); 1 May 2006 15:54:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22908 invoked by alias); 1 May 2006 15:54:08 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO k75.linux.bogus) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 01 May 2006 08:54:06 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.13.6/8.13.6/Debian-1) with ESMTP id k41FrxPj004113;
+	Mon, 1 May 2006 17:53:59 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.6/8.13.6/Submit) id k41FrxcK004112;
+	Mon, 1 May 2006 17:53:59 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: Johan Vromans <jvromans@squirrel.nl>
+Cc: modules@perl.org
+Subject: Re: Problem with indexer
+References: <17494.7740.944744.135445@phoenix.squirrel.nl>
+Date: Mon, 01 May 2006 17:53:59 +0200
+Message-ID: <87r73d91wo.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 1 May 2006 16:42:04 +0200, Johan Vromans <jvromans@squirrel.nl> said:
+
+  > Hi,
+  > While indexing one of my modules, I get the following error:
+
+  >     Status: Permission missing
+  >     ==========================
+
+  > 	 module: DB
+  > 	version: 
+  > 	in file: Data-Report-0.01/lib/Data/Report/Base.pm
+
+  > This is the result of the following chunk of code:
+
+  >     my ($package, $filename, $line, $subroutine) = do { package DB; caller(1) };
+  >     my $got = scalar(@DB::args)-1;
+
+  > How can I avoid this error?
+
+I tend to believe that maybe the indexer should be taught about the
+special role of DB. What do you think?
+
+In general, of course, you can ignore the error because the rest of
+the distro got indexed correctly.
+
+And to answer your question, you *should* be able to avoid the indexer
+report by using the no_index key in the META.yml, but I have not
+verified.
+
+-- 
+andreas

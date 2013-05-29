@@ -1,0 +1,348 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:70563
+Return-Path: <philipp@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 26155 invoked from network); 31 Mar 2010 17:24:03 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 31 Mar 2010 17:24:03 -0000
+Received: (qmail 32308 invoked by uid 225); 31 Mar 2010 17:24:03 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 32258 invoked by uid 103); 31 Mar 2010 17:24:03 -0000
+Received: from x16.dev (10.0.100.26)
+  by x1.dev with QMQP; 31 Mar 2010 17:24:03 -0000
+X-Spam-Level: *
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: 16.mx.develooper.com
+Received: from mail.redfish-solutions.com (HELO mail.redfish-solutions.com) (66.232.79.143)
+    by 16.mx.develooper.com (qpsmtpd/0.80) with ESMTP; Wed, 31 Mar 2010 10:23:58 -0700
+Received: from [192.168.1.10] (builder.redfish-solutions.com [192.168.1.10])
+	(authenticated bits=0)
+	by mail.redfish-solutions.com (8.14.4/8.14.4) with ESMTP id o2VHNpgM002392
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-CAMELLIA256-SHA bits=256 verify=NO);
+	Wed, 31 Mar 2010 11:23:52 -0600
+Message-ID: <4BB38527.5030601@cpan.org>
+Date: Wed, 31 Mar 2010 11:23:51 -0600
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.7) Gecko/20100120 Fedora/3.0.1-1.fc12 Thunderbird/3.0.1
+MIME-Version: 1.0
+To: modules@cpan.org
+CC: Alian <alian@amisw.com>
+Subject: Requesting co-maintenance of Filesys::SmbClient
+Content-Type: multipart/mixed;
+ boundary="------------050600020602020008050700"
+X-Scanned-By: MIMEDefang 2.67 on 192.168.1.3
+X-Virus-Checked: Checked by ClamAV on 16.mx.develooper.com
+Approved: news@nntp.perl.org
+From: philipp@cpan.org (Philip Prindeville)
+
+--------------050600020602020008050700
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+Hi.
+
+I've been using Filesys::SmbClient for a while for a couple of projects,
+but noticed that it's significantly behind the currently shipping Samba
+(libsmbclient.a) API, and indeed is using a deprecated interface.
+
+The last release was about 4 years ago.
+
+I contacted the author about 5 weeks ago, and he said he didn't have a
+lot of time to work on it.
+
+I followed up saying I had some fixes, and he said he would try to get
+them in (below).
+
+Since then, I've sent a couple more patches, some questions, and links
+to a potential new release, but haven't heard back.
+
+I know the "Taking over" section explains to "tread lightly", but one of
+the issues I've tried to address is the fact that since Perl 5.6 came
+out, the model for IO has completely changed, and that IO::Handle is the
+base class that one is encouraged to use.  Part of the maintenance of
+this module has been adapting it to take into account the
+re-architecting of IO that went on in Perl 5.6.
+
+In doing so, I would bump the version from 3.1 to 4.0 to reflect the
+nature of the modified API.
+
+Please advise.
+
+Thanks,
+
+-Philip
+
+
+--------------050600020602020008050700
+Content-Type: message/rfc822;
+ name="Re: Resend: Updates for Filesys::SmbClient.eml"
+Content-Transfer-Encoding: 8bit
+Content-Disposition: attachment;
+ filename="Re: Resend: Updates for Filesys::SmbClient.eml"
+
+Return-Path: <alian@amisw.com>
+Received: from mail.redfish-solutions.com ([unix socket])
+	 by mail (Cyrus v2.3.16-Fedora-RPM-2.3.16-3.fc11) with LMTPA;
+	 Tue, 23 Feb 2010 01:35:37 -0700
+X-Sieve: CMU Sieve 2.3
+Received: from x1.develooper.com (x1.develooper.com [207.171.7.70])
+	by mail.redfish-solutions.com (8.14.3/8.14.3) with SMTP id o1N8ZUiC015323
+	for <philipp@redfish-solutions.com>; Tue, 23 Feb 2010 01:35:35 -0700
+Received: (qmail 11944 invoked by uid 225); 23 Feb 2010 08:35:29 -0000
+Delivered-To: philipp@cpan.org
+Received: (qmail 11940 invoked by uid 103); 23 Feb 2010 08:35:29 -0000
+Received: from x16.dev (10.0.100.26)
+  by x1.dev with QMQP; 23 Feb 2010 08:35:29 -0000
+X-Spam-Level: *
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: 16.mx.develooper.com
+Received: from smtp.albert.com (HELO chico.albert-inc.com) (62.23.130.171)
+    by 16.mx.develooper.com (qpsmtpd/0.80) with ESMTP; Tue, 23 Feb 2010 00:34:53 -0800
+Received: from chico.albert-inc.com (unknown [127.0.0.1])
+	by localhost (Postfix) with ESMTP id 3E39AA711D
+	for <philipp@cpan.org>; Tue, 23 Feb 2010 09:34:31 +0100 (CET)
+Received: by chico.albert-inc.com (Postfix, from userid 0)
+	id 6D86EA711F; Tue, 23 Feb 2010 09:34:24 +0100 (CET)
+X-Spam-Checker-Version: SpamAssassin 3.1.4 (2006-07-25) on 
+	chico.albert-inc.com
+Received: from vador (lns-bzn-47f-62-147-136-234.adsl.proxad.net [62.147.136.234])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by chico.albert-inc.com (Postfix) with ESMTP id 76E77A711F
+	for <philipp@cpan.org>; Tue, 23 Feb 2010 09:34:20 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by vador (Postfix) with ESMTP id A354064A4C
+	for <philipp@cpan.org>; Tue, 23 Feb 2010 08:51:45 +0100 (CET)
+X-Virus-Scanned: amavisd-new at albert.com
+Received: from vador ([127.0.0.1])
+	by localhost (vador.albert.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id J9c+1tZDN1cZ for <philipp@cpan.org>;
+	Tue, 23 Feb 2010 08:51:45 +0100 (CET)
+Received: from [10.1.1.150] (unknown [10.1.1.150])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by vador (Postfix) with ESMTP id 7832B64796
+	for <philipp@cpan.org>; Tue, 23 Feb 2010 08:51:45 +0100 (CET)
+Message-ID: <4B839314.5020506@amisw.com>
+Date: Tue, 23 Feb 2010 09:34:28 +0100
+From: Alian <alian@amisw.com>
+User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
+MIME-Version: 1.0
+To: Philip Prindeville <philipp@cpan.org>
+Subject: Re: Resend: Updates for Filesys::SmbClient
+References: <4B82EC5D.6090503@cpan.org> <b834c7f0f8284e28bdc0e49fc5ae6145.squirrel@webmail2.albert.com> <4B82F581.9010103@cpan.org>
+In-Reply-To: <4B82F581.9010103@cpan.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Old-Spam-Status: No, score=1.6 required=8.0 tests=AWL,BAYES_00,RCVD_IN_PBL,
+	RCVD_IN_SORBS_DUL autolearn=no version=3.1.4
+X-Old-Spam-Level: *
+X-Scanned-By: MIMEDefang 2.67 on 192.168.1.3
+
+Philip Prindeville a écrit :
+> On 02/22/2010 12:09 PM, alian@amisw.com wrote:
+>>> I was wondering if there's a new version of SmbClient due out?
+>>>
+>>> I noticed that it was missing some methods, including the TELL tie
+>>> method...  and wasn't derived from an IO::Handle, which most modules
+>>> doing I/O are single 5.8 came out.
+>>>
+>>> Also seems to be missing the flush() and truncate() methods.
+>>>
+>>> I have some comments/edits about the documentation as well, if you're
+>>> interested.
+>>>
+>>> Thanks,
+>>>
+>>> -Philip
+>>>     
+>> Hello,
+>>
+>> I've no time now to work and this. Send me patch, and i apply it with
+>> pleasure.
+>>
+>> Regards,
+>> --
+>> A.Barbet
+>>
+>>   
+> 
+> Is it the case for the indefinite future that you won't have a chance to
+> work on it?
+
+I don't know when I can work for CPAN ... but have enough time to apply patch if 
+you want contribute to this module.
+
+Regards,
+--
+A.BARBET
+
+
+--------------050600020602020008050700
+Content-Type: message/rfc822;
+ name="Attached Message"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="Attached Message"
+
+Message-ID: <4B9D74EE.8090405@cpan.org>
+Date: Sun, 14 Mar 2010 17:44:46 -0600
+From: Philip Prindeville <philipp@cpan.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.7) Gecko/20100120 Fedora/3.0.1-1.fc12 Thunderbird/3.0.1
+MIME-Version: 1.0
+To: Alian <alian@amisw.com>
+Subject: Re: Resend: Updates for Filesys::SmbClient
+References: <4B82EC5D.6090503@cpan.org> <b834c7f0f8284e28bdc0e49fc5ae6145.squirrel@webmail2.albert.com> <4B82F581.9010103@cpan.org> <4B839314.5020506@amisw.com>
+In-Reply-To: <4B839314.5020506@amisw.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+On 02/23/2010 01:34 AM, Alian wrote:
+> Philip Prindeville a =E9crit :
+>> On 02/22/2010 12:09 PM, alian@amisw.com wrote:
+>>>> I was wondering if there's a new version of SmbClient due out?
+>>>>
+>>>> I noticed that it was missing some methods, including the TELL tie
+>>>> method...  and wasn't derived from an IO::Handle, which most modules=
+
+>>>> doing I/O are single 5.8 came out.
+>>>>
+>>>> Also seems to be missing the flush() and truncate() methods.
+>>>>
+>>>> I have some comments/edits about the documentation as well, if you'r=
+e
+>>>> interested.
+>>>>
+>>>> Thanks,
+>>>>
+>>>> -Philip
+>>>>    =20
+>>> Hello,
+>>>
+>>> I've no time now to work and this. Send me patch, and i apply it with=
+
+>>> pleasure.
+>>>
+>>> Regards,
+>>> --=20
+>>> A.Barbet
+>>>
+>>>  =20
+>>
+>> Is it the case for the indefinite future that you won't have a chance =
+to
+>> work on it?
+>
+> I don't know when I can work for CPAN ... but have enough time to
+> apply patch if you want contribute to this module.
+>
+> Regards,
+> --=20
+> A.BARBET
+>
+I might have something to test soon.
+
+I rewrote parts of the .xs and I'm working on SmbClient.pm, I'm also
+adding an SmbClient/FileHandle.pm and an SmbClient/DirHandle.pm wrapper.
+
+The semantics of error indication will change significantly, so we'll
+need to do a major version bump to 4.0.
+
+Also, the semantics of methods like "write" and "read" have been to
+emulate those of the intrinsic functions and IO::Handle.
+
+Trying to decide how to expose the "open" and "new" methods in the
+DirHandle module...
+
+I'll keep you posted.
+
+-Philip
+
+
+
+--------------050600020602020008050700
+Content-Type: message/rfc822;
+ name="Attached Message"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="Attached Message"
+
+Message-ID: <4BA9019C.5000401@cpan.org>
+Date: Tue, 23 Mar 2010 11:59:56 -0600
+From: Philip Prindeville <philipp@cpan.org>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.7) Gecko/20100120 Fedora/3.0.1-1.fc12 Thunderbird/3.0.1
+MIME-Version: 1.0
+To: Alian <alian@amisw.com>
+Subject: Re: Resend: Updates for Filesys::SmbClient
+References: <4B82EC5D.6090503@cpan.org> <b834c7f0f8284e28bdc0e49fc5ae6145.squirrel@webmail2.albert.com> <4B82F581.9010103@cpan.org> <4B839314.5020506@amisw.com>
+In-Reply-To: <4B839314.5020506@amisw.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+On 02/23/2010 01:34 AM, Alian wrote:
+> Philip Prindeville a =E9crit :
+>> On 02/22/2010 12:09 PM, alian@amisw.com wrote:
+>>>> I was wondering if there's a new version of SmbClient due out?
+>>>>
+>>>> I noticed that it was missing some methods, including the TELL tie
+>>>> method...  and wasn't derived from an IO::Handle, which most modules=
+
+>>>> doing I/O are single 5.8 came out.
+>>>>
+>>>> Also seems to be missing the flush() and truncate() methods.
+>>>>
+>>>> I have some comments/edits about the documentation as well, if you'r=
+e
+>>>> interested.
+>>>>
+>>>> Thanks,
+>>>>
+>>>> -Philip
+>>>>    =20
+>>> Hello,
+>>>
+>>> I've no time now to work and this. Send me patch, and i apply it with=
+
+>>> pleasure.
+>>>
+>>> Regards,
+>>> --=20
+>>> A.Barbet
+>>>
+>>>  =20
+>>
+>> Is it the case for the indefinite future that you won't have a chance =
+to
+>> work on it?
+>
+> I don't know when I can work for CPAN ... but have enough time to
+> apply patch if you want contribute to this module.
+>
+> Regards,
+> --=20
+> A.BARBET
+>
+
+I've done a bit of work on it.
+
+Since you don't have time to maintain it, how about making me a co-owner?=
+
+
+I've got a new version here:
+
+ftp://ftp.redfish-solutions.com/pub/Filesys-SmbClient-3.99_10.tar.gz
+
+I was thinking we would release it at as 4.00.
+
+Thanks,
+
+-Philip
+
+
+
+--------------050600020602020008050700--

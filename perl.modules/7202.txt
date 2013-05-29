@@ -1,0 +1,76 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7202
+Return-Path: <skud@newbabe.mengwong.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 37800 invoked from network); 27 Aug 2001 14:00:42 -0000
+Received: from newbabe.mengwong.com (postfix@208.210.125.227)
+  by onion.valueclick.com with SMTP; 27 Aug 2001 14:00:42 -0000
+Received: by newbabe.mengwong.com (Postfix, from userid 669)
+	id B8566140A5; Mon, 27 Aug 2001 09:59:46 -0400 (EDT)
+Date: Mon, 27 Aug 2001 09:59:46 -0400
+To: "Andrew M. Langmead" <aml@world.std.com>
+Cc: modules@perl.org
+Subject: Re: author ID request
+Message-ID: <20010827095946.A19951@infotrope.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20010827002106.A9195@world.std.com>
+User-Agent: Mutt/1.3.18i
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: skud@infotrope.net (Kirrily Robert)
+References: <20010827002106.A9195@world.std.com>
+
+On Mon, Aug 27, 2001 at 12:21:06AM -0400, Andrew M. Langmead wrote:
+| 
+| I'm sorry, if I realize that I'd wind up defending the name, I'd have
+| put the rational in my original message. The OS specific name spaces
+| nearly universally run under the OS they are named for. Under the
+| Macintosh, one would be best served by using the OS's native API (as
+| accessed in perl with the Mac::Resource module) and not this perl
+| level re-implementation. As a comparison, would you expect to find a
+| Unix implementation of COM in Win32::OLE? A windows version of popen()
+| in Unix::PipedFileHandle? 
+
+Those two examples aren't analogous.
+
+I'm expect to find platform-independent tools for identifying Windows
+file types or for manipulating the Windows registry under Win32::,
+however.  I'd expect to find popen under POSIX::.
+
+| When initially developing this module, I asked around for suggestions
+| on both the name of the module and the design (although the only
+| evidence I can find is this thread in comp.lang.perl.modules which the
+| only common answer for a hierarchy is Mac::
+| 
+| <URL:http://groups.google.com/groups?q=group:comp.lang.perl.modules+
+| author:aml%40world.std.com&hl=en&safe=off&scoring=r&rnum=9&
+| selm=F25vyu.IB5%40world.std.com>
+
+I just asked on #perl and the response was unanimously "Mac", and
+unanimously against "Data".  One mac-knowledgeable person there asked
+what resource-fork model your module worked with, and suggested
+Mac::Resources::Netatalk or Mac::Resources::LinuxHFS or similar.
+
+| I guess to bring it to a point, I strongly feel that Mac:: is the
+| wrong hierarchy for the module to be in. The choice of Data:: wasn't
+| done without any thought or consultation, although I agree it isn't
+| ideal.
+| 
+| Do you have any suggestions besides Mac:: for a namespace?
+
+A suggestion was made for starting a top-level namespace for
+cross-platform tools, but no good name was suggested for it.
+
+The general process you should be doing is drilling down on this blurry
+"data" thing and saying "what sort of data is it?"  Well, it's a file.
+OK, so how about File::?  Perhaps something like File::Mac::Resources?
+Or if it's more like a file system (I'm not very knowledgeable about
+macs) then perhaps Filesys:: 
+
+But *not* Data.
+
+K.

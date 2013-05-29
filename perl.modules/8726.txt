@@ -1,0 +1,107 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8726
+Return-Path: <siracusa@mindspring.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11032 invoked by uid 75); 10 Nov 2001 19:52:30 -0000
+Received: from chmls06.mediaone.net (HELO chmls06.mediaone.net) (24.147.1.144)
+  by onion.perl.org (qpsmtpd/0.04) with SMTP; Sat Nov 10 19:52:30 2001 -0000
+Received: from [65.96.138.4] (sracusa.ne.mediaone.net [65.96.138.4])
+	by chmls06.mediaone.net (8.11.1/8.11.1) with ESMTP id fAAJqw821383
+	for <modules@perl.org>; Sat, 10 Nov 2001 14:52:58 -0500 (EST)
+User-Agent: Microsoft-Entourage/9.0.1.3108
+Date: Sat, 10 Nov 2001 14:52:18 -0500
+Subject: New object/class module - what to name it?
+To: <modules@perl.org>
+Message-ID: <B812EFA2.2428B%siracusa@mindspring.com>
+Mime-version: 1.0
+Reply-To: siracusa@mindspring.com
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+Approved: news@nntp.perl.org
+From: siracusa@mindspring.com (John Siracusa)
+
+Over the past few years, I've been carrying around (and/or re-writing from
+scratch) a very simple object base class that I like to use in my work.  I
+never though to upload it to CPAN since I figured there must already be
+something similar.  Well, I've started looking and I can't find anything
+that fits the bill on CPAN, so I'm considering uploading it.
+
+My base class does almost nothing.  It requires hash-based objects; it
+provides very loose conventions for cascading initialization; and it
+auto-creates simple scalar accessors via AUTOLOAD.  There's also a (still
+experimental) "pre-compile" option for use with mod_perl, etc.
+
+The module has historically been named XXX::Object, where XXX is some
+identifier unique to the environment I'm working in at the time: my initials
+for personal use, a company name for business use, etc.
+
+Here's a usage example:
+
+   package Person;
+
+   use XXX::Object;
+   our @ISA = qw(XXX::Object);
+
+   sub init # Override init
+   {
+     my($self) = shift;
+
+     # Add attributes
+     $self->{'name'} = undef;
+     $self->{'age'}  = undef;
+
+     # Call base class init()
+     $self->SUPER::init(@_);
+   }
+
+   ...
+
+   $person = Person->new(name => 'John');
+
+   $person->age(26);
+
+   print $person->name, " is ", $person->age, " years old.";
+
+Like I said, it's dead simple.  The only wrinkle is that the constructor:
+
+   $person = Person->new(name => 'John');
+
+actually calls $self->name('John') rather than setting the hash key
+directly.  (To better encapsulate you, my dear... :)
+
+I find this module useful because it is so light-weight.  It's easy to
+expand upon to further constrain things, and stuff like Tie::SecureHash is
+always out there if I need it.  But I've built very large class hierarchies
+on my XXX::Object base class with great success.  I'd like to share my tiny
+little module with the world (before Perl 6 arrives and makes it unnecessary
+;)
+
+But now we come to naming.  What should I call this thing if/when its placed
+in CPAN?  It looks like Class::* is the hierarchy of choice, but I much
+prefer the expressiveness of:
+
+    @ISA = qw(XXX::Object);
+
+"This is-a XXX::Object."  "Is $foo a 'XXX::Object'?"  And so on.
+Substituting "Class" seems odd to me.  But whatever, the problem of what
+goes either before or after "Object" or "Class" remains.
+
+All I've got so far are:
+
+    Object::Lite
+    Object::Simple
+
+    Class::Lite
+    Class::Simple
+    Class::Object::Lite
+
+Er...or something.  And, of course, you could just tell me not to upload it
+at all because there's already something similar or identical on CPAN that I
+haven't found :)
+
+So, ideas?  Suggestions?  Thanks.
+
+-John
+

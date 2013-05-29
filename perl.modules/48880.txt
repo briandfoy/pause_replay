@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:48880
+Return-Path: <zefram@fysh.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 24021 invoked from network); 18 May 2006 09:53:33 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 18 May 2006 09:53:33 -0000
+Received: (qmail 23358 invoked by uid 225); 18 May 2006 09:53:32 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 23347 invoked by alias); 18 May 2006 09:53:30 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from fysh.org (HELO bowl.fysh.org) (83.170.75.51)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 18 May 2006 02:52:34 -0700
+Received: from zefram by bowl.fysh.org with local (Exim 3.35 #1 (Debian))
+	id 1FgfB8-0001W8-00; Thu, 18 May 2006 10:52:22 +0100
+Date: Thu, 18 May 2006 10:52:22 +0100
+To: modules@perl.org
+Subject: Re: Module submission Time::UTC::Now
+Message-ID: <20060518095222.GA3057@fysh.org>
+References: <200605162159.k4GLxk8t031993@pause.perl.org> <170520061611081265%brian.d.foy@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <170520061611081265%brian.d.foy@gmail.com>
+Approved: news@nntp.perl.org
+From: zefram@fysh.org (Zefram)
+
+brian d foy wrote:
+>Out of curiosity, how does Perl's gmtime fail?
+
+It's reliant on the system's time() function, which has three major
+problems.  (a) Its resolution is only 1 s, so in a function call that
+completes in under a second it can't really give the *current* time, just
+the most recent integral second.  (b) It's incapable of indicating a time
+within a leap second, and if it does anything at all at a leap second
+it is likely to leap at the wrong moment.  (c) It gives no indication
+of how accurate the result is.
+
+>                                               Do you skip the
+>localhost and hit the network, or something else?
+
+I considered implementing an SNTP client as a fallback, but no.  For full
+functionality it relies on the local clock being NTP-synchronised.
+It uses the ntp_adjtime() interface, which gives the system clock to a
+resolution of 1 us, flags that let it be decoded correctly around leap
+seconds, and inaccuracy bounds.  A bit of processing on this data yields
+meaningful results.  If ntp_adjtime() isn't available then it falls
+back on gettimeofday() (resolution 1 us) or as a last resort time(),
+but only if the caller will accept the infinite inaccuracy bound.
+
+I'm hoping that the implementation can be extended in the future to
+provide full functionality on non-Unix systems, using the local equivalent
+of ntp_adjtime().  I don't know any such systems, so I can't do that yet,
+but establishing the interface should help.
+
+I'm already using this module to implement a clock display program, which
+is not only telling me the time in both UTC and TAI but is also telling
+me that it could be up to 57 centiseconds out.  The same clock program
+on my machine at work tells me the system time with a maximum inaccuracy
+of 6 cs, but also tells me that the system time is not synchronised to
+UTC (because NTP is firewalled off, bloody stupid `security' policy).
+I like the explicit inaccuracy bound a lot.
+
+-zefram

@@ -1,0 +1,132 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21445
+Return-Path: <nobody@pause.x.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 43563 invoked by uid 76); 2 Jun 2003 23:31:53 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Mon, 02 Jun 2003 16:31:53 -0700
+Received: (qmail 30372 invoked by uid 225); 2 Jun 2003 23:31:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30363 invoked by uid 507); 2 Jun 2003 23:31:50 -0000
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Mon, 02 Jun 2003 16:31:48 -0700
+Received: from pause.perl.org (IDENT:nobody@localhost [127.0.0.1])	by pause.perl.org (8.12.9/8.12.9) with ESMTP id h52NVjtQ013909;	Tue, 3 Jun 2003 01:31:45 +0200
+Received: (from nobody@localhost)	by pause.perl.org (8.12.9/8.12.9/Submit) id h52NVjG8013908;	Tue, 3 Jun 2003 01:31:45 +0200
+Date: Tue, 3 Jun 2003 01:31:45 +0200
+Message-ID: <200306022331.h52NVjG8013908@pause.perl.org>
+Subject: Module submission SQL::ObjectModel
+Reply-To: modules@perl.org
+To: modules@perl.org, duncand@cpan.org
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.8 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.x.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       SQL::ObjectModel
+  DSLIP:       cdhOg
+  description: Unserialized SQL objects, use like XML DOM
+  userid:      DUNCAND (Darren Duncan)
+  chapterid:   11 (String_Lang_Text_Proc)
+  communities:
+    modules@perl.org, poop-group@lists.sourceforge.net,
+    dbi-users@perl.org
+
+  similar:
+    most of the SQL::* modules, some object-to-database mapping tools
+
+  rationale:
+
+    This module manages objects which are equivalent to SQL statements
+    and database schema definitions. This is analagous to how XML DOMs
+    are objects that are equivalent XML strings, and they can be
+    converted back and forth at will.
+
+    But the actual conversion is not handled by this module, but rather
+    by third party extension modules or code of your choice. This is
+    analagous to how Perl hashes or arrays store a list of values which
+    can also be stored in a string with the appropriate encoding.
+
+    These objects are intended to represent all kinds of SQL, both DML
+    and DDL, both ANSI standard and RDBMS vendor extensions. Unlike
+    basically all of the other SQL generating/parsing modules I know
+    about, which are limited to basic DML and only support table
+    definition DML, my module supports arbitrarily complex select
+    statements, with composite keys and unions, and calls to stored
+    functions; my module can also define views and stored procedures and
+    triggers.
+
+    Since said items are just described by my module rather than
+    implemented, other modules can implement the description any way
+    they want, which could mean either generating and executing SQL, or
+    generating Perl code that does the same task, should they want to.
+    My module makes this easy.
+
+    It is intended that SQL::ObjectModel objects can be passed around
+    and used by programs instead of SQL strings, and can be used in all
+    of the same ways (but different syntax).
+
+    The objects don't exactly match an existing SQL dialect, but a new
+    one which is a normalized superset of existing dialects. Normalized
+    means that if other dialects have different ways of saying the same
+    thing, there is only one way to say it in the objects. All
+    functionality that a database can do is representable, when
+    reasonable, even if some other databases don't support the feature.
+    So if you want to use a feature you still can, but that limits which
+    databases you can use. So you define the object the same way no
+    matter which database you are using.
+
+    These modules are especially suited for use with applications or
+    modules that make use of data dictionaries to control what they do.
+    It is common in applications that they interpret their data
+    dictionaries and generate SQL to accomplish some of their work,
+    which means making sure generated SQL is in the right dialect or
+    syntax, and making sure literal values are encoded correctly. By
+    using my module, they can simply copy appropriate individual
+    elements in their data dictionaries to my module, including column
+    names, table names, function names, literal values, and they don't
+    have to do any string parsing or assembling.
+
+    While there is some overlap in functionality, I believe most of the
+    features in my module have never been provided by another CPAN
+    module, and that it would be valuable. This is also being
+    implemented such that many existing CPAN modules could be updated to
+    use the objects rather than SQL strings or other proprietary
+    SQL-representing-structures, if they want to.
+
+    Please let me know if you need clarification, or you want to
+    suggest an alternate module name.
+
+    I chose "... language text processing ..." as the category for this
+    module since that is where most of the other SQL::* modules are
+    located. But this module could conceivably go under "... data types
+    ..." or "... database interfaces ..." instead. I will note, however,
+    that my module doesn't actually talk to any databases itself, and it
+    does not require that someone using it would do so; that is just the
+    common usage.
+
+    Thank you.
+
+  enteredby:   DUNCAND (Darren Duncan)
+  enteredon:   Mon Jun  2 23:31:44 2003 GMT
+
+The resulting entry would be:
+
+SQL::
+::ObjectModel     cdhOg Unserialized SQL objects, use like XML DOM   DUNCAND
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=7a400000_5d708721cd38e94e&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=7a400000_5d708721cd38e94e&SUBMIT_pause99_add_mod_insertit=1

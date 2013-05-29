@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:77
+Return-Path: <k@hohenstaufen.in-berlin.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20319 invoked from network); 16 Oct 1999 13:57:28 -0000
+Received: from dubravka.in-berlin.de (HELO hohenstaufen.in-berlin.de) (0@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 16 Oct 1999 13:57:28 -0000
+Received: (from k@localhost)
+	by hohenstaufen.in-berlin.de (8.9.1a/8.9.1) id PAA15432;
+	Sat, 16 Oct 1999 15:57:18 +0200
+Sender: k@hohenstaufen.in-berlin.de
+To: John Porter <jdporter@min.net>
+Cc: modules@perl.org
+Subject: Re: [RFC] Tie::Array::Offset ?
+References: <19991015150405.A14149@min.net>
+Date: 16 Oct 1999 15:57:18 +0200
+In-Reply-To: John Porter's message of "Fri, 15 Oct 1999 15:04:05 -0400"
+Message-ID: <sfcd7ufwgqp.fsf@hohenstaufen.in-berlin.de>
+Lines: 54
+User-Agent: Gnus/5.070097 (Pterodactyl Gnus v0.97) Emacs/20.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Fri, 15 Oct 1999 15:04:05 -0400, John Porter <jdporter@min.net> said:
+
+ > Hi, I have created a module defining a TIEARRAY class,
+ > which implements the following function:
+
+ > Given an "offset" value, and an existing array variable
+ > (possibly anonymous), map accesses to the tied variable
+ > into the given existing variable, with indexes offset
+ > by the given "offset" amount.
+
+ > For example:
+
+ > 	@a = qw( alpha beta gamma );
+
+ > 	tie @b, 'Tie::Array::Offset', 1, \@a;
+
+ > 	print $b[0];  # prints 'beta';
+ > 	print $b[-1]; # prints 'gamma', as usual.
+
+ > Modifications to the "underlying" array are visible
+ > in the tied array, because the ref is remembered:
+
+ > 	push @a, 'delta';
+ > 	print $b[-1]; # now prints 'delta'.
+
+ > As well as:
+
+ > 	push @b, 'epsilon';
+ > 	print $a[-1]; # prints 'epsilon'.
+
+ > shift does the expected thing:
+
+ > 	shift @b;
+ > 	print $a[1]; # prints 'gamma', because 'beta' is gone.
+
+
+ > What do you think?  Tie::OffsetArray?
+ > As I opinied earlier, I would consider Tie::Array::Offset to
+ > be appropriate...
+
+About Tie::FooBar vs. Tie::Bar::Foo vs. Tie::Foo::Bar -- In the past
+we have tried to keep everything 2-level and so I'd prefer to let that
+stay so.
+
+On the name Tie::OffsetArray, I see no better name. But...
+
+ > Also, FWIW, this sort of mechanism (it's bloody simple) would
+ > have made pseudo-hashes a lot more natural to work with...
+
+...on this statement, I'm baffled. Maybe it depends on the appropriate
+definition of natural:-)
+
+-- 
+andreas

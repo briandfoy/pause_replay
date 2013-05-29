@@ -1,0 +1,108 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5947
+Return-Path: <Ron.Isaacson@morganstanley.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 66490 invoked from network); 1 Jun 2001 14:00:13 -0000
+Received: from pivsbh1-x0.ms.com (HELO pivsbh1.ms.com) (199.89.64.101)
+  by onion.valueclick.com with SMTP; 1 Jun 2001 14:00:13 -0000
+Received: (from uucp@localhost)
+	by pivsbh1.ms.com (8.11.3/8.11.3) id f51E0A103862
+	for <modules@perl.org>; Fri, 1 Jun 2001 10:00:10 -0400 (EDT)
+Received: from localhost(127.0.0.1) by pivsbh1 via smap (4.1)
+	id sma.9914040081.003812; Fri, 1 Jun 01 10:00:08 -0400
+Received: (from uucp@localhost)
+	by pivsbh1.ms.com (8.11.3/8.11.3) id f51E08K03772
+	for <modules@perl.org>; Fri, 1 Jun 2001 10:00:08 -0400 (EDT)
+Received: from unknown(144.14.110.221) by pivsbh1 via smap (4.1)
+	id sma.9914040071.003727; Fri, 1 Jun 01 10:00:07 -0400
+Received: from morganstanley.com (bk12ronisaacpc.morgan.com [144.14.248.46])
+        by pismh1.ms.com (8.8.5/imap+ldap v2.4) with ESMTP id KAA18711
+        for <modules@perl.org>; Fri, 1 Jun 2001 10:00:06 -0400 (EDT)
+Message-ID: <3B179FE6.ECD0CAE7@morganstanley.com>
+Date: Fri, 01 Jun 2001 10:00:06 -0400
+Reply-To: Ron.Isaacson@morganstanley.com
+Organization: Morgan Stanley
+X-Mailer: Mozilla 4.75 [en]C-CCK-MCD MS4.75 V20001029.1  (WinNT; U)
+X-Accept-Language: en,pdf
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: New User Request
+References: <3B16606D.302F16A8@morganstanley.com> <m3d78opssv.fsf@ak-71.mind.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: Ron.Isaacson@morganstanley.com (Ron Isaacson)
+
+"Andreas J. Koenig" wrote:
+> 
+> >>>>> On Thu, 31 May 2001 11:17:01 -0400, Ron Isaacson <Ron.Isaacson@morganstanley.com> said:
+> 
+>   > I have one module ready for near-immediate release: Env::Module, a Perl
+>   > interface to modulecmd, to automate loading of modulefiles from Perl
+>   > scripts.
+> 
+> Can you please use the form "Apply for namespace..." on PAUSE for
+> registering? And please try to describe the purpose of the module a
+> bit more so that an innocent reader gets the intent--I do not get it.
+
+Hi Andreas --
+
+Thanks for the quick reply! It seems the Env:: namespace is already in
+use under Chapter 4 (user DSB has Env::Path). Env::Module is similar in
+theory, although it works with modulefiles. By definition, from
+www.modules.org:
+
+  The Modules package provides for the dynamic modification of a user's
+  environment via modulefiles. 
+
+  Each modulefile contains the information needed to configure the shell
+  for an application. Once the Modules package is initialized, the
+  environment can be modified on a per-module basis using the module
+  command which interprets modulefiles. Typically modulefiles instruct
+  the module command to alter or set shell environment variables such as
+  PATH, MANPATH, etc. modulefiles may be shared by many users on a
+  system and users may have their own collection to supplement or
+  replace the shared modulefiles
+
+Here's an example: let's say you have several releases of xemacs
+installed, and you want an easy way to choose your favorite release.
+Here's a modulefile that might be called "xemacs/21.1.14":
+
+  #%Module
+
+  if { [file isdirectory /usr/xemacs/21.1.14/bin] } {
+          prepend-path PATH /usr/xemacs/21.1.14/bin
+  }
+
+  if { [file isdirectory /usr/xemacs/21.1.14/man] } {
+          prepend-path MANPATH /usr/xemacs/21.1.14/man
+  }
+
+Then there's a binary, called modulecmd, which outputs eval'able code in
+a variety of languages. If your shell is ksh, you might type: "eval
+`modulecmd ksh load xemacs/21.1.14`" to properly configure your
+environment.
+
+Now, modulecmd supports perl as well. If I issue the command "modulecmd
+perl load xemacs/21.1.14", given the above modulefile, it will spit out
+something like this (well not exactly, but here's a simplified version):
+
+  $ENV{'PATH'} = "/usr/xemacs/21.1.14/bin:" . $ENV{'PATH'};
+  $ENV{'MANPATH'} = "/usr/xemacs/21.1.14/man:" . $ENV{'MANPATH'};
+
+That's where Env::Module comes in. You say Env::Module::load
+('xemacs/21.1.14') and it will run modulecmd and eval the output. (It
+can also unload modules and do some other fancy stuff, like check for
+errors.)
+
+Obviously, this will only be useful to people who use modulecmd and have
+some modulefiles installed. Can you recommend a chapter for this, and a
+good succinct way to describe it? :-)
+
+--
+Ron Isaacson
+Morgan Stanley
+ron.isaacson@morganstanley.com / (718) 754-2345

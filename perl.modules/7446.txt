@@ -1,0 +1,137 @@
+Newsgroups: perl.beginners.cgi,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.beginners.cgi:2220 perl.modules:7446
+Return-Path: <mark@summersault.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 80293 invoked from network); 7 Sep 2001 16:13:59 -0000
+Received: from nollie.summersault.com (qmailr@208.10.44.140)
+  by onion.valueclick.com with SMTP; 7 Sep 2001 16:13:59 -0000
+Received: (qmail 72047 invoked from network); 7 Sep 2001 16:16:09 -0000
+Received: from hoobella.summersault.com (HELO summersault.com) (208.10.44.182)
+  by nollie.summersault.com with SMTP; 7 Sep 2001 16:16:09 -0000
+Message-ID: <3B98F250.D362A184@summersault.com>
+Date: Fri, 07 Sep 2001 11:14:13 -0500
+Reply-To: mark@summersault.com
+Organization: Summersault
+X-Mailer: Mozilla 4.78C-CCK-MCD {C-UDP; EBM-APPLE} (Macintosh; U; PPC)
+X-Accept-Language: en,pdf
+MIME-Version: 1.0
+To: Maryana Osipchuk <chyortik@inbox.lv>
+CC: beginners-cgi@perl.org, modules@perl.org, perl-help@perl.org
+Subject: Re: FW: problem with using HTML::FormValidator
+References: <B7BC17C9.9445%jsimoni@totalsite.com> <3B97B4CB.678C958C@summersault.com> <013c01c137a1$2dc25f60$2fa015d9@chyortik>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: mark@summersault.com (Mark Stosberg)
+
+
+Hello again Maryana,
+
+It appears that you are not following the format of the example given
+below, 
+which is the cause of you error. You have the right idea about how to
+call an 
+anonymous subroutine (like this: \&subroutine ). Here's a test script
+with the
+syntax you are looking for:
+#######
+use Data::FormValidator;
+use strict;
+
+my $input_profile = 
+{
+   optional => [ qw( my_field other_field) ],
+   constraints => {
+		  my_field => {
+				constraint => \&custom_constraint,
+				params	   => [ qw( my_field other_field ) ],
+		   } 
+   }                
+};
+
+my $validator = new Data::FormValidator({default => $input_profile});
+
+my $input_hashref = {   
+	my_field => 'toast', 
+    other_field => 'jam',
+};
+
+sub custom_constraint {
+	my ($my_field, $other_fields) = @_;
+	return  if ($my_field eq $other_fields);
+	
+}
+
+my  ($valids, $missings, $invalids, $unknowns) = 
+	$validator->validate($input_hashref, 'default');
+
+use Data::Dumper; 
+print "valid: ". Dumper ($valids);
+print "missing: ". Dumper ($missings);
+print "invalid: ". Dumper ($invalids);
+
+####
+
+
+Maryana Osipchuk wrote:
+> 
+> Hi, Mark!
+> 
+> Thanx for answer - it's partly help me to resolve my problem (now I use Data::FormValidator). Tnx for so usefull module ;o)
+> 
+> But to call my function I need do it in that way:
+> 
+> p1 => {
+>               constraint => \&main::valid_equiv,
+>               params => [ qw (p1 p2)],
+>       },
+> when I try to call it (as described in docs, where cc_number name of builtin validator)
+> 
+> p1 => {
+>               constraint => "valid_equiv",
+>               params => [ qw (p1 p2)],
+>       },
+> 
+> I receive an error:
+> Undefined subroutine &Data::FormValidator::valid_valid_equiv called at C:/Perl/lib/Data/FormValidator.pm line 579.
+> There are no samples in docs how to call external subroutine.
+> 
+> Tnx a lot for answer ;-)
+> 
+> --
+> Maryana
+> 
+> ----- message  --------
+> 
+> > Hello Maryana,
+> >
+> > First, if you just learning HTML::FormValidator, I suggest looking into
+> > Data::FormValidator. It contains all the old functions plus a few new features.
+> >
+> > In your case, I think your solution may be found an example in the
+> > documentation which looks like this:
+> >
+> >     {
+> >         customer_infos => {
+> >              constraints => {
+> >                 cc_no      => {  constraint  => "cc_number",
+> >                                  params      => [ qw( cc_no cc_type ) ],
+> >                                 },
+> > }
+> > }
+> >
+> >
+> > # cc_no is the field name with the constraint
+> > # cc_number is the custom function
+> >
+> >    -mark
+
+-- 
+ . . . . . . . . . . . . . . . . . . . . . . . . . .
+   Mark Stosberg              Principal Developer  
+   mark@summersault.com       Summersault, LLC     
+   v: 765-939-9301 ext 223    website development  
+ . . . . . http://www.summersault.com/ . . . . . . .

@@ -1,0 +1,102 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:42531
+Return-Path: <KHC03156@nifty.ne.jp>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17832 invoked from network); 11 Aug 2005 05:00:57 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 11 Aug 2005 05:00:57 -0000
+Received: (qmail 7406 invoked by uid 225); 11 Aug 2005 05:00:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7397 invoked by alias); 11 Aug 2005 05:00:55 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from userg500.nifty.com (HELO userg500.nifty.com) (202.248.238.80)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 10 Aug 2005 22:00:51 -0700
+Received: from [192.168.0.6] (eaoska212109.adsl.ppp.infoweb.ne.jp [220.209.19.109])by userg500.nifty.com with ESMTP id j7B50VCc014698;
+	Thu, 11 Aug 2005 14:00:31 +0900
+Authentication-Results: userg500.nifty.com from=KHC03156@nifty.ne.jp; sender-id=neutral; spf=neutral
+Message-ID: <42FADB6F.1030200@nifty.ne.jp>
+Date: Thu, 11 Aug 2005 14:00:31 +0900
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: ja, en-us, en
+MIME-Version: 1.0
+To: modules@perl.org
+CC: comdog@panix.com
+Subject: Re: Module submission warnings::DynamicScope
+References: <200508032112.j73LCf0C025104@pause.perl.org> <100820051048055974%comdog@panix.com>
+In-Reply-To: <100820051048055974%comdog@panix.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: KHC03156@nifty.ne.jp (Keitaro Miyazaki)
+
+Hello,
+
+thank you for your response :-)
+
+ > Looking at your code and reading perllexwarn, I think your
+ > code should work (and it doesn't). Perhaps you can make the
+ > right fix to warnings.pm (or its friends). :)
+
+I think present behavior of "warnings" pragma is proper, and
+the result which brought about by my code describes it's
+nature -- it works with static scope:
+
+|(1)  use warnings;
+|
+|     package GrandMother;
+|     use warnings::register;
+|
+|     sub deliver {
+|       my $self;
+|       warnings::warnif("GrandMother", "You have warned by grandma.");
+|       bless \$self;
+|     }
+|
+|     package Mother;
+|     use base "GrandMother";
+|     use warnings::register;
+|
+|     sub deliver {
+|       warnings::warnif("Mother", "You have warned by mom.");
+|(2)    $_[0]->SUPER::deliver();
+|     }
+|
+|     package main;
+|(3)  no warnings "GrandMother";
+|(4)  no warnings "Mother";
+|
+|(5)  my $me = Mother->deliver(); # => You have warned by grandma.
+
+Let's see what's happen.
+
+   A. at the line (5), warning bit of category "GrandMother" is
+      OFF by pragma at line(3).
+
+   B. In Mother::deliver method around line (2)  called from line
+      (5), warning bit of category "GrandMother" is ON by pragma at
+      line (1), because of "use warnings" pragma turns on warning
+      bits of all categories, and it's value can't be overridden
+      at runtime.
+
+   C. As the result of B., GrandMother::deliver method called from
+      line (2) warns here.
+
+   D. Returns to line (5), warning bit of category "Mother" is OFF
+      by pragma at line (4), so "Mother::deliver" method does not
+      warn.
+
+As you see above, warnings pragma works properly and I think there
+is no room to be fixed.
+
+Although warnings pragma is faithful to it's duty, the code above
+brings me the result which I didn't want, so I wrote this module.
+
+Best regards,
+---
+Keitaro Miyazaki<kmiyazaki@cpan.org>
+

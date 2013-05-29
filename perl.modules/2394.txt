@@ -1,0 +1,76 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2394
+Return-Path: <schwern@athens.arena-i.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18087 invoked from network); 7 Jul 2000 20:07:17 -0000
+Received: from athens.arena-i.com (166.84.148.130)
+  by tmtowtdi.perl.org with SMTP; 7 Jul 2000 20:07:17 -0000
+Received: by athens.arena-i.com (Postfix, from userid 1000)
+	id 838563848; Fri,  7 Jul 2000 16:07:12 -0400 (EDT)
+Date: Fri, 7 Jul 2000 16:07:12 -0400
+To: "Kurt D. Starsinic" <kstar@chapin.edu>, modules@perl.org
+Subject: Re: Class::WhiteHole
+Message-ID: <20000707160712.A9396@athens.aocn.com>
+References: <20000707042639.A1219@blackrider.aocn.com> <20000707095840.B17806@O2.chapin.edu> <20000707151929.S465@pobox.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.1.3i
+In-Reply-To: <20000707151929.S465@pobox.com>; from gbarr@pobox.com on Fri, Jul 07, 2000 at 03:19:29PM +0100
+Sender: schwern@athens.arena-i.com
+Approved: news@nntp.perl.org
+From: schwern@pobox.com (Michael G Schwern)
+
+On Fri, Jul 07, 2000 at 03:19:29PM +0100, Graham Barr wrote:
+> I have not looked at the code, but I assume it works by Class::WhiteHole 
+> defining an AUTOLOAD sub which just dies. 
+
+Pretty much.  You have to do a few tricks for DESTROY and to make sure
+the right error message shows up (all of which I forgot to do in 0.01
+*sigh*)
+
+> If so then I would consider a
+> patch to AutoLoader.pm which allows
+> 
+>   no AutoLoader;
+
+That was along the lines of my first thought, too.  Problem is when
+used naively, no AutoLoader could severely screw things up.  Consider:
+
+package Foo;
+
+use AutoLoader qw(AUTOLOAD);
+@ISA = qw(AutoLoader);
+
+sub public_bar {
+    my($self) = shift;
+    return $self->_autoloaded_private_method();
+}
+__END__
+sub _autoloaded_private_method {
+    return 'whatever';
+}
+
+
+# Meanwhile, in a nearby file
+package Bar;
+
+use base qw(Foo);
+no AutoLoader;
+
+# Ooops, public_bar() can't autoload _autoloaded_private_method()
+# because we blocked reaching AutoLoader from Bar.
+Bar->public_bar;
+
+
+Blocking inheritance has to be done selectively and carefully.
+
+
+-- 
+
+Michael G Schwern      http://www.pobox.com/~schwern/	   schwern@pobox.com
+<GuRuThuG> make a channel called Perl, and infest it with joking and
+fun....it doesnt make alot of sense.
+

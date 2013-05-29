@@ -1,0 +1,114 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21224
+Return-Path: <nobody@pause.x.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 40030 invoked by uid 76); 19 May 2003 16:10:58 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Mon, 19 May 2003 09:10:58 -0700
+Received: (qmail 23601 invoked by uid 225); 19 May 2003 16:10:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 23592 invoked by uid 507); 19 May 2003 16:10:55 -0000
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Mon, 19 May 2003 09:10:54 -0700
+Received: from pause.perl.org (IDENT:nobody@localhost [127.0.0.1])	by pause.perl.org (8.12.9/8.12.9) with ESMTP id h4JGApI3018003;	Mon, 19 May 2003 18:10:51 +0200
+Received: (from nobody@localhost)	by pause.perl.org (8.12.9/8.12.9/Submit) id h4JGAnov018001;	Mon, 19 May 2003 18:10:49 +0200
+Date: Mon, 19 May 2003 18:10:49 +0200
+Message-ID: <200305191610.h4JGAnov018001@pause.perl.org>
+Subject: Module submission protocol
+Reply-To: modules@perl.org
+To: modules@perl.org, jsmith@cpan.org
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.8 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.x.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       protocol
+  DSLIP:       bdphp
+  description: Define an API for use by a package
+  userid:      JSMITH (James G Smith)
+  chapterid:    2 (Perl_Core_Modules)
+  communities:
+    module-authors@perl.org (mentioned, no immediate cries of outrage),
+    irc
+
+  similar:
+    Perl6::Class, but doesn't handle class prototypes (source filter
+    that adds a new Perl keyword comparable to `package'), but
+    `prototype' isn't a Perl6 thing
+
+  rationale:
+
+    This package introduces a new Perl keyword, protocol, that allows
+    API declarations via subroutine prototypes.
+
+    Usually, an algorithm is written to require objects of particular
+    types to make sure certain methods are available. This can tie
+    certain programs to particular object frameworks, which might not
+    always be the best way to write a program. This module tries to
+    correct this by allowing interfaces to be defined without creating a
+    class. These interface definitions are called `protocols' after the
+    Objective-C concept (See Objective-C documentation for more
+    details). Protocols not only allow more flexible tracking of
+    implemented APIs, but can also aid in the debugging process during
+    module development. Any subroutines that are prototyped in a
+    protocol are prototyped in the using package. For example, if
+    package A uses protocol B, and protocol B defines subroutine C, then
+    A::C will be prototyped. Perl will then issue warnings if the
+    subsequent subroutine definition doesn't match the prototype given
+    in the protocol definition.
+
+    This allows declarations such as this:
+
+    use protocol;
+
+    protocol My::Protocol;
+
+    sub foo($); sub bar($);
+
+    Then, when implementing a class that conforms to My::Protocol:
+
+    package My::Class;
+
+    use protocol qw(My::Protocol);
+
+    sub foo($$) { } # Perl compile-time warning - not ($) sub bar($) {
+    } # okay
+
+    Later, in some other code, I can check to see if I have an object
+    that implements this protocol:
+
+    die "Need to foo and bar" unless $object ->
+    implements("My::Protocol");
+
+    This works regardless of whether or not $object's class is aware of
+    My::Protocol.
+
+    Current documentation is available at
+    http://moya.tamu.edu/~jgsmith/protocol.html . The tarball is at
+    http://moya.tamu.edu/~jgsmith/protocol-0.00_02.tar.gz . Because this
+    module is `pragma'tic in its name, I'm waiting for feedback (esp. on
+    the name) before I upload to CPAN.
+
+  enteredby:   JSMITH (James G Smith)
+  enteredon:   Mon May 19 16:10:47 2003 GMT
+
+The resulting entry would be:
+
+protocol          bdphp Define an API for use by a package           JSMITH
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=73400000_a20bc8fdff4f9bfa&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=73400000_a20bc8fdff4f9bfa&SUBMIT_pause99_add_mod_insertit=1

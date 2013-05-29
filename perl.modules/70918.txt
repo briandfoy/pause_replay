@@ -1,0 +1,141 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:70918
+Return-Path: <sbeck@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 19307 invoked from network); 20 Apr 2010 13:38:58 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 20 Apr 2010 13:38:58 -0000
+Received: (qmail 31530 invoked by uid 225); 20 Apr 2010 13:38:57 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31525 invoked by alias); 20 Apr 2010 13:38:57 -0000
+X-Spam-Status: No, hits=-2.3 required=8.0
+	tests=RCVD_IN_DNSWL_MED
+X-Spam-Check-By: la.mx.develooper.com
+Received: from smtp01.osg.ufl.edu (HELO smtp.ufl.edu) (128.227.74.149)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 20 Apr 2010 06:38:52 -0700
+Received: from [128.227.212.53] (heather.osg.ufl.edu [128.227.212.53])
+	(authenticated bits=0)
+	by smtp.ufl.edu (8.14.0/8.14.0/3.0.0) with ESMTP id o3KDclis022292
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <modules@perl.org>; Tue, 20 Apr 2010 09:38:47 -0400
+Message-ID: <4BCDAE67.4030400@cpan.org>
+Date: Tue, 20 Apr 2010 09:38:47 -0400
+Reply-To: sbeck@cpan.org
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.9) Gecko/20100317 SUSE/3.0.4-2.3 Thunderbird/3.0.4
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Module name suggestions for new Test framework
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=fsecure engine=1.12.8161:2.4.5,1.2.40,4.0.166 definitions=2010-04-20_07:2010-02-06,2010-04-20,2010-04-20 signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 ipscore=0 phishscore=0 bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx engine=5.0.0-0908210000 definitions=main-1004200103
+X-Spam-Level: *
+X-UFL-Spam-Level: *
+Approved: news@nntp.perl.org
+From: sbeck@cpan.org (Sullivan Beck)
+
+I've been using a test framework that I wrote (which actually predates
+any of the other Test:: modules by 1-2 years) and I finally decided to
+rework it as a full-blown module. I was never a fan of the existing
+Test:: frameworks because I felt they make it easy to write test
+scripts, but the tests are hard to read and use the way I want to.
+
+I use my test scripts in two ways:
+
+1) I use my test scripts to debug my module. When I get a bug report,
+I'll add a test case which I know demonstrates a bug to one of the test
+scripts, and then I'll debug the test script. Once the module is
+debugged, I'll just leave the test case there so (hopefully) the bug
+won't come back.
+
+So, in the debugger, I want to be able to trivially do the following:
+
+   break at the start of test N
+
+2) Obviously, I use my test scripts to easily see what I'm testing for
+and to see if there are any particular combinations of input that I
+might need to test for.
+
+
+In Test::More, a series of tests might look like:
+
+   # test 1
+   $result = func("apples","bushels");
+   is($result, "enough");
+
+   # test 2
+   $result = func("grapefruit","tons");
+   is($result, "enough");
+
+   # test 3
+   $result = func("oranges","boatloads");
+   is($result, "insufficient");
+
+This illustrates both of the missing features I want.
+
+
+1) If I ran the test and found that test #2 failed, I have to figure out
+what line the second call to func is on, run the script in the debugger,
+and set a breakpoint there. Not hard... but it breaks the train of
+thought, and if instead of 3 tests, there are 300 tests, it might take a
+while to figure out where the breakpoint should be.
+
+I much prefer being able to say:
+
+   b func ($::TI_NUM == 2)
+
+Additionally, I'd like support for only running a subset of the tests
+(one only one specific test), etc. The scripts can also print out more
+or less diagnostic information which may reduce the amount of time
+needed to debug the problem.
+
+2) Looking at the Test::More script, the script is very simple (thanks
+to the very nice Test::More module)... but the TESTS are NOT nice to
+read. When I'm working on my test suite, the scripts are almost
+completely uninteresting. Once I get it right, it's very likely that
+I'll never touch the "script" side of things again, but I may reexamine
+the scripts many times (to add new tests, to re-debug one when a new
+version of the module breaks something, to examine them in total to see
+if there are missing tests). I don't want to write the tests in the form
+above (unless that turns out to be the most convenient). I'd prefer to
+write the tests in a form in which the tests are very readable, such as:
+
+   $tests = "
+
+     apples     bushels   => enough
+
+     grapefruit tons      => enough
+
+     oranges    boatloads => insufficient
+
+   ";
+
+   $o->tests(tests => $tests,
+             func  => \&func);
+
+Now, I can quickly see all of the tests in a simple table that I can
+trivially understand. I can also see that I forgot to test for "bunches
+of bananas", and add that.
+
+
+So, I finally got around to reworking my framework into a module that
+I'll be releasing to CPAN within a few days... but I'm not sure what to
+name it.
+
+I'm currently using "Test::Inter" (i.e. interactive tests), but I'm not
+a fan of that name since interactive tests are only one of the features
+(and the more readable tests are probably more 'important' to most people).
+
+I could go with "Test::Readable", "Test::Flexible", "Test::Most", ...
+but none of them are really grabbing me, so I figured I'd just call for
+suggestions and go with whatever is suggested.
+
+The complete POD is here:
+
+   http://heather.osg.ufl.edu/Test-Inter.html
+
+Thanks for any suggestions
+

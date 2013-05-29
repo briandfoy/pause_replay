@@ -1,0 +1,96 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1923
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21038 invoked from network); 21 May 2000 16:45:43 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (0@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 21 May 2000 16:45:43 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id SAA31972;
+	Sun, 21 May 2000 18:45:30 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: "Anthony Payne" <anthonyp@petsmart.com>
+Cc: "Andreas J. Koenig" <andreas.koenig@anima.de>, <modules@perl.org>
+Subject: Re: New userid request
+References: <000201bfc2a4$2e17ccc0$aa01010b@houseofpayne.petsmart.com>
+Date: 21 May 2000 18:45:30 +0200
+In-Reply-To: "Anthony Payne"'s message of "Sat, 20 May 2000 14:41:39 -0700"
+Message-ID: <m3vh07c0np.fsf@ak-71.mind.de>
+Lines: 68
+User-Agent: Gnus/5.0803 (Gnus v5.8.3) Emacs/20.6
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+
+>> Bundle::Installer sounds like a strange name to me. How does it fit
+>> with the description in the module list:
+>> 
+>> Bundle            i    Namespace reserved for modules collections   ANDK
+>> 
+>> Could you describe your intentions with it a little?
+
+
+  > The system consists of four modules and an exectuable, whose current names
+  > are:
+
+  > Installer::Base         - base class for package modules
+  > Installer::Manifest     - manifest object
+  > Installer::Rule         - simple object for handling "rules" (a rule here is
+  > defined as a group of regexes which matches against a list of strings
+  > Installer::Ruleset      - a simple object for handling a list of rules and
+  > actions associated with those rules
+  > rkit                            - executable perl script
+
+If they are all called Installer::something, they are apparently not
+called Bundle::something.
+
+  > Which is why I chose Bundle::Installer. I guess I'm unclear what
+  > is meant by "modules collections".
+
+Ahh, I see. Whatever is called Bundle::something should be nothing
+more than a list of modules. The idea of collecting modules by
+referencing their name. Not by collecting the modules themselves
+(the referenced modules are expected to be on CPAN anyway).
+
+  > Since these modules are meant to be used only with each other,
+  > perhaps they should they not be in the Bundle:: namespace?
+
+A module should never be in the Bundle namespace.
+
+  > The internal name that we use for this package is simply 'rkit'.
+  > Perhaps App::Rkit would be better? I'll defer to better judgement
+  > here.
+
+Looks more like Rkit::something, as I get the impression, this hasn't
+much to do with "applications" either.
+
+  > To be honest, I'm not sure if this belongs in the modules section
+  > or not. The modules included are primarily there to support the
+  > rkit executable and are not extremely reuseable (I could see
+  > Manifest, Rule and Ruleset possibly being reused, but definitely
+  > not Base).
+
+Hmmm. If all you need is a namespace you use within the rkit script, I
+see no reason to register a namespace at all. If the code is not going
+to be reused, it may even live in the "main" namespace as no conflict
+will occur. OTOH if there is a tiny chance that one of the packages
+grows beyond itself and becomes reuseable, you can work in the
+pet_s_mart::rkit:: namespace and wait until the time is ripe.
+
+  > What it boils down to is this: suggestions are 100% welcome. It
+  > will probably be a couple of weeks anyway before the legal
+  > department gives the go ahead to upload it, so fire away.
+
+It seems to me that there's nothing wrong with the script rkit, but
+that it is rather a script or application than a module. There's
+nothing wrong with that, just nothing to be registered in the module
+list.
+
+Regards,
+-- 
+andreas

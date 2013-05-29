@@ -1,0 +1,74 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:15226
+Return-Path: <olivier@pas-tres.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 33008 invoked by uid 76); 12 Nov 2002 00:03:06 -0000
+Received: from daemon@nova.rhapsodyk.net (HELO nova.rhapsodyk.net) (212.43.230.60) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-11-12 00:03:06Z
+Received: from localhost (localhost [127.0.0.1])  (uid 1000)  by nova.rhapsodyk.net with local; Tue, 12 Nov 2002 01:03:03 +0100
+To: modules@perl.org
+Cc: _brian_d_foy <comdog@panix.com>
+Subject: Re: Module submission Net::Server::Mail
+References: <200211091509.gA9F9oS19924@pause.perl.org>	<87isz4uw8s.fsf@nova.rhapsodyk.net>	<20021111225303.FYWI26427.sccrmhc02.attbi.com@10-0-1-2>
+Date: Tue, 12 Nov 2002 01:03:03 +0100
+In-Reply-To: <20021111225303.FYWI26427.sccrmhc02.attbi.com@10-0-1-2> (_brian_d_foy's message of "Mon, 11 Nov 2002 16:53:43 -0600")
+Message-ID: <871y5rpsco.fsf@nova.rhapsodyk.net>
+User-Agent: Gnus/5.090008 (Oort Gnus v0.08) Emacs/21.2 (i386-debian-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: olivier@pas-tres.net (Olivier Poitrey)
+
+_brian_d_foy <comdog@panix.com> writes:
+
+> In article <87isz4uw8s.fsf@nova.rhapsodyk.net>, Olivier Poitrey <olivier@pas-tres.net> wrote:
+>
+>> My class implements 3 protocols : SMTP, ESMTP and LMTP. ESMTP inherit
+>> from SMTP and LMTP from ESMTP (as describe in RFCs). So isn't it a
+>> problem to use 3 namespaces (Net::SMTP::Server, Net::ESMTP::Server and
+>> Net::LMTP::Server) ? Another problem is that Net::SMTP::Server already
+>> exists.
+>
+> do you need to rewrite Net::SMTP::Server or can you work with the
+> existing ones?
+>
+
+Net::Server::Mail::* are already written, and as I said in my first
+post, the current Net::SMTP::Server wasn't designed to be
+extendable. Actually - in my module distribution - the SMTP class is
+the base class for all others, so I can't request only ESMTP and LMTP
+ones.
+
+> if you submit namespace requests for the other ones i'll approve those
+> unless anyone else has something to say about it.  that gets you
+> started at least.
+
+Let me describe the actual Net::Server::Mail architecture:
+
+Net::Server::Mail is the base class, it implements all common methods
+that are not part of the protocol.
+
+Net::Server::Mail::SMTP inherits from Net::Server::Mail and implements
+all required commands described in RFC 821.
+
+Net::Server::Mail::ESMTP inherits from Net::Server::Mail::SMTP and adds
+the extension mechanism introduced in RFC 2821. Included extensions
+are disposed under the Net::Server::Mail::ESMTP namespace (eg:
+Net::Server::Mail::ESMTP::PIPELINING).
+
+Finally Net::Server::Mail::LMTP inherits from Net::Server::Mail::ESMTP
+and implements little modifications needed by RFC 2033.
+
+Now you should understand why I need a separated namespace.
+
+best regards.
+
+PS: you can find the module to the CPAN or on its CVS (cvsroot:
+anonymous@cvs.rhapsodyk.net:/devel module: Net-Server-Mail).
+
+-- 
+______________________________________________________________________
+ O  l  i  v  i  e  r    P  o  i  t  r  e  y

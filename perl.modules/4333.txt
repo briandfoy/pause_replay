@@ -1,0 +1,835 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4333
+Return-Path: <rp@ockham.be>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31532 invoked from network); 25 Jan 2001 15:39:26 -0000
+Received: from chekov.belgium.eu.net (193.74.208.161)
+  by tmtowtdi.perl.org with SMTP; 25 Jan 2001 15:39:26 -0000
+Received: from (fw.ockham.be [195.207.18.64] (may be forged))
+	by chekov.Belgium.EU.net  with SMTP id QAA10409 
+	for <modules@perl.org>;
+	Thu, 25 Jan 2001 16:39:24 +0100 (MET)
+Date: Thu, 25 Jan 2001 15:41:22 GMT
+Message-ID: <20010125.15412200@localhost.localdomain>
+Subject: Request for registering, and the classes PhraseBook,
+ PhraseBook::SQL, Log, NullLog and LockedFile
+To: modules@perl.org
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------=_4D4800FA6CFC09825A40"
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: rp@ockham.be (Rani Pinchuk)
+
+--------------=_4D4800FA6CFC09825A40
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hello.
+
+My Name is Rani Pinchuk,
+My Email address: rani.pinchuk@em-tech.net
+My preferred user-ID on CPAN: RANI
+
+Attached 5 pod files of 5 classes. Here in EM-TECH, Belgium, we use
+those classes already for more then a year. It seems that they are
+quite stable and extremely useful.
+
+Now EM-TECH decided to publish those classes on CPAN (under the same=20
+terms as Perl itself).
+
+I'm not sure yet about the name of those classes although I thought of
+the following for the two first classes:
+
+Class::PhraseBook
+Class::PhraseBook::SQL
+
+The PhraseBook classes implements the Phrasebook design pattern (see
+http://jerry.cs.uiuc.edu/~plop/plop2k/proceedings/proceedings.html).
+Because I found in Class other patterns (like Class::Singleton,
+Class::Visitor or Class::Template), I though this is the best place.
+
+It might be that we should write it as Phrasebook instead of PhraseBook =
+-
+please your comments.
+
+About LockedFile - There are many flock classes on CPAN. So what so
+special about this one? The answer is simple: It gives us interface that=
+
+is very similar to IO::File class. I could not find any class that
+provides that. This is why I think this class should be:
+IO::LockedFile
+
+About Log and NullLog - Here it is not simple again: I'm sure these
+classes have added values over the many Log classes on CPAN.=20
+But there are many other Log classes in CPAN. The uniqueness of the
+Log class I try to submit is that it is very simple to use it (has=20
+only 6 method, although most of the time only 2 will be used), but=20
+gives very nice results, including logging from certain level, tracing=20
+the calls, and defining the look of the log messages using a template.=20
+
+Moreover, the NullLog class implements the Null Object pattern and let
+us use NullLog object instead of Log object in cases where Log object=20
+should be used, but we don't want to have a log (for example if you don'=
+t=20
+want to generate log file from the PhraseBook class above, yet the call =
+
+for Log is hard-coded there, we can use the NullLog instead, the code=20
+will
+not break but no log will be written).
+
+If I try to put those features to the other logging classes in CPAN, the=
+=20
+whole interface of those classes will be totally different. And this is =
+
+the reason I think they deserve to live their own life.=20
+
+What is the best name for Log and NullLog? Class::Log and Class::NullLog=
+?
+Log::XXX and Log::NullXXX ? I really cannot come with any idea right now=
+.
+Please your suggestions.
+
+Thanks in advance,
+
+Rani
+
+--=20
+Rani Pinchuk, E-mail: rani.pinchuk@em-tech.net
+EM-TECH Group, Ockham, Olivetenvest 52, Mechelen,  B-2800
+Tel: +32-15-28-18-20, Fax: +32-15-28-18-21
+--------------=_4D4800FA6CFC09825A40
+Content-Description: filename="LockedFile.pod"
+Content-Disposition: inline; filename="LockedFile.pod"
+Content-Type: text/plain; charset=iso-8859-1; name ="LockedFile.pod"
+Content-Transfer-Encoding: quoted-printable
+
+
+=3Dhead1 NAME
+
+LockedFile Class - supply object methods for locking files=20
+
+=3Dhead1 SYNOPSIS
+
+  use LockedFile;
+             =20
+  # create new locked file object. $file will hold a file handle.
+  # if the file is already locked, the method will not return until the
+  # file is unlocked (blocking method).
+  my $file =3D new LockedFile(">locked1.txt");
+
+  # when we close the file - it become unlocked.
+  $file->close();
+
+  # create new locked file object. if the file is already locked, return=
+=20
+  # immediately with undef.
+  $file =3D new LockedFile(">locked1.txt", 1);
+
+  # if we delete the object, the file is automatically unlocked and=20
+  # closed.
+  $file =3D undef;
+
+=3Dhead1 DESCRIPTION
+
+The LockedFile class gives us the same interface of the IO::File class=20
+to files with the unique difference that those files are locked using
+the flock mechanism.  =20
+
+If during the running of the process, the process hang up - the file wil=
+l=20
+be automatically unlocked. Actually - if the LockedFile object goes
+out of scope, the file is automatically closed and unlocked.
+
+=3Dhead1 CONSTRUCTOR
+
+=3Dover 4
+
+=3Ditem new ( FILENAME [,NO_BLOCKING_FLAG ] )
+
+Creates a C<LockedFile>.  If it receives any parameters, they are passed=
+ to
+the method C<open>; if the open fails, the object is destroyed.  Otherwi=
+se,
+it is returned to the caller.
+
+=3Dback
+
+=3Dhead1 METHODS
+
+=3Dover 4
+
+=3Ditem open( FILENAME [,NO_BLOCKING_FLAG ] )
+
+The file FILENAME will be opened as a locked file, and the object will b=
+e=20
+the file handle of that opened file. If the file that is opened is locke=
+d=20
+and the NO_BLOCKING_FLAG is flase, the method will not return until the =
+
+file is unlocked. If NO_BLOCKING_FLAG is set to true, the method will re=
+turn=20
+undef if the file is locked.=20
+FILENAME can be any string the the method C<open> of  C<IO::File> accept=
+s=20
+(like ">file.txt" for example).
+
+=3Ditem close()
+
+The file will be closed and unlocked. The method does not return anythin=
+g.=20
+
+=3Ditem is_locked( FILENAME )
+
+Will return true if the file is locked. Will return false otherwise.
+
+
+=3Dhead1 AUTHOR
+
+Rani Pinchuk, EM-TECH, rani.pinchuk@em-tech.net
+
+=3Dhead1 SEE ALSO
+
+L<IO::File(3)>
+
+=3Dcut
+--------------=_4D4800FA6CFC09825A40
+Content-Description: filename="Log.pod"
+Content-Disposition: inline; filename="Log.pod"
+Content-Type: text/plain; charset=iso-8859-1; name ="Log.pod"
+Content-Transfer-Encoding: quoted-printable
+
+
+=3Dhead1 NAME
+
+Log - The C<Log> class helps us create simple logs for our application. =
+ =20
+
+=3Dhead1 SYNOPSIS
+
+  use Log;
+  my $LOG_DIRECTORY =3D "/where/ever/our/log/file/should/be";=20
+  my $ERROR_LOG_LEVEL =3D 6;=20
+              =20
+  # create new Log object
+  my $log =3D new Log($LOG_DIRECTORY."/error.log", $ERROR_LOG_LEVEL);
+
+  ...
+
+  # we had an error
+  $log->write("Could not open the file ".$file_name.": $!", 4);
+
+=3Dhead1 DESCRIPTION
+
+In order to have a log we have first to create a C<Log> object. The c<Lo=
+g>
+object is created with a logging level. The default logging level is 5. =
+
+After the C<Log> object is created, each call to the C<write> method may=
+=20
+write a new line in the log file. If the level of the message is lower o=
+r=20
+equal to the logging level, the message will be written to the log file.=
+
+The format of the logging messages can be controled by changing the temp=
+late,
+and by defining a default message.
+The Log file uses the LockedFile class and the Devel::DumpStack module.
+
+=3Dhead1 CONSTRUCTOR
+
+=3Dover 4
+
+=3Ditem new ( FILEPATH [,LEVEL [,DEFAULT_MESSAGE ]] )
+
+The constructor. FILEPATH is the path of the log file. LEVEL is the defi=
+ned
+logging level - the LEVEL data member. DEFAULT_MESSAGE will define the=20
+DEFAULT_MESSAGE data member - a message that will be added to the messag=
+e=20
+of each entry in the log (according to the TEMPLATE data member, see bel=
+ow).
+
+The levels can be any levels that the user chooses to use. There are,=20
+though, recommended levels:
+      0  the application is unusable
+      1  the application is going to be unusable
+      2  critical conditions
+      3  error conditions=20
+      4  warning conditions
+      5  normal but significant condition
+      6  informational
+      7+ debug-level messages
+
+The default value of LEVEL is 5.
+The default value of DEFAULT_MESSAGE is "".
+Returns the new object.=20
+
+=3Dback
+
+=3Dhead1 METHODS
+
+=3Dover 4
+
+=3Ditem write( MESSAGE [, LEVEL ] )=20
+
+If LEVEL is less or equal to the LEVEL data member, or if LEVEL is undef=
+ined,=20
+the string in MESSAGE will be written to the log file.
+Does not return anything.=20
+
+=3Ditem level( [ LEVEL ] )=20
+
+Access method to the LEVEL data member. If LEVEL is defined, the LEVEL d=
+ata=20
+member will get its value.=20
+Returns the value of the LEVEL data member.=20
+
+=3Ditem default_message( [ MESSAGE ] )=20
+
+Access method to the DEFAULT_MESSAGE data member. If MESSAGE is defined,=
+ the
+DEFAULT_MESSAGE data member will get its value.=20
+Returns the value of the DEFAULT_MESSAGE data member.=20
+
+=3Ditem log_line_numbers( [ BOOLEAN ] )
+
+If this flag is set to true, the <called_by> string will hold the file=20
+that calls the subroutine and the line where the call is issued. The def=
+ault
+value is zero.=20
+
+=3Ditem template( [ TEMPLATE ] )=20
+
+Access method to the TEMPLATE data member. The TEMPLATE data member is a=
+ string
+that defines how the log entries will look like. The default TEMPLATE is=
+:
+
+'[<date/>] <<level/>> <called_by/><default_message/><message/>'
+
+We use here several tags in the XML syntax of single tags:
+
+      <date/>           will be replaced by a string that represent=20
+                        the date. For example: 09/01/2000 17:00:13
+      <level/>          will be replaced by the level of the entry.
+      <called_by>       will be replaced by a call trace string. For=20
+                        example:
+                        CGIDaemon::listen > MyCGIDaemon::accepted=20
+      <default_message> will be replaced by the value of the=20
+                        DEFAULT_MESSAGE data member.
+      <message>         will be replaced by the message string that=20
+                        is sent to the C<write> method.
+
+Returns the value of the TEMPLATE data member.=20
+
+=3Dhead1 AUTHOR
+
+Rani Pinchuk, EM-TECH, rani.pinchuk@em-tech.net
+
+=3Dhead1 SEE ALSO
+
+L<Devel::DumpStack(3)>,
+L<LockedFile(3)>
+
+=3Dcut
+--------------=_4D4800FA6CFC09825A40
+Content-Description: filename="NullLog.pod"
+Content-Disposition: inline; filename="NullLog.pod"
+Content-Type: text/plain; charset=iso-8859-1; name ="NullLog.pod"
+Content-Transfer-Encoding: quoted-printable
+
+=3Dhead1 NAME
+
+NullLog - The C<NullLog> class implements the Null Object pattern for th=
+e C<Log> class.
+
+=3Dhead1 SYNOPSIS
+
+  use Log;
+              =20
+  # create new NullLog object
+  my $log =3D new NullLog();
+
+  ...
+
+  # we had an error (this entry will not be written to the log=20
+  # file because we use NullLog object).
+  $log->write("Could not open the file ".$file_name.": $!", 4);
+
+=3Dhead1 DESCRIPTION
+
+The C<NullLog> class is derived from the C<Log> class and implement the =
+
+Null object pattern to let us to use the C<Log> class with B<null> C<Log=
+>
+objects.
+We might want to do that if we use a C<Log> object in our code, and we d=
+o=20
+not want always to actually define a C<Log> object (i.e. not always
+we want to write to a log file). In such a case we will create a C<NullL=
+og>
+object instead of the C<Log> object, and will use that object instead.
+The object has all the methods that the C<Log> object has, but those met=
+hods
+do nothing. Thus our code will continue to run without any change, yet
+we will not have to define a log file path for the C<Log> object, and no=
+ log
+will be created.
+
+=3Dhead1 CONSTRUCTOR
+
+=3Dover 4
+
+=3Ditem new ( FILEPATH [,LEVEL [,DEFAULT_MESSAGE ]] )
+
+The constructor. The parameters will not have any affect.
+Returns the new NullLog object.=20
+
+
+=3Dback
+
+=3Dhead1 METHODS
+
+=3Dover 4
+
+=3Ditem write( MESSAGE [, LEVEL ] )=20
+
+Does nothing. The parameters will not have any affect.
+Returns nothing.=20
+
+=3Ditem level( [ LEVEL ] )=20
+
+Does nothing. The parameters will not have any affect.
+Returns -1.=20
+
+=3Ditem default_message( [ MESSAGE ] )=20
+
+Does nothing. The parameters will not have any affect.
+Returns empty string ("").=20
+
+=3Dhead1 AUTHOR
+
+Rani Pinchuk, EM-TECH, rani.pinchuk@em-tech.net
+
+=3Dhead1 SEE ALSO
+
+L<Log(3)>
+
+=3Dcut
+--------------=_4D4800FA6CFC09825A40
+Content-Description: filename="PhraseBook.pod"
+Content-Disposition: inline; filename="PhraseBook.pod"
+Content-Type: text/plain; charset=iso-8859-1; name ="PhraseBook.pod"
+Content-Transfer-Encoding: quoted-printable
+
+
+=3Dhead1 NAME
+
+PhraseBook - Implements the PhraseBook pattern
+
+=3Dhead1 SYNOPSIS
+
+  use PhraseBook;
+  my $pb =3D new PhraseBook($log, "test.xml");
+  $pb->load("NL"); # using Dutch as the language
+  $phrase =3D $pb->get("ADDRESS",=20
+		     { street =3D> "Chaim Levanon",
+		       number =3D> 88,
+		       city   =3D> "Tel Aviv" } );
+
+=3Dhead1 DESCRIPTION
+
+This class implements the PhraseBook pattern. It lets us create dictiona=
+ries=20
+of phrases. Each phrase can be accessed by a unique key. Each phrase may=
+ have
+placeholders. Group of phrases are kept in a dictionary. The first dicti=
+onary=20
+is the default one - which means that it will always be read. One of the=
+=20
+dictionaries might be used to override the default one. The phrases are =
+kept
+in an XML document.
+ =20
+The XML document type definition is as followed:
+
+ <?xml version=3D"1.0"?>
+ <!DOCTYPE phrasebook [
+	       <!ELEMENT phrasebook (dictionary)*>             =20
+	       <!ELEMENT dictionary (phrase)*>
+               <!ATTLIST dictionary name CDATA #REQUIRED>
+               <!ELEMENT phrase (#PCDATA)>
+               <!ATTLIST phrase name CDATA #REQUIRED>
+ ]>
+
+Example for XML file:
+
+ <?xml version=3D"1.0"?>
+ <!DOCTYPE phrasebook [
+	       <!ELEMENT phrasebook (dictionary)*>             =20
+	       <!ELEMENT dictionary (phrase)*>
+               <!ATTLIST dictionary name CDATA #REQUIRED>
+               <!ELEMENT phrase (#PCDATA)>
+               <!ATTLIST phrase name CDATA #REQUIRED>
+ ]>
+ <phrasebook>
+ <dictionary name=3D"EN">
+
+ <phrase name=3D"HELLO_WORLD">
+            Hello World!!!
+ </phrase>
+
+ <phrase name=3D"THE_HOUR">
+            The time now is $hour.=20
+ </phrase>
+
+ <phrase name=3D"ADDITION">
+            add $a and $b and you get $c
+ </phrase>
+
+
+ <!-- my name is the same in English Dutch and French. -->
+ <phrase name=3D"THE_AUTHOR">
+            Rani Pinchuk
+ </phrase>
+ </dictionary>
+
+ <dictionary name=3D"FR">
+ <phrase name=3D"HELLO_WORLD">
+            Bonjour le Monde!!!
+ </phrase>
+
+ <phrase name=3D"THE_HOUR">
+            Il est maintenant $hour.=20
+ </phrase>
+
+ <phrase name=3D"ADDITION">
+            $a + $b =3D $c
+ </phrase>
+
+ </dictionary>
+
+ <dictionary name=3D"NL">
+ <phrase name=3D"HELLO_WORLD">
+            Hallo Werld!!!
+ </phrase>
+
+ <phrase name=3D"THE_HOUR">
+            Het is nu $hour.=20
+ </phrase>
+
+ <phrase name=3D"ADDITION">
+            $a + $b =3D $c
+ </phrase>
+
+ </dictionary>
+
+ </phrasebook>
+
+Each phrase should have a unique name. Within the phrase text we can=20
+place placeholders. When get method is called, those placeholders will b=
+e=20
+replaced by their value.
+
+=3Dhead1 CONSTRUCTOR
+
+=3Dover 4
+
+=3Ditem new ( [ LOG ], FILEPATH )
+
+The constructor. FILEPATH can be the absolute path of the XML file. But =
+it
+can be also just a name of the file, or relative path to the file. In th=
+at
+case, that file will be searched in the following places:=20
+   * The current directory.
+   * The directory ./lib in the current directory.
+   * The directory ../lib in the current directory.
+   * The directories that are in @INC.
+
+LOG is a Log object. If LOG is undef, NullLog object will be used.=20
+If it is provided, the class will use the Log facilities to log unusual =
+events.
+Returns the new object, or undef on failure.
+
+=3Dback
+
+=3Dhead1 METHODS
+
+=3Dover 4
+
+=3Ditem load( DICTIONARY_NAME )
+
+Will load the phrases of certain dictionary from the file. If the dictio=
+nary
+that is requested is not the first one (in the XML file), the first dict=
+ionary
+will be loaded first, and then the requested dictionary phrases will be =
+loaded.
+That way, the first dictionary play the role of the default dictionary.
+
+The DICTIONARY_NAME data member will be set to the parameter that is sen=
+t=20
+to this method. Yet, if nothing is sent to the method, the method will u=
+se=20
+the value of the DICTIONARY_NAME data member to load the right dictionar=
+y.
+If the data member is not defined as well, the default dictionary will b=
+e=20
+loaded.
+=20
+Returns 1 on success, 0 on failure.
+
+=3Ditem get(KEY [, REFERENCE_TO_ANONYMOUS_HASH ])
+Will return the phrase that fits to the KEY. If a reference to=20
+anonymous has is sent, it will be used to define the parameters in the=20
+phrase.
+
+=3Ditem dictionary_name( DICTIONARY_NAME )=20
+
+Access method to the DICTIONARY_NAME data member. See I<load> method abo=
+ve.
+
+=3Ditem remove_new_lines ( BOOLEAN )
+
+Access method to the data member REMOVE_NEW_LINES flag. If this data mem=
+ber=20
+is true (1), then new lines will be removed from the phrase that a is=20
+returned by the method I<get>.
+Returns the value of the data member REMOVE_NEW_LINES flag.
+
+=3Dback
+
+=3Dhead1 ACCESS METHODS
+
+=3Dover 4
+
+=3Ditem get_xml_path ( FILE )
+
+Will return the path of the xml file with that name. It will look for th=
+is
+file in the current directory, in ./lib ../lib and in all the directorie=
+s=20
+in @INC.
+If it is not found, NULL will be returned.
+
+=3Ditem file_path( FILEPATH )=20
+
+Access method to the FILE_PATH data member. FILEPATH can be the absolute=
+=20
+path of the XML file. But it can be also just a name of the file, or=20
+relative path to the file. In that case, that file will be searched in=20
+the following places:=20
+   * The current directory.
+   * The directory ./lib below the current directory.
+   * The directory ../lib below the current directory.
+   * The directories that are in @INC.
+
+=3Ditem log( LOG )=20
+
+Access method to the LOG data member.=20
+
+=3Dback
+
+=3Dhead1 ENVIRONMENTS
+
+=3Dover 4
+
+=3Ditem PHRASEBOOK_DEBUG_PRINTS
+
+If this environment is set to "COLOR", the get method will print the=20
+phrases it gets, with some extra information in color screen output=20
+using ANSI escape sequences. If the environment is set to "HTML", the=20
+information will be printed in HTML format. If the environment is set to=
+=20
+"TEXT" - the information will be printed as simple text. If the environm=
+ent=20
+is not set, or empty - nothing will be printed. This feature comes to he=
+lp
+debugging the phrases that we get from the object of this class.
+
+=3Dback
+
+=3Dhead1 AUTHOR
+
+Rani Pinchuk, EM-TECH, rani.pinchuk@em-tech.net
+
+=3Dhead1 SEE ALSO
+
+L<XML::Parser(3)>,
+L<Log(3)>,
+L<NullLog(3)>
+
+=3Dcut
+--------------=_4D4800FA6CFC09825A40
+Content-Description: filename="SQL.pod"
+Content-Disposition: inline; filename="SQL.pod"
+Content-Type: text/plain; charset=iso-8859-1; name ="SQL.pod"
+Content-Transfer-Encoding: quoted-printable
+
+
+=3Dhead1 NAME
+
+PhraseBook::SQL - Implements the PhraseBook pattern for SQL statements.
+
+=3Dhead1 SYNOPSIS
+
+  use PhraseBook::SQL;
+  my $sql =3D new PhraseBook::SQL($log, "test.xml");
+  $sql->load("Pg");
+  $statement =3D $sql->get("INSERT_INTO_CONFIG_ROW",=20
+		       { id =3D> 88,
+			 parent =3D> 77,
+			 level =3D> 5 });
+
+=3Dhead1 DESCRIPTION
+
+This class inherit from PhraseBook and let us manage all the SQL code we=
+=20
+have in a project, in one file. The is done by placing all the SQL state=
+ments=20
+as phrases in the XML file of the PhraseBook. See I<PhraseBook> for deta=
+ils=20
+about that file format.
+
+=3Dhead1 METHODS
+
+=3Dover 4
+
+=3Ditem get(KEY [, REFERENCE_TO_ANONYMOUS_HASH ])
+
+Will return the SQL statement that fits to the KEY. If a reference to=20
+anonymous has is sent, it will be used to define the parameters in the=20
+SQL statement.
+
+For example, if the following statement is defined in the XML file:
+   <statement name=3D"INSERT_INTO_CONFIG_ROW">
+               insert into t_config (id, parent_id, level)
+                      values($id, $parent, $level)
+   </statement>
+We usually will call get method to get this statement in the following w=
+ay:
+   $statement =3D $sql->get("INSERT_INTO_CONFIG_ROW",=20
+                          { id =3D> 88,
+                            parent =3D> 77,
+                            level =3D> 5 });
+
+Special case are the SQL update instructions. Most of the time, when we =
+
+call update, we would like to update only part of the columns in a row.
+Yet, we usually prefer to avoid from writing all the possible update=20
+combinations. For example if we have the following update call:
+
+   update t_account set
+                         login =3D '$login',
+                         description =3D '$description',=20
+                         dates_id =3D $dates_id,=20
+                         groups =3D $groups,
+                         owners =3D $owners
+                                     where id =3D $id
+
+We do not want to write special update for each case like:
+
+   update t_account set
+                         owners =3D $owners
+                                     where id =3D $id
+
+or=20
+
+   update t_account set
+                         login =3D '$login',
+                         owners =3D $owners
+                                     where id =3D $id
+
+In order to solve this, the get method will delete the "set" lines of=20
+the update method where the were the parameter value is udefined.
+Because of that we should write the update statements were the pairs of =
+
+<column name> =3D <parameter> are in separate lines from the rest of the=
+=20
+statement. Note that the get method will also fix comma problems between=
+=20
+the pairs (so if the last pair is deleted we will not have extra comma).=
+
+The method returns the SQL statement, or undef if there is no SQL statem=
+ent=20
+for the sent KEY.
+
+=3Ditem escaped_quote ( STRING )
+
+An access method to the data memeber ESCAPED_QUOTE. The default way to e=
+scape
+a quote is to have two quotes (''). This will work on Postgres and on MS=
+QL.=20
+Yet, if this default is not working with your database of choice, you ca=
+n=20
+change it by seting the ESCAPE_QUOTE data member using this method.=20
+
+=3Ditem use_is_null( BOOLEAN )=20
+
+Sometimes, when we have an argument in SQL statement, we will want to ch=
+ange=20
+the equal sign to 'is'. For example:
+=20
+		   select * from my_table where my_id =3D $id
+
+If $id is NULL, we sometimes want to have 'my_id is NULL'.
+We can have that by sending to this method 1. This will promis that wher=
+e=20
+ever we have the pattern '=3D NULL' it will become 'is NULL'. The defaul=
+t
+is not to use the 'is' (thus 0).
+
+=3Ditem save_statements_file_path ( [ FILE_PATH ] )
+
+Access method to the SAVE_STATEMENTS_FILE_PATH data member. If this data=
+
+member is set, for each call to the I<get> method, the statement that=20
+is returned also will be appended to that file. This might be useful whi=
+le
+debugging big projects - it will let the user have a full log of all the=
+=20
+statemnets that were generated by the I<get> method.
+
+=3Dback
+
+=3Dhead1 ENVIRONMENTS
+
+=3Dover 4
+
+=3Ditem PHRASEBOOK_SQL_DEBUG_PRINTS
+
+If this environment is set to "COLOR", the get method will print the=20
+statements it gets, with some extra information in color screen output=20
+using ANSI escape sequences. If the environment is set to "HTML", the=20
+information will be printed in HTML format. If the environment is set to=
+=20
+"TEXT" - the information will be printed as simple text. If the environm=
+ent=20
+is not set, or empty - nothing will be printed. This feature comes to he=
+lp
+debugging the SQL statements that we get from the object of this class.
+
+=3Ditem PHRASEBOOK_SQL_SAVE_STATEMENTS_FILE_PATH
+
+Another way to set the SAVE_STATEMENTS_FILE_PATH data member is by setti=
+ng=20
+this environment variable.
+
+=3Dback
+
+=3Dhead1 AUTHOR
+
+Rani Pinchuk, EM-TECH, rani.pinchuk@em-tech.net
+
+=3Dhead1 SEE ALSO
+
+L<XML::Parser(3)>,
+L<PhraseBook(3)>,
+L<Log(3)>,
+L<NullLog(3)>
+
+=3Dcut
+--------------=_4D4800FA6CFC09825A40--

@@ -1,0 +1,54 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62183
+Return-Path: <fair-play@comcast.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 20092 invoked from network); 10 Sep 2008 20:45:09 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 10 Sep 2008 20:45:09 -0000
+Received: (qmail 17272 invoked by uid 225); 10 Sep 2008 20:45:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17265 invoked by alias); 10 Sep 2008 20:45:09 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from qmta08.westchester.pa.mail.comcast.net (HELO QMTA08.westchester.pa.mail.comcast.net) (76.96.62.80)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 10 Sep 2008 13:45:06 -0700
+Received: from OMTA02.westchester.pa.mail.comcast.net ([76.96.62.19])
+	by QMTA08.westchester.pa.mail.comcast.net with comcast
+	id D6m81a00C0QuhwU588l1hY; Wed, 10 Sep 2008 20:45:01 +0000
+Received: from amailcenter05.comcast.net ([204.127.225.105])
+	by OMTA02.westchester.pa.mail.comcast.net with comcast
+	id D8ko1a00K2H40ZG3N8kopU; Wed, 10 Sep 2008 20:44:50 +0000
+X-Authority-Analysis: v=1.0 c=1 a=QLR_YQqirYBpxoPFaA0A:9
+ a=zwUy5ycNNZwGnF3m76xJ89xQMDEA:4 a=gi0PWCVxevcA:10
+Received: from [24.62.73.204] by amailcenter05.comcast.net;
+	Wed, 10 Sep 2008 20:44:59 +0000
+To: oyama@module.jp, oyama@cpan.org, oyama@crayfish.co.jp, hioyama@mail.yahoo.co.jp
+Cc: modules@perl.org
+Subject: net::mySQL 0.09
+Date: Wed, 10 Sep 2008 20:44:59 +0000
+Message-ID: <091020082044.16396.48C831CB000E90960000400C2215567074970E049FD39D070E00@comcast.net>
+X-Mailer: AT&T Message Center Version 1 (Oct 30 2007)
+X-Authenticated-Sender: ZmFpci1wbGF5QGNvbWNhc3QubmV0
+Approved: news@nntp.perl.org
+From: fair-play@comcast.net
+
+I have used several versions of Net::MySQL to download tables from MySQL.  It is very useful because the client OS is SCO OpenServer 5.0.7.  I once tried to build the MySQL client on this system but it was a disaster.  It seemed like there were many build environment problems.  (I'd love to use another OS but the client runs a proprietary turnkey application that has not been ported to Linux.)
+
+Some time ago I installed 0.09 and it wouldn't even connect.  I worked through the problems and am now able to execute my query.  There were three problems:
+
+1. The server was telling the client that it wanted the short version of the encrypted password (I'm guessing because the server was upgraded and passwords were not re-encrypted).   I added code to handle the response from the server and send a packet with the short version of the encrypted password.
+
+2. The EOF packet at the end of the query was never matched because the server flags didn't match those in the comparison.  I changed it to look for the EOF marker only.
+
+3. The EOF packet at the end of the header packets was 1 byte instead of 5 bytes.  I changed the code to look at the packet length so it should work regardless of the length of the packet.
+
+Note: The server is 4.1.1 (the server is on a provider's server so I don't have any control over it).
+
+Are you interested in incorporating the changes I made?  I thought others might be interested in them as well.  I'd be glad to look at other bugs too if that would be helpful.
+
+Ken Fairchild
+

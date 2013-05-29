@@ -1,0 +1,76 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53679
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4588 invoked from network); 23 Mar 2007 06:56:31 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 23 Mar 2007 06:56:31 -0000
+Received: (qmail 31844 invoked by uid 225); 23 Mar 2007 06:56:31 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 31838 invoked by alias); 23 Mar 2007 06:56:31 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 22 Mar 2007 23:56:26 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by franz.ak.mind.de (8.13.8/8.13.8/Debian-2) with ESMTP id l2N6uKel020214;
+	Fri, 23 Mar 2007 07:56:20 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.8/8.13.8/Submit) id l2N6uJM4020179;
+	Fri, 23 Mar 2007 07:56:19 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: "Kenton Drake" <kenton@roirocketcorp.com>
+Cc: <modules@cpan.org>
+Subject: Re: missing module Array::Dissect
+References: <007701c76cc8$05329ad0$5600a8c0@kenton>
+Reply-To: modules@perl.org
+Date: Fri, 23 Mar 2007 07:56:19 +0100
+In-Reply-To: <007701c76cc8$05329ad0$5600a8c0@kenton> (Kenton Drake's message
+	of "Thu\, 22 Mar 2007 15\:21\:12 -0600")
+Message-ID: <87648sfnxo.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Thu, 22 Mar 2007 15:21:12 -0600, "Kenton Drake" <kenton@roirocketc=
+orp.com> said:
+
+  > I have been attempting to use the Module File::Split.=C2=A0 When I load
+  > from cpan it fails because of a missing dependency on module
+  > Array::Dissect.=C2=A0 Array::Dissect does not exist in cpan; however,
+  > based on Google searches it did at one time not necessarily long
+  > ago.=C2=A0 There are many references to it, but when I try to find a
+  > copy I keep getting sent back to cpan.
+
+Please report this as a bug to the author of File::Split.
+
+  > Do you have a solution?
+
+Install Parse::BACKPAN::Packages. Ignore the failing tests, instore
+nonetheless. With this oneliner you can determine where to look
+further:
+
+perl -le 'use Parse::BACKPAN::Packages; my $p =3D Parse::BACKPAN::Packages-=
+>new; print join "\n", map {join "/", $_->cpanid, $_->filename} $p->distrib=
+utions("Array-Dissect");'
+KILINRAX/Array-Dissect-1.00.tar.gz
+KILINRAX/Array-Dissect-1.01.tar.gz
+KILINRAX/Array-Dissect-1.02.tar.gz
+KILINRAX/Array-Dissect-1.03.tar.gz
+
+
+Now google for backpan to find your nearest backpan site and find the
+file there in
+
+CPAN/authors/id/K/KI/KILINRAX/Array-Dissect-1.03.tar.gz
+
+--=20
+andreas

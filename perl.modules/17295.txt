@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17295
+Return-Path: <vze4rnqz@verizon.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12490 invoked by uid 76); 22 Jan 2003 06:18:23 -0000
+Received: from out001pub.verizon.net (HELO out001.verizon.net) (206.46.170.140) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-22 06:18:23Z
+Received: from verizon.net ([68.161.127.158]) by out001.verizon.net          (InterMail vM.5.01.05.20 201-253-122-126-120-20021101) with ESMTP          id <20030122061745.BRXV23484.out001.verizon.net@verizon.net>;          Wed, 22 Jan 2003 00:17:45 -0600
+Received: from verizon.net (localhost [127.0.0.1])	by verizon.net (8.12.7/8.12.7/Debian-2) with ESMTP id h0M6HipA009069;	Wed, 22 Jan 2003 01:17:44 -0500
+Received: (from kstar@localhost)	by verizon.net (8.12.7/8.12.7/Debian-2) id h0M6Hid8009067;	Wed, 22 Jan 2003 01:17:44 -0500
+X-Authentication-Warning: squirtle.localdomain: kstar set sender to vze4rnqz@verizon.net using -f
+Date: Wed, 22 Jan 2003 01:17:44 -0500
+To: Arthur Corliss <corliss@digitalmages.com>
+Cc: modules@perl.org
+Subject: Re: Namespace suggestions?
+Message-ID: <20030122061744.GC8915@verizon.net>
+References: <Pine.LNX.4.44.0301211440170.4215-100000@sigurd.digitalmages.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.44.0301211440170.4215-100000@sigurd.digitalmages.com>
+User-Agent: Mutt/1.5.3i
+X-Authentication-Info: Submitted using SMTP AUTH at out001.verizon.net from [68.161.127.158] at Wed, 22 Jan 2003 00:17:45 -0600
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: kstar@cpan.org (Kurt Starsinic)
+
+On Jan 21, Arthur Corliss wrote:
+> Greetings:
+> 
+> I previously submitted Object::BaseClass for consideration as part of CPAN.
+> I've spent the better part of this day reading pods for the Class::* modules,
+> and I believe that my module would probably be better classified here.
+> 
+> I'm still requesting inclusion in CPAN based on the following reasons:
+> 
+>   --I haven't found a module on CPAN (correct me if I missed it)
+>     that tracks parent<->child relationships (in terms of the
+>     parent being a container for its children) and does an orderly
+>     termination of objects as a result automatically
+
+    Be careful about your terminology here.  "Parent" and "child"
+have well-established meanings in OO literature.  They refer to the
+"is-a" relationship (inheritance), not the "has-a" relationship
+(containership).  A base class has a well-established definition as
+a virtual class from which one inherits.
+
+    This confusion may also be limiting your success in finding other
+classes that provide similar functionality.  For example, Class::Container,
+Class::Composite::Container, Meta::Ds::Container, Class::UI::Container,
+Class::Class, Class::Struct::FIELDS, POE, and probably several other
+CPAN modules may hover around the functionality you're interested in.
+
+>   --While some modules provide auto-accessor capabilities, they
+>     don't do so in quite the same manner, nor do they combine
+>     that capability for psuedo properties like state flag registers
+>   --Most do not provide a psuedo event-handling mechanism, either
+> 
+> A little background on methodology:
+> 
+> This module is meant to be subclassed.  A custom object would provide one
+> mandatory method which is called by the constructor.  This method defines the
+> object's properties and flags, which consists of (optional) event handlers
+> for each flag, and read, write, or unified property accessors.  A generic
+> accessor is provided and can work in any of the mentioned modes.  All custom
+> handlers and accessors would account for the rest of the derived class.
+> 
+> Both flags and properties are exposed directly in the interface as virtual
+> methods, with a standard interface.  Flags and properties are handled
+> differently internally, but internal methods do all conform to a standard
+> method of invocation for each type.
+> 
+> Events are triggered by manipulation of the state flag registers.
+> 
+> So here's where you can tell me to go away, if need be.  I believe that this
+> peculiar mix of functionality would be somewhat tedious to reproduce from the
+> existing modules, and hence, could be made available as a CPAN module.
+> 
+> If you guys don't think I'm barking up the wrong tree, I would suggest that a
+> better name would be Class::Hybrid or Class::Generic.  I would be happy to
+> hear any suggestions you have as well.
+
+    The functionality you're trying to provide is clearly useful; I think
+that naming is really key to your module being *discovered and used* by
+the open source community.  Mention containership, or static definition,
+or deterministic destruction, or declarative programming, or ownership
+hierarchy in the class name.
+
+    - Kurt
+

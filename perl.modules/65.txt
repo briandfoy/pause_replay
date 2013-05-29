@@ -1,0 +1,58 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:2332 perl.modules:65
+Return-Path: <Paul.Moore@uk.origin-it.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22233 invoked from network); 15 Oct 1999 09:15:34 -0000
+Received: from gw-nl1.origin-it.com (@193.79.128.34)
+  by tmtowtdi.perl.org with SMTP; 15 Oct 1999 09:15:34 -0000
+Received: from mail.origin-it.com (localhost.origin-it.com [127.0.0.1])
+          by gw-nl1.origin-it.com with ESMTP id LAA24227;
+          Fri, 15 Oct 1999 11:15:27 +0200 (MEST)
+          (envelope-from Paul.Moore@uk.origin-it.com)
+Received: from mail.origin-it.com(172.16.127.3) by gw-nl1.origin-it.com via mwrap (4.0a)
+	id xma024225; Fri, 15 Oct 99 11:15:27 +0200
+Received: from ukrax001.ras.uk.origin-it.com (ukrax001.ras.uk.origin-it.com [172.16.201.234]) 
+	by mail.origin-it.com (8.9.3/8.8.5-1.2.2m-19990317) with ESMTP id LAA18952; Fri, 15 Oct 1999 11:15:26 +0200 (MET DST)
+Received: by ukrax001.ras.uk.origin-it.com with Internet Mail Service (5.5.2448.0)
+	id <454MQYX1>; Fri, 15 Oct 1999 10:15:26 +0100
+Message-ID: <714DFA46B9BBD0119CD000805FC1F53BB41591@UKRUX002.rundc.uk.origin-it.com>
+To: "'Michael King'" <mike808@my-Deja.com>, modules@perl.org
+Cc: perl5-porters@perl.org
+Subject: RE: NEW MODULE (pragma): import.pm 
+Date: Fri, 15 Oct 1999 10:15:25 +0100
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Approved: news@nntp.perl.org
+From: Paul.Moore@uk.origin-it.com ("Moore, Paul")
+
+From: Michael King [mailto:mike808@my-Deja.com]
+> 
+> The WHOLE POINT of the module/pragma is to make 
+> Really::Long::Namespaces::That::Programmers::Hate::To::Type 
+> *alot* easier to use without cluttering up their program with 
+> FQPNs. IMHO, it only adds noise to the code.
+
+That is a good goal. However, I'm not so sure that taking the Java approach
+works. I reiterate my earlier suggestion:
+
+use Alias qw(alias_package);
+alias_package 'Really::Long::Namespaces::That::Programmers::Hate::To::Type'
+=> RLNS;
+
+(I bet that line gets wrapped somewhere :-)
+
+Effectively this steals an idea from C++ (namespace ABC = DEF) instead of
+from Java (import a.b.*).
+
+I am against wholesale importing in principle, and this "everything
+currently installed under this namespace" approach is a particularly extreme
+example. Particularly as installing new modules could silently change the
+effect. Imagine someone installing a new package XML::gotcha which included
+an exported subroutine open. This would silently override the builtin open
+for ANY module which did a use import 'XML::*'. That CAN'T be a good thing!
+
+Paul Moore.

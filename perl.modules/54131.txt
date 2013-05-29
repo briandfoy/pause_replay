@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:54131
+Return-Path: <daniel_lo@picturetrail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 7526 invoked from network); 23 Apr 2007 16:13:50 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 23 Apr 2007 16:13:50 -0000
+Received: (qmail 18618 invoked by uid 225); 23 Apr 2007 16:13:49 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 18599 invoked by alias); 23 Apr 2007 16:13:48 -0000
+X-Spam-Status: No, hits=-1.1 required=8.0
+	tests=BAYES_05,DK_POLICY_SIGNSOME,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of daniel_lo@picturetrail.com designates 64.124.91.15 as permitted sender)
+Received: from home.mediatechnique.com (HELO home.mediatechnique.com) (64.124.91.15)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 23 Apr 2007 09:13:44 -0700
+Date: Mon, 23 Apr 2007 09:13:37 -0700
+Reply-To: Daniel Lo <daniel_lo@picturetrail.com>
+Organization: Picturetrail Inc.
+X-Priority: 3 (Normal)
+Message-ID: <1248506727.20070423091337@picturetrail.com>
+To: modules@cpan.org
+Subject: BackOff::Linear? Module name suggestion..
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: daniel_lo@picturetrail.com (Daniel Lo)
+
+Greetings,
+
+        I am planing on uploading a module to cpan.  I have requested an PAUSE
+account and I am awaiting a reply.
+
+        The module, which I have tentatively named BackOff provides modules
+to "Back Off" after a failure.
+
+        The current modules are
+
+BackOff::Linear - Backs off on a line
+BackOff::Exponential - Backs off exponentially
+BackOff::Random - Backs off on a random number.
+
+        A co-worker has suggested Proc::BackOff::*
+
+        If you have any suggestions for a better name, please let me know.
+
+TIA,
+
+
+Daniel Lo
+
+
+
+The basic usage of the module is to do the following:
+
+my $obj = new BackOff::Random( { min=>5, max=>10 } ); # random between 5-10
+seconds
+
+while (...) {
+    sleep $obj->delay(); # returns 0 if nothing to do
+
+    # do action
+    ...
+
+    if ( success ) {
+        $obj->success(); # removes any existing back off
+    } else {
+        $obj->failure(); # increments the sleep time reported by $obj-delay()
+    }
+}
+
+
+
+
+
+

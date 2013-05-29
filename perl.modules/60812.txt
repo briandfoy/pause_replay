@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60812
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14672 invoked from network); 12 Jun 2008 06:18:43 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 12 Jun 2008 06:18:43 -0000
+Received: (qmail 7135 invoked by uid 225); 12 Jun 2008 06:18:43 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7129 invoked by alias); 12 Jun 2008 06:18:42 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 11 Jun 2008 23:18:40 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-1) with ESMTP id m5C6Gt4p008001;
+	Thu, 12 Jun 2008 08:16:55 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id m5C6Gs17008000;
+	Thu, 12 Jun 2008 08:16:54 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Steffen Mueller <wyp3rlx02@sneakemail.com>
+Cc: "\(Andreas J. Koenig\)" <andreas.koenig.7os6VVqR@franz.ak.mind.de>,
+        modules@perl.org
+Subject: Re: lib.pm indexing problem
+References: <20080609132123.18185.qmail@lists.develooper.com>
+	<874p82idtv.fsf@k75.linux.bogus> <484FD048.4030201@sneakemail.com>
+Reply-To: modules@perl.org
+Date: Thu, 12 Jun 2008 08:16:54 +0200
+In-Reply-To: <484FD048.4030201@sneakemail.com> (Steffen Mueller's message of
+	"Wed\, 11 Jun 2008 15\:16\:56 +0200")
+Message-ID: <87mylrfa95.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Wed, 11 Jun 2008 15:16:56 +0200, Steffen Mueller <wyp3rlx02@sneakemail.com> said:
+
+  > Hi Andreas,
+  > sorry for the late answer.
+
+  > (Andreas J. Koenig) wrote:
+ >> Without even looking I can say, yes, if you generate lib.pm at
+ >> runtime, the indexer cannot index it. Would you be able to provide a
+ >> META.yml with the provides field? The intent was: if this is there,
+ >> then the indexer does not get triggered at all and the META.yml wins.
+
+  > Thanks for that suggestion.
+
+  > However, I still have a bit of a problem. If provides has to look like this:
+
+  >   provides:
+  >     lib:
+  >       file: lib.pm
+  >       version: 0.57
+
+  > what happens if there is no file lib.pm in the distribution?
+
+The indexer currently does not verify the existence of the file. It
+puts the content in the database without further processing. So I'd
+suggest you write the lib_pm.PL file there.
+
+
+-- 
+andreas

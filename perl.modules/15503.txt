@@ -1,0 +1,67 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:15503
+Return-Path: <sam@tregar.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 79597 invoked by uid 76); 25 Nov 2002 03:21:17 -0000
+Received: from airtrout.tregar.com (HELO airtrout.tregar.com) (66.92.104.10) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-11-25 03:21:17Z
+Received: (qmail 21095 invoked by uid 500); 25 Nov 2002 03:10:17 -0000
+Received: from localhost (sendmail-bs@127.0.0.1)  by localhost with SMTP; 25 Nov 2002 03:10:17 -0000
+Date: Sun, 24 Nov 2002 22:10:17 -0500 (EST)
+To: modules@perl.org
+cc: brian d foy <comdog@panix.com>
+Subject: Re: Module submission Config::ApacheFormat
+In-Reply-To: <241120022054426205%comdog@panix.com>
+Message-ID: <Pine.LNX.4.44.0211242148420.17111-100000@airtrout.tregar.com>
+References: <200211250047.gAP0lkl02868@pause.perl.org> <241120022054426205%comdog@panix.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: sam@tregar.com (Sam Tregar)
+
+On Sun, 24 Nov 2002, brian d foy wrote:
+
+> >     Apache::ConfigFile suffers from a complete lack of tests and a
+> >     rather clumsy API. Also, it doesn't support quoted strings
+> >     correctly.
+>
+> those things should be fixed.
+
+That sounds like a good idea.  However, I took a look through the code and
+decided it was more trouble than it was worth.  My module took around 4
+hours to write, including docs and tests.  I don't think I could have
+fixed Apache::ConfigFile's many problems so quickly.  In particular,
+coming up with a better API for an existing module tends to be a lengthy
+process of negotiation.  Just because I don't like the current API doesn't
+mean the author agrees!
+
+> >     Apache::ConfigParser comes closer to my needs, but contains code
+> >     specific to parsing actual Apache configuration files.
+>
+> I would think yours would too, based on the name.  perhaps a name that
+> describes the format instead of an example use is better.
+
+I tried to make it obvious that my module deals with the format of the
+Apache config files rather than with Apache config files themselves.
+That's why it's called Config::ApacheFormat rather than Config::Apache or
+Apache::* anything.
+
+However, my module is general enough that it should work with real Apache
+config files.  It just doesn't have any of Apache's configuration
+rules hard-coded in the module like Apache::ConfigParser does.
+
+Do you have a better name in mind?  I considered Config::Apachesque, but I
+decided it was too cute.
+
+> also, what about the many configuration data modules in Config::*
+> and ConfigReader::*?  some of those handle the block style.
+
+My purpose in providing an Apache-format configuration file is to leverage
+existing expertise among the sys-admins where I work.  Another syntax that
+also supports nested blocks with parameter inheritance would not meet this
+goal.
+
+-sam
+

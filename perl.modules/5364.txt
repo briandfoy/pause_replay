@@ -1,0 +1,127 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5364
+Return-Path: <demerphq@hotmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 35233 invoked from network); 7 May 2001 16:01:31 -0000
+Received: from f195.law12.hotmail.com (HELO hotmail.com) (64.4.19.195)
+  by onion.valueclick.com with SMTP; 7 May 2001 16:01:31 -0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Mon, 7 May 2001 09:01:01 -0700
+Received: from 194.203.215.177 by lw12fd.law12.hotmail.msn.com with HTTP;	Mon, 07 May 2001 16:01:00 GMT
+X-Originating-IP: [194.203.215.177]
+To: modules@perl.org
+Cc: steve@silug.org
+Subject: String::Random replacement String::RegEx (Also Request pragma 'use caution')
+Date: Mon, 07 May 2001 18:01:00 +0200
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+Message-ID: <F195opYC98Bi89QtpfT00012c9b@hotmail.com>
+X-OriginalArrivalTime: 07 May 2001 16:01:01.0177 (UTC) FILETIME=[E9679E90:01C0D70E]
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: demerphq@hotmail.com ("Yves Orton")
+
+Greetings.
+
+Recently I have been working on a number of utilities for regular 
+expressions, one of which is similer to String::Random.  I have taken the 
+liberty of using the namespaces specified, but would be interested to know 
+if they present a problem, or if their functionality has been covered 
+elsewhere.  All of the packages are set up in OO style.
+(Apologies if I have missed out on some protocol issue here, this my first 
+post.)
+Also a request: Could we have a pragma that can be used to replace the dual 
+use of use strict and use warnings?  It would be cool if
+
+use caution;
+
+was an alias for
+
+use strict;
+use warnings;
+
+Also the name seemed apropriate. :-)
+
+-------------------------------------------------------------------
+
+String::RegEx::.....
+-- This is the umbrella class that I have used for my classes.  I thought 
+about extending String::Random, but the functionality I have been working on 
+covers much more than String::Random does.
+It provides a single interface into the other classes I have been writing, 
+so as to enable me to avoid typing long use lists.
+Major functions:
+String::RegEx::generate()
+Takes a regular expression and generates random data based on it.  Supports 
+basically all perl regular expressions that dont involve backreferences and 
+zero-width assertions, which are currently a work in progress.
+An example would be:
+my $regex=String::RegEx->new();
+warn $regex->generate('(?:(perl|PERL|[Pp]erl) is (?:very ){1,5} cool!\n)+');
+Produces (Edited for size...):
+PERL is very very  cool!
+Perl is very very very very  cool!
+PERL is very  cool!
+PERL is very very very very  cool!
+
+String::RegEx::gen_allcases()
+An experimental routine that will generate a set of strings, one per 'part' 
+of the regex.  The idea being that if you are using a rgex as a input 
+cleaner or the like you use this to see if your pattern would match some 
+string that you didnt expect.  Work In Progress.
+
+String::RegEx::pretty()
+Takes a regular expression and outputs it indented and the like...
+Example using previous regex. Whitespace in the original is convert to 
+escape sequences.  The pretty version should run under the x modifier just 
+as the original...
+(?:
+	(
+		perl
+	|
+		PERL
+	|
+		[Pp]erl
+	)
+	\x20is\x20
+	(?:very\x20){3,5}
+	\x20cool!
+	\n
+)+
+String::RegEx::build_from_list()
+Takes a list of words and generate a regular expression that will match 
+those words. Inspired by J Friedl and his book.  Unfortunately I forgot my 
+laptop network cable today so no example avail :-(
+
+String::RegEx::make_trans()
+Automate the eval'ing of runtime tr///.
+(Editor says more detail:  Takes a string containing alphabet and target 
+alphabet and returns a subref that will do the translation. For 
+convienience)
+
+String::RegEx::build_longest_matcher
+Kind of a special purpose tool, takes a list like build_from_list and
+returns a sub ref that will match the words in the list LONGEST first.
+
+String::RegEx::build_list_matcher
+Returns a subroutine reference that will match the words in the list.  Has 
+options to determine if it will make one huge regex or a bunch of smaller 
+ones that are applied in turn.
+
+
+
+----------------------------------------------------------------------
+I really would like to release this stuff to CPAN and would appreciate any 
+help or advice regarding this that may had.
+
+DeMerphQ
+
+
+
+
+
+_________________________________________________________________________
+Get Your Private, Free E-mail from MSN Hotmail at http://www.hotmail.com.
+

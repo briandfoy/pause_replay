@@ -1,0 +1,328 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:76915
+Return-Path: <yikuyiku.com@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18072 invoked from network); 21 Jul 2011 09:00:20 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 21 Jul 2011 09:00:20 -0000
+Received: (qmail 18908 invoked by uid 225); 21 Jul 2011 09:00:20 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18902 invoked by alias); 21 Jul 2011 09:00:20 -0000
+X-Spam-Status: No, hits=-0.8 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,HTML_MESSAGE,RCVD_IN_DNSWL_LOW,SPF_PASS,T_TO_NO_BRKTS_FREEMAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-iw0-f169.google.com (HELO mail-iw0-f169.google.com) (209.85.214.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 21 Jul 2011 02:00:12 -0700
+Received: by iwn8 with SMTP id 8so934079iwn.14
+        for <modules@perl.org>; Thu, 21 Jul 2011 02:00:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=9Fx8cKpmw5Xbvic7DgqbSPDVeJ3Ti2+V3nTkFDSQCsA=;
+        b=i0tYgYJc+dLroG3yWWnfGXKRP85ZS3MJKQScMxfotC4rSDvcglcOHogRUEqouaRNNC
+         wrvJRvoMT8VYUIq7ZvIhMZKmubVxU2/5gEofAXvI7zxUbGofmFF8reqJHAU27uk/y8cf
+         9ZcVf0uKgs+c6sq3Pkm+tD9mEWkU4tbPb6IEM=
+MIME-Version: 1.0
+Received: by 10.231.24.193 with SMTP id w1mr2690ibb.41.1311238807264; Thu, 21
+ Jul 2011 02:00:07 -0700 (PDT)
+Received: by 10.42.221.3 with HTTP; Thu, 21 Jul 2011 02:00:07 -0700 (PDT)
+Date: Thu, 21 Jul 2011 17:00:07 +0800
+Message-ID: <CADRPc1wxXSmxXtnMtvJjRsskSPYGkms0KM9ymsVHmbsARacFUw@mail.gmail.com>
+Subject: [RFC]RTMP::Client
+To: modules@perl.org
+Content-Type: multipart/alternative; boundary=001517740cb2529f7604a89093f8
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: yikuyiku.com@gmail.com (=?GB2312?B?s8K41g==?=)
+
+--001517740cb2529f7604a89093f8
+Content-Type: text/plain; charset=ISO-8859-1
+
+Hello all - I've written a new module called RTMP::Client that I'm planning
+to put on CPAN.
+
+Take a look at the documentation and tell me what you think.
+
+thank you for your time.
+
+
+NAME
+    RTMP::Client - Very Simle RTMP client
+
+SYNOPSIS
+     use RTMP::Client qw(rtmp_connect rtmp_play rtmp_call);
+
+     print "connect success\n" if rtmp_connect('192.168.1.1', '1935',
+'live/23');
+     rtmp_play('MainB_1', '-1.0', '-1.0');
+     rtmp_call('YourFunc', 'YourARGV');
+
+DESCRIPTION
+    This is a simple RTMP client without video or audio decode. It
+    implemented in pure PERL including packing Adobe amf packages.
+
+METHODS
+  rtmp_connect($rtmp_server_address, $server_port, $application_name)
+    Just like the 'NetConnection.connect()' function in ActionScript, with
+    args are set in different way.
+
+  rtmp_play($stream_or_file_name, $play_type, $length,
+$interval_call_hook_function, $hook_function)
+    Just like the 'NetStream.play()' function in ActionScript, with args are
+    set in different way. You can use the last two args or not.
+
+  rtmp_call($stream_or_file_name, $play_type, $length,
+$file_path_to_store_the_data_received)
+    Just like the 'NetStream.call()' function in ActionScript, with args are
+    set in different way.
+
+SOME INTERNAL METHODS
+  rtmp_handshake()
+    No args need. Called in function rtmp_connect().
+
+  pack_amf_body_to_chunks($string, $object_id, $stream_id, $type)
+    Output a available binary amf packet. Works on amf message body, just
+    like add a right amf header before the message body.
+
+  pack_amf_object_start()
+  pack_amf_object_end()
+  pack_amf_attribute_name($string)
+    It packs a attribute_name which less than 65536 bytes or return null.
+
+  pack_amf_number($double)
+    Return 9 bytes binary data.
+
+  pack_amf_boolean($boolean)
+    Return 2 bytes binary data.
+
+  pack_amf_string($string)
+    it can pack a string which less than 65536 bytes or it return null.
+    There will be a long string packer in future.
+
+  pack_amf_boolean($boolean)
+    Return 1 byte binary data.
+
+  my_recv_a_chunk()
+    Recieve a rtmp chunk.
+
+  my_recv_a_msg()
+    Recieve a rtmp message.
+
+  my_recv_nostop(\&sub)
+    Wait until recieved bytes, then return it.
+
+  my_recv($int_wanted_length, $int_time_out)
+    Wait $int_time_out Seconds, or Recieve $int_wanted_length bytes, then
+    return it.
+
+  my_send_bin($binary_data)
+    Send binary data to server.
+
+  my_send_hex(@array_with_hex)
+    Convert hex array to binary ,then send them to server.
+
+  print_hex($binary_data)
+    Print binary data in a readable format.
+
+  rtmp_timer($int_chunk_id)
+    Return rtmp timestamp of the chunk stream id in string format. From
+    Adobe RTMP Spec: 1.Timestamps in RTMP Chunk Stream are given as an
+    integer number of milliseconds. 2.each Chunk Stream will start with a
+    timestamp of 0, but this is not required. 3.Timestamps MUST be
+    monotonically increasing, and SHOULD be linear in time.
+
+  reset_rtmp_timer($chunk_id)
+  reset_rtmp_timer($chunk_id, $chunk_message_length)
+  get_rtmp_chunk_msg_length($chunk_id)
+  set_rtmp_chunk_msg_type_id($chunk_id, $chunk_message_type_id)
+  get_rtmp_chunk_msg_type_id($chunk_id)
+  set_rtmp_chunk_msg_stream_id($chunk_id, $chunk_message_stream_id)
+  get_rtmp_chunk_msg_stream_id($chunk_id)
+  set_rtmp_client_chunk_size($new_chunk_size)
+  get_rtmp_client_chunk_size
+  reset_rtmp_msg($chunk_id)
+  put_rtmp_msg($chunk_id, $string)
+  get_rtmp_msg
+  set_rtmp_window($window_size, $limit_type)
+  get_rtmp_window()
+  set_rtmp_peer_window($window_size)
+  get_rtmp_peer_window()
+  dec($binary_data)
+    Dump the data to dec
+
+  dec($string, $indent, $front_color, $back_color)
+    print colorful strings
+
+  analysis_rtmp_msg($msg_type, $msg)
+    output the rtmp stream information to STDOUT
+
+EXAMPLES
+        use RTMP::Client qw(rtmp_connect rtmp_play rtmp_call);
+
+    Speed Detection
+
+    report download speed every 5 secs.
+
+        print "connect success\n" if rtmp_connect('192.168.1.1', '1935',
+'live/23');
+        my $report_time = 5;
+        rtmp_play('MainB_1', '-1.0', '-1.0', $report_time,
+\&speed_detector);
+        sub speed_detector
+        {
+            my $rev_length = shift;
+            my $speed = $rev_length / 1024 / $report_time;
+            if ($speed > 3)
+            {
+                my $cur_time = strftime("%F_%T", localtime);
+                print $cur_time, "\t", $speed, "\tKbytes/s\n";
+            }
+            else
+            {
+                print "too slow !\n";
+            }
+        }
+
+    Save to File
+
+    do things like "rtmpdump".<http://rtmpdump.mplayerhq.hu/>
+
+        print "connect success\n" if rtmp_connect('192.168.1.1', '1935',
+'live/23');
+        my $loop_time = 10;
+        rtmp_play('MainB_1', '-1.0', '-1.0', $report_time, \&save_to_file);
+        sub save_to_file
+        {
+            my $rev_length = shift;
+            my $rev_binary = shift;
+            open my $fh,">>","/root/rtmp_dump.bin";
+            binmode $fh;
+            print $fh $rev_binary;
+            close $fh;
+        }
+
+AUTHOR
+    Written by ChenGang, yikuyiku.com@gmail.com
+
+COPYRIGHT
+    Copyright (c) 2011 ChenGang. This library is free software; you can
+    redistribute it and/or modify it under the same terms as Perl itself.
+
+--001517740cb2529f7604a89093f8
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hello all - I&#39;ve written a new module called RTMP::Client that I&#39;m =
+planning to put on CPAN.=A0 <br><br>Take a look at the documentation and te=
+ll me what you think.<br><br>thank you for your time.<br>
+
+<br><br>NAME<br>=A0=A0=A0 RTMP::Client - Very Simle RTMP client<br><br>SYNO=
+PSIS<br>=A0=A0=A0=A0 use RTMP::Client qw(rtmp_connect rtmp_play rtmp_call);=
+<br><br>=A0=A0=A0=A0 print &quot;connect success\n&quot; if rtmp_connect(&#=
+39;192.168.1.1&#39;, &#39;1935&#39;, &#39;live/23&#39;);<br>
+=A0=A0=A0=A0 rtmp_play(&#39;MainB_1&#39;, &#39;-1.0&#39;, &#39;-1.0&#39;);<=
+br>=A0=A0=A0=A0 rtmp_call(&#39;YourFunc&#39;, &#39;YourARGV&#39;);<br><br>D=
+ESCRIPTION<br>=A0=A0=A0 This is a simple RTMP client without video or audio=
+ decode. It<br>=A0=A0=A0 implemented in pure PERL including packing Adobe a=
+mf packages.<br>
+<br>METHODS<br>=A0 rtmp_connect($rtmp_server_address, $server_port, $applic=
+ation_name)<br>=A0=A0=A0 Just like the &#39;NetConnection.connect()&#39; fu=
+nction in ActionScript, with<br>=A0=A0=A0 args are set in different way.<br=
+><br>=A0 rtmp_play($stream_or_file_name, $play_type, $length, $interval_cal=
+l_hook_function, $hook_function)<br>
+=A0=A0=A0 Just like the &#39;NetStream.play()&#39; function in ActionScript=
+, with args are<br>=A0=A0=A0 set in different way. You can use the last two=
+ args or not.<br><br>=A0 rtmp_call($stream_or_file_name, $play_type, $lengt=
+h, $file_path_to_store_the_data_received)<br>
+=A0=A0=A0 Just like the &#39;NetStream.call()&#39; function in ActionScript=
+, with args are<br>=A0=A0=A0 set in different way.<br><br>SOME INTERNAL MET=
+HODS<br>=A0 rtmp_handshake()<br>=A0=A0=A0 No args need. Called in function =
+rtmp_connect().<br>
+<br>=A0 pack_amf_body_to_chunks($string, $object_id, $stream_id, $type)<br>=
+=A0=A0=A0 Output a available binary amf packet. Works on amf message body, =
+just<br>=A0=A0=A0 like add a right amf header before the message body.<br><=
+br>=A0 pack_amf_object_start()<br>
+=A0 pack_amf_object_end()<br>=A0 pack_amf_attribute_name($string)<br>=A0=A0=
+=A0 It packs a attribute_name which less than 65536 bytes or return null.<b=
+r><br>=A0 pack_amf_number($double)<br>=A0=A0=A0 Return 9 bytes binary data.=
+<br><br>=A0 pack_amf_boolean($boolean)<br>
+=A0=A0=A0 Return 2 bytes binary data.<br><br>=A0 pack_amf_string($string)<b=
+r>=A0=A0=A0 it can pack a string which less than 65536 bytes or it return n=
+ull.<br>=A0=A0=A0 There will be a long string packer in future.<br><br>=A0 =
+pack_amf_boolean($boolean)<br>
+=A0=A0=A0 Return 1 byte binary data.<br><br>=A0 my_recv_a_chunk()<br>=A0=A0=
+=A0 Recieve a rtmp chunk.<br><br>=A0 my_recv_a_msg()<br>=A0=A0=A0 Recieve a=
+ rtmp message.<br><br>=A0 my_recv_nostop(\&amp;sub)<br>=A0=A0=A0 Wait until=
+ recieved bytes, then return it.<br>
+<br>=A0 my_recv($int_wanted_length, $int_time_out)<br>=A0=A0=A0 Wait $int_t=
+ime_out Seconds, or Recieve $int_wanted_length bytes, then<br>=A0=A0=A0 ret=
+urn it.<br><br>=A0 my_send_bin($binary_data)<br>=A0=A0=A0 Send binary data =
+to server.<br><br>
+=A0 my_send_hex(@array_with_hex)<br>=A0=A0=A0 Convert hex array to binary ,=
+then send them to server.<br><br>=A0 print_hex($binary_data)<br>=A0=A0=A0 P=
+rint binary data in a readable format.<br><br>=A0 rtmp_timer($int_chunk_id)=
+<br>=A0=A0=A0 Return rtmp timestamp of the chunk stream id in string format=
+. From<br>
+=A0=A0=A0 Adobe RTMP Spec: 1.Timestamps in RTMP Chunk Stream are given as a=
+n<br>=A0=A0=A0 integer number of milliseconds. 2.each Chunk Stream will sta=
+rt with a<br>=A0=A0=A0 timestamp of 0, but this is not required. 3.Timestam=
+ps MUST be<br>
+=A0=A0=A0 monotonically increasing, and SHOULD be linear in time.<br><br>=
+=A0 reset_rtmp_timer($chunk_id)<br>=A0 reset_rtmp_timer($chunk_id, $chunk_m=
+essage_length)<br>=A0 get_rtmp_chunk_msg_length($chunk_id)<br>=A0 set_rtmp_=
+chunk_msg_type_id($chunk_id, $chunk_message_type_id)<br>
+=A0 get_rtmp_chunk_msg_type_id($chunk_id)<br>=A0 set_rtmp_chunk_msg_stream_=
+id($chunk_id, $chunk_message_stream_id)<br>=A0 get_rtmp_chunk_msg_stream_id=
+($chunk_id)<br>=A0 set_rtmp_client_chunk_size($new_chunk_size)<br>=A0 get_r=
+tmp_client_chunk_size<br>
+=A0 reset_rtmp_msg($chunk_id)<br>=A0 put_rtmp_msg($chunk_id, $string)<br>=
+=A0 get_rtmp_msg<br>=A0 set_rtmp_window($window_size, $limit_type)<br>=A0 g=
+et_rtmp_window()<br>=A0 set_rtmp_peer_window($window_size)<br>=A0 get_rtmp_=
+peer_window()<br>
+=A0 dec($binary_data)<br>=A0=A0=A0 Dump the data to dec<br><br>=A0 dec($str=
+ing, $indent, $front_color, $back_color)<br>=A0=A0=A0 print colorful string=
+s<br><br>=A0 analysis_rtmp_msg($msg_type, $msg)<br>=A0=A0=A0 output the rtm=
+p stream information to STDOUT<br>
+<br>EXAMPLES<br>=A0=A0=A0=A0=A0=A0=A0 use RTMP::Client qw(rtmp_connect rtmp=
+_play rtmp_call);<br><br>=A0=A0=A0 Speed Detection<br><br>=A0=A0=A0 report =
+download speed every 5 secs.<br><br>=A0=A0=A0=A0=A0=A0=A0 print &quot;conne=
+ct success\n&quot; if rtmp_connect(&#39;192.168.1.1&#39;, &#39;1935&#39;, &=
+#39;live/23&#39;);<br>
+=A0=A0=A0=A0=A0=A0=A0 my $report_time =3D 5;<br>=A0=A0=A0=A0=A0=A0=A0 rtmp_=
+play(&#39;MainB_1&#39;, &#39;-1.0&#39;, &#39;-1.0&#39;, $report_time, \&amp=
+;speed_detector);<br>=A0=A0=A0=A0=A0=A0=A0 sub speed_detector<br>=A0=A0=A0=
+=A0=A0=A0=A0 {<br>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 my $rev_length =3D shif=
+t;<br>
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 my $speed =3D $rev_length / 1024 / $repor=
+t_time;<br>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if ($speed &gt; 3)<br>=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0 {<br>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 my $cur_time =3D strftime(&quot;%F_%T&quot;, localtime);<br>=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 print $cur_time, &quot;\t&quot;, $spee=
+d, &quot;\tKbytes/s\n&quot;;<br>
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 }<br>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 el=
+se<br>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 {<br>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 print &quot;too slow !\n&quot;;<br>=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 }<br>=A0=A0=A0=A0=A0=A0=A0 }<br><br>=A0=A0=A0 Save to File<br><br=
+>=A0=A0=A0 do things like &quot;rtmpdump&quot;.&lt;<a href=3D"http://rtmpdu=
+mp.mplayerhq.hu/">http://rtmpdump.mplayerhq.hu/</a>&gt;<br>
+<br>=A0=A0=A0=A0=A0=A0=A0 print &quot;connect success\n&quot; if rtmp_conne=
+ct(&#39;192.168.1.1&#39;, &#39;1935&#39;, &#39;live/23&#39;);<br>=A0=A0=A0=
+=A0=A0=A0=A0 my $loop_time =3D 10;<br>=A0=A0=A0=A0=A0=A0=A0 rtmp_play(&#39;=
+MainB_1&#39;, &#39;-1.0&#39;, &#39;-1.0&#39;, $report_time, \&amp;save_to_f=
+ile);<br>
+=A0=A0=A0=A0=A0=A0=A0 sub save_to_file<br>=A0=A0=A0=A0=A0=A0=A0 {<br>=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0 my $rev_length =3D shift;<br>=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0 my $rev_binary =3D shift;<br>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 open my $fh,&quot;&gt;&gt;&quot;,&quot;/root/rtmp_dump.bin&quot;;<br>=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 binmode $fh;<br>
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 print $fh $rev_binary;<br>=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 close $fh;<br>=A0=A0=A0=A0=A0=A0=A0 }<br><br>AUTHOR<br>=
+=A0=A0=A0 Written by ChenGang, <a href=3D"http://yikuyiku.com">yikuyiku.com=
+</a>@<a href=3D"http://gmail.com">gmail.com</a><br><br>COPYRIGHT<br>
+=A0=A0=A0 Copyright (c) 2011 ChenGang. This library is free software; you c=
+an<br>=A0=A0=A0 redistribute it and/or modify it under the same terms as Pe=
+rl itself.<br>
+
+--001517740cb2529f7604a89093f8--

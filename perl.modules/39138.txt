@@ -1,0 +1,235 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:39138
+Return-Path: <perrin@elem.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12631 invoked from network); 17 Mar 2005 23:29:18 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 17 Mar 2005 23:29:18 -0000
+Received: (qmail 11267 invoked by uid 225); 17 Mar 2005 23:29:18 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11263 invoked by alias); 17 Mar 2005 23:29:17 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: 207.114.11.197 is neither permitted nor denied by domain of perrin@elem.com)
+Received: from ns2.plusthree.com (HELO ns2.plusthree.com) (207.114.11.197)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 17 Mar 2005 15:29:12 -0800
+Received: from 192.168.1.106 (varick-236-218.180VarickStreet.com [216.223.218.236])
+	(authenticated bits=0)
+	by ns2.plusthree.com (8.13.1/8.13.1) with ESMTP id j2HNS3L2009222
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NO)
+	for <modules@perl.org>; Thu, 17 Mar 2005 18:28:03 -0500
+Subject: RFC: Cache::Wrapper
+To: modules@perl.org
+Content-Type: text/plain
+Date: Thu, 17 Mar 2005 18:29:39 -0500
+Message-ID: <1111102179.3554.8.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.2 
+Content-Transfer-Encoding: 7bit
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: perrin@elem.com (Perrin Harkins)
+
+Hello,
+
+I'd like to get approval or alternate suggestions for a new cache module
+I want to put on CPAN.  The basic idea is to provide a wrapper for the
+existing cache modules which provides a consistent API for basic
+functionality, and is compatible with a small subset of the Cache::Cache
+API.  I do not believe that these modules can be easily converted to
+real Cache::Cache subclasses for various reasons, so the idea is to just
+make porting applications as easy as possible by supporting the most
+useful part of that API across these other modules.
+
+Here are some alternate names I thought of:
+
+Cache::Interface
+Cache::API
+Cache::Factory
+Cache::Unified
+
+The man page I have so far is below.
+
+- Perrin
+
+=head1 NAME
+
+Cache::Wrapper - A unified API for caching modules
+
+=head1 VERSION
+
+Version 0.1_1
+
+=head1 SYNOPSIS
+
+    use Cache::Wrapper;
+    
+    my $cache = Cache::Wrapper->new(
+        cache_class     => 'Cache::FastMmap',
+        namespace       => 'my_namespace',
+        default_expires => 60 * 60, # seconds, i.e. 1 hour
+    );
+    my $value;
+    $value = $cache->get('key');
+    if (!$value) {
+        # no result cached. do slow query to fetch it.
+        $value = some_slow_function('key');
+        # store it for future use
+        $cache->set('key' => $value);
+    }
+    
+    $cache->clear('key');
+    $cache->Clear(); # clear the whole cache
+
+=head1 DESCRIPTION
+
+Cache::Wrapper provides a common API for using various caching modules
+from CPAN.  It attempts to provide a baseline set of functionality,
+including:
+
+=over
+
+=item hash-like get/set semantics
+
+The API for fetching and storing is as simple as basic hash access.
+
+=item namespaces
+
+Multiple caches can be declared with separate namespaces.
+
+=item per-cache and per-item expiration times
+
+Time-to-live can be set for individual items or for everything in a
+particular cache.
+
+=item storage of scalar or complex values
+
+Anything that the Storable module can serialize can be stored in the
+cache.  Some cache modules are able to optimize storage of simple
+scalars, and this ability will be used when Cache::Wrapper is given the
+appropriate hints about your data.
+
+=item safe atomic updates
+
+Although explicit locking is not currently provided, updates are atomic
+in all cache classes.
+
+=back
+
+When the underlying cache module does not provide these features as
+built-ins, Cache::Wrapper attempts to compensate.  In some cases this
+results in a loss of performance, although that is minimized as much as
+possible.  It should be obvious though that the performance of the
+underyling cache modules is at least slightly reduced by being used
+through Cache::Wrapper -- you are trading a little speed for
+flexibility.
+
+=head1 METHODS
+
+=head2 C<new>
+
+    my $cache = Cache::Wrapper->new(
+                                    cache_class    => 'BerkeleyDB'
+                                    namespace      => 'my_cache',
+				    default_ttl    => 60 * 60, # seconds
+				    [ class-specific options ]
+                                   );
+
+The C<new> method instantiates a cache handle.  The primary parameter is
+C<cache_class>, which tells C<Cache::Wrapper> which storage module to
+use.  The options for this parameter are listed in detail under
+L</CACHE_CLASS OPTIONS>.
+
+The C<namespace> parameter is a string identifying a namespace that all
+cache entries for this handle will be in.  This allows separation of
+multiple caches with different data but conflicting keys.  For
+compatibility across cache modules, this string must be valid as a file
+name.
+
+The C<default_ttl> parameter is just what it sounds like -- a default
+time-to-live setting for all items placed in the cache.
+
+=head2 C<get>
+
+=head2 C<set>
+
+=head2 C<clear>
+
+=head1 CACHE_CLASS OPTIONS
+
+These are the bundled options for this version of C<Cache::Wrapper>.
+More may be provided later, or through separate CPAN downloads.  In each
+case, you will need to install the actual cache module yourself -- the
+code bundled here is just the wrapper.  See the manual pages for the
+individual wrappers for details on options and requirements.
+
+=head2 Cache::FastMmap
+
+This module uses mmap and a core written in C to achieve high speeds.
+Local disk only.
+
+=head2 Cache::Memcached
+
+This is the Perl client for memcached, a cache daemon that can hash
+entries across multiple machines to form one giant in-memory cache.  It
+is suitable for clusters of machines.
+
+=head2 BerkeleyDB
+
+This is an interface to modern versions of Berkeley DB from Sleepycat
+Software.  It is far beyond the old DB_File module in performance, using
+a shared memory cache and internal locking to achieve high-speed access.
+Local disk only.
+
+=head2 DBD::SQLite
+
+This is the self-contained SQL database SQLite.  It does not need a
+separate server.  Local disk only.
+
+=head2 DBD::MySQL
+
+This is the client for the MySQL database server.  It uses the MyISAM
+table type for storing data.  This is suitable for use with a cluster,
+although performance is better when the server is local.
+
+=head2 Cache::FileBackend
+
+This is the file-based storage from C<Cache::FileCache> in the
+C<Cache::Cache> distribution.  Local disk only.
+
+=head2 Cache::SharedMemoryBackend
+
+This is the shared memory backend from C<Cache::SharedMemoryCache>.  It
+uses C<IPC::ShareLite> for the memory manipulation.  Local use only.
+
+=head1 USE WITH MOD_PERL AND OTHER PERSISTENT ENVIRONMENTS
+
+... To be written ...
+
+=head1 AUTHOR
+
+Perrin Harkins, C<< <perrin@elem.com> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests to
+C<bug-cache-wrapper@rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org>.  I will be notified, and then you'll
+automatically
+be notified of progress on your bug as I make changes.
+
+=head1 ACKNOWLEDGEMENTS
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2004 Perrin Harkins, All Rights Reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut
+
+

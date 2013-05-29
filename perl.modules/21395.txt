@@ -1,0 +1,94 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21395
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 96513 invoked by uid 76); 30 May 2003 08:58:25 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Fri, 30 May 2003 01:58:25 -0700
+Received: (qmail 26761 invoked by uid 225); 30 May 2003 08:58:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26756 invoked by uid 507); 30 May 2003 08:58:21 -0000
+Received: from mail01.svc.cra.dublin.eircom.net (HELO mail01.svc.cra.dublin.eircom.net) (159.134.118.17) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Fri, 30 May 2003 01:58:19 -0700
+Received: (qmail 40341 messnum 424213 invoked from network[159.134.164.239/p239.as1.limerick1.eircom.net]); 30 May 2003 08:58:16 -0000
+Received: from p239.as1.limerick1.eircom.net (HELO dansat.data-plan.com) (159.134.164.239)  by mail01.svc.cra.dublin.eircom.net (qp 40341) with SMTP; 30 May 2003 08:58:16 -0000
+Received: from dansat.data-plan.com (localhost [127.0.0.1])	by dansat.data-plan.com (8.12.6/8.12.6) with ESMTP id h4U8wI2f020655;	Fri, 30 May 2003 09:58:18 +0100 (BST)	(envelope-from timbo@dansat.data-plan.com)
+Received: (from timbo@localhost)	by dansat.data-plan.com (8.12.6/8.12.6/Submit) id h4U8wI6e020654;	Fri, 30 May 2003 09:58:18 +0100 (BST)
+Date: Fri, 30 May 2003 09:58:18 +0100
+To: Darren Duncan <darren@DarrenDuncan.net>
+Cc: modules@perl.org
+Subject: Re: RFC: a SQL-representing object
+Message-ID: <20030530085818.GB6818@dansat.data-plan.com>
+References: <Pine.LNX.4.33.0305291755350.8719-100000@pd2.baremetal.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.33.0305291755350.8719-100000@pd2.baremetal.com>
+User-Agent: Mutt/1.4i
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-3.0 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_01_02,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+On Thu, May 29, 2003 at 07:51:45PM -0700, Darren Duncan wrote:
+> 
+> So, my first questions are these: 1. Would a DOM-for-SQL be useful in its
+> own right to other module developers, and therefore grow beyond its
+> previous intention of being "part of just one framework";
+
+Er, perhaps :-)
+
+> 2. What should this new module be called?
+
+> Rosetta::Schema
+> Rosetta::DOM
+> Rosetta::Dictionary
+> SQL::DOM
+> SQL::Parsed
+> SQL::Dictionary
+> Class::SQL
+> Class::AbstractSQL
+> Class::ParsedSQL
+> Class::SQLDOM
+> 
+> Now, some of the issues I need to keep in mind are:
+> 1. My class has nothing to do with XML, although they could be serialized
+> into XML, so I am wondering whether "DOM" implies XML and therefore I
+> shouldn't use it.
+
+DOM shouldn't imply XML. But you could drop the D and expand the OM into
+SQL::ObjectModel, or Class::SQLObjectModel, for example.
+
+> 2. My class is meant to also be usable with databases that don't
+> understand SQL natively (such as older ones), so would having "SQL" in the
+> name be a problem.  I suspect it may not.  Also, is "SQL" trademarked?
+
+It's not trademarked. I'd say the benefits of including SQL in the
+name outweigh any limitation it may imply.
+
+> 3. Since Rosetta as a whole depends so much on these modules (despite the
+> effort to make them usable on their own), would it just be better to leave
+> them named "Rosetta::*" but still distribute them separately?  What would
+> be the most descriptive of what they do?  Or could it be said that these
+> "Schema" modules in fact *are* Rosetta and everything else is an extension
+> to them?
+
+Frameworks can be intimidating to use. Requiring a significant 'buy in'.
+I think you'd gain more users overall by breaking it up (all else being equal).
+
+Also I think you'll need to address Rosetta::Locale:: in a similar way.
+Give it a new lease of life as an independantly useful set of modules.
+(And you might be surprised to find that they become more widely used than
+the other parts as it addresses a more common problem.)
+
+
+> A question: 4. Would a comprehensive intermediate SQL object be useful to
+> writers of a lot of these modules, so they can more quickly support the
+> parsing or generation of more complex SQL, and improve their works?
+
+dbi-users@perl.org is probably a better place to ask that.
+
+
+Tim.

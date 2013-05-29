@@ -1,0 +1,142 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:36760
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26458 invoked from network); 30 Nov 2004 02:24:11 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 30 Nov 2004 02:24:11 -0000
+Received: (qmail 12760 invoked by uid 225); 30 Nov 2004 02:24:10 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12756 invoked by alias); 30 Nov 2004 02:24:10 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+  by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 29 Nov 2004 18:24:07 -0800
+Received: from pause.perl.org (localhost [127.0.0.1])
+	by pause.perl.org (8.12.3/8.12.3/Debian-7.1) with ESMTP id iAU2O264019712
+	for <modules@perl.org>; Tue, 30 Nov 2004 03:24:03 +0100
+Received: (from nobody@localhost)
+	by pause.perl.org (8.12.3/8.12.3/Debian-7.1) id iAU2O0vc019704;
+	Tue, 30 Nov 2004 03:24:00 +0100
+Date: Tue, 30 Nov 2004 03:24:00 +0100
+Message-ID: <200411300224.iAU2O0vc019704@pause.perl.org>
+Subject: Module submission POOF
+Reply-To: modules@perl.org
+To: modules@perl.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       POOF
+  DSLIP:       adpOg
+  description: Perl Object-Oriented Framework
+  userid:      MARKLE (Mark Hedges)
+  chapterid:    6 (Data_Type_Utilities)
+  communities:
+    modules@perl.org
+
+  similar:
+    ?
+
+  rationale:
+
+    I guess this could be under Object::POOF too.
+
+    This is what I posted to modules@perl.org already...
+
+    Hi there. I've been working on and off for a few years on a generic
+    module/application framework I want to call POOF. I was impressed
+    reading about EJB's container-managed persistence and I wanted to
+    make SQL life for Perl objects a little easier to work with (and a
+    little more rigidly defined.)
+
+    Basically, a user setting up a web app defines a new class
+    MyApp::Whatever with a constructor that makes itself as a POOF, or a
+    more specialized POOF::User, POOF::Funk (function), or POOF::App,
+    POOF::Group, etc. Then the user defines fields in a database table
+    named "whatever" and optionally "whatever_info". This data is
+    automatically accessible:
+
+    # create a new db thread: $db = POOF::DB->new( [stuff] );
+
+    # share thread with new object: $whatever = MyApp::Whatever->new(
+    id => 1234, db => $db );
+
+    # get data from object's main table, # calls "select * from
+    whatever where id = ".$self->id $quick_field =
+    $whatever->data->{field1};
+
+    # get data from object's info table $info_field =
+    $whatever->data_info->{field2};
+
+    # use cached data, instead of calling sql again: $info_cached =
+    $whatever->{data_info}->{field3};
+
+    # save routine does auto-quoting based on field types:
+    $whatever->{save}->{quick_field} = $newval_1;
+    $whatever->{save_info}->{info_field} = $newval_2; $whatever->save;
+
+    # commit the thread: $db->commit; # or $whatever->{db}->commit;
+
+    Additional features include POOF::Data::Shepherd, a machine class
+    object that operates on a 'herd' of objects of a particular class.
+    Simple fields set in MyApp::Whatever->init tell one Whatever that it
+    might contain many Whatsis objects, which would have an index
+    defined in the "whatsis" table called whatever_id. Then a particular
+    Whatever knows to instantiate a POOF::Data::Shepherd to call a herd
+    of Whatsis objects "where whatsis.whatever_id = ".$whatever->id().
+    The Shepherd can do other things such as populating a tree or list
+    from a root or head object reference that contains a
+    self-referential field in its database table in addition to the
+    default 'id' field.
+
+    The POOF::DB object does some nifty tricks, including a subobject
+    POOF::DB::Fields that assigns dynamic subroutines that 'describe
+    table' and get field properties when called with a function matching
+    a table name. I did this with a typeglob and not autoload, I don't
+    know if that's preferred/faster. Right now it works with mysql, but
+    I plan to continue development with function space for other
+    databases in DB-related functions, especially POOF::Data::Shepherd's
+    methods of finding, breeding, crossing and comparing herds.
+
+    I would like to be able to create a second interface for an
+    application under POOF::App::NCurses (in addition to the current
+    defaut POOF::App::HTML), to provide equivalent interfaces for the
+    same POOF::Funk (function) tree. Who knows, maybe POOF::App::SOAP
+    eventually.
+
+    The POOF::Funk tree is managed by special POOF::Data::Shepherds
+    created by the user's MyApp::App instantiation of POOF::App. Each
+    leaf of the Funk tree can also be a head of a list, i.e. the start
+    of a sequential process or user interaction program. I still have to
+    write out menu functions to display the Funk tree in various ways.
+
+    It isn't done, but I've started a new job where I want to use the
+    code, only I don't want to give it to them, I want to release it to
+    the public. I think it's got a lot of potential and I will have
+    reason and occasion to work on it.
+
+  enteredby:   MARKLE (Mark Hedges)
+  enteredon:   Tue Nov 30 02:23:53 2004 GMT
+
+The resulting entry would be:
+
+POOF              adpOg Perl Object-Oriented Framework               MARKLE
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=e6800000_4ed8b1a09ce834f4&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=e6800000_4ed8b1a09ce834f4&SUBMIT_pause99_add_mod_insertit=1

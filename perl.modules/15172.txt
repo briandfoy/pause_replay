@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:15172
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17532 invoked by uid 76); 11 Nov 2002 12:22:09 -0000
+Received: from mail04.svc.cra.dublin.eircom.net (HELO mail04.svc.cra.dublin.eircom.net) (159.134.118.20) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-11-11 12:22:09Z
+Received: (qmail 19938 messnum 1155756 invoked from network[159.134.166.13/p525.as1.limerick1.eircom.net]); 11 Nov 2002 12:21:41 -0000
+Received: from p525.as1.limerick1.eircom.net (HELO dansat.data-plan.com) (159.134.166.13)  by mail04.svc.cra.dublin.eircom.net (qp 19938) with SMTP; 11 Nov 2002 12:21:41 -0000
+Received: (from timbo@localhost)	by dansat.data-plan.com (8.11.6/8.11.6) id gABCLia61398;	Mon, 11 Nov 2002 12:21:44 GMT	(envelope-from timbo)
+Date: Mon, 11 Nov 2002 12:21:44 +0000
+To: =?iso-8859-1?Q?J=F6rg?= Ziefle <ziefle@ifd.mavt.ethz.ch>
+Cc: Tim Bunce <Tim.Bunce@pobox.com>, modules@perl.org
+Subject: Re: Module submission WWW::LEO
+Message-ID: <20021111122144.GD60586@dansat.data-plan.com>
+References: <200211081849.gA8Insi10534@pause.perl.org> <20021108194715.GA40961@dansat.data-plan.com> <20021111111746.GB23535@ifd.mavt.ethz.ch>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20021111111746.GB23535@ifd.mavt.ethz.ch>
+User-Agent: Mutt/1.4i
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+On Mon, Nov 11, 2002 at 12:17:46PM +0100, Jörg Ziefle wrote:
+> On Fri, Nov 08, 2002 at 07:47:15PM +0000, Tim Bunce wrote:
+> > Seems like a good fit for the new WebService:: category.
+> > 
+> > But how does it relate to 
+> > http://search.cpan.org/author/SAMV/Lingua-Translate-0.06/lib/Lingua/Translate.pm
+> 
+> I wasn't aware of that module.  Its purpose seems pretty similar to my
+> module (it uses the Babelfish service instead of the LEO one, which has
+> different pros and cons).  Then again, this raises the question why that
+> module is not in WebService? :)
+
+Actually it raises the opposite issue... A general guideline for
+modules is that they should be named for what they do not how they
+do it.
+
+So the "WebService" category should only be used where "what the
+module does" is closely related to the fact it uses a web service.
+
+> I had a thought about modifying my code to be a backend to
+> Lingua::Translate, but the Lingua::Translate frontend seems to be
+> designed specifically for the two available backends, so my interface
+> (resp. the interface that is needed to provide the functionality I want)
+> doesn't fit in there very well right now.  In other words, the change
+> would require considerable changes in Lingua::Translate first.  As the
+> POD of Lingua::Translate states:
+> 
+> ---
+> =head1 BUGS/TODO
+> 
+> [...]
+> 
+> Need to formalise and define the "Interface" that the back-end modules
+> adhere to.
+> ---
+> 
+> Therefore, it seems to be reasonable to go with one of
+> 
+> * WebService::LEO <-- simplicity
+> * WebService::DictLEO <-- purpose visible in name
+> (* WebService::Dict::LEO) <-- w/ same implications as stated above
+
+Given what I've said above and what I understand of your module it
+seems like Lingua:: would be the best category to use.
+
+So I'd suggest something like Lingua::LEOTranslate, or perhaps a
+Lingua::Translate::LEO module that offers both a minimal plugin
+to Lingua::Translate and also a more full-features API for applications
+that "use Lingua::Translate::LEO;" directly.
+
+Tim.

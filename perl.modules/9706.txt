@@ -1,0 +1,116 @@
+Newsgroups: perl.macosx,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.macosx:1356 perl.modules:9706
+Return-Path: <pudge@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 58432 invoked by uid 76); 14 Jan 2002 14:28:35 -0000
+Received: from berke-breathed.deathtongue.org (HELO berke-breathed.deathtongue.org) (209.251.75.53)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Mon Jan 14 14:28:35 2002 -0000
+Received: from pudge.dyndns.org (allotpudge@ma-plymouthcenter4c-232.ply.adelphia.net [24.48.179.232])
+	by berke-breathed.deathtongue.org (8.12.1/8.12.1) with ESMTP id g0EERasJ020415;
+	Mon, 14 Jan 2002 09:27:36 -0500 (EST)
+Received: from [10.0.1.177] (bourque.pudge.net [10.0.1.177])
+	by pudge.dyndns.org (8.9.3/8.9.3) with ESMTP id JAA13306;
+	Mon, 14 Jan 2002 09:27:34 -0500
+Mime-Version: 1.0
+X-Sender: pudge@berke-breathed.deathtongue.org
+Message-ID: <p05100304b86897e2e4bb@[10.0.1.177]>
+In-Reply-To: <6DCD6686-08CA-11D6-8009-00039301D480@dan.co.jp>
+References: <6DCD6686-08CA-11D6-8009-00039301D480@dan.co.jp>
+Date: Mon, 14 Jan 2002 09:27:24 -0500
+To: Dan Kogai <dankogai@dan.co.jp>
+Subject: Re: Namespace [Was: Re: MacOSX::File]
+Cc: macosx@perl.org, modules@perl.org
+Content-Type: text/plain; charset="us-ascii"
+Approved: news@nntp.perl.org
+From: pudge@pobox.com (Chris Nandor)
+
+At 17:40 +0900 2002.01.14, Dan Kogai wrote:
+>   Okay, I will.  I heareby request namespace
+>
+>MacOSX
+>
+>   for the use by modules that are platform-specific to MacOS X.
+
+....
+
+>   As for the namespace Mac::X, I object because this is confusing with X
+>window.
+
+Yes, I agree it is confusing.  I am not crazy about MacOSX, but can think
+of nothing better, so I am not objecting.
+
+
+>> My problem is that I think this module should have the same interface as
+>> Mac::Files and should be called Mac::Files and then programmers on both
+>> platforms can "use Mac::Files" and just have it work.
+>
+>   Mine does not have the same interface.  That's why I picked the
+>different name space to begin with.  After XS (therefore C compiler) is
+>imperative for make install MacOSX::File (though binary distribution is
+>considered when it gets stable) something you can't expect of MacOS 9
+>and below.
+
+What can be expected of Mac OS (9) isn't relevant, since binary
+distributions are possible (and the norm).  We have binary distributions of
+all the Mac modules, plus many other modules; certainly a binary
+distribution of this module for Mac OS 9 would be possible, if it were
+written to be compatible (or were patched as such).
+
+So it makes me wonder again if MacOSX is the right place for it, if indeed
+it can work on both platforms.
+
+
+>   Oh, that reminds me.  Is there a canonical way to upload BINARY
+>version of the module?  I can make it so that Makefile.PL works like an
+>installer rather than Makefile generator but is it the way?
+
+Well, there is a canonical way on Mac OS, but I don't know about Mac OS X.
+You can grab one of the distributions from my user directory (CNANDOR) and
+examine it; essentially, I put the binary files in their place
+(macbinarizing them), and then there is special code in ExtUtils::Mac /
+CPAN / Mac::BuildTools to handle them.  It wouldn't be as complex for Mac
+OS X to handle it, if for no other reason but that you wouldn't need
+MacBinary for anything.
+
+
+>> Well, OK, maybe not.  But I do want *A* module called "Mac::Files" on
+>> Mac OS X that has the same interface as Mac::Files on Mac OS, though,
+>> and what I don't want is for there to be confusion in the long run as to
+>> what these modules should and shouldn't do ...
+>
+>   It would be nice, too but that requires more than my share of work.
+>Resorting to reinventing a wheel is a pain enough.
+
+But the issue is that there *will be* Mac::Files on Mac OS X eventually.
+So with your module, there will be two sets of modules that do the same
+thing, one of which is incompatible with Mac OS (perhaps).
+
+This isn't necessarily a bad thing, but I would like to see something like
+this module just be a stopgap measure until the full toolbox set is
+available via the Mac:: modules, because I would rather people use modules
+compatible for both OSes when possible, for maximum portability.
+
+
+>> What I really should do is just port the Mac:: modules, but I don't have
+>> the time to do that work.  :/
+>
+>   Yes, that's always the problem.  As for MacOSX::File, I was too lazy
+>to use Finder to backup a hundred of thousand of files (vanilla MacOS X
+>with Developer Kit well exceeds 100,000 files).  I was too impatient to
+>wait for someone come of a module like this.  And I was too hubristic to
+>wait for the verdict of modules@cpan.org.
+>   What other virtues do I need :)
+
+I am not denying the need for the module, and I am not saying the module as
+it exists is wrong in any way.  But the issue of duplicated functionality
+and compatability (as well as the issues of what File::Copy etc. should do)
+need to be addressed, so that we all know what direction things are headed,
+and so that interested parties have a chance to weigh in.
+
+Thanks,
+
+-- 
+Chris Nandor                      pudge@pobox.com    http://pudge.net/
+Open Source Development Network    pudge@osdn.com     http://osdn.com/

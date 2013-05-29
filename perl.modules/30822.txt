@@ -1,0 +1,478 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:30822
+Return-Path: <muir@idiom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10045 invoked by uid 76); 14 Apr 2004 23:41:18 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170)
+  by onion.perl.org (qpsmtpd/0.27.1) with SMTP; Wed, 14 Apr 2004 16:41:18 -0700
+Received: (qmail 20230 invoked by uid 225); 14 Apr 2004 23:41:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20216 invoked by alias); 14 Apr 2004 23:41:12 -0000
+X-Spam-Status: No, hits=0.0 required=7.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from idiom.com (HELO idiom.com) (216.240.32.1)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Wed, 14 Apr 2004 16:41:10 -0700
+Received: from idiom.com (localhost [127.0.0.1])
+	by idiom.com (8.12.9p2/8.12.9) with ESMTP id i3ENf7nN057115
+	for <modules@perl.org>; Wed, 14 Apr 2004 16:41:07 -0700 (PDT)
+	(envelope-from muir@idiom.com)
+Received: (from muir@localhost)
+	by idiom.com (8.12.9p2/8.12.9/Submit) id i3ENf7m1057018
+	for modules@perl.org; Wed, 14 Apr 2004 16:41:07 -0700 (PDT)
+	(envelope-from muir)
+Date: Wed, 14 Apr 2004 16:41:07 -0700 (PDT)
+Message-ID: <200404142341.i3ENf7m1057018@idiom.com>
+To: modules@perl.org
+Subject: module naming help.
+Approved: news@nntp.perl.org
+From: muir@idiom.com (David Muir Sharnoff)
+
+
+Hi.  I've nearly completed a module that stores perl objects
+in a relational database.  Unlike nearly every other somewhat
+similar module, my module does not require any prior schema 
+definition nor does it require explicit loads and saves.
+
+I've tried to make perl data persistent with as few side-effects
+as possible.
+
+I currently support REF, SCALAR, ARRAY, and HASH.  I don't (yet)
+support any other sort of perl data but adding REGEX wouldn't be
+too hard.  I even (mostly) support REFs to HASH keys.
+
+I currently support mysql and postgresql as backends.  
+
+The next major revision will add support for SQL queries using
+perl data access syntax:
+
+	Find me employees who have children older than their boss....
+	
+	select Employee where $Employee->{boss}{age} < $Employee->{children}[]{age}
+
+My working name for this module is Object::Rectangular, but I
+think that's too obscure.
+
+I'm currently leaning towards naming it Data::DBMS but I'm interested
+to know if any of you have any suggestions.
+
+Thanks,
+
+-Dave
+
+
+
+NAME
+            Object::Rectangular - map perl data objects into a RDBMS
+
+SYNOPSIS
+            use Object::Rectangular;
+
+            transaction(sub {
+                    $rectangular = new Object::Rectangular 
+                            dbi_dsn => $DBI_DSN, username => $username, password => $password;
+
+                    $rectangular->{named_objects}{foobar} = $myobject;
+
+                    $rectangular->commit;
+            });
+
+DESCRIPTION
+    The goal of Object::Rectangular is to make perl objects transparently
+    persistent.
+
+    Full transactional consistenty is the only operational mode. Either all
+    of your changes are saved or none of them are. During your program, you
+    will see a consistent view of the data: no other running transactions
+    will change the data you see. If another transaction changes data that
+    you are using then at least one of the transactions must abort. This
+    happens automatically.
+
+    It maps all perl objects to the same RDBMS schema. No advance schema
+    definition is required on the part of the user of Object::Rectangular.
+    The name comes from the rectangular nature of RDBMS storage. Internally,
+    the RDBMS schema uses four tables: a table of objects, a table of
+    attributes (keys and values), a table of large attributes that overflow
+    the normal column widths, and a table of counters.
+
+    At this time, Object::Rectangular is expecting a web-like workflow:
+
+            create Object::Rectangular instance
+
+            load some ojbects
+
+            modify some objects
+
+            commit
+
+            exit
+
+    If you need more than one transaction in a program, create more than one
+    Object::Rectangular instance.
+
+EXAMPLE PROGRAM
+            use Object::Rectangular;
+
+            transaction(sub {
+                    my $rectangular = new Object::Rectangular 
+                            dbi_dsn => 'DBI:mysql:database=MY-DATABASE-NAME;host=localhost', 
+                            username => 'MY-USERNAME', 
+                            password => 'MY-PASSWORD';
+
+                    my $p = $rectangular->{named_objects}{pages}{"/some/path"};
+
+                    $p->{next} = $rectangular->{named_objects}{pages}{"/some/other/path"};
+                    $p->{jpgs} = [ read_file("x.jpg"), read_file("y.jpg") ];
+
+                    $rectangular->commit;
+            });
+
+            exit;
+
+SUPPORTED DATA TYPES
+    Perl HASHes, REFs, SCALARs, and ARRAYs are supported. Currently, HASH
+    keys may not be longer than 255 characters. Class names may not be more
+    than 128 characters long.
+
+    At the current time, large ARRAYs are not efficient. Use HASHes instead
+    if this matters to you. References to array elements and hash values are
+    not efficient.
+
+    Large HASHes are supported by only loading keys that are accessed.
+
+    HASHes, array elements, and REFs are implmented with tie(). ARRAYs are
+    not currently tie()d because of bugs in perl. Multiple references to the
+    same scalar are supported. References to array elements and hash values
+    are supported.
+
+    Perl version 5.8.3 is required.
+
+SUPPORTED RDBMS
+    The following RDBMSs are supported:
+
+    mysql
+        Mysql version 4.x using InnoDB tables is supported. InnoDB is
+        required for its transaction support. Object::Rectangular has been
+        tested against mysql version 4.0.18. Mysql seems to have bad
+        performance characteristics when there are more than a couple of
+        simultaneous transactions. This is due to the use of the
+        SERIALIZABLE transaction isolation level in combination with the
+        fact that every transaction will touch the named_objects hash.
+
+    PostgreSQL
+        Object::Rectangular has been tested with PostgreSQL version 7.4.2.
+
+FUNCTIONS
+    transaction($funcref, @args)
+        "transaction()" is a wrapper for a complete transaction.
+        Transactions that fail due to deadlock with other processes will be
+        re-run automatically.
+
+        The first parameter is a reference to a function. Any additional
+        parameters will be passed as parameters to that function. The return
+        value of "transaction()" is the return value of "&$funcref()".
+
+        It is not necessary to use the "transaction()" method. Beware that
+        nearly any operation on persistent date (even read operations) can
+        cause deadlock.
+
+        Any use of persistent data can trigger a deadlock. The
+        "transaction()" function catches this and retries automatically. If
+        you don't use "transaction()" you might want to catch the exceptions
+        that "transaction()" catches. To do this, you can regex match $@
+        against $Object::Transaction::transfailrx.
+
+    workaround27555($reference)
+        References to values inside tied hashes do not behave properly after
+        the hash key is deleted. Since this may happen when using
+        Object::Rectangular, workaround27555() provdes a fix. After creating
+        such a reference, either directly
+
+                $ref = \$hash{key};
+
+        or by copying
+
+                $ref = $oldref
+
+        call "workaround27555($ref)" to register it for special treatment.
+        Persistent references do not need to be registered -- it happens
+        automatically when they are brought in-memory.
+
+        workaround27555() is harmless if called on other sorts of references
+        so it is safe to use indescriminately.
+
+        http://rt.perl.org/rt3/Ticket/Display.html?id=27555
+
+PUBLIC CLASS METHODS
+    new(dbi_dsn => $dbi_dsn, user => $user, password => $password)
+        Creates a Object::Rectangular object instance. In addition to the
+        normal DBI default environment variables of $DBI_DSN, $DBI_DRIVER,
+        $DBI_USER, $DBI_PASS, Object::Rectangular has its own set that
+        overrides the DBI_ set: $OBJ_RECT_DSN, $OBJ_RECT_DRIVER,
+        $OBJ_RECT_USER, $OBJ_RECT_PASS.
+
+    inital_setup(dbi_dsn => $dbi_dsn, user => $user, password => $password)
+        Drops and rereates the database tables. Don't use it too often :-)
+        The test suite drops and re-creates the tables many times. Be
+        careful.
+
+PUBLIC OBJECT METHODS
+    commit
+        Writes any changed objects back to the database and commits the
+        transaction. Currently only one commit() call is allowed.
+
+    virtual_object([\%hash])
+        Queries [and sets] the load-virtual flag on a persistent hash.
+        Hashes that load virtual will do separate queries for each key
+        rather than load the entire hash. This is a good thing if your has
+        has many keys. This flag takes effect the next time the hash is
+        loaded.
+
+        This may be handled automatically in the future.
+
+MEMBERS
+    named_objects
+        There is one pre-defined persisted object: the hash member
+        "named_objects". To make an object persistent, it must be referenced
+        by a persistent object.
+
+DEVELOPMENT STATUS, BUGS, AND BUG BOUNTY
+    At this time, Object::Rectangular has no users other than its author. If
+    you're using it, please let me know.
+
+    Few known bugs. The regression suite is well developed. So well
+    developed that I'm offering a bounty on bugs!
+
+    I'll pay (via paypal) US$5.00 to anyone who submits a new bug (with
+    regression test) that is caused by a problem in my Object::Transaction.
+    Bugs that are specific to an underlying DBMS do not count. Bugs due to
+    perl's incomplete implementation of TIE do not count. To qualify, bugs
+    must be serious: they must cause data corruption, false results, or
+    program failure. Bugs must not be listed here.
+
+    I'll report the number of bounties paid in the CHANGELOG as bugs are
+    fixed.
+
+    Known bugs...
+
+    Additional references to the in-memory copies of persistent data are
+    kept by Object::Rectangular. These extra references will prevent DESTORY
+    methods from being called as soon as they otherwise would be.
+
+    Perl's implmentation of TIE is not complete. Here are ways in which tied
+    persistent data will behave differently than regular data:
+
+    "scalar(%hash)"
+        The scalar value of a tied hash is always false. This is documented
+        in perltie.
+
+    references to hash keys
+        Persistent hashes are implemented with tie. There are bugs with
+        perl's implementation of references to tied hash keys. These bugs
+        will be triggered in several situations: creating a reference to
+        tied hash key that doesn't exist yet; deleting a key that has a
+        reference tied to it; assigning through a reference to a key that
+        has multiple references.
+
+        All of the above can either be avoided or you can workaround them by
+        calling "workaround27555"($YOUR_REFERENCE) whenver you create or
+        copy a tied hash key reference.
+
+        The perl bugs are documented in
+
+        http://rt.perl.org/rt3/Ticket/Display.html?id=27555
+
+        There are futher problem with references to references to tied hash
+        keys that cannot be worked around with "workaround27555()". To avoid
+        problems with references to references to tied hash keys, don't
+        change or delete value of the hash key after reading the value of
+        reference to a reference all within one transaction.
+
+        Some operations using references to tied hashes will cause a SEGV.
+        For example, the following breaks:
+
+                $rectangular->{named_objects}{root} = {};
+                $root->{skey} = 'sval';
+                $root->{X9} = [ \$root->{skey} ];
+                $rectangular->workaround27555($root->{X9}[0]);
+                $root->{Y9} = [ \$root->{skey} ];
+                $rectangular->workaround27555($root->{Y9}[0]);
+                ${$root->{X9}[0]} = 'FOO9';
+
+        However by copying the reference before assinging through it works
+        around the problem:
+
+                $rectangular->{named_objects}{root} = {};
+                $root->{skey} = 'sval';
+                $root->{X9} = [ \$root->{skey} ];
+                $rectangular->workaround27555($root->{X9}[0]);
+                $root->{Y9} = [ \$root->{skey} ];
+                $rectangular->workaround27555($root->{Y9}[0]);
+                my $x = $root->{X9}[0];
+                $$x = 'FOO9';
+
+        In summary: references to tied hash keys are dangerous and likely to
+        cause problems.
+
+    other magic
+        Other perl magic attributes are not currently stored persistently.
+        It's unlikely most of them could be made to work correctly anyway.
+        Not even taint works on tied hashes.
+
+        http://rt.perl.org/rt3/Ticket/Display.html?id=6758
+
+    "local" and tie
+        "local(%some_tied_hash)" doesn't work right. Thus
+        "local(%some_persistent_hash)" won't work right either.
+
+        http://rt.perl.org/rt3/Ticket/Display.html?id=6017
+
+FUTURE DIRECTIONS
+    Object::Rectangular isn't done. There are a bunch of things that I am
+    considering adding to it. If any of these things is important to you,
+    speak up so that I know there is interest...
+
+    better concurency
+        With the transaction model of SERIALIABLE on mysql, there are
+        serious performance issues surrounding access to named_objects.
+        Change to a different transaction model or DBMS.
+
+    perl-syntax sql query translator
+         SELECT Employee WHERE $Employee->{salary} > 5000
+
+        It's possible to translate perl-syntax queries into real SQL that
+        can be used to query the object store.
+
+    better grouping
+        Objects are loaded in groups rather than individually. There is much
+        room for improvement in choosing how groups are formed.
+
+    support for databases other than mysql
+        PostgreSQL is the next likely supported backend.
+
+    caching
+        Many possibilities. A cache-invalidation daemon to note when objects
+        have changed. Re-verification of touched data from the database.
+        Ability to call commit() more than once.
+
+    weak references
+        Support for weak references is possible.
+
+    external references to objects
+        Currently objects are reference counted internally. You must have a
+        reference to something from an already existing object for it to
+        continue to exist.
+
+    contracts
+        Object::Rectangular has to do a lot of scanning of objects to see if
+        they've changed. Explicit notification of changes would improve
+        performance.
+
+        Object::Rectangular could call functions before saving and after
+        loading to transform objects for a better or cleaner on-disk
+        representation.
+
+    support for 'base' & accessor methods
+        This isn't something that I care about but maybe someone else does?
+
+    schema enforcement
+        Allow explicit schemas to be defined. Do not save objects that don't
+        conform.
+
+    RDBMS -> object mapping
+        Map existing RDBMS schemas into objects.
+
+RUNNING THE REGRESSION TEST SUITE
+    The regression test suite empties and re-creates the persistent store
+    over and over again. To prevent the accidental erasure of production
+    data, all of the tests require a special environment variable to be set
+    $ORTEST_DSN. This variable replaces the normal $DBI_DSN or
+    $OBJ_RECT_DSN. Correspondingly there is a $ORTEST_USER and $ORTEST_PASS.
+
+    Set these variables to something different than what you use for your
+    production data!
+
+    Some of the tests take a long time to run and are disabled by default.
+
+THE COMPETITION
+    There are a number of other modules that make perl objects persistent.
+    For each module, I'll provde a sentence or two that explains why I wrote
+    Object::Rectangular rather than using that one.
+
+    Object::Rectangular does not require any schema defintion. Every other
+    persistence package requires schema definition and allows the nature of
+    the underlying RDBMS to show in both the kinds of objects you can use
+    and how you use them. For nested objects, Object::Rectangular's
+    performance can be better than anything that maps more directly to an
+    underlying RDBMS. For simple objects with a lot of attributes (columns),
+    Object::Rectangular will probably have a performance disadvantage.
+
+    Persistence::Object::Postgres
+        Uses Data::Dumper to serialize objects into BLOBs.
+
+    pop Only supports Sybase. Uses a fixed schema defined in XML.
+
+    SPOPS
+        Objects are HASHes, values are scalars only.
+
+    DBIx::RecordSet
+        Thin layer on top of DBI. Removes much pain from using DBI. Does not
+        change basic relationship to data -- still relational.
+
+    Object::Transaction
+        Cannot handle object links between master objects. No query support
+        at all (does not use RDBMS backend).
+
+    Class::DBI
+        Must define schema and relationships to RDBMS. Accessor methods.
+        Doesn't support many2many. Close tie to underlying RDBMS.
+
+    Alzabo
+        Must define schema and relationships as relates to RDBMS. Close tie
+        to underlying RDBMS. Can help create RDBMS schema. Complex. Can
+        cache database rows.
+
+    Tangram
+        Must define schmea. RDBMS schema is created from perl schema.
+
+    see also
+        http://poop.sourceforge.net/ has an overview of options.
+
+LICENSE
+    Copyright(C) 2004 David Muir Sharnoff <muir@idiom.com>
+
+    All rights reserved except as granted by this license. Use of this
+    module in a program or script indicates acceptance of this license by
+    the entity that chooses to use this module. Using a 3rd-party program
+    that includes this module does not bind an entity to this license.
+    Modification or redistribution of this module does bind an entity.
+    Entities are persons, organizations, companies, etc.
+
+    Modifications to this module are allowed as long as all useful
+    modifications are licensed back to David Sharnoff or his sucessors such
+    that David Sharnoff can relicense the modifications to third parties
+    under terms of his choosing with no restrictions whatsoever and need not
+    even acknowledge the origin of such modifications.
+
+    Any redistribution must retain this license.
+
+    Under this license, use, modification, and redistribution of this module
+    is expressly forbidden to all entities that have willfully violated an
+    open source license or attempted to enforce a software patent (except as
+    a defensive move like IBM's counter to SCO). This includes at least SCO
+    (GPL violator); Unisys (GIF patent enforcer).
+
+    Under this license, use, modification, and redistribution of this module
+    is expressly forbidden to all entities that engage in or encourage
+    sending SPAM emails.
+
+    This license is not compatabile with the GPL. It was not written by a
+    lawyer and the exact wording will probably change when a legal expert
+    examines it. This license applies only to this version of this module:
+    other versions may exist with other licenses.
+
+    Except for the University of California, Previous employers of David
+    Sharnoff may not use this module under this license.
+

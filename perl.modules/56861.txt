@@ -1,0 +1,114 @@
+Newsgroups: perl.module.build,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.module.build:927 perl.modules:56861
+Return-Path: <xdaveg@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 5690 invoked from network); 22 Sep 2007 22:36:59 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 Sep 2007 22:36:59 -0000
+Received: (qmail 29030 invoked by uid 225); 22 Sep 2007 19:42:41 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29022 invoked by alias); 22 Sep 2007 19:42:41 -0000
+X-Spam-Status: No, hits=-1.1 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VERIFIED,DK_SIGNED,SPF_PASS,URIBL_OB_SURBL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from rv-out-0910.google.com (HELO rv-out-0910.google.com) (209.85.198.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 22 Sep 2007 12:42:26 -0700
+Received: by rv-out-0910.google.com with SMTP id l15so918938rvb
+        for <modules@perl.org>; Sat, 22 Sep 2007 12:42:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        bh=U7GvChndfHLSYnWdxgN23h1S9LUiUXFUTXddvthLEgg=;
+        b=ou15wzeObaUzZagwETwU9YF4NMGMI0CvL5C4qIyeMoValD6ArnsyjignR6oSrOtSgJtTfch+NAMnZJg3xNQ96gyJWAjkRMy4W1mFgaTKeNeb7eiAabO7GzQQhKFls98O77f3gNDwVbofovHDvUy+npm3OlLTpWIfc+0PD/QRbwI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=LdfxS0bjQnASNnzkE3arPiS5T3DfZjpWhzFAvu0RitZnDxOa/0qkZ8HxQAUNGPzvc2K6j2l5U7nH1M4KNdH1cvf3x5E94DwmYSc39TC6QyTBEOXw2o2daIR7T8p+JSYD9IWpp7waDnhCKa1M44EKnP+yt4KxFqoanysz/sKdhxw=
+Received: by 10.141.128.19 with SMTP id f19mr1158519rvn.1190490143231;
+        Sat, 22 Sep 2007 12:42:23 -0700 (PDT)
+Received: by 10.140.127.12 with HTTP; Sat, 22 Sep 2007 12:42:22 -0700 (PDT)
+Message-ID: <5d4beb40709221242s27400646t2983497376f28915@mail.gmail.com>
+Date: Sat, 22 Sep 2007 15:42:22 -0400
+To: "Michael G Schwern" <schwern@pobox.com>
+Subject: Re: Which takes precedence, provides or no_index? (was Re: PAUSE indexer report MSCHWERN/Alien-SVN-1.4.5.2.tar.gz)
+Cc: modules@perl.org, "List - Module-Build" <module-build@perl.org>
+In-Reply-To: <46F53215.9070805@pobox.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <200709211146.l8LBkj8l024169@pause.perl.org>
+	 <46F3D9C8.2080401@pobox.com> <46F3DAB2.6010707@pobox.com>
+	 <5d4beb40709220646j70f599b3l916e675367bc8d3f@mail.gmail.com>
+	 <46F53215.9070805@pobox.com>
+Approved: news@nntp.perl.org
+From: xdaveg@gmail.com ("David Golden")
+
+On 9/22/07, Michael G Schwern <schwern@pobox.com> wrote:
+> Here's the problem.  "no_index" allows me to blot out whole directory trees
+> and individual files.  "provides" allows me to specify individual files.
+
+But the two keys do different things.
+
+"provides" maps a package name to a filename and, optionally, a
+version number.  A smart enough tool could potentially map multiple
+packages to a single filename, with different version information for
+each.  (I'm not sure if M::B or EU::MM do this today).  In other
+words, "provides" is metadata about package names.
+
+By contract, "no_index" just contains exclusion lists of types of
+object (dirs, files, packages and namespaces -- and I'm not clear on
+the difference of the last two, unless the latter is recursive).
+That's not package metadata in the same way.
+
+It would be more logical to me to have an "index" directive that is
+the counterpart of "no_index" and then specific rules to govern the
+conflict.  E.g. one trumps the other, or the most specific trumps (so
+that "index" a dir, but "no_index" a file inside the dir indexes the
+dir but excluding the file).
+
+> Trouble is I have an enormous subdirectory full of files.
+> http://search.cpan.org/src/MSCHWERN/Alien-SVN-1.4.5.2/src/subversion-1.4.5/
+>
+> Most of it should not be indexed, but buried deep down in there is a handful
+> of Perl modules which should be.  Crafting a "no_index" that excludes
+> everything but these modules is a royal pain in the ass.  So I've said:
+
+Well, it makes for a META.yml that's a pain, but in Build.PL, I think
+this works:
+
+use File::Find;
+my @no_index_files;
+find sub {
+    return unless -f;
+    return if $File::Find::name =~
+        m{^src/subversion-[0-9.]+/subversion/bindings/swig/perl/native/.+\.pm};
+    push @no_index_files, $File::Find::name;
+} => "src";
+
+And then later:
+
+    no_index => {
+        directory => ['inc'],
+        file => [ @no_index_files ],
+    },
+
+> I don't think setting no_index on API.pm is necessary as search will favor a
+> Foo.pod over a Foo.pm for displaying docs, just like perldoc.
+
+But I want CPAN::Reporter::API to show up in the Documentation
+section, not Modules, because there is no actual code in the API.pm
+file.
+
+> In fact, since CPAN::Reporter::API should be in the 02module index, it is
+> contradictory to say a file provides a package and also that file should not
+> be indexed.
+
+That's arguable.  I could probably just add the pure doc .pm files to
+MANIFEST.SKIP and get the same effect in the end.
+
+Regards,
+David

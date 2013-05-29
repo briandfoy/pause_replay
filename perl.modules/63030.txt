@@ -1,0 +1,99 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:63030
+Return-Path: <powerman@powerman.name>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 28230 invoked from network); 6 Nov 2008 07:11:52 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 6 Nov 2008 07:11:52 -0000
+Received: (qmail 6073 invoked by uid 225); 6 Nov 2008 07:11:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6069 invoked by alias); 6 Nov 2008 07:11:51 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from powerman.name (HELO powerman.name) (85.90.198.1)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 05 Nov 2008 23:11:48 -0800
+Received: (qmail 28818 invoked by uid 1000); 6 Nov 2008 07:11:41 -0000
+Date: Thu, 6 Nov 2008 09:11:41 +0200
+To: modules@perl.org
+Subject: name space and license ques
+Message-ID: <20081106071141.GF19538@home.power>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Organization: http://powerman.name/
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Approved: news@nntp.perl.org
+From: powerman@powerman.name (Alex Efros)
+
+Hi!
+
+= license
+
+Simple things first. :) While I can live with Standard-Perl license,
+I usually prefer to release my work in Public Domain. Is it allowed on
+CPAN? If allowed, then which one license I should choose in 'Register
+Namespace' - distribution_allowed?
+
+
+= POWER::Utils
+
+Now about name spaces. Right now I've about 30 modules in my local CPAN
+overlay (http://powerman.name/perl/overlay.html), more than 250 files
+(counting all versions). I mostly used top level POWER:: name space for
+them, to avoid clashing with CPAN modules. Now, to upload them to CPAN,
+I have to rename them.
+
+Not all modules deserve to be uploaded, of course - for example there some
+modules with unsorted utility functions, which probably doesn't really
+useful for other people. Example: POWER::Utils. But problem is, most
+other, much more useful, modules _use_ these modules with utility functions.
+
+How to handle this issue in best way? Inline required functions from
+POWER::Utils to other modules? Try to release POWER::Utils to CPAN in some
+way under some obscure name? Create top level POWER:: category and upload
+all modules as is?
+
+
+= WITH
+
+I've fresh module, which was developed with CPAN in mind (i.e. it doesn't
+use POWER::Utils :-)). But I've no idea how to name it to fit CPAN
+structure anyway. I have uploaded WITH-0.0.2.tar.gz to PAUSE, as it
+recommended, but doesn't tried to 'Register Namespace' for it yet.
+
+This module has unusual interface (somewhat similar to pragma or source
+filters, but not exactly).
+
+WITH give you ability to define values for some other module's constants
+when loading it with 'use'. This needed to allow hardcore optimizations
+to allow perl to optimize away some constructions based on constant values.
+Without WITH it's possible to get same effect with environment variables:
+
+  package Some::Module;
+  use constant DEBUG => $ENV{PERL_SOME_MODULE_DEBUG};
+  if (DEBUG) { ... } # optimize me away if possible, please
+
+  package main;
+  BEGIN {
+      $ENV{PERL_SOME_MODULE_DEBUG} = 1;
+  }
+  use Some::Module qw(:ALL);
+
+but that's ugly. WITH used this way:
+
+  package main;
+  use Some::Module WITH => { DEBUG => 1 }, qw(:ALL);
+
+What's recommended name for WITH module?
+
+
+P.S. How to subscribe to this list to get replies? Or I already subscribed
+(after creating PAUSE account)? Or only way to get replies is read archive
+at http://www.xray.mpe.mpg.de/mailing-lists/modules/?
+
+-- 
+			WBR, Alex.

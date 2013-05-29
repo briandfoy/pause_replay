@@ -1,0 +1,125 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5269
+Return-Path: <nobody@pause.kbx.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3747 invoked from network); 2 May 2001 06:43:57 -0000
+Received: from dubravka.kbx.de (HELO pause.kbx.de) (root@212.40.160.59)
+  by onion.valueclick.com with SMTP; 2 May 2001 06:43:57 -0000
+Received: (from nobody@localhost)
+	by pause.kbx.de (8.9.3/8.9.3) id IAA22494;
+	Wed, 2 May 2001 08:43:54 +0200
+Date: Wed, 2 May 2001 08:43:54 +0200
+Message-ID: <200105020643.IAA22494@pause.kbx.de>
+Subject: Module submission CGI::Portable
+To: modules@perl.org, duncand@cpan.org
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       CGI::Portable
+  DSLI:        adpO
+  description: Framework for server-agnostic web apps
+  userid:      DUNCAND (Darren Duncan)
+  chapterid:   15 (World_Wide_Web_HTML_HTTP_CGI)
+  communities:
+    cgi-list@jann.com, modules@perl.org, perhaps more
+
+  similar:
+    little bits of CGI::Screen CGI::MxScreen CGI::Application
+    CGI::BuildPage CGI::Response HTML::Mason CGI
+
+  rationale:
+
+    In the following few paragraphs I will give an overview of the
+    module, and in doing so I hope that I can justify the choice of my
+    name space. After that I discuss comparison to other modules. I
+    believe that this should be in the module list because it is rather
+    generic and unique, and such a thing should have a fair demand; the
+    main problem is communicating what its strengths are and how to use
+    it. I will try. My apologies if this section is longer than you'd
+    like.
+
+    The CGI::Portable class is a framework intended to support complex
+    web applications that are easily portable across servers because
+    common environment-specific details are abstracted away, including
+    the file system type, the web server type, and your project's
+    location in the file system or uri hierarchy.
+
+    Also abstracted away are details related to how users of your
+    applications arrange instance config/preferences data across single
+    or multiple files, so they get more flexability in how to use your
+    application without you writing the code to support it. So your apps
+    are easier to make data-controlled.
+
+    Application cores would use CGI::Portable as an interface to the
+    server they are running under, where they receive user input through
+    it and they return a response (HTML page or other data type) to the
+    user through it. Since CGI::Portable should be able to express all
+    of their user input or output needs, your application cores should
+    run well under CGI or mod_perl or IIS or a Perl-based server without
+    having code that supports each type's individual needs.
+
+    That said, CGI::Portable doesn't contain any user input/output code
+    of its own, but allows you to use whatever platform-specific code or
+    modules you wish between it and the actual server. By using my
+    module as an abstraction layer, your own program core doesn't need
+    to know which platform-specific code it is talking to.
+
+    As a logical extension to the interfacing functionality,
+    CGI::Portable makes it easier for you to divide your application
+    into atonomous components, each of which acts like it is its own
+    application core with user input and instance config data provided
+    to it and a recepticle for its user output provided. This module
+    would be an interface between the components.
+
+    Based on the above, you could conceivably say it has similarities
+    to the modules listed above. To start with, all of the above modules
+    do one or more of: storing and providing access to user input,
+    helping to organize access to multiple user screens or application
+    modes, collecting and storing output for the user, and so on.
+
+    Some ways that the modules are different from mine are: level of
+    complexity, because my module is simpler than HTML::Mason and
+    CGI::MxScreen (maybe) and CGI, but it is more complex and/or
+    comprehensive than the others; functionality, because it takes
+    portability between servers to a new level by being agnostic on both
+    ends, where the other solutions are all/mostly tied to specific
+    server types since they do the I/O by themselves; my module also
+    does filesystem translation and some settings management, and I
+    don't think any of the others do; I have built-in functionality for
+    organizing user screens hierarchically, called user_path/url_path
+    (in/out equivalents); I keep query params and post params whereas
+    most of the others use CGI.pm which combines them together; more
+    differences.
+
+    The current version of my module is available now under the name
+    HTML::Application, which will be changed once this new name is
+    approved. That module will also be split up into 4-5 or so modules
+    that are more focused and they will all go in the CGI::Portable::*
+    namespace to keep them out of others' back yards. Any current
+    CGI::WPM::* modules that I have will be considered demonstrations of
+    CGI::Portable in action as they are wrapped apps themselves.
+
+  enteredby:   DUNCAND (Darren Duncan)
+  enteredon:   Wed May  2 06:43:53 2001 GMT
+
+The resulting entry would be:
+
+CGI::
+::Portable        adpO Framework for server-agnostic web apps       DUNCAND
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  http://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=32000000_d4433e803f15db1e&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  http://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=32000000_d4433e803f15db1e&SUBMIT_pause99_add_mod_insertit=1

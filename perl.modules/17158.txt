@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17158
+Return-Path: <michael@insulin-pumpers.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13193 invoked by uid 76); 17 Jan 2003 21:14:00 -0000
+Received: from root@ns2.bizsystems.net (HELO ns2.is.bizsystems.com) (69.3.95.130) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-17 21:14:00Z
+Received: from gomer.is.bizsystems.com (gomer.is.bizsystems.com [192.168.1.166])	by ns2.is.bizsystems.com (8.12.5/8.12.5) with SMTP id h0HLDptF003014;	Fri, 17 Jan 2003 13:13:52 -0800
+Message-ID: <200301172113.h0HLDptF003014@ns2.is.bizsystems.com>
+To: modules@perl.org
+Date: Fri, 17 Jan 2003 13:14:11 -0800
+MIME-Version: 1.0
+Content-type: text/plain; charset=US-ASCII
+Content-transfer-encoding: 7BIT
+Subject: Re: modid:  Crypt::CapnMidNite
+Reply-to: michael@insulin-pumpers.org
+CC: comdog@panix.com
+Priority: normal
+In-reply-to: <200301170356.h0H3uAtB031141@ns2.is.bizsystems.com>
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: michael@insulin-pumpers.org ("Michael")
+References: <200301170356.h0H3uAtB031141@ns2.is.bizsystems.com>
+
+> In article <3E27601A.2CBAF188@bizsystems.com>, Michael
+> <michael@bizsystems.com> wrote:
+> 
+> > Bryan wrote:
+> 
+> that's brian.
+> 
+> > >> >     Implements various encrypt and decrypt methods
+> 
+> > >> which ones?  should they each have their own module?
+> 
+> > Michael said:
+> > >No, they are inter-related. Some individual methods can already be
+> > >found in other modules but are used withing CapnMidNite in a manner
+> > >that would not be as efficient if the external modules were used
+> > >instead.
+> >
+> > That was a pretty thin answer. More specifically, CapnMidnite implements
+> 
+
+Ok, more specifically, the calls to methods "encode" and 'decode" 
+assume the internal availability to all the module's methods.
+
+From the XS comments
+
+# call as:
+#       new_md5         md5 only
+#       new_rc4         rc4 setup
+#       new_md5_rc4     md5+rc4 setup
+#       new_crypt       rc4 setup, + hash, rot setup
+#       new_md5_crypt   md5+rc4 setup, + hash, rot setup
+#       decode          md5+rc4 setup, + hash, rot setup + decrypt
+
+The methods md5 and rc4 are usable, but are incidental to the true 
+purpose of the module which is to provide the last 4 functions + 
+method 'license' . These all use numerous internal calls to various 
+internal pieces of md5 and rc4. Specifically:
+init_md5, prep_key,init_hash_xy,MD5Update,MD5Final
+
+These internal method calls are needed to implement the mentioned 
+methods would not be easily exportable in perl since C structure 
+pointers are being passed around.
+
+MD5 already exists so implementing another is not what I had in mind. 
+I could do an RC4 module, I suppose, but it would still be needed 
+in its current form for use within this module as is md5 and its 
+internal structures.
+
+How about some constructive suggestions or pointers..... I don't want 
+to destroy the functionality for the sake of namespace and would like 
+to get this registered in some fashion so that modules that use it 
+can find it in CPAN.
+
+Michael
+
+
+> > MD5 and RC4 + RC4 modified-non-linear
+> 
+> > MD5 is identical in function to Digest::MD5, but because of the way it
+> > is used inside the C program, it would be a hassle to use the module
+> > though it could be done of course. The RC4 implementation is similar to
+> > Crypt::RC4 but this module appears to be broken and not maintained.
+> 
+> that sounds like they can be separate modules.  i would like to see
+> a better name that helps people find what they need.  i think most
+> people will have no idea what "CapnMidnite" is (the only references
+> to that string in Google is your module).

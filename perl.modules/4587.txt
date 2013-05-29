@@ -1,0 +1,222 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4587
+Return-Path: <Raphael.Manfredi@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6912 invoked from network); 2 Mar 2001 14:28:56 -0000
+Received: from beta.dmz-eu.st.com (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 2 Mar 2001 14:28:56 -0000
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+	by beta.dmz-eu.st.com (STMicroelectronics) with SMTP id 52BBD4ADD
+	for <modules@perl.org>; Fri,  2 Mar 2001 14:28:22 +0000 (GMT)
+Received: by zeta.dmz-eu.st.com (STMicroelectronics, from userid 0)
+	id 7A8E54D42; Fri,  2 Mar 2001 14:28:10 +0000 (GMT)
+Received: from eux220.sgp.st.com (localhost [127.0.0.1])
+	by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 4E9D1184C
+	for <modules@perl.org>; Fri,  2 Mar 2001 14:28:10 +0000 (GMT)
+Received: from gnx009.gnb.st.com (gnx009.gnb.st.com [164.129.103.229])
+	by eux220.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id PAA18789
+	for <modules@perl.org>; Fri, 2 Mar 2001 15:27:59 +0100 (MET)
+Received: from lod23.gnb.st.com (lod28.gnb.st.com [164.129.117.125])
+	by gnx009.gnb.st.com (8.8.6 (PHNE_14041)/8.8.6) with ESMTP id PAA14552;
+	Fri, 2 Mar 2001 15:27:58 +0100 (MET)
+To: modules@perl.org
+Cc: Raphael_Manfredi@pobox.com
+Reply-To: Raphael_Manfredi@pobox.com
+Subject: More info on CGI::Test namespace...
+X-Mailer: NMH [version 1.0.1]
+Organization: ST Microelectronics, Grenoble, France
+Date: Fri, 02 Mar 2001 15:27:58 +0100
+Message-ID: <21780.983543278@lod23.gnb.st.com>
+Sender: manfredi@lod23.gnb.st.com
+Approved: news@nntp.perl.org
+From: Raphael.Manfredi@st.com (Raphael Manfredi)
+
+[Please, read this through, and send me comments if you have an
+ informed opinion on that topic]
+
+There was no reply to the following message of mine:
+
+----------------------------------------------------
+I'm about to start developping a test framework to allow testing
+of CGI applications "offline", i.e. without plugging them into a
+web server.
+
+I was thinking to use the CGI::Test namespace.  Would that be ok?
+
+DLSI follows:
+
+CGI::Test     i     Off-line CGI regression test framework    RAM
+-----------------------------------------------------
+
+Maybe the fact that CGI::Test is looking too common to waste
+is holding you back...?  Nah!, here's why:
+
+Given the following CGI script:
+
+-----------------------------------------------
+: # feed this into perl
+	eval 'exec perl -S $0 ${1+"$@"}'
+		if $running_under_some_shell;
+
+use CGI qw/:standard/;
+
+$\ = "\n";
+
+print header;
+print start_html("GET form"), h1("GET form");
+print startform("GET");
+
+my $counter = param("counter") + 1;
+param("counter", $counter);
+print hidden("counter");
+
+print "Title: ", radio_group(
+	-name		=> "title",
+	-values		=> [qw(Mr Ms Miss)],
+	-default	=> 'Mr'), br;
+
+print "Name: ", textfield("name"), br;
+
+print "Skills: ", checkbox_group(
+	-name		=> "skills",
+	-values		=> [qw(cooking drawing teaching listening)],
+	-defaults	=> ['listening'],
+), br;
+
+print "New here: ", checkbox(
+	-name		=> "new",
+	-checked	=> 1,
+	-value		=> "ON",
+	-label		=> "click me",
+), br;
+
+
+print "Color: ", popup_menu(
+	-name		=> "color",
+	-values		=> [qw(white black green red blue)],
+), br;
+
+print "Note: ", textarea("note"), br;
+
+print "Prefers: ", scrolling_list(
+	-name		=> "months",
+	-values		=> [qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec)],
+	-size		=> 5,
+	-multiple	=> 1,
+	-default	=> [qw(Jul)],
+), br;
+
+print "Password: ", password_field(
+	-name		=> "passwd",
+	-size		=> 10,
+	-maxlength	=> 15,
+), br;
+
+print "Portrait: ", filefield(
+	-name		=> "portrait",
+	-size		=> 30,
+	-maxlength	=> 80,
+), br;
+
+print p(
+	reset(), defaults("default"), submit("Send"),
+	image_button(
+		-name	=> "img_send",
+		-alt	=> "GO!",
+		-src	=> "go.png",
+		-width	=> 50,
+		-height	=> 30,
+		-border	=> 0,
+	),
+);
+
+print endform;
+print end_html;
+-----------------------------------------------
+
+Here's my "t/parsing.t" test script that highlights the parsing work
+done by CGI::Test (this test currently passes):
+
+-----------------------------------------------
+use CGI::Test;
+
+print "1..33\n";
+
+my $BASE = "http://server:18/cgi-bin";
+
+my $ct = CGI::Test->make(
+	-url_base	=> $BASE,
+	-cgi_dir	=> "t/cgi",
+);
+
+ok 1, defined $ct;
+
+my $page = $ct->GET("$BASE/getform");
+ok 2, !$page->is_error;
+ok 3, length $page->raw_content;
+ok 4, $page->content_type eq "text/html";
+
+my $forms = $page->forms;
+ok 5, @$forms == 1;
+
+my $form = $forms->[0];
+
+my @names;
+my $rg = $form->radio_groups;
+ok 6, ref $rg && (@names = $rg->names) && 1;		# ok(x, 1, undef)
+ok 7, @names == 1;
+
+my $r_groupname = $names[0];
+ok 8, $rg->is_groupname($r_groupname);
+my @buttons = @{$rg->widgets_in($r_groupname)};
+ok 9, @buttons == 3;
+
+my $cg = $form->checkbox_groups;
+ok 10, ref $cg && (@names = $cg->names) && 1;
+ok 11, @names == 2;
+
+my $c_groupname = "skills";
+ok 12, $cg->is_groupname($c_groupname);
+@buttons = @{$cg->widgets_in($c_groupname)};
+ok 13, @buttons == 4;
+
+ok 14, @{$form->inputs} == 4;		# 1 of each (field, area, passwd, file)
+ok 15, @{$form->buttons} == 4;
+ok 16, @{$form->menus} == 2;
+ok 17, @{$form->checkboxes} == 5;
+
+my $months = $form->menu_by_name("months");
+ok 18, defined $months;
+ok 19, !$months->is_popup;
+ok 20, $months->selected_count == 1;
+ok 21, @{$months->option_values} == 12;
+ok 22, $months->is_selected("Jul");
+ok 23, !$months->is_selected("Jan");
+
+my $color = $form->menu_by_name("color");
+ok 24, defined $color;
+ok 25, $color->is_popup;
+ok 26, !$color->is_selected("white");
+ok 27, $color->selected_count == 0;
+ok 28, $color->option_values->[0] eq "white";
+
+my @menus = $form->widgets_matching(sub { $_[0]->is_menu });
+ok 29, @menus == 2;
+my @radio = $form->radios_named("title");
+ok 30, @radio == 3;
+
+ok 31, $form->action eq "/cgi-bin/getform";
+ok 32, $form->method eq "GET";
+ok 33, $form->enctype eq "application/x-www-form-urlencoded";
+-----------------------------------------------
+
+I'm currently working on implementing the "user inteface" side
+of the test, i.e.: click on that radio, press that button...
+
+Besides, I'm needing CGI::Test for writing regression tests
+for the forthcoming CGI::MxScreen framework...  I think this will
+be a useful addition.
+
+Raphael

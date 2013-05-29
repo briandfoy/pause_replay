@@ -1,0 +1,123 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13094
+Return-Path: <geoff@modperlcookbook.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 75890 invoked by uid 76); 8 Aug 2002 15:05:52 -0000
+Received: from [209.207.216.54] (HELO jaws.exclamationlabs.com) (209.207.216.54)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Thu Aug  8 15:05:52 2002 -0000
+Received: from modperlcookbook.org (ham-nat.laserlink.net [208.216.91.198])
+	(authenticated)
+	by [128.242.215.98] (8.10.2/8.10.2) with ESMTP id g78F58611206
+	for <modules@perl.org>; Thu, 8 Aug 2002 11:05:08 -0400
+Message-ID: <3D5288A9.4030405@modperlcookbook.org>
+Date: Thu, 08 Aug 2002 11:05:13 -0400
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:0.9.4.1) Gecko/20020508 Netscape6/6.2.3
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: RFC: Acme::No
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: geoff@modperlcookbook.org (Geoffrey Young)
+
+hi all...
+
+   I was thinking about releasing Acme::No to CPAN but wanted to make 
+sure that it follows the spirit of the Acme:: namespace properly.
+
+   Acme::No can be downloaded from
+ 
+http://www.modperlcookbook.org/~geoff/modules/experimental/Acme-No-0.01.tar.gz
+
+   below is the README.
+
+   thanks
+
+--Geoff
+
+
+NAME
+
+Acme::No - makes no() work the way I want it to
+
+SYNOPSIS
+
+  use 5.6;            # I use our(), so 5.6 is required
+  no  6.0;            # but this was coded for perl 5, not perl 6
+                      # and the perl 6 compat layer isn't really 5.6
+                      # so my code breaks under 6.0
+
+  use mod_perl 1.27;  # we need at least version 1.27
+  no mod_perl 2.0;    # but mod_perl 2.0 is entirely different than 1.0
+                      # so keep my cpan email to a minimum
+
+
+DESCRIPTION
+
+ok, first the appropriate pod:
+
+$ perldoc -f no
+   =item no Module VERSION LIST
+
+   =item no Module VERSION
+
+   =item no Module LIST
+
+   =item no Module
+
+   See the L</use> function, which C<no> is the opposite of.
+
+
+now, one might think that, since
+
+  use mod_perl 1.27;
+
+makes sure that mod_perl is at least version 1.27,
+
+  no mod_perl 1.27;
+
+should mean that 1.27 is too high - the manpage says use() and
+no() are opposites, and that looks like opposite behavior to
+me.  however...
+
+  $ perl -e 'use mod_perl 2.0'
+  mod_perl version 2 required--this is only version 1.2701 at -e line 1.
+  BEGIN failed--compilation aborted at -e line 1.
+
+  $ perl -e 'no mod_perl 2.0'
+  mod_perl version 2 required--this is only version 1.2701 at -e line 1.
+  BEGIN failed--compilation aborted at -e line 1.
+
+so, no() and use() do the exact same thing here - hmmm... looks like a
+bug in perl core...
+
+enter Acme::No
+
+Acme::No makes no() work the way I want it to.
+
+FEATURES/BUGS
+
+probably lots
+
+SEE ALSO
+
+Filter::Util::Call, perldoc -f use, perldoc -f no,
+http://www.mail-archive.com/perl5-porters@perl.org/msg53742.html,
+http://www.mail-archive.com/perl5-porters@perl.org/msg53752.html,
+
+
+AUTHOR
+
+Geoffrey Young <geoff@modperlcookbook.org>
+
+COPYRIGHT
+
+Copyright (c) 2002, Geoffrey Young
+All rights reserved.
+
+This module is free software.  It may be used, redistributed
+and/or modified under the same terms as Perl itself.
+

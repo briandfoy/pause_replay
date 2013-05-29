@@ -1,0 +1,114 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:72373
+Return-Path: <jw@suse.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 22580 invoked from network); 13 Aug 2010 16:19:55 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 13 Aug 2010 16:19:55 -0000
+Received: (qmail 11371 invoked by uid 225); 13 Aug 2010 16:19:55 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11367 invoked by alias); 13 Aug 2010 16:19:54 -0000
+X-Spam-Status: No, hits=-5.0 required=8.0
+	tests=RCVD_IN_DNSWL_HI,T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from cantor.suse.de (HELO mx1.suse.de) (195.135.220.2)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 13 Aug 2010 09:19:53 -0700
+Received: from relay1.suse.de (charybdis-ext.suse.de [195.135.221.2])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx1.suse.de (Postfix) with ESMTP id 6FC349428F;
+	Fri, 13 Aug 2010 18:19:48 +0200 (CEST)
+Date: Fri, 13 Aug 2010 18:19:48 +0200
+To: modules@perl.org
+Cc: JNW@cpan.org
+Subject: Re: Module submission URL::Checkout
+Message-ID: <20100813161947.GC5162@suse.de>
+References: <201008051256.o75CuE69010110@pause.fiz-chemie.de>
+ <130820101215441117%brian.d.foy@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <130820101215441117%brian.d.foy@gmail.com>
+Approved: news@nntp.perl.org
+From: jw@suse.de (Juergen Weigert)
+
+On Aug 13, 10 12:15:46 +0200, brian d foy wrote:
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+> 
+> In article <201008051256.o75CuE69010110@pause.fiz-chemie.de>, Perl
+> Authors Upload Server <upload@pause.perl.org> wrote:
+> 
+> > The following module was proposed for inclusion in the Module List:
+> > 
+> >   modid:       URL::Checkout
+> >   DSLIP:       adpOp
+> >   description: Get one or more files from a remote location
+> >   userid:      JNW (Jürgen Weigert)
+> 
+> This sounds like LWP::Simple. Why didn't you just use that instead of
+> wget? I'm curious if there was some issue that you couldn't handle with
+> LWP.
+
+URL::Checkout works on files. It is not pulling contents incore, 
+like LWP would do. It creates a checkout tree rather than fetching a single
+file through a single connection as LWP would do. 
+Wget allows me to copy a web-page together with all its css, js, image
+components, or even mirror an entire subtree hierarchy. These features are
+Imho lissing in LWP. wget also has a wonderful --continue option.
+
+Namespace-wise, this would fit really well under the LWP:: hiearchy.
+LWP already supports http, https, gopher, ftp, news, file, and mailto
+I am basically adding to that list. 
+
+> I think URL is the wrong namespace for this. In CPAN, the URL space is
+> mostly things that work with the URL string itself.
+
+True. This is posisbly misleading. I am working with the URL strings, if
+close examination counts: I apply regexp and possibly other
+parsers to determine (guess?) the best protocol handlers.
+
+File::Copy::Recursive is quite close. It just does not fetch from remote.
+LWP::Simple::mirror() is also very close, but does no recursion.
+I feel like in between :-)
+
+> Checkout is a bit weird too, because that term is closely related to
+> source control systems, as you say. However, you aren't really working
+> with a source control system.
+
+Oh, no. I am working with VCS's, but not exclusivly.
+
+The purpose is an idiot fool proof way to just 'get that stuff'.
+ - be it from a web server, ftp server, VCS server
+ - be it a single file, a directory, or an entire tree.
+
+File::Fetch - would be an understatement, 
+ it does hint at the remote aspect, but not at the multitude 
+ of protocols, not at the multitude of files.
+
+File::Copy::Recursive::Remote::ANY
+ would be technically correct, but is too cumbersome.
+
+LWP::Recursive would not sound too bad. Except that I'd feel 
+oblieged to at least use LWP for something. :-)
+
+Thanks for the review.
+I am a bit stalled with good names now, I appreciate this discussion
+and would like to hear more ideas. 
+
+        cheers,
+                JW-
+
+-- 
+ o \  Juergen Weigert  paint it green!    __/ _=======.=======_
+<V> | jw@suse.de       back to ascii!  __/        _---|____________\/
+ \  | 0911 74053-508                __/          (____/            /\
+(/) | _____________________________/              _/ \_ vim:set sw=2 wm=8
+SUSE LINUX Products GmbH, GF: Markus Rex, HRB 16746 (AG Nuernberg)
+"You are trying to use packages from project 'openSUSE:11.3'.
+ Note that malicious packages can compromise your system."
+

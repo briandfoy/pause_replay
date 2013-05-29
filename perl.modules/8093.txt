@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8093
+Return-Path: <acme@astray.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 78637 invoked from network); 7 Oct 2001 21:40:43 -0000
+Received: from unknown (HELO ns0.astray.com) (195.82.114.160)
+  by onion.valueclick.com with SMTP; 7 Oct 2001 21:40:43 -0000
+Received: from acme by ns0.astray.com with local (Exim 3.13 #1)
+	id 15qLeR-0001O5-00
+	for modules@perl.org; Sun, 07 Oct 2001 22:39:59 +0100
+Date: Sun, 7 Oct 2001 22:39:59 +0100
+To: modules@perl.org
+Subject: java classfile reading modules naming
+Message-ID: <20011007223959.A5294@ns0.astray.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.4i
+X-Perl-Mongers: Amsterdam.pm, Bath.pm, Croydon.pm, ... London.pm
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: acme@astray.com (Leon Brocard)
+
+Hullo. I ask the module naming gods for advice. Here is my goat.
+
+I'm about to finish writing a module which parsers Java .class files
+and reports the structure of the file by returning an object
+containing all information in the file: constants, methods, actual JVM
+bytecode etc. The module will eventually expose JVM bytecodes and,
+well, things to make a Perl / Parrot JVM implementation possible.
+
+The Classfile is strictly part of the JVM and not of Java, so my best
+guess so far is JVM::ClassFile. I'm not a big fan of modules named
+...Parser, as surely everything does that these days (that's worse
+than having XML:: everything). However, JVM:: is a new namespace
+(there's already Jvm though, should I use that instead?).
+
+OK, basically, my question is: Is JVM::ClassFile ok?
+
+Copious example excerpt from test file:
+
+my $c = JVM::ClassFile->new("HelloWorld.class");
+ok(ref($c), "Loaded HelloWorld");
+ok($c->magic == 0xCAFEBABE, "Good magic");
+ok($c->version eq '45.3', "Right compiler version");
+ok($c->class eq 'HelloWorld', "Right class");
+ok($c->superclass eq 'java/lang/Object', "Right superclass");
+ok(scalar(@{$c->constant_pool}) == 29, "Full constant pool");
+ok(scalar(@{$c->access_flags}) == 1, "Right number of class access flags");
+ok($c->access_flags->[0] eq 'super', "Correct super class access flags");
+ok(scalar(@{$c->interfaces}) == 0, "No interfaces");
+ok(scalar(@{$c->fields}) == 0, "No fields");
+ok(scalar(@{$c->methods}) == 2, "Right number of methods");
+
+my $method = $c->methods->[0];
+ok($method->name eq '<init>', "<init> named");
+ok($method->descriptor eq '()V', "<init> descriptor");
+ok(scalar(@{$method->access_flags}) == 0, "<init> has no access flags");
+ok(scalar(@{$method->attributes}) == 1, "<init> has 1 attribute");
+ok($method->attributes->[0]->name eq 'Code', "<init> has Code attribute");
+
+$method = $c->methods->[1];
+ok($method->name eq 'main', "main named");
+ok($method->descriptor eq '([Ljava/lang/String;)V', "main descriptor");
+ok(scalar(@{$method->access_flags}) == 2, "main has two access flags");
+ok(scalar(grep { $_ eq 'public' } @{$method->access_flags}) == 1, "main has access flags public");
+ok(scalar(grep { $_ eq 'static' } @{$method->access_flags}) == 1, "main has access flags static");
+ok(scalar(@{$method->attributes}) == 1, "main has 1 attribute");
+ok($method->attributes->[0]->name eq 'Code', "main has Code attribute");
+
+ok(scalar(@{$c->attributes}) == 1, "Right number of attributes");
+ok($c->attributes->[0]->name eq 'SourceFile', "SourceFile attribute present");
+ok($c->attributes->[0]->value eq 'HelloWorld.java', "SourceFile attribute value correct");
+
+Many thanks O holy Gods I bow to your judgement ;-), Leon
+-- 
+Leon Brocard.............................http://www.astray.com/
+Nanoware...............................http://www.nanoware.org/
+
+... Bad Command:(A)bort (R)etry (T)ake RAM hostage

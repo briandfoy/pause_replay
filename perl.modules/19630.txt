@@ -1,0 +1,56 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:19630
+Return-Path: <vze4rnqz@verizon.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14193 invoked by uid 76); 20 Mar 2003 18:49:43 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.25) with SMTP; Thu, 20 Mar 2003 10:49:43 -0800
+Received: (qmail 6914 invoked by uid 225); 20 Mar 2003 18:49:42 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6909 invoked by uid 507); 20 Mar 2003 18:49:42 -0000
+Received: from out006pub.verizon.net (HELO out006.verizon.net) (206.46.170.106) by one.develooper.com (qpsmtpd/0.25) with SMTP; Thu, 20 Mar 2003 10:49:40 -0800
+Received: from verizon.net ([68.161.124.246]) by out006.verizon.net          (InterMail vM.5.01.05.27 201-253-122-126-127-20021220) with ESMTP          id <20030320184938.NMSR4892.out006.verizon.net@verizon.net>;          Thu, 20 Mar 2003 12:49:38 -0600
+Received: from verizon.net (squirtle [127.0.0.1])	by verizon.net (8.12.8/8.12.8/Debian-2) with ESMTP id h2KInOwf028124;	Thu, 20 Mar 2003 13:49:24 -0500
+Received: (from kstar@localhost)	by verizon.net (8.12.8/8.12.8/Debian-2) id h2KInNvI028122;	Thu, 20 Mar 2003 13:49:23 -0500
+X-Authentication-Warning: squirtle.localdomain: kstar set sender to vze4rnqz@verizon.net using -f
+Date: Thu, 20 Mar 2003 13:49:23 -0500
+To: Alan Barclay <gorilla@elaine.furryape.com>
+Cc: modules@perl.org
+Subject: Re: Namespace advice for hashcash module
+Message-ID: <20030320184923.GA28082@verizon.net>
+References: <20030320130108.A6900@elaine.furryape.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030320130108.A6900@elaine.furryape.com>
+User-Agent: Mutt/1.5.3i
+X-Authentication-Info: Submitted using SMTP AUTH at out006.verizon.net from [68.161.124.246] at Thu, 20 Mar 2003 12:49:38 -0600
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-2.9 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_MUTT,X_AUTH_WARNING version=2.44
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: kstar@cpan.org (Kurt Starsinic)
+
+On Mar 20, Alan Barclay wrote:
+> I've just finished a module which allows users to generate and
+> validate hashcash tokens.
+> 
+> Hashcash tokens are bitstreams which are hard to calculate, but
+> easy to verify, and are therefore proof that the generator 
+> performed a certain amount of CPU work, and have been proposed
+> as a solution to spamming. More on this webpage
+> http://www.cypherspace.org/~adam/hashcash/
+> 
+> Digest::HashCash  doesn't seem to be a good place, because it's
+> not performing a digest
+> 
+> Crypt::HashCash same problem, it's not doing crypto
+
+    I think Crypt::HashCash is the best fit.  It *does* provide
+cryptographic functions, it's just not a cipher.  See, e.g.,
+Crypt::Random.
+
+    - Kurt
+

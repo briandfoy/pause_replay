@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:83327
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24818 invoked from network); 16 Nov 2012 20:43:11 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 16 Nov 2012 20:43:11 -0000
+Received: (qmail 20862 invoked by uid 225); 16 Nov 2012 20:43:11 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20858 invoked by alias); 16 Nov 2012 20:43:10 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.fiz-chemie.de) (195.37.231.65)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 16 Nov 2012 12:43:07 -0800
+Received: from pause.fiz-chemie.de (localhost.localdomain [127.0.0.1])
+	by pause.fiz-chemie.de (8.13.8/8.13.8/Debian-3) with ESMTP id qAGKh2fd014025
+	for <modules@perl.org>; Fri, 16 Nov 2012 21:43:02 +0100
+Received: (from nobody@localhost)
+	by pause.fiz-chemie.de (8.13.8/8.13.8/Submit) id qAGKh28H014024;
+	Fri, 16 Nov 2012 21:43:02 +0100
+Date: Fri, 16 Nov 2012 21:43:02 +0100
+Message-ID: <201211162043.qAGKh28H014024@pause.fiz-chemie.de>
+Subject: Module submission IO::Pipe::Producer
+Reply-To: modules@perl.org
+To: modules@perl.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       IO::Pipe::Producer
+  DSLIP:       RdpOp
+  description: Get STDOUT & STDERR handles on a subroutine.
+  userid:      ROBLEACH (Robert Leach)
+  chapterid:   21 (File_Handle_Input_Output)
+  communities:
+
+  similar:
+
+  rationale:
+
+    If you have a series of sequential steps to perform to process a
+    stream of input and each of those steps is somewhat complex, you
+    might want to encapsulate those steps in their own subroutines, but
+    doing so on a large file would mean you have to wait for the last
+    step to start before you start getting output from your script:
+
+    @results1 = step1($fh); @results2 = step2(\@results1); @results3 =
+    step3(\@results2); print(@results3);
+
+    Instead, you can start getting results right away if each step was
+    reading and printing to standard in & out and you called them as
+    forked producers. You could chain them together like this:
+
+    print(<$producer->getSubroutineProducer(\&step3,
+    $producer->getSubroutineProducer(\&step2,
+    $producer->getSubroutineProducer(\&step1,$fh)))>);
+
+    This is basically piping, which is why I selected to put
+    Producer.pm in IO::Pipe. Forking and piping between subroutines is
+    the unique part of the approach. I've already used this to
+    encapsulate some C functions I converted using SWIG. The C function
+    was printing to standard output (and standard error) from a number
+    of places throughout a complex library and I wanted to be able to
+    run it and capture the output to return as a string and it worked
+    beautifully.
+
+  enteredby:   ROBLEACH (Robert Leach)
+  enteredon:   Fri Nov 16 20:43:02 2012 GMT
+
+The resulting entry would be:
+
+IO::Pipe::
+::Producer        RdpOp Get STDOUT & STDERR handles on a subroutine. ROBLEACH
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=1bb00000_3e162a41819fa24a&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=1bb00000_3e162a41819fa24a&SUBMIT_pause99_add_mod_insertit=1
+Peek at the current permissions:
+  https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=me&pause99_peek_perms_query=IO%3A%3APipe%3A%3AProducer

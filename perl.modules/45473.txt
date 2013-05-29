@@ -1,0 +1,112 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45473
+Return-Path: <ron@savage.net.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 17769 invoked from network); 21 Oct 2005 04:11:06 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 21 Oct 2005 04:11:06 -0000
+Received: (qmail 12364 invoked by uid 225); 21 Oct 2005 04:11:06 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12360 invoked by alias); 21 Oct 2005 04:11:05 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from mail21.syd.optusnet.com.au (HELO mail21.syd.optusnet.com.au) (211.29.133.158)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 20 Oct 2005 21:10:57 -0700
+Received: from ron (c211-28-130-218.eburwd3.vic.optusnet.com.au [211.28.130.218])
+	by mail21.syd.optusnet.com.au (8.12.11/8.12.11) with SMTP id j9L4AoMd014293
+	for <modules@perl.org>; Fri, 21 Oct 2005 14:10:51 +1000
+To: "Andreas J. Koenig" <modules@perl.org>
+X-Mailer: PocoMail 3.4 (2130) - Licensed Version
+Reply-To: ron@savage.net.au
+Date: Fri, 21 Oct 2005 14:08:02 +1000
+Message-ID: <200510211482.523137@ron>
+In-Reply-To: <87zmp3zg4c.fsf@k75.linux.bogus>
+Subject: Re: Curious errors from PAUSE namespace indexer
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: ron@savage.net.au (Ron Savage)
+References: <87zmp3zg4c.fsf@k75.linux.bogus>
+
+On Fri, 21 Oct 2005 05:46:43 +0200, Andreas J. Koenig wrote:
+
+Hi Andreas
+
+>> 'No package statements could be found in the distro (maybe a
+>> script or documentation distribution?)'
+> Very confusing error message. Sorry. Suggestions for a better
+> wording welcome.
+
+Don't apologize. It's not your fault. See below.
+
+As for a new message, how about:
+
+Nothing in this distro has been indexed, because according to META.yml this=
+ 
+package does not provide any modules/scripts/etc.
+
+> No. It's because your META.yml says
+> provides: {}
+
+Now I understand.
+
+> Do you know why you have this empty hash in there?
+
+Yes, now you've indicated where to look :-)).
+It's a problem with Module::Build. Look at the last line of META.yml:
+
+generated_by: Module::Build version 0.24
+
+I just used V 0.2611 and now it says:
+
+provides:
+  Javascript::MD5:
+    file: lib/Javascript/MD5.pm
+    version: 1.05
+generated_by: Module::Build version 0.2611
+
+I will check all my modules, and release new versions where necessary.
+
+Luckily, the 2 Javascript modules are the only ones of mine which do not=
+ appear 
+in 01modules.index.html, which makes me think (fingers crossed!) they are=
+ the 
+only 2 with this problem.
+
+> Should the indexer distrust the YAML when the provides hash is
+> empty? I'd say it depends on why it is empty. I encounter this
+> problem for the first time.
+
+I agree - it depends. There seems no way to determine automatically why it=
+ is 
+empty.
+
+For the past:
+I'm reluctant to suggest you take on more work, but perhaps the best=
+ solution is 
+a quick script to examine every distro (someone must have done that before)=
+ and 
+report which ones have a problem with this 'provides' statement. Then the 
+authors could be emailed, as a once-off.
+
+For the future:
+Anyway, a more specific error message as I suggest above would at least=
+ point 
+users to the source of the (potential) problem.
+
+I'll post a warning on the Module::Build mailing list about this.
+
+$many x $thanx;
+-- 
+Cheers
+Ron Savage, ron@savage.net.au on 21/10/2005
+http://savage.net.au/index.html
+Let the record show: Microsoft is not an Australian company
+
+

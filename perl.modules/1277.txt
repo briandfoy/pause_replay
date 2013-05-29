@@ -1,0 +1,437 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1277
+Return-Path: <tchrist@chthon.perl.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22654 invoked from network); 8 Mar 2000 16:13:04 -0000
+Received: from perl.com (HELO chthon.perl.com) (root@199.45.135.9)
+  by tmtowtdi.perl.org with SMTP; 8 Mar 2000 16:13:04 -0000
+Received: from chthon (IDENT:tchrist@localhost [127.0.0.1])
+	by chthon.perl.com (8.9.1a/8.9.1) with ESMTP id JAA24853;
+	Wed, 8 Mar 2000 09:12:52 -0700 (MST)
+To: Tim Bunce <Tim.Bunce@ig.co.uk>
+cc: modules@perl.org
+Subject: Re: Request for module name 
+In-Reply-To: Message from Tim Bunce <Tim.Bunce@ig.co.uk> 
+   of "Wed, 08 Mar 2000 15:51:54 GMT." <20000308155154.B6583@ig.co.uk> 
+Date: Wed, 08 Mar 2000 09:12:52 -0700
+Message-ID: <2351.952531972@chthon>
+Approved: news@nntp.perl.org
+From: tchrist@chthon.perl.com (Tom Christiansen)
+References: <Tim.Bunce@ig.co.uk>
+
+>On Wed, Mar 08, 2000 at 07:48:11AM -0700, Tom Christiansen wrote:
+>> I'd like to submit the following module for consideration of being
+>> placed on CPAN.  I am unattached to the name, and am mailing you
+>> with the hope that you might either bless this name, or suggest
+>> others that would be more acceptable.
+>> 
+>> --tom
+>> 
+>> begin 644 Stat-DumpFDs-0.01.tar.gz
+>> M'XL(""V9PC@"`U-T870M1'5M<$9$<RTP+C`Q+G1A<@#M'/UWVD8ROZ*_8HJ=
+>> M`%>,P6#["DGN",@Q+QAX@!OWM7U42`OH+"2JC]A<D__]9G970N+#29O4N;ZB
+
+>Just posting the docs in plain text will improve your chances of
+>getting a reply from busy people.
+
+Well, I *thought* I was doing the right thing, but I see that I
+neglected to give you the critical information extracted from the
+tarfile without which of course you can't say yes or no or maybe,
+which is to tell you that this is a Perl extension to dump open
+file descriptors, generally for debugging file descriptor leaks or
+anomalies in system programming jobs.  The docs are pretty
+straightforward, although perhaps sparse.  This is a very simple
+XS module.
+
+    =head1 NAME
+
+    Stat::DumpFDs - Perl extension to dump open file descriptors
+
+    =head1 SYNOPSIS
+
+      use Stat::DumpFDs;
+      dump_dtable();
+
+    =head1 DESCRIPTION
+
+    Debugging tool to show all open file descriptors with their flags.
+    Two functions are exported: dump_dtable(), which prints to standard
+    output, and getdtablesize(), which runs the standard library function.
+
+    =head1 AUTHOR
+
+    Tom Christiansen
+
+    =head1 SEE ALSO
+
+    getdtablsize(3), fstat(2), fcntl(2), open(2)
+
+    =cut
+
+That's all there is.  Stat::DumpFDs::getdtablsize just calls the
+standard getdtablsize(3) function from libc.  Stat::DumpFDs::dump_dtable
+does just what it says it does: it dumps out your descriptor table.
+The XS code is filled with ifdefs so that this is useful for the
+native platform.  The following flags are checked everywhere,
+
+    O_WRONLY
+    O_RDWR
+    O_RDONLY
+    O_NONBLOCK
+    O_APPEND
+    O_CREAT
+    O_TRUNC
+    O_EXCL
+
+And these are checked through ifdefs:
+
+    O_ASYNC
+    O_SHLOCK
+    O_EXLOCK
+    O_NOCTTY
+    O_NDELAY
+    O_SYNC
+    O_NOFOLLOW
+    O_DIRECTORY
+    O_LARGEFILE
+
+I consulted with the Mac people to find out whether they could
+do O_EXCL etc, and they said yes, so I figured leaving the standard
+ones was ok.  I do go through some tricks to make sure that O_RDONLY
+works whether it's 0 or not.
+
+I could put sample output in the docs if you would like.  If it
+would help you choose a good name, here is an example of the output,
+as produce by doing this in vi:
+
+    :r!perl -MStat::DumpFDs -e 'dump_dtable()'
+
+DUMPING up to 64 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type pipe
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type pipe
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+More interesting is the examples included in the samples directory.
+
+--tom
+
+chthon(tchrist)% cd samples/
+chthon(tchrist)% make
+perl -Mblib -MStat::DumpFDs -e dump_dtable
+Using /home/tchrist/Stat-DumpFDs-0.01/samples/../blib
+DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type character special
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+perl -Mblib -MStat::DumpFDs -e dump_dtable
+Using /home/tchrist/Stat-DumpFDs-0.01/samples/../blib
+DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type character special
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+perl -Mblib -MStat::DumpFDs -e dump_dtable | cat
+Using /home/tchrist/Stat-DumpFDs-0.01/samples/../blib
+DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type pipe
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+perl -Mblib -MStat::DumpFDs -e dump_dtable < Makefile 2>>/dev/tty
+Using /home/tchrist/Stat-DumpFDs-0.01/samples/../blib
+DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type regular file
+File is opened read only.
+flags on fdno 0 are: [0]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type character special
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened write only.
+flags on fdno 2 are: O_APPEND [0x9]
+
+perl -Mblib -MStat::DumpFDs pipe-sample
+Using /home/tchrist/Stat-DumpFDs-0.01/samples/../blib
+DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type character special
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+fdno 3 is open and will be closed across execs.
+fdno 3 is of type pipe
+File is opened read-write.
+flags on fdno 3 are: [0x2]
+
+fdno 4 is open and will be closed across execs.
+fdno 4 is of type pipe
+File is opened read-write.
+flags on fdno 4 are: [0x2]
+
+fdno 5 is open and will be closed across execs.
+fdno 5 is of type pipe
+File is opened read-write.
+flags on fdno 5 are: [0x2]
+
+fdno 6 is open and will be closed across execs.
+fdno 6 is of type pipe
+File is opened read-write.
+flags on fdno 6 are: [0x2]
+
+DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type character special
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+fdno 3 is open and will be closed across execs.
+fdno 3 is of type pipe
+File is opened read-write.
+flags on fdno 3 are: [0x2]
+
+fdno 4 is open and will be closed across execs.
+fdno 4 is of type pipe
+File is opened read-write.
+flags on fdno 4 are: [0x2]
+
+fdno 5 is open and will be closed across execs.
+fdno 5 is of type pipe
+File is opened read-write.
+flags on fdno 5 are: [0x2]
+
+fdno 6 is open and will be closed across execs.
+fdno 6 is of type pipe
+File is opened read-write.
+flags on fdno 6 are: [0x2]
+
+Child Pid 27921 just read this: `Parent Pid 10019 is sending this'
+Parent Pid 10019 just read this: `Child Pid 27921 is sending this'
+DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type character special
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+perl -Mblib -MStat::DumpFDs socketpair-sample
+Using /home/tchrist/Stat-DumpFDs-0.01/samples/../blib
+DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type character special
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+fdno 3 is open and will be left open across execs.
+fdno 3 is of type socket
+File is opened read-write.
+flags on fdno 3 are: [0x2]
+
+fdno 4 is open and will be left open across execs.
+fdno 4 is of type socket
+File is opened read-write.
+flags on fdno 4 are: [0x2]
+
+DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type character special
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+fdno 3 is open and will be left open across execs.
+fdno 3 is of type socket
+File is opened read-write.
+flags on fdno 3 are: [0x2]
+
+fdno 4 is open and will be left open across execs.
+fdno 4 is of type socket
+File is opened read-write.
+flags on fdno 4 are: [0x2]
+
+Child Pid 13284 just read this: `Parent Pid 13599 is sending this'
+Parent Pid 13599 just read this: `Child Pid 13284 is sending this'
+DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type character special
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+perl -e '                                        $pid = fork or exec "perl -Mblib server-sample";        sleep 1;                                        system("perl -Mblib client-sample");            system("perl -Mblib client-sample `hostname`");         kill "INT", $pid;                       wait;                                   exit 0;                                         '
+Using /home/tchrist/Stat-DumpFDs-0.01/samples/../blib
+SERVER says: SERVER dumping pre-accept:
+SERVER says: DUMPING up to 1024 descriptors
+SERVER says: fdno 0 is open and will be left open across execs.
+SERVER says: fdno 0 is of type character special
+SERVER says: File is opened read-write.
+SERVER says: flags on fdno 0 are: [0x2]
+SERVER says: 
+SERVER says: fdno 1 is open and will be left open across execs.
+SERVER says: fdno 1 is of type pipe
+SERVER says: File is opened read-write.
+SERVER says: flags on fdno 1 are: [0x2]
+SERVER says: 
+SERVER says: fdno 2 is open and will be left open across execs.
+SERVER says: fdno 2 is of type character special
+SERVER says: File is opened read-write.
+SERVER says: flags on fdno 2 are: [0x2]
+SERVER says: 
+SERVER says: fdno 3 is open and will be left open across execs.
+SERVER says: fdno 3 is of type socket
+SERVER says: File is opened read-write.
+SERVER says: flags on fdno 3 are: [0x2]
+SERVER says: 
+SERVER says: [SERVER server-sample accepting clients on port 9000]
+Using /home/tchrist/Stat-DumpFDs-0.01/samples/../blib
+SERVER says: [Connect from localhost]
+Client dumping: DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type character special
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+fdno 3 is open and will be left open across execs.
+fdno 3 is of type socket
+File is opened read-write.
+flags on fdno 3 are: [0x2]
+
+Using /home/tchrist/Stat-DumpFDs-0.01/samples/../blib
+Client dumping: DUMPING up to 1024 descriptors
+fdno 0 is open and will be left open across execs.
+fdno 0 is of type character special
+File is opened read-write.
+flags on fdno 0 are: [0x2]
+
+fdno 1 is open and will be left open across execs.
+fdno 1 is of type character special
+File is opened read-write.
+flags on fdno 1 are: [0x2]
+
+fdno 2 is open and will be left open across execs.
+fdno 2 is of type character special
+File is opened read-write.
+flags on fdno 2 are: [0x2]
+
+fdno 3 is open and will be left open across execs.
+fdno 3 is of type socket
+File is opened read-write.
+flags on fdno 3 are: [0x2]

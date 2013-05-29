@@ -1,0 +1,141 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:25900
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 73987 invoked by uid 76); 25 Jan 2004 11:15:26 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Sun, 25 Jan 2004 03:15:26 -0800
+Received: (qmail 31184 invoked by uid 225); 25 Jan 2004 11:15:25 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31173 invoked by uid 507); 25 Jan 2004 11:15:24 -0000
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110) by one.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Sun, 25 Jan 2004 03:14:53 -0800
+Received: from pause.perl.org (localhost [127.0.0.1])	by pause.perl.org (8.12.3/8.12.3/Debian-6.6) with ESMTP id i0PBEXcj031106;	Sun, 25 Jan 2004 12:14:33 +0100
+Received: (from nobody@localhost)	by pause.perl.org (8.12.3/8.12.3/Debian-6.6) id i0PBEXcw031104;	Sun, 25 Jan 2004 12:14:33 +0100
+Date: Sun, 25 Jan 2004 12:14:33 +0100
+Message-ID: <200401251114.i0PBEXcw031104@pause.perl.org>
+Subject: Module submission Net::SNMP::Fast
+Reply-To: modules@perl.org
+To: modules@perl.org, kragen@cpan.org
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.8 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Net::SNMP::Fast
+  DSLIP:       adphb
+  description: fast, flexible, low-level, pure-Perl SNMP
+  userid:      KRAGEN (Kragen Javier Sitaker)
+  chapterid:    5 (Networking_Devices_IPC)
+  communities:
+
+  similar:
+    Net::SNMP
+
+  rationale:
+
+    Why would you want to use this module instead of its
+    much-more-mature sibling, Net::SNMP?
+
+    Well, usually, you wouldn't. I anticipate that this module will get
+    better in time, but right now, you probably don't want to use it,
+    unless Net::SNMP just doesn't work for you.
+
+    Some of the reasons Net::SNMP doesn't work for me follow:
+
+    - it's slow. On my 500MHz laptop, Net::SNMP can do about 110 simple
+    request/response pairs per CPU second. These SNMP modules can do
+    about 1100, about as many as ucd-snmp snmpd can respond to. (The
+    SNMP agent in Net::SNMP::Fast::Agent is a little faster.)
+
+    - it's inconvenient to use for simple cases.
+
+    - its interface is bug-prone in a few ways.
+
+    - By default, it does all sorts of translations to make things
+    human-readable, but the translations are sometimes pretty heuristic.
+    This can result in bugs in your code. (For example, it renders
+    OCTET_STRINGs in hexadecimal if they contain any unprintable
+    characters. This (in combination, obviously, with our carelessness)
+    resulted in our software failing to handle MAC addresses correctly
+    if they happened to contain no unprintable characters.
+
+    - You can't do SNMP operations in blocking mode when nonblocking
+    SNMP sessions exist --- that is to say, Perl hasn't destructed them
+    yet. This occasionally catches performance bugs, but it's silly when
+    you're trying to send an SNMP trap, which doesn't block in any case,
+    or when your nonblocking SNMP sessions have merely not yet gone out
+    of scope.
+
+    - Its SNMP walk interface gives you the results of the walk in a
+    hash, so their order is scrobbled. There's another method to get the
+    order of the OIDs, though.
+
+    - With SNMPv2, it often returns error indicators in-band, as the
+    values of OIDs.
+
+    - it's completely unhelpful for dissecting captured SNMP packets
+    (say, for debugging) because demultiplexing and decoding logic are
+    closely intertwined, apparently for efficiency.
+
+    - it's not suitable for writing SNMP agents, because it discards
+    the types before it hands the data back to you. It also doesn't
+    document a way to receive requests and send responses. (It exists,
+    of course.)
+
+    - it's not suitable for making test stubs for systems that speak
+    SNMP, because it does too much on your behalf. For example, you
+    might want to verify that your management station handles negative
+    TIMETICKS values in a sane way, but Net::SNMP won't let you send
+    negative TIMETICKS values. (Net::SNMP does, by default.)
+
+    - it has a nonblocking mode, but it insists on using its own event
+    loop, which means you can't integrate it into, say, a POE program.
+
+    - it's huge and complicated, and therefore hard to maintain and
+    hard to find bugs in. Net::SNMP 4.1.2's .pm files total 9690 lines,
+    including 4456 distinct lines. These SNMP modules total 712 lines at
+    the moment, including 466 distinct lines. If you use Deparse,
+    Net::SNMP is about 2000 lines, while these SNMP modules are about
+    400. We had a couple of serious bugs in critical parts of our system
+    that turned out to come from bugs in Net::SNMP, but we only know
+    that because they disappeared when we upgraded to a new version of
+    Net::SNMP that fixed the bugs. I also find the Net::SNMP code hard
+    to read and understand, which may be just a dialect issue; you be
+    the judge.
+
+    Anyway, so as I posted a few days ago, I'm not sure what to call
+    it. I just uploaded it as NSNMP-0.5, after renaming it from SNMP.
+    Here I'm calling it Net::SNMP::Fast (with submodules
+    Net::SNMP::Fast::Mapper, Net::SNMP::Fast::Simple,
+    Net::SNMP::Fast::Agent, and soon, Net::SNMP::Fast::UsefulAgent) but
+    that seems awfully self-promoting. It's a lot like the CGI.pm vs.
+    CGI::Lite issue. Maybe I should call it Net::SNMP::Lite?
+
+    By the way, I hate using modules with lengthy names like
+    Net::SNMP::Fast::UsefulAgent. Net::NSNMP::UsefulAgent might be
+    better.
+
+  enteredby:   KRAGEN (Kragen Javier Sitaker)
+  enteredon:   Sun Jan 25 11:14:32 2004 GMT
+
+The resulting entry would be:
+
+Net::SNMP::
+::Fast            adphb fast, flexible, low-level, pure-Perl SNMP    KRAGEN
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=28500000_aba0244336035cc9&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=28500000_aba0244336035cc9&SUBMIT_pause99_add_mod_insertit=1

@@ -1,0 +1,59 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17263
+Return-Path: <jhiver@mkdoc.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 34024 invoked by uid 76); 21 Jan 2003 14:59:01 -0000
+Received: from mkdoc.demon.co.uk (HELO frogette.webarchitects.co.uk) (62.49.20.1) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-21 14:59:01Z
+Received: (from jhiver@localhost)	by frogette.webarchitects.co.uk (8.11.6/8.11.6) id h0LEwrD07702	for modules@perl.org; Tue, 21 Jan 2003 14:58:53 GMT
+X-Authentication-Warning: frogette.webarchitects.co.uk: jhiver set sender to jhiver@mkdoc.com using -f
+Date: Tue, 21 Jan 2003 14:58:53 +0000
+To: modules@perl.org
+Subject: triple store module
+Message-ID: <20030121145853.GA7601@mkdoc.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4i
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: jhiver@mkdoc.com (Jean-Michel Hiver)
+
+Hello List,
+
+I have recently released a fesh, new, and probably bugged module on CPAN
+called TripleStore, because, err, that's what it is. Basically it's an
+interface to manipulate triple stores (insert, delete, update) and also
+to perform queries with a syntax inspired from the 'RDBF' style syntax,
+i.e.
+
+  # rdbf-style syntax
+  # select ( ?x ?y ) from triple where (?x worksFor ?y) (?y name 'BBC')  
+  
+  # Equivalent TripleStore syntax
+  my $x = $::DB->var();
+  my $y = $::DB->var();
+  my $res = $::DB->select (
+      $x, $y,
+      $::DB->clause ($x, 'worksFor', $y) &
+      $::DB->clause ($x, 'name', 'BBC')
+  );
+  
+I am looking forward to maybe rename this module, because I think that
+TripleStore is too generic... I've previously been moaning about generic
+namespaces being taken by modules on this list so I would like to avoid
+making this mistake :)
+
+Another thing to note is that this TripleStore module has __NOTHING__ to
+do with RDF, you might be able to use it in conjunction with an RDF
+parser to store RDF but that's where it stops.
+
+Any ideas for an appropriate name?
+Thanks in advance,
+-- 
+Building a better web - http://www.mkdoc.com/
+---------------------------------------------
+Jean-Michel Hiver
+jhiver@mkdoc.com  - +44 (0)114 255 8097
+Homepage: http://www.webmatrix.net/

@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2231
+Return-Path: <sb@sdm.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21159 invoked from network); 26 Jun 2000 12:19:56 -0000
+Received: from unknown (HELO sdmmx1.sdm.de) (192.76.162.232)
+  by tmtowtdi.perl.org with SMTP; 26 Jun 2000 12:19:56 -0000
+Received: FROM muccpu1.muc.sdm.de BY sdmmx1.sdm.de ; Mon Jun 26 14:19:57 2000 +0100
+Received: by muccpu1.muc.sdm.de (Sendmail 8.9.3+Sun)
+	id OAA07094; Mon, 26 Jun 2000 14:19:50 +0200 (MET DST)
+Message-ID: <200006261219.OAA07094@muccpu1.muc.sdm.de>
+Subject: Re: ANNOUNCE: Date::Calc 5.0 release candidate
+In-Reply-To: <20000626061640.A11934@iki.fi> from Jarkko Hietaniemi at "Jun 26,
+ 2000 06:16:41 am"
+To: Jarkko Hietaniemi <jhi@iki.fi>
+Date: Mon, 26 Jun 2000 14:19:50 +0200 (MET DST)
+CC: Steffen Beyer <sb@sdm.de>, modules@perl.org
+Reply-To: sb@sdm.de (Steffen Beyer)
+X-No-Archive: yes
+X-Disabled: Return-Receipt-To: sb@sdm.de
+X-W3-Page: http://www.engelschall.com/u/sb/download/
+X-Mailer: ELM [version 2.4ME+ PL61 (25)]
+Approved: news@nntp.perl.org
+From: sb@sdm.de (Steffen Beyer)
+References: <20000626061640.A11934@iki.fi>
+
+Hello Jarkko Hietaniemi, in a previous mail you wrote:
+
+> I think that the suggested name for the new OO interface,
+> Date::Object, is a Very Bad Choice.  I severely dislike embedding
+> either the interface style or the implementation style to the name of
+> a module.  Why don't you just continue using the Date::Calc namespace?
+
+That's an interesting idea indeed! I like it!
+
+However, I would like to separate the man pages for the functional (XS)
+part and the OO part of the user interface. (Because both man pages are
+already rather long, and a long Date::Calc.pm with lots of documentation
+only adds to the startup loading time - usually minimal, sure, but still
+unnecessary, and in often-used CGI scripts it might even amount to some
+substantial time loss).
+
+Any suggestions for that?
+
+Date::Calc.pod for the functional interface and Date::CalcOO.pod for the
+OO interface?
+
+Or Date::CalcXS.pod and DateCalcOO.pod?
+Or Date::CalcPM.pod, Date::CalcXS.pod and DateCalcOO.pod?
+
+(There are a few functions implemented in Perl in Date::Calc.pm, not in XS)
+
+Or something else?
+
+> Export the OO interface onlyt when so asked, e.g. using some export :tag?
+
+OO interfaces are never exported. That's the whole point of OO! You don't
+call (fully qualified or imported) functions but let Perl look for the
+method in the object's class!
+
+And unfortunately I don't see how I could switch on and off the overloading
+easily on demand. Moreover, this would involve some ugly hacking and surely
+also some time overhead.
+
+The best thing IMHO is to have a separate module which users can "use" (or
+even "require") on demand or not.
+
+That way people can opt for more comfort and more speed penalty or less
+comfort and fastest possible speed.
+
+Therefore I think it would in fact be better to keep the OO interface in a
+separate module. Now about the name of this module - anyone any suggestions?
+
+Thanks for your help!
+
+Regards,
+-- 
+    Steffen Beyer <sb@engelschall.com>
+    http://www.engelschall.com/u/sb/whoami/ (Who am I)
+    http://www.engelschall.com/u/sb/gallery/ (Fotos Brasil, USA, ...)
+    http://www.engelschall.com/u/sb/download/ (Free Perl and C Software)

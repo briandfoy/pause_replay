@@ -1,0 +1,74 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:49396
+Return-Path: <zefram@fysh.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28062 invoked from network); 13 Jun 2006 23:38:04 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 13 Jun 2006 23:38:04 -0000
+Received: (qmail 4678 invoked by uid 225); 13 Jun 2006 23:38:04 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4673 invoked by alias); 13 Jun 2006 23:38:04 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from fysh.org (HELO bowl.fysh.org) (83.170.75.51)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 13 Jun 2006 16:37:53 -0700
+Received: from zefram by bowl.fysh.org with local (Exim 4.50 #1 (Debian))
+	id 1FqIRx-0000US-0q; Wed, 14 Jun 2006 00:37:33 +0100
+Date: Wed, 14 Jun 2006 00:37:32 +0100
+To: modules@perl.org
+Subject: Re: Module submission Date::JD
+Message-ID: <20060613233732.GA26936@fysh.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20060529061345.29003.qmail@lists.develooper.com>
+Approved: news@nntp.perl.org
+From: zefram@fysh.org (Zefram)
+References: <20060529061345.29003.qmail@lists.develooper.com>
+
+I just discovered in the modules@perl.org archive that there was a
+reply to my Date::JD submission.  The reply didn't go to me, so I didn't
+see it.  Anyway:
+
+Adam Kennedy wrote:
+>The general question for all date and time-related modules without a
+>community listed is "have you spoken to the DateTime guys about this"?
+
+No I haven't, because this module doesn't fit with what they're
+doing.  This is lower-level than DateTime.  DateTime objects are not a
+suitable way to represent the semantics of any flavour of Julian Date.
+Superficially, DateTime objects and JDs can be used for roughly the same
+purpose -- identifying a point in time -- but they do it differently,
+and the difference matters.
+
+A Julian Date is, strictly speaking, not meaningful in isolation.
+It identifies a point within a linear sequence of days, but it is not
+specific about *which* sequence of days.  Considering Earth rotation
+time scales, we have UT1 (the direct successor of GMT), UT2 (a smoothed
+version of UT1), UT0 (a naive implementation of UT1), and others.
+Dynamical and atomic time scales, such as Ephemeris Time, Terrestrial
+Time, and International Atomic Time, all (for historical reasons) have
+a conventional `day' of exactly 86400 SI seconds defined, so that Julian
+Dates can be used with them.
+
+DateTime, by contrast, is somewhat specific about its time scale.  In the
+present era it is specifically using UTC.  UTC actually is one of the few
+time scales that can't use JDs properly, because of its leap seconds: it
+is implicit in the concept of a Julian Date that all days are subjectively
+equal in length.  OK, I can take a TAI Julian Date and convert it to UTC
+and represent it as a DateTime, but TAI is the only one of the time scales
+I've mentioned that has an algorithmically determined relationship to UTC.
+
+So: a Julian Date is a low-level tool.  It gets used within date-handling
+systems, in several different ways.  It is not a complete date
+representation system in itself.  DateTime can make use of Julian Dates in
+some ways (and in fact does one of them in DateTime::Format::Epoch::JD),
+but general JD handling is out of its scope.  Date::JD exists to do
+that general stuff.  Modules such as DateTime are the target audience
+of Date::JD.
+
+-zefram

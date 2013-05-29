@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:50059
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26596 invoked from network); 30 Jul 2006 05:40:39 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 30 Jul 2006 05:40:39 -0000
+Received: (qmail 912 invoked by uid 225); 30 Jul 2006 05:40:39 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 906 invoked by alias); 30 Jul 2006 05:40:38 -0000
+X-Spam-Status: No, hits=-1.3 required=8.0
+	tests=BAYES_00,INFO_TLD
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 29 Jul 2006 22:40:35 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by franz.ak.mind.de (8.13.7/8.13.7/Debian-2) with ESMTP id k6U5eRT2014117;
+	Sun, 30 Jul 2006 07:40:27 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.7/8.13.7/Submit) id k6U5eRpR014116;
+	Sun, 30 Jul 2006 07:40:27 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: Jeffrey Friedl <jfriedl@yahoo.com>
+Cc: modules@perl.org, andreas.koenig.gmwojprw+pause@franz.ak.mind.de
+Subject: Re: Failed: PAUSE indexer report JFRIEDL/Yahoo-Search-1.7.10.tar.gz
+References: <200607292352.k6TNqujU013989@pause.perl.org>
+	<20060730000438.6C3D0182BC@pakupaku.regex.info>
+Date: Sun, 30 Jul 2006 07:40:27 +0200
+In-Reply-To: <20060730000438.6C3D0182BC@pakupaku.regex.info> (Jeffrey Friedl's
+	message of "Sat, 29 Jul 2006 17:04:38 -0700 (PDT)")
+Message-ID: <87vepf1whg.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Sat, 29 Jul 2006 17:04:38 -0700 (PDT), jfriedl@regex.info (Jeffrey Friedl) said:
+
+  > Hi,
+  > I can't tell from the appended report if the whole thing has been rejected
+  > or accepted.
+
+It was indexed under 4 other namespaces but not under the fifth,
+Yahoo::Search::Request.
+
+  > What can I do to make it not choke on a line in the file that
+  > happens to have the word "VERSION" on it?
+
+Nowadays two solutions are popular
+
+(1) add a $VERSION assignment near the top of the file. If you do not
+    want to have a VERSION in every file, $VERSION = "undef" or
+    $VERSION = 0 are OK from the indexer's point of view (but users
+    might prefer version numbers that increase from time to time to
+    track dependencies). Complex assignment constructs that need more
+    than one line or involve reading of other files are not feasible
+    in the indexer environment.
+
+    In any case the following paragraph, taken from
+    http://www.cpan.org/modules/04pause.html tells you how to test:
+
+      Please make sure all your *.pm files contain a $VERSION variable
+      that conforms to the CPAN rules, i.e. the complete computation
+      of $VERSION must take place on the one first line within the
+      module that assigns to it. You can test if this is the case by
+      running
+
+          perl -MExtUtils::MakeMaker -le 'print MM->parse_version(shift)' 'file'
+
+      on the filenames in question. The CPAN indexer will run this
+      code within a Safe compartement, so maybe even if the above
+      command succeeds, PAUSE may fail if you're doing file IO or
+      other potentially dangerous things within that line.
+
+(2) Use Module::Build instead of ExtUtils::MakeMaker, it adds a
+    "provides" stanza to the META.yml so that the indexer takes just
+    that and does not parse the files for $VERSION. Instead,
+    Module::Build parses the files under your control. You might end
+    up with the same requirement that Module::Build wants $VERSION
+    assignment. I do not know how well this works.
+
+In theory you could do (3): write you own provides stanza for META.yml
+but this doesn't seem like a good idea because the META spec does not
+seem stable yet.
+
+Hope that helps, Regards,
+-- 
+andreas

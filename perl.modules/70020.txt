@@ -1,0 +1,236 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:70020
+Return-Path: <stefan@cog-ent.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 9466 invoked from network); 22 Feb 2010 19:29:52 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 22 Feb 2010 19:29:52 -0000
+Received: (qmail 7831 invoked by uid 225); 22 Feb 2010 19:29:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7736 invoked by alias); 22 Feb 2010 19:29:50 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-ew0-f219.google.com (HELO mail-ew0-f219.google.com) (209.85.219.219)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 22 Feb 2010 11:29:45 -0800
+Received: by ewy19 with SMTP id 19so2888085ewy.21
+        for <modules@perl.org>; Mon, 22 Feb 2010 11:29:32 -0800 (PST)
+MIME-Version: 1.0
+Sender: stefan@cog-ent.com
+Received: by 10.213.65.204 with SMTP id k12mr618588ebi.4.1266866972706; Mon, 
+	22 Feb 2010 11:29:32 -0800 (PST)
+Date: Mon, 22 Feb 2010 13:29:32 -0600
+X-Google-Sender-Auth: 31af01d5a6ee126e
+Message-ID: <afa3d35b1002221129k7fe20fenbec2760e127f73d6@mail.gmail.com>
+Subject: New modules
+To: modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: stefan@cogentinnovators.com (Stefan Adams)
+
+I have two modules to release and need to get feedback.  Where should
+I discuss this?  comp.lang.perl.misc seems to be all spam and FAQs and
+very little discussion.  If there is discussion, it's hidden by the
+spam and FAQs.
+
+My two modules (names open to feedback):
+
+------------------------------------------------------------------------------------------------------------
+
+Config::LDAP::Clients(User Contributed Perl DocumentatConfig::LDAP::Clients(3)
+
+
+
+NAME
+       Config::LDAP::Clients - Perl extension for mimicking ldap*(1) argu-
+       ments.
+
+SYNOPSIS
+         use Config::LDAP::Clients;
+         my $ldapclients = new Config::LDAP::Clients;
+
+         print "$_: ", $ldapclients->$_, "\n" for $ldapclients->options;
+         print "Remaining ARGV: ", join(', ', @ARGV), "\n";
+
+         my $ldap = $ldapclients->connect;
+         $ldap->search(...);
+
+DESCRIPTION
+       This module provides all arguments available to the ldap*(1) utilities
+       and uses Config::LDAP::Conf to set defaults based on ldap.conf(5).
+
+       All single-letter methods accept an optional value to set as the first
+       parameter and return the current value of the option.
+
+       The special method 'options' returns all set arguments.
+
+CONSTRUCTOR
+       new ( OPTIONS )
+           method => {search?modify?add?delete?passwd?modrn}
+
+METHODS
+       connect ( [new] )
+           Connect and bind to Net::LDAP with processed options according to
+           ldap.conf(5) and ldap*(1).
+
+           [new] = hashref of options
+
+       options ( [option] )
+           Returns an array of arguments that were set according to ldap*(1).
+
+           [option] = Returns a scalar if option was properly set in accordance
+           with ldap*(1).
+
+       ldapconf ( )
+           Returns a Config::LDAP::Conf object.
+
+       show ( )
+           Prints all items found according to ldap*(1).
+
+       Single-letter methods
+           These are the single-letter methods based on the arguments avail-
+           able to the ldap*(1) utilities.
+
+           search: n c u v t T F A L M S d f x D W w y H h p b s a P e E l z O
+           I Q U R X Y Z
+
+SEE ALSO
+       ldapsearch(1), ldapmodify(1), ldapadd(1), ldapdelete(1), ldappasswd(1),
+       ldapmodrn(1)
+
+AUTHOR
+       Stefan Adams, <stefan@cogentinnovators.com>
+
+COPYRIGHT AND LICENSE
+       Copyright (C) 2010 by Stefan Adams
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself, either Perl version 5.8.8 or, at
+       your option, any later version of Perl 5 you may have available.
+
+
+
+perl v5.8.8                       2010-02-22          Config::LDAP::Clients(3)
+
+------------------------------------------------------------------------------------------------------------
+
+Config::LDAP::Conf(3) User Contributed Perl DocumentationConfig::LDAP::Conf(3)
+
+
+
+NAME
+       Config::LDAP::Conf - Perl extension for mimicking ldap.conf(5) process-
+       ing.
+
+SYNOPSIS
+         use Config::LDAP::Conf;
+         my $ldapconf = new Config::LDAP::Conf;
+         print $ldapconf->base, "\n";
+         $ldapconf->base('dc=example,dc=com');
+         print $ldapconf->base, "\n";
+
+DESCRIPTION
+       This module follows all the guidelines in ldap.conf(5) for reading
+       defaults from files and the environment.
+
+       All methods accept an optional value to set as the first parameter.
+
+       All methods return the current value of the option.
+
+       Some methods provide value checking operations to adhere to the guide-
+       lines in ldap.conf(5).  If the value passes it is used, if not it is
+       set to the default value noted in ldap.conf(5).
+
+CONSTRUCTOR
+       new ( )
+
+METHODS
+       show ( )
+               Prints all items found according to ldap.conf(5).
+
+       uri ( [uri] )
+               Sets if provided.  Returns array of values.
+
+       base ( [base] )
+               Sets if provided.  Returns value.
+
+       binddn ( [binddn] )
+               Sets if provided.  Returns value.
+
+       host ( [host] )
+               Sets if provided.  Returns value.
+
+       port ( [port] )
+               Sets if provided.  Returns value.
+
+       referrals ( [referrals] )
+               Sets if provided.  Returns value.
+
+       sizelimit ( [sizelimit] )
+               Sets if provided.  Returns value.
+
+       timelimit ( [timelimit] )
+               Sets if provided.  Returns value.
+
+       deref ( [deref] )
+               Sets if provided.  Returns value.
+
+       sasl_mech ( [sasl_mech] )
+               Sets if provided.  Returns value.
+
+       sasl_realm ( [sasl_realm] )
+               Sets if provided.  Returns value.
+
+       sasl_authcid ( [sasl_authcid] )
+               Sets if provided.  Returns value.
+
+       sasl_authzid ( [sasl_authzid] )
+               Sets if provided.  Returns value.
+
+       sasl_secprops ( [sasl_secprops] )
+               Sets if provided.  Returns array of values.
+
+       tls_cacert ( [tls_cacert] )
+               Sets if provided.  Returns value.
+
+       tls_cacertdir ( [tls_cacertdir] )
+               Sets if provided.  Returns value.
+
+       tls_cert ( [tls_cert] )
+               Sets if provided.  Returns value.
+
+       tls_key ( [tls_key] )
+               Sets if provided.  Returns value.
+
+       tls_cipher_suite ( [tls_ciper_suite] )
+               Sets if provided.  Returns value.
+
+       tls_randfile ( [tls_randfile] )
+               Sets if provided.  Returns value.
+
+       tls_reqcert ( [tls_reqcert] )
+               Sets if provided.  Returns value.
+
+       tls_crlcheck ( [tls_crlcheck] )
+               Sets if provided.  Returns value.
+
+SEE ALSO
+       ldap.conf(5)
+
+AUTHOR
+       Stefan Adams, <stefan@cogentinnovators.com>
+
+COPYRIGHT AND LICENSE
+       Copyright (C) 2010 by Stefan Adams
+
+       This library is free software; you can redistribute it and/or modify it
+       under the same terms as Perl itself, either Perl version 5.8.8 or, at
+       your option, any later version of Perl 5 you may have available.
+
+
+
+perl v5.8.8                       2010-02-22             Config::LDAP::Conf(3)

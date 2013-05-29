@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:67426
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28962 invoked from network); 30 Aug 2009 19:40:16 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 30 Aug 2009 19:40:16 -0000
+Received: (qmail 3244 invoked by uid 225); 30 Aug 2009 19:40:16 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3234 invoked by alias); 30 Aug 2009 19:40:15 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 30 Aug 2009 12:40:09 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-6) with ESMTP id n7UJe1JE030276;
+	Sun, 30 Aug 2009 21:40:01 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id n7UJe1dY030275;
+	Sun, 30 Aug 2009 21:40:01 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Robert Buels <rmb32@cornell.edu>
+Cc: modules@perl.org
+Subject: Re: [Fwd: Failed: PAUSE indexer report RBUELS/Bio-Chado-Schema-0.022.tar.gz]
+References: <4A998AF5.4080901@cornell.edu>
+Reply-To: modules@perl.org
+Date: Sun, 30 Aug 2009 21:40:01 +0200
+In-Reply-To: <4A998AF5.4080901@cornell.edu> (Robert Buels's message of "Sat\,
+	29 Aug 2009 13\:09\:25 -0700")
+Message-ID: <87eiqtjdke.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/22.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Sat, 29 Aug 2009 13:09:25 -0700, Robert Buels <rmb32@cornell.edu> said:
+
+  > Hi all,
+  > I got this failure email from the indexer for a dist I recently
+  > uploaded, and I'm confused as to what is wrong.  The META.yml in this
+  > distribution has a lot of things listed that it provides.  What's the
+  > deal?
+
+  > Rob
+
+
+  > -------- Original Message --------
+  > Subject: Failed: PAUSE indexer report RBUELS/Bio-Chado-Schema-0.022.tar.gz
+  > Date: Sat, 29 Aug 2009 21:22:51 +0200
+  > From: PAUSE <upload@pause.fiz-chemie.de>
+  > To: rmb32@cornell.edu, andreas.koenig.gmwojprw+pause@franz.ak.mind.de
+
+  > The following report has been written by the PAUSE namespace indexer.
+  > Please contact modules@perl.org if there are any open questions.
+  >   Id
+
+  >                User: RBUELS (Robert Buels)
+  >   Distribution file: Bio-Chado-Schema-0.022.tar.gz
+  >     Number of files: 203
+  >          *.pm files: 163
+  >              README: Bio-Chado-Schema-0.022/README
+  >            META.yml: Bio-Chado-Schema-0.022/META.yml
+  >         YAML-Parser: YAML::XS 0.32
+  >   META-driven index: yes
+  >   Timestamp of file: Sat Aug 29 19:21:13 2009 UTC
+  >    Time of this run: Sat Aug 29 19:22:51 2009 UTC
+
+  > Nothing in this distro has been
+  >                      indexed, because according to META.yml this
+  >                      package does not provide any modules.
+
+I think its the version missing for all the provided modules. Does this
+line:
+
+  generated_by: Module::Build version 0.34
+
+mean that Module::Build did not provide the version numbers? Maybe
+something to report to Module::Build?
+
+I see that 0.03100 has this:
+
+  provides:
+    Bio::Chado::Schema:
+      file: lib/Bio/Chado/Schema.pm
+      version: 0.03100
+
+and the indexing did not fail anymore. Seems to me a good solution.
+Does it match your intentions?
+
+
+
+-- 
+andreas

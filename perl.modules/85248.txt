@@ -1,0 +1,52 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:85248
+Return-Path: <rt-cpan-org-return@perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 20326 invoked from network); 20 Mar 2013 22:41:02 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 20 Mar 2013 22:41:02 -0000
+Received: (qmail 8564 invoked by uid 225); 20 Mar 2013 22:41:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8560 invoked by alias); 20 Mar 2013 22:41:02 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=ALL_TRUSTED,BAYES_00,MISSING_HEADERS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from cpan.rt.develooper.com (HELO cpan.rt.develooper.com) (207.171.7.181)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 20 Mar 2013 15:40:53 -0700
+Received: by cpan.rt.develooper.com (Postfix, from userid 536)
+	id 83A06704A; Wed, 20 Mar 2013 15:40:50 -0700 (PDT)
+Subject: [rt.cpan.org #56681] Unhandled type: REGEXP at ...Devel/Cycle.pm line 107 under Perl 5.12.0.
+Reply-To: bug-Devel-Cycle@rt.cpan.org
+In-Reply-To:
+References: <RT-Ticket-56681@rt.cpan.org>
+Message-ID: <rt-3.8.HEAD-30901-1363819249-1874.56681-7-0@rt.cpan.org>
+X-RT-Loop-Prevention: rt.cpan.org
+RT-Ticket: rt.cpan.org #56681
+Managed-BY: RT 3.8.HEAD (http://www.bestpractical.com/rt/)
+RT-Originator: ether@cpan.org
+CC: modules@perl.org, lincoln.stein@gmail.com
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+X-RT-Original-Encoding: utf-8
+Date: Wed, 20 Mar 2013 18:40:50 -0400
+Approved: news@nntp.perl.org
+From: bug-Devel-Cycle@rt.cpan.org ("Karen Etheridge via RT")
+
+<URL: https://rt.cpan.org/Ticket/Display.html?id=56681 >
+
+On Fri Apr 16 18:01:50 2010, WYANT wrote:
+
+> This appears to be because regular expressions have become first-class
+> objects under 5.12, so UNIVERSAL::isa($thingy,'SCALAR'), which was true
+> under 5.10 when $thingy contained a reference to a regexp, is false
+> under 5.12.
+
+It is not valid to use UNIVERSAL::isa in this way:
+1. isa is only a (object or class) method, not a function - it must have an invocant
+2. isa should only properly be used for class names or blessed objects, not for base types -- to check the base type of a reference, use Scalar::Util::reftype.
+
+Is the repository in git yet? If so, I can provide patches. thank you!

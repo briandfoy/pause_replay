@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:79
+Return-Path: <ix@jonezware.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25230 invoked from network); 16 Oct 1999 18:23:44 -0000
+Received: from uzi.jonezware.com (HELO jonezware.com) (209.60.53.60)
+  by tmtowtdi.perl.org with SMTP; 16 Oct 1999 18:23:44 -0000
+Received: (qmail 8200 invoked by uid 100); 16 Oct 1999 18:23:33 -0000
+Date: Sat, 16 Oct 1999 11:23:33 -0700 (PDT)
+X-Sender: ix@uzi.jonezware.com
+To: "Andreas J. Koenig" <andreas.koenig@anima.de>
+cc: modules@perl.org
+Subject: Re: Properties class
+In-Reply-To: <sfcwvsnwjh2.fsf@hohenstaufen.in-berlin.de>
+Message-ID: <Pine.LNX.4.10.9910161107310.6141-100000@uzi.jonezware.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: ix@maz.org (doctor jest)
+References: <sfcwvsnwjh2.fsf@hohenstaufen.in-berlin.de>
+
+On 16 Oct 1999, Andreas J. Koenig wrote:
+
+> I don't disagree, but I still have the impression, there
+> is some file format in the agenda there (how else would
+> you serialize, without formatting conventions?). Maybe
+> that file format has a name and maybe then we could use
+> this name? Sorry, if I'm missing the obvious:-)
+
+i dont know of a standard name for this file format. i call
+it 'nv'.
+
+somebody noted that it would be useful to see the api. here
+is a list of methods:
+
+# takes an optional properties obj to use as default
+new
+
+get_property
+
+# populates the object from a stream
+load
+
+# returns an enumeration of property names, including any defaults
+property_names
+
+set_property
+
+# serializes the object to a stream
+store
+
+see.. a whole lotta discussion over something really simple
+:) i could certainly use Storable or Data::Dumper or
+whatever but yes, the file format is the important part.
+properties objects are mostly used as far as i can tell for
+specifying configuration data, so the file format is as
+simple as possible, so as to allow complete bozos to
+reconfigure the application:
+
+# this is a comment. i love comments.
+my.chunk.o.data:	its value \
+      consists of all of this whole string
+
+my instinct is still to go with Data::Properties and to just
+dump it in the corner for folks who might be familiar with
+the name and its context and file format from java.
+
+

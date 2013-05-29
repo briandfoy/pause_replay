@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2395
+Return-Path: <gbarr@gbarr.demon.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24757 invoked from network); 7 Jul 2000 20:50:10 -0000
+Received: from finch-post-11.mail.demon.net (194.217.242.39)
+  by tmtowtdi.perl.org with SMTP; 7 Jul 2000 20:50:10 -0000
+Received: from gbarr.demon.co.uk ([194.222.72.232])
+	by finch-post-11.mail.demon.net with esmtp (Exim 2.12 #1)
+	id 13Af4Z-00062A-0B; Fri, 7 Jul 2000 20:50:08 +0000
+Received: from chipper.localdomain (local12.localdomain [192.168.1.12])
+	by gbarr.demon.co.uk (8.9.3/8.9.3) with ESMTP id VAA31742;
+	Fri, 7 Jul 2000 21:37:32 +0100
+Received: (from gbarr@localhost)
+	by chipper.localdomain (8.9.3/8.9.3/SuSE Linux 8.9.3-0.1) id VAA14285;
+	Fri, 7 Jul 2000 21:46:06 +0100
+Date: Fri, 7 Jul 2000 21:46:06 +0100
+To: Michael G Schwern <schwern@pobox.com>
+Cc: "Kurt D. Starsinic" <kstar@chapin.edu>, modules@perl.org
+Subject: Re: Class::WhiteHole
+Message-ID: <20000707214606.D465@pobox.com>
+Mail-Followup-To: Michael G Schwern <schwern@pobox.com>,
+	"Kurt D. Starsinic" <kstar@chapin.edu>, modules@perl.org
+References: <20000707042639.A1219@blackrider.aocn.com> <20000707095840.B17806@O2.chapin.edu> <20000707151929.S465@pobox.com> <20000707160712.A9396@athens.aocn.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3i
+In-Reply-To: <20000707160712.A9396@athens.aocn.com>
+Approved: news@nntp.perl.org
+From: gbarr@pobox.com (Graham Barr)
+
+On Fri, Jul 07, 2000 at 04:07:12PM -0400, Michael G Schwern wrote:
+> On Fri, Jul 07, 2000 at 03:19:29PM +0100, Graham Barr wrote:
+> > I have not looked at the code, but I assume it works by Class::WhiteHole 
+> > defining an AUTOLOAD sub which just dies. 
+> 
+> Pretty much.  You have to do a few tricks for DESTROY and to make sure
+> the right error message shows up (all of which I forgot to do in 0.01
+> *sigh*)
+> 
+> > If so then I would consider a
+> > patch to AutoLoader.pm which allows
+> > 
+> >   no AutoLoader;
+> 
+> That was along the lines of my first thought, too.  Problem is when
+> used naively, no AutoLoader could severely screw things up.  Consider:
+> 
+> package Foo;
+> 
+> use AutoLoader qw(AUTOLOAD);
+> @ISA = qw(AutoLoader);
+> 
+> sub public_bar {
+>     my($self) = shift;
+>     return $self->_autoloaded_private_method();
+> }
+> __END__
+> sub _autoloaded_private_method {
+>     return 'whatever';
+> }
+> 
+> 
+> # Meanwhile, in a nearby file
+> package Bar;
+> 
+> use base qw(Foo);
+> no AutoLoader;
+> 
+> # Ooops, public_bar() can't autoload _autoloaded_private_method()
+> # because we blocked reaching AutoLoader from Bar.
+> Bar->public_bar;
+
+This is not true. Perl will first look for Foo::AUTOLOAD because there is
+a stub for _autoloaded_private_method created by AutoSplit when the
+module is installed.
+
+Perl will only look for AUTOLOAD via @ISA if it cannot find a stub for the method
+or there is no AUTOLOAD in the package where the stub exists.
+
+Graham.

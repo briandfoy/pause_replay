@@ -1,0 +1,114 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13331
+Return-Path: <stas@stason.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 45862 invoked by uid 76); 22 Aug 2002 03:41:12 -0000
+Received: from smtp21.singnet.com.sg (HELO smtp21.singnet.com.sg) (165.21.101.201)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Thu Aug 22 03:41:12 2002 -0000
+Received: from stason.org (bb-203-125-7-72.singnet.com.sg [203.125.7.72])
+	by smtp21.singnet.com.sg (8.12.5/8.12.5) with ESMTP id g7M3ee4Z029509
+	for <modules@perl.org>; Thu, 22 Aug 2002 11:40:41 +0800
+Received: from stason.org (localhost.localdomain [127.0.0.1])
+	by stason.org (Postfix) with ESMTP id 409773150F
+	for <modules@perl.org>; Thu, 22 Aug 2002 11:40:32 +0800 (SGT)
+Message-ID: <3D645D30.4060907@stason.org>
+Date: Thu, 22 Aug 2002 11:40:32 +0800
+Organization: Hope, Humanized
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020510
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: The Env::C namespace
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: stas@stason.org (Stas Bekman)
+
+Hi,
+
+Should Env::C be a good name for a Perl glue to getenv(3), setenv(3) and 
+unsetenv(3)?
+
+Thanks!
+
+Here is the whole manpage:
+
+NAME
+     Env::C - Get/Set/Unset Environment Variables on the C level
+
+SYNOPSIS
+       use Env::C;
+
+       my $key = "USER";
+       $val = Env::C::getenv($key) || '';
+
+       Env::C::setenv($key, "foobar", [$override]);
+       $new_val = Env::C::getenv($key) || '';
+
+       Env::C::unsetenv($key);
+
+       my $ar_env = Env::C::getallenv();
+       print join "\n", @$ar_env;
+
+DESCRIPTION
+     This module provides a Perl API for getenv(3), setenv(3) and
+     unsetenv(3). It also can return all the "environ" variables.
+
+     Sometimes Perl invokes modules with underlaying C APIs which rely on
+     certain environment variables to be set, if these variables are set in
+     Perl and the glue code doesn't worry to set them on the C level, these
+     variables might not be seen by the C level. This module shows what
+     really the C level sees.
+
+   FUNCTIONS
+
+     * getenv()
+           $val = Env::C::getenv($key);
+
+         Returns the value of the environment variable matching the key or
+         "undef".
+
+     * setenv()
+           Env::C::setenv($key, $value, [$override]);
+
+         The setenv() function adds the variable "$key" to the environment
+         with the value "$value", if "$key" does not already exist. If 
+"$key"
+         does exist in the environment, then its value is changed to 
+"$value"
+         if "$overwrite" is non-zero; if "$overwrite" is zero or is not
+         passed, then the value of "$key" is not changed.
+
+     * unsetenv()
+           Env::C::unsetenv($key);
+
+         The unsetenv() function deletes the variable "$key" from the
+         environment.
+
+     * getallenv()
+           my $ar_env = Env::C::getallenv();
+           print join "\n", @$ar_env;
+
+         The getallenv() function returns an array reference which includes
+         all the all the environment variables.
+
+   EXPORT
+
+     None.
+
+AUTHOR
+     Stas Bekman <stas@stason.org>
+
+SEE ALSO
+     the perl manpage.
+
+
+
+__________________________________________________________________
+Stas Bekman            JAm_pH ------> Just Another mod_perl Hacker
+http://stason.org/     mod_perl Guide ---> http://perl.apache.org
+mailto:stas@stason.org http://use.perl.org http://apacheweek.com
+http://modperlbook.org http://apache.org   http://ticketmaster.com
+

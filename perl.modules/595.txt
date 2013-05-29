@@ -1,0 +1,52 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:595
+Return-Path: <Raphael.Manfredi@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2007 invoked from network); 24 Nov 1999 13:06:18 -0000
+Received: from beta.st.com (HELO beta.dmz-eu.st.com) (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 24 Nov 1999 13:06:18 -0000
+Received: from eux100.sgp.st.com (eux100.sgp.st.com [164.129.225.7])
+	by beta.dmz-eu.st.com (Postfix) with ESMTP id 0236725D6
+	for <modules@perl.org>; Wed, 24 Nov 1999 13:05:38 +0000 (GMT)
+Received: from lod23.gnb.st.com (lod28.gnb.st.com [164.129.116.152])
+	by eux100.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id OAA25999
+	for <modules@perl.org>; Wed, 24 Nov 1999 14:05:40 +0100 (MET)
+To: modules@perl.org
+Subject: Extending the LockFile::Simple namespace
+X-Mailer: NMH [version 1.0.1]
+Organization: ST Microelectronics, Grenoble, France
+Date: Wed, 24 Nov 1999 14:06:19 +0100
+Message-ID: <12235.943448779@lod23.gnb.st.com>
+Sender: manfredi@lod23.gnb.st.com
+Approved: news@nntp.perl.org
+From: Raphael.Manfredi@st.com (Raphael Manfredi)
+
+I already have a module named LockFile::Simple.
+
+However, I'd like to make the module more OO, and in particular,
+have locks be returned as LockFile::Lock objects.
+
+I don't wish to make it LockFile::Simple::Lock, because other locking
+schemes like LockFile::XXX might also wish to return LockFile::Lock
+objects (which have an attribute that points back to the lock scheme).
+
+To be able to also write LockFile::Lock in a general way, I need to
+introduce the LockFile::Scheme from which LockFile::Simple will inherit.
+
+The LockFile::Scheme will be a purely deferred class, i.e. all its
+routines will be deferred. But it will define the interface on which
+LockFile::Lock will be able to base its processing.
+
+When someone else implements LockFile::XXX, he might want to
+inherit from LockFile::Scheme, and hop! Everything else works.
+
+I can't break the LockFile::Simple name for backward compatibility
+reasons. Although, if I were to do it today, it would be named
+LockFile::Scheme::Simple.
+
+How can I advertise that LockFile::Simple uses the names LockFile::Manager
+and LockFile::Lock?
+
+Rapahel

@@ -1,0 +1,86 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1996
+Return-Path: <ken@bitsko.slc.ut.us>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 386 invoked from network); 23 May 2000 19:19:13 -0000
+Received: from c941885-a.west1.ia.home.com (HELO bitsko.slc.ut.us) (@24.2.246.129)
+  by tmtowtdi.perl.org with SMTP; 23 May 2000 19:19:13 -0000
+Received: (from ken@localhost)
+	by bitsko.slc.ut.us (8.9.1/8.9.1) id OAA16310;
+	Tue, 23 May 2000 14:25:33 -0500 (CDT)
+X-Authentication-Warning: jess.bitsko.slc.ut.us: ken set sender to ken@bitsko.slc.ut.us using -f
+To: <perl-xml@listserv.activestate.com>
+Cc: modules@perl.org
+Subject: Re: SAX or XML::SAX ?
+References: <x5k8gmfogj.fsf@bitsko.slc.ut.us> <20000522204137.A15233@kropotkin.copyleft.de>
+Date: 23 May 2000 14:25:32 -0500
+In-Reply-To: Michael Koehne's message of "Mon, 22 May 2000 20:41:37 +0200"
+Message-ID: <x5aehhvzkj.fsf@bitsko.slc.ut.us>
+Lines: 59
+User-Agent: Gnus/5.0803 (Gnus v5.8.3) Emacs/20.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: ken@bitsko.slc.ut.us (Ken MacLeod)
+
+Michael Koehne <kraehe@copyleft.de> writes:
+
+>   So the question we have :
+> 
+>   The Java implementation of SAX 2.0 is out, and it improve in some
+>   important concepts as the namespace thing, filters, and document
+>   order. Ken had mad XML::Parser::PerlSAX as a part of his
+>   libxmlperl, providing a look like SAX programming style to the
+>   CPAN comunity.  Unfortunately those PerlSAX modules had wild
+>   grown, and distributed anywhere in the XML namespace.
+> 
+>   This may be the point to call for either the XML::SAX namespace or
+>   to ask modules@perl.org for a toplevel SAX namespace ? The benefit
+>   would be, that the necessary work on the existing modules, that
+>   are using PerlSAX, would also clean the namespace.
+
+Michael and I, and others on occasion, have been discussing SAX module
+naming for quite a while, mostly so we can present a pretty clear
+picture when we're close to needing them.  That time is coming up with
+SAX2.  SAX2 is not backwards compatible with SAX1 so this would be a
+really good time to start using a SAX::* or SAX*:: namespace, to
+indicate those modules that are SAX2 compliant, and without breaking
+any SAX1 modules.
+
+We have two basic differences of opinion that we'd like to get input
+on.
+
+A little background first.  SAX modules come in three basic flavors,
+"drivers" which generate SAX events (parsers are drivers), "handlers"
+which consume SAX events (writers and tree builders are handlers), and
+"filters" which are both handlers and drivers.
+
+The first question is: do we want to have one top-level namespace
+called "SAX::" with multiple namespaces under it (SAX::Driver::*,
+SAX::Handler::*, and SAX::Filter::*) and use three-level naming; or
+have multiple top-level namespaces (SAXDriver::*, SAXHandler::*, and
+SAXFilter::*) and use two-level namespaces.  For reference, Tim Bunce
+mentioned during the last round that the module list maintainers
+prefer two-level naming.
+
+The second question is: should unique namespaces be used for
+specialized types of drivers, handlers, or filters.  Specifically,
+Parser (SAX::Parser::* or SAXParser::*), Writer, Builder [for trees],
+etc.
+
+Although there are four combinations of these, I've taken all the
+existing SAX modules and shown a SAX::* without sub-types and a SAX*::
+with sub-types for each module at
+<http://bitsko.slc.ut.us/~ken/perl-xml/sax-modules.txt>.
+
+So please indicate your preference:
+
+1)  SAX::*::*     or  SAX*::*
+
+2)  no-sub-types  or  sub-types
+
+Thanks,
+
+  -- Ken

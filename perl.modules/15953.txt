@@ -1,0 +1,103 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:15953
+Return-Path: <webmaster@simonproctor.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26612 invoked by uid 76); 4 Dec 2002 00:57:21 -0000
+Received: from smtp-relay01.tc.dsvr.net (HELO smtp-relay01.tc.dsvr.net) (212.69.192.4) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-12-04 00:57:21Z
+Received: from [212.69.198.108] (helo=proctor.dsvr.co.uk)	by smtp-relay01.tc.dsvr.net with esmtp (Exim 3.33 #3)	id 18JNqn-0006bv-00	for modules@perl.org; Wed, 04 Dec 2002 00:57:17 +0000
+Received: from lager (pc2-basf1-3-cust76.nott.cable.ntl.com [213.107.55.76])	by proctor.dsvr.co.uk (8.11.6/8.11.6) with SMTP id gB40vGO08185	for <modules@perl.org>; Wed, 4 Dec 2002 00:57:16 GMT
+To: <modules@perl.org>
+Subject: Apache::Precompress
+Date: Wed, 4 Dec 2002 01:06:25 -0000
+Message-ID: <HPEIKOKKBFNHGKKIINJECEPMDAAA.webmaster@simonproctor.com>
+MIME-Version: 1.0
+Content-Type: text/plain;	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: webmaster@simonproctor.com ("Simon Proctor")
+
+Hi,
+
+As per the docs:
+
+*	Your name
+
+Simon Proctor
+
+*	your email address
+
+cpan@simonproctor.com
+
+*	your homepage if you have one
+
+www.simonproctor.com
+
+* your preferred user-ID on CPAN. It must be between 4 and 9
+characters long, all uppercase, letters 
+
+s-proctor (9 chars)
+
+* a short description of what you're planning to contribute
+
+I have written a module tentatively called Apache::Precompress.
+
+In a nutshell you precompress your files with gzip and it spits
+them out, decompressing them only if the client doesn't support
+gzip encoding or you have called it via SSI. An example SSI
+conf being:
+
+<FilesMatch "\.html$">
+  	Options +Includes
+  	PerlSetVar  SSI  1
+</FilesMatch>
+
+Showing the var test (I'm working on a way around that). Or
+for ordinary content:
+
+<Directory "docroot/compressedfilesfolder">
+  	Options -Includes
+  	SetHandler perl-script
+	PerlHandler Apache::Precompress
+</Directory>
+
+This module can sit in a Filter chain to allow for compressed
+content that is then parsed for SSI and where those SSI templates
+are a combination of compressed and uncompressed pages.
+
+ie:
+
+	PerlModule Apache::Filter
+	PerlModule Apache::Precompress
+	PerlModule Apache::SSI
+	<FilesMatch "\.html$">  # or whatever
+		SetHandler perl-script
+		PerlSetVar Filter On
+		PerlSetVar  SSI  1
+		PerlHandler Apache::Precompress Apache::SSI
+	</FilesMatch>
+
+Note, this is different to Compress and Dynagzip in that the content
+is already compressed and not done on the fly as with those modules.
+
+The rationale behind this is that if your disk space is low or
+your find yourself spending too long archiving files and taking up
+CPU then you can save both by compressing first.
+
+Requires 
+
+Compress::Zlib
+Apache::Constants
+
+For the SSI you also need
+
+Apache::Filter
+Apache::SSI
+

@@ -1,0 +1,71 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:47652
+Return-Path: <uleobeh02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23704 invoked from network); 2 Mar 2006 17:37:19 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 2 Mar 2006 17:37:19 -0000
+Received: (qmail 6992 invoked by uid 225); 2 Mar 2006 17:37:19 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6981 invoked by alias); 2 Mar 2006 17:37:17 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_HELO_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from can01.de (HELO can01.de) (213.203.199.108)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 02 Mar 2006 09:37:13 -0800
+Received: from [10.0.0.18] (dslb-084-056-219-193.pools.arcor-ip.net [84.56.219.193])
+	by can01.de (can01.de) with ESMTP id 01D3A42C16E;
+	Thu,  2 Mar 2006 18:37:00 +0100 (CET)
+Message-ID: <44072CC3.90600@sneakemail.com>
+Date: Thu, 02 Mar 2006 18:34:59 +0100
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041207)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: John Constable <cpan@kript.net>
+Cc: modules@perl.org
+Subject: Re: Module name request: Samba Domain List
+References: <Pine.LNX.4.61.0603011724540.6881@john.ddns.teaparty.net>
+In-Reply-To: <Pine.LNX.4.61.0603011724540.6881@john.ddns.teaparty.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: uleobeh02@sneakemail.com (Steffen Mueller)
+
+John Constable wrote:
+> I'm writing a module that will parse the output of smbclient on linux to 
+> return data on the windows domains and associated master browser's on 
+> the network, but I find I'm completely stuck for the right namespace.  
+> ShoulBd it be Win32::? Operating System Interfaces?
+> 
+> I'm tending towards "Networking Devices IPC" and to calling the module 
+> SMB::DomainList, but I'd appreciate the Wisdom Of The List, as it were..
+
+This shouldn't be in Win32:: that's for sure.
+There are several samba related modules in several places. File::Samba, 
+Filesys::SmbClient, Filesys::SmbClientParser, ...
+The latter might actually do something very similar to what you plan to 
+do. If you were implementing any part of the smb protocol itself, I'd 
+say use Net::SMB or so. But that's not the case, so I'd suggest 
+something similar to the precedents. Anyhow, here are a couple of 
+suggestions. No guarantee they'll be approved by the module list 
+maintainers.
+
+File::SMBClient
+Filesys::SMBClient
+Parse::SMBClient
+
+Or possibly better:
+File::SMB::Client
+Filesys::SMB::Client
+Parse::SMB::Client
+
+Alternatively, it might be warranted to create an SMB top level 
+namespace, but only if there will be significantly more modules. This is 
+unlikely to be approved.
+
+SMB::Client::Parser etc
+
+Steffen

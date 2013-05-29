@@ -1,0 +1,60 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:80
+Return-Path: <jtillman@bigfoot.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25277 invoked from network); 16 Oct 1999 18:27:23 -0000
+Received: from earth.electro-net.com (199.44.160.5)
+  by tmtowtdi.perl.org with SMTP; 16 Oct 1999 18:27:23 -0000
+Received: from jamie (Dlp-047.electro-net.com [199.44.160.82])
+	by earth.electro-net.com (8.8.7/8.8.7) with SMTP id OAA28875;
+	Sat, 16 Oct 1999 14:17:13 -0400
+To: "John Porter" <jdporter@min.net>
+Cc: <modules@perl.org>
+Subject: RE: RFC: Fieldmapper.pm
+Date: Sat, 16 Oct 1999 14:24:17 -0400
+Message-ID: <NCBBILECPECKOHPHFCKDCEGNCLAA.jtillman@bigfoot.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+In-Reply-To: <19991014103236.C25407@min.net>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+Approved: news@nntp.perl.org
+From: jtillman@bigfoot.com ("James Tillman")
+References: <19991014103236.C25407@min.net>
+
+>Any particular reason it has to read and write files/streams,
+>rather than working on in-memory data?
+Now that you mention it, no, not really.  It could be modified to accept
+input via an array or scalar value.  Currently a call to it might look like
+this:
+> If it absolutely has to read/write streams, then perhaps
+>it should go under IO:: instead.
+It just reads streams and files right now because I wanted to use it as a
+command line file processor.  I was doing a lot of piping and wanted a
+middle-man to reformat the text stream inline.
+>Does it do anything besides reorder fields?
+It does anything you can use a regexp and an eval'd string to do.  Imagine
+the following:
+A single line of input is:  bob|1234|jane\n
+You provide the following to fieldmapper:
+Regexp: /^(.+)|(.+)|(.+)$/
+Eval string:  $3|$1|$2\n
+When Fieldmapper is done, you have this:  Sally|Bob|1234\n
+You can also provide CODE refs instead of either the regexp or eval in order
+to do more complex stuff.  So it's really an input processor, rather than a
+simple ReorderFields.
+Does this expanded explanation bring any good names to mind?  Namespaces?
+IO:: might not be a bad idea considering my current usage of the module.
+Also, does this thing sound too simple to warrant including it in CPAN?  I'm
+rather fond of simple modules that do one thing and do it well, but others
+might think it's not worth the trouble...
+Jamie
+
+

@@ -1,0 +1,131 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:57425
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19730 invoked from network); 27 Oct 2007 20:41:37 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 27 Oct 2007 20:41:37 -0000
+Received: (qmail 10275 invoked by uid 225); 27 Oct 2007 20:41:37 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10256 invoked by alias); 27 Oct 2007 20:41:36 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 27 Oct 2007 13:41:32 -0700
+Received: from pause.perl.org (localhost.localdomain [127.0.0.1])
+	by pause.perl.org (8.13.4/8.13.4/Debian-3sarge3) with ESMTP id l9RKfRIf023289
+	for <modules@perl.org>; Sat, 27 Oct 2007 22:41:27 +0200
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.4/8.13.4/Submit) id l9RKfQop023288;
+	Sat, 27 Oct 2007 22:41:26 +0200
+Date: Sat, 27 Oct 2007 22:41:26 +0200
+Message-ID: <200710272041.l9RKfQop023288@pause.perl.org>
+MIME-Version: 1.0
+Subject: Module submission Data::Page::Balanced
+Content-Type: Text/Plain; Charset=ISO-8859-1
+Reply-To: modules@perl.org
+To: modules@perl.org
+Content-Transfer-Encoding: 8bit
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Data::Page::Balanced
+  DSLIP:       RdpOp
+  description: Pager with balanced entries per page
+  userid:      KIMAHL (Kim Ahlström)
+  chapterid:   6 (Data_Type_Utilities)
+  communities:
+
+  similar:
+
+  rationale:
+
+    This data pager balances the number of entries per page, which
+    means that cases with the last page only having a few number of
+    entries will be avoided.
+
+    The relevant POD describes it well, so I have included it below.
+
+    SYNOPSIS use Data::Page::Balanced;
+
+    my $pager = Data::Page::Balanced->new({ total_entries => 67,
+    entries_per_page => 25 }); print $pager->last_page() # 2 print
+    $pager->entries_per_page() # 34
+
+    DESCRIPTION This module behaves like Data::Page except that it
+    balances the number of entries per page so there is no last page
+    with only a few entries. If, for example, you have 26 entries and
+    want 25 entries per page, a normal pager would give you two pages
+    with 25 entries on the first and 1 on the last. Data::Page::Balanced
+    will instead give you one page with 26 entries.
+
+    The benefit of a balanced number of entries per page is greater
+    when the number of pages is small, with the ideal case being when
+    there are two pages with only one entry on the last, in which case
+    Data::Page::Balanced will fold it over to the first page. This saves
+    the user from having to navigate to a page with only one entry,
+    making it easier for him or her to see all the entries at once.
+
+    The default flexibility is "floor(entries_per_page/2)", which means
+    that in the example with 25 entries per page, the calculated entries
+    per page can go up to 37 (25 + 12). The flexibility can be changed
+    both at initialization and later on.
+
+    SUBROUTINES/METHODS new my $pager = Data::Page::Balanced->new({
+    total_entries => 67, entries_per_page => 25, current_page => 1,
+    flexibility => 12 });
+
+    This constructs a new pager object. The "total_entries" and
+    "entries_per_page" arguments are mandatory, since they are used to
+    calculate the actual number of entries per page.
+
+    The "current_page" and "flexibility" arguments are optional.
+
+    All arguments are given as name-value pairs in an anonymous hash.
+
+    total_entries $pager->total_entries(100); # Sets the total entries
+    to 100 $pager->total_entries(); # Returns the current total entries
+
+    This will get or set the total entries. *Changing this will
+    re-calculate the number of entries per page.*
+
+    entries_per_page $pager->entries_per_page(23); # Sets the entries
+    per page to 23 $pager->entries_per_page(); # Returns the current
+    entries per page
+
+    This will get or set the entries per page. *Since changing this
+    will re-calculate the number of entries per page according to the
+    flexibility, in most cases what you set is not what you later will
+    get.*
+
+    flexibility $pager->flexibility(12); # Sets the flexibility to 12
+    $pager->flexibility(); # Returns the current flexibility
+
+    This will get or set the flexibility value. *Changing this will
+    re-calculate the number of entries per page.*
+
+  enteredby:   KIMAHL (Kim Ahlström)
+  enteredon:   Sat Oct 27 20:41:26 2007 GMT
+
+The resulting entry would be:
+
+Data::Page::
+::Balanced        RdpOp Pager with balanced entries per page         KIMAHL
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=63010000_a4e4133662a26c40&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=63010000_a4e4133662a26c40&SUBMIT_pause99_add_mod_insertit=1

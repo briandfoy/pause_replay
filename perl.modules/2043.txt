@@ -1,0 +1,153 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2043
+Return-Path: <mah@everybody.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14091 invoked from network); 27 May 2000 08:28:01 -0000
+Received: from dialup100.tcs.tulane.edu (HELO hexmode.local.everybody.org) (root@129.81.78.4)
+  by tmtowtdi.perl.org with SMTP; 27 May 2000 08:28:01 -0000
+Received: (from mah@localhost)
+	by hexmode.local.everybody.org (8.9.3/8.9.3) id DAA07524;
+	Sat, 27 May 2000 03:24:48 -0500
+X-Authentication-Warning: hexmode.local.everybody.org: mah set sender to mah@everybody.org using -f
+Sender: mah@everybody.org
+To: modules@perl.org
+Subject: IO::PgLoFile
+X-URL: http://everybody.org/mah/
+Date: 27 May 2000 03:24:48 -0500
+Message-ID: <m3hfbkflin.fsf@hexmode.local.everybody.org>
+Lines: 127
+User-Agent: Gnus/5.0804 (Gnus v5.8.4) Emacs/20.5
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: mah@everybody.org ((Mark A. Hershberger))
+
+
+Can I have the IO::PgLoFile namespace?
+
+Here is the pod:
+
+NAME
+    IO::PgLoFile - Emulate IO::File interface for PostgreSQL Large
+    Objects
+
+SYNOPSIS
+     use IO::PgLoFile;
+     use DBI;
+
+     $dbh = DBI->connect("dbi:Pg:dbname=mah", "", "",
+                         {RaiseError=>1,
+                          AutoCommit=>0}) # <- Absolutely necessary!
+     $io = IO::PgLoFile->new($dbi);
+     $io = IO::PgLoFile->new($var);
+     tie *IO, 'IO::PgLoFile';
+
+     # read data
+     <$io>;
+     $io->getline;
+     read($io, $buf, 100);
+
+     # write data
+     print $io "string\n";
+     $io->print(@data);
+     syswrite($io, $buf, 100);
+
+     select $io;
+     printf "Some text %s\n", $str;
+
+     # seek
+     $pos = $io->getpos;
+     $io->setpos(0);        # rewind
+     $io->seek(-30, -1);
+
+**** WARNING ****
+    To use this module, you *must* feed your DBI connection
+    `AutoCommit => 0'. See the PostgreSQL documentation for more
+    details.
+
+DESCRIPTION
+    The `IO::PgLoFile' module provide the `IO::File' interface for
+    Large Objects (aka BLOBs) in a PostgreSQL database. An
+    `IO::PgLoFile' object can be attached to a Large Object ID, and
+    will make it possible to use the normal file operations for
+    reading or writing data, as well as seeking to various locations
+    of the object.
+
+    This provides a tremendous amount of convenience since you can
+    treat the object just like a regular file and operate on it as
+    you would normally in Perl instead of doing all sorts of funky
+    stuff like:
+
+      $dbh->func($lobjfd, $buff, $len, "lo_read");
+
+    you get:
+
+      <$lobjfd>
+
+    I based this code on Gisle Aas' IO::String, so the interface is
+    similar.
+
+    The `IO::PgLoFile' module provide an interface compatible with
+    `IO::File' as distributed with IO-1.20, but the following
+    methods are not available; new_from_fd, fdopen, format_write,
+    format_page_number, format_lines_per_page, format_lines_left,
+    format_name, format_top_name.
+
+    The following methods are specific for the `IO::PgLoFile' class:
+
+    $io = IO::PgLoFile->new( $dbh[, $objid] )
+        The constructor returns a newly created `IO::PgLoFile'
+        object. You must supply it with a database handle. It takes
+        an optional argument which is oid of the large objectto read
+        from or write into. If no $objid argument is given, then a
+        new large object is created.
+
+        The `IO::PgLoFile' object returned will be tied to itself.
+        This means that you can use most perl IO builtins on it too;
+        readline, <>, getc, print, printf, syswrite, sysread, close.
+
+    $io->open( $dbh[, $objid] )
+        Attach an existing IO::PgLoFile object to some other $objid,
+        or create a new large object if no $objid is given. The
+        position is reset back to 0.
+
+    $io->oid
+        This method will return the oid of the large object. This is
+        useful for when you create a large object and what to put a
+        reference to it in another table.
+
+    $io->pad( [$char] )
+        The pad() method makes it possible to specify the padding to
+        use if the object is extended by either the seek() or
+        truncate() methods. It is a single character and defaults to
+        "\0".
+
+        Currently, extending the large object via seek() or
+        truncate() is not possible.
+
+    $io->pos( [$newpos] )
+        Yet another interface for reading and setting the current
+        read/write position within the object (the normal
+        getpos/setpos/tell/seek methods are also available). The
+        pos() method will always return the old position, and if you
+        pass it an argument it will set the new position.
+
+    One more difference compared to IO::Handle, is that the write()
+    and syswrite() methods allow the length argument to be left out.
+
+BUGS
+    The perl TIEHANDLE interface is still not complete. There are
+    quite a few file operations that will not yet invoke any method
+    on the tied object. See the perltie manpage for details.
+
+SEE ALSO
+    the IO::File manpage, the IO::String manpage
+
+COPYRIGHT
+    Copyright 2000 Mark A. Hershberger, <mah@everybody.org>.
+
+    This library is free software; you can redistribute it and/or
+    modify it under the same terms as Perl itself.
+

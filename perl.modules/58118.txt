@@ -1,0 +1,97 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:58118 perl.module-authors:6107
+Return-Path: <maddingue@free.fr>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 1488 invoked from network); 8 Dec 2007 17:39:33 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 8 Dec 2007 17:39:33 -0000
+Received: (qmail 3270 invoked by uid 225); 8 Dec 2007 17:39:33 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3259 invoked by alias); 8 Dec 2007 17:39:32 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from neuf-infra-smtp-out-sp604007av.neufgp.fr (HELO neuf-infra-smtp-out-sp604007av.neufgp.fr) (84.96.92.120)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 08 Dec 2007 09:39:23 -0800
+Received: from [192.168.0.101] ([86.69.40.127])
+	by neuf-infra-smtp-out-sp604007av.neufgp.fr with neuf telecom
+	id NHer1Y00d2kcc0N0700000; Sat, 08 Dec 2007 18:39:15 +0100
+In-Reply-To: <20071206221132.GB682@timac.local>
+References: <20071206221132.GB682@timac.local>
+Mime-Version: 1.0 (Apple Message framework v752.2)
+Content-Type: text/plain; charset=ISO-8859-1; delsp=yes; format=flowed
+Message-ID: <D2F46975-4C9A-48DD-B50C-D4CBD1C9FBC6@free.fr>
+Cc: module-authors@perl.org,
+ modules@perl.org,
+ Patrick Galbraith <patg@patg.net>
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: Naming convention for thin wrappers around C lib<foo>.so ?
+Date: Sat, 8 Dec 2007 18:38:50 +0100
+To: Tim Bunce <Tim.Bunce@pobox.com>
+X-Mailer: Apple Mail (2.752.2)
+Approved: news@nntp.perl.org
+From: maddingue@free.fr (=?ISO-8859-1?Q?S=E9bastien_Aperghis-Tramoni?=)
+
+Tim Bunce wrote:
+
+> If there's a libfoo.so and I want to create a perl module/distribution
+> that's just a very thin wrapper around libfoo, what should I call it?
+>
+>     LibFoo
+>     Lib::Foo
+>     Lib::foo
+>     Lib::libfoo
+>     libfoo
+>     SomeCategory::Libfoo
+>     ???
+
+
+Following the "Category::Foo" scheme:
+  - libpcap -> Net::Pcap
+  - libdnet -> Net::Libdnet
+  - libxml2 -> XML::LibXML
+  - libxslt -> XML::LibXSLT
+  - Xerces -> XML::Xerces
+  - OpenSP -> SGML::Parser::OpenSP
+  - libmagick -> Image::Magick
+  - libkakasi -> Text::Kakasi
+  - zlib -> Compress::Zlib (same for the other compression libs: =20
+Bzip2, LZF, LZW)
+  - OpenSSL -> Net::SSLeay / Crypt::SSLeay
+  - MatrixSSL -> Crypt::MatrixSSL
+  - libsyck -> YAML::Syck / JSON::Syck
+  - PARI -> Math::Pari
+  - libtidy -> HTML::Tidy
+  - libusb -> Device::USB
+
+Following the top-level namespace "Foo" scheme:
+  - libdb (BerkeleyDB) -> DB_File (v1) / BerkeleyDB (v2, 3, 4) / BDB =20
+(v4)
+  - libev -> EV
+  - OpenGL
+  - Ogre, OIS (game libs)
+  - all the GUI toolkits: Tk, TkZinc, Gtk2, Wx, Qt, Prima
+
+
+
+Eric Whilhem wote:
+
+> Seems like Alien would be the place for that.  If it goes by e.g.
+> libpng, then Alien::libpng seems natural.
+
+Alien dists seem to be currently more for installing things more =20
+"alien" than mere libs. Out of the 14 Alien distributions on the =20
+CPAN, 8 are for installing JavaScript libraries, 2 are for Selenium, =20
+1 for SVN Perl bindings, 1 for WxWidgets. As a sysadmin, I prefer to =20
+install the external libs by myself, or in case of packaging, make =20
+sure the needed libs are indicated as prerequisites.
+
+
+--=20
+S=E9bastien Aperghis-Tramoni
+
+Close the world, txEn eht nepO.
+

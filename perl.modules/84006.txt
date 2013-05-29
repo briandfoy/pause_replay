@@ -1,0 +1,77 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:84006
+Return-Path: <brian.d.foy@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1050 invoked from network); 3 Jan 2013 03:44:42 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 3 Jan 2013 03:44:42 -0000
+Received: (qmail 30177 invoked by uid 225); 3 Jan 2013 03:43:22 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25382 invoked by alias); 3 Jan 2013 03:38:51 -0000
+X-Spam-Status: No, hits=-2.0 required=8.0
+	tests=ALL_TRUSTED,BAYES_00,DKIM_ADSP_CUSTOM_MED,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO x6.develooper.com) (207.171.7.86)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 02 Jan 2013 19:38:48 -0800
+Received: from lists-nntp.develooper.com (localhost.localdomain [127.0.0.1])
+	by x6.develooper.com (Postfix) with SMTP id 2E7B41773D
+	for <modules@perl.org>; Wed,  2 Jan 2013 19:38:45 -0800 (PST)
+Received: (qmail 31444 invoked by uid 515); 3 Jan 2013 03:38:44 -0000
+To: modules@perl.org, MATHIAS@cpan.org
+Subject: Re: Module submission Test::Subs
+Date: Thu, 03 Jan 2013 07:38:46 +0400
+Reply-To: modules@perl.org
+Posted-And-Mailed: yes
+Message-ID: <030120130738464004%brian.d.foy@gmail.com>
+References: <201301022000.r02K0bAW020958@pause.fiz-chemie.de>
+Organization: The Perl Review, LLC
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+User-Agent: Thoth/1.9.0 (Mac OS X)
+X-Posted-By: 38.103.167.122
+Approved: news@nntp.perl.org
+From: brian.d.foy@gmail.com (brian d foy)
+
+[[ This message was both posted and mailed: see
+   the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+In article <201301022000.r02K0bAW020958@pause.fiz-chemie.de>, "Perl
+Authors Upload Server" <upload@pause.perl.org> wrote:
+
+
+>     As opposed to other module, the main functionnalities of Test::Subs
+>     are that the user does not need to pre-declare the number of test to
+>     run (so all modification) in a test file are locals and the
+>     declaration of the tests is done with a syntax based on anonymous
+>     code block, which I believe (subjectively) are cleaner and easier to
+>     read than the list of value used by other module.
+
+The Test::* namespace has a bit of a problem in that people now expect
+the modules to do Test::Builder sorts of things. If you're doing
+something completely different, the trick is to set your stuff apart
+somehow.
+
+However, before you go off to do a lot of work,  I'll point out that
+this sounds like what I already do with Test::More subtests:
+
+    use Test::More;
+
+    subtest 'some_label' => sub {
+        local *STDOUT = ...
+        ...
+        };
+
+    done_testing();
+
+If you still want a separate module, that's not a problem. Since I
+don't have any ideas on a better name, if you still want the original
+name, that's not a problem either.
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+PAUSE instructions:  http://pause.perl.org/pause/query?ACTION=pause_04about
+Archives: http://www.xray.mpe.mpg.de/mailing-lists/modules
+Please send all messages back to modules@perl.org with no CC to me.

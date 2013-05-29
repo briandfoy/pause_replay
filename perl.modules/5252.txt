@@ -1,0 +1,63 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5252
+Return-Path: <rpolzer@durchnull.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 63504 invoked from network); 29 Apr 2001 10:37:39 -0000
+Received: from unknown (HELO post.webmailer.de) (192.67.198.65)
+  by onion.valueclick.com with SMTP; 29 Apr 2001 10:37:39 -0000
+Received: from www42.t-offline.de (B18e5.pppool.de [213.7.24.229])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id MAA05658
+	for <modules@perl.org>; Sun, 29 Apr 2001 12:37:35 +0200 (MET DST)
+Received: from localhost (rpolzer@localhost)
+	by www42.t-offline.de (8.11.2/8.11.2/SuSE Linux 8.11.1-0.5) with ESMTP id f3SN47c15408
+	for <modules@perl.org>; Sun, 29 Apr 2001 01:04:07 +0200
+Date: Sun, 29 Apr 2001 01:04:07 +0200 (CEST)
+To: <modules@perl.org>
+Subject: PAUSE
+Message-ID: <Pine.LNX.4.31.0104290047120.12778-100000@www42.t-offline.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: rpolzer@durchnull.de ("echo 'Rudolf Polzer'>/dev/null")
+
+
+Name: Rudolf Polzer
+Interface style: f
+Mail: rpolzer@durchnull.de
+UserID: rpolzer
+Module I am planning to contribute: autodetection of modules
+DSLI: Mdpf
+Description: Autodetect of modules: find available module
+
+The idea came from a posting in comp.lang.perl.misc in the thread "dynamic
+creation of classes". After trying a little I thought: let's make a module
+that loads the first one in a list that exists. Since many CGI providers
+do not have a full Perl installation (often DB_File, Storable etc. are
+missing) but falling back to using SDBM_File and Data::Dumper where not
+needed shouldn't be done because of speed and space issues, I decided to
+write an autodetect module just in Perl (so it can be installed anywhere).
+Unfortunately I do not know which Perl version this requires; it works on
+5.6.0 and does not use anything strange. It should work as long as
+ eval "require CGI;"
+returns true if and only if there is a module CGI, so a 5.00x version
+should suffice.
+There is already a module 'AndDBM_File' which does exactly use this; this
+module is designed to be used for more than one purpose in the same
+program and even allows user-supplied module names (there are even checks
+for things like
+
+Module::Detect::Use 'CGI; `rm -rf /`'
+
+so that they do not blindly execute
+
+require CGI; `rm -rf /`;
+
+in eval()
+
+).
+
+.
+

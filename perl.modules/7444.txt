@@ -1,0 +1,86 @@
+Newsgroups: perl.beginners.cgi,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.beginners.cgi:2217 perl.modules:7444
+Return-Path: <chyortik@inbox.lv>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 8268 invoked from network); 7 Sep 2001 13:33:31 -0000
+Received: from unknown (HELO satan.inbox.lv) (194.19.240.58)
+  by onion.valueclick.com with SMTP; 7 Sep 2001 13:33:31 -0000
+Received: (from root@localhost)
+	by satan.inbox.lv (8.12.0.Beta7/8.11.0) id f87EiVEh030318
+	for modules@perl.org.AVP; Fri, 7 Sep 2001 16:44:31 +0200
+Received: from chyortik (chyortik.undernet.lv [217.21.160.47])
+	by satan.inbox.lv (8.12.0.Beta7/8.11.0) with SMTP id f87EiK0e030118;
+	Fri, 7 Sep 2001 16:44:20 +0200
+Message-ID: <013c01c137a1$2dc25f60$2fa015d9@chyortik>
+To: <mark@summersault.com>
+Cc: <beginners-cgi@perl.org>, <modules@perl.org>, <perl-help@perl.org>
+References: <B7BC17C9.9445%jsimoni@totalsite.com> <3B97B4CB.678C958C@summersault.com>
+Subject: Re: FW: problem with using HTML::FormValidator
+Date: Fri, 7 Sep 2001 13:07:21 +0300
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="ISO-8859-1"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Content-Transfer-Encoding: 8bit
+X-MIME-Autoconverted: from base64 to 8bit by satan.inbox.lv id f87EiK0e030118
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: chyortik@inbox.lv ("Maryana Osipchuk")
+
+
+Hi, Mark!
+
+Thanx for answer - it's partly help me to resolve my problem (now I use Data::FormValidator). Tnx for so usefull module ;o)
+ 
+But to call my function I need do it in that way:
+
+p1 => {
+              constraint => \&main::valid_equiv,
+              params => [ qw (p1 p2)],
+      },
+when I try to call it (as described in docs, where cc_number name of builtin validator)
+
+p1 => {
+              constraint => "valid_equiv",
+              params => [ qw (p1 p2)],
+      },
+
+I receive an error:
+Undefined subroutine &Data::FormValidator::valid_valid_equiv called at C:/Perl/lib/Data/FormValidator.pm line 579. 
+There are no samples in docs how to call external subroutine.
+
+Tnx a lot for answer ;-)
+
+--
+Maryana
+
+
+----- message  --------
+
+> Hello Maryana,
+> 
+> First, if you just learning HTML::FormValidator, I suggest looking into
+> Data::FormValidator. It contains all the old functions plus a few new features.
+> 
+> In your case, I think your solution may be found an example in the
+> documentation which looks like this:
+> 
+>     {
+>         customer_infos => {
+>              constraints => {
+>                 cc_no      => {  constraint  => "cc_number",
+>                                  params      => [ qw( cc_no cc_type ) ],
+>                                 },
+> }
+> }
+> 
+> 
+> # cc_no is the field name with the constraint
+> # cc_number is the custom function
+> 
+>    -mark

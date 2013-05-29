@@ -1,0 +1,67 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62520
+Return-Path: <matthewt@agaton.scsys.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26796 invoked from network); 5 Oct 2008 09:15:12 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 5 Oct 2008 09:15:12 -0000
+Received: (qmail 10307 invoked by uid 225); 5 Oct 2008 09:15:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10302 invoked by alias); 5 Oct 2008 09:15:11 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from de007061.idaq.com (HELO jules.scsys.co.uk) (217.168.153.160)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 05 Oct 2008 02:15:07 -0700
+Received: from [217.168.150.167] (helo=agaton.scsys.co.uk)
+	by jules.scsys.co.uk with esmtp (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1KmPhU-0007g9-CJ; Sun, 05 Oct 2008 10:14:52 +0100
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1KmPhU-0001zZ-5B; Sun, 05 Oct 2008 10:14:52 +0100
+Date: Sun, 5 Oct 2008 10:14:52 +0100
+To: Bob Free <bfree@graphcomp.com>
+Cc: Chris Marshall <chm@alum.mit.edu>,
+	pdl-porters <pdl-porters@jach.hawaii.edu>, wyp3rlx02@sneakemail.com,
+	modules@perl.org
+Subject: Re: [Pdl-porters] Module submission PDL::Graphics::POGL
+Message-ID: <20081005091452.GV16741@agaton.scsys.co.uk>
+References: <48DADFAF.1000706@alum.mit.edu> <48E572A5.7050005@alum.mit.edu> <20081004112940.GM16741@agaton.scsys.co.uk> <2485A25D-7AB0-4D37-97EA-807315B8573C@graphcomp.com> <20081004185406.GU16741@agaton.scsys.co.uk> <2CA6DAF1C37B47348CA51AD0AA3821EB@HPONE>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2CA6DAF1C37B47348CA51AD0AA3821EB@HPONE>
+User-Agent: Mutt/1.5.11
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Sat, Oct 04, 2008 at 09:52:27PM -0700, Bob Free wrote:
+> Unfortunately, the current OpenGL namespace is legacy - there's not much of 
+> a chance for me to change it... although I may do so when I port to Parrot 
+> for Perl6.
+
+Sure there is. Shift it to the new namespace and add shims for all class
+methods that make things carry on working - or just make OpenGL an empty
+package that does "use base qw(Graphics::OpenGL::POGL);" or whatever.
+
+I've done this many times - that's how Class::Accessor::Grouped and
+Class::C3::Componentised were factored out of DBIx::Class (where they were
+DBIx::Class::AccessorGroup and ::Componentised respectively).
+
+Something like Sub::Exporter will make it trivial for you to delegate
+exports as well.
+
+If you actually do consider it legacy and are interested in trying to
+change it, I've no objection to taking this discussion somewhere more
+suitable and helping you get through the process, provided you'd be willing
+to write up what you did so we've got a document to point the next guy
+needing to do this at :) 
+
+-- 
+      Matt S Trout       Need help with your Catalyst or DBIx::Class project?
+   Technical Director                    http://www.shadowcat.co.uk/catalyst/
+ Shadowcat Systems Ltd.  Want a managed development or deployment platform?
+http://chainsawblues.vox.com/            http://www.shadowcat.co.uk/servers/

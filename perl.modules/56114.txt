@@ -1,0 +1,116 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:56114
+Return-Path: <l2ot9pa02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26232 invoked from network); 3 Sep 2007 08:53:31 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 3 Sep 2007 08:53:31 -0000
+Received: (qmail 8849 invoked by uid 225); 3 Sep 2007 08:53:31 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8843 invoked by alias); 3 Sep 2007 08:53:30 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from fzkmail3.ka.fzk.de (HELO fzkmail3.ka.fzk.de) (141.52.32.200)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 03 Sep 2007 01:53:16 -0700
+Received: from /spool/local
+	by fzkmail3.ka.fzk.de with XMAIL
+	for <modules@perl.org> from <l2ot9pa02@sneakemail.com>;
+	Mon, 3 Sep 2007 10:53:10 +0200
+Received: from FZKMSX6.ka.fzk.de [[141.52.92.76]]
+	by fzkmail3.ka.fzk.de with XMAIL;
+	Mon, 3 Sep 2007 10:53:09 +0200
+Received: from [141.52.67.61] ([141.52.67.61]) by FZKMSX6.ka.fzk.de with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 3 Sep 2007 10:53:09 +0200
+Message-ID: <46DBCB74.7000401@sneakemail.com>
+Date: Mon, 03 Sep 2007 10:53:08 +0200
+User-Agent: Thunderbird 1.5.0.10 (X11/20060911)
+MIME-Version: 1.0
+To:  modules@perl.org
+Subject: Re: Stale registrations statistics
+References: <AF57F840-E4C9-4787-80AF-485F5D4D24A5@mit.edu>	<46D7E1F0.9050402@sneakemail.com>	<310820071304209607%brian.d.foy@gmail.com>	<46D86823.6000105@sneakemail.com> <87odgkb60t.fsf@k75.linux.bogus>
+In-Reply-To: <87odgkb60t.fsf@k75.linux.bogus>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 03 Sep 2007 08:53:09.0088 (UTC) FILETIME=[D9E03600:01C7EE07]
+Approved: news@nntp.perl.org
+From: l2ot9pa02@sneakemail.com (Steffen Mueller)
+
+Hi Andreas, hi modules@,
+
+(Andreas J. Koenig) wrote:
+>>>>>> On Fri, 31 Aug 2007 21:12:35 +0200, Steffen Mueller <l2ot9pa02@sneakemail.com> said:
+> 
+>   > brian d foy schrieb:
+>  >>> That's because in order to do this
+>  >>> right, you would need to check with the uploader's PAUSE permissions.
+>  >>> They might be co-maintainers. Andreas is the only one who could do that,
+>  >>> I guess.
+>  >> 
+>  >> There's a new file from PAUSE for that:
+>  >> 
+>  >> http://www.cpan.org/modules/06perms.txt
+> 
+>   > That's great, but I was wrong. What I'd also need is a list of all
+>   > uploaded modules.
+> 
+> Doesn't exist. A find (over a backpan?) only shows us the
+> distributions but we do not know which modules are in them.
+
+I realized this and decided to drop that specific part of the issue.
+
+>   > Just the list of the PAUSE indexed ones (02...)
+>   > doesn't help :/. The good news is that these would be uncovered by
+>   > cleaning out the old registrations. They'd just be a reindexing away.
+> 
+> What would you reindex? Everything? This would probably cause more
+> grief. I'm pretty sure we do have distributions that shall not be
+> reindexed.
+
+Okay, too bad. I had the impression this would be possible. It shouldn't
+be too common for a third party to upload a module with the same name as
+a registered (but unused) namespace. Unfortunately, we can't detect this
+(see above).
+
+>   > Anyhow. I'll append the hack I used to get the number of 736
+>   > registered namespaces without uploads by the registrant. That's
+>   > shorter than including the list :)
+> 
+> Very nice script and a good start but what do you propose as a next
+> step? There are plenty of things in there that need individual
+> treatment.
+> 
+> My current thinking is we should take the list produced by your script
+> and harvest the low hanging fruits manually. But if you see a pattern
+> how we can proceed programmatically, let me know. Maybe we could write
+> mails to the owners and tell them if they'd veto such and such
+> deletions and if they do not veto within a certain time we actually
+> delete the items. What would you imagine?
+
+Does the PAUSE database know when a registration was approved? I suppose
+it doesn't which is bad for proceeding programmatically. Then, then only
+source of approval dates would be the modules@perl.org mailing list
+archive. Yuck.
+
+So I guess manually going through the list is the most practical
+approach. That's too bad because I don't think there is so much manual
+email-writing time to spare between the bunch of us.
+
+I'll think about this a little more and perhaps I can come up with a
+semi automated process:
+
+Something along the lines of
+1) paring down the list of stale registrations manually, removing any
+recent registrations,
+2) then sending mails to the authors with a script and asking them to
+contact modules@perl.org telling us whether they intend to use the
+namespace and whether they object to deletion of the registration.
+3) As they answer, the namespaces which the authors want to keep are
+manually removed from the list.
+4) Purging the leftovers from the database in a few weeks or months
+could probably be automated again.
+
+Best regards,
+Steffen

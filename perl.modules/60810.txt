@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60810
+Return-Path: <wyp3rlx02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 16680 invoked from network); 11 Jun 2008 13:17:22 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 11 Jun 2008 13:17:22 -0000
+Received: (qmail 2852 invoked by uid 225); 11 Jun 2008 13:17:22 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2808 invoked by alias); 11 Jun 2008 13:17:17 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from spam1.fzk.de (HELO spam1.fzk.de) (141.52.32.63)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 11 Jun 2008 06:17:14 -0700
+X-Scan-Signature: 826841988a7c986e9b08444a17a3f168
+X-Scan-Server: spam1.fzk.de
+X-SCC-Spam-Level: --
+X-Spam-Level: --
+X-Spam-Report: -2.6 BAYES_00               BODY: Bayesian spam probability is 0 to 1%
+	[score: 0.0000]
+Received: from fzkmsx3.ka.fzk.de ([141.52.92.3])
+	by spam1.fzk.de with esmtp (Exim 4.69)
+	(envelope-from <wyp3rlx02@sneakemail.com>)
+	id 1K6QC8-0001RX-Pw; Wed, 11 Jun 2008 15:17:01 +0200
+Received: from [141.52.67.61] ([141.52.67.61]) by fzkmsx3.ka.fzk.de with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 11 Jun 2008 15:16:56 +0200
+Message-ID: <484FD048.4030201@sneakemail.com>
+Date: Wed, 11 Jun 2008 15:16:56 +0200
+User-Agent: Thunderbird 1.5.0.10 (X11/20060911)
+MIME-Version: 1.0
+To: "(Andreas J. Koenig)" <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+CC:  modules@perl.org
+Subject: Re: lib.pm indexing problem
+References: <20080609132123.18185.qmail@lists.develooper.com> <874p82idtv.fsf@k75.linux.bogus>
+In-Reply-To: <874p82idtv.fsf@k75.linux.bogus>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 11 Jun 2008 13:16:56.0691 (UTC) FILETIME=[6C5A4430:01C8CBC5]
+X-Old-Spam-Status: no, hits=-2.6 required=5.0
+Approved: news@nntp.perl.org
+From: wyp3rlx02@sneakemail.com (Steffen Mueller)
+
+Hi Andreas,
+
+sorry for the late answer.
+
+(Andreas J. Koenig) wrote:
+> Without even looking I can say, yes, if you generate lib.pm at
+> runtime, the indexer cannot index it. Would you be able to provide a
+> META.yml with the provides field? The intent was: if this is there,
+> then the indexer does not get triggered at all and the META.yml wins.
+
+Thanks for that suggestion.
+
+However, I still have a bit of a problem. If provides has to look like this:
+
+  provides:
+    lib:
+      file: lib.pm
+      version: 0.57
+
+what happens if there is no file lib.pm in the distribution?
+Should I make that
+
+  provides:
+    lib:
+      file: lib_pm.PL
+      version: 0.57
+
+where lib_pm.PL is the file lib.pm is generated from? (I guess not.)
+
+Or will
+
+  provides:
+    lib:
+      version: 0.57
+
+suffice? The examples in
+http://module-build.sourceforge.net/META-spec-current.html#provides
+suggest "file:" is mandatory.
+
+Best regards,
+Steffen

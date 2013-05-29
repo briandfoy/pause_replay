@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1033
+Return-Path: <jtillman@bigfoot.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19757 invoked from network); 2 Feb 2000 01:41:14 -0000
+Received: from earth.electro-net.com (199.44.160.5)
+  by tmtowtdi.perl.org with SMTP; 2 Feb 2000 01:41:14 -0000
+Received: from jamie (Dlp-042.electro-net.com [199.44.160.77])
+	by earth.electro-net.com (8.8.7/8.8.7) with SMTP id UAA04943
+	for <modules@perl.org>; Tue, 1 Feb 2000 20:31:36 -0500
+To: <modules@perl.org>
+Subject: Linux:: modules
+Date: Tue, 1 Feb 2000 20:36:43 -0500
+Message-ID: <000901bf6d1d$f6d38640$1201a8c0@home>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+Importance: Normal
+Approved: news@nntp.perl.org
+From: jtillman@bigfoot.com ("James Tillman")
+
+I hope this isn't considered noise on this mailing list, but here goes:
+
+I posted the following article to comp.lang.perl.modules, and have as yet
+received no comments.  The module I mention is my main concern.  Is there
+any interest in it?  I'm also wondering what others think of the Linux::
+namespace and whether it has a legitimate use.  Suggestions for better
+namespace placement for my module are welcome.
+
+Jamie Tillman
+jtillman@bigfoot.com
+
+-----
+
+Hi.  I have 2 related questions.  First, I've recently been browsing CPAN
+and noticed that although the Win32 namespace is crawling with activity,
+there don't appear to be any Linux:: modules.  I realize that Linux, being
+mostly Unix, is more closely tied to perl than Win32 and doesn't need that
+much "help", but I do believe there are some Linux-specific capabilities
+that would benefit from being modularized in perl.  Has anyone else given
+this thought?  What's your take on it?
+
+Also, for those more experienced in Linux C development than I:  I've
+recently been studying Linux C programming, and as a learning excercise, I
+created a perl module called Linux::MsgQueue that provides perl access to
+the Linux kernel level Message Queue service.  I've never done any IPC in
+Unix, and I'm wondering whether other unixes might provide something
+similar.  Do they, or is it Linux only?  Would anyone be interested in
+seeing such an animal on CPAN?  Should it be in a Linux namespace if it is
+indeed a Linux specific service?  It's all the same to me, since it was only
+for learning, but I want to make my work useful to others if possible.
+
+Just for the curious, here's how the module works:
+
+The linux message queue provides methods to create a "queue" which is
+basically a FIFO stack for C structs.  You create the structs as you desire,
+drop them in the queue, and another process (or multiple competing
+processes) can receive the messages in the same order.  An example in the
+book I was using was one of a paging service with a client and server piece.
+
+My PerlXS module provides some predefined C structs to the perl script that
+give it character arrays of varying length, perfect for stuffing
+Data::Dumper output into, but you can also create your own C structs and
+provide them to your perl script through PerlXS.
+
+Then you have the functions to create, write to, read from, and destroy a
+queue.  Basically, the same functions provided to a C program using the
+queue.
+
+I realize the module would have limited applicability even in the Linux
+realm, but it seems that it would have certain uses, esp. when the two
+communication processes may not be running at the same time.  Putting a
+network front-end on it might create an interesting optimized network IPC
+server.
+
+So, any interest?  Comments?
+
+Thanks,
+
+Jamie
+
+
+

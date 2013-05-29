@@ -1,0 +1,86 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:37117
+Return-Path: <opiate@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23005 invoked from network); 16 Dec 2004 19:07:56 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 16 Dec 2004 19:07:56 -0000
+Received: (qmail 32496 invoked by uid 225); 16 Dec 2004 19:07:55 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 32491 invoked by alias); 16 Dec 2004 19:07:54 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of opiate@gmail.com designates 64.233.170.206 as permitted sender)
+Received: from rproxy.gmail.com (HELO rproxy.gmail.com) (64.233.170.206)
+  by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 16 Dec 2004 11:07:52 -0800
+Received: by rproxy.gmail.com with SMTP id 34so571rns
+        for <modules@perl.org>; Thu, 16 Dec 2004 11:07:49 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:references;
+        b=utxhSMXmTtUvkycr00q95f2C1iz0de2NLAzJaq9Mh8fZTlGiy/9JzaSnthylaugp5Ei22GNp5pPl0XNjHBmsVhcNmRfVXdjQ4jjxbwDhi85Kw6Ty64obUXPan2L2ZVs7lMyzhih46GygRjPAHRtzoFUVTrisb4mOiPyJ6s7tGSw=
+Received: by 10.38.206.35 with SMTP id d35mr229277rng;
+        Thu, 16 Dec 2004 11:07:48 -0800 (PST)
+Received: by 10.38.8.7 with HTTP; Thu, 16 Dec 2004 11:07:48 -0800 (PST)
+Message-ID: <15cafc5b0412161107292cbdff@mail.gmail.com>
+Date: Thu, 16 Dec 2004 13:07:48 -0600
+Reply-To: opiate <opiate@gmail.com>
+To: modules@perl.org
+Subject: Re: Module submission HTML::ReportWriter
+In-Reply-To: <161220040132343057%comdog@panix.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+References: <200412150423.iBF4Nq3R007222@pause.perl.org>
+	 <161220040132343057%comdog@panix.com>
+Approved: news@nntp.perl.org
+From: opiate@gmail.com (opiate)
+
+> >     My goal is simplicity. I want to be able to generate a page-able,
+> >     sortable report in HTML with a minimum of work.
+> 
+> Why limit it to HTML?  I'd start with the data layer and branch
+> out from there.  You could do HMTL, XML, text, or anything else
+> that floats your boat.
+
+Part of my goal was for this module to not handle data at all, simply
+the numbers and calculations needed to enable paging.
+
+I could see benefit in generalizing the paging draw function and
+allowing it to use other modules/functions to generate paging in any
+given format, however you have the question of how paging functions
+(in terms of passing back page numbers and the like) if you draw a
+flat-text report. This original intent of this module was interactive
+paging...
+
+I am definitely open to further discussion on this point.
+
+> >     Eventually I want to allow for easy customization, but have not yet
+> >     determined how best to do that. Additionally considered is
+> >     multiple-database compatibility, however it will begin its life
+> >     working only for MySQL 4.0+.
+> 
+> why only MySQL?  Shouldn't you get a lot of stuff for free if you use
+> DBI?
+
+You do get a lot for free with DBI, but my sole experience with DBMSs
+is with MySQL, so I as of this point lack the knowledge required to
+implement a database-independent implementation of LIMIT or ORDER BY
+clauses. Additionally, I have read documents online stating that some
+databases don't support LIMIT clauses, but have "work-arounds" to
+allow that sort of functionality. Please don't take offense at my
+MySQL-centric view of things. :)
+
+Since this module was written to fill a need at my company, I have not
+had time to research the other implementations -- I had to do what I
+know. I felt that this module could provide some benefit to others out
+there as it stands, even before multiple databases are supported.
+
+In fact, the existing functions that return SQL fragments could be
+used -- if the SQL fragments are compatible in syntax with
+Postgres/Oracle/Informix/et al., with those databases. I do not want
+to represent that they are compatible, however, until I know that they
+are. :)

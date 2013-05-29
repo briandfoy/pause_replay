@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:72484
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13215 invoked from network); 23 Aug 2010 10:56:03 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 23 Aug 2010 10:56:03 -0000
+Received: (qmail 26126 invoked by uid 225); 23 Aug 2010 10:56:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26122 invoked by alias); 23 Aug 2010 10:56:02 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.fiz-chemie.de) (195.37.231.65)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 23 Aug 2010 03:56:00 -0700
+Received: from pause.fiz-chemie.de (localhost.localdomain [127.0.0.1])
+	by pause.fiz-chemie.de (8.13.8/8.13.8/Debian-3) with ESMTP id o7NAt9as030935
+	for <modules@perl.org>; Mon, 23 Aug 2010 12:55:09 +0200
+Received: (from nobody@localhost)
+	by pause.fiz-chemie.de (8.13.8/8.13.8/Submit) id o7NAt9Kx030934;
+	Mon, 23 Aug 2010 12:55:09 +0200
+Date: Mon, 23 Aug 2010 12:55:09 +0200
+Message-ID: <201008231055.o7NAt9Kx030934@pause.fiz-chemie.de>
+Subject: Module submission Data::Dmap
+Reply-To: modules@perl.org
+To: modules@perl.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Data::Dmap
+  DSLIP:       adpfp
+  description: Deep in-place version of map()
+  userid:      MADZ (Michael Anton Dines Zedeler)
+  chapterid:   6 (Data_Type_Utilities)
+  communities:
+    http://github.com/mzedeler/Data-Dmap
+
+  similar:
+    Data::Rmap, Data::Visitor
+
+  rationale:
+
+    I want to be able to do things like this:
+
+    use Data::Dmap;
+
+    my $foo = { cars => [ 'ford', 'opel', 'BMW' ], birds => [
+    'cuckatoo', 'ostrich', 'frigate' ], handler => sub { print "barf\n"
+    } };
+
+    # This removes all keys named 'cars' my($bar) = dmap { delete
+    $_->{cars} if ref eq 'HASH'; $_ } $foo;
+
+    # This replaces arrays with the number of elements they contains
+    my($other) = dmap { $_ = scalar @$_ if ref eq 'ARRAY'; $_ } $foo;
+
+    use Data::Dumper; print Dumper $other; # # Prints # { # birds => 3,
+    # handler => sub { "DUMMY" } # } # (Data::Dumper doesn't dump subs)
+
+    $other->{handler}->(); # Prints # barf
+
+    The rmap and visitor modules doesn't preserve the input data
+    structure, which puts a large load on the developer using them, if
+    the goal is to just replace some of the nodes in the provided data
+    structure.
+
+    I have taken the liberty to upload the module already.
+
+    Regards,
+
+    Michael.
+
+  enteredby:   MADZ (Michael Anton Dines Zedeler)
+  enteredon:   Mon Aug 23 10:55:09 2010 GMT
+
+The resulting entry would be:
+
+Data::
+::Dmap            adpfp Deep in-place version of map()               MADZ
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=23300000_1570e7f1a99763c4&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=23300000_1570e7f1a99763c4&SUBMIT_pause99_add_mod_insertit=1
+Peek at the current permissions:
+  https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=me&pause99_peek_perms_query=Data%3A%3ADmap

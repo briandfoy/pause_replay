@@ -1,0 +1,116 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:34931
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29498 invoked from network); 17 Sep 2004 22:46:53 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 17 Sep 2004 22:46:53 -0000
+Received: (qmail 3441 invoked by uid 225); 17 Sep 2004 22:46:53 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3436 invoked by alias); 17 Sep 2004 22:46:52 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Fri, 17 Sep 2004 15:46:50 -0700
+Received: from pause.perl.org (localhost [127.0.0.1])
+	by pause.perl.org (8.12.3/8.12.3/Debian-6.6) with ESMTP id i8HMkeKt026435;
+	Sat, 18 Sep 2004 00:46:40 +0200
+Received: (from nobody@localhost)
+	by pause.perl.org (8.12.3/8.12.3/Debian-6.6) id i8HMkdMk026433;
+	Sat, 18 Sep 2004 00:46:39 +0200
+Date: Sat, 18 Sep 2004 00:46:39 +0200
+Message-ID: <200409172246.i8HMkdMk026433@pause.perl.org>
+Subject: Module submission Data::Normalize
+Reply-To: modules@perl.org
+To: modules@perl.org, dmuey@cpan.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Data::Normalize
+  DSLIP:       Sdpfp
+  description: Normalize Text String
+  userid:      DMUEY (Daniel Muey)
+  chapterid:    6 (Data_Type_Utilities)
+  communities:
+    beginners@perl.org
+
+  similar:
+    Other Normalization modules I see on CPAN are a different type of
+    normalization.
+
+  rationale:
+
+    Indexes, for example, can be more acurate if the data has been
+    "normalized" in the sense that strings that can be represented in
+    multiple ways (1 one dr doctor, etc) are consistently modified to be
+    the same.
+
+    So for example if someone serached for "dr worm"
+
+    you would use this module to normalize "dr worm" into "doctor worm"
+    and then do the search on the same data that has been normalixed the
+    same.
+
+    See http://dev.mysql.com/doc/mysql/en/Fulltext_Search.html and the
+    post with "Tom's fulltext tips: To get MySQL searching well for me I
+    did:" item #1 for another example.
+
+    This module would give a standard consistent way to normailize
+    data, with a way to expand it by simply giving it a hashref as the
+    argument.
+
+    For example in the database/search example above you could ensure
+    compatibility by doing:
+
+    Assuming $string to be "Dr. Worm"
+
+    1) When its added to the database by a perl script (what else of
+    course ;p)
+
+    my $data_to_store = normalize($string); # then INSERT
+    $dbh->quote($data_to_store);
+
+    2) When its searhed for
+
+    my $search_string = normalized($string); use $search_string in
+    query
+
+    3) Now regardless of if the admin or the searcher entered dr worm,
+    Dr. Worm, or Doctor Worm - the record will match
+
+    The same principle would apply to acronyms (and special cases)
+
+    my %norm_map = ( tmbg => 'They Might Be Giants', rtfm => 'Read the
+    Friendly Manual', stfw => 'Search The Friendly Web', );
+
+    my $norm_data = normalized($string,\%norm_map);
+
+    Plus ways to handle exeptions, say
+
+    etc - where you mean Et Cetera or /etc/ It can be handled easily...
+
+  enteredby:   DMUEY (Daniel Muey)
+  enteredon:   Fri Sep 17 22:46:39 2004 GMT
+
+The resulting entry would be:
+
+Data::
+::Normalize       Sdpfp Normalize Text String                        DMUEY
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=6a700000_34a86ac3b402388c&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=6a700000_34a86ac3b402388c&SUBMIT_pause99_add_mod_insertit=1

@@ -1,0 +1,60 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13456
+Return-Path: <povey@wedgetail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 52700 invoked by uid 76); 28 Aug 2002 12:44:33 -0000
+Received: from starling.wedgetail.com (HELO osprey.wedgetail.com) (202.83.95.124)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Wed Aug 28 12:44:33 2002 -0000
+Received: from coot.wedgetail.com (coot.wedgetail.com [10.10.10.4])
+	by osprey.wedgetail.com (8.12.5/8.12.5) with ESMTP id g7SCh7B4012531
+	for <modules@perl.org>; Wed, 28 Aug 2002 22:43:08 +1000 (EST)
+Message-ID: <200208281243.g7SCh7B4012531@osprey.wedgetail.com>
+X-Mailer: exmh exmh 2.5 (2001-07-13) with nmh-1.0.4
+To: modules@perl.org
+Subject: RFC: Acme::Inline?
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Wed, 28 Aug 2002 22:43:07 +1000
+Sender: povey@wedgetail.com
+X-Scanned-By: MIMEDefang 2.15 (www dot roaringpenguin dot com slash mimedefang)
+Approved: news@nntp.perl.org
+From: povey@wedgetail.com (Dean Povey)
+
+Hi all,
+
+I am putting the finishing touches on my Acme::Inline::Brainfuck module, 
+which allows you call Brainfuck (an 8 instruction turing complete 
+language - and you thought Perl was obfuscated!) programs from Perl code.
+
+However, the standard Inline module does not allow you to call modules in 
+the Acme::Inline namespace, but requires modules be in the Inline 
+namespace.
+
+I note that this problem has been solved in Acme::Inline::PERL by naming the 
+module Acme::Inline::PERL, but installing it in Inline::PERL through some 
+Makefile trickery.
+
+I found this solution somewhat inelegant, so I have quickly hacked up an 
+Acme::Inline module, which essentially does:
+
+package Acme::Inline;
+BEGIN { push @INC, map "$_/Acme", @INC; }
+sub import { use Inline @_; }
+1;
+
+And then I can use Acme::Inline::Brainfuck like you'd expect, viz:
+
+use Acme::Inline Brainfuck ...
+
+So I'm seeking feedback on whether this is a good approach or not before I 
+submit my two modules.
+
+-- 
+Dean Povey,             |em: povey@wedgetail.com|JCSI: Java security toolkit
+Wedgetail Communications|ph:  +61 7 3023 5139   |uPKI: Embedded/C PKI toolkit
+Level 14, 388 Queen St, |fax: +61 7 3023 5199   |uSSL: Embedded/C SSL toolkit
+Brisbane, Australia     |www: www.wedgetail.com |XML Security: XML Signatures 
+
+

@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10955
+Return-Path: <payerle@physics.umd.edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5864 invoked by uid 76); 1 Apr 2002 18:56:09 -0000
+Received: from root@benfranklin.physics.umd.edu (HELO benfranklin.physics.umd.edu) (129.2.42.9)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Mon Apr  1 18:56:09 2002 -0000
+Received: from bofh.physics.umd.edu (root@bofh.physics.umd.edu [129.2.41.42])
+	by benfranklin.physics.umd.edu (8.11.6/8.11.6) with ESMTP id g31ItSm14445;
+	Mon, 1 Apr 2002 13:55:28 -0500 (EST)
+Received: from bofh.physics.umd.edu (sendmail@localhost [127.0.0.1])
+	by bofh.physics.umd.edu (8.9.3/8.9.3) with SMTP id NAA00235;
+	Mon, 1 Apr 2002 13:55:33 -0500 (EST)
+Received: (from payerle@localhost)
+	by bofh.physics.umd.edu (8.9.3/8.9.3) id NAA00270;
+	Mon, 1 Apr 2002 13:55:33 -0500 (EST)
+Date: Mon, 1 Apr 2002 13:55:33 -0500 (EST)
+Message-ID: <200204011855.NAA00270@bofh.physics.umd.edu>
+To: modules@perl.org
+Subject: Module for Topological Sort
+Cc: payerle@physics.umd.edu
+Approved: news@nntp.perl.org
+From: payerle@benfranklin.physics.umd.edu ("Thomas M. Payerle")
+
+I have a need for a Perl routine to do a topological sort (a la the Unix
+tsort command), and was unable to locate one in CPAN.  (The closest I got
+was a perl version of the tsort command in the Perl Power Tools collection
+by Jeffrey Haemer, but is not set up as a subroutine, and does not identify 
+the cycles when found).
+
+Anyhow, it was easy enough to write a routine to meet my requirements, with
+some peaking at the GNU tsort C code, and I was considering contributing the
+module to CPAN.  In interests of making the proposed module more useful, was
+interested if anyone has feedback re the interface.  Still working on a good
+set of tests for the module and docs, so it is a good point at which to make
+changes in the API.
+
+I was proposing a module Algorithm::TopologicalSort.
+
+Currently consists of a single exported routine tsort, which accepts as input
+a list pairwise orderings, and returns as list consisting of the number of
+cycles found in the input, followed by a 'solution' to the topological sort.
+The solution consists of nodes of the inputted set in an order consistent with
+the given pairwise orderings.  If cycles were detected, it is reflected in the
+cycle count, and at an appropriate place in the returned solution, instead of
+a single node there is a ref to an anon array consisting of the nodes comprising
+the cycle.  E.g., 
+my ($cyc,@ordered) = tsort 
+		'a'=>'b','b'=>'c','c'=>'d', 'd'=>'e','c'=>'b';
+would return $cyc=1 and @ordered = ( 'a', ['b','c'], 'd', 'e' );
+(actually, the order of 'b' and 'c' in anon array is unspecified).
+
+The only option right now is a global $AlwaysUseAnonArrays which if set will
+cause even singleton nodes to be put in an anon array, so in above example will
+return @ordered = ( ['a'], ['b', 'c'], ['d'], ['e'])
+This is primiarily intended for use if the nodes are not simple scalars (I have
+not done anything else to make it work with other than simple scalars, but
+believe Perl's stringification of references will allow such to work.)
+
+The algorithm currently only does breadth first sorts, debating as to whether
+should add a depth first option (e.g. whether 'a'=>'e','c'=>'d', 'a'=>'b'
+should return 'a','c','b','d','e' or 'a','b','e','c','d').
+
+In particular, looking for any advice/suggestions on making the input/output
+more Perlish.  One idea was an alternate input format consisting of a list
+of lists, so the 1st example could be simplified to
+($cyc, @ordered) = tsort [ 'a','b','c','d','e' ] , ['c','b'];
+with the first anon array being an abbreviated form for 'a'=>'b', 'b'=>'c', etc.
+If we insist on simple scalar nodes, this could even be overloaded (and/or
+allow a mixture of two formats, e.g., allow omission of anon array brackets
+around ['c','b'] in above).
+
+Any feedback appreciated.
+
+
+Tom Payerle 	
+Dept of Physics				payerle@physics.umd.edu
+University of Maryland			(301) 405-6973
+College Park, MD 20742-4111		Fax: (301) 314-9525

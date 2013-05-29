@@ -1,0 +1,162 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3714
+Return-Path: <pudge@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20259 invoked from network); 29 Nov 2000 18:18:12 -0000
+Received: from smtprelay3.adelphia.net (64.8.25.8)
+  by tmtowtdi.perl.org with SMTP; 29 Nov 2000 18:18:12 -0000
+Received: from [10.0.1.177] ([24.48.179.232]) by
+          smtprelay3.adelphia.net (Netscape Messaging Server 4.15) with
+          ESMTP id G4STES00.GZU; Wed, 29 Nov 2000 13:16:04 -0500 
+Mime-Version: 1.0
+X-Sender: chris.nandor@pop.andover.net
+Message-ID: <p05010411b64af840551a@[10.0.1.177]>
+In-Reply-To: <3A253B9B.5DA83232@west.sun.com>
+References: <3A24459D.9253E65D@west.sun.com>
+ <p05010409b649fe995e9c@[10.0.1.177]> <3A253B9B.5DA83232@west.sun.com>
+Date: Wed, 29 Nov 2000 13:16:48 -0500
+To: Nathan Wiger <nate@west.sun.com>
+Subject: Re: Potential module - Module::Interface??
+Cc: modules@perl.org
+Content-Type: text/plain; charset="us-ascii"
+Approved: news@nntp.perl.org
+From: pudge@pobox.com (Chris Nandor)
+
+At 9:23 -0800 2000.11.29, Nathan Wiger wrote:
+>Chris Nandor wrote:
+>>
+>> Well, h2xs already creates a reasonable module framework, which I think is
+>> just fine.  If people used it, we would not have a lot of the problems we
+>> have, and I don't see people using some external module when they won't use
+>> h2xs.  I am not necessarily opposed to the idea, I just don't know if it
+>> will accomplish the goal you want to accomplish.
+>
+>You may be right, but I wasn't talking about the build of the module
+>package as much as the module itself. Unless there's something h2xs does
+>that I'm not aware of? I use h2xs to build all my packages, but I'm not
+>aware of it being able to provide a stub module, which is what I'm
+>talking about here. But I could be wrong (if so, please correct me).
+
+Maybe you and I have different definitions of stub module.  It certainly
+doesn't set up OOP, but perhaps it could be extended to provide default
+constructors, etc., as an option to h2xs.  Just in case you don't know,
+here is what it does now:
+
+[pudge@yaz pudge]$ h2xs -a -n Foo
+Writing Foo/Foo.pm
+Writing Foo/Foo.xs
+Writing Foo/Makefile.PL
+Writing Foo/test.pl
+Writing Foo/Changes
+Writing Foo/MANIFEST
+[pudge@yaz pudge]$ less Foo/Foo.pm
+package Foo;
+
+require 5.005_62;
+use strict;
+use warnings;
+use Carp;
+
+require Exporter;
+require DynaLoader;
+use AutoLoader;
+
+our @ISA = qw(Exporter DynaLoader);
+
+# Items to export into callers namespace by default. Note: do not export
+# names by default without a very good reason. Use EXPORT_OK instead.
+# Do not simply export all your public functions/methods/constants.
+
+# This allows declaration       use Foo ':all';
+# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
+# will save memory.
+our %EXPORT_TAGS = ( 'all' => [ qw(
+
+) ] );
+
+our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+
+our @EXPORT = qw(
+
+);
+our $VERSION = '0.01';
+
+sub AUTOLOAD {
+    # This AUTOLOAD is used to 'autoload' constants from the constant()
+    # XS function.  If a constant is not found then control is passed
+    # to the AUTOLOAD in AutoLoader.
+
+    my $constname;
+    our $AUTOLOAD;
+    ($constname = $AUTOLOAD) =~ s/.*:://;
+    croak "& not defined" if $constname eq 'constant';
+    my $val = constant($constname, @_ ? $_[0] : 0);
+    if ($! != 0) {
+        if ($! =~ /Invalid/ || $!{EINVAL}) {
+            $AutoLoader::AUTOLOAD = $AUTOLOAD;
+            goto &AutoLoader::AUTOLOAD;
+        }
+        else {
+            croak "Your vendor has not defined Foo macro $constname";
+        }
+    }
+    {
+        no strict 'refs';
+        # Fixed between 5.005_53 and 5.005_61
+        if ($] >= 5.00561) {
+            *$AUTOLOAD = sub () { $val };
+        }
+        else {
+            *$AUTOLOAD = sub { $val };
+        }
+    }
+    goto &$AUTOLOAD;
+}
+
+bootstrap Foo $VERSION;
+
+# Preloaded methods go here.
+
+# Autoload methods go after =cut, and are processed by the autosplit program.
+
+1;
+__END__
+# Below is stub documentation for your module. You better edit it!
+
+=head1 NAME
+
+Foo - Perl extension for blah blah blah
+
+=head1 SYNOPSIS
+
+  use Foo;
+  blah blah blah
+
+=head1 DESCRIPTION
+
+Stub documentation for Foo, created by h2xs. It looks like the
+author of the extension was negligent enough to leave the stub
+unedited.
+
+Blah blah blah.
+
+=head2 EXPORT
+
+None by default.
+
+
+=head1 AUTHOR
+
+A. U. Thor, a.u.thor@a.galaxy.far.far.away
+
+=head1 SEE ALSO
+
+perl(1).
+
+=cut
+
+-- 
+Chris Nandor                      pudge@pobox.com    http://pudge.net/
+Open Source Development Network    pudge@osdn.com     http://osdn.com/

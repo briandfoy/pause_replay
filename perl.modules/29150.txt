@@ -1,0 +1,118 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:29150
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 72726 invoked by uid 76); 5 Mar 2004 01:26:02 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170)
+  by onion.perl.org (qpsmtpd/0.27-dev) with SMTP; Thu, 04 Mar 2004 17:26:02 -0800
+Received: (qmail 24417 invoked by uid 225); 5 Mar 2004 01:25:57 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 24332 invoked by alias); 5 Mar 2004 01:25:35 -0000
+Received: from [208.184.111.59] (HELO pd2.baremetal.com) (208.184.111.59)
+  by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Thu, 04 Mar 2004 17:25:35 -0800
+Received: from [24.108.166.215] (h24-108-166-215.gv.shawcable.net [24.108.166.215])
+	by pd2.baremetal.com (8.12.10/8.12.9) with ESMTP id i251PeOq024715;
+	Thu, 4 Mar 2004 17:25:42 -0800
+Mime-Version: 1.0
+X-Sender: darren@DarrenDuncan.net (Unverified)
+Message-ID: <p05200f00bc6d7b2cedac@[24.108.166.215]>
+Date: Thu, 4 Mar 2004 17:25:27 -0800
+To: modules@cpan.org
+Subject: RFC: multi-package module best practices
+Cc: darren@DarrenDuncan.net
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+X-Scanned-By: MIMEDefang 2.36
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on x1.develooper.com
+X-Spam-Status: No, hits=-4.9 required=8.0 tests=BAYES_00 autolearn=ham 
+	version=2.63
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+P.S. Please CC a copy of any replies to this email directly to me, in 
+addition to modules@cpan.org, as I don't have a subscription to that 
+list.
+----------------------------
+
+Hello.
+
+I have a question regarding "best practice" details concerning a 
+module which declares multiple packages/classes inside that should be 
+visible to the public.
+
+Say, for example, I have a single object-oriented Perl 5 module named 
+"Foo.pm", and it contains these 3 package declarations inside: "Foo", 
+"Foo::Bar", "Foo::Baz".  The "NAME" POD inside only gives a one-liner 
+for "Foo" as that is the namesake package, though it is mainly 
+"Foo::Bar" and "Foo::Baz" which users of the module actually make 
+instances of, pass around, store data in, test for by name using 
+"UNIVERSAL::isa", and so on.  (They issue just "use Foo" before using 
+any one of them to compile the whole set.)
+
+In this example, users of the Foo module are treating Foo::Bar and 
+Foo::Baz as distinct entities to use, but those two classes are 
+implemented in a single module file for convenience as they are 
+normally used together, and the POD for the Foo module says they are 
+components of Foo and documents a separate method list for each.
+
+Now some of the questions (answer just the ones you want):
+
+1. Since the two classes in the example are always used together, is 
+it reasonable to have them in a single module with unified 
+documentation (much of which describes them together), or is it 
+better to have Foo::Bar and Foo::Baz as separate physical modules 
+where the file names match the package names (eg: lib/Foo/Bar.pm and 
+lib/Foo/Baz.pm).  Which is easier to use or understand?
+
+2. Since people are meant to use each package directly, would it be 
+better to have normal-looking names like Foo::Bar, or would it be 
+better to have a different looking name such as Foo::_::Bar which 
+makes the name stand out as being declared inside a module with a 
+different name?  What would be best practice or easier to use?  (Note 
+that I would still use the "::_" for any additional inner classes 
+that are meant to be private and only used by the public-visible 
+ones, such as Foo::_::Shared, to avoid possible namespace collisions 
+later.)
+
+3. Concerning CPAN's tracking of module ownership and registration: 
+Is module ownership tracked and attributed by file/path name or by 
+the name of the package declaration inside or by the NAME POD?
+
+4. Related to #3, if I were to upload said module Foo.pm to CPAN, 
+would the system register me as the maintainer/owner of Foo::Bar and 
+Foo::Baz in addition to Foo?  I want to avoid a situation where, for 
+example, someone later uploads their own extension module named 
+Foo::Bar in a file named "lib/Foo/Bar.pm" and then get ownership to 
+Foo::Bar.
+
+Now for a bit of context:
+
+1. For all intents and purposes, I have 3 actual modules on CPAN now 
+which are organized in the multiple-package fashion that I described 
+above:
+	Rosetta - presently contains [*::Interface, *::Engine]
+	SQL::SyntaxModel - [*::_::Container, *::_::Node]
+	Locale::KeyedText - [*::_::Message, *::_::Translator]
+For the first one, the inner classes were visible to the PAUSE 
+indexer.  For the latter two, the inner package declarations were 
+mangled slightly (split into 2 lines each) to not be visible to the 
+PAUSE indexer.
+
+2. Some other modules, such as DBI, also have multiple related 
+package declarations in them; however, in the case of DBI, users 
+never do the equivalent of "new" except with one package; other 
+package objects are created in the context of an existing object.  My 
+situation is different than DBI, though, in that all package types 
+are instantiated as objects in a stateless context.
+
+3. I want to standardize my modules so all of the public inner 
+classes either have the "::_" in their names or they all do not.  I'm 
+inclined to go "not", but wanted to get second opinions first.
+
+That's all for my questions at the moment.
+
+Thank you in advance for any advice or opinions you can give me.
+
+Have a good day. -- Darren Duncan

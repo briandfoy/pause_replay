@@ -1,0 +1,130 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45
+Return-Path: <John.Redford@fmr.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23351 invoked from network); 14 Oct 1999 17:44:32 -0000
+Received: from gw34e.fmr.com (HELO gw34i.fmr.com) (192.223.207.76)
+  by tmtowtdi.perl.org with SMTP; 14 Oct 1999 17:44:32 -0000
+Received: (from smtp@localhost)
+	by gw34i.fmr.com (8.8.7/8.8.7) id NAA29466
+	for <modules@perl.org>; Thu, 14 Oct 1999 13:44:28 -0400 (EDT)
+Received: from msgbos101nts.fmr.com(137.199.100.30) by gw34i.fmr.com via smap (V2.0)
+	id xma029153; Thu, 14 Oct 99 13:43:48 -0400
+Received: by msgbos101nts.fmr.com with Internet Mail Service (5.5.2448.0)
+	id <42AM0ZV1>; Thu, 14 Oct 1999 13:43:50 -0400
+Message-ID: <C139F4D49384D2118EB60008C7A4337B578493@MSGBOS675NTS.fmr.com>
+To: "'John Porter'" <jdporter@min.net>
+Cc: modules@perl.org
+Subject: RE: Carp::TypeCheck module
+Date: Thu, 14 Oct 1999 13:43:50 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Approved: news@nntp.perl.org
+From: John.Redford@fmr.com ("Redford, John")
+
+Well, Carp might become a catch-all for "things that complain".. which might
+not be so bad. Especially given that I can't think of any other use for
+Carp::*.
+
+Anyway, I suspect that the lack of knowing the syntax is misleading you. The
+syntax for most users would be like the following:
+
+		sub foo ($$) {
+		   ...
+		}
+		typecheck('foo');
+
+or
+
+		sub foo ($$) {
+		   ...
+		}
+		typecheck('foo', 'MyObject $foo, ARRAY $args');
+
+The former would simply enforce runtime checks of the prototype, which
+usually isn't worth a great deal. The latter would check to make sure that
+there were 2 args, and that the first was a MyObject or subclass thereof,
+while the second was a reference to an array.
+
+In both of these cases, it is not necessary for the user to know that a
+closure is being created around the base function. That is only apparent in
+the third form:
+
+		$s = sub { ... };
+		$ts = typecheck('SomeName', 'MyObject $foo, ARRAY $args',
+$s);
+
+
+Other possible names:
+CheckArgs 
+Sub::CheckArgs
+
+
+		-----Original Message-----
+		From:	'John Porter' [mailto:jdporter@min.net]
+		Sent:	Thursday, October 14, 1999 1:18 PM
+		To:	Redford, John
+		Subject:	Re: Carp::TypeCheck module
+
+		Redford, John wrote:
+		> Well.. the Hook module provides a way for users to
+intercept routines & add
+		> arbitrary code to calls. This module does intercept calls,
+but it provides
+		> no way for users of the module to intercept the calls. I
+think using Hook
+		> would definitely be naming it for "how it does it" rather
+than "what it
+		> does".
+
+		I have to say, I'm not sure I agree with you, looking at it
+from
+		the perspective of a user.  I know -- because I have to know
+-- that
+		if I say
+
+			$my_sub_typechecked_closure =
+			typecheck(
+				{
+					... # description of the arguments
+				},
+
+				\&my_sub
+			);
+
+		(Sorry, had to guess at the syntax...)
+		that some code is being interposed between a call to
+
+			$my_sub_typechecked_closure->()
+
+		and the subsequent
+
+			my_sub()
+
+		which happens "inside".
+
+
+		> I saw there being great similarity between this module and
+the Carp::Assert
+		> module. Carp::Assert, exports 'assert', this module
+exports 'typecheck'.
+		> Similar to 'assert', the type-checking can be turned off
+for "production
+		> code". And clearly in spirit, both 'assert' and
+'typecheck' are tools for
+		> programming in the same style .. with explicit code to
+verify the state of
+		> the program environment at the time of execution.
+
+		I suppose you're right about that; but I'm not sure I'm
+happy with
+		Carp::Assert, either.  It seems that Carp:: would become a
+catch-all
+		family for anything that throws exceptions.  Not good.
+
+		-- 
+		John Porter

@@ -1,0 +1,135 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:69763
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28192 invoked from network); 9 Feb 2010 18:31:09 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 9 Feb 2010 18:31:09 -0000
+Received: (qmail 30106 invoked by uid 225); 9 Feb 2010 18:31:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30102 invoked by alias); 9 Feb 2010 18:31:08 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 09 Feb 2010 10:30:34 -0800
+Received: from pause.fiz-chemie.de (localhost.localdomain [127.0.0.1])
+	by pause.perl.org (8.13.8/8.13.8/Debian-3) with ESMTP id o19ITY0F004855;
+	Tue, 9 Feb 2010 19:29:34 +0100
+Received: (from nobody@localhost)
+	by pause.fiz-chemie.de (8.13.8/8.13.8/Submit) id o19ITYu6004854;
+	Tue, 9 Feb 2010 19:29:34 +0100
+Date: Tue, 9 Feb 2010 19:29:34 +0100
+Message-ID: <201002091829.o19ITYu6004854@pause.fiz-chemie.de>
+Subject: Module submission Set::ArrayAlt
+Reply-To: modules@perl.org
+To: modules@perl.org, sbeck@cpan.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Set::ArrayAlt
+  DSLIP:       RdpOp
+  description: full set of list/set operations
+  userid:      SBECK (Sullivan Beck)
+  chapterid:   6 (Data_Type_Utilities)
+  communities:
+
+  similar:
+    Set::Array
+
+  rationale:
+
+    The origin of this module came when I needed better list handling
+    operations (especially involving lists that might contain duplicate
+    elements) inside of a Template::Toolkit template. The built in list
+    functions in Template::Toolkit weren't sufficent for my needs, so I
+    looked around.
+
+    The module that came closest to my needs was Set::Array. Although
+    not a perfect match for what I wanted, it came close enough, so I
+    wrote a wrapper module (Template::Plugin::ListOps) around it to do
+    most of what I wanted.
+
+    Unfortunately, I discovered almost immediately that Set::Array
+    suffered from a fairly serious problem. It depends on the Want
+    module which, at the time, had some known problems and would fail
+    under some circumstances (older versions of perl if I recall
+    correctly, though I could be wrong about that), and unfortunately,
+    some of the places I needed my module to run failed due to those
+    problems.
+
+    I looked at the Want module, but correcting it was beyond my
+    abiltity, so the best solution seemed to be to rewrite the module
+    without depending on Set::Array. This would also allow me to add the
+    functionality that I wanted.
+
+    So I did that. I rewrote each function to do the list/set operation
+    I wanted instead of calling a Set::Array functions.
+
+    That modules (Template::Plugin::ListOps) was registered in PAUSE
+    and has been available sinc 2007.
+
+    As I was completing the module, I was already regretting rewriting
+    the module in that way. I should have written a standalone module to
+    do the operations (basically, a replacement for the Set::Array
+    module) and then had the Template::Plugin::ListOps be a wrapper for
+    it .
+
+    In 2009, I ran into a case where I wanted the set/list
+    functionality from Template::Plugin::ListOps for another application
+    outside of a Template. So, I took all of the functions from
+    Template::Plugin::ListOps and moved them into a separate module
+    which just does list/set operations, and trivially rewrote
+    Template::Plugin::ListOps to call the functions in the new module.
+
+    In early 2009, I released the new module (under the name
+    Set::ArrayAlt) and a new version of Template::Plugin::ListOps (which
+    has the unregistered module Set::ArrayAlt as a dependancy). I'd like
+    to correct that issue by registering the Set::ArrayAlt module.
+
+    This module is named Set::ArrayAlt to indicate that it is based on
+    Set::Array, but with a number of changes. It has enhanced
+    functionality with respect to duplicate elements but is missing some
+    of the functionality of Set::Array (especially method chaining and
+    operator overloading) which depend on the Want module. This module
+    is not intended to be a drop-in replacement for Set::Array.
+
+    It may well be that the problems with the Want module have been
+    corrected at this point, and that I could have used Set::Array, but
+    since the functionality has existed (first in
+    Template::Plugin::ListOps, and later in the unregistered
+    Set::ArrayAlt module), I have never wanted to go back and rewrite
+    the modules (especially since I'd lose the enhanced duplicate
+    element handling).
+
+    Anyway, that's the history. Hopefully, I was justified in
+    reinventing the wheel, and at this point, I'd just like to register
+    the name so that the registered module Template::Plugin::ListOps
+    does not have an unregistered module for a dependancy.
+
+  enteredby:   SBECK (Sullivan Beck)
+  enteredon:   Tue Feb  9 18:29:34 2010 GMT
+
+The resulting entry would be:
+
+Set::
+::ArrayAlt        RdpOp full set of list/set operations              SBECK
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=fc200000_134621476d964d6b&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=fc200000_134621476d964d6b&SUBMIT_pause99_add_mod_insertit=1
+Peek at the current permissions:
+  https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=me&pause99_peek_perms_query=Set%3A%3AArrayAlt

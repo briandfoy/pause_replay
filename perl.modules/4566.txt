@@ -1,0 +1,272 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4566
+Return-Path: <sam@zelerate.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14960 invoked from network); 26 Feb 2001 20:48:16 -0000
+Received: from mx2.idealab.com (HELO simpurio.idealab.com) (64.208.8.4)
+  by tmtowtdi.perl.org with SMTP; 26 Feb 2001 20:48:16 -0000
+Received: (qmail 11653 invoked by alias); 26 Feb 2001 20:47:49 -0000
+Received: (qmail 11610 invoked from network); 26 Feb 2001 20:47:48 -0000
+Received: from unknown (HELO zelerate.com) (209.81.27.194)
+  by simpurio.idealab.com with SMTP; 26 Feb 2001 20:47:48 -0000
+Message-ID: <3A9AC326.9080401@zelerate.com>
+Date: Mon, 26 Feb 2001 12:57:10 -0800
+User-Agent: Mozilla/5.0 (X11; U; Linux 2.2.12-20 i686; en-US; m18) Gecko/20001215
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+CC: samcorl@best.com
+Subject: Please allow me to contribute
+Content-Type: multipart/mixed;
+ boundary="------------090905010008070402020504"
+Approved: news@nntp.perl.org
+From: sam@zelerate.com (Sam Corl)
+
+--------------090905010008070402020504
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+
+Requested Information:
+Name: Sam Corl
+Email: samcorl@best.com (or sam@zelerate.com)
+Homepage: http://www.best.com/~samcorl
+Preferred Userid: SAMCORL
+Description: I have written a small perl script that parses PDB backup 
+files for PunchClock on the palm and returns an html report.  Please see 
+attached script and let me know if I can sign up.
+
+Please see the pod documentation for details.
+
+The developers I work with loved this script and suggested that I submit 
+it to CPAN.  This script really makes it easy to access time tracking 
+information, which is a big issue for most folks.  It's handy to enter 
+times into the PDA device, but displaying reports and converting this 
+information was difficult until I wrote this.  Now, I can do whatever I 
+want with the data (besides an HTML formatted report) and I like that 
+very much.
+
+Hope you like it...
+
+Sam Corl
+
+Attached: the cgi script and a sample backup pdb file.
+
+--------------090905010008070402020504
+Content-Type: text/plain;
+ name="punchclock.cgi"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="punchclock.cgi"
+
+#!/usr/bin/perl
+
+###########################################################################=pod
+=title punchclock.cgi
+
+
+=head1 TITLE
+
+punchclock.cgi
+
+=head1 DESCRIPTION
+
+Tool for parsing PunchClock pdb files from a palm backup directory
+on this server.  Produces a report in HTML format for now, but
+an array of hashrefs is returned from parse, so anything goes!
+
+=head1 INPUT/MODES
+
+There is no input to this, and there are no modes.
+
+=head1 AUTHOR
+
+Sam Corl, Feb 2001
+
+=head1 NOTES
+
+Uses Palm::PDB and Palm::PunchClock
+
+=head1 SCRIPT
+
+
+ $relpath_backups = "./../palm/backups";
+
+ print "Content-type: text/html\n\n";
+ select(STDOUT);
+ $| = 1;
+
+   use Palm::PDB;
+   use Palm::PunchClock;
+
+
+ print "<HTML><HEAD><TITLE>PUNCHCLOCK REPORTS</TITLE></HEAD><BODY BGCOLOR=\"#FFFFFF\">\n";
+ print "<A NAME=\"top\"><H1>PUNCHCLOCK REPORTS</H1></A>\n";
+
+ my $rv = "";
+
+ opendir(PALMFILES, "$relpath_backups");
+ $filename = readdir(PALMFILES);
+ while ($filename ne "") {
+ 	if ($filename =~ /^PC_[a-zA-Z0-9\-\_\ ]+\-PClk\.pdb$/i) {
+ 		my $data_hash = &parse_file($filename);
+ 		push(@displaynames, $data_hash->{'displayname'});
+ 		$rv .= "\n\n<BR><A NAME=\"$data_hash->{'displayname'}\"><FONT SIZE=\"4\"><B>$data_hash->{'displayname'}</FONT></B></A>\n\n";
+               	$rv .= ("<PRE>MM DD YYYY START |        DURATION\n");
+ 		$rv .= ("-----------------+------------------------\n");
+ 		my $total_hours = 0;
+ 		foreach $dataidx (keys(%{$data_hash})) {
+ 	  		$rv .= sprintf("%2.2d/%2.2d/%4d %2.2d:%2.2d | %5d mins.  | %3.2f hrs.\n", $data_hash->{$dataidx}->{'month'}, $data_hash->{$dataidx}->{'day'}, $data_hash->{$dataidx}->{'year'}, $data_hash->{$dataidx}->{'hour'}, $data_hash->{$dataidx}->{'min'}, $data_hash->{$dataidx}->{'duration'}, ($data_hash->{$dataidx}->{'duration'} / 60));
+ 	  		$total_hours += ($data_hash->{$dataidx}->{'duration'} / 60);
+ 		}	
+ 		$rv .= ("-----------------+------------------------\n");
+     		$rv .= sprintf("                          TOTAL: %5.1f\n</PRE>", $total_hours);
+ 		$rv .= "<A HREF=\"\#top\">top</a><BR>\n";
+ 		$grand_total_hours += $total_hours;
+ 	}
+ 	$filename = readdir(PALMFILES);
+ }
+ close(PALMFILES);
+ foreach $titlekey  (sort(@displaynames)) {
+   $topnav .= "<A HREF=\"\#$titlekey\">$titlekey</A><BR>\n";
+ }
+ print $topnav . "<HR>";
+ print $rv;
+
+ print("</BODY></HTML>\n");
+
+
+ exit;
+
+
+
+ sub parse_file {
+ my $filename = $_[0];
+ my ($record, $keyval, $subkey, $dataidx, $total_hours);
+ my $data;
+ 	my $pdb = new Palm::PDB;
+ 	$pdb->Load("./../palm/backups/$filename");
+ 	my $idx = 0;
+ 	my $displayname = $filename;
+ 	$displayname =~ s/^PC_//;
+ 	$displayname =~ s/\-PClk\.pdb$//;
+ 	
+ 	foreach $record (@{$pdb->{records}}) {
+ 			foreach $keyval (keys(%{$record})) {
+ 				foreach $subkey (keys(%{$record->{$keyval}})) {
+ 					$data->{$idx}->{$subkey} = $record->{$keyval}->{$subkey};
+ 				}
+ 			}
+ 	$idx++;
+ 	}
+ $data->{'displayname'} =  $displayname;
+ return($data);
+ }
+
+
+
+
+=cut
+
+###############################################################################
+
+
+$relpath_backups = "./../palm/backups";
+
+print "Content-type: text/html\n\n";
+select(STDOUT);
+$| = 1;
+
+  use Palm::PDB;
+  use Palm::PunchClock;
+
+
+print "<HTML><HEAD><TITLE>PUNCHCLOCK REPORTS</TITLE></HEAD><BODY BGCOLOR=\"#FFFFFF\">\n";
+print "<A NAME=\"top\"><H1>PUNCHCLOCK REPORTS</H1></A>\n";
+
+my $rv = "";
+
+opendir(PALMFILES, "$relpath_backups");
+$filename = readdir(PALMFILES);
+while ($filename ne "") {
+	if ($filename =~ /^PC_[a-zA-Z0-9\-\_\ ]+\-PClk\.pdb$/i) {
+		my $data_hash = &parse_file($filename);
+		push(@displaynames, $data_hash->{'displayname'});
+		$rv .= "\n\n<BR><A NAME=\"$data_hash->{'displayname'}\"><FONT SIZE=\"4\"><B>$data_hash->{'displayname'}</FONT></B></A>\n\n";
+              	$rv .= ("<PRE>MM DD YYYY START |        DURATION\n");
+		$rv .= ("-----------------+------------------------\n");
+		my $total_hours = 0;
+		foreach $dataidx (keys(%{$data_hash})) {
+	  		$rv .= sprintf("%2.2d/%2.2d/%4d %2.2d:%2.2d | %5d mins.  | %3.2f hrs.\n", $data_hash->{$dataidx}->{'month'}, $data_hash->{$dataidx}->{'day'}, $data_hash->{$dataidx}->{'year'}, $data_hash->{$dataidx}->{'hour'}, $data_hash->{$dataidx}->{'min'}, $data_hash->{$dataidx}->{'duration'}, ($data_hash->{$dataidx}->{'duration'} / 60));
+	  		$total_hours += ($data_hash->{$dataidx}->{'duration'} / 60);
+		}	
+		$rv .= ("-----------------+------------------------\n");
+    		$rv .= sprintf("                          TOTAL: %5.1f\n</PRE>", $total_hours);
+		$rv .= "<A HREF=\"\#top\">top</a><BR>\n";
+		$grand_total_hours += $total_hours;
+	}
+	$filename = readdir(PALMFILES);
+}
+close(PALMFILES);
+foreach $titlekey  (sort(@displaynames)) {
+  $topnav .= "<A HREF=\"\#$titlekey\">$titlekey</A><BR>\n";
+}
+print $topnav . "<HR>";
+print $rv;
+
+print("</BODY></HTML>\n");
+
+
+exit;
+
+
+
+sub parse_file {
+my $filename = $_[0];
+my ($record, $keyval, $subkey, $dataidx, $total_hours);
+my $data;
+	my $pdb = new Palm::PDB;
+	$pdb->Load("./../palm/backups/$filename");
+	my $idx = 0;
+	my $displayname = $filename;
+	$displayname =~ s/^PC_//;
+	$displayname =~ s/\-PClk\.pdb$//;
+	
+	foreach $record (@{$pdb->{records}}) {
+			foreach $keyval (keys(%{$record})) {
+				foreach $subkey (keys(%{$record->{$keyval}})) {
+					$data->{$idx}->{$subkey} = $record->{$keyval}->{$subkey};
+				}
+			}
+	$idx++;
+	}
+$data->{'displayname'} =  $displayname;
+return($data);
+}
+
+
+--------------090905010008070402020504
+Content-Type: application/octet-stream;
+ name="PC_Peak templates-PClk.pdb"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="PC_Peak templates-PClk.pdb"
+
+UENfUGVhayB0ZW1wbGF0ZXMtUENsawAMAAAAcP//+JQACAACvUjpqL2yS129sktdAAAAQwAA
+AIAAAAAAVElNRVBDbGsAAAAAAAAAAAAGAAACFEDowAIAAAIiQOjAAQAAAjBA6MADAAACPkDo
+wAQAAAJMQOjABQAAAlpA6MAGsUAAAFVuZmlsZWQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAQIDBAUGBwgJCgsMDQ4PDwABBwEmAAcBAQAAAQIBAAACZAEAAABlAQIABWYC
+AAAAAGcFAAAAaAEAAAACKQAEAQJTdGFydERhdGUAAgVTdGFydFRpbWUABQZUb3RhbAAGB05v
+dGUABSgAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAYwH0AIJ
+NwUAAFRgAAMBjAfQAgsABQAAOEAAAwGTB9ACCwAFAAAcIAADAZOH0AILAAUAAFRgAAMBmofQ
+AgseBQAAP0gAAwGah9ACEQAFAAAcIA==
+--------------090905010008070402020504--
+

@@ -1,0 +1,72 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:6096
+Return-Path: <nwiger@san-diego.West.Sun.COM>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 56634 invoked from network); 11 Jun 2001 21:09:32 -0000
+Received: from patan.sun.com (192.18.98.43)
+  by onion.valueclick.com with SMTP; 11 Jun 2001 21:09:32 -0000
+Received: from westmail2.West.Sun.COM ([129.153.100.30])
+	by patan.sun.com (8.9.3+Sun/8.9.3) with ESMTP id PAA21683
+	for <modules@perl.org>; Mon, 11 Jun 2001 15:09:29 -0600 (MDT)
+Received: from san-diego.West.Sun.COM (san-diego.West.Sun.COM [129.153.85.10])
+	by westmail2.West.Sun.COM (8.9.3+Sun/8.9.3/ENSMAIL,v2.1p1) with ESMTP id OAA17236;
+	Mon, 11 Jun 2001 14:09:29 -0700 (PDT)
+Received: (from nwiger@localhost)
+	by san-diego.West.Sun.COM (8.9.3+Sun/8.9.3) id OAA08293;
+	Mon, 11 Jun 2001 14:09:30 -0700 (PDT)
+Date: Mon, 11 Jun 2001 14:09:29 -0700
+To: modules@perl.org
+Cc: Nathan Wiger <nate@sun.com>
+Subject: Many new modules - input please
+Message-ID: <20010611140929.W22589@west.sun.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.18i
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: nate@sun.com (Nathan Wiger)
+
+Hey all-
+
+I just recently finished rewriting an application used to modify host
+records. In the process, I wrote it into a completely modular form, with
+much reusable code.
+
+I'd like to upload this stuff to CPAN. There are several modules, but
+they can actually be used separately or together. So, I'd like your
+advice on naming.
+
+The application is called "HostEdit", and currently it lives under
+"Net::HostEdit" (seems appropriate). It is an OO module that creates
+network, subnet, and host objects, and lets you modify their
+properties. It's completely transactional, allowing multiple concurrent
+users access to your hosts files. When you're all done you call
+->commit() to write your changes to disk.
+
+In addition, in the process I created two other modules, one for
+terminal user interaction ("Term::UI" - should it be "Term::CLI"?) and
+one for Apache-style configuration parsing. This latter module just
+lives under "Net::HostEdit::Conf" right now, but considering it works
+100% on Apache config files (and I had promised mod_perl something like
+this a while ago :-), I was thinking of naming it "Apache::ConfigFile",
+which was the name Doug MacEachern originally proposed for it.
+
+In any case, what do you think? Judging by the above there would be
+three module listings:
+
+ Name           DSLIP  Description                                 
+ -------------  -----  --------------------------------------------
+ Net::HostEdit  RdpOp  Comprehensive host maintenance system        
+ Term::UI       Rdpfp  Simple, flexible terminal user interface 
+ Apache::ConfigFile  Rdpfp  Read an Apache-style configuration file
+
+Along with probably a "Bundle::HostEdit" to make it easy to use (it
+needs Unix::Login and some other stuff). Input?
+
+Thanks as always,
+
+Nate
+

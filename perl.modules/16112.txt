@@ -1,0 +1,323 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16112
+Return-Path: <muir@idiom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5871 invoked by uid 76); 11 Dec 2002 11:29:14 -0000
+Received: from root@idiom.com (HELO idiom.com) (216.240.32.1) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2002-12-11 11:29:14Z
+Received: from idiom.com (localhost [127.0.0.1])	by idiom.com (8.12.6/8.12.6) with ESMTP id gBBBTBPM045302	for <modules@perl.org>; Wed, 11 Dec 2002 03:29:12 -0800 (PST)	(envelope-from muir@idiom.com)
+Received: (from muir@localhost)	by idiom.com (8.12.6/8.12.6/Submit) id gBBBTBXm045290	for modules@perl.org; Wed, 11 Dec 2002 03:29:11 -0800 (PST)	(envelope-from muir)
+Date: Wed, 11 Dec 2002 03:29:11 -0800 (PST)
+Message-ID: <200212111129.gBBBTBXm045290@idiom.com>
+To: modules@perl.org
+Subject: need a module name - Cisco::Conf is taken
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: muir@idiom.com (David Muir Sharnoff)
+
+
+I've written another module.  As far as I know this module does not
+duplicate the functionality of any existing module.  Unfortunantly,
+the obvious name Cisco::Conf is already taken.
+
+
+My working title is 'XYZ'.  Please suggest something better :-)
+
+I've considered Cisco::Parse but I don't like it for two reasons:
+
+	1.  it doens't really understand Cisco config files
+	2.  a big part of XYZ is generating changes (not parsing)
+
+Cisco::Generate suffers from the opposite problem: XYZ parses more 
+than it generates.  It isn't designed to genreate whole configurations.
+
+Aside from lacking a name, XYZ is all ready to go. 
+
+Thanks,
+
+-Dave
+
+
+NAME
+    XYZ - Parse and generate Cisco configuration files
+
+SYNOPSIS
+            use XYZ;
+
+            my $config = readconfig("/my/cisco/config");
+
+DESCRIPTION
+    XYZ makes it easier to write programs to generate changes to Cisco
+    configuration files.
+
+    XYZ is a module that parses Cisco router configuration files. It doesn't
+    have any real understanding of Cisco configurations so it might be
+    useful for other similar configuration languages. It knows that nesting
+    is shown by indentation. It knows that "!" means a comment. It knows
+    that "no" may proceed a line without changing where that line exists in
+    the hierarchy. It doesn't know much else.
+
+    XYZ can be used to modify configurations. The "set()" method will check
+    the current configruation and return commands to change it if it is
+    other than what is wanted (as passed to the "set()" method).
+
+  DETAILS
+    Some of the accessor methods return a special "undef" object instead of
+    a proper undef. This is so that code that uses accessors doesn't have to
+    be paranoid about undefined values. However this also means that
+    undefined values must be tested for explicitly with the "defined()" and
+    "undefined()" methods.
+
+    Methods that return configuration items can return items that represent
+    any particular word in the configruation file. For example, with the
+    following configuration & code, the return value for the "get()" method
+    would represent the word "access-list" in both of the lines:
+
+            ip as-path access-list 111 deny _10993_
+            ip as-path access-list 111 permit .*
+
+            $config->get('ip as-path access-list');
+
+    Most of the time you don't need to worry about the fact that the object
+    represents a word. Another way to look at it is that the object
+    represents a selection of lines from the configuration file. Sometimes
+    that selection is a single line. Sometimes it is a block. Sometimes it
+    is a few lines that start with the same tokens.
+
+    To look at all the different as-path access lists, the following would
+    work:
+
+            $config->get('ip as-path access-list')->all;
+
+FUNCTIONS
+    There is just one function provided: "readconfig()". Readconfig takes a
+    single argument: a filename or file handle. It parses the file and
+    returns an XYZ object.
+
+MAIN METHODS
+    ->get(@designators)
+        The "get()" method is the key to looking up items in a configuration
+        file. It takes an array of designators as an argument. A designator
+        is simply something that identifies a portion of a configuration
+        file. For example "('interface')" is a designator for all the
+        interfaces and "('ip route')" is a designator for all the static
+        routes.
+
+        When multiple designators are specified, they are used for nested
+        configuration items. For example, "('router bgp', 'neighbor')" would
+        be a designator for all the BGP neighbors. This assumes that there
+        is only one "router bgp" defined.
+
+        In array context, "get()" will follow multiple paths to find
+        configuration items that match the specification. For example
+        "('interface', 'ip address')" would return a list of ip address
+        items across multiple interfaces.
+
+        Designators must exactly match words in the configuration. You may
+        not abbr anythng.
+
+    ->set($designator | [@designators], $newvalue)
+        The "set()" method will generate Cisco configuration snippets that
+        will modify the configuration of an item. For example, the following
+        code:
+
+                my $ser0 = $config->get('interface Serial0');
+                print $ser0->set('ip address', 
+                        'ip address 207.181.198.194 255.255.255.252');
+
+        Will print:
+
+                interface Serial0
+                 ip address 207.181.198.194 255.255.255.252
+                exit
+
+        If the configuration already matches the $newvalue then nothing
+        would be printed.
+
+        The designator(s) say what will be modified. This should either be
+        represent a line or an entire block. When multiple designators are
+        needed, pass them as an anonymous array. The above example could
+        also have been written as:
+
+                print $config->set(['interface Serial0', 'ip address'],
+                        'ip address 207.181.198.194 255.255.255.252');
+
+        If no designator is required, provide a false value for that
+        parameter. That same code again:
+
+                my $ipaddr = $config->get('interface Serial0', 'ip address');
+                print $ipaddr->set(undef, 
+                        'ip address 207.181.198.194 255.255.255.252');
+
+        When providing code snippets to "set()", indent blocks just like
+        Ciscos do when they display their configuration. For example, the
+        following:
+
+                print $config->set("ip access-list extended all-addresses", <<END);
+                        ip access-list extended all-addresses
+                         permit ip any any
+                        !
+                END
+
+        Will print the following if the access list ins't already set as
+        listed:
+
+                ip access-list extended all-addresses
+                 permit ip any any
+                exit
+
+        When modifying a block, include the configruation line that starts
+        the block in the replacement text. For example, when setting an
+        entire interface, provide the entire block:
+
+                print $config->set('interface Serial0',<<END);
+                        interface Serial0 point-to-point
+                         ip address 219.22.221.3 255.255.255.252
+                         bandwidth 3022
+                        !
+                END
+
+    ->all($regex)
+        The "all()" method can be used to expand and select configuration
+        items.
+
+        For example, to make sure that all loopback interfaces use a netmask
+        of 255.255.255.255, use the following:
+
+                for my $loop ($config->get('interface')->all(qr{^Loop})) {
+                        my $ip = $loop->get('ip address');
+                        next unless $ip->text =~ /\A\s*ip address (\S+) \S+\s*\Z/;
+                        print $ip->set(undef, "ip address $1 255.255.255.255");
+                }
+
+        The $regex paramater is optional.
+
+ACCESSOR METHODS
+    ->single()
+        XYZ objects may represent any word in a configruation file. For
+        example the word "address" in the following is represented by an
+        object that would be returned by the code that follows.
+
+                interface Loopback0 
+                 ip access-group 151 in
+                 ip address 218.28.41.38 255.255.255.255
+                !
+
+                my $address_word = $config->get('interface Loopback0', 'ip')
+                        ->all(qr{^address});
+
+        "single()" answers the question: does this XYZ object uniquely
+        specify a single line? In the example above, the object for word
+        "ip" (above) does not but the object for the word "address" does.
+
+        "single()" returns an object (representing the last word on the
+        line) or undef.
+
+    ->zoom()
+        "zoom()" is the same as to "single()" except that it will always
+        return a valid XYZ object.
+
+    ->endpt()
+        Returns an XYZ object representing the last word on a configuration
+        line that could follow from the current ZYZ object. When there are
+        multiple possibilities the object picked is nearly random.
+
+    ->next()
+        "next()" returns an XYZ object representing the last word on the
+        suceeding line of the current configuration block.
+
+        When used at the beginning of a block, it returns the last word of
+        the first line in the block.
+
+    ->context()
+        Returns the configuration object that represents the surounding
+        context.
+
+                # returns the "undefined" object
+                $config->context 
+
+                # returns $config
+                $config->get('interface Loopback0')->context 
+
+                # returns $config->get('interface Loopback0')
+                $config->get('interface Loopback0', 'ip address')->context 
+
+        "context()" always returns a configuration object.
+
+    ->subs()
+        For XYZ objects that represent a word in a line that introduces a
+        block of configuration items (such as most "interface" lines), the
+        "subs()" function returns an XYZ object that represents the contents
+        of the block.
+
+        If the XYZ object in question does not represent the start of a
+        configuration block, the
+
+    ->kids()
+        For XYZ objects that do not uniquely specify a single line (ie: "!
+        -"single()>), the ->kids() method will return an array of objects
+        representing the possible following words.
+
+        If there is only one possibility, that one possibility is returned.
+
+        If the XYZ object represents the last word on a configuration line
+        then that word is returned.
+
+MISCELLANEOUS METHODS
+    ->text()
+        Returns the text from the original configuration file (in original
+        order) of all of the lines that could follow from the current XYZ
+        object.
+
+        When the invoking XYZ object represents a single line "text()"
+        returns that line. When the invoking XYZ object represents a block
+        "text()" returns the entire block. When the XYZ object represents a
+        word with multiple possible completions, "text()" returns all the
+        completions.
+
+    ->defined()
+        Returns true if the XYZ object is a valid XYZ object. Some XYZ
+        methods would return perl's undef value but return an invalid XYZ
+        object instead to make programming easier.
+
+    ->undefined()
+        Returns the opposite of "defined()".
+
+    ->setcontext()
+        Returns an array of configuration lines that define the block
+        surrounding the invoking object.
+
+    ->unsetcontext()
+        Returns an array of the word "exit" repeated as many times as
+        nessasary to undo a "setcontext()".
+
+    ->block()
+        Returns true if the object represents a whole configuration block.
+
+    ->destroy()
+        XYZ objects are highly self-referential. They will not deallocate
+        themselves when they go out of scope. The "destory()" method will
+        cause the entire nest of them to loose all their values which will
+        allow them to be deallocated. Use "destory()" only if you're reading
+        more than one configruation file in your program.
+
+CAVEATS
+    Since XYZ doesn't really understand Cisco configuration files it can't
+    know things that you might think it should.
+
+    For example, it doesn't know that "interface Serial0" is the same as
+    "int ser 0" nor even "interface Serial 0". Be very careful about where
+    Cisco's actually put spaces and where they don't.
+
+    No attempt has been made to make this module particularly fast or
+    efficient. This sort of manipulation isn't expected to be done a whole
+    lot.
+
+    XYZ objects don't automatically garbage collect themselves because they
+    are highly self-referrential.
+
+LICENSE
+    Copyright (C) 2002 David Muir Sharnoff <muir@idiom.com> This module may
+    be licensed on the same terms as Perl itself.
+

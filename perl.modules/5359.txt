@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5359
+Return-Path: <simonm@evolution.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 65527 invoked from network); 6 May 2001 04:43:11 -0000
+Received: from darwin.evolution.com (209.208.128.5)
+  by onion.valueclick.com with SMTP; 6 May 2001 04:43:11 -0000
+Received: from stellar (stellar.evolution.com [209.208.128.71])
+	by darwin.evolution.com (8.9.1/8.9.1) with SMTP id AAA07246;
+	Sun, 6 May 2001 00:41:53 -0400 (EDT)
+Message-ID: <200105060441.AAA07246@darwin.evolution.com>
+To: modules@perl.org
+Subject: RFC: Class::Methods
+Cc: Martyn Pearce <m.pearce@inpharmatica.co.uk>
+Date: Sun, 6 May 2001 00:44:08 -0400
+Reply-To: "M. Simon Cavalletto" <simonm@evolution.com>
+X-Mailer: by Apple MailViewer (2.106)
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: simonm@evolution.com ("M. Simon Cavalletto")
+
+Hello,
+
+This is a new module and I am soliciting feedback before posting
+it to CPAN. Suggestions for alternate names would be welcome.
+
+Class::Methods allows module developers to quickly define object
+constructor and accessor methods by reusing templates for these
+common types of functions.
+
+Class::Methods is based on Class::MethodMaker, but has been
+substantially revised in order to provide a range of new features.
+Although originally posted for review as a possible "version 2" of
+Class::MethodMaker, the maintainer of that module subsequently
+indicated that that he had different goals for future development
+and suggested a fork. (Full backward compatibility is provided by
+an emulator, described below.)
+
+Class::Methods includes templates for dozens of types of constructor,
+accessor, and mutator methods, ranging from from the mundane
+(constructors and value accessors for hash and array slots)
+to the esoteric (inheritable class data and "flyweight" accessors
+with external indexes). A listing is included as ClassMethods/Catalog.pod.
+
+Methods are generated dynamically when a module uses Class::Methods,
+and installed in the calling package The code for generated methods
+is eval'd once for each type, and then repeatedly bound as closures
+to method-specific data for better performance.
+
+There are a variety of related modules on CPAN; I've included a
+quick review of several of these in ClassMethods/RelatedModules.pod.
+In comparison, this module aims to be quite general purpose and
+extensible while retaining acceptable performance characteristics.
+
+In several cases, Class::Methods provides functionality closely
+equivalent to that of an existing module, and it has been simple
+to build emulation modules which act as an adaptor between the
+existing interface and that provided by Class::Methods.
+
+I have included drop-in replacements for Class::MethodMaker,
+Class::Data::Inheritable, Class::Singleton, and Class::Struct, each
+of which fully passes the test suite of the original module.
+(Er, except that I haven't found Struct's tests yet.)
+
+The latest distribution may be retrieved from here:
+  http://work.evolution.com/dist/Bundle-ClassMethods-1.0.10.tar.gz
+
+I would be particularly interested in correcting any Perl-version
+or platform dependencies, any suggestions towards improving the
+documentation, or any general feedback or suggested changes.
+
+Please send any feedback to me at simonm@evolution.com.
+
+Thanks,
+
+-Simon

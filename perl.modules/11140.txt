@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11140
+Return-Path: <Thomas.Dorner@start.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 96818 invoked by uid 76); 12 Apr 2002 11:55:28 -0000
+Received: from darwin.dunkel.de (HELO darwin.dunkel.de) (195.4.128.20)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Fri Apr 12 11:55:28 2002 -0000
+Received: (qmail 32500 invoked from network); 12 Apr 2002 11:55:21 -0000
+Received: from startproxy01.dunkel.de (HELO ex05.inhouse.start.de) (195.246.188.12)
+  by mail.dunkel.de with SMTP; 12 Apr 2002 11:55:21 -0000
+Received: by start.de with Internet Mail Service (5.5.2653.19)
+	id <2YPG3JFT>; Fri, 12 Apr 2002 13:55:21 +0200
+Message-ID: <6727B1DACFCDD311A757009027CA8D690257ADFF@Ex02.inhouse.start.de>
+To: "'modules@perl.org'" <modules@perl.org>
+Subject: new user likes to register ; first module would be File::Locate
+Date: Fri, 12 Apr 2002 13:55:20 +0200
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain
+Approved: news@nntp.perl.org
+From: Thomas.Dorner@start.de (Dorner Thomas)
+
+Hi fellow perl developers,
+
+I'm just working on my first module with probable public interest and would
+like to register as a developer (other than being perl porter for the BS2000
+operating system ;-).
+
+My name is
+	Thomas Dorner
+My (company) email address is
+	Thomas.Dorner@start.de
+My (private) homepage http://www.th-dorner.de doesn't have anything to with
+computers at all and is in german only, so maybe we better skip it.
+My preferred user ID on CPAN would be DORNER, followed by THDORNER or
+TDORNER.
+
+The module I'm working on is a fairly simple one:
+
+It will cache filenames and directories for multiple file searches in an
+object, so that a script only has to browse the filesystem once.  To achive
+this, it mainly uses a hash containing filenames and their corresponding
+directories.
+
+I need this module for a script analyzing a big tree of source modules in a
+proprietary programing language.  The include files are scattered within
+many directories, but the include statement in the modules doesn't contain
+these directory informations - I have to search the whole tree for each
+module.  I haven't found anything like it on CPAN, so I started my own.  It
+should notably decrease the time spend looking for the include files.
+
+I would suggest
+	File::Locate
+as the name for this module.
+
+An example usage would be (using a known directory tree for example
+reasons):
+
+$includes = File::Locate->new(Path => ['/usr/include',
+'/usr/local/include'],
+                              Filter => '\.h$');
+@time_h = $includes->findInPath('time.h');
+$time_h = $includes->findBestInPath('time.h', \&nifty_evaluation_function);
+@std_h = $includes->findMatch('^(?i:std)');
+
+findInPath in above example would return a list at least containing
+('/usr/include/time.h', '/usr/include/sys/time.h').
+
+Any comments / objections?
+
+Yours sincerely, Thomas Dorner
+________________________________________
+Thomas Dorner
+Start Amadeus, Technology-Strategy (I-T)
+E-Mail: Thomas.Dorner@start.de
+

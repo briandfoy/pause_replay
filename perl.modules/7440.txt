@@ -1,0 +1,67 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7440
+Return-Path: <schwern@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5929 invoked from network); 7 Sep 2001 06:38:41 -0000
+Received: from ool-18ba90a1.dyn.optonline.net (HELO ool-18b93024.dyn.optonline.net) (24.186.144.161)
+  by onion.valueclick.com with SMTP; 7 Sep 2001 06:38:41 -0000
+Received: by ool-18b93024.dyn.optonline.net (Postfix, from userid 1000)
+	id F38048192; Fri,  7 Sep 2001 02:38:40 -0400 (EDT)
+Date: Fri, 7 Sep 2001 02:38:40 -0400
+To: modules@perl.org
+Subject: Security::Test
+Message-ID: <20010907023840.A2566@blackrider>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.20i
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: schwern@pobox.com (Michael G Schwern)
+
+I just caught this going by in the daily CPAN update.
+
+[9.] Security-Test - Performs checks for common Perl insecurities
+ Uploaded: Sep 06, 2001
+ CPAN id: N/NW/NWETTERS (Nigel Wetters)
+          http://search.cpan.org/search?author=NWETTERS
+ Package: Security-Test-0.01.tar.gz
+          http://search.cpan.org/search?dist=Security-Test-0.01
+
+What this module actually does is contacts a web server upon
+installation and tells it what the UID that ran the test was (to see
+if it's root).
+
+It does *not* look like there is any malicious intent, just a little
+overzealous.  I've contacted the author and asked him to voluntarily
+delete this module and discuss the problem with modules@perl.org.
+
+    package Security::Test;
+
+    # IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT  IMPORTANT  
+    #
+    # READ THIS BEFORE INSTALLING!!
+    #
+    # This module does nothing.
+    #
+    # The test module sends a HTTP request to
+    # http://securitytest.perlfascist.com
+    # which notes the number of attempted installations
+    # and whether installation was performed
+    # with superuser priviledges. The request is
+    # formatted as follows:
+    #   GET /YetAnotherFail?uid=$uid HTTP/1.1
+    #   Host: securitytest.perlfascist.com
+    # I will release details of this research
+    # to CPAN maintainers, and maybe later will
+    # post a summary on 
+    # http://securitytest.perlfascist.com 
+
+
+-- 
+
+Michael G. Schwern   <schwern@pobox.com>    http://www.pobox.com/~schwern/
+Perl6 Quality Assurance     <perl-qa@perl.org>	     Kwalitee Is Job One
+The eye opening delightful morning taste of expired cheese bits in sour milk!

@@ -1,0 +1,388 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11988
+Return-Path: <prlawrence@lehigh.edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 62830 invoked by uid 76); 5 Jun 2002 15:36:26 -0000
+Received: from rain.cc.lehigh.edu (HELO rain.CC.Lehigh.EDU) (128.180.39.20)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Wed Jun  5 15:36:26 2002 -0000
+Received: from lehigh.edu (pc-lfn0.dept.Lehigh.EDU [128.180.52.51])
+	by rain.CC.Lehigh.EDU (8.12.4/8.12.2) with ESMTP id g55Fahnp009036;
+	Wed, 5 Jun 2002 11:36:43 -0400
+Message-ID: <3CFE3015.3080008@lehigh.edu>
+Date: Wed, 05 Jun 2002 11:36:53 -0400
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.0rc3) Gecko/20020523
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: Request to Register Namespace -- SQL::Snippet
+References: <035901c2029f$4591bdb0$3334b480@lawrencework> <20020523231959.Z41389@dansat.data-plan.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: prlawrence@Lehigh.EDU (Phil R Lawrence)
+
+Tim Bunce wrote:
+ > Looks interesting, but I'd suggest the Databases chapter rather than String
+ > Processing.
+
+Has someone created the PAUSE namespace entry needed for me to go ahead and 
+upload the module?  (It will be ready soon -- before YAPC at any rate.)  Again 
+I apologize the namespace form wasn't working for my original request.  I can 
+try that form again if it makes your job easier...
+
+:-)
+Phil
+
+
+ > On Thu, May 23, 2002 at 05:17:35PM -0400, Phil R Lawrence wrote:
+ >
+ >>Since the PAUSE form is not responding for me, please forgive this manual
+ >>email...
+ >>
+ >>Thanks, Phil R Lawrence prl -AT- cpan -DOT- org
+ >>
+ >>Name of the module SQL::Snippet
+ >>
+ >>Module List Chapter
+ >>11) String Processing, etc.
+ >>
+ >>Development Stage (Note: No implied timescales) b -- beta
+ >>
+ >>Support Level d -- developer
+ >>
+ >>Language Used p -- perl
+ >>
+ >>Interface Style O -- object oriented
+ >>
+ >>Public license p -- Standard Perl
+ >>
+ >>Description in Module List (44 chars limit) Enables an OO Interface to
+ >>Your RDBMS
+ >>
+ >>Places where this module has been or will be discussed publicly clpm,
+ >>YAPC::NA 2002
+ >>
+ >>Modules with similar functionality SQL::QueryBuilder::Simple,
+ >>Relations::Query
+ >>
+ >>Rationale OVERVIEW
+ >>
+ >>SQL::Snippet enables an OO (Object Oriented) interface to your RDBMS
+ >>(Relational Database Management System). It does this by generating correct
+ >>SQL based on your OO requests. Actual RDBMS-specific info (table names,
+ >>joins, subselects, etc.) does not appear in your invocant script.
+ >>
+ >>While other modules exist that will create SQL for you, they do so only
+ >>insofar as the invocant script passes RDBMS-specific info. SQL::Snippet is
+ >>much simpler to use. You tell it you want SQL for 'this' or 'that', and it
+ >>takes care of figuring out what tables and joins are involved.
+ >>
+ >>
+ >>APPLICATION
+ >>
+ >>Reports and other scripts that use SQL often look like someone's first
+ >>effort at web programming with Perl; only instead of being littered with
+ >>HTML they are full of SQL: SQL that is duplicated in another script, and
+ >>another, and another... So if it's a good thing to get your HTML out of your
+ >>Perl scripts and into its own repository, why not do the same with your SQL?
+ >>
+ >>SQL::Snippet will require you to create a Perl module full of, well,
+ >>snippets of SQL. For example, that snippet you use to limit a selection by
+ >>gender. And that other one you use to grab all the miscreants that have
+ >>never ordered from you even though they're still receiving your catalog.
+ >>Wait, that's two snippets: the 'catalog_recipient' population and the
+ >>'never_ordered_a_single_thing' limit, which creates a subset of the
+ >>'catalog_recipient' population.
+ >>
+ >>The point is that, like most things, you can break those SQL statements down
+ >>into their parts and store them in one central module, instead of in
+ >>individual scripts. Then you can use SQL::Snippet to dynamically assemble
+ >>these snippets as needed. This can even be done in an ad hoc manner; you can
+ >>let the user build whatever question he likes of the RDBMS, and SQL::Snippet
+ >>will take care of turning it into SQL. Once you have modularized your SQL
+ >>into snippets, all you're left with is some easy OO syntax.
+ >>
+ >>
+ >>PARADIGM
+ >>
+ >>There are four elements to the paradigm that SQL::Snippet uses to enable
+ >>easy interaction with your RDBMS.
+ >>  1.  pop - Populations
+ >>  2.  lim - Limits applicable to those populations
+ >>  3.  parm - Parameters needed to flesh out the pops and lims
+ >>  4.  methods - each of the above three items has various built in methods
+ >>      associated with it. Additionally, objects and methods are
+ >>      automatically generated from the snippets in your Repository as
+ >>      needed. (See below.)
+ >>
+ >>Populations Population objects are real world things that are represented
+ >>in your RDBMS. The following are example of objects you might find in
+ >>your RDBMS:
+ >>  - people
+ >>  - suppliers
+ >>  - parts
+ >>  - assemblies
+ >>  - SKUs (Stock Keeping Units)
+ >>
+ >>All of these are real world things. Information about them in your RDBMS may
+ >>be contained in one and only one table, or the information may be normalized
+ >>(split) between many different tables. In the latter case, the SQL necessary
+ >>to query your object of interest could get rather complicated, necessarily
+ >>including all of the relevant tables and joins.
+ >>
+ >>SQL::Snippet abstracts the details of your RDBMS table structure into
+ >>objects that you can simply reference in your scripts; SQL::Snippet will
+ >>fill in all the details behind the scenes. For example:
+ >>
+ >>  # prints the canonical SQL statement needed to query info about
+ >>  # assemblies from your RDBMS
+ >>  print $snippet->pop->assemblies->query;
+ >>
+ >>Limits Limits are types of real world attributes that can apply to the
+ >>population objects. For example, gender is a type of attribute applicable to
+ >>people, but not to assemblies. Weight is a type of attribute applicable to
+ >>both people and assemblies. By indicating a limit for a given population,
+ >>you can sharpen the definition of that population. For example:
+ >>
+ >>  # apply the gender limit to our 'people' population
+ >>  $snippet->pop->people->lim->new( 'gender' );
+ >>
+ >>Note that neither we nor the user of the script has yet specified what
+ >>gender to limit the population by (Unknown, Female, etc.). We have only
+ >>indicated that the population should have a gender limit applied to it. To
+ >>complete the job we need to look at the next element of the SQL::Snippet
+ >>paradigm.
+ >>
+ >>Parameters Parameters are the actual attributes used by population limits.
+ >>In the above example we specified a gender limit, so now we should specify
+ >>the gender parameter to be used by that limit. The gender limit requires
+ >>only one parameter, aptly named 'gender'.
+ >>
+ >>  # limit the people population to those with gender attribute of Female
+ >>  # or Unknown
+ >>  $snippet->pop->people->lim->gender->parm->gender( ['U','F'] );
+ >>
+ >>Actually, we don't need to say:
+ >>  $snippet->pop->people->lim->new( 'gender' );
+ >>before saying:
+ >>  $snippet->pop->people->lim->gender->parm->gender( ['U','F'] );
+ >>
+ >>The gender limit is autoinstantiated in the latter example. In fact, it's
+ >>all autoinstantiated, from pop to gender. You start your script with a
+ >>simple snippet object, and the rest autoinstantiates as needed.
+ >>
+ >>Methods In the above examples you see that pop, lim, and parm are
+ >>autoinstantiated objects furnished by SQL::Snippet. There are multiple
+ >>methods associated with each one. For example, we called the 'new' method on
+ >>lim. But note that most of the methods and objects we used were actually
+ >>named by us, the *users* of SQL::Snippet, not by me, the guy who wrote
+ >>SQL::Snippet. For example, not only did we use the autoinstantiated 'gender'
+ >>object, we also called the 'gender' method on parm (see the last example
+ >>above). Note that we, the users of SQL::Snippet did not have to actually
+ >>code a 'gender' method somewhere -- far from it. This method was AUTOLOADed
+ >>for us. All we had to do was create a repository with pop, lim, and parm
+ >>snippets, and the rest was automatic. For example, here is the 'gender'
+ >>snippet from SQL::Snippet::ExampleRepository, an example repository included
+ >>with the distribution:
+ >>
+ >>  if ($parm eq 'gender') {
+ >>          return (
+ >>              name        =>  $parm,
+ >>              default     =>  '',
+ >>              msg         =>  "\nBy default, gender will bear no impact " .
+ >>                              "on selection.  Press ENTER to accept " .
+ >>                              "this default, or, to limit the selection " .
+ >>                              "by gender, type one or more gender codes " .
+ >>                              "from the following list:  M (Male), " .
+ >>                              "F (Female), U (Unknown)",
+ >>              delimiter   =>  ',',
+ >>              prompt      =>  'Gender',
+ >>              list_check  =>  [ 'M','F','U' ],
+ >>          );
+ >>  } elsif ($parm eq ...
+ >>
+ >>When you reference 'gender' in your code, either as an object or method (as
+ >>in the above examples), SQL::Snippet will automatically create the needed
+ >>object or method using this snippet as a source of basic information. If you
+ >>can follow this easy pattern for creating snippets, you can use
+ >>SQL::Snippet. SQL::Snippet itself automatically creates the back end stuff
+ >>needed to allow the use of intuitive OO syntax.
+ >>
+ >>
+ >>HOW I USE IT
+ >>
+ >>I use SQL::Snippet in a production system with seven basic populations that
+ >>my clients like to report on. I then have 31 different limits. Multiple
+ >>limits can, of course, be combined with a population. Not every limit is
+ >>compatible with all base populations, but most are, leaving the client with
+ >>more possible questions they can ask of the RDBMS than I have statistical
+ >>chops to calculate.  :-)
+ >>
+ >>To make it all work I have 47 different parameters. Some limits only require
+ >>one parameter (i.e. the gender limit only needs one parameter -- gender),
+ >>but some require more than one. Also, many lim snippets need access to extra
+ >>parms in order to correctly tie into the population. For example, if the
+ >>gender information in the database is stored in table not included in the
+ >>chosen pop snippet, the gender lim snippet will also need something like
+ >>'base_table' and 'linking_field' parms to correctly link itself in to the
+ >>base population.
+ >>
+ >>Most of the populations are actually pre-limited (i.e. the populations don't
+ >>refer to so basic an object as 'people', but rather to different kinds of
+ >>people). Thus most require more than one parameter and tend to have multiple
+ >>tables included in their definition.
+ >>
+ >>My clients love their ability to ask anything they can think of from the
+ >>RDBMS; I love the ability to maintain the SQL snippets in one and only
+ >>one place.
+ >>
+ >>
+ >>EXAMPLE SCRIPT 1
+ >>
+ >>  # specify the repository to be used.  The repository is
+ >>  # subclassed from SQL::Snippet.
+ >>  use SQL::Snippet::ExampleRepository;
+ >>
+ >>  # If you don't specify the parm values needed to fill out
+ >>  # your pops and lims, the user will be prompted automatically.
+ >>  # I use Term::Interact to enable this in interaction in a
+ >>  # command line environment.
+ >>  use Term::Interact;
+ >>
+ >>  # We'll use DBI to execute the SQL we get from SQL::Snippet.
+ >>  # Also, SQL::Snippet may use DBI to validate user input (if
+ >>  # you so specify in the repository) and to quote parameters.
+ >>  use DBI;
+ >>
+ >>  my $ti = Term::Interact->new;
+ >>  my $dbh = DBI->connect( ... );
+ >>  my $snippet = SQL::Snippet::ExampleRepository->new(
+ >>      dbh => $dbh,
+ >>      ui => $ti,
+ >>      syntax => 'oracle'
+ >>  );
+ >>
+ >>
+ >>  ###EXAMPLE 1###
+ >>
+ >>  # We need to specify what our SELECT statement will be.
+ >>  # A future version will allow prompting of the user to
+ >>  # build his own SELECT based on meta-data supplied by
+ >>  # the snippets.
+ >>  $snippet->pop->catalog_recipient->select( 'SELECT count(*)' );
+ >>
+ >>  # get the SQL necessary to pull a count of the catalog
+ >>  # recipient population out of your RDBMS.
+ >>  print $snippet->pop->catalog_recipient->query;
+ >>
+ >>
+ >>  ###EXAMPLE 2###
+ >>
+ >>  # instead of grabbing the whole population of catalog
+ >>  # recipients, let's limit it to those who never placed
+ >>  # an order.
+ >>  $snippet->pop->catalog_recipient->lim->last_order->parm->last_order(
+ >>      'null'
+ >>  );
+ >>
+ >>  # our SELECT is still set for this pop from above...
+ >>  print $snippet->pop->catalog_recipient->query;
+ >>
+ >>
+ >>  ###EXAMPLE 3###
+ >>
+ >>  # instead of forcing a last_order limit, let's let the user
+ >>  # say whether or not he wants the limit, and if so what sort
+ >>  # of limit.  Possible inputs by the user might be:
+ >>  #    '> 1/1/2001'       # with orders after 1/1/2001
+ >>  #       -or-
+ >>  #    'null'             # with no orders ever
+ >>  #       -or-
+ >>  #    ''                 # let's not limit, thank you
+ >>
+ >>  # set the limit for this pop
+ >>  $snippet->pop->catalog_recipient->lim->new( 'last_order' );
+ >>
+ >>  # when generating the SQL, SQL::Snippet will notice we have
+ >>  # requested a 'last_order' limit, but no parm value for
+ >>  # 'last_order' has been set.  The user will be prompted with
+ >>  # whatever verbiage we have stored in the repository, and
+ >>  # their input will be parsed by whatever logic we have in the
+ >>  # repository.  (See perldoc Term::Interact for the details
+ >>  # of user prompting, and the source for SQL::Snippet::
+ >>  # ExampleRepository for boilerplate and example Repository
+ >>  # logic.
+ >>  print $snippet->pop->catalog_recipient->query;
+ >>
+ >>
+ >>EXAMPLE SCRIPT 2
+ >>
+ >>  # this example script uses some more advanced functionality.
+ >>  # see perldoc SQL::Snippet for full documentation.
+ >>
+ >>  use SQL::Snippet::ExampleRepository;
+ >>  use Term::Interact;
+ >>  use DBI;
+ >>
+ >>  my $ti = Term::Interact->new;
+ >>  my $dbh = DBI->connect( ... );
+ >>  my $snippet = SQL::Snippet::ExampleRepository->new(
+ >>      dbh => $dbh,
+ >>      ui => $ti,
+ >>      syntax => 'oracle'
+ >>  );
+ >>
+ >>  # all pops referenced from the current snippet will
+ >>  # automatically have the zip limit applied.
+ >>  $snippet->shared_lim->new( 'zip' );
+ >>
+ >>  # Since all pops will share the zip lim, let's set
+ >>  # the zip parm value *once* the top level (instead
+ >>  # of once for each pop at the pop->lim->parm level).
+ >>  # Here, the value will be set via user interaction
+ >>  # since we have passed in no value and none has
+ >>  # been previously set.
+ >>  $snippet->parm->zip->value;
+ >>
+ >>  $snippet->pop->pre_sale->select( 'SELECT SKU, count(SKU)' );
+ >>  $snippet->pop->pre_sale->group_by( 'SKU' );
+ >>  $snippet->pop->pre_sale->order_by( 'count(SKU)' );
+ >>
+ >>  $snippet->pop->sale->select( 'SELECT SKU, count(SKU)' );
+ >>  $snippet->pop->sale->group_by( 'SKU' );
+ >>  $snippet->pop->sale->order_by( 'count(SKU)' );
+ >>
+ >>  $snippet->pop->re_sale->select( 'SELECT SKU, count(SKU)' );
+ >>  $snippet->pop->re_sale->group_by( 'SKU' );
+ >>  $snippet->pop->re_sale->order_by( 'count(SKU)' );
+ >>
+ >>  my $pre_sale_hits_by_SKU = $dbh->selectall_arrayref(
+ >>      $snippet->pop->pre_sale->query
+ >>  );
+ >>  my $sales_by_SKU = $dbh->selectall_arrayref(
+ >>      $snippet->pop->sale->query
+ >>  );
+ >>  my $re_sales_by_SKU = $dbh->selectall_arrayref(
+ >>      $snippet->pop->re_sale->query
+ >>  );
+ >>
+ >>  print       "                  ----SKU----  --COUNT--\n";
+ >>  print       "Pre-Sales Hits\n";
+ >>  for (@$pre_sale_hits_by_SKU) {
+ >>      print   "                  $_->[0]      $_->[1]\n";
+ >>  }
+ >>  print       "Sales\n";
+ >>  for (@$sales_by_SKU) {
+ >>      print   "                  $_->[0]      $_->[1]\n";
+ >>  }
+ >>  print       " Re-Sales\n";
+ >>  for (@$re_sales_by_SKU) {
+ >>      print   "                  $_->[0]      $_->[1]\n";
+ >>  }
+ >>
+ >>  # print any notes the repository has associated with
+ >>  # limits placed on the whole report.
+ >>  print scalar($snippet->get_shared_lim_notes);
+

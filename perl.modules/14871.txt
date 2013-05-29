@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:14871
+Return-Path: <jschueler@tqis.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 83335 invoked by uid 76); 30 Oct 2002 19:24:12 -0000
+Received: from [208.184.26.103] (HELO clara.tqis.com) (208.184.26.103) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-10-30 19:24:12Z
+Received: from localhost (jschueler@localhost)	by clara.tqis.com (8.10.2/8.9.3) with ESMTP id g9UJNeJ14416;	Wed, 30 Oct 2002 14:23:40 -0500
+Date: Wed, 30 Oct 2002 14:23:40 -0500 (EST)
+X-Sender: jschueler@clara.tqis.com
+To: Arthur Bergman <arthur@contiller.se>
+cc: modules@perl.org
+Subject: RE: BerkeleyDB::Tie module (fwd)
+Message-ID: <Pine.LNX.4.21.0210301421510.14276-100000@clara.tqis.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: jschueler@tqis.com (Jim Schueler)
+
+Per your recent email...
+
+ -Jim
+
+---------- Forwarded message ----------
+Date: Thu, 15 Aug 2002 17:35:00 +0100
+From: Paul Marquess <Paul.Marquess@btinternet.com>
+To: Jim Schueler <jschueler@tqis.com>
+Subject: RE: BerkeleyDB::Tie module 
+
+Hi Jim,
+
+sorry for the delay it getting back to you. I was on leave for a couple of
+weeks and have been slowly working my way through my mail mountain ever
+since.
+
+Regarding your module, it sounds like a really good idea. Here are a couple
+of random comments.
+
+The use of the &incrementkeys and &duplicatekeys seems a bit strange. I can
+see what you are using it for, but I'm not sure about the approach. Perhaps
+you could hide the gory details like this?
+
+  my $dupdb = new BerkeleyDB::Tie::Btree(
+		home => 'zoo',
+		filename => 'bigcats',
+		incrementkeys => 1,
+		) ;
+
+then get the new method to map the incrementkeys parameter to "sub { $_[0]
+<=> $_[1] }".
+
+Regarding the documentation, I really like the use of examples, but the
+thing that is missing is manual page definitions of the interface (I'm a
+fine one to tell you this given the sad state of my own documentation).
+
+I'd fire it onto CPAN.
+
+cheers
+Paul
+
+> -----Original Message-----
+> From: Jim Schueler [mailto:jschueler@tqis.com]
+> Sent: 30 July 2002 16:42
+> To: paul.marquess@btinternet.com
+> Subject: BerkeleyDB::Tie module
+>
+>
+> Hello.
+>
+> I contacted you about a year ago offering to help with BerkeleyDB support-
+> at least in the area of documentation.  However, I ended up writing an
+> interface module, BerkeleyDB::Tie, that defines a small set of practical
+> functions instead.  I have attached this module, which hopefully provides
+> a bridge between the primitive BerkeleyDB 1.1 interface and the complexity
+> offered by the Berkeley DB 4 interface that you've implemented.
+>
+> This effort is new territory for me.  Even though this module is simple, I
+> have no experience distributing my software.  I would like to submit this
+> work for CPAN review, and you're probably the person who can provide the
+> most valuable input.  Would you have a chance to take a look and please
+> let me know of any suggestions?
+>
+> Thanks,
+>
+> Jim Schueler
+> Lead Programmer
+> Motor City Interactive
+>
+
+
+

@@ -1,0 +1,108 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16366
+Return-Path: <tim@consultix-inc.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 97272 invoked by uid 76); 22 Dec 2002 09:39:52 -0000
+Received: from smtp1.sea.theriver.com (HELO smtp1.sea.theriver.com) (216.39.128.16) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2002-12-22 09:39:52Z
+Received: (qmail 25408 invoked from network); 22 Dec 2002 09:39:51 -0000
+Received: from consultix-inc.com (216.39.144.161)  by smtp1.sea.theriver.com with SMTP; 22 Dec 2002 09:39:51 -0000
+Received: from timji.consultix-inc.com (timji.consultix-inc.com [192.101.183.41])	by consultix-inc.com (8.12.1/8.12.1) with ESMTP id gBMAdndD014260;	Sun, 22 Dec 2002 02:39:49 -0800
+Received: (from tim@localhost)	by timji.consultix-inc.com (8.9.1a/8.9.1) id BAA20464;	Sun, 22 Dec 2002 01:43:13 -0800
+Date: Sun, 22 Dec 2002 01:43:13 -0800
+To: comdog@panix.com
+Cc: modules@perl.org
+Subject: Re: Module submission SelectLoop
+Message-ID: <20021222014313.A20150@timji.consultix-inc.com>
+References: <20021222003919.A20135@timji.consultix-inc.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20021222003919.A20135@timji.consultix-inc.com>
+User-Agent: Mutt/1.3.22.1i
+Organization: Consultix
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: tim@consultix-inc.com (Tim Maher)
+
+> In article <200209051808.g85I85628896@pause.perl.org>, Perl Authors Upload Server <upload@p11.speed-link.de> wrote:
+> 
+> > The following module was proposed for inclusion in the Module List:
+>  
+> >   modid:       SelectLoop
+> 
+> 
+> >     There doesn't seem to be any existing namespace that's devoted to
+> >     control structures for Perl. The most similar module, Damian's
+> >     Switch.pm, was granted its own root-level namespace, so I figure
+> >     this module should get the same treatment.
+> 
+> that's a bad precedent.  "select" also has a special meaning in
+> Perl, so your name should say something more.
+
+That was the reasoning behind calling it SelectLoop rather than just
+Select, but I take if from your remarks below that you mean it would
+benefit from some leading namespace fields.
+
+> >     Ultimately, perhaps we should have a root-level namespace of
+> >     "source-filtered flow-control extensions to Perl", providing for
+> >     names like PerlExt::SelectLoop.pm. 
+> 
+> if you want to emulate shell features, I'd like to see a namespace
+> that can handle many shells, like:
+> 
+>    Shell::Korn::Select
+> -- 
+> brian d foy (one of many PAUSE admins), http://pause.perl.org
+
+I agree that this makes the most sense, if one overlooks existing
+precedents (which I agree are perhaps misguided).
+
+But perhaps Shell::POSIX::Select would make a better name, given
+that the select loop found in the Korn shell is part of the 1003.2
+("POSIX shell") standard, and appears also in the Bash, Dtksh, and
+Tksh shells.
+
+Using that naming convention might help prevent the possible
+future emergence of Shell::(Bash|Dtksh|Tksh)::Feature entries,
+for other Features common to those shells.
+
+For shell-specific features, namespaces like Shell::C::
+and Shell::Z:: would seem appropriate, as brian suggested.
+
+And namespaces like that would be needed to distinguish the
+features of the earlier year-numbered Korn shells, which were not
+POSIX-compliant -- Shell::Korn83::Feature, Shell::Korn88::Feature, etc.
+
+On the other hand, we already have a precedent for POSIX as a
+root-level namespace to hold the 1003.1 ("POSIX OS interface")
+features in Perl, which raises the question of whether
+POSIX::Shell::Select might be a reasonable place to put this module.
+
+The downside I see with that is that there are other, non-POSIX
+compliant features of the same shells that might be provided
+for Perl, and they would fit better into the Shell::Shellname::
+hierarchy than under POSIX::Not!:: 8-}
+
+In any case, the maintenance of two separate shell-related namespaces
+would make it easy to overlook the fact that POSIX::Shell:: and
+Shell::Ksh83:: were two places to look for Korn shell features.
+
+So I think the different shell features should appear alongside each
+other in namespaces like Shell::POSIX::, Shell::C::, Shell::Ksh88::,
+etc.
+
+But I'd appreciate hearing the comments of brian and others on
+these new points I've raised.
+
+TIA,
+
+-Tim
+*----------------------------------------------------------------------------*
+| Tim Maher, CEO, CONSULTIX  (206) 781-UNIX; (866) DOC-PERL; (866) DOC-LINUX |
+|  tim@consultix-inc.com  teachmeunix.com  teachmeperl.com  teachmelinux.net |
+*-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+*
+| MAHER::CLASSES-> Minimal Perl: 1/27; UNIX: 1/28; Perl: 2/10; Modules: 2/13 |
+| DAMIAN:CLASSES-> Munging: 1/13; Regexes: 1/15; BioInfo: 1/15; OOP: 1/17    |
+*----------------------------------------------------------------------------*

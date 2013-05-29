@@ -1,0 +1,526 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1425
+Return-Path: <gyoung@laserlink.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17014 invoked from network); 30 Mar 2000 21:05:34 -0000
+Received: from corpex.laserlink.net (208.216.91.202)
+  by tmtowtdi.perl.org with SMTP; 30 Mar 2000 21:05:34 -0000
+Received: by corpex.laserlink.net with Internet Mail Service (5.5.2650.21)
+	id <H7K0LNVN>; Thu, 30 Mar 2000 16:07:39 -0500
+Message-ID: <A14A9ADE3BEAD311AF95009027B6FBE003BA02@corpex.laserlink.net>
+To: 'Ask Bjoern Hansen' <ask@valueclick.com>
+Cc: "'modperl@apache.org'" <modperl@apache.org>, 'Stas Bekman'
+	 <sbekman@stason.org>, 'darren chamberlain' <darren@boston.com>, 
+	"'modules@perl.org'" <modules@perl.org>
+Subject: RE: [new module] proposal Apache::DebugHeaders
+Date: Thu, 30 Mar 2000 16:07:38 -0500
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain
+Approved: news@nntp.perl.org
+From: gyoung@laserlink.net (Geoffrey Young)
+
+Hey, I'm not trying to redo anyone's work or step on toes...
+
+I looked at DumpHeaders and thought that my stuff didn't quite fit in
+becuase:
+  1) it's longer - DumpHeaders is short and sweet
+  2) it's my attempt at trying to make something OO and extensible
+  3) it has functionality that DumpHeaders doesn't (and doesn't 'allow' for
+by name)
+  4) it allows you to track stuff throughout the request cycle (for modules
+that change them)
+
+Here's the code (minus documentation - if it isn't appropriate it isn't.
+Let me know what you think - I'm open to anything...
+
+
+BTW, this is still alpha, so be kind :)
+
+package Apache::DebugInfo;
+
+#---------------------------------------------------------------------
+#
+# usage: various - see the perldoc below
+#
+#---------------------------------------------------------------------
+
+use 5.004;
+use mod_perl 1.21;
+use Apache::Constants qw( OK DECLINED SERVER_ERROR);
+use Apache::Log;
+use strict;
+
+$Apache::DebugInfo::VERSION = '0.01';
+
+# set debug level
+#  0 - messages at info or debug log levels
+#  1 - verbose output at info or debug log levels
+$Apache::DebugInfo::DEBUG = 0;
+
+sub handler {
+#---------------------------------------------------------------------
+# this is kinda clunky, but we have to build in some intelligence
+# about where the various methods will do the most good
+# for those who don't get the apache request cycle
+#
+# do some preliminary stuff...
+#---------------------------------------------------------------------
+  
+  my $r           = shift;
+  my $log         = $r->server->log;
+
+  return OK unless $r->dir_config('DebugInfo') =~ m/On/i;
+
+  my (@inits, @cleanups);
+
+  push @inits, "headers_in" 
+    if $r->dir_config('DebugHeadersIn') =~ m/On/i;
+  push @inits, "headers_out" 
+    if $r->dir_config('DebugHeadersOut') =~ m/On/i;
+  push @cleanups, "notes" 
+    if $r->dir_config('DebugNotes') =~ m/On/i;
+  push @cleanups, "pnotes"
+    if $r->dir_config('DebugPNotes') =~ m/On/i;
+  push @cleanups, "pid" 
+    if $r->dir_config('DebugPID') =~ m/On/i;
+
+  $log->info("Using Apache::DebugInfo") if $Apache::DebugLog::DEBUG;
+
+#---------------------------------------------------------------------
+# push the various debug routines onto the stack
+#---------------------------------------------------------------------
+
+  foreach my $phase (@inits) {
+    my $rc = push_on_stack($r, $phase, 'PerlInitHandler' );
+    return SERVER_ERROR if $rc;
+  }
+
+  foreach my $phase (@cleanups) {
+    my $rc = push_on_stack($r, $phase, 'PerlCleanupHandler');
+    return SERVER_ERROR if $rc;
+  }
+
+#---------------------------------------------------------------------
+# wrap up...
+#---------------------------------------------------------------------
+
+  $log->info("Exiting Apache::DebugInfo") if $Apache::DebugLog::DEBUG;
+
+  return OK;
+}
+
+sub new {
+#---------------------------------------------------------------------
+# create a new Apache::DebugInfo object
+#---------------------------------------------------------------------
+  
+  my ($class, $r) = @_;
+
+  my %self = {};
+
+  my $log               = $r->server->log;
+  $self{request}        = $r;
+  $self{log}            = $log;
+
+  bless(\%self, $class);
+ 
+  $log->info("\ta new Apache::DebugInfo object was generated") 
+    if $Apache::DebugInfo::DEBUG;
+
+  return \%self;
+}
+
+sub push_on_stack {
+
+  my ($r, $debug, @phases) = @_;
+  
+  foreach my $phase (@phases) {
+    # disable direct PerlHandler calls - it spits Registry scripts
+    # to the browser...
+    next if $phase =~ m/PerlHandler/;
+
+    $r->push_handlers($phase => sub {
+      my $object = Apache::DebugInfo->new($r);
+      $object->$debug();
+    });
+    $r->server->log->info("\t$phase debugging enabled for \$r->$debug")
+      if $Apache::DebugInfo::DEBUG;
+   }
+   return;
+}
+
+sub headers_in {
+#---------------------------------------------------------------------
+# do some preliminary stuff...
+#---------------------------------------------------------------------
+  
+  my $self              = shift;
+
+  my @phases            = @_;
+
+  my $r                 = $self->{request};
+  my $log               = $self->{log};
+
+  my $uri               = $r->uri;
+
+  $log->info("Using Apache::DebugInfo::headers_in")
+     if $Apache::DebugInfo::DEBUG;
+
+#---------------------------------------------------------------------
+# if there are arguments, push the routine onto the handler stack
+#---------------------------------------------------------------------
+
+  if (@phases) {
+    push_on_stack($r, 'headers_in', @phases);
+    return 1;
+  }
+
+#---------------------------------------------------------------------
+# otherwise, just print $r->headers_in in a pretty format
+#---------------------------------------------------------------------
+
+  my $headers_in = $r->headers_in;
+
+  print STDERR "Debug headers_in for $uri during " .
+    $r->notes('PERL_CUR_HOOK') . "\n";
+
+  $headers_in->do(sub {
+    my ($field, $value) = @_;
+    if ($field =~ m/Cookie/) {
+      my @values = split /; /, $value;
+      foreach my $cookie (@values) {
+        print STDERR "\t$field => $cookie\n";
+      }
+    }
+    else { 
+      print STDERR "\t$field => $value\n";
+    }
+    1;
+  });   
+
+#---------------------------------------------------------------------
+# wrap up...
+#---------------------------------------------------------------------
+
+  $log->info("Exiting Apache::DebugInfo::headers_in") 
+    if $Apache::DebugInfo::DEBUG;
+
+  # return declined so that Apache::DebugInfo doesn't short circuit
+  # Perl*Handlers that stop the chain after the first OK (like
+  # PerlTransHandler
+
+  return DECLINED;
+}
+
+sub headers_out {
+#---------------------------------------------------------------------
+# do some preliminary stuff...
+#---------------------------------------------------------------------
+  
+  my $self              = shift;
+
+  my @phases            = @_;
+
+  my $r                 = $self->{request};
+  my $log               = $self->{log};
+
+  my $uri               = $r->uri;
+
+  $log->info("Using Apache::DebugInfo::headers_out")
+     if $Apache::DebugInfo::DEBUG;
+
+#---------------------------------------------------------------------
+# if there are arguments, push the routine onto the handler stack
+#---------------------------------------------------------------------
+
+  if (@phases) {
+    push_on_stack($r, 'headers_out', @phases);
+    return 1;
+  }
+
+#---------------------------------------------------------------------
+# otherwise, just print $r->headers_out in a pretty format
+#---------------------------------------------------------------------
+
+  my $headers_out = $r->headers_out;
+
+  print STDERR "Debug headers_out for $uri during " .
+    $r->notes('PERL_CUR_HOOK') . "\n";
+
+  $headers_out->do(sub {
+    my ($field, $value) = @_;
+    if ($field =~ m/Cookie/) {
+      my @values = split /;/, $value;
+      print STDERR "\t$field => $values[0]\n";
+      for (my $i=1;$i < @values; $i++) {
+        print STDERR "\t\t\t\t=> $values[$i]\n";
+      }
+    }
+    else { 
+      print STDERR "\t$field => $value\n";
+    }
+    1;
+  });   
+
+#---------------------------------------------------------------------
+# wrap up...
+#---------------------------------------------------------------------
+
+  $log->info("Exiting Apache::DebugInfo::headers_out") 
+    if $Apache::DebugInfo::DEBUG;
+
+  # return declined so that Apache::DebugInfo doesn't short circuit
+  # Perl*Handlers that stop the chain after the first OK (like
+  # PerlTransHandler
+
+  return DECLINED;
+}
+
+sub notes {
+#---------------------------------------------------------------------
+# do some preliminary stuff...
+#---------------------------------------------------------------------
+  
+  my $self              = shift;
+
+  my @phases            = @_;
+
+  my $r                 = $self->{request};
+  my $log               = $self->{log};
+
+  my $uri               = $r->uri;
+
+  $log->info("Using Apache::DebugInfo::notes")
+     if $Apache::DebugInfo::DEBUG;
+
+#---------------------------------------------------------------------
+# if there are arguments, push the routine onto the handler stack
+#---------------------------------------------------------------------
+
+  if (@phases) {
+    push_on_stack($r, 'notes', @phases);
+    return 1;
+  }
+
+#---------------------------------------------------------------------
+# otherwise, just print $r->notes in a pretty format
+#---------------------------------------------------------------------
+
+  my $notes = $r->notes;
+
+  print STDERR "Debug notes for $uri during " .
+    $r->notes('PERL_CUR_HOOK') . "\n";
+
+  $notes->do(sub {
+    my ($field, $value) = @_;
+    print STDERR "\t$field => $value\n" unless 
+      ($field =~ m/PERL_CUR_HOOK/);  # skip this one since we just
+                                     # printed it...
+    1;
+  });   
+
+#---------------------------------------------------------------------
+# wrap up...
+#---------------------------------------------------------------------
+
+  $log->info("Exiting Apache::DebugInfo::notes") 
+    if $Apache::DebugInfo::DEBUG;
+
+  # return declined so that Apache::DebugInfo doesn't short circuit
+  # Perl*Handlers that stop the chain after the first OK (like
+  # PerlTransHandler
+
+  return DECLINED;
+}
+
+sub pnotes {
+#---------------------------------------------------------------------
+# do some preliminary stuff...
+#---------------------------------------------------------------------
+  
+  my $self              = shift;
+
+  my @phases            = @_;
+
+  my $r                 = $self->{request};
+  my $log               = $self->{log};
+
+  my $uri               = $r->uri;
+
+  $log->info("Using Apache::DebugInfo::pnotes")
+     if $Apache::DebugInfo::DEBUG;
+
+#---------------------------------------------------------------------
+# if there are arguments, push the routine onto the handler stack
+#---------------------------------------------------------------------
+
+  if (@phases) {
+    push_on_stack($r, 'pnotes', @phases);
+    return 1;
+  }
+
+#---------------------------------------------------------------------
+# otherwise, just print $r->notes in a pretty format
+#---------------------------------------------------------------------
+
+  my $pnotes = $r->pnotes;
+
+  print STDERR "Debug pnotes for $uri during " .
+    $r->notes('PERL_CUR_HOOK') . "\n";
+
+  my %hash = %$pnotes;
+
+  foreach my $field (sort keys %hash) {
+    my $value = $hash{$field};
+    my $type = ref $value;
+
+    if ($type eq 'SCALAR') {
+      print STDERR "\t$field => $value\n";
+
+    } elsif ($type eq 'HASH') {
+      my %hash = %$value;
+      print STDERR "\t$field =>\n";
+      foreach my $key (sort keys %hash) {
+        print STDERR "\t\t   $key = $hash{$key}\n";
+      }
+
+    } elsif ($type eq 'ARRAY') {
+      my @array = @$value;
+      print STDERR "\t$field => $array[0]\n";
+      for (my $i=1;$i < @array; $i++) {
+        print STDERR "\t\t\t\t=> $array[$i]\n";
+      }
+
+    } elsif ($type) {
+      # we don't handle globs or other references yet...
+      print STDERR "\t$field => $type thingy\n";
+
+    } else {
+      print STDERR "\t$field => $value\n";
+    }
+      
+  }
+
+#---------------------------------------------------------------------
+# wrap up...
+#---------------------------------------------------------------------
+
+  $log->info("Exiting Apache::DebugInfo::pnotes") 
+    if $Apache::DebugInfo::DEBUG;
+
+  # return declined so that Apache::DebugInfo doesn't short circuit
+  # Perl*Handlers that stop the chain after the first OK (like
+  # PerlTransHandler
+
+  return DECLINED;
+}
+
+sub pid {
+#---------------------------------------------------------------------
+# I know this is a waste of code for just printing $$, but I thought
+# it would be nice to have a consistent interface.  whatever...
+#---------------------------------------------------------------------
+  
+  my $self              = shift;
+
+  my @phases            = @_;
+
+  my $r                 = $self->{request};
+  my $log               = $self->{log};
+
+  my $uri               = $r->uri;
+
+  $log->info("Using Apache::DebugInfo::pid")
+     if $Apache::DebugInfo::DEBUG;
+
+#---------------------------------------------------------------------
+# if there are arguments, push the routine onto the handler stack
+#---------------------------------------------------------------------
+
+  if (@phases) {
+    push_on_stack($r, 'pid', @phases);
+    return 1;
+  }
+
+#---------------------------------------------------------------------
+# otherwise, just print the pid
+#---------------------------------------------------------------------
+
+  print STDERR "Debug PID for $uri during " .
+    $r->notes('PERL_CUR_HOOK') . "\n\t$$\n";
+
+#---------------------------------------------------------------------
+# wrap up...
+#---------------------------------------------------------------------
+
+  $log->info("Exiting Apache::DebugInfo::pid") 
+    if $Apache::DebugInfo::DEBUG;
+
+  # return declined so that Apache::DebugInfo doesn't short circuit
+  # Perl*Handlers that stop the chain after the first OK (like
+  # PerlTransHandler
+  # you really need help if you call this one more than once,
+  # though...
+
+  return DECLINED;
+}
+
+1;
+
+__END__
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+> -----Original Message-----
+> From: Ask Bjoern Hansen [mailto:ask@valueclick.com]
+> Sent: Thursday, March 30, 2000 3:19 PM
+> To: Geoffrey Young
+> Cc: 'modperl@apache.org'; 'Stas Bekman'; 'darren chamberlain';
+> 'modules@perl.org'
+> Subject: Re: [new module] proposal Apache::DebugHeaders
+> 
+> 
+> On Thu, 30 Mar 2000, Geoffrey Young wrote:
+> 
+> > Hi all...
+> > 
+> > I finished an alpha of DebugHeaders (now potentially called 
+> DebugInfo) -
+> > here's the description.  
+> 
+> I still think it would fit much better as patches to 
+> Apache::DumpHeaders.
+> :)
+> 
+> They are doing pretty much the same thing.
+> 
+> 
+>  - ask
+> 
+> -- 
+> ask bjoern hansen - <http://www.netcetera.dk/~ask/>
+> more than 70M impressions per day, <http://valueclick.com>
+> 

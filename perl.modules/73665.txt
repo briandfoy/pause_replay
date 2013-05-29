@@ -1,0 +1,86 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:73665
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17159 invoked from network); 21 Nov 2010 10:15:54 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 21 Nov 2010 10:15:54 -0000
+Received: (qmail 13057 invoked by uid 225); 21 Nov 2010 10:15:53 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13051 invoked by alias); 21 Nov 2010 10:15:53 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from rz1.akoenig.de (HELO rz1.akoenig.de) (83.223.90.65)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 21 Nov 2010 02:15:50 -0800
+Received: from franz.ak.mind.de (p5DDB21B4.dip.t-dialin.net [93.219.33.180])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(Client CN "franz.ak.mind.de", Issuer "franz.ak.mind.de" (not verified))
+	by rz1.akoenig.de (Postfix) with ESMTPS id ACE511AE00C2;
+	Sun, 21 Nov 2010 11:15:45 +0100 (CET)
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-6) with ESMTP id oALAFZqH001295
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sun, 21 Nov 2010 11:15:35 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id oALAFYWK001294;
+	Sun, 21 Nov 2010 11:15:34 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Matthew Musgrove <mr.muskrat@gmail.com>
+Cc: modules@perl.org
+Subject: Re: Fwd: PAUSE indexer report MMUSGROVE/File-LinkDir-1.00.tar.gz
+References: <201011202145.oAKLjnbw032097@pause.fiz-chemie.de>
+	<AANLkTikwK4-PCj=RWx0g9YU4P=jr=xbuyYTTm=Ff2=ZL@mail.gmail.com>
+Date: Sun, 21 Nov 2010 11:15:34 +0100
+In-Reply-To: <AANLkTikwK4-PCj=RWx0g9YU4P=jr=xbuyYTTm=Ff2=ZL@mail.gmail.com>
+	(Matthew Musgrove's message of "Sat, 20 Nov 2010 18:57:15 -0600")
+Message-ID: <87wro79e49.fsf@franz.ak.mind.de>
+User-Agent: Gnus/5.110011 (No Gnus v0.11) Emacs/23.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Sat, 20 Nov 2010 18:57:15 -0600, Matthew Musgrove <mr.muskrat@gmail.com> said:
+
+  > Can someone tell me what this means exactly?
+
+I can reproduce with
+
+  /usr/local/perl-5.10.1/bin/perl -e 'use YAML::XS; print YAML::XS::LoadFile("META.yml")'
+  YAML::XS::Load Error: The problem:
+
+      Invalid trailing UTF-8 octet
+
+  was found at document: 0
+
+Looks like your META.yml was written in latin1 which I think is not
+legal YAML.
+
+  > It looks like it was indexed.
+
+Yes.
+
+  > Do I need to fix META.yml and upload as File-LinkDir-1.01-tar-gz?
+
+I wouldn't sweat over it. If nobody complains you can fix it next time
+you do a regular upload. As a PAUSE maintaintainer I see no immediate
+reason to ask you to re-upload.
+
+  > If so,
+  > how?
+
+I don't know what you or some of the involved software did wrong. I see
+only the result of a META.yml written in latin1.
+
+  > BTW, I'm using Module::Install and I didn't see this with my previous
+  > uploads.
+
+Which previous upload are you talking about and what might have been
+different in these? Note that developer releases do not get read by the
+indexer, so those don't count.
+
+-- 
+andreas

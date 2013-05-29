@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21638
+Return-Path: <afoxson@guild.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 61442 invoked by uid 76); 7 Jun 2003 18:21:27 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Sat, 07 Jun 2003 11:21:27 -0700
+Received: (qmail 10814 invoked by uid 225); 7 Jun 2003 18:21:24 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10804 invoked by uid 507); 7 Jun 2003 18:21:23 -0000
+Received: from [209.166.167.23] (HELO guild.net) (209.166.167.23) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Sat, 07 Jun 2003 11:21:21 -0700
+Received: (qmail 30601 invoked by uid 1002); 7 Jun 2003 18:21:18 -0000
+Date: Sat, 7 Jun 2003 14:21:18 -0400
+To: Kurt Starsinic <kstar@cpan.org>
+Cc: modules@perl.org, fox@cpan.org
+Subject: Re: Module submission Net::IANA::PortNumbers
+Message-ID: <20030607182118.GA28164@magnonel.guild.net>
+References: <200306070711.h577Bgo6031794@pause.perl.org> <20030607163242.GA16864@verizon.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030607163242.GA16864@verizon.net>
+User-Agent: Mutt/1.3.24i
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-2.4 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_03_05,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: afoxson@pobox.com (Adam Foxson)
+
+On Sat, Jun 07, 2003 at 12:32:42PM -0400, Kurt Starsinic wrote:
+
+>         1. It's not *actually* using the official registry, as
+>         advertised; the port numbers are hard-coded.
+
+Thanks for the taking the time to draw up your concerns. Actually, it *is*
+using the official registry, as advertised. There is an undocumented internal
+method named _create_db which takes the official registry at
+http://www.iana.org/assignments/port-numbers and converts it into the internal
+representation to which you're referring. I do this for several reasons, and
+the top reason is that it results in a distribution that *tremdously* smaller
+than if it would not have been translated to an internal representation. I
+discussed some of this on IRC with Dan Sugalski, and he mentioned that it would
+be best to get it as small as possible (although I did not discuss any possible
+implementations to accomplish this, with him). Since the port registry has much
+miscellanea in the file that is not necessary to the operation of N::I::P, I
+translated it to an internal representation that encodes only what is relevant.
+The internal representation also results in N::I::P being ever-so-slightly
+faster and less memory-intensive. If you still feel there should be an
+implementation change for this point, please feel free to suggest one that you
+feel would be better. :-)
+
+>         Thus, if the registry is updated, I have no way of knowing that
+>         the entries I'm using are outdated, and no way of
+>         forcing an update.
+
+There is a method last_updated() that will return the date that the IANA port
+registry, that was translated, stated that it was last updated. Ostensibly,
+there is no current means by which one could force an update, but I had
+planned to keep a good eye on it and release new versions as necessary. If I
+do include a means by which to allow users of N::I::P to force an update how
+would you envision that working?
+
+>         2. You leave out some ports "with no associated protocols."
+>         I'm not sure what the value of this is; as a naive user, I
+>         would expect that the module maps as in IANA's registry,
+>         not as in what protocols are actually known to be deployed
+>         in the wild.
+
+Well, the problem with the sixteen services that you mention is simply that
+in the port registry they have no protocols associated with them, thus I
+have no idea as to how they should be "correctly represented". I figured it
+would be better to disclude them than to guess, being that all of the methods
+require either a port and protocol, or service and protocol. I regard these
+particular entries, in the port registry, as clerical mistakes, since the
+thousands of other services do indeed have associated protocols. If you have
+any ideas as to how this can best be dealt with, I am all ears.
+
+-- 
+Adam J. Foxson

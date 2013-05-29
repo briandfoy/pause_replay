@@ -1,0 +1,67 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12935
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 84877 invoked by uid 76); 30 Jul 2002 14:01:33 -0000
+Received: from mail02.svc.cra.dublin.eircom.net (HELO mail02.svc.cra.dublin.eircom.net) (159.134.118.18)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Tue Jul 30 14:01:33 2002 -0000
+Received: (qmail 74500 messnum 37878 invoked from network[159.134.164.163/p163.as1.limerick1.eircom.net]); 30 Jul 2002 14:00:38 -0000
+Received: from p163.as1.limerick1.eircom.net (HELO dansat.data-plan.com) (159.134.164.163)
+  by mail02.svc.cra.dublin.eircom.net (qp 74500) with SMTP; 30 Jul 2002 14:00:38 -0000
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id g6UE0Nh05338;
+	Tue, 30 Jul 2002 15:00:23 +0100 (BST)
+	(envelope-from timbo)
+Date: Tue, 30 Jul 2002 15:00:23 +0100
+To: Eric Kidder <kageneko@persian.evilkitten.org>
+Cc: modules@perl.org
+Subject: Re: Appropriate name for a module?
+Message-ID: <20020730150023.K598@dansat.data-plan.com>
+References: <Pine.LNX.4.33.0207241335210.26938-100000@persian.evilkitten.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.33.0207241335210.26938-100000@persian.evilkitten.org>; from kageneko@persian.evilkitten.org on Wed, Jul 24, 2002 at 01:51:33PM -0500
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+The name shouldn't include 'Storable' since that's an implementation detail.
+Something like IPC::Queue seems more reasonable.
+
+Have you looked at BerkeleyDB's Queue API?:
+http://search-beta.cpan.org/author/PMQS/BerkeleyDB-0.19/BerkeleyDB.pod#COMMON_OPTIONS
+(scroll back a couple of pages)
+
+Tim.
+
+
+On Wed, Jul 24, 2002 at 01:51:33PM -0500, Eric Kidder wrote:
+> I am working on some modules which use Storable to handle higher data
+> structures.  This is mainly for some neat IPC:
+> 
+> # CLIENT
+>    my $queue	= Storable::Queue->new("queue.file");
+>    $queue->push($reference_to_some_data);
+> 
+> # SERVER
+>    my $queue	= Storable::Queue->new("queue.file");
+>    my $data	= $queue->peek();
+>    my @data;
+> 
+>    if ( $$data = "FRED" ) {
+>         my @data	= $queue->pop_all();
+>    } else {
+>        $data		= $queue->pop();
+>    }
+> 
+> Anything "pushed" into the store file is kept in a queue/stack/whatever
+> format.  Thus, you can have multiple programs pushing and popping and the
+> data will come out in the right order.  Right now, I've called them
+> Storable::Queue, Storable::Stack, etc., but I've been wondering if that's
+> an appropriate place for them to go?
+> 
+> Eric
+> 

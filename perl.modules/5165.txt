@@ -1,0 +1,186 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5165
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23000 invoked from network); 17 Apr 2001 08:29:43 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 17 Apr 2001 08:29:43 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id KAA22015;
+	Tue, 17 Apr 2001 10:29:22 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: Steve Traugott <stevegt@TerraLuna.Org>
+Cc: modules@perl.org, Johan Vromans <JVromans@squirrel.nl>
+Subject: Re: PAUSE Process Changes
+References: <200104140546.WAA07570@roton.terraluna.org>
+	<15064.28173.799060.340142@phoenix.squirrel.nl>
+	<m3snj9e2ip.fsf@ak-71.mind.de>
+	<20010416120445.B10694@scramjet.TerraLuna.Org>
+Reply-To: modules@perl.org
+Date: 17 Apr 2001 10:29:22 +0200
+In-Reply-To: <20010416120445.B10694@scramjet.TerraLuna.Org>
+Message-ID: <m366g4c4kd.fsf@ak-71.mind.de>
+Lines: 154
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+Thanks for you careful considerations. I haven't yet made up my mind
+about the whole proposal and would welcome further thoughts.
+
+>>>>> On Mon, 16 Apr 2001 12:04:45 -0700, Steve Traugott <stevegt@TerraLuna.Org> said:
+
+  > Hey, I just found this:  According to paragraph 5b in the module list
+  > docs, uploading "locks" the namespace on a first-come-first-served
+  > basis, which might be why the docs say several times to register
+  > namespaces before uploading, to keep people from stepping on each
+  > other unknowingly.  Is this still true, and am I reading it right?
+
+Yes, this is described in CPAN/modules/04pause.html. Every upload is
+scanned for package declarations in *.pm files and as a result
+CPAN/modules/02packages.details.txt is written. Whenever a new package
+is discovered it is reserved for the author automatically.
+
+  > On Mon, Apr 16, 2001 at 09:18:22AM +0200, Andreas J. Koenig wrote:
+ >> >>>>> On Sat, 14 Apr 2001 17:34:37 +0200, JVromans@squirrel.nl (Johan Vromans) said:
+ jv> What do we think would be the typical sequence of steps?
+ >> 
+ jv> 1. A user wants to share a Perl module.
+ >> 
+ jv> 2. Before sending the module to CPAN things like naming and API must
+ jv> be discussed. I think comp.lang.perl.modules should be used for
+ jv> this.
+ >> 
+ jv> 3. The user applies for a CPAN id.
+ >> 
+ jv> 4. To allow the people at c.l.p.m. access to the new module, it needs
+ jv> to be stored somewhere. CPAN would be great, but then we have a
+ jv> catch-22 situation.
+
+  > How about ftp://pause.kbx.de/incoming?  
+
+No. The biggest advantage of CPAN for me is that I have the modules
+already on my harddisk when I find the time to investigate them, be
+they blessed by a Module List entry or not, I can immediately play
+with them.
+
+ jv> I think that it is quite pointless to ask on the user registration
+ jv> form what the user wants to contribute. Often, this is interpreted as
+ jv> a request for module registration. 
+ >> 
+ >> The tieing of user- and modules registration IMHO has the side effect
+ >> that people perceive user registration as something that needs to be
+ >> carefully considered. It has kept CPAN so much smaller than
+ >> sourceforge and perceived as higher quality. It's highly desirable
+ >> that we do not lose this.
+
+  > I think a good goal might be to go ahead and automate both user and
+  > module registrations.  
+
+The modules registration form is done since yesterday. I'd give it two
+weeks of testing and evaluation.
+
+  > You might be able to unlink user and module registration and keep the
+  > ID namespace from cluttering up if you expire authors who have never
+  > uploaded modules 90 days after registration.
+
+The userid namespace is no problem, at least for now. Let's handle
+that if it becomes a problem.
+
+  > One way to keep module quality high might be to start using
+  > cpan-testers results to control DSLI to some degree.
+
+I'm not fond of feeding CPAN-testers results back to the process on
+PAUSE. Yes, CPAN-testers results should be promoted more widely, I
+don't know how, but not by feeding them back to PAUSE. I envision
+deadlock if we do that.
+
+  > Here's a clean flow, I think -- it avoids most name changes, should
+  > increase quality, and makes better use of the 'idea' stage:
+
+  > 1.  Developer needs to write a Perl module.
+
+  > 2.  Developer discusses name, API, prior art, etc. on c.l.p.m.
+
+  > 3.  Developer registers as CPAN author if they aren't already. (web form)
+
+Yes, I'm in favor of the user-registration form. If the
+module-registration form works and turns out as being efficient, I'm
+planning to provide the same functionality for authors.
+
+  > 4.  Developer applies for temporary modlist namespace reservation,
+  >     entering 'SLI' but not 'D'.  Formal notice automatically mailed to
+  >     modules@perl.org.  (web form)  
+
+  > 5.  Modlist maintainers grant namespace reservation for 90
+  >     days, renewable.  Reservation is shown as 'idea' stage.  
+
+  > 6.  Developer starts writing code, uploads iterations to PAUSE.
+
+Currently 4,5,and 6 are done by a single upload. Currently such a
+module is not listed in the Modules List but no harm is done by that.
+On the contrary, I'd prefer we do not list all modules in the Modules
+List to protect the innocent reader.
+
+  > 7.  Registration switched out of 'idea' to 'construction' stage
+  >     after cpan-testers returns positive results on at least 1 platform.
+
+See above.
+
+  > 8.  Developer advances DSLI settings via existing web form as module
+  >     matures.
+
+No change needed.
+
+  > If I understand things right, the above flow would need the following
+  > code beyond what's there now:
+
+  > - one web form for user registration
+
+Yes.
+
+  > - one web form for module namespace reservation
+
+Done.
+
+  > - something to record the granting date and automatically expire
+  >   unused namespace reservations (how is the modlist edited now?  web,
+  >   CLI, or vi?)
+
+98% web+make and 2% vi^H^Hemacs.
+
+  > - something to sniff cpan-testers results and update the DSLI 
+
+Let's delay this till after we have a complex solution for much richer
+metadata. I'd like to have an extensible solution for metadata.
+Metadata should live in a separate file so that adding a new item is
+just a matter of
+
+    $meta = $monitor->new($filename);
+    $meta->merge($new_data) or $monitor->alert;
+    $meta->write;
+
+you get the idea... This must happen sooner or later anyway, but it
+still is too complex for me to start programming on it.
+
+  > We could eventually put the reservation granting in step 4 up for a
+  > vote by existing registered authors, letting modlist maintainers take
+  > a little more of a break as volume increases.
+
+  > One problem with the above s that I've slightly redefined what "idea"
+  > stage means -- rather than meaning "up for adoption" it would mean
+  > "no uploads yet".
+
+  > I can see other variations on this; for instance, rather than
+  > redefining 'idea', we could add a 'name reserved' stage or something.
+
+'idea' always was 'name reserved'. Right now I've lost track of what
+the problem was:-)
+
+-- 
+andreas

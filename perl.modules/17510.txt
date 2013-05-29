@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17510
+Return-Path: <gwhulbert@rogers.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17913 invoked by uid 76); 30 Jan 2003 21:25:05 -0000
+Received: from fep03-mail.bloor.is.net.cable.rogers.com (HELO fep03-mail.bloor.is.net.cable.rogers.com) (66.185.86.73) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-30 21:25:05Z
+Received: from rogers.com ([24.101.152.8])          by fep03-mail.bloor.is.net.cable.rogers.com          (InterMail vM.5.01.05.06 201-253-122-126-106-20020509) with ESMTP          id <20030130212437.OQTV121195.fep03-mail.bloor.is.net.cable.rogers.com@rogers.com>;          Thu, 30 Jan 2003 16:24:37 -0500
+Sender: guy
+Message-ID: <3E3997EF.8CF7F9D0@rogers.com>
+Date: Thu, 30 Jan 2003 16:23:59 -0500
+Reply-To: gwhulbert@eol.ca
+X-Mailer: Mozilla 4.79 [en] (X11; U; Linux 2.2.19 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org, mikewong@perl.org, 	Mike Wong <mike_w3@pacbell.net>
+Subject: Plans for Table::*  or ???::Table::*
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Authentication-Info: Submitted using SMTP AUTH PLAIN at fep03-mail.bloor.is.net.cable.rogers.com from [24.101.152.8] using ID <gwhulbert@rogers.com> at Thu, 30 Jan 2003 16:24:37 -0500
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: gwhulbert@rogers.com (Guy Hulbert)
+
+I recently searched the module list 
+	http://cpan.perl.org/modules/00modlist.long.html
+for "Table::" and did not find it.
+
+However, today I also searched here
+	http://www.xray.mpe.mpg.de/mailing-lists/modules/
+and found
+ 1. 2002-12/msg00399 Module submission Table::ParentChild
+ - I don't completely understand the "rationale" here.
+
+ 2. 2002-02/msg00310 Module submission DBIx::Pivot
+ - In this case Table::Pivot was used for development but changed
+   because Table:: did not exist.
+   [ However Data::Pivot also seems to exist ]
+
+ 3. 1998-06/msg00161: Re: Statistics::Table:: proposal
+ - In this case the Table has to do with Statistics.
+
+Anyhow.  I had looked at
+ Data::CTable
+ Data::Table
+and neither of these do what I intend (although I wish
+I had found Data::Table about 3 years ago :-).
+
+My intent was to register the following:
+  Table		- v 0.1 todo
+  Table::File	- v 0.3 written.
+To go under chapterid:    6 (Data_Type_Utilities).
+
+The idea is that the primary abstraction is a "Table".  It
+is similar to but more general than a Table in an RDBMS.  The
+data in this table might come from a database (via DBI::*) or
+a file (via Table::File) but to the programmer it exists
+purely as a Table.  The module Table::File fulfills a contract
+which the sub Table::import() requires.  It provides a function
+next_record(), which allows the Table to import both its data
+and meta-data.
+
+Obviously, one idea is to have be able to change the data source
+for the same data with things such as Table::DBI, Table::Oracle, 
+Table::Stream, Table::XML without changing the rest of the code.
+
+I don't care what the top-level namespace is (but I thought I
+could grab Table :-).  I think that Table::ParentChild may be
+entirely compatible with what I intend but I don't know how
+permissions work on CPAN yet.  It also seems that either
+DBIx::Pivot or Data::Pivot might be appropriate as Table::Pivot.
+
+I could always use Xyz::Table::* ... and I'd appreciate it if 
+someone has a suitable suggestion for Xyz. (DBI is NOT right,
+Data is taken, but Db would work ... although I believe that 
+the Db:: namespace already exists and I don't know what it is
+for).  Perhaps DBIx:: is good for this...
+
+--GH.

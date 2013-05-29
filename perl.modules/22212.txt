@@ -1,0 +1,84 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:22212
+Return-Path: <jcduque@mailcity.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17871 invoked by uid 76); 3 Jul 2003 11:44:03 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Thu, 03 Jul 2003 04:44:03 -0700
+Received: (qmail 3592 invoked by uid 225); 3 Jul 2003 11:43:59 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3565 invoked by uid 507); 3 Jul 2003 11:43:55 -0000
+Received: from www1.mail.lycos.com (HELO lycos.com) (209.202.220.140) by one.develooper.com (qpsmtpd/0.26) with SMTP; Thu, 03 Jul 2003 04:43:54 -0700
+Received: from Unknown/Local ([?.?.?.?]) by mailcity.com; Thu, 03 Jul 2003 11:43:38 -0000
+To: modules@perl.org
+Date: Thu, 03 Jul 2003 18:43:38 +0700
+Message-ID: <JEFMJEJOHDAODEAA@mailcity.com>
+Mime-Version: 1.0
+X-Sent-Mail: off
+Reply-To: jcduque@lycos.com
+X-Expiredinmiddle: true
+X-Mailer: MailCity Service
+X-Priority: 3
+Subject: Proposed new class
+X-Sender-Ip: 210.23.209.65
+Organization: Lycos Mail  (http://www.mail.lycos.com:80)
+Content-Type: text/plain; charset=us-ascii
+Content-Language: en
+Content-Transfer-Encoding: 7bit
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.9 required=7.0 tests=CARRIAGE_RETURNS,NOSPAM_INC,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: jcduque@lycos.com ("J C D")
+
+Hello,
+
+I would like to propose a new class under Chapter
+14 (Security and Encryption). The new
+class should be known as MAC:: (for Message
+Authentication Code).
+
+Message Authentication Code (MAC) is used to
+provide authenticity of a stream of data, be it a
+file or just a string of characters. Just hashing
+the data (using MD5 or SHA-1) would be no good
+because an adversary could just recompute a new
+hash for the substituted data. With MAC, a secret
+key, known only to the two communicating parties,
+is appended at the beginning and at the end of the
+message, and the resulting message is hashed using
+MD5, SHA-1, RIPEMD160, or any one-way hashing
+function. At first, it is logical to place MAC
+algorithms on the Digest:: class. One well-known
+MAC algorithm is HMAC, using either MD5 or SHA-1
+as underlying primitives. However, the latest
+trend in MAC today is block cipher-based. This
+means that the underlying crypto primitive is a
+block cipher while providing message
+authentication. The standard block cipher-based in
+use today is OMAC (One-key CBC MAC). Other MAC
+algorithms like this are: RMAC, OCB, PMAC, TMAC,
+TTMAC, UMAC, and EMAC.
+
+I would, therefore, strongly suggest that MACs be
+categorized as a new class, because MACs no longer
+depend on one-way hash functions.
+
+Furthermore, the block cipher-based MACs are also
+used as "modes of operations", just like ECB, CBC,
+and CFB. The Crypt::CBC module by Lincoln Stein,
+for instance, is placed under Crypt:: because it
+was exclusively used with block ciphers. Now, with
+the addition of these new modes of operations,
+which also function as MACs, they cannot be
+classfied under Crypt:: either.
+
+JCDUQUE
+
+
+
+____________________________________________________________
+Get advanced SPAM filtering on Webmail or POP Mail ... Get Lycos Mail!
+http://login.mail.lycos.com/r/referral?aid=27005

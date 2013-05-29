@@ -1,0 +1,69 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2246
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13724 invoked from network); 26 Jun 2000 19:30:38 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 26 Jun 2000 19:30:38 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id VAA25692;
+	Mon, 26 Jun 2000 21:30:29 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: "Luis E. Muñoz" <lem@cantv.net>
+Cc: andreas.koenig@anima.de (Andreas J. Koenig), modules@perl.org
+Subject: Re: [lem@cantv.net] Digested Articles
+References: <4.3.2.7.0.20000626093626.00aa5610@pop.cantv.net>
+Date: 26 Jun 2000 21:30:29 +0200
+In-Reply-To: "Luis E. Muñoz"'s message of "Mon, 26 Jun 2000 09:48:04 -0400"
+Message-ID: <m34s6gtf3e.fsf@ak-71.mind.de>
+Lines: 39
+User-Agent: Gnus/5.0806 (Gnus v5.8.6) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 26 Jun 2000 09:48:04 -0400, "Luis E. Mu=F1oz" <lem@cantv.=
+net> said:
+
+>> I'm not sure, but I could imagine somewhere in the NetPacket or
+>> Network hierarchie or below the Net::DNS there might be a place to
+>> consider settling.
+
+ > The modules I referred to deal specifically with representations of
+ > IP addresses. They're protocol independent.
+
+ > Under 'Net' there is essentially stuff related to networking and
+ > actual implementations (protocols, clients, servers, tools, etc).
+ > While logically the modules I wrote about could fit in something
+ > like 'Net::IP', I'm not sure if this approach would make sense in
+ > the long run.
+
+ > On the other hand, something like 'Net::Address::IP' might make
+ > more sense. The Tie interface could then be Tie::Net::Address::IP
+ > so it could all boil down to
+
+ >          IP::Address             -->     Net::Address::IP
+ >          Tie::IP::Address        -->     Tie::Net::Address::IP
+ >          Net::Subnet::Count      -->     Net::Address::IP::Count
+
+ > Please let me know what you think about this one, as I feel this
+ > makes more sense.
+
+It indeed looks much more intuitive than before. Just one thing,
+there's a long standing tradition to discourage
+extremely::deep::nesting::namespaces. E.g. one could shorten
+Net::Address to NetAddr. No matter how ugly it looks, it seems
+understandable and less to type. Leading to
+
+         IP::Address             -->     NetAddr::IP
+         Tie::IP::Address        -->     Tie::NetAddr::IP
+         Net::Subnet::Count      -->     NetAddr::IP::Count
+
+Other opinions welcome,
+--=20
+andreas

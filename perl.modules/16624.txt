@@ -1,0 +1,99 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16624
+Return-Path: <gaa@ulticom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 63616 invoked by uid 76); 3 Jan 2003 22:04:24 -0000
+Received: from angelica.ulticom.com (HELO chuckie.dgms.com) (208.255.120.2) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-03 22:04:24Z
+Received: from ulticom.com (localhost [127.0.0.1])	by chuckie.dgms.com (8.9.3/8.9.3) with ESMTP id RAA28424;	Fri, 3 Jan 2003 17:03:55 -0500 (EST)
+Message-ID: <3E1608CB.4000401@ulticom.com>
+Date: Fri, 03 Jan 2003 17:03:55 -0500
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.2.1) Gecko/20021130
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: mzsanford@cpan.org
+CC: comdog@panix.com, modules@perl.org
+Subject: Your Image::OrgChart vs my GD::OrgChart
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: gaa@ulticom.com (Gary Algier)
+
+Matt:
+
+Hello, I was looking for a perl package to draw corporate org charts like:
+[this was done manually for illustration purposes. I can send PNGs upon request]
+
+                                Gary
+                             Home Owner
+                                 |
+              +------------------+------------------+
+              |                                     |
+             Tex                                 Dudley
+          VP Backyard                          VP Frontyard
+              |                                     |
+        +-----+-----+                     +---------+---------+
+        |           |                     |                   |
+     Ophelia     Cinnamon                Jax                Maisie
+   Gate Watcher  Deck Sitter       Bay Window Watcher    Door Watcher
+
+I first looked at yours, which would produce something more like:
+         Gary
+          +-- Dudley
+          |     +-- Jax
+          |     +-- Maisie
+          +-- Tex
+                +-- Cinnamon
+                +-- Ophelia
+
+So, I sat down one weekend and wrote one myself.  (Actually took almost a
+week of spare time to get it _working_, but...).
+
+The primary difference I needed was to have a manager centered above his/her
+subordinates.  In addition I wanted to be able to put arbitrary text in
+the boxes so that a title could be included, etc.
+
+I then picked up a book on submitting modules to the CPAN (_Writing Perl
+Modules for CPAN_ by Sam Tregar) and followed the guidelines there and
+tried to register the module namespace as "GD::OrgChart".  I did
+upload it, however, so it is available at:
+     http://search.cpan.org/author/GALGIER/GD-OrgChart-0.01/
+
+I have since then received some feedback and the latest is:
+     _brian_d_foy wrote:
+     > That sounds likw Image::OrgChart is a subset of GD::OrgChart.  can
+     > the two of you get together to make one module that does both?
+
+So, here I am.
+
+The primary differences I see between our modules are:
+     Image::OrgChart                     GD::OrgChart
+     ---------------                     ------------
+     One line per box                    Multiple lines per box
+     Drawn along left edge               Drawn with subordinates centered below
+     No limit on drawing depth           Simple maxdepth argument
+     Only can use GD built-in fonts      Only can use GD truetype fonts
+     The box is as it is                 A call-back is available to augment
+     Sorts the input                     Draws it as presented
+Also, the "tree" as submitted to your module uses a different structure
+from mine.
+
+Do you want to work on combining these two modules?
+
+Personally I see the following issues:
+     1) Your data structure won't support my needs.  I want to allow
+        the user to store arbitrary data in the structure in addition
+        to the node names.  We would need two different sets of method
+        calls.
+     2) The algorithm to draw your chart has different needs as to calculations
+        of spacing, box size, etc. from mine.  Again, this would need two
+        different sets of methods.
+
+Do you have any comments or suggestions?
+
+-- 
+Gary Algier, WB2FWZ          gaa at ulticom.com             +1 856 787 2758
+Ulticom Inc., 1020 Briggs Rd, Mt. Laurel, NJ 08054      Fax:+1 856 866 2033
+

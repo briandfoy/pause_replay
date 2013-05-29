@@ -1,0 +1,104 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3565
+Return-Path: <stevegt@roton.terraluna.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32616 invoked from network); 16 Nov 2000 09:55:56 -0000
+Received: from scramjet-bk.terraluna.org (HELO roton.terraluna.org) (38.244.98.5)
+  by tmtowtdi.perl.org with SMTP; 16 Nov 2000 09:55:56 -0000
+Received: from roton.terraluna.org (localhost.TerraLuna.Org [127.0.0.1])
+	by roton.terraluna.org (8.9.3/8.9.3) with ESMTP id BAA03573;
+	Thu, 16 Nov 2000 01:55:53 -0800
+Message-ID: <200011160955.BAA03573@roton.terraluna.org>
+To: Graham Barr <gbarr@pobox.com>
+cc: Steve Traugott <stevegt@TerraLuna.Org>, modules@perl.org,
+        andreas.koenig@anima.de, chardin@savageoasis.fc.net,
+        stevegt@roton.terraluna.org
+Subject: Namespace registration for Mail::TieFolder (was: Re: RFD: MH Mailbox API) 
+In-reply-to: Your message of "Mon, 13 Nov 2000 10:01:06 GMT."
+             <20001113100106.R1967@pobox.com> 
+Date: Thu, 16 Nov 2000 01:55:53 -0800
+Approved: news@nntp.perl.org
+From: stevegt@TerraLuna.Org (Steve Traugott)
+References: <20001113100106.R1967@pobox.com>
+
+
+After incorporating input from Andreas and Graham and thinking some
+more about this, here's what I'd like to do:
+
+If there are no objections, I'd like to upload Mail::TieFolder and
+Mail::Tiefolder::mh to PAUSE sometime in the next few days.  The code
+runs clean right now (43 regression tests...)  ;-)
+
+
+Name               DSLI  Description                                  Info
+---------------    ----  -------------------------------------------- -----
+Mail::TieFolder    adpr  mail folder tied hash, keyed by Message-ID   STEVEGT
+
+
+Graham Barr <gbarr@pobox.com> wrote: 
+> On Sun, Nov 12, 2000 at 02:49:11PM -0800, Steve Traugott wrote:
+> > Other thoughts about this...  What I'd really like to do is start
+> > Mail::Tie::* as a tree of similarly tied interfaces to common
+> > mailboxes -- i.e. Mail::Tie::mbox, Mail::Tie::IMAP, etc.  The only
+> > drawback I can see is that that might give people the impression that
+> > I "own" Mail::Tie::*, when in fact I'd like nothing more than to
+> > encourage others to add to the tree.  
+> 
+> Have you taken a look at Mail::Folder which attempts to give a uniform 
+> interface to many types of mailbox.
+
+Actually, I did look at Mail::Folder earlier.  After Graham prompted
+me I went back and took another look, and realized there was something
+there that I really liked:  Kevin did a good job of describing
+stylistic and HOWTO guidelines for implementing additional folder
+formats under Mail::Folder.  This convinced me that it should be
+possible to provide a similar level of high-quality encouragement and
+handholding for potential authors of Mail::TieFolder::* modules.
+
+Before starting work on Mail::TieFolder, I originally took a look at
+trying to use Mail::Folder, as well as Mail::MsgStore.  The
+Mail::MsgStore docs say:
+
+  The Mail::Folder module, on top of not quite being complete yet, is a
+  pretty low-level API. I was very impressed with how Win32::TieRegistry
+  simplified an otherwise complex task...
+
+I happen to agree.  I can't really build on top of Mail::MsgStore
+either though -- it's locked into its own maildir-derived folder
+format -- it's not intended to be a universal interface to existing
+folders. 
+
+One thing I like about tie() interfaces is the fact that they
+constrain authors to a reasonably small and well-defined interface --
+it's bloatware protection.  This protects me from letting my own
+imagination run too wild, and it (hopefully) lowers the bar of entry
+for later authors who might want to add Mail::TieFolder::* modules to
+support additional folder formats.
+
+There are scope and complexity issues I see with Mail::Folder's
+current interface which would deter me from trying to implement
+Mail::Folder::MH.  I won't go into them any more than that here,
+because I think that Kevin deserves the benefit of the doubt -- he's
+never claimed Mail::Folder is anything but alpha code.  While it's
+been 32 months since he uploaded the most recent version, I have some
+old scraggly stuff floating around the net that I'd like to finish
+too, someday.  I'd hope nobody beats me up for it in the meantime.  ;-)
+
+Perhaps more important (to me) is the fact that Mail::Folder uses
+message sequence numbers as the primary key into a folder.  There is a
+better way (I think), because message sequence numbers are not fixed
+attributes uniquely attached to one and only one message.  Using
+message sequence number for mail is equivalent to using queue position
+as the unique identifier for shoppers standing in line at the grocery
+-- if you blink, everyone's identity changes.  ;-)  
+
+The "better way" I wanted to try was to use Message-ID, since it's
+theoretically a globally unique identifier.  I used it in
+Mail::TieFolder as the key into a mail folder.  This way I can sort,
+renumber, pack, and so on, and still have safe, immutable, persistent
+handles on individual messages.  
+
+Steve
+

@@ -1,0 +1,482 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8500
+Return-Path: <rani@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 35605 invoked from network); 27 Oct 2001 18:21:32 -0000
+Received: from pop3.telenet-ops.be (195.130.132.40)
+  by onion.valueclick.com with SMTP; 27 Oct 2001 18:21:32 -0000
+Received: from mikmik.mik (D5E0A8E0.kabel.telenet.be [213.224.168.224])
+	by pop3.telenet-ops.be (Postfix) with ESMTP id 73B3B9C06A
+	for <modules@perl.org>; Sat, 27 Oct 2001 20:21:23 +0200 (CEST)
+Received: from mikush.ockham.be (mikush.mik [172.16.1.4])
+	by mikmik.mik (8.9.3/8.9.3) with SMTP id VAA11994
+	for <modules@perl.org>; Sat, 27 Oct 2001 21:13:52 +0200
+Received: (qmail 24141 invoked from network); 27 Oct 2001 18:21:21 -0000
+Received: from unknown (HELO nitush) (172.16.208.2)
+  by 172.16.208.1 with SMTP; 27 Oct 2001 18:21:21 -0000
+To: <modules@perl.org>
+Subject: Devel::CallerItem and Devel::DumpStack
+Date: Sat, 27 Oct 2001 20:16:00 +0200
+Message-ID: <NFBBLAKLBKKPNEEMBCCKGEDNCAAA.rani@cpan.org>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0040_01C15F24.31CACC00"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: rani@cpan.org ("Rani Pinchuk")
+
+------=_NextPart_000_0040_01C15F24.31CACC00
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+
+Hello,
+
+As you see below, I'm quite desperate. Can someone help me fix the
+Devel::CallerItem and Devel::DumpStack modules on CPAN? They have no
+Makefile.PL and because of that it is difficult to install them.
+
+I attach here the same modules WITH Makefile.PL. Obviously, I cannot change
+the modules themselves as I'm not the author of those modules, and the
+author is un-reachable for quite a long time.
+
+PLEASE! I get many requests from user of my module Log::LogLite, about this
+problem, and this is the second request about it to modules@perl.org
+
+Thanks in advance,
+
+Rani
+
+
+
+
+-----Original Message-----
+From: Terrence Brannon [mailto:metaperl@mac.com]
+Sent: Thursday, October 25, 2001 4:21 PM
+To: Rani Pinchuk
+Subject: Re: SQL::Catalog - test, label, store, search and retrieve SQL
+queries
+
+
+
+On Thursday, October 25, 2001, at 07:01 AM, Rani Pinchuk wrote:
+
+> Thanks Terrence for referencing my module.
+>
+> Yet, I would like to know why you find installing Log::Lite difficult.
+> Is it
+> the Devel::CallerItem and Devel::DumpStack modules?
+
+yeah, the old ones my Jack Shirazi where hell to install... heheh... but
+I think Dave Rolsky has a newer Devel::Dumpstack which is easy to
+install.
+
+> I ask because if this is the reason, I will just forward your answer to
+> CPAN
+> people, asking them again to fix those two modules (those modules comes
+> without Makefile.PL which makes it difficult to install. It is easy to
+> fix,
+> yet as I'm not the author of those modules, I cannot change them on
+> CPAN).
+>
+> Thanks again,
+>
+> Rani
+>
+> -----Original Message-----
+> From: Terrence Brannon [mailto:metaperl@mac.com]
+> Sent: Thursday, October 25, 2001 3:49 PM
+> To: dbi-users@perl.org
+> Cc: ivan-pause@420.am; rani@cpan.org; bugs@iNsu.COM
+> Subject: ANN: SQL::Catalog - test, label, store, search and retrieve SQL
+> queries
+>
+>
+> The URL
+>
+>
+> http://princepawn.perlmonk.org/domains/semantic-
+> elements.com/cpan/SQL-Catalog-0.01.tar.gz
+>
+> has entered CPAN as
+>
+>    file: $CPAN/authors/id/T/TB/TBONE/SQL-Catalog-0.01.tar.gz
+>
+> NAME
+>      SQL::Catalog - test, label, store, search and retrieve SQL queries
+>
+> SYNOPSIS
+>       shell% cd sql_lair/city,date/weather/1/
+>
+>       shell% cat concrete.sql
+>       select city, date from weather where temp_lo < 20;
+>       shell% sql_test concrete.sql
+>       shell% cat testexec.out # see results of prepare, execute on this
+>
+>       shell% cat abstract.sql
+>       select city, date from weather where temp_lo < ?;
+>       shell% sql_test abstract.sql 55 # send in placeholder value
+>       shell% cat testexec.out # to see results... looks good
+>
+>       shell% sql_register abstract.sql basic_weather
+>       [hi_and_low] inserted as
+>       [select city from weather where temp_lo > ? and temp_hi > ? LIMIT
+> 10]
+>
+>       ... then in a Perl program (e.g. test.pl in this distribution)
+>       my $dbh = SQL::Catalog->db_handle; # optional - get the handle as
+> you please
+>       my $sql = SQL::Catalog->lookup('hi_and_low');
+>       my $sth = $dbh->prepare($sql);
+>       $sth->execute(55);
+>
+>       my $rows = $sth->rows;
+>
+> DESCRIPTION
+>      Over time, it has become obvious that a few things about SQL
+> queries
+> are
+>      necessary. One, you want to be able to get a query by a label. Two,
+> you
+>      want to be able to look through old queries to see if someone else
+> has
+>      written one similar to what you want. Three, you want the database
+> guru
+>      to develop queries on his own and be able to register them for your
+> use
+>      without interfering with him. Four, you want to be able to answer
+>      questions such as "what queries are doing a select on such-and-such
+>      tables".
+>
+>      Well, wait no longer, for your solution has arrived.
+>
+> COMMON STEPS TO USAGE
+>    Develop your concrete query in a db shell
+>
+>      The first step to developing a database query is to play around at
+> the
+>      db shell. In this case, you normally dont have any placeheld
+> values.
+> You
+>      just keep mucking with the query until it gives you what you want.
+>
+>      When you finally get what you want, save it in a file, say
+>      `concrete.sql' for example. Here is a concrete query:
+>
+>       select city, date from weather where temp_hi > 20
+>
+>    Abstract your query with placeholders
+>
+>      Now it's time to make your query more abstract. So we do the
+> following:
+>
+>       select city, date from weather where temp_hi > ?
+>
+>      and save in a different file, say `abstract.sql'.
+>
+>      But let's test this query next:
+>
+>       sql_test abstract.sql 34
+>
+>      And let's cat testexec.out to see the results.
+>
+>    Register your query
+>
+>       sql_register abstract.sql city_date_via_temp_hi
+>
+>      and the system tells you
+>
+>       [city_date_via_temp_hi] saved as
+>       [select city, date from weather where temp_hi > ?]
+>
+>    Use your query from DBI:
+>
+>       use SQL::Catalog;
+>
+>       my $dbh = SQL::Catalog->db_handle;
+>       my $SQL = SQL::Catalog->lookup('city_date_via_temp_hi') or die
+> "not
+> found";
+>       my $sth = $dbh->prepare($SQL, $cgi->param('degrees'));
+>        .... etc
+>
+> What you must do
+>      * edit sub db_handle so it gets a database handle.
+>      * copy the sql_* scripts to a place on your `$PATH'
+>      * create a table named sql_catalog. a script for Postgresql is
+> provided.
+> What SQL::Catalog does
+>      It stores each query in a database table. I could have gone for
+>      something more fancy in database design but wanted to maintain
+> database
+>      independence without requiring extra tools for schema creation and
+>      database use.
+>
+>      The queries are stored in this table:
+>
+>       CREATE TABLE sql_catalog (
+>              query varchar(65535) , # the actual query
+>              tables varchar(255) ,  # tables used
+>              columns varchar(255) , # fields selected
+>              cmd varchar(40) ,      # SELECT, INSERT, UPDATE, etc
+>              phold int4   # number of bind_values
+>       );
+>
+>      Query field omitted for brevity. It has (wouldya guess) the SQL
+> query.
+>
+>        mydb=# select label,cmd,columns,tables,phold from sql_catalog;
+>            label     |  cmd   | columns                          |
+> tables  | phold
+>
+> ---------------+--------+-------------------------------------------------
+--
+>       weather_hi    | SELECT | weather.city,weather.date        |
+> weather |     1
+>       hi_and_low    | SELECT | weather.city                     |
+> weather |     2
+>
+> AUTHOR
+>      T. M. Brannon, <tbone@cpan.org>
+>
+> SEE ALSO
+>      * Class::Phrasebook::SQL performs a similar function. It
+>      stores a "phrasebook" of SQL in XML files. It has some rather
+> daunting
+>      satellite module requirements to get the non-optional the Log::Lite
+>      manpage to work.
+>      * DBIx::SearchProfiles does query labeling and also has some
+>      convenience functions for query retrieval. It does not store the
+> SQL
+> in
+>      a database or make it searchable by table, column, or number of
+>      placeholders.
+>
+Fwd: Fwd: Log::LogLite requires Devel::DumpStack?
+
+
+
+       From: Rani Pinchuk <rp@ockham.be>
+       To: modules@perl.org
+       Date: Mon, 02 Jul 2001 20:50:29 GMT
+       Message-ID: <20010702.20502900@localhost.localdomain>
+
+
+
+Hello,
+
+Can someone please help me with this? The email of Jack Shirazi is no
+longer valid. Can someone update his modules? I attached the "fixes" that
+are needed (namely - a usual package with Makefile.PL, test.pl etc...).
+
+Thanks,
+
+Rani
+
+>>>>>>>>>>>>>>>>>> Original Message <<<<<<<<<<<<<<<<<<
+
+On 7/3/01, 12:39:57 AM, Rani Pinchuk <rp@ockham.be> wrote regarding Fwd:
+Log::Loglite requires Devel::DumpStack?:
+
+
+> Hello Jack,
+
+> I was wondering if you still support the modules Devel::DumpStack and
+> Devel::CallerItem. I looked at you directory and saw that the files there
+> are from 1995.
+
+> The reason I ask is that I wrote a class that uses those modules. I found
+> your modules extremely useful and was quite shocked to find out that you
+> wrote them so long ago (around the time I started to learn Perl). Yet -
+> because the modules are supplied without Makefile.PL, it is not obvious
+> how to install them (as you see below).
+
+> I attached to this email your modules as tar.gz files with the
+> Makefile.PL files and the rest of the usual parts in a CPAN package, so
+> they can be installed easily. I wonder if you mind to upload those.
+
+> I will appreciate any comment from you (even if it is a simple "no").
+
+> Anyway, thanks in advance,
+
+> Rani
+
+
+
+
+
+> >>>>>>>>>>>>>>>>>> Original Message <<<<<<<<<<<<<<<<<<
+
+> On 7/2/01, 6:43:14 PM, Michael Dube wrote regarding
+> Log::Loglite requires Devel::DumpStack?:
+
+
+> > Hi,
+
+> > I am trying to install Log::Loglite on Solaris 2.7.  I installed the
+> prereq
+> > of IO::LockedFile, but 'make test' still complains that it can't find
+> > Devel::DumpStack.  I found this module on CPAN, but it is only a .pm
+> file,
+> > with no installation instruction.  I put it in my module path, and the
+> 'make
+> > test' seems to find it, but then it complains about 'Can't locate
+> > auto/Devel/DumpStack/autosplit.ix'.  Do you know anything about this?
+
+> > Mike
+
+
+------=_NextPart_000_0040_01C15F24.31CACC00
+Content-Type: application/x-gzip;
+	name="Devel-CallerItem-0.10.tar.gz"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="Devel-CallerItem-0.10.tar.gz"
+
+H4sICJmepDoCA0RldmVsLUNhbGxlckl0ZW0tMC4xMC50YXIA7Rv9d9NGkl+zf8U0uEgqsi05XxBf
+aAyYkr4QeElKry9xXVlexyqy5OojThpyf/vN7K6+bAcox+N697zvAbJ2dmZ2vme1POeX3K8/c3yf
+RwcJn9Sthm01733RYVmb1s7WFv4rxvy/8nmntWXb9k5rA5/tjZZt3YOte19hpHHiRAD3ojBMPgT3
+sfn/0fF8qf5fOe/4yPN5483hl9C/bVnbm5t36n9jZyvXv72DcPaWvbNxD6yV/r/C9jl0r5KfEs+P
+d3dJ7/QnarP7cMI5+N6gmU0389nGdAKjMIIhTxycgHAE43AGSQheMPJTHrgc1ydjDm4YJDxIBAj9
+zgwLfzgJeDHMIi9BiAb7GR94Nq0zwKEddV51NRBj7wlowlZ3dwtj1UwkQ4Bvu8cnB6+P+i+OX7/S
+BGwBhMxqJtyHkRcMY6gpUGa0Gbu3Gsv9/9nYCS54/KXi/0f8v2W3cv+3tin+b25iGFj5/1cYx/zS
+i70wgLEXJ2F0Lfz6DY984Ffol2Jqwe8ajFkNywY4TcmlUXzbYD3ebVm71iNoWZbNQI06hJF34QWO
+D5c8ImxtcCPuJHwIg2sYt65isBv2Y7Zyxr9V/u8cHbzonpx+Hf/HySL/b+yQ/29srvz/qwwV6Vkl
+X7JM/6xUCLKEx0lj6q889f/f/5Wqv07+t1ut7cL/7S3y/63Wyv+/yrgPTzmmfA6/TdDVsX5Hcfi+
+RqX5lEc4M8FMnWBxALEbedME4nGY+pi8OURpEDgDrOVnXjLGQlxiINPRGtAZJTxaQJovn4XRO3Bi
++G1KpYYyN42x+3cN+JkDaSoR1CAOJxwGvuO+g4lz4bnUe0wjL0gA65URNiVpxLFKuQ8yvmGN0bCR
+Z192KfjLd+KkT3T7SdiXKxsIrh8kiPAaQV2igN3RKPXBk80LgZNgJuElCSWERhM3lA6GXsRdKp4a
+BmNPuz8cHMEN1N7DHthtxdU6MXAerLfhlnWPnsONeh2EyPE7oClIA5/H2KH4oTPkw/Yto95sofZq
+MwUg0DOFR+Fof0iC3WBIbVhJakJCB0HMUazXYRrJHbrhkCtZ6QOekB5RAKg7QSuWxDbWSVpuGEU8
+nobB0Asu/OtiPxvrBnaHUy4mSCckvzh1XdohMuGO04DAEElYEi6RNnZXGea/3v+Vq4EvGf8xwm/L
+uN/K8kGr1drBXLBtWTtY921bVP9tWZgSvm78/9i4cCZfrCH+G40pBgPnYmmcYRjaYBSFkz56Msbc
+G9HVTa71movRMzZr4rWBcWi/3xZzcgJfRHykoAx4/169VzAS2fv3e2AhDXqV8/C0nZHYd5GRt04U
+E3pXMKWrlQ/BNiRcDkQ0Ip6kUYBBdMhHCq8KqMiJgjvb7Bm4jTXag2fWxohnjfpd/IVkcvytNsau
+kRfwoQ61Mc7oGQeeYSAOMODBA/imNm5DzXv4EFHeCnq31d0skSjNDwRTZ+f7z5/u7jrRRWwWG+mZ
+uaxupfwRIJ3wIOn72J/3Ua5wU+ufWb36E/zrVoAQweKtrd6KU7b8bUu99XFXxdsN9Rb/RGGaVOY2
+1dzYifvEZTGzpWZmDmYDnIswX+aT272M8XxqX07eFhNxElFaKAwq5v7IrIn80vdJbmWrEgBJpJRO
+j6QsWlJ/UuJBN+B70PZxToNd0Gr0IJdg9tIVfLYb3RCGIJA1cmyFHBBZAzRdg/YCUKYRRJTtRK+y
+jisNRfoWuI9ZvERKe6AhwDKC7ZIR5dDS+IfCD6G0UpySClJSp6UpP+N/XVQEGboFkypt4NNVgfYZ
+plhx7AGqVL78PfQCHTQTeTCxrpjqGSMCCVWIJHK91q+gNTXNlLgMk62tZQdGgNZSlXNu+bpxmwEa
+bA2MfEMVOgtbwXdVwvieB2YtqESuEkAWm6TgEFa8uLlVb+TPfPdV6yRTE8EPqUoTE8ZXxr6HyMVM
+yZrXCR51tSbsZdkSO1+irJkH9Sc3ct2tmFubx1W1v7W5NbJ8zFcpoZOc+3N6u1uAGRHFN/9UFrXa
+pbLXMsgSlgMR5h4+bC/lX03TJBmmDKwYrZHVIb+SjGt7mkHyq9siPIjQYApvydVUkoKmK84kZuFe
+ewJaV+gRh3wQmDQoVjc+X4g5Ah1yMupBEslCyloRIYqnXGD0Y16fQRjcwY4xH29yf1q+aJljzceG
+qgUWBv4viJta8/xca17Mv9bPfj23et8ZTa1ma022lnVBCqD5q/79LtS/PzsfNnoP4T2cf3d2Ptvt
+fQdGrXm1iOy8ZVn1842dnZ7RjAX/I339Vf1bd90Mo6Fes40Hlr2zYzT5Ek7OxdJzu7r619LiX7c3
+q0sLoX2SwJbagIyCd2Y84U2Ej8TROT7u/NIsklehaZEEP9XsJMlSjqoQedk5ebmUBqbP8ZchcfKs
+c9g5XkokxpTnRJ9NhpdQli1xmaEvkdl/rDWzxn1Oiausvvs3hOc2i0QFh9pZT7uDee1Mk/Upd9wx
+ZFhB35e4qjmkiD5zclPLPii7ChrNJLIY091xOM3ssChfcnZzIS4axReQ4Tt+bdYuHT/l5bqPGLhR
+DMzGVAKhbEugiEkI61sl7mVF3l0hEdFgnJVfjxervjlgQe5DW2pIORaGV5ZmZT+3WmGPy0z/84Wp
+YcAtysK5HUgJfdAskCssEfr97tHzfp+xvTF3hjbQR3nGFrobqEMngHDwO3cTzK3TiMdodlRbOjBK
+AzehL4lUzIpSlonzoIQ6l3BUnY8bOamTX45evzk5OGHspxhbql3ZQEX8j9SLljZYNK06UaK0twiD
+lXPe0epZB5u3j1kxiB0YH/aLQpn6rj2JdGlh2i6Iim4sh6VflWnRluXTsoovTYtaPp+WlXxpmowk
+ny03DwpmEIZ+AVA0O0unK72ThBBhlrZk7suW1yhtew5WvM76hzLUsp7oLsEuLF/SXBllvVZdY6mC
+P5I46OKHsq/n3ZNnxwdvTuk+yBKLlsYcwzj0h0D2REbrBXQo7ghzdQYof7TveMpdb+S5rGro2bEn
+mXkDTucWezEMnNgjyGt5HSYcJA6dOjDR7EkFgBMMoXRUoE4XhogqCXFSMUnoESEdWsfyPD4unV9P
+eDIOh3FxSE5sKVf1cBsQeC7Hfv46c70WvFJLOpeO55Mw0fn2wktkaBMfPOHwZVd63n1z+tJgTLAh
+6dEO1R0g1GRKJ+TidoF4R4ccDRCrCA5ZSCcDHpmscqRMHBeRQjZDTkzbEtcHpIikaEeh74czXMOS
+WSgDCXa6HChYYLSmzIlbTXg0EQfQMxL4BUftTtNEClNTNq+x4nSJR6XzJ7nHD3jKR6KNXF/1pFyW
+S6IKY8ciKpF48AWP6GIVSLXLsxWyTCEmFIBK9AjsJikZFZPelskwt82yWUrDo680KNVpFY72hQZx
+MKq+nqEC1KEEPmkPaKKNPRUCBfJLkeQNH+hrAJ9Mk2uTeYlgVlqEBBCkCZvicxjOggVmNXrSGoWc
+ZEQlQ+P5UZvwF6wHMPPfwWoJgYy5EoGIxn9ptQzJcrUI1n9pdTlkKw5Scv8/UGEYQFAI2ZYCB903
+nBN9LrEFxEWoZ+wpRnmOJoJdMEYXkYJnY/RIHt2pSPFNLY+9JbyVHLEUdX7L70o42KdKwilh7RYu
+mqk/c2aV8vW7U69ZybRmJbGaeadcSajmkgRqLuTMhcUVWVRcN09Vb44Pjk77h9233cOS91ajrUp5
+MhFAnHoiV4nIKIIzhTBH2UWeLy45BtWYiiCVdBY9FQ7D8F3MfO8dUgsK45kTJZ2L0kKddmlUjhdf
+HBx2pVEfHhx12zm4cPGPQu7/NcT7n4SYXXiX81amyyoZC86aqUJJHfYNkSkzQ/fKfsKq5g0oaXpD
+YtQfGA0oaY2utGKKQAak2kTKYShKedVVaogiX66EAu186KoDltOgVcoRjYkPq43FuF+ueJabkZOZ
+TqW6rvIw5v5Q5LkxZwvO0oCqp5F0CMUci2SKTLRRGQYhWjrmVQQnMmBgtTFxytGiWnl1jn8w53cS
+DHmERcXxD8WhbVX+zmgkai7alpK5ytaMriRI8YuMH3GR35NxxJWesDyySLk2/dVqgP4sxVoiSDAV
+OsE1pib6FK3ioCNkhP226ORiUauoe4kOiVprYUobpAkTGY2SGn1bitPpNIwIaISwKbEgCjlyOqri
+UKbivgHDph9Joi1Egp5kT/DrDOnbPdpGSGUMWE272aKFA8zIzojTFYJDUedYKi1LpceFwARfIJ0g
+VgFXti8MlSyp/J7GiVop80odvAaKWlQOSqlypadCxtnGhnmjXYj+d2vrtgczcVFDIHKmU44Oh4Kh
+qlIIUi7SxHGUbl09fvSo5RqaKkO9TH8jJ/UTNJBOooo321zKAixlgc2yqyYyGvKrKRqirGi0eWCl
+LpK6ig85cvQXqVnpGCV3wc0vSAqR57uE5btkQpao4+swhbEzBK3mYDhTX/Z6Zqddwz7trOb02jVH
+nCTv1QZYI7GcJSro3DSKKbDL1KAKKMSkQb5vZe+MCq2zs85exsijDWvjkdHrUWH0gm7X+tcoWBmQ
+xt7FmO5SyJa+tFmyiwyhjIioiTgOXU8I59KJPJGJyNnlVrBETOShkzdiAee55YrlglUMhLgFkoNk
+GktqQGEUjO+KQ3W7EA/+atHnI3zZM3omdMhsjl6fdmV5Q/7GhiGX1WNWy6K4BqnnDyVR1KO4NyRu
+qtTFMxa7USyCNkkXA6Ej8gZRFhUorSGWIrqKrJIGFaUIHQaIHwXhXQRS/Y64uySydpqIFiwMridh
+qipbCkTETNZ0BWgtATY0Ih54qjuZ4g8ZEcQVKDRd33M9aZ8l1UcwQQ/xpgiqquBCX3V17woDDmUg
+6UBFKiLKUiVU07uuQ7erZWygmMOZMDPXJ891w1jUHshl5CXU5pUFzrNiRJUMWZKjFEeRPZaA8j5P
+zFT/UI7aS0IgkRulQibq5neM5s8DkcbQxJxo6P2JRCbhMJ0rf3JTVA0tQ0YoywywxMt79+4/O6/e
+HHZVFZ0VOdK3Ym8y9UnoDv1rguf76OVRUbCWk0YpuztZs4s6zEDL3+FinhCK2BQ+4qL/DDjjV6hO
+Epdc8+wfwjTrV7IbrF6lecLY/W+EuYoTjU8/znL21qfT7JOKW4410MnuVQincnsZkPyCRdca5Bvx
++Z9oWHQoKs8BPtywWka5trUMkz4ol440c4z252G078bY+jyMrQWM4i+5bV0be5rZss2zzU3zbHvb
+vFn/Y91cH3vrt+Y5xmpsAXqqu5e7+qsLWp+4YOFItfPT6cvXx4z9SB35ydiLnD890KlCvZC91NAb
+jTwXIwUMPIwMMyp+EowrgayaMXShdU8NMqhn4fQ6whSAta1rgP348RaU0Tag4/sgACgxxjy6pL4M
+ZCibRuFF5EzIi0bkIXE4SmaYN9oiwpPBR3zokbAxzHCqstERmlguAvmxN7qmV3QFR4bPmJpYeeSC
+IVn8rxJkn/uj4oj31evnBy8OnnXoDA5eHpycvj7+hbG3MmKA3bBM2LAxeP2Y+lTm/3iCK9HdVjcE
+V2M1VmM1VmM1VmM1VmM1VmM1VmM1VmM1VmM1VmM1PjL+DTH3Kw8AUAAA
+
+------=_NextPart_000_0040_01C15F24.31CACC00
+Content-Type: application/x-gzip;
+	name="Devel-DumpStack-0.10.tar.gz"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="Devel-DumpStack-0.10.tar.gz"
+
+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
+/qI0sABQAAA=
+
+------=_NextPart_000_0040_01C15F24.31CACC00--
+

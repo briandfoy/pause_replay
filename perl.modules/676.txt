@@ -1,0 +1,172 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:4600 perl.modules:676
+Return-Path: <Raphael.Manfredi@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13273 invoked from network); 8 Dec 1999 09:05:15 -0000
+Received: from beta.st.com (HELO beta.dmz-eu.st.com) (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 8 Dec 1999 09:05:15 -0000
+Received: from eux100.sgp.st.com (eux100.sgp.st.com [164.129.225.7])
+	by beta.dmz-eu.st.com (Postfix) with ESMTP id 4C1A125DD
+	for <modules@perl.org>; Wed,  8 Dec 1999 09:04:48 +0000 (GMT)
+Received: from lod23.gnb.st.com (lod28.gnb.st.com [164.129.116.152])
+	by eux100.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id KAA04231;
+	Wed, 8 Dec 1999 10:04:43 +0100 (MET)
+To: perl5-porters@perl.org, modules@perl.org
+Subject: ANNOUNCE: Released Log-Agent-0.1.0
+X-Mailer: NMH [version 1.0.1]
+Organization: ST Microelectronics, Grenoble, France
+Date: Wed, 08 Dec 1999 10:05:36 +0100
+Message-ID: <27135.944643936@lod23.gnb.st.com>
+Sender: manfredi@lod23.gnb.st.com
+Approved: news@nntp.perl.org
+From: Raphael.Manfredi@st.com (Raphael Manfredi)
+
+I have released version 0.1 of the new Log::Agent framework.
+
+The purpose of this framework is to have a common ground for all
+reusable modules to perform their logging activities, without committing
+for the underlying implementation of the log.
+
+It is the application's business to choose to use syslog(), or have logging
+done to some files. Or no logging at all.
+
+Until now, reusable modules had two options: no logging, and only warn()
+or die() to report problems. Without letting the application trace those
+things (e.g. it could have been running as a daemon and have STDERR closed,
+so warn() calls would not be traced).
+
+With Log::Agent, modules have a common API to perform the logging, and
+the application can choose from 4 different drivers:
+
+* The Default driver (which is the one used by default if the application
+  does not customize anything) which simply maps to printf(), warn(), die().
+* The Silent driver (which simply maps all calls to /dev/null, conceptually).
+* The File driver, to have logging made to files. One may redirect 'output',
+  'error' and 'debug' channels to separate files, send them to "pipes", or
+  already opened files via magic open.
+* The Syslog driver which remaps calls to Sys::Syslog.
+
+Appended is the README file for the module.
+
+Raphael
+
+------------------------------------------------------------------------
+                           Log::Agent 0.1
+                 Copyright (c) 1999, Raphael Manfredi
+
+------------------------------------------------------------------------
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the Artistic License, a copy of which can be
+    found with perl.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    Artistic License for more details.
+------------------------------------------------------------------------
+
+       *** This is alpha software -- use at your own risks ***
+
+Name           DSLI  Description                                  Info
+-----------    ----  -------------------------------------------- -----
+Log::Agent     adpr  A general logging framework                  RAM
+::Driver       ----  Ancestor class for all Log::Agent drivers    RAM
+::Caller       ----  Fetch and format caller information          RAM
+::Message      ----  A log message with append/prepend routines   RAM
+Log::Agent::Driver
+::Default      ----  The default logging driver                   RAM
+::File         ----  Log messages redirected to files             RAM
+::Silent       ----  Silence all the log messages                 RAM
+::Syslog       ----  Redirects all messages to Sys::Syslog        RAM
+
+SYNOPSIS
+
+	#
+	# In reusable modules, log via logxxx() routines
+	#
+
+	use Log::Agent;
+
+	logsay "creating file";
+	open(FILE, ">>file") || logdie "can't append to file: $!";
+	....
+	close FILE;
+	logwarn "MANIFEST not found" unless -e 'MANIFEST';
+
+	#
+	# In the application, choose a driver for logxxx() messages
+	#
+	# Default behaviour: no need to do anything. logxxx() messages will
+	# be mapped to print, warn or die, as appropriate.
+	#
+	# Or customize a driver, as we do here.
+	#
+
+	use Log::Agent;
+	require Log::Agent::Driver::File;
+
+	(my $me = $0) =~ s|.*/(.*)|$1|;
+
+	my $driver = Log::Agent::Driver::File->make(
+		-prefix     => $me,
+		-showpid    => 1,
+		-channels   => {
+			'error'    => '/tmp/output.err',
+			'output'   => 'log.out',
+			'debug'    => '../appli.debug',
+		},
+	);
+	logconfig(-driver => $driver, -level => 'notice');
+
+	#
+	# Alternative: redirect to syslog
+	#
+
+	use Log::Agent;
+	require Log::Agent::Driver::Syslog;
+
+	(my $me = $0) =~ s|.*/(.*)|$1|;
+
+	my $driver = Log::Agent::Driver::Syslog->make(
+		-prefix     => $me,
+		-showpid    => 1,
+		-facility   => "user",
+		-logopt     => "ndelay",
+	);
+	logconfig(-driver => $driver, -level => 'debug');
+
+DESCRIPTION
+
+Log::Agent is a general logging framework aimed at reusable modules.
+
+Instead of having modules insist on using their onw logging reporting
+(by hardwiring calls to warn() or syslog()) which can conflict with
+the final application's choice, one may use logwarn() for instance to
+emit a warning.
+
+It is then up to the application to decide, once and for all, which
+logging scheme should be used, by selecting a proper driver. If it
+does not select one, the Default driver will be used, which is a simple
+mapping of the logwarn() routine to warn(), for instance.
+
+Or the application may choose to use the Silent driver to make all the
+logwarn() calls be ignored, the Syslog driver to redirect logwarn()
+to Sys::Syslog, or the File driver to redirect logwarn() to the 'error'
+channel defined (by default STDERR), whith proper time stamping.
+
+The available calls are:
+
+	logdie
+	logerr
+	logwarn
+	logsay
+	logtrc 'priority', "message"
+	logdbg 'priority', "message"
+
+Please read the Log::Agent(3) manpage and the related pages for more
+information.
+
+-- Raphael Manfredi <Raphael_Manfredi@pobox.com>
+

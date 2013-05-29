@@ -1,0 +1,318 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4324
+Return-Path: <Ross.Ferguson@cibc.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 617 invoked from network); 24 Jan 2001 17:17:49 -0000
+Received: from relay2.bt.net (194.72.6.62)
+  by tmtowtdi.perl.org with SMTP; 24 Jan 2001 17:17:49 -0000
+Received: from [194.74.48.2] (helo=lnns0016.uk.cibcwm.com)
+	by relay2.bt.net with smtp (Exim 3.15 #1)
+	id 14LTXt-0006h2-00
+	for modules@perl.org; Wed, 24 Jan 2001 17:17:22 +0000
+Received: from 167.26.156.249 by lnns0016.uk.cibcwm.com (InterScan E-Mail VirusWall NT); Wed, 24 Jan 2001 17:23:53 -0000 (GMT Standard Time)
+Received: by LNNS0016 with Internet Mail Service (5.5.2650.21)
+	id <Z55YQND5>; Wed, 24 Jan 2001 17:23:53 -0000
+Message-ID: <D51CE5DD980FD411A09E00805F153A48020A8262@LNNS0030>
+To: "'modules@perl.org'" <modules@perl.org>
+Subject: RE: CPAN contribition - Apache::ASP::Lite
+Date: Wed, 24 Jan 2001 17:23:52 -0000
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: multipart/mixed;
+	boundary="----_=_NextPart_000_01C0862A.6C23FC60"
+Approved: news@nntp.perl.org
+From: Ross.Ferguson@cibc.co.uk ("Ferguson, Ross")
+
+------_=_NextPart_000_01C0862A.6C23FC60
+Content-Type: text/plain;
+	charset="iso-8859-1"
+
+take 2 (module attached)
+ <<Lite.pm>> 
+
+>  -----Original Message-----
+> From: 	Ferguson, Ross  
+> Sent:	Wednesday, January 24, 2001 5:23 PM
+> To:	'modules@perl.org'
+> Subject:	CPAN contribition - Apache::ASP::Lite
+> 
+> 
+> Name  	    : Ross Ferguson
+> E-mail      : ross.ferguson@cibc.co.uk
+> Homepage: N/A
+> ID             : FERGUSOR
+> Description : Lightweight IIS emulation under Apache 
+> DSLI	      : impO
+> 
+> Have been in contact with Joshua Chamas, author of Apache::ASP (enclosed)
+> who suggest publishing it in the Apache::ASP::Lite namespace. (Originally
+> Apache::ASPLite)
+> 
+> thanks
+> Ross Ferguson
+> 
+> 
+> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+> ++++++++++++++++++++++++++++++++
+> I use it to write "ASP ready" CGI scripts under Apache. It makes for
+> future porting to IIS almost seamless. 
+> 
+> thanks for your input on this...
+> -Ross
+> 
+> 
+> -----Original Message-----
+> From: Joshua Chamas [mailto:joshua@chamas.com]
+> Sent: Wednesday, January 24, 2001 4:09 PM
+> To: Ferguson, Ross
+> Cc: 'chamas@alumni.stanford.org'
+> Subject: Re: Apache::ASPLite
+> 
+> 
+> Have you looked at Apache::ASP?  http://www.apache-asp.org
+> 
+> If you wanted to submit this to CPAN, I would recommend a
+> CGI::ASP::Lite module, since this is really for use under
+> CGI style programming.  But tell me, why have ASP objects
+> under CGI, where there are other CGI interfaces, especially
+> CGI.pm ?
+> 
+> Also note, I plan to release a CGI compatible Apache::ASP
+> version one day, but have never been inspired to finish the
+> job.  Let me know if this would interest you.  As it provides
+> a full ASP environment though it will be much slower to run,
+> but would provide things like full script compilation, and 
+> richer API.
+> 
+> --Josh
+> 
+> "Ferguson, Ross" wrote:
+> > 
+> > Joshua,
+> >  attached is limited emulation of Microsoft IIS $Request $Response
+> objects
+> > under Apache environment as a single package.
+> > 
+> > Provides a common CGI interfaces across both platforms
+> > 
+> > Any use under Apache::* on CPAN?
+> > 
+> > -Ross Ferguson
+> > 
+> > 
+> 
+
+
+
+
+
+This e-mail, its content and any files transmitted with it are intended solely for the addressee(s) and may be legally privileged and/or confidential. If you are not the named addressee you should not disseminate, distribute or copy this e-mail.  Please notify the sender immediately by e-mail if you have received this e-mail by mistake and delete this e-mail from your system. E-mail transmission cannot be guaranteed to be secure or error-free as information could be intercepted, corrupted, lost, destroyed, arrive late or incomplete, or contain viruses.  The sender therefore does not accept liability for any errors or omissions in the contents of this message and any attachments  which arise as a result of e-mail transmission.  If verification is required please request a hard-copy version.  This message is provided for information purposes and should not be construed as a solicitation or offer to buy or sell any securities or related financial instruments.
+------_=_NextPart_000_01C0862A.6C23FC60
+Content-Type: application/octet-stream;
+	name="Lite.pm"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="Lite.pm"
+
+#####################################################################=0A=
+#=0A=
+# Apache::ASP::Lite - Implement IIS $Request $Response objects in =
+non-IIS environment =0A=
+#=0A=
+# Emulate limited Microsoft IIS ASP collections under Apache =
+envirnoment=0A=
+#=0A=
+# Author: Ross Ferguson (ross.ferguson@cibc.co.uk)=0A=
+# Revisions: 1.00=0A=
+#=0A=
+# Modhist: =0A=
+# 24-jan-2001	Released=0A=
+#=0A=
+#=0A=
+#####################################################################=0A=
+=0A=
+package Apache::ASP::Lite;=0A=
+$VERSION =3D "1.00";=0A=
+=0A=
+print "content-type: text/html\n\n";=0A=
+=0A=
+sub new {=0A=
+=0A=
+my $self =3D { =0A=
+  $ContentType =3D "text/html",=0A=
+  $sent =3D false,=0A=
+  $query =3D {},=0A=
+  $env	 =3D {},=0A=
+  $form  =3D {}=0A=
+  }; =0A=
+=0A=
+=0A=
+&parse($ENV{'QUERY_STRING'});=0A=
+=0A=
+if($ENV{'REQUEST_METHOD'} eq "POST") {=0A=
+    read(STDIN,$query_string,$ENV{'CONTENT_LENGTH'});=0A=
+    &parse($query_string,true);=0A=
+}=0A=
+=0A=
+while(($key,$value) =3D each %ENV) {=0A=
+  $value =3D~tr/+/ / ;=0A=
+  $value =3D~s/%([0-9a-fA-F]{2})/pack("c",hex($1))/ge;=0A=
+  $self{env}{$key} =3D $value;=0A=
+ }=0A=
+  =0A=
+sub parse {=0A=
+=0A=
+foreach $arg (split(/&/,$_[0])) {=0A=
+  ($key,$value) =3D split(/=3D/,$arg);=0A=
+  $value =3D~tr/+/ / ;=0A=
+  $value =3D~s/%([0-9a-fA-F]{2})/pack("c",hex($1))/ge;=0A=
+  =0A=
+  if($_[1]) {=0A=
+     $self{form}{$key} =3D $value;=0A=
+  } else {=0A=
+     $self{query}{$key} =3D $value;=0A=
+     }=0A=
+  } =0A=
+}=0A=
+=0A=
+bless $self, 'Apache::ASP::Lite';=0A=
+return($self);	=0A=
+}=0A=
+=0A=
+=0A=
+####=0A=
+####=0A=
+####=0A=
+=0A=
+sub Write { =0A=
+=0A=
+my $self =3D shift;=0A=
+=0A=
+if (!$self{$sent}) {=0A=
+   print "content-type: $ContentType\n\n"; =0A=
+   $self{$sent} =3D true;=0A=
+}=0A=
+=0A=
+print @_[0]; =0A=
+}=0A=
+=0A=
+####=0A=
+####=0A=
+####=0A=
+=0A=
+sub Item  { =0A=
+=0A=
+my $self =3D shift;=0A=
+return($self->{Item});=0A=
+}=0A=
+=0A=
+####=0A=
+####=0A=
+####=0A=
+=0A=
+sub Count  { =0A=
+=0A=
+my $self =3D shift;=0A=
+return($self->{Count});=0A=
+}=0A=
+=0A=
+=0A=
+####=0A=
+####=0A=
+####=0A=
+=0A=
+sub QueryString {=0A=
+=0A=
+my $self =3D shift;=0A=
+my $ret =3D { =0A=
+  'Item'  =3D> $self{query}{@_[0]}, =0A=
+  'Count' =3D> scalar keys %{ $self{query} }=0A=
+};=0A=
+=0A=
+bless $ret, Apache::ASP::Lite;=0A=
+return($ret);	=0A=
+}=0A=
+=0A=
+=0A=
+####=0A=
+####=0A=
+####=0A=
+=0A=
+sub ServerVariables { =0A=
+=0A=
+my $self =3D shift;=0A=
+my $ret =3D { =0A=
+  'Item'  =3D> $self{env}{@_[0]},=0A=
+  'Count' =3D> scalar keys %{ $self{env} }=0A=
+}; =0A=
+=0A=
+bless $ret, Apache::ASP::Lite;=0A=
+return($ret);	=0A=
+}=0A=
+=0A=
+=0A=
+####=0A=
+####=0A=
+####=0A=
+=0A=
+sub Form { =0A=
+=0A=
+my $self =3D shift;=0A=
+my $ret =3D { =0A=
+   'Item'  =3D> $self{form}{@_[0]},=0A=
+   'Count' =3D> scalar keys %{ $self{form} }=0A=
+};=0A=
+=0A=
+bless $ret, Apache::ASP::Lite;=0A=
+return($ret);	=0A=
+}=0A=
+=0A=
+####=0A=
+####=0A=
+####=0A=
+=0A=
+sub BinaryWrite { =0A=
+=0A=
+my $self =3D shift;=0A=
+=0A=
+if (!$self{$sent}) {=0A=
+   print "content-type: $ContentType\n\n"; =0A=
+   $self{$sent} =3D true;=0A=
+}=0A=
+=0A=
+print @_[0];=0A=
+}=0A=
+=0A=
+package main;=0A=
+=0A=
+$Request  =3D Apache::ASP::Lite::new(); =0A=
+$Response =3D $Request;=0A=
+=0A=
+1;=0A=
+=0A=
+=3Dhead1 NAME=0A=
+=0A=
+Apache::ASP::Lite - a Module for ASP emulation =0A=
+=0A=
+=3Dhead1 SYNOPSIS=0A=
+=0A=
+	use Apache::ASP::Lite; =0A=
+=0A=
+	$Response->Write("hello<br>\n");=0A=
+=0A=
+ 	$IE=3Dtrue if $Request->ServerVariables("HTTP_USER_AGENT")->Item =
+=3D~/MSIE/;=0A=
+ =0A=
+ 	$Response->Write("IE=3D$IE<br>\n");=0A=
+=0A=
+ 	$Response->Write("id=3D" . $Request->QueryString("id")->Item . =
+"<br>\n");=0A=
+=0A=
+=3Dhead1 DESCRIPTION=0A=
+=0A=
+Emulate limit Microsoft IIS ASP objects under Apache envirnoment =0A=
+Provides common API across both platforms=0A=
+
+------_=_NextPart_000_01C0862A.6C23FC60--

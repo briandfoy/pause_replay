@@ -1,0 +1,126 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7652
+Return-Path: <kpmahony@wamnet.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 59399 invoked from network); 20 Sep 2001 22:54:45 -0000
+Received: from cliff.wamnet.com (208.50.249.21)
+  by onion.valueclick.com with SMTP; 20 Sep 2001 22:54:45 -0000
+Received: from ndm.wamnet.com (ndm.wamnet.com [172.17.38.2])
+	by cliff.wamnet.com (8.11.4/8.11.4) with ESMTP id f8KMscn1355592
+	for <modules@perl.org>; Thu, 20 Sep 2001 17:54:38 -0500 (CDT)
+Received: from noumea.dev.wamnet.com (noumea.dev.wamnet.com [172.17.27.57])
+	by ndm.wamnet.com (8.9.1a/8.9.1) with ESMTP id RAA5559645
+	for <@ndm.wamnet.com:modules@perl.org>; Thu, 20 Sep 2001 17:54:37 -0500 (CDT)
+Received: from wamnet.com (localhost [127.0.0.1]) by noumea.dev.wamnet.com (980427.SGI.8.8.8/980728.SGI.AUTOCF) via ESMTP id RAA09832 for <modules@perl.org>; Thu, 20 Sep 2001 17:55:18 -0500 (CDT)
+Sender: kpmahony@wamnet.com
+Message-ID: <3BAA73D5.E05F65C5@wamnet.com>
+Date: Thu, 20 Sep 2001 17:55:17 -0500
+X-Mailer: Mozilla 4.51C-SGI [en] (X11; I; IRIX 6.5 IP32)
+X-Accept-Language: en, ja
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: CGI.pm and uploading 4096 byte file
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: kpmahony@wamnet.com (Kevin Mahony)
+
+Dear Perl Module authors,
+
+I am using the CGI.pm module from the CPAN, and came across a bug
+when uploading a file of 4096 bytes.  The last 2 bytes of the file
+were being truncated, so that the uploaded file only contained
+4094 bytes.   I investigated this a bit and made the following
+one-line change to fix this:
+
+$ diff CGI.pm.2.77 CGI.pm.fix
+3256c3256
+<     return ($start > 0) ? substr($returnval,0,-2) : $returnval;
+---
+>      return (($start > 0) && ($start <= $bytes)) ?
+substr($returnval,0,-2) : $returnval;
+
+
+Basically what seems to be happening is the code is trying to
+remove the CR/LF at the end of the data just before the MIME
+boundary string, but not succeeding for a file of 4096 bytes.  To
+clarify what I'm seeing, included below is a commented snippet of
+CGI.pm.
+
+## Intended buffer size
+$INITIAL_FILLUNIT = 1024 * 4;
+...
+$FILLUNIT = $INITIAL_FILLUNIT;
+...
+sub read {
+    my($self,$bytes) = @_;
+
+    ## $bytes is set to 4096 because read was called with no
+parameters.
+    $bytes = $bytes || $FILLUNIT;
+
+    # Fill up our internal buffer in such a way that the boundary
+    # is never split between reads.
+    ## Apparently this actually could cause the buffer to be
+larger than 4096!
+    $self->fillBuffer($bytes);
+
+    # Find the boundary in the buffer (it may not be there).
+    ## $start is set to 4098!
+    my $start = index($self->{BUFFER},$self->{BOUNDARY});
+
+    ...
+    my $bytesToReturn;
+    if ($start > 0) {           # read up to the boundary
+            ## In my case $start is 4098!  The boundary string is
+present, but past the size
+            ## of the intended buffer length of 4096.  So
+$bytesToReturn is set to 4096
+            $bytesToReturn = $start > $bytes ? $bytes : $start;
+     } else {
+            $bytesToReturn = $bytes -
+(length($self->{BOUNDARY})+1);
+     }
+
+    ## the BUFFER is truncated to 4096, but this does not include
+the CR/LF, as indicated by
+    ## the value of $start which is 4098.  Two bytes of the
+    my $returnval=substr($self->{BUFFER},0,$bytesToReturn);
+    substr($self->{BUFFER},0,$bytesToReturn)='';
+
+    # If we hit the boundary, remove the CRLF from the end.
+    ## We truncate 2 bytes from the return value, but those 2
+bytes are NOT the CR/LF.
+    ## I just lost the last 2 bytes of the uploaded file!
+    return ($start > 0) ? substr($returnval,0,-2) : $returnval;
+}
+
+Please let me know if this fix looks good, and whether it will be
+incorporated into the CPAN CGI.pm module.
+
+As a side, I would also like to make a modification to CGI.pm.  We
+are using it to upload a bunch of files from an applet running in
+a Browser.  The applet builds a multi-part MIME document and POSTs
+it to our server.  The MIME document can contain many, many
+files.  Since the CGI.pm module opens a filehandle for each
+uploaded file (that it caches on disk), we end up running out of
+filehandles, and the upload fails.  I intend to change this to
+provide an interface where I can specify that I want to change
+this behavior to not open a filehandle for each file.  Instead,
+there will be a new function that will return either a filehandle,
+or possibly even the location of the cached file, so I don't have
+to actually read the file, but can hard link it to where I want
+it.  I would appreciate any input on the usefullness of this
+change.
+
+By the way, this is the first time I'm submitting an update to the
+CPAN, so if I'm not following correct protocol in this submission,
+please excuse me.
+
+Thanks to any and all who have time to reply to this message.
+
+- Kevin -
+

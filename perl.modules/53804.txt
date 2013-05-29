@@ -1,0 +1,165 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53804
+Return-Path: <adamk@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 25648 invoked from network); 31 Mar 2007 12:09:24 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 31 Mar 2007 12:09:24 -0000
+Received: (qmail 31432 invoked by uid 225); 31 Mar 2007 12:09:24 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31418 invoked by alias); 31 Mar 2007 12:09:23 -0000
+X-Spam-Status: No, hits=-4.4 required=8.0
+	tests=ALL_TRUSTED,BAYES_00,DK_POLICY_SIGNSOME
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Sat, 31 Mar 2007 05:09:21 -0700
+Received: (qmail 25643 invoked by uid 515); 31 Mar 2007 12:09:17 -0000
+To: modules@perl.org, modules@perl.org
+Message-ID: <460E4ED5.7060101@cpan.org>
+Date: Sat, 31 Mar 2007 22:06:45 +1000
+User-Agent: Thunderbird 1.5.0.10 (Windows/20070221)
+MIME-Version: 1.0
+CC: hacker@cpan.org
+Subject: Re: Module submission TCLI
+References: <200703291542.l2TFgBXV016277@pause.perl.org>
+In-Reply-To: <200703291542.l2TFgBXV016277@pause.perl.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 124.188.112.43
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: adamk@cpan.org (Adam Kennedy)
+
+While I agree Test:: might be wrong, your entire acronym doesn't work 
+either in that case.
+
+ From what I can tell you are shoving a whole bunch of functionality 
+into it that basically just involves questions and answers to a user.
+
+"...that interact with their
+     host operating system or the network with a current focus on
+     supporting functional testing."
+
+This reads to me as "that do stuff"...
+
+And you don't really have a command line interface, you will support 
+multiple interfaces...
+
+in fact, it seems the only true distinguishing feature of this module is 
+that it's designed to provide a platform for a certain class of HCI 
+(Human-Computer Interface)...
+
+So to take a stab in the dark...
+
+Agent::HCI (I wouldn't class Agent as "taken")
+Agent::CLI
+Bot::HCI
+Bot::CLI
+
+Even if you use voice, it's still really a command line...
+
+Adam K
+
+Perl Authors Upload Server wrote:
+> The following module was proposed for inclusion in the Module List:
+> 
+>   modid:       TCLI
+>   DSLIP:       adpOp
+>   description: CLI for Distributed Functional Testing Agent
+>   userid:      HACKER (Eric Hacker)
+>   chapterid:   4 (Operating_System_Interfaces)
+>   communities:
+>     tcli.org (under contrsuction)
+> 
+>   similar:
+> 
+>   rationale:
+> 
+>     TCLI is an acronym for Transactional Contextual command Line
+>     Interface. Optionally it may stand for Tester's Command Line
+>     Interface.
+> 
+>     TCLI supports the writing of agents (bots) that interact with their
+>     host operating system or the network with a current focus on
+>     supporting functional testing.
+> 
+>     TCLI then supports the writing of Test::Harness compliant test
+>     scripts that control the agents. The tests pass or fail depending on
+>     the responses from the agents.
+> 
+>     TCLI is designed to be network protocol agnostic. It currently
+>     support a Jabber/XMPP Transport as a module that ships with the
+>     core. An HTTP transport is planned. Transports may support both a
+>     human interface (the CLI) and an RPC interface. The RPC interface
+>     supports the testing capability, but could also be used to interact
+>     in a client server like manner with a GUI or some other application.
+> 
+>     TLCI is designed to allow new test functionality to be added
+>     through additional modules. It attempts to make writing these
+>     modules easier by providing Base classes that offer much of the
+>     needed functionality to support a standardized, easy to learn human
+>     interface. The goal is to allow one to add new functionality without
+>     having to spend a lot of time learning the particular syntax.
+> 
+>     Why a new root namespace?
+> 
+>     Because it doesn't completely fit anywhere else. Maybe that's not
+>     good enough, so suggestions are welcome.
+> 
+>     Test:: While it initially supports functional testing, and my
+>     specific interest is network security testing, it can easily do
+>     other things. I have a dream to write an agent to interact with
+>     Google Calendar, so I can IM new appts to my calendar. The TCLI core
+>     supports this type of agent already, it just needs the Google
+>     interface.
+> 
+>     Net:: Net is best left to network protocol stuff (SIP, XMPP,
+>     Packet, etc. ) rather than applications that operate over the
+>     network (LWP, CPAN, etc.) TCLI also can operate completely on a
+>     single host; that's how it's own tests run under Build test.
+> 
+>     Agent:: Taken, unfortunately. Also doesn't reflect the full CLI
+>     capability offered in TCLI.
+> 
+>     Bot:: This is mostly a collection of IRC bots. Bots must not be
+>     transport agnostic, as they need to understand and have a strong
+>     interface to the protocol in order to perform their normal
+>     functions. TCLI is not a traditional bot writing tool.
+> 
+>     POE::Component::TCLI It's not really a Component that is easily
+>     leveraged by other POE applications, though I tried at first. I also
+>     don't believe that everything using POE needs to reside under POE.
+> 
+>     I am open to suggestions about naming. When I began this effort, I
+>     tried to find something already exisiting that would meet my needs.
+>     While I borrowed ideas and pieces from a variety of places, there
+>     was nothing that I could find that met the core requirements that
+>     I've put into TCLI. In that respect , I believe it is unique. I also
+>     believe that it will meet the needs for many others outside of
+>     network security functional testing, and testing in general.
+> 
+>     In fact, the contextual properties of the CLI interface as well as
+>     an attempt to remove the use of symbols as much as possible may make
+>     TCLI a good candidate for being the backend to a voice driven system
+>     in the future.
+> 
+>     Ahem. appointment add date june 1 time 8 subject "darn subjects
+>     need quoting" alarm 15
+> 
+>     Who knows?
+> 
+>     Regards, Eric Hacker pause id: HACKER
+> 
+>   enteredby:   HACKER (Eric Hacker)
+>   enteredon:   Thu Mar 29 15:42:11 2007 GMT
+> 
+> The resulting entry would be:
+> 
+> TCLI              adpOp CLI for Distributed Functional Testing Agent HACKER
+> 
+> 
+> Thanks for registering,

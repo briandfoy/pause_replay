@@ -1,0 +1,60 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:6156
+Return-Path: <shasan@crestarnet.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6506 invoked from network); 19 Jun 2001 06:45:36 -0000
+Received: from unknown (HELO khi.crestarnet.net) (202.133.32.12)
+  by onion.valueclick.com with SMTP; 19 Jun 2001 06:45:36 -0000
+Received: from crestarnet.net (star.crestarnet.net [202.133.32.35])
+	by khi.crestarnet.net (8.9.3/8.9.3) with ESMTP id MAA10907
+	for <modules@perl.org>; Tue, 19 Jun 2001 12:43:46 -0400 (EDT)
+Message-ID: <3B2EF4C7.F95070FB@crestarnet.net>
+Date: Tue, 19 Jun 2001 11:44:23 +0500
+X-Mailer: Mozilla 4.73 [en] (Win98; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Problem with the DB.
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: shasan@crestarnet.net (Sohail Hasan)
+
+Hi,
+
+I am running the Solaris 8 with Perl version 5.005_03 as comes with
+Solaris 8. I have successfully insalled BerkeleyDB.3.2. But now when I
+try to compile any package that requires the DB Support I get the
+message that DB library not present or found, all the required DB
+libraries and include files are in appropriate locations. I got the
+messages like these:
+
+Checking for installation of Berkely DB or GNU DB capability...
+No DBM package was successfully found or installed at
+/usr/perl5/5.00503/AnyDBM_File.pm line 14.
+
+Where the AnyDBM_File.pm at line 14 says:
+package AnyDBM_File;
+
+use vars qw(@ISA);
+@ISA = qw(NDBM_File DB_File GDBM_File SDBM_File ODBM_File) unless @ISA;
+
+my $mod;
+for $mod (@ISA) {
+    if (eval "require $mod") {
+        @ISA = ($mod);  # if we leave @ISA alone, warnings abound
+        return 1;
+    }
+}
+
+die "No DBM package was successfully found or installed";
+
+I hope you would give me helpful advice about what's the problem.
+
+Best Regards,
+
+Sohail
+

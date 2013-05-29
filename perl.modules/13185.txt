@@ -1,0 +1,148 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13185
+Return-Path: <alian@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 66488 invoked by uid 1008); 13 Aug 2002 15:38:13 -0000
+Delivered-To: cpanmail-modules@cpan.org
+Received: (qmail 66473 invoked by uid 76); 13 Aug 2002 15:38:13 -0000
+Received: from alian.net1.nerim.net (HELO jupiter.alianet) (62.212.98.196)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Tue Aug 13 15:38:13 2002 -0000
+Received: from netbsd.alianet (netbsd.alianet [192.168.100.67])
+	by jupiter.alianet (8.12.3/8.12.3/Debian -4) with ESMTP id g7DFUXZC029081;
+	Tue, 13 Aug 2002 17:30:33 +0200
+Received: (from alian@localhost)
+	by netbsd.alianet (8.11.3nb1/8.11.3) id g7DFZRF10528;
+	Tue, 13 Aug 2002 17:35:27 +0200 (CEST)
+Date: Tue, 13 Aug 2002 17:35:27 +0200 (CEST)
+Message-ID: <200208131535.g7DFZRF10528@netbsd.alianet>
+To: cpan-testers@perl.org
+Subject: FAIL Math-Pari-2.010305 i386-netbsd 1.5.2
+Cc: modules@cpan.org
+Approved: news@nntp.perl.org
+From: alian@cpan.org
+
+This distribution has been tested as part of the cpan-testers
+effort to test as many new uploads to CPAN as possible.  See
+http://testers.cpan.org/
+
+Please cc any replies to cpan-testers@perl.org to keep other
+test volunteers informed and to prevent any duplicate effort.
+
+-- 
+This is an error report generated automatically by CPANPLUS.
+Below is the error stack during 'make test':
+
+cd libPARI && /usr/bin/make LIB="" LIBPERL_A="libperl.a" LINKTYPE="dynamic" PREFIX="/usr/local/perl-5.8.0" OPTIMIZE="-O" PASTHRU_DEFINE="" PASTHRU_INC=""
+PERL_DL_NONLAZY=1 /usr/local/perl-5.8.0/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/*.t
+t/analyz......ok
+        2/6 skipped: various reasons
+t/elliptic....ok
+        2/46 skipped: various reasons
+t/graph.......# Can't locate Term/Gnuplot.pm in @INC, ignoring plotting
+ok
+        3/28 skipped: various reasons
+t/linear......FAILED test 11
+	Failed 1/105 tests, 99.05% okay (less 2 skipped tests: 102 okay, 97.14%)
+t/nfields.....PARI:   ***   Warning: insufficient precision for fundamental units, not given.
+PARI:   ***   Warning: not a fundamental discriminant in quadclassunit.
+ok
+        3/161 skipped: various reasons
+t/number......ok
+        3/83 skipped: various reasons
+t/objets......FAILED test 39
+	Failed 1/62 tests, 98.39% okay (less 5 skipped tests: 56 okay, 90.32%)
+t/Pari........ok
+t/ploth.......# Can't locate Term/Gnuplot.pm in @INC, ignoring plotting
+ok
+        11/34 skipped: various reasons
+t/PlotRect....# Can't locate Term/Gnuplot.pm in @INC, ignoring the test
+skipped
+        all skipped: no reason given
+t/polyser.....FAILED test 32
+	Failed 1/51 tests, 98.04% okay (less 5 skipped tests: 45 okay, 88.24%)
+t/program.....ok
+        17/37 skipped: various reasons
+t/sumiter.....FAILED test 8
+	Failed 1/21 tests, 95.24% okay (less 6 skipped tests: 14 okay, 66.67%)
+t/trans.......FAILED tests 35, 44, 57
+	Failed 3/62 tests, 95.16% okay (less 4 skipped tests: 55 okay, 88.71%)
+Failed Test Stat Wstat Total Fail  Failed  List of Failed
+-------------------------------------------------------------------------------
+t/linear.t               105    1   0.95%  11
+t/objets.t                62    1   1.61%  39
+t/polyser.t               51    1   1.96%  32
+t/sumiter.t               21    1   4.76%  8
+t/trans.t                 62    3   4.84%  35 44 57
+1 test and 63 subtests skipped.
+Failed 5/14 test scripts, 64.29% okay. 7/804 subtests failed, 99.13% okay.
+*** Error code 45
+
+Stop.
+
+
+Additional comments:
+
+Hello, modules! Thanks for uploading your works to CPAN.
+
+I noticed that the test suite seem to fail without these modules:
+
+Term::Gnuplot
+Term::Gnuplot
+Term::Gnuplot
+
+As such, adding the prerequisite module(s) to 'PREREQ_PM' in your
+Makefile.PL should solve this problem.  For example:
+
+WriteMakefile(
+    AUTHOR      => 'modules (modules@cpan.org)',
+    ... # other information
+    PREREQ_PM   => {
+	'Term::Gnuplot'	=> '0', # or a minimum workable version
+	'Term::Gnuplot'	=> '0', # or a minimum workable version
+	'Term::Gnuplot'	=> '0', # or a minimum workable version
+    }
+);
+
+If you are interested in making a more flexible Makefile.PL that can
+probe for missing dependencies and install them, ExtUtils::AutoInstall
+at <http://search.cpan.org/search?dist=ExtUtils-AutoInstall> may be
+worth a look.
+
+Thanks! :-)
+
+
+
+--
+
+Summary of my perl5 (revision 5.0 version 8 subversion 0) configuration:
+  Platform:
+    osname=netbsd, osvers=1.5.2, archname=i386-netbsd
+    uname='netbsd netbsd.alianet 1.5.2 netbsd 1.5.2 (generic) #3: sat aug 18 23:37:05 cest 2001 he@hamster.urc.uninett.no:usrsrcsysarchi386compilegeneric i386 '
+    config_args='-d -Dprefix=/usr/local/perl-5.8.0'
+    hint=recommended, useposix=true, d_sigaction=define
+    usethreads=undef use5005threads=undef useithreads=undef usemultiplicity=undef
+    useperlio=define d_sfio=undef uselargefiles=define usesocks=undef
+    use64bitint=undef use64bitall=undef uselongdouble=undef
+    usemymalloc=y, bincompat5005=undef
+  Compiler:
+    cc='cc', ccflags ='-fno-strict-aliasing -I/usr/pkg/include',
+    optimize='-O',
+    cppflags='-fno-strict-aliasing -I/usr/pkg/include'
+    ccversion='', gccversion='2.95.2 19991024 (release)', gccosandvers='netbsdelf'
+    intsize=4, longsize=4, ptrsize=4, doublesize=8, byteorder=1234
+    d_longlong=define, longlongsize=8, d_longdbl=define, longdblsize=12
+    ivtype='long', ivsize=4, nvtype='double', nvsize=8, Off_t='off_t', lseeksize=8
+    alignbytes=4, prototype=define
+  Linker and Libraries:
+    ld='cc', ldflags =' -Wl,-rpath,/usr/pkg/lib -Wl,-rpath,/usr/local/lib -L/usr/pkg/lib -L/usr/local/lib'
+    libpth=/usr/pkg/lib /usr/local/lib /usr/lib
+    libs=-lm -lc -lposix -lcrypt -lutil
+    perllibs=-lm -lc -lposix -lcrypt -lutil
+    libc=/usr/lib/libc.so, so=so, useshrplib=false, libperl=libperl.a
+    gnulibc_version=''
+  Dynamic Linking:
+    dlsrc=dl_dlopen.xs, dlext=so, d_dlsymun=undef, ccdlflags='-Wl,-whole-archive -lgcc -Wl,-no-whole-archive 			-Wl,-E '
+    cccdlflags='-DPIC -fPIC ', lddlflags='--whole-archive -shared  -L/usr/pkg/lib -L/usr/local/lib'
+

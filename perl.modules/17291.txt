@@ -1,0 +1,65 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17291
+Return-Path: <corliss@digitalmages.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22265 invoked by uid 76); 22 Jan 2003 00:41:49 -0000
+Received: from [12.17.180.99] (HELO sigurd.digitalmages.com) (12.17.180.99) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-22 00:41:49Z
+Received: from localhost (localhost [127.0.0.1])	by sigurd.digitalmages.com (8.11.6/8.11.6) with ESMTP id h0M09ue04649	for <modules@perl.org>; Tue, 21 Jan 2003 15:09:56 -0900
+Date: Tue, 21 Jan 2003 15:09:56 -0900 (AKST)
+To: modules@perl.org
+Subject: Namespace suggestions?
+Message-ID: <Pine.LNX.4.44.0301211440170.4215-100000@sigurd.digitalmages.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: corliss@digitalmages.com (Arthur Corliss)
+
+Greetings:
+
+I previously submitted Object::BaseClass for consideration as part of CPAN.
+I've spent the better part of this day reading pods for the Class::* modules,
+and I believe that my module would probably be better classified here.
+
+I'm still requesting inclusion in CPAN based on the following reasons:
+
+  --I haven't found a module on CPAN (correct me if I missed it)
+    that tracks parent<->child relationships (in terms of the
+    parent being a container for its children) and does an orderly
+    termination of objects as a result automatically
+  --While some modules provide auto-accessor capabilities, they
+    don't do so in quite the same manner, nor do they combine
+    that capability for psuedo properties like state flag registers
+  --Most do not provide a psuedo event-handling mechanism, either
+
+A little background on methodology:
+
+This module is meant to be subclassed.  A custom object would provide one
+mandatory method which is called by the constructor.  This method defines the
+object's properties and flags, which consists of (optional) event handlers
+for each flag, and read, write, or unified property accessors.  A generic
+accessor is provided and can work in any of the mentioned modes.  All custom
+handlers and accessors would account for the rest of the derived class.
+
+Both flags and properties are exposed directly in the interface as virtual
+methods, with a standard interface.  Flags and properties are handled
+differently internally, but internal methods do all conform to a standard
+method of invocation for each type.
+
+Events are triggered by manipulation of the state flag registers.
+
+So here's where you can tell me to go away, if need be.  I believe that this
+peculiar mix of functionality would be somewhat tedious to reproduce from the
+existing modules, and hence, could be made available as a CPAN module.
+
+If you guys don't think I'm barking up the wrong tree, I would suggest that a
+better name would be Class::Hybrid or Class::Generic.  I would be happy to
+hear any suggestions you have as well.
+
+	--Arthur Corliss
+	  Bolverk's Lair -- http://arthur.corlissfamily.org/
+	  Digital Mages -- http://www.digitalmages.com/
+	  "Live Free or Die, the Only Way to Live" -- NH State Motto
+

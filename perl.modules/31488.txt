@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:31488
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 44657 invoked from network); 4 May 2004 08:54:15 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by onion.develooper.com with SMTP; 4 May 2004 08:54:15 -0000
+Received: (qmail 21943 invoked by uid 225); 4 May 2004 08:54:14 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 21933 invoked by alias); 4 May 2004 08:54:14 -0000
+X-Spam-Status: No, hits=0.0 required=7.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Tue, 04 May 2004 01:54:13 -0700
+Received: from franz.ak.mind.de (localhost [127.0.0.1])
+	by franz.ak.mind.de (8.12.3/8.12.3/Debian-6.6) with ESMTP id i448rwUM011199;
+	Tue, 4 May 2004 10:53:59 +0200
+Received: (from k@localhost)
+	by franz.ak.mind.de (8.12.3/8.12.3/Debian-6.6) id i448rrpC011197;
+	Tue, 4 May 2004 10:53:53 +0200
+X-Authentication-Warning: franz.ak.mind.de: k set sender to andreas.koenig@anima.de using -f
+To: modules@perl.org
+Cc: merlyn@stonehenge.com (Randal L. Schwartz),
+   "Andreas J. Koenig"
+ <andreas.koenig@anima.de>
+Subject: Re: Trojan horses in Makefile.PLs
+References: <030520041417238862%comdog@panix.com> <40968E22.3090709@iki.fi>
+	<86zn8pb8tz.fsf@blue.stonehenge.com> <87wu3s223r.fsf@franz.ak.mind.de>
+Reply-To: modules@perl.org
+Date: Tue, 04 May 2004 10:53:53 +0200
+In-Reply-To: <87wu3s223r.fsf@franz.ak.mind.de> (Andreas J. Koenig's message
+ of "Tue, 04 May 2004 07:27:52 +0200")
+Message-ID: <87r7u01ske.fsf@franz.ak.mind.de>
+User-Agent: Gnus/5.110002 (No Gnus v0.2) Emacs/21.3 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Spam-Rating: onion.develooper.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de (Andreas J Koenig)
+
+>>>>> On Tue, 04 May 2004 07:27:52 +0200, Andreas J Koenig <andreas.koenig@anima.de> said:
+
+>>>>> On 03 May 2004 12:37:44 -0700, merlyn@stonehenge.com (Randal L. Schwartz) said:
+ >> Can we at least take proactive action and delete the PAUSE index items
+
+  > I'm about to do that.
+
+For the record, I committed these three small changes:
+
+mysql> alter table packages add status enum('index','noindex') NOT NULL default 'index';
+Query OK, 33347 rows affected (6.40 sec)
+Records: 33347  Duplicates: 0  Warnings: 0
+mysql> update packages set status='noindex' where packages.dist like 'D/DO/DOMIZIO/%';
+Query OK, 39 rows affected (0.30 sec)
+Rows matched: 39  Changed: 39  Warnings: 0
+
+Index: cron/mldistwatch
+===================================================================
+--- cron/mldistwatch    (revision 493)
++++ cron/mldistwatch    (working copy)
+@@ -279,7 +279,8 @@
+     }
+     my $date = HTTP::Date::time2str();
+     my $sth = $dbh->prepare(qq{SELECT package, version, dist, file
+-                               FROM packages});
++                               FROM packages
++                               WHERE status='index'});
+     $sth->execute;
+     my(@row,@listing02);
+     my $numrows = $sth->rows;
+
+
+The first index written after these changes is 
+
+ Written-By:   Id: mldistwatch 494 2004-05-04 06:34:08Z k 
+ Last-Updated: Tue, 04 May 2004 07:38:53 GMT
+
+and it contains no DOMIZIO-owned modules anymore. Uploading is still
+possible for DOMIZIO and his next upload will be indexed again. I'm
+sure the next uploads will behave according to our expectations.
+
+I'll forward this message to DOMIZIO's secret address.
+
+FWIW, the whole thread that brought this up is archived at
+http://www.xray.mpe.mpg.de/mailing-lists/modules/2004-05/msg00096.html
+
+DOMIZIO, please clear things up. modules@perl.org is publicly readable
+and can be written to, but cannot be subscribed to. I think, it's a
+good place to discuss this, that's why the Reply-To is already set to
+the address. If some other forum already has a similar thread, please
+let us know.
+
+-- 
+andreas

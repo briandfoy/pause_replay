@@ -1,0 +1,160 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4913
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19950 invoked from network); 5 Apr 2001 07:32:43 -0000
+Received: from palladium.baremetal.com (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 5 Apr 2001 07:32:43 -0000
+Received: from [24.64.199.254] (h24-64-199-254.gv.shawcable.net [24.64.199.254])
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id AAA17247;
+	Thu, 5 Apr 2001 00:32:40 -0700
+Mime-Version: 1.0
+X-Sender: darren@DarrenDuncan.net (Unverified)
+Message-ID: <f04320400b6f175e445c0@[24.66.166.107]>
+Date: Thu, 5 Apr 2001 00:32:40 -0700
+To: modules@perl.org
+Subject: I request namespaces for File::VirtualPath, Config::HashTree,
+ HTML::Application
+Cc: darren@DarrenDuncan.net
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+I would like to request namespaces for 3 new modules which would be 
+used together as a support system for web applications that are 
+easily portable across servers because common environment-specific 
+details are abstracted away.
+
+The abstracted details include:
+1. The file system type.
+2. Your project's location within the filesystem.
+3. The base web url of your project.
+4. The kind of web server environment you are using (eg: CGI or mod_perl).
+5. The method of passing session variables to yourself.
+6. How input like queries, posts, and cookies is fetched.
+7. How output like HTML pages and cookies are are sent to the user.
+
+In addition, my modules can make it easier for the application to be 
+broken into reusable components, each of which could act like it was 
+its own application, which receives user-input and configuration data 
+some how and returns an HTML page.
+
+Here is the DSLI for the three modules that I propose, in "uses" order:
+
+Name              DSLI Description                                  Info
+------------      ---- -------------------------------------------- ----
+File::
+::VirtualPath     adpO Portable abstraction of a file/dir/url path  DUNCAND
+Config::
+::HashTree        adpO Abstracts n-depth hash tree over m-files     DUNCAND
+HTML::
+::Application     adpO Framework for portable complex web apps      DUNCAND
+
+Note that the first two lower-level modules are generic to the point 
+of working with any kind of application, whether it is web related or 
+not.  It is the highest-level third module that has the web-centric 
+focus.  That is why the first two are not in the HTML::Application::* 
+namespace.
+
+Note also that these modules are centrally data structures or program 
+control structures and they do not do any input or output by 
+themselves; this makes them a lot more flexible for applications 
+since you have full control over your own I/O.  The one exception is 
+that Config::HashTree will open filesystem files which you specify; 
+no user I/O is done, however.
+
+My modules can be considered interfaces, so that your fat core 
+application sees a constant interface regardless of the platform it 
+is on; that is the abstraction I am referring to.  However, the thin 
+"main" of your application still needs to know the 
+environment/filesystem/server details since it handles the actual 
+user I/O.  Look at it this way:
+
+             YOUR THIN             MY MODULES      FAT CORE
+USER <----> "MAIN" CONFIG, <----> ABSTRACT <----> FUNCTIONALITY
+             I/O PROGRAM           LAYER           OF YOUR PROGRAM
+             (non-portable)        (portable)      (portable)
+
+Now, this is not to say that your "main" can't be autosensing of its 
+environment or
+use other modules to do the I/O.  Its just that my modules are being 
+kept simpler
+by avoiding these details.
+
+If for some reason you can't grant me the above namespaces, then 
+please treat this letter as an RFC and let me know why not.
+
+More on the features:
+
+Building on File::VirtualPath, each application instance is provided 
+with a "virtual filesystem", which resembles UNIX, inside which it 
+owns the root directory.  Your core application would then take this 
+space and organize it how it sees fit for configuration and data 
+files, including any use of subdirectories that is desired.  My 
+modules would take care of mapping this virtual filesystem to the 
+real one, in which your virtual root is actually a subdirectory and 
+your path separators may or may not be the UNIXy ones.  During the 
+initialization of your app, you would just need to pass two strings 
+to my modules containing the actual path to the virtual root and the 
+actual path separator; you only need to change these in one place 
+when your project is moved around to a different dir or a different 
+OS and your app still knows how to find its files without worrying 
+about platform specifics.
+
+Config::HashTree represents a hierarchical data structure which has a 
+hash as its root, and can be arbitrarily complex from that point on. 
+Your program controls what data is in the data structure and it knows 
+the data's significance.  At certain points in the program flow, 
+branches in the structure will be followed until a node is reached 
+that your program wants to be a hash.  At that point, this node can 
+be given back to my module and resolved into a hash one way or 
+another.  If it already is a hash then it is given back as is; 
+otherwise it is taken as a filename for a Perl file which when 
+evaluated with "do" returns a hash.  The point is that your data file 
+itself specifies how the whole data structure is segmented, whether 
+it is in a single piece or many pieces.  Your "main" program could 
+hand off the program settings in a hardwired hash or as a filename, 
+so you can have your settings in there or separate, to an m-level 
+depth of subordinate files.  So it is easier to make your program 
+data-controlled rather than code-controlled.
+
+HTML::Application is designed to make building scalable and reusable 
+web applications easier by providing a framework for managing their 
+states and components.  The module provides a consistent context that 
+application components can be written to, so that they can each act 
+as if they are the "main program", whether or not they actually are.
+
+When any component is started, it sees that it must construct an HTML 
+page of some kind as output, and that it is with provided a 
+hierarchical set of "preferences" to customize its behaviour, and 
+that it has a "virtual filesystem directory" that it can use to read 
+or write persistant data, and that it has its own branch in the 
+"virtual url hierarchy" to map its sub-functions (or "web pages") 
+into, and that it is provided with any user input details (usually 
+from the query) that it needs to know.
+
+An application designer can take any "subclassed" components that 
+they wish and organize them into a calling hierarchy where some 
+components can ask others to do a portion of their work.  All 
+components are called in exactly the same way, where the caller makes 
+sure that the environment for the called is right, and taking the 
+results of the called.  So you can use exactly one of them or more in 
+your application.  My module takes care of many interaction details, 
+so it is easy for a component to use its own context, and to set up 
+contexts for others.
+
+Since "preferences" are themselves hierarchical, the programmer using 
+some components has but to properly set the preferences for the top 
+level component, and those preferences say which other components the 
+first one calls, and say how to set up their environment.
+
+If it would help, you can examine the code of my temporary modules 
+CGI::WPM::Globals and CGI::WPM::PageMaker since prototypes of the 
+above functionality are in them.
+
+Thanks for all your help.
+
+// Darren Duncan
+

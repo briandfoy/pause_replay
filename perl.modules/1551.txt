@@ -1,0 +1,65 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1551
+Return-Path: <kstar@o2.chapin.edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29531 invoked from network); 5 Apr 2000 20:42:53 -0000
+Received: from chapin.edu (HELO o2.chapin.edu) (206.71.228.1)
+  by tmtowtdi.perl.org with SMTP; 5 Apr 2000 20:42:53 -0000
+Received: (from kstar@localhost) by o2.chapin.edu (980427.SGI.8.8.8/950213.SGI.AUTOCF) id QAA24901; Wed, 5 Apr 2000 16:34:28 -0400 (EDT)
+Date: Wed, 5 Apr 2000 16:34:27 -0400
+To: "Andreas J. Koenig" <andreas.koenig@anima.de>
+Cc: cpan@perl.org, modules@perl.org,
+        "Elaine M. Ashton" <elaine@chaos.wustl.edu>,
+        Jarkko Hietaniemi <jhi@iki.fi>
+Subject: Re: Reworking CPAN/authors/id/
+Message-ID: <20000405163427.A21001@O2.chapin.edu>
+References: <m3bt3ozpof.fsf@ak-71.mind.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95i
+In-Reply-To: <m3bt3ozpof.fsf@ak-71.mind.de>; from Andreas Koenig on Wed, Apr 05, 2000 at 02:40:32PM +0200
+Approved: news@nntp.perl.org
+From: kstar@chapin.edu ("Kurt D. Starsinic")
+
+On Wed, Apr 05, 2000 at 02:40:32PM +0200, Andreas Koenig wrote:
+> I believe, the CPAN/authors/id/ directory needs a gentle cleanup.
+> Currently there is no simple algorithm to generate the directory of an
+> author from the userid. The only way to find out that JHI has the
+> directory JHI/ is by trying which of JHI/ and J/JH/JHI/ exists.
+> 
+> It would be a simple job to make the transition with backwards
+> compatibility like so (tested):
+> 
+>   use File::Path qw(mkpath);
+>   opendir DIR, "."; # from authors/id
+>   for (readdir DIR){
+>     next if /^\./ or length($_)==1;
+>     my $targ = substr($_,0,1) . "/" . substr($_,0,2);
+>     mkpath $targ;
+>     rename $_, "$targ/$_";
+>     symlink "$targ/$_", $_;
+>   }
+> 
+> But that will cause a huge avalanche of mirror traffic (both for
+> mirror and rsync). So I suppose we'd have a sleep 3600 after each loop
+> so that the job takes 12 days until all 290 directories are relocated.
+> 
+> The question is: do you see any other problems I am not seeing? Is
+> sleep 3600 OK? Is the whole idea sound? If nobody has objections, I'll
+> start tomorrow by relocating my own directory, wait a week and if no
+> problems are reported run the job with the sleep 3600. Otherwise,,,
+> 
+> Opinions?
+
+    The idea is very good, Andreas.  It would probably be a good idea _not_
+to run it when the update daemons are running, or you might get very
+confusing glitches in the moment between the rename and the symlink.
+
+    Peace,
+* Kurt Starsinic (kstar@orientation.com) ---------- Senior Network Engineer *
+|          `The term `Internet' has the meaning given that term in          |
+|           section 230(f)(1) of the Communications Act of 1934.'           |
+|           -- H.R. 3028, Trademark Cyberpiracy Prevention Act              |
+

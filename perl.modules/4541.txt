@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4541
+Return-Path: <briani@ActiveState.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19589 invoked from network); 22 Feb 2001 22:37:07 -0000
+Received: from gw.activestate.com (HELO smtp1.ActiveState.com) (209.17.183.249)
+  by tmtowtdi.perl.org with SMTP; 22 Feb 2001 22:37:07 -0000
+Received: from smtp3.ActiveState.com (smtp3.ActiveState.com [192.168.3.19])
+	by smtp1.ActiveState.com (8.11.1/8.11.1) with ESMTP id f1MMadU04668
+	for <modules@perl.org>; Thu, 22 Feb 2001 14:36:39 -0800
+Received: from activestate.com (ingy@thebrain.activestate.com [192.168.3.187])
+	by smtp3.ActiveState.com (8.11.1/8.11.1) with ESMTP id f1MMadJ23710
+	for <modules@perl.org>; Thu, 22 Feb 2001 14:36:39 -0800
+Sender: ingy@ActiveState.com
+Message-ID: <3A9595D2.75434116@activestate.com>
+Date: Thu, 22 Feb 2001 14:42:26 -0800
+X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.13 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: RFC for Inline::Files namespace
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Filtered-By: PerlMx makes it fast and easy.  See http://www.ActiveState.com/Products/PerlMx/Header
+Approved: news@nntp.perl.org
+From: briani@ActiveState.com (Brian Ingerson)
+
+I'm working on a module that will allow you to have multiple DATA-like
+file handles in your Perl script. This is not yet complete but will look
+something like:
+
+----8<----
+use Inline::Files;
+
+while (<BAR>) {
+    # process BAR file
+}
+
+while (Foo) {
+    while (<Foo>) {
+        # process next Foo file
+    }
+}
+
+__Foo__
+
+This is a text psuedo file
+
+Line 1
+Line 2
+
+__BAR__
+
+This is another file
+
+__Foo__
+
+This is another file with the same file handle name as the first.
+
+__END__
+
+Real end of Perl code. Real DATA file handle.
+
+----8<----
+
+BTW, This module has nothing to do with the usual Inline:: candidates,
+per se. It doesn't bind any language to Perl. Although future versions
+of Inline.pm may have support for it.
+
+
+Name             DLSI    Description                                 
+Info
+Inline::Files    cdpr    Support for multiple DATA-like file handles 
+INGY
+
+Cheers, Brian
+
+-- 
+perl -le 'use Inline C=>q{SV*JAxH(char*x){return newSVpvf
+("Just Another %s Hacker",x);}};print JAxH+Perl'

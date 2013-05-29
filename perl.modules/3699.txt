@@ -1,0 +1,67 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3699
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5242 invoked from network); 28 Nov 2000 19:15:47 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 28 Nov 2000 19:15:47 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id UAA14659;
+	Tue, 28 Nov 2000 20:15:22 +0100
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: Matt Sergeant <matt@sergeant.org>
+Cc: modules@perl.org
+Subject: Re: New module XML::PYX
+References: <Pine.LNX.4.21.0011281141130.17996-100000@ted.sergeant.org>
+Reply-To: modules@perl.org
+Date: 28 Nov 2000 20:15:21 +0100
+In-Reply-To: Matt Sergeant's message of "Tue, 28 Nov 2000 11:42:29 +0000 (GMT)"
+Message-ID: <m3itp752nq.fsf@ak-71.mind.de>
+Lines: 38
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Tue, 28 Nov 2000 11:42:29 +0000 (GMT), Matt Sergeant <matt@sergeant.org> said:
+
+   > I'm going for a record - who has the most modules in their CPAN directory?
+
+It depends what you define as module. Here we are counting namespaces:
+
+% zcat ~ftp/pub/CPAN/modules/02packages.details.txt.gz | perl -nale '$F[2] =~ m|^./../(.+?)/|; print $1' | sort | uniq -c | sort -n | tail
+     76 AWIN
+     77 JPRIT
+     91 BIRNEY
+     92 LDS
+    101 MKUL
+    103 GBARR
+    104 JWIED
+    125 NI-S
+    180 GSAR
+    203 GAAS
+
+Here we are counting files that contain at least one module (older
+files excluded):
+
+% zcat ~ftp/pub/CPAN/modules/02packages.details.txt.gz | perl -nale '$F[2] =~ m|^./../(.+?)/|; next if $SEEN{$F[2]}++; print $1' | sort | uniq -c | sort -n | tail
+     18 DOUGM
+     18 LDS
+     21 GBARR
+     22 ILYAZ
+     22 JPRIT
+     22 SBURKE
+     23 MSCHWERN
+     25 JWIED
+     28 GAAS
+     30 TOMC
+
+Looking closer reveals that both counts have horrible unfair
+properties. Maybe you must find your own definition:-)
+
+-- 
+andreas

@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8563
+Return-Path: <Philip.Newton@gmx.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 35090 invoked by uid 75); 1 Nov 2001 05:17:36 -0000
+Received: from mail.picon.de (HELO mail.picon.de) (62.214.2.230)
+  by onion.perl.org (qpsmtpd/0.04) with SMTP; Thu Nov  1 05:17:36 2001 -0000
+Received: (qmail 29884 invoked from network); 1 Nov 2001 05:17:33 -0000
+Received: from dialup004.picon.de (62.214.2.4)
+  by mail.picon.de with SMTP; 1 Nov 2001 05:17:33 -0000
+To: nick@rlnt.net (Nick Tonkin)
+Cc: modules@perl.org
+Subject: Re: Requesting user ID
+Date: Thu, 01 Nov 2001 06:19:32 +0100
+Organization: very little
+Message-ID: <87m1ut8hhijqfgs1rm259iaf7isb9lhpgv@4ax.com>
+References: <Pine.BSF.4.21.0110311441310.15480-100000@world.tonkinresolutions.com>
+In-Reply-To: <Pine.BSF.4.21.0110311441310.15480-100000@world.tonkinresolutions.com>
+X-Mailer: Forte Agent 1.8/32.548
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: Philip.Newton@gmx.net (Philip Newton)
+
+Disclaimer: I am not a PAUSE admin.
+
+On Wed, 31 Oct 2001 14:44:04 -0800 (PST), in perl.modules you wrote:
+
+>        Date::MySQL -- Manipulate dates back and forth between
+>        human-readable and MySQL formats
+
+Um, I think you *really* should discuss this on datetime@perl.org before
+submitting this module to CPAN. There are, at last count, about two
+squillion modules already on CPAN which deal with dates in some form or
+another. That mailing list should help you determine whether your
+module's functionality deserves a separate module, what its name should
+be, or which module it could be merged into.
+
+=46or example, parsing dates is handled by Date::Parse [among others] and
+outputting them in various formats by Date::Format [among others], both
+from Graham Barr's TimeDate distribution.
+
+> SYNOPSIS
+>         use Date::MySQL;
+>         my $md =3D Date::MySQL->new();
+>         print $md->toMySQL("5/31/87");    # prints "1987-05-31"
+>         print $md->frMySQL("1987-05-31"); # prints "05-31-1987"
+
+I can imagine (without having tested this) that these could be reduced
+to something like
+
+    use Date::Parse;
+    use Date::Format;
+    print time2str("%Y-%m-%d", str2time('5/31/87'));
+    print time2str("%m-%d-%Y", str2time('1987-05-31'));
+    # or if you want DD/MM/YY:
+    print time2str("%D",       str2time('1987-05-31'));
+
+That wheel has already been invented -- and in more flexible ways, to
+boot.
+
+> DESCRIPTION
+>        The MySQL RDBMS requires dates to be supplied in
+>        YYYY-MM-DD format[1,2], but humans expect dates to be
+>        presented, and to be able to enter them, in MM-DD-YY
+>        format or similar. This module converts dates back and
+>        forth between human-readable and MySQL format.
+
+Um, make that: *some* humans. MM-DD-YY is common in America, but much of
+Europe prefers DD-MM-YY, and Japan uses YY-MM-DD. A format allowing you
+to specify the order of the date parts would be better, in my opinion.
+
+And even though my "native" date order is DD-MM-YY (I'm in Germany), I
+have no problem with YYYY-MM-DD (but that may be because I'm a
+programmer and like that format for its sorting properties), so I don't
+"expect dates to be presented, and to be able to enter them" in another
+way.
+
+Again, I strongly urge you to talk to the folks on datetime@perl.org .
+
+Cheers,
+Philip

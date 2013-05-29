@@ -1,0 +1,112 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53965
+Return-Path: <damian.k.green@medtronic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 19995 invoked from network); 13 Apr 2007 21:30:22 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 13 Apr 2007 21:30:22 -0000
+Received: (qmail 31387 invoked by uid 225); 13 Apr 2007 21:30:21 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 31371 invoked by alias); 13 Apr 2007 21:30:20 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from mail87.messagelabs.com (HELO mail87.messagelabs.com) (216.82.250.19)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Fri, 13 Apr 2007 14:30:18 -0700
+X-VirusChecked: Checked
+X-Env-Sender: damian.k.green@medtronic.com
+X-Msg-Ref: server-10.tower-87.messagelabs.com!1176499812!48187006!1
+X-StarScan-Version: 5.5.10.7.1; banners=-,-,-
+X-Originating-IP: [144.15.157.121]
+Received: (qmail 18241 invoked from network); 13 Apr 2007 21:30:13 -0000
+Received: from postman.medtronic.com (HELO postman.medtronic.com) (144.15.157.121)
+  by server-10.tower-87.messagelabs.com with AES256-SHA encrypted SMTP; 13 Apr 2007 21:30:13 -0000
+Received: from MSPM1BMSGH01.ent.core.medtronic.com (localhost [127.0.0.1])
+	by postman.medtronic.com (8.13.6/8.13.6) with ESMTP id l3DLUC2r003466
+	for <modules@cpan.org>; Fri, 13 Apr 2007 16:30:12 -0500 (CDT)
+Received: from PHXM1BMSGM02.ent.core.medtronic.com ([172.24.216.171]) by MSPM1BMSGH01.ent.core.medtronic.com with Microsoft SMTPSVC(6.0.3790.2499);
+	 Fri, 13 Apr 2007 16:30:12 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Subject: FW: Found bug in module Uniq :: distinct
+Date: Fri, 13 Apr 2007 14:30:10 -0700
+Message-ID: <1BB3F8304E484D499CAFCF48CE5D1C6D874C54@PHXM1BMSGM02.ent.core.medtronic.com>
+Thread-Topic: Found bug in module Uniq :: distinct
+Thread-Index: Acd+A7YNBOkSwBdLQdmN6VIsuJKYgAADhThA
+To: <modules@cpan.org>
+X-OriginalArrivalTime: 13 Apr 2007 21:30:12.0222 (UTC) FILETIME=[EB1A29E0:01C77E12]
+Approved: news@nntp.perl.org
+From: damian.k.green@medtronic.com ("Green, Damian")
+
+Earlier, I sent the following bug report, which is still valid, but I
+would like to ammend my recognition for a fix...
+
+The problem was that the last element in the list being passed in was
+not being added to the output when it should have been... So instead of
+removing the "next;" as I suggested before, the following needs to be
+added right before "return @out;" :
+
+	if ($prev && $ctr =3D=3D 1){	#<---takes care of last element
+in the list
+		push(@out,$prev);
+	}
+
+Sorry for the confusion,=20
+
+Damian
+
+> ______________________________________________=20
+> From: 	Green, Damian =20
+> Sent:	Friday, April 13, 2007 12:41 PM
+> To:	'modules@cpan.org'
+> Subject:	Found bug in module Uniq :: distinct
+>=20
+> Hi, I found and downloaded the following module:
+> http://search.cpan.org/~syamal/Uniq-0.01/Uniq.pm
+>=20
+> And found that the "distinct" subroutine has a bug. I've Identified
+> the problem, but don't know how to fix the module on the CPAN site...
+>=20
+> In the source:
+> sub distinct{
+> 	# Eliminates values mentioned more than once from a list of
+> 	# sorted values presented.
+> 	my $prev =3D undef;
+> 	my $ctr =3D 0;
+> 	my @out;
+> 	foreach my $val (@_){
+> 		if ($prev){
+> 			if ($prev eq $val){
+> 				$ctr ++;
+> 				next;  			 #<--- this is a
+> bug in the CPAN module...It needs to be removed...DKG
+> 			}
+> 			push(@out,$prev) if ($ctr =3D=3D 1);
+> 			$prev =3D $val;
+> 			$ctr  =3D 1;
+> 			next;
+> 		}else{
+> 			$prev =3D $val;
+> 			$ctr  =3D 1;
+> 		}
+>=20
+> 	}
+> 	return @out;
+> }
+>=20
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> There are a couple ways to fix the problem, I'll leave it to someone
+> else to figure out the best way, but the simplist way is just to
+> remove the line I've identified above...
+>=20
+>=20
+> Damian Green

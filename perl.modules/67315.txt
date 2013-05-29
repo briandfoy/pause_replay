@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:67315
+Return-Path: <nj88udd02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1972 invoked from network); 24 Aug 2009 07:13:49 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 24 Aug 2009 07:13:49 -0000
+Received: (qmail 9103 invoked by uid 225); 24 Aug 2009 07:13:48 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9099 invoked by alias); 24 Aug 2009 07:13:48 -0000
+X-Spam-Status: No, hits=0.7 required=8.0
+	tests=SPF_SOFTFAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from caiajhbdcaid.dreamhost.com (HELO homiemail-a18.g.dreamhost.com) (208.97.132.83)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 24 Aug 2009 00:13:42 -0700
+Received: from [192.168.1.81] (unknown [188.200.131.9])
+	by homiemail-a18.g.dreamhost.com (Postfix) with ESMTPA id 54FE1250069;
+	Mon, 24 Aug 2009 00:13:38 -0700 (PDT)
+Message-ID: <4A923D96.6000503@sneakemail.com>
+Date: Mon, 24 Aug 2009 09:13:26 +0200
+User-Agent: Thunderbird 2.0.0.22 (X11/20090608)
+MIME-Version: 1.0
+To: Moritz Lenz <moritz@faui2k3.org>
+CC: modules@perl.org
+Subject: Re: Perl 6 modules on CPAN
+References: <4A900595.50304@faui2k3.org>
+In-Reply-To: <4A900595.50304@faui2k3.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: nj88udd02@sneakemail.com (Steffen Mueller)
+
+Hi Moritz,
+
+disclaimer: I'm not the one to decide and not the right person to 
+discuss this since I don't currently have the time to think this 
+through. I'll just try to add some facts and speculation.
+
+Moritz Lenz wrote:
+> We'd like to use parts of the CPAN infrastructure for module
+> distribution. This is my current vision, optimized for being simple and
+> being the least work for the fine CPAN folk:
+> 
+> 1) Module authors upload Perl 6 modules via PAUSE.
+> 
+> 2) The uploaded modules have a flag in their META.yml marking them as
+> Perl 6. The indexer ignores such modules, so that they don't appear in
+> modules/02packages.details.txt.gz or modules/03modlist.data.gz  (in
+> order not to disrupt the work flow of anything that deals with Perl 5
+> modules
+
+This is opt-in which could produce some noise from distributions whose 
+authors neglect to set the META bit.
+General META.yml issues should be brought up elsewhere. I'd suggest 
+#toolchain.
+
+> 3) A new list is being created that contains all Perl 6 modules
+> 
+> 4) I (or somebody I can motivate) will write  a searching interface for
+> Perl 6 modules similar to search.cpan.org
+> 
+> 5) We'll teach our provisional installer how to download modules from CPAN.
+> 
+> 
+> So my questions are:
+> 
+> 1) is this the right place to discuss? if not, where should I go?
+
+Well, obviously Andreas is key to much of the practicalities. I can't 
+say how much he wants to be involved in the design.
+
+> 2) does it sound sane? Do you see things that need to be different, or
+> that could be even simpler?
+
+Could there be some sort of safety net/heuristic in the indexer that 
+temporarily rejects a distribution that:
+1) does not specify the "is perl6" flag at all (neither true nor false)
+2) look like perl6.
+
+In that case, the author could just explicitly set the flag and 
+everything would be fine.
+
+> 4) whom do I need to contact about what? For example PAUSE will surely
+> need some small changes - is the source code somewhere available so that
+> I can try to contribute patches?
+
+https://pause.perl.org/pause/authenquery?ACTION=pause_04about#credits
+
+Cheers,
+Steffen

@@ -1,0 +1,133 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4016
+Return-Path: <martin@scim.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18423 invoked from network); 29 Dec 2000 13:22:52 -0000
+Received: from mail.netizen.com.ar (root@200.16.153.4)
+  by tmtowtdi.perl.org with SMTP; 29 Dec 2000 13:22:52 -0000
+Received: from intranet.scim.net (IDENT:qmailr@m80c-ras4.netizen.com.ar [200.47.108.80])
+	by mail.netizen.com.ar (8.9.3/8.9.3/SuSE Linux 8.9.3-0.1) with SMTP id KAA13535
+	for <modules@perl.org>; Fri, 29 Dec 2000 10:11:40 -0300
+Received: (qmail 32686 invoked from network); 29 Dec 2000 13:22:25 -0000
+Received: from unknown (HELO scim.net) (10.10.10.2)
+  by 10.10.10.10 with SMTP; 29 Dec 2000 13:22:25 -0000
+Message-ID: <3A4C9028.6717F1F0@scim.net>
+Date: Fri, 29 Dec 2000 10:22:48 -0300
+Organization: SCIM Multimedia
+X-Mailer: Mozilla 4.73 [en] (WinNT; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: New Module Mail::Vmailmgr 
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: martin@scim.net (Martin Langhoff)
+
+I'm proposign this new module. It's available as first stable version at
+http://martin.scim.net/ . 
+
+If noone disagrees, I'd be uploading it to CPAN shortly. 
+
+
+Thanks!
+
+
+martin langhoff
+---
+
+
+NAME
+    Mail::Vmailmgr - A Perl module to use Vmailmgr daemon.
+
+SYNOPSIS
+    use Mail::Vmailmgr;
+
+    #create a user account martin@mydomain.com
+    vadduser("mydomain.com", "my_domain_passwd", "martin");
+
+DESCRIPTION
+    This module allows easy interaction with the vmailmgrd, a daemon
+    designed to allow access to all of vmailmgr functions from
+    unprivileged accounts, such as CGI scripts usually have.
+
+    It was designed and tested against vmailmgrd version 0.96.9. A
+    major rewrite of vmailmgrd is expected, so this module may not
+    work properly with newer versions of vmailmgrd.
+
+AUTHOR
+    The author and mantainer of this module is Martin Langhoff
+    <martin@scim.net>.
+
+    Most of this initial release is based on the PHP version written
+    by Mike Bell <mike@mikebell.org>. This module would not be here
+    without Mike's help.
+
+Passwords
+    Commands that operate on an existing virtual user account can be
+    authorized with either the virtual user account password, or
+    with the domain-user password.
+
+    Commands that operate on the virtual domain, such as vadduser,
+    can only be authorized with the domain-user password.
+
+Return codes
+    In a very un-perlish fashion, all of these functions (with a few
+    exceptions) will return an array where the first positions
+    indicates if the command succeded or not.
+
+    If the command did not succeed, the error code will be >0. And
+    probably you'll find string in the second position of the array,
+    indicating what went wrong.
+
+    The success code is "0". This is consistent with the design of
+    the vmailmgrd interface, and very inconsistent with the general
+    Perl fashion.
+
+vlistdomain($domain, $password){
+    Returns the user accounts available in the virtual domain.
+
+    Similar to the listvdomain binary, supplied with Vmailmgr.
+
+vlookup($domain, $user, $password)
+    Returns for a single virtual user what vlistdomain does for an
+    entire domain.
+
+vadduser($domain, $password, $username, $userpass, @forwards)
+    Similar to the vadduser binary, supplied with Vmailmgr.
+
+vaddalias($domain, $password, $username, $userpass, @forwards)
+    Similar to the vaddalias binary, supplied with Vmailmgr.
+
+vdeluser($domain, $password, $username)
+    Similar to the vdeluser binary, supplied with Vmailmgr.
+
+vchpass($domain, $password, $username, $newpass)
+    Similar to the vchpassd binary, supplied with Vmailmgr.
+
+vchforward($domain, $password, $username, @forwards)
+    Similar to the vchpassd binary, supplied with Vmailmgr.
+
+vchattr($domain, $password, $username, $attr, $value)
+    Change Attribute. Chech attribute list and the possible values
+    with the vmailmgr documentation.
+
+vwriteautoresponse($domain, $password, $username, $message)
+    missing explanation
+
+vreadautoresponse($domain, $password, $username, $message)
+    missing explanation
+
+vdisableautoresponse($domain, $password, $username, $message)
+    missing explanation
+
+venableautoresponse($domain, $password, $username, $message)
+    missing explanation
+
+vautoresponsestatus($domain, $password, $username, $message)
+    missing explanation
+
+SEE ALSO
+    vmailmgr(7).

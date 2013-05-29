@@ -1,0 +1,65 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:28457
+Return-Path: <wlkngowl@i-2000.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9146 invoked by uid 76); 11 Feb 2004 18:49:36 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Wed, 11 Feb 2004 10:49:36 -0800
+Received: (qmail 22864 invoked by uid 225); 11 Feb 2004 18:49:34 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22822 invoked by alias); 11 Feb 2004 18:49:22 -0000
+Received: from [204.97.92.222] (HELO smtp3.i-2000.com) (204.97.92.222)  by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Wed, 11 Feb 2004 10:49:22 -0800
+Received: from i-2000.com (pool-141-155-154-145.ny5030.east.verizon.net [141.155.154.145])	(authenticated bits=0)	by smtp3.i-2000.com (8.12.10/8.12.10) with ESMTP id i1BInEfG018778	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);	Wed, 11 Feb 2004 13:49:18 -0500 (EST)
+Message-ID: <402A792A.9080002@i-2000.com>
+Date: Wed, 11 Feb 2004 13:49:14 -0500
+Reply-To: rrwo@cpan.org
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.6) Gecko/20040113
+X-Accept-Language: en-us, en, es, pt, fr, de, it
+MIME-Version: 1.0
+To: modules@perl.org
+CC: ezdb@cpan.org
+Subject: New module idea, namespace?  Table::SomethingOrOther
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on x1.develooper.com
+X-Spam-Status: No, hits=-4.7 required=8.0 tests=BAYES_00,RCVD_IN_NJABL,	RCVD_IN_SORBS autolearn=no version=2.63
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: wlkngowl@i-2000.com (Robert Rothenberg)
+
+
+I am thinking about a set of modules, tentatively named Data::Table::Simple 
+which allows simple creation of "abstract" tables by specifying rows/columns 
+and headers and supporting simple rotation, appending of tables.
+
+This would be connected to another set of modules which names like 
+Data::Table::WriteXXX where XXX is some format, such as HTML and TeX. 
+Basically my needs are to easily create tables and then be able to output them 
+in multiple formats.  Kind of like:
+
+   my $table = new SomethingOrOther::WriteTeX;
+
+   $table->add_header_row(qw( x y z));
+
+   foreach (@calculation) {
+     $table->add_row($x, $y, $z);
+   }
+
+   print $table->as_string;
+
+Data::Table does not appear to suit these needs, since it's focus is on 
+creating tables from different sources rather than outputting in different 
+formats.
+
+Table is an older version of Data::Table.
+
+Text::Table appears only to handle text tables.  Likewise, for HTML::Table.
+
+Other table modules deal with databases or with "tables" specific to files or 
+applications.
+
+Opinions, ideas, (especially in terms of naming this module!) would be 
+appreciated.
+
+

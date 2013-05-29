@@ -1,0 +1,88 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4664
+Return-Path: <falkkin@strago.jenovaproject.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2796 invoked from network); 11 Mar 2001 18:33:54 -0000
+Received: from x138-145.reshalls.umn.edu (HELO strago.jenovaproject.org) (160.94.138.145)
+  by tmtowtdi.perl.org with SMTP; 11 Mar 2001 18:33:54 -0000
+Received: (from falkkin@localhost)
+	by strago.jenovaproject.org (8.10.1/8.10.1) id f2BIQUv13980
+	for modules@perl.org; Sun, 11 Mar 2001 12:26:30 -0600 (CST)
+Date: Sun, 11 Mar 2001 12:26:29 -0600
+To: modules@perl.org
+Subject: Request for CPAN id COLINM and namespace Net::Ping::External
+Message-ID: <20010311122629.A29764@strago.jenovaproject.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0.1i
+Approved: news@nntp.perl.org
+From: mcmi0037@tc.umn.edu (Colin McMillen)
+
+Name: Colin McMillen
+Email Address: mcmi0037@tc.umn.edu
+Homepage: none.
+Preferred User ID: COLINM
+
+Planned Contribution:
+The most immediate contribution I have to make is Net::Ping::External, a
+module which interfaces with the "ping" utility on many systems. It
+presently provides a single function, ping(), that takes in a hostname
+and timeout and returns true is the host is alive, false otherwise. More
+functionality, such as pinging multiple hosts, sending more than one
+ICMP packet per host, may be added in the future.
+
+Support currently exists for interfacing with the standard ping
+utilities on the following systems:
+MSWin32, Linux, *BSD, Solaris, IRIX, and AIX.
+
+More systems will be added as soon as any users request them.
+
+The reasoning behind this module is as follows:
+* ICMP ping is the most reliable assessor of whether a remote host is
+alive.
+* However, there is no way to achieve direct ICMP access on most systems
+unless one has access to root or administrator privileges. (For
+instance, the standard Net::Ping module has no way of performing an ICMP
+ping without these special privileges).
+* The system's "ping" command uses ICMP and does not usually require
+privileged access.
+* While it is relatively trivial to write a Perl script that parses the
+output of the "ping" command on a given system, the aim of this module
+is to encapsulate this functionality and provide a single interface for
+it that works on multiple systems.
+
+A drawback which has been discussed:
+* If there is a trojan "ping" program in the user's path, we'd be
+calling the trojan with this module. This "vulnerability" will be
+explicitly stated in the POD for the module, but it is generally not
+considered to be a major risk, since any user with a trojan "ping" will
+probably eventually invoke the system "ping" anyhow.
+
+I have attempted to contact the author of Net::Ping to see if it would
+eventually be possible to add support for calling Net::Ping::External
+through a new protocol option called "system" or "external". However, I
+have not heard back from him yet.
+
+This module has been discussed by several people, on the website
+www.perlmonks.org. I had originally suggested that this functionality be
+added straight to Net::Ping, but the general consensus was that it would
+be better as a separate module that Net::Ping could interface with. One
+person pointed out the possible trojan vulnerability, as listed above.
+
+Description of this module in module list format:
+
+Name                DSLI  Description
+-------------       ----  --------------------------------------------
+Net::Ping::External adpf  Cross-platform interface to "ping" utilities
+
+Info
+----
+COLINM
+
+Thank you for your consideration.
+
+Colin McMillen
+-- 
+print sort map{sub{map{push@_,shift;"@_\n"}@_}->(split)}<>

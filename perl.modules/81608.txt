@@ -1,0 +1,201 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:81608
+Return-Path: <josediazseng@gmx.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 27286 invoked from network); 29 Jul 2012 15:40:36 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 29 Jul 2012 15:40:36 -0000
+Received: (qmail 20064 invoked by uid 225); 29 Jul 2012 15:40:35 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20060 invoked by alias); 29 Jul 2012 15:40:35 -0000
+X-Spam-Status: No, hits=0.5 required=8.0
+	tests=BAYES_00,FREEMAIL_FROM,HTML_MESSAGE,RCVD_IN_DNSWL_NONE,SPF_PASS,TVD_PH_BODY_ACCOUNTS_PRE
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mailout-de.gmx.net (HELO mailout-de.gmx.net) (213.165.64.23)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Sun, 29 Jul 2012 08:40:32 -0700
+Received: (qmail 18211 invoked by uid 0); 29 Jul 2012 15:40:19 -0000
+Received: from 217.226.114.4 by rms-de004.v300.gmx.net with HTTP
+Content-Type: multipart/alternative;
+ boundary="========GMXBoundary119471343576418445987"
+Date: Sun, 29 Jul 2012 17:40:18 +0200
+Message-ID: <20120729154018.119470@gmx.net>
+MIME-Version: 1.0
+Subject: Finding a good name for a module
+To: modules@perl.org
+X-Authenticated: #15253446
+X-Flags: 0001
+X-Mailer: GMX.net Web Mailer
+x-registered: 0
+X-GMX-UID: NTxncM9PeSEqMafcg3QhX9h+IGRvbwAU
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: josediazseng@gmx.de (=?iso-8859-1?Q?=22Jos=E9_Diaz_Seng=22?=)
+
+--========GMXBoundary119471343576418445987
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Dear Perl Coders,
+
+ I would like to publish a module on CPAN (author ID: JDS) and would like to make sure it gets an appropriate name. In "About PAUSE" I read that I should write to your mailing list to get advice on this important issue.
+
+ Despite an extensive search I have not found anything similar on CPAN or a module where the functionality would naturally fit in. The only (weakly related) module I could find is DBIx::CopyRecord.
+
+ My current favourite name is DBIx::Table::Inflate and here is what it does when I am done coding it, right now there is only a (released/mature) Oracle PL/SQL procedure. I intend to support a wide range of DBMSs besides Oracle:
+
+ The module exposes only one method inflate() which can be used to add records to a table, mainly with performance tests of database clients in mind. inflate() automatically takes into account the different types of constraints on the target table and tries to generate meaningful records by using values coming from the target table itself or from referenced tables. A sample usage (subject to changes) looks like this:
+
+use DBIx::Table::Inflate;
+
+my $inflation = DBIx::Table::Inflate->new();
+
+$inflation->inflate({
+ dbh =>$dbh,
+ table_name => $table,
+ target_size => $size,
+ num_random => $random,
+ max_tree_depth => $depth,
+ min_children => $min_children,
+ min_roots => $min_roots
+ });
+
+ The parameters are as follows:
+
+dbh: DBI database handle
+
+table_name: name of the table to inflated
+
+target_size: total number of records to be reached
+
+num_random: The first num_random number of records use fresh random choices for their values taken from foreign key relations or from the target table itself. For performance reasons, these values are stored in a cache and re-used for the remaining target_size - num_random records.
+ (the last three parameters become relevant only in case of self-references of the target table (current definition of a self-ref: one-column wide foreign key constraint to itself):
+
+max_tree_depth: maximum depth at which new records will be inserted
+min_children: minimum number of child records to be inserted (currently using a breadth-first traversal)
+
+min_roots: the minimum number of root elements defined after completion. A record is considered to be a root element if the corresponding parent id is null or equal to its child id
+Thank you & kind regards
+ José Diaz Seng
+
+--========GMXBoundary119471343576418445987
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<span style=3D'font-family:Verdana'><span style=3D'font-size:12px'><div>=20
+	<span style=3D"font-family:Verdana"><span style=3D"font-size:12px"><span s=
+tyle=3D"font-family:Verdana"><span style=3D"font-size:12px">Dear Perl Coder=
+s,<br />=20
+	<br />=20
+	I would like to publish a module on CPAN (author ID: JDS) and would like t=
+o make sure it gets an appropriate name. In "About PAUSE" I read that I sho=
+uld write to your mailing list to get advice on this important issue.<br />=
+=20
+	<br />=20
+	Despite an extensive search I have not found anything similar on CPAN or a=
+ module where the functionality would naturally fit in. The only (weakly re=
+lated) module I could find is&nbsp;DBIx::CopyRecord.<br />=20
+	<br />=20
+	My current favourite name is DBIx::Table::Inflate and here is what it does=
+ when I am done coding it, right now there is only a (released/mature) Orac=
+le PL/SQL procedure. I intend to support a wide range of DBMSs besides Orac=
+le:</span></span><br />=20
+	<br />=20
+	The module exposes only one method inflate() which can be used to add reco=
+rds to a table, mainly with performance tests of database clients in mind. =
+inflate() automatically takes into account the different types of constrain=
+ts on the target table and tries to generate meaningful records by using va=
+lues coming from the target table itself or from referenced tables. A sampl=
+e usage (subject to changes) looks like this:</span></span><br />=20
+	<div>=20
+		<br />=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px"><span =
+style=3D"font-family:Verdana"><span style=3D"font-size:12px">use DBIx::Tabl=
+e::Inflate;</span></span> </span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px"><span =
+style=3D"font-family:Verdana"><span style=3D"font-size:12px">&nbsp;</span><=
+/span> </span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px"><span =
+style=3D"font-family:Verdana"><span style=3D"font-size:12px">my $inflation =
+=3D DBIx::Table::Inflate-&gt;new();</span></span> </span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px"><span =
+style=3D"font-family:Verdana"><span style=3D"font-size:12px">&nbsp; &nbsp;&=
+nbsp;</span></span> </span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px"><span =
+style=3D"font-family:Verdana"><span style=3D"font-size:12px">$inflation-&gt=
+;inflate({</span></span><br />=20
+		<span style=3D"background-color: rgb(238, 238, 238); ">&nbsp; dbh </span>=
+<span class=3D"sh_symbol">=3D&gt;</span><span style=3D"background-color: rg=
+b(238, 238, 238); "> </span><span class=3D"sh_variable">$dbh</span><span cl=
+ass=3D"sh_symbol">,</span>&nbsp;<br />=20
+		&nbsp; table_name =3D&gt; $table,<br />=20
+		&nbsp; target_size =3D&gt; $size,<br />=20
+		&nbsp; num_random =3D&gt; $random,<br />=20
+		&nbsp; max_tree_depth =3D&gt; $depth,<br />=20
+		&nbsp; min_children =3D&gt; $min_children,<br />=20
+		&nbsp; min_roots =3D&gt; $min_roots<br />=20
+		});<br />=20
+		<br />=20
+		The parameters are as follows:</span></span></div>=20
+	<br />=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px">dbh: D=
+BI database handle</span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px">&nbsp;=
+</span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px">table_=
+name: name of the table to inflated</span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px">&nbsp;=
+</span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px">target=
+_size: total number of records to be reached</span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px">&nbsp;=
+</span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px">num_ra=
+ndom: The first num_random number of records use fresh random choices for t=
+heir values taken from foreign key relations or from the target table itsel=
+f. For performance reasons, these values are stored in a cache and re-used =
+for the remaining target_size - num_random records.</span></span></div>=20
+	<div>=20
+		<br />=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px">&nbsp;=
+ (the last three parameters become relevant only in case of self-references=
+ of the target table&nbsp;(current definition of a self-ref: one-column wid=
+e foreign key constraint to itself):<br />=20
+		&nbsp;</span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px">max_tr=
+ee_depth: maximum depth at which new records will be inserted</span></span>=
+</div>=20
+	<div>=20
+		<br />=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px">min_ch=
+ildren: minimum number of child records to be inserted (currently using a b=
+readth-first traversal)<br />=20
+		&nbsp;</span></span></div>=20
+	<div>=20
+		<span style=3D"font-family:Verdana"><span style=3D"font-size:12px">min_ro=
+ots: the minimum number of root elements defined after completion. A record=
+ is considered to be a root element if the corresponding parent id is null =
+or equal to its child id</span></span></div>=20
+	<br />=20
+	<span style=3D"font-family:Verdana"><span style=3D"font-size:12px"><span s=
+tyle=3D"font-family:Verdana"><span style=3D"font-size:12px"><span id=3D"edi=
+tor_signature"><span style=3D"font-family:Verdana; font-size:12px">Thank yo=
+u &amp; kind regards<br />=20
+	Jos=C3=A9 Diaz Seng</span></span></span></span></span></span></div>=20
+</span></span>
+
+--========GMXBoundary119471343576418445987--

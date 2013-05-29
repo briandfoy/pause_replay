@@ -1,0 +1,203 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4361
+Return-Path: <beppu@lineo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27261 invoked from network); 28 Jan 2001 21:14:54 -0000
+Received: from yukari.lineo.com (64.50.107.69)
+  by tmtowtdi.perl.org with SMTP; 28 Jan 2001 21:14:54 -0000
+Received: by yukari.lineo.com (Postfix, from userid 440)
+	id 534DC9B020; Sun, 28 Jan 2001 14:14:49 -0700 (MST)
+Date: Sun, 28 Jan 2001 14:14:49 -0700
+To: modules@perl.org
+Subject: [cpan] MP3::Daemon
+Message-ID: <20010128141449.A6668@yukari.lineo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+Approved: news@nntp.perl.org
+From: beppu@lineo.com (John BEPPU)
+
+
+
+Here's a little something I'd like to contribute:
+
+
+Name           DSLI  Description                                  Info
+-------------  ----  -------------------------------------------- -----
+MP3::Daemon    bdpO  a daemon that possesses mpg123               BEPPU
+
+
+If no one makes any objections, I'll be uploading this
+in a few days.
+
+
+It uses Audio::Play::MPG123 to control mpg123 and forks itself into the
+background.  Clients can then talk to this daemon and have it make 
+mpg123 do its bidding.
+
+It comes with a client called mp3 which is the only mp3 player
+I know of that is compliant with the UNIX Philosophy.  This client
+does not have a captive user interface -- you can do everything
+from your shell, and you don't need X11.
+
+As for discussion of this module...
+Marc Lehmann (the author of Audio::Play::MPG123) said:
+
+    "It's the greatest thing since sliced bread! ;) Unsurprisingly, 
+    it worked out of the box and I could even use it immediately ;)"
+
+hehe..
+
+
+NAME
+    mp3 - an mpg123 front-end for UNIX::Philosophers
+
+SYNOPSIS
+    General Syntax
+
+        mp3 [COMMAND] [PARAMETER]...
+
+    Building the play list
+
+        mp3 add Blue_Six-Conga_Lounge_Mix.mp3
+        mp3 add /c/mp3/*.mp3
+        mp3 add http://www.testpress.com/mp3/07202000_papp.mp3
+        mp3 del 0 2 4 -1
+
+    Playing from the list
+
+        mp3 play 5
+        mp3 next
+        mp3 prev
+
+    Other controls
+
+        mp3 rw 2.00
+        mp3 ff 32.32
+        mp3 jump 820
+        mp3 pause
+        mp3 stop
+
+    Getting information
+
+        mp3 time
+        mp3 info
+        mp3 ls
+
+    Unloading the daemon
+
+        mp3 quit
+
+DESCRIPTION
+    I have combined my favourite features from dcd, cdcd, and mpg123
+    to create Yet Another Front-End For Mpg123. (YAFEFM)
+
+    From dcd, I derived the ability to fork itself into the
+    background.
+
+    From cdcd, I derived its intuitive interface.
+
+    With mpg123, I do the CPU-intensive work of actually playing the
+    mp3s.
+
+    The end result is an MP3 player that is compliant with the
+    UNIX::Philosophy. Note that mp3 does not have a Captive User
+    Interface. Requests are made by mp3 to an MP3::Daemon and mp3
+    returns immediately after getting a reply. The commands that
+    generate output do so on STDOUT. This makes mp3 easy to combine
+    with other Unix utilities via pipes and filters.
+
+COMMANDS
+    Most of these commands are self-explanatory. One thing that may
+    confuse some people is that the playlist has a zero-based index.
+    Otherwise, if you're familiar with the cdcd interface, this
+    should feel vaguely familiar.
+
+    add     This adds mp3s to the playlist. Multiple files may be
+            specified.
+
+    del     This deletes items from the playlist by index. More than one
+            index may be specified. If no index is specified, the
+            last mp3 in the playlist is removed. Indices may also be
+            negative in which case they count from the end of the
+            playlist.
+
+    play    This plays the current mp3 if no other parameters are given.
+            This command also takes an optional parameter where the
+            index of an mp3 in the playlist may be given.
+
+    next    This loads the next mp3 in the playlist.
+
+    prev    This loads the previous mp3 in the playlist.
+
+    pause   This pauses the currently playing mp3. If the mp3 was
+            already paused, this will unpause it. Note that using
+            the play command on a paused mp3 makes it start over
+            from the beginning.
+
+    rw      This rewinds an mp3 by the specified amount of seconds.
+
+    ff      This fastforwards an mp3 by the specified amount of seconds.
+
+    jump    This will go directly to a part of an mp3 specified by
+            seconds from the beginning of the track. If the number
+            of seconds is prefixed with either a "-" or a "+", a
+            relative jump will be made. This is another way to
+            rewind or fastforward.
+
+    stop    This stops the player.
+
+    time    This sends back the index of the current track, the amount
+            of time that has elapsed, the amount of time that is
+            left, and the total amount of time. All times are
+            reported in seconds.
+
+    info    This sends back information about the current track.
+
+    ls      This sends back a list of all mp3s currently in the
+            playlist. The current track is denoted by a line
+            matching the regexp /^>/.
+
+    quit    This unloads the MP3::Daemon that was automagically spawned
+            when you first invoked mp3.
+
+FILES
+    $HOME/.mp3/mp3_socket
+        This is the socket used to communicate with the daemon. In
+        the event that the daemon is not cleanly shut down, this
+        file may need to be deleted before another MP3::Daemon can
+        be started up.
+
+COPYLEFT
+    Copyleft (c) 2001 John BEPPU. All rights reversed. This program
+    is free software; you can redistribute it and/or modify it under
+    the same terms as Perl itself.
+
+AUTHOR
+    John BEPPU <beppu@binq.org>
+
+SEE ALSO
+    My inspirations
+        dcd(1), cdcd(1), mpg123(1)
+
+    Other perl modules
+        Audio::Play::MPG123(3pm), MP3::Daemon(3pm)
+
+    The UNIX Philosophy
+        If you want to know what UNIX is all about, check this book
+        out. It's only 151 pages, and it's really easy and fun to
+        read. Some parts are a little biased and/or dated, but there
+        is still a lot of wisdom in it. I highly recommend it.
+
+            {
+                title  => 'The UNIX Philosophy',
+                author => 'Mike Gancarz',
+                isbn   => '1-55558-123-4',
+            }
+
+    the newest version
+            http://opensource.lineo.com/cgi-bin/cvsweb/pm/MP3/Daemon/
+

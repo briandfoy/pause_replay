@@ -1,0 +1,164 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:55316
+Return-Path: <Simon.Day@ingbank.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 24739 invoked from network); 10 Jul 2007 07:24:00 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 10 Jul 2007 07:24:00 -0000
+Received: (qmail 17376 invoked by uid 225); 10 Jul 2007 07:24:00 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17372 invoked by alias); 10 Jul 2007 07:23:59 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DKIM_POLICY_SIGNSOME,DK_POLICY_SIGNSOME,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from mail12.ing.nl (HELO mail12.ing.nl) (145.221.95.53)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 10 Jul 2007 00:23:48 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Subject: RE: New module collection name space query - ProcessControl
+Date: Tue, 10 Jul 2007 09:23:29 +0200
+Message-ID: <0B7D66C69383AC4CB88CBC1BD6FB51C6018B2D37@ing.com>
+In-reply-to: <468F4356.2000108@phase-n.com>
+Thread-Topic: New module collection name space query - ProcessControl
+Thread-Index: AcfAahA445q+BZWzRj+dFHEGQvCfOQCWSHHQ
+To: <adam@phase-n.com>
+Cc: <modules@perl.org>
+X-OriginalArrivalTime: 10 Jul 2007 07:23:29.0886 (UTC) FILETIME=[36E6DFE0:01C7C2C3]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: Simon.Day@ingbank.com
+References: <468F4356.2000108@phase-n.com>
+
+Hi Adam,
+
+Thanks for getting back to me, I'll try to give you a concise overview.
+
+The system is designed to launch, control and monitor unix based
+processes, it's currently tested and deployed on solaris but should run
+on any of the system V based unixes and I can't see why it wouldn't work
+on BSD (but as I come from a test back ground I won't make any claims I
+haven't put through a test cycle)
+
+The system can optionally gather STDOUT and STDERR from the process, it
+can also monitor log files. Notifications are either by email, or by
+watchdog file (which is the prefered method here for interfacing with
+tivoli)
+
+Extending notificaitons would not be difficult for anyone that wants
+more functionality.
+
+DSA key authentication is built in (as all processes run with the
+daemon's UID connecting to it needs to be secured)
+
+I'll admit it's a fairly simple concept, and one that has been solved in
+various ways by other systems - I've had to implement solutions for this
+before and usually only had a very small amount of time to do it in so
+they've been little more than hacks. This is the first time I've had
+several weeks plus the resources of 2 test departments in order to do
+this properly and I'd like others to be able to benefit from that
+effort.
+
+Modules in the program:
+
+ProcessControl.pm - doesn't really do much code wise, contains the main
+version string for the release and large pod containing end user guide
+and sample simple script to use the suite as it is used here.
+ProcessControl/Server.pm - Daemon process routines
+ProcessControl/Client.pm - Command line client library
+ProcessControl/Interfaces.pm - Communication between client and server -
+kept separate to make it easy to add to other projects, eg a web front
+end. ProcessControl/Instance.pm - The base class of the object used to
+control and monitor each process and the workhorse of the system.
+ProcessControl/Instance/LogFile.pm - a sub class of Instance that does
+not run a process, but adds the same log file monitoring to an existing
+proces
+
+(there are other sub classes, but since they were written purely to run
+interal ING applications they will not be released as would not be of
+much use for anyone outside of ING - obviously others are more than
+welcome to extend these)
+
+If you would like any more information or detila please feel free to ask
+
+Simon
+
+-----Original Message-----
+From: Adam Kennedy [mailto:adam@phase-n.com]=20
+Sent: 07 July 2007 09:40
+To: Day, S. (Simon)
+Cc: modules@perl.org
+Subject: Re: New module collection name space query - ProcessControl
+
+
+Simon
+
+It depends entirely on what it does :)
+
+How about you elaborate.
+
+Adam K
+
+Simon.Day@ingbank.com wrote:
+> Hi all,
+>=20
+> The bank that I've been working for has given me permission to open=20
+> source one of the main projects I've put together, as since I'm=20
+> leaving they like the idea of continued support and I like the idea of
+
+> being able to reuse it without the usual contract enforced=20
+> restrictions.
+>=20
+> Part of the condition is uploading it to CPAN, it would probably also=20
+> need to stay in its current name space (since the bank wants the CPAN=20
+> modules to be completely compatable with its current deployment.
+>=20
+> What I'm trying to find out is will using the ProcessControl name=20
+> space cause a problem (ProcessControl.pm and several sub modules) - I=20
+> can't see anything on CPAN using that space and while there are=20
+> similar tasks covered in other modules none implement the concept in=20
+> quite the same way (hence the reason I had to put the modules=20
+> together, I'm not one for reinventing the wheel unecessarily)
+>=20
+> If you could le tme know your thoughts,
+>=20
+> Many thanks
+>=20
+> Simon Day
+> -----------------------------------------------------------------
+> ATTENTION:
+> The information in this electronic mail message is private and=20
+> confidential, and only intended for the addressee. Should you receive=20
+> this message by mistake, you are hereby notified that any disclosure,=20
+> reproduction, distribution or use of this message is strictly=20
+> prohibited. Please inform the sender by reply transmission and delete=20
+> the message without copying or opening it.
+>=20
+> Messages and attachments are scanned for all viruses known. If this=20
+> message contains password-protected attachments, the files have NOT=20
+> been scanned for viruses by the ING mail domain. Always scan=20
+> attachments before opening them.
+> -----------------------------------------------------------------
+>=20
+-----------------------------------------------------------------
+ATTENTION:
+The information in this electronic mail message is private and
+confidential, and only intended for the addressee. Should you
+receive this message by mistake, you are hereby notified that
+any disclosure, reproduction, distribution or use of this
+message is strictly prohibited. Please inform the sender by
+reply transmission and delete the message without copying or
+opening it.
+
+Messages and attachments are scanned for all viruses known.
+If this message contains password-protected attachments, the
+files have NOT been scanned for viruses by the ING mail domain.
+Always scan attachments before opening them.
+-----------------------------------------------------------------
+

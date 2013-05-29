@@ -1,0 +1,136 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:63189
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20588 invoked from network); 14 Nov 2008 19:38:05 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 14 Nov 2008 19:38:05 -0000
+Received: (qmail 27026 invoked by uid 225); 14 Nov 2008 19:38:05 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27022 invoked by alias); 14 Nov 2008 19:38:04 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 14 Nov 2008 11:38:02 -0800
+Received: from pause.perl.org (localhost.localdomain [127.0.0.1])
+	by pause.perl.org (8.13.8/8.13.8/Debian-3) with ESMTP id mAEJbo89015382;
+	Fri, 14 Nov 2008 20:37:50 +0100
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.8/8.13.8/Submit) id mAEJboA0015381;
+	Fri, 14 Nov 2008 20:37:50 +0100
+Date: Fri, 14 Nov 2008 20:37:50 +0100
+Message-ID: <200811141937.mAEJboA0015381@pause.perl.org>
+Subject: Module submission Builder
+Reply-To: modules@perl.org
+To: modules@perl.org, draegtun@cpan.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Builder
+  DSLIP:       bdphp
+  description: Build XML/HTML/CSS/* structures in simply
+  userid:      DRAEGTUN (Barry Walsh)
+  chapterid:   15 (World_Wide_Web_HTML_HTTP_CGI)
+  communities:
+    Very briefly on Squatting mailing list. Future..?
+
+  similar:
+    XML::Generator XML::Writer XML::Class
+
+  rationale:
+
+    This is a rootlevel namespace request. This module is inspired by
+    Builder for Ruby (http://builder.rubyforge.org/) and also Groovy
+    (http://groovy.codehaus.org/Builders) so I think the name is
+    fitting.
+
+    Its most similar to XML::Generator (of the three I mentioned above)
+    however I think the syntax is slightly simpler plus its not tied to
+    building just XML. U can build different "blocks" which can then be
+    rendered together. For eg. HTML & CSS combined. Or u could even
+    set-up rendering for CSV or something data format.
+
+    Currently I have Builder::XML & Builder::CSS modules developed.
+    Future modules like Builder::HTML (only allow HTML markup),
+    Builder::HTML4 (only HTML4), Builder::XHTML (only XHTML) or
+    Builder::HTML::Validate (perhaps further validation of attributes or
+    its context) could be defined and added has builder blocks.
+
+    Below is one of my test files.... ==start== use Test::More tests =>
+    3; use Builder;
+
+    my $builder = Builder->new(); my $xm = $builder->block(
+    'Builder::XML' );
+
+    my $expected = q{<body><em>emphasized</em><div
+    id="mydiv"><bold>hello</bold><em>world</em></div></body>};
+
+    # test 1 $xm->body( sub { $xm->em("emphasized"); $xm->div( { id =>
+    'mydiv' }, $xm->bold('hello'), $xm->em('world') ); });
+
+    is $builder->render, $expected, "xml test 1 failed";
+
+    # test 2 $xm->body( $xm->em("emphasized"), $xm->div( { id =>
+    'mydiv' }, sub { $xm->bold('hello'); $xm->em('world'); }), );
+
+    is $builder->render, $expected, "xml test 2 failed"; ==end==
+
+    And here is another test which shows XML namespaces... ==start== my
+    $builder = Builder->new(); my $xm = $builder->block( 'Builder::XML',
+    namespace => 'foo', qualifiedAttrib => 0 );
+
+    my $expected = q{<foo:body><foo:em>emphasized</foo:em><foo:div
+    id="mydiv"><foo:bold>hello</foo:bold><foo:em>world</foo:em></foo:div></foo:body>};
+
+    # test 1 $xm->body( sub { $xm->em("emphasized"); $xm->div( { id =>
+    'mydiv' }, $xm->bold('hello'), $xm->em('world') ); });
+
+    is $builder->render, $expected, "xml test 1"; ==end==
+
+    Below are a few examples from some programs....
+
+    my $root = Builder->new(); my $h = $root->block( 'Builder::XML' );
+    $h->ul( sub { $h->li( $_ ) for qw/one two three/; }); say
+    $root->render;
+
+    # produces <ul><li>one</li><li>two</li><li>three</li></ul>
+
+    my $html = $root->block( 'Builder::XML', indent => 2, newline => 1
+    ); my $meld = $root->block( 'Builder::XML', attr_namespace => 'meld'
+    ); $html->html( $html->body( $meld->h1( { id => 'title' }, 'hello'
+    ), # meld:id="title" ), ); say $root->render;
+
+    # produces <html> <body> <h1 meld:id="title">hello</h1> </body>
+    </html>
+
+    There u go! I await your thoughts. Have a good weekend
+
+    regards Barry Walsh (draegtun)
+
+    PS. I've put this under module chapter 15. Is there a more fitting
+    one?
+
+  enteredby:   DRAEGTUN (Barry Walsh)
+  enteredon:   Fri Nov 14 19:37:50 2008 GMT
+
+The resulting entry would be:
+
+Builder           bdphp Build XML/HTML/CSS/* structures in simply    DRAEGTUN
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=42410000_13b568741e948539&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=42410000_13b568741e948539&SUBMIT_pause99_add_mod_insertit=1

@@ -1,0 +1,209 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21392
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 76566 invoked by uid 76); 30 May 2003 02:49:15 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Thu, 29 May 2003 19:49:15 -0700
+Received: (qmail 19156 invoked by uid 225); 30 May 2003 02:49:11 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19151 invoked by uid 507); 30 May 2003 02:49:11 -0000
+Received: from palladium2.baremetal.com (HELO pd2.baremetal.com) (208.184.111.59) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Thu, 29 May 2003 19:49:09 -0700
+Received: from pd2.baremetal.com (localhost [127.0.0.1])	by pd2.baremetal.com (8.12.9/8.12.4) with ESMTP id h4U2pjVl023534;	Thu, 29 May 2003 19:51:45 -0700
+Received: from localhost (darren@localhost)	by pd2.baremetal.com (8.12.9/8.12.9/Submit) with ESMTP id h4U2pj72023531;	Thu, 29 May 2003 19:51:45 -0700
+X-Authentication-Warning: pd2.baremetal.com: darren owned process doing -bs
+Date: Thu, 29 May 2003 19:51:45 -0700 (PDT)
+X-X-Sender:  <darren@pd2.baremetal.com>
+To: <modules@perl.org>
+cc: Darren Duncan <darren@DarrenDuncan.net>
+Subject: RFC: a SQL-representing object
+Message-ID: <Pine.LNX.4.33.0305291755350.8719-100000@pd2.baremetal.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.0 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02,USER_AGENT_PINE,X_AUTH_WARNING version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Hello (and in particular to database module makers/users),
+
+I am at a point in the design/development of my "Rosetta" database
+abstraction tool where I am considering spitting the framework into more
+independant pieces than was previously planned, namely splitting up the
+"core", so that it is easier for developers to adapt smaller pieces as
+they see fit rather than having to take parts they don't want.  So I would
+like to request some specific comments/feedback/advice from this list.
+
+Essentially, I would like for my work to be useful to people, but I don't
+want to give people the impression that I have a "not invented here"
+problem.  At the same time, I don't want to limit my creativity.
+
+P.S.  Please reply both directly to me and to modules@perl.org (I am not
+subscribed to the mailing list, both of us should have copies).
+
+The questions are at the end or in the middle so you should read the whole
+letter before replying to any of it.
+
+The "core" of Rosetta as it currently exists or is planned are already 4
+separate pieces conceptually, but they have been distributed together
+because I thought that is what most people do or would expect.  The 4
+pieces which I would consider separating into their own tgz
+distributions are currently:
+
+1. "Rosetta::*" - A bunch of POD files providing documentation.  These
+make up a significant part of the weight of the whole distribution.  They
+describe the design of the system and how to use it or write extensions.
+
+2. "Rosetta::Locale::*" - Essentially a bunch of constant data that
+is stored as Perl code (an anonymous hash declaration).  It is mainly a
+collection of user-readable text strings mapped to short machine-readable
+codes; when certain parts of Rosetta want to provide a message for display
+to the user, usually an error message, they "throw" the code (with
+optional variable values for interpolation), and the matching
+user-readable string in the user's locale/language is fetched for display.
+The idea is similar to how some existing systems, such as Mac OS X, handle
+user-text which is built into the program; the text for each user language
+is in a separate resource file that comes with the program, and adding
+support for more languages is as simple as adding a file.  Since this is
+not user-defined text, it does not make sense to store it in a code table
+in a database, or if we did, then those would be populated from the above
+Locale files.  Error messages et al are part of the program.
+
+3. "Rosetta::Schema::*" - These classes are intended to do for SQL what a
+DOM does for XML, which is to have an object that is a fully-parsed
+representation of an instruction string.  Given that different RDBMS
+vendors use their own variants of SQL, in many ways the same and in some
+ways different, what my classes would do is represent a normalized
+superset of the various SQL dialects.  In a manner of speaking, they would
+constitute the parsed version of a new SQL dialect that can describe any
+task the old dialects could, including some proprietary ones.  The
+difference in my case is that my "SQL dialect" is intended to always be an
+object and not a string.  That said, it is intended that SQL strings in
+any existing dialect could be parsed into objects of my classes, and new
+SQL strings in another dialect could be generated.  But I would not be
+doing either of those myself in these classes.  Sometimes one SQL
+statement in a source dialect may become multiple statements in another,
+if one wants to emulate a feature.  I call these "Schema" because the
+majority of SQL details are used for creating objects in an RDBMS schema
+and invoking them.  "Objects" being a generic term to include tables,
+views, stored procedures and functions, and so on.  Given that in practice
+database "views" look the same as "select statements", as do "subqueries"
+or "cursors".  I am using the same structure to describe both, and
+insert/update/delete SQL is just the inverse operation of a select, which
+can be generated from a view definition.  Schema objects are not "live";
+they do not "do" anything; they simply are containers of program "data".
+An advantage of using these objects is that they work with databases whose
+native interface is not SQL, just as much as with those that do; also, one
+could render these objects into Perl code instead of SQL if they want to
+perform the same functionality at the application level, but the calling
+application wouldn't have to know, and no parsing of SQL is necessary.
+
+4. "Rosetta::Engine::*" - These classes are thin programmatic interfaces
+to a runtime environment of sorts for Schema objects.  They are "live" in
+the same way that DBI is "live", and like DBI, they mostly pass the
+workload to RDBMS specific "Driver" modules, which either interface to
+databases doing the real work or implement some of the work themselves.
+Mostly the "Engine" modules just store some context-specific environment
+variables and do some error trapping/reporting for the Driver modules.
+How they mainly differ from DBI is that they take objects for all their
+inputs (usually Schema objects) rather than SQL strings.  In that respect,
+they are a higher level of abstraction than DBI.  Unlike most other DBI
+abstraction modules, mine do not expose their implementation (underlying
+DBI objects) to callers, which would save applications that use my modules
+from breaking when the modules I use myself change.
+
+Note that the "Driver" modules (corresponding to DBD modules or the
+variety of RDBMS-specific hint modules that several other abstraction
+frameworks use) were never part of the "core" and they are already in
+other distributions; I will not be discussing those in this email, at
+least not much.
+
+Out of the above module groups, the one that I thought would be the best
+for "setting free" would be the "Schema" ones, because I thought they
+would provide the most value or "new blood" to users or creators of other
+CPAN modules.  But at the same time I thought this set, which could in
+fact be all put in a single module if that would be easier to use, perhaps
+should have a new name.
+
+So, my first questions are these: 1. Would a DOM-for-SQL be useful in its
+own right to other module developers, and therefore grow beyond its
+previous intention of being "part of just one framework"; 2. What should
+this new module be called?
+
+As a further explanation of what said modules do, they can also be
+considered a procedural programming language of sorts, especially suited
+for databases, which could be rendered at least in part into multiple
+programming languages.  That is, the modules describe invokable procedures
+or other objects without actually containing any code.  They are intended
+to be rendered/compiled eventually into some RDBMS-native format (usually
+with SQL being an intermediary format), and executed by the database.  But
+they could also be rendered/compiled into Perl code and then eval'd, if
+one wanted.  I have no intention of making an "interpreter", which would
+be ungodly slow or complicated.
+
+But it isn't all that complicated, really.  And it is feasible.
+
+So another question: 3. Are there already any modules on CPAN which store
+a parsed representation of a generic programming language, in such a way
+as to form an intermediary format of translating a program from one
+procedural language to another, and if so then what are they and where are
+they listed?  I haven't been able to find any so far.
+
+Now, all of the modules that I have seen so far which generate or parse
+SQL seem to be limited to just the most common tasks, mainly creating tables
+and doing some select/insert/update/delete operations.  But all of the
+select-generating ones I have seen appear to be limited to either working
+with one table or working with just a few that are related in a few
+specific ways.  Doing anything more complicated requires writing SQL
+fragments yourself, and then some of the magic doesn't work anymore.
+
+A question: 4. Would a comprehensive intermediate SQL object be useful to
+writers of a lot of these modules, so they can more quickly support the
+parsing or generation of more complex SQL, and improve their works?  The
+idea is that my module would provide a structured hierarchy of slots (like
+a DOM) into where details pulled from SQL being parsed could go, or from
+which details for SQL being generated could come from?  Isn't it true that
+a lot of the trouble of parsing/generating is just coming up with places
+to keep all the pieces?  Or would these people not be able to use such a
+module?
+
+Now, some possible names I have come up with are (unless they are
+already in use):
+
+Rosetta::Schema
+Rosetta::DOM
+Rosetta::Dictionary
+SQL::DOM
+SQL::Parsed
+SQL::Dictionary
+Class::SQL
+Class::AbstractSQL
+Class::ParsedSQL
+Class::SQLDOM
+
+Now, some of the issues I need to keep in mind are:
+1. My class has nothing to do with XML, although they could be serialized
+into XML, so I am wondering whether "DOM" implies XML and therefore I
+shouldn't use it.
+2. My class is meant to also be usable with databases that don't
+understand SQL natively (such as older ones), so would having "SQL" in the
+name be a problem.  I suspect it may not.  Also, is "SQL" trademarked?
+3. Since Rosetta as a whole depends so much on these modules (despite the
+effort to make them usable on their own), would it just be better to leave
+them named "Rosetta::*" but still distribute them separately?  What would
+be the most descriptive of what they do?  Or could it be said that these
+"Schema" modules in fact *are* Rosetta and everything else is an extension
+to them?
+
+My apologies to you if these seem like tough or ill-defined questions.
+But I thought I should get them out sooner rather than later.
+
+Thank you and have a good day.
+
+P.S.  Please reply both directly to me and to modules@perl.org (I am not
+subscribed to the mailing list, both of us should have copies).
+
+

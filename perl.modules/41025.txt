@@ -1,0 +1,206 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:41025
+Return-Path: <ondr@mail.ru>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12225 invoked from network); 15 Jun 2005 00:02:19 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 15 Jun 2005 00:02:19 -0000
+Received: (qmail 10406 invoked by uid 225); 15 Jun 2005 00:02:19 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10401 invoked by alias); 15 Jun 2005 00:02:18 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of ondr@mail.ru designates 194.67.23.121 as permitted sender)
+Received: from mx1.mail.ru (HELO mx1.mail.ru) (194.67.23.121)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 14 Jun 2005 17:02:15 -0700
+Received: from [83.219.135.7] (port=10487 helo=ondr)
+	by mx1.mail.ru with asmtp 
+	id 1DiLM9-000JQV-00
+	for modules@perl.org; Wed, 15 Jun 2005 04:02:10 +0400
+Message-ID: <007801c5713d$81b677d0$0100a8c0@ondr>
+To: <modules@perl.org>
+Subject: Re: Module submission personal
+Date: Wed, 15 Jun 2005 03:02:17 +0300
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="koi8-r"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1106
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+Approved: news@nntp.perl.org
+From: ondr@mail.ru ("Andrian Zubko")
+
+
+
+> brian d foy:
+> Which problem are you trying to solve? Can you say more about that
+> or point to some discussions?
+
+the problem:
+
+http://perl.apache.org/docs/1.0/guide/porting.html#Name_collisions_with_Modu
+les_and_libs
+
+there we can see 3 solutions:
+  1. use different module names at all our site's in all vhosts, - not real.
+(ex: site copy)
+  2. use absolute module names, - portability is losed and it is very ugly.
+  3. obligatory reloading modules at every requests, - losing speed and we
+can't cache our modules global variables.
+
+from mod_perl2 will come new feature:
+  for every vhost his own perl interpreter.
+    http://perl.apache.org/docs/2.0/user/config/config.html#C_Parent_
+  yes, it will solve the problem, but payment is using too much memory.
+
+
+
+
+
+> brian d foy:
+> Also, this solution seems very fragile, and you would have to
+> write the module to make it work with personal. I'd like to
+> hear more about how you're using it. :)
+
+
+
+
+###### Original site example (with inheritance for Adam) ######
+
+index.pl
+---------------------------
+  #!/usr/bin/perl -w
+
+  use strict;
+
+  use lib qw(.);
+  use Common1 qw($query finish);
+
+  Common1->activate;
+
+  $query->sendheader;
+
+  print Common1->content;
+
+  finish;
+
+
+Common1.pm
+---------------------------
+  package Common1;
+
+  use strict;
+  use base qw(Exporter Common2);
+  use PCGI ();
+
+  our @EXPORT_OK = qw($query finish);
+
+  our $query;
+
+  sub activate {
+    $query = PCGI->new;
+  }
+
+  sub finish {
+    undef $query;
+  }
+
+  1;
+
+
+Common2.pm
+---------------------------
+  package Common2;
+
+  use strict;
+
+  sub content {
+    return " ... bla bla ... ";
+  }
+
+  1;
+
+
+
+
+###### the same, but with 'use personal' for local packages ######
+
+index.pl
+---------------------------
+  #!/usr/bin/perl -w
+
+  use strict;
+
+  use lib qw(.);
+  use personal 'Common1' => qw($query finish);
+
+  personal('Common1')->activate;
+
+  $query->sendheader;
+
+  print personal('Common1')->content;
+
+  finish;
+
+
+Common1.pm
+---------------------------
+  package Common1;
+
+  use strict;
+  use personal 'Common2'; # only need precompile
+  use base ( 'Exporter', personal('Common2') );
+  use PCGI ();
+
+  our @EXPORT_OK = qw($query finish);
+
+  our $query;
+
+  sub activate {
+    $query = PCGI->new;
+  }
+
+  sub finish {
+    undef $query;
+  }
+
+  1;
+
+
+Common2.pm
+---------------------------
+  package Common2;
+
+  use strict;
+
+  sub content {
+    return " ... bla bla ... ";
+  }
+
+  1;
+
+
+#
+# difference: the second variant will not have namespaces collisions
+# problems under mod_perl never
+#
+# this examples will works under mod_perl1 Apache::Registry/PerlRun, mod_cgi
+#
+
+
+
+> Adam:
+> I concur with the fragility bit... surely this is going to break all
+> sorts of things like inheritance, and packages with multiple classes.
+
+inheritance stay, like you saw in example,
+but packages with multiple classes is gone. it's payment...
+
+for be compatible with 'use personal' local(!) package should pass
+only three simple rules. IMHO it's very small payment
+

@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12545
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 48349 invoked by uid 76); 8 Jul 2002 10:49:48 -0000
+Received: from mail05.svc.cra.dublin.eircom.net (HELO mail05.svc.cra.dublin.eircom.net) (159.134.118.21)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Mon Jul  8 10:49:48 2002 -0000
+Received: (qmail 43297 messnum 257018 invoked from network[159.134.164.40/p40.as1.limerick1.eircom.net]); 8 Jul 2002 10:48:53 -0000
+Received: from p40.as1.limerick1.eircom.net (HELO dansat.data-plan.com) (159.134.164.40)
+  by mail05.svc.cra.dublin.eircom.net (qp 43297) with SMTP; 8 Jul 2002 10:48:53 -0000
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id g68AmqI80860;
+	Mon, 8 Jul 2002 11:48:52 +0100 (BST)
+	(envelope-from timbo)
+Date: Mon, 8 Jul 2002 11:48:52 +0100
+To: "D. Hageman" <dhageman@dracken.com>
+Cc: Robin Berjon <robin@knowscape.com>, dhageman@cpan.org, modules@perl.org
+Subject: Re: Module submission TEILite
+Message-ID: <20020708114852.G87029@dansat.data-plan.com>
+References: <02070616531514.15602@morgaine> <Pine.LNX.4.44.0207061513510.1350-100000@localhost.localdomain>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.LNX.4.44.0207061513510.1350-100000@localhost.localdomain>; from dhageman@dracken.com on Sat, Jul 06, 2002 at 03:17:41PM -0500
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+On Sat, Jul 06, 2002 at 03:17:41PM -0500, D. Hageman wrote:
+> On Sat, 6 Jul 2002, Robin Berjon wrote:
+> 
+> > On Friday 21 June 2002 10:44, Perl Authors Upload Server wrote:
+> > >     This library package is not the most easiest to classify. The Text
+> > >     Encoding Initiative is a group that has defined a schema originally
+> > >     SGML based for the generic mark-up of documents. It is slowly
+> > >     starting to be adopted by libraries and electronic document centers
+> > >     (even more so now that an XML version of the specification has been
+> > >     produced). The TEI specification is quite large as it is designed to
+> > >     be able to markup from everything to songs to poetry to technical
+> > >     papers to novels. Since the full TEI specification is quite large a
+> > >     'Lite' version was made that is a subset that allows a person to
+> > >     markup over 90% of the type of documents one would encounter. The
+> > >     goal of this library is to implement the TEILite specification that
+> > >     is based on XML as this seems to be the most common path that
+> > >     libraries and such are using. It might be better to make a generic
+> > >     TEI root node and put this under TEI::TEILite or possibly
+> > >     XML::Schema::TEILite. I think I would like to stay away from the
+> > >     XML::Schema::TEILite as the XML::Schema might provide the wrong
+> > >     impression (as in modules for building XML schema models).
+> > 
+> > Applications of XML often tend to go directly under the XML:: namespace.
+
+Be careful here... The XML namespace should be reserved for modules
+where manipulating XML is the primary purpose. *Applications of XML*
+to a specific problem (like Job Control :) should *not* go into the
+XML namespace. Of course, that distinction can be a fine one sometimes.
+
+> > I'm ready to be proven wrong but I don't think TEI needs a top level namespace of 
+> > its own. XML::Schema is probably a bad choice too, as people would indeed 
+> > think that it is an implementation of W3C XML Schema (and if they have any 
+> > sense, run away fast ;).
+> > 
+> > Given that it is a DOM wrapper, why not simply XML::TEILite?
+> 
+> I guess the only reason why I didn't go with XML::TEILite is that I 
+> thought as TEI becomes more established that more people would be 
+> interested in adding additional tools.  I guess one can't really predict 
+> the future and if later this prediction becomes true and people do such a 
+> thing and more 'group'ing namespace can be considered then.  I am okay 
+> with the namespace XML::TEILite.
+
+I notice the text above says "The TEI specification is quite large"
+(implying possibly more modules over time) and "the TEILite
+specification that is based on XML" (implying there are non-XML
+aspects to it).
+
+Given those points, and that the Text Encoding Initiative is a "big
+thing" ("adopted by libraries and electronic document centers")
+I'd go with a new top-level namespace: TEI.
+
+Tim.

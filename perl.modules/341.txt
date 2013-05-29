@@ -1,0 +1,79 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:341
+Return-Path: <k@hohenstaufen.in-berlin.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17732 invoked from network); 28 Oct 1999 05:42:07 -0000
+Received: from dubravka.in-berlin.de (HELO hohenstaufen.in-berlin.de) (0@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 28 Oct 1999 05:42:07 -0000
+Received: (from k@localhost)
+	by hohenstaufen.in-berlin.de (8.9.1a/8.9.1) id HAA29410;
+	Thu, 28 Oct 1999 07:41:56 +0200
+Sender: k@hohenstaufen.in-berlin.de
+To: "James Tillman" <jtillman@bigfoot.com>
+Cc: "John Porter" <jdporter@min.net>, <modules@perl.org>
+Subject: Re: RFC: Fieldmapper.pm
+References: <NCBBILECPECKOHPHFCKDCEGNCLAA.jtillman@bigfoot.com>
+Date: 28 Oct 1999 07:41:56 +0200
+In-Reply-To: "James Tillman"'s message of "Sat, 16 Oct 1999 14:24:17 -0400"
+Message-ID: <sfcaep4dot7.fsf@hohenstaufen.in-berlin.de>
+Lines: 52
+User-Agent: Gnus/5.070097 (Pterodactyl Gnus v0.97) Emacs/20.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Sat, 16 Oct 1999 14:24:17 -0400, "James Tillman" <jtillman@bigfoot.com> said:
+
+>> Any particular reason it has to read and write files/streams,
+>> rather than working on in-memory data?
+ > Now that you mention it, no, not really.  It could be modified to accept
+ > input via an array or scalar value.  Currently a call to it might look like
+ > this:
+
+>> If it absolutely has to read/write streams, then perhaps
+>> it should go under IO:: instead.
+
+ > It just reads streams and files right now because I wanted to use it as a
+ > command line file processor.  I was doing a lot of piping and wanted a
+ > middle-man to reformat the text stream inline.
+
+>> Does it do anything besides reorder fields?
+
+ > It does anything you can use a regexp and an eval'd string to do.  Imagine
+ > the following:
+ > A single line of input is:  bob|1234|jane\n
+ > You provide the following to fieldmapper:
+ > Regexp: /^(.+)|(.+)|(.+)$/
+ > Eval string:  $3|$1|$2\n
+ > When Fieldmapper is done, you have this:  Sally|Bob|1234\n
+
+So you replace
+
+    s/^(.+)|(.+)|(.+)$/$3|$1|$2/
+
+with
+
+    Regexp: /^(.+)|(.+)|(.+)$/
+    Eval string:  $3|$1|$2\n
+
+? Sorry, that looks backwards to me.
+
+ > You can also provide CODE refs instead of either the regexp or eval in order
+ > to do more complex stuff.  So it's really an input processor, rather than a
+ > simple ReorderFields.
+ > Does this expanded explanation bring any good names to mind?  Namespaces?
+
+ > IO:: might not be a bad idea considering my current usage of the module.
+ > Also, does this thing sound too simple to warrant including it in CPAN?  I'm
+ > rather fond of simple modules that do one thing and do it well, but others
+ > might think it's not worth the trouble...
+
+One thing is a strict requirement for a perl module: it must have an
+advantage over perl without the module. So far you didn't show, what
+it is that your module "does well".
+
+-- 
+andreas

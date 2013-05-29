@@ -1,0 +1,144 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:14057
+Return-Path: <root@thesafrans.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 70199 invoked by uid 1008); 29 Sep 2002 09:16:45 -0000
+Delivered-To: cpanmail-modules@cpan.org
+Received: (qmail 70190 invoked by uid 76); 29 Sep 2002 09:16:45 -0000
+Received: from [216.133.72.196] (HELO mail.thesafrans.com) (216.133.72.196) by onion.perl.org (qpsmtpd/0.11-dev) with SMTP; 2002-09-29 09:16:45Z
+Received: from localhost (5226 bytes) by mail.thesafrans.com	via send-mail with P:stdio/R:inet_hosts/T:smtp	(sender: <root>) (ident <root> using unix)	id <m17vaBv-0004BDC@mail.thesafrans.com>	for <modules@cpan.org>; Sun, 29 Sep 2002 05:16:43 -0400 (EDT)	(Smail-3.2.0.112 2001-Feb-5 #7 built 2002-Aug-25)
+Message-ID: <m17vaBv-0004BDC@mail.thesafrans.com>
+Date: Sun, 29 Sep 2002 05:16:43 -0400 (EDT)
+To: cpan-testers@perl.org
+Subject: FAIL Math-Pari-2.010305 i686-linux 2.4.7-10
+Cc: modules@cpan.org
+X-SMTPD: qpsmtpd/0.11-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: root@thesafrans.com ((root))
+
+This distribution has been tested as part of the cpan-testers
+effort to test as many new uploads to CPAN as possible.  See
+http://testers.cpan.org/
+
+Please cc any replies to cpan-testers@perl.org to keep other
+test volunteers informed and to prevent any duplicate effort.
+
+-- 
+This is an error report generated automatically by CPANPLUS.
+Below is the error stack during 'make test':
+
+cd libPARI && /usr/bin/make LIB="" LIBPERL_A="libperl.a" LINKTYPE="dynamic" PREFIX="/usr" OPTIMIZE="-O2" PASTHRU_DEFINE="" PASTHRU_INC=""
+make[1]: Entering directory `/usr/lib/perl/CPANPLUS/build/Math-Pari-2.010305/libPARI'
+make[1]: Nothing to be done for `makemakerdflt'.
+make[1]: Leaving directory `/usr/lib/perl/CPANPLUS/build/Math-Pari-2.010305/libPARI'
+make[1]: Entering directory `/usr/lib/perl/CPANPLUS/build/Math-Pari-2.010305/libPARI'
+make[1]: Nothing to be done for `all'.
+make[1]: Leaving directory `/usr/lib/perl/CPANPLUS/build/Math-Pari-2.010305/libPARI'
+PERL_DL_NONLAZY=1 /usr/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/*.t
+t/analyz......ok
+        2/6 skipped: various reasons
+t/elliptic....ok
+        2/46 skipped: various reasons
+t/graph.......# Can't locate Term/Gnuplot.pm in @INC, ignoring plotting
+ok
+        3/28 skipped: various reasons
+t/linear......ok
+        2/105 skipped: various reasons
+t/nfields.....PARI:   ***   Warning: insufficient precision for fundamental units, not given.
+PARI:   ***   Warning: not a fundamental discriminant in quadclassunit.
+ok
+        3/161 skipped: various reasons
+t/number......ok
+        3/83 skipped: various reasons
+t/objets......ok
+        5/62 skipped: various reasons
+t/Pari........ok
+t/ploth.......# Can't locate Term/Gnuplot.pm in @INC, ignoring plotting
+ok
+        11/34 skipped: various reasons
+t/PlotRect....# Can't locate Term/Gnuplot.pm in @INC, ignoring the test
+skipped
+        all skipped: no reason given
+t/polyser.....ok
+        5/51 skipped: various reasons
+t/program.....ok
+        17/37 skipped: various reasons
+t/sumiter.....FAILED test 14
+	Failed 1/21 tests, 95.24% okay (less 6 skipped tests: 14 okay, 66.67%)
+t/trans.......FAILED tests 19, 21, 35
+	Failed 3/62 tests, 95.16% okay (less 4 skipped tests: 55 okay, 88.71%)
+Failed Test Stat Wstat Total Fail  Failed  List of Failed
+-------------------------------------------------------------------------------
+t/sumiter.t               21    1   4.76%  14
+t/trans.t                 62    3   4.84%  19 21 35
+1 test and 63 subtests skipped.
+Failed 2/14 test scripts, 85.71% okay. 4/804 subtests failed, 99.50% okay.
+make: *** [test_dynamic] Error 29
+
+
+Additional comments:
+
+Hello, modules! Thanks for uploading your works to CPAN.
+
+I noticed that the test suite seem to fail without these modules:
+
+Term::Gnuplot
+Term::Gnuplot
+Term::Gnuplot
+
+As such, adding the prerequisite module(s) to 'PREREQ_PM' in your
+Makefile.PL should solve this problem.  For example:
+
+WriteMakefile(
+    AUTHOR      => 'modules (modules@cpan.org)',
+    ... # other information
+    PREREQ_PM   => {
+	'Term::Gnuplot'	=> '0', # or a minimum workable version
+	'Term::Gnuplot'	=> '0', # or a minimum workable version
+	'Term::Gnuplot'	=> '0', # or a minimum workable version
+    }
+);
+
+If you are interested in making a more flexible Makefile.PL that can
+probe for missing dependencies and install them, ExtUtils::AutoInstall
+at <http://search.cpan.org/search?dist=ExtUtils-AutoInstall> may be
+worth a look.
+
+Thanks! :-)
+
+
+
+--
+
+Summary of my perl5 (revision 5.0 version 8 subversion 0) configuration:
+  Platform:
+    osname=linux, osvers=2.4.7-10, archname=i686-linux
+    uname='linux localhost.localdomain 2.4.7-10 #1 thu sep 6 16:46:36 edt 2001 i686 unknown '
+    config_args=''
+    hint=recommended, useposix=true, d_sigaction=define
+    usethreads=undef use5005threads=undef useithreads=undef usemultiplicity=undef
+    useperlio=define d_sfio=undef uselargefiles=define usesocks=undef
+    use64bitint=undef use64bitall=undef uselongdouble=undef
+    usemymalloc=n, bincompat5005=undef
+  Compiler:
+    cc='cc', ccflags ='-fno-strict-aliasing -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64',
+    optimize='-O2',
+    cppflags='-fno-strict-aliasing -I/usr/local/include'
+    ccversion='', gccversion='2.96 20000731 (Red Hat Linux 7.1 2.96-98)', gccosandvers=''
+    intsize=4, longsize=4, ptrsize=4, doublesize=8, byteorder=1234
+    d_longlong=define, longlongsize=8, d_longdbl=define, longdblsize=12
+    ivtype='long', ivsize=4, nvtype='double', nvsize=8, Off_t='off_t', lseeksize=8
+    alignbytes=4, prototype=define
+  Linker and Libraries:
+    ld='cc', ldflags =' -L/usr/local/lib'
+    libpth=/usr/local/lib /lib /usr/lib
+    libs=-lbind -lnsl -lgdbm -ldb -ldl -lm -lc -lcrypt -lutil
+    perllibs=-lbind -lnsl -ldl -lm -lc -lcrypt -lutil
+    libc=/lib/libc-2.2.4.so, so=so, useshrplib=false, libperl=libperl.a
+    gnulibc_version='2.2.4'
+  Dynamic Linking:
+    dlsrc=dl_dlopen.xs, dlext=so, d_dlsymun=undef, ccdlflags='-rdynamic'
+    cccdlflags='-fpic', lddlflags='-shared -L/usr/local/lib'
+

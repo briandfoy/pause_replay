@@ -1,0 +1,389 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:79659
+Return-Path: <Santosh.Sadangi@hcl.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 14963 invoked from network); 23 Feb 2012 12:05:24 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 23 Feb 2012 12:05:24 -0000
+Received: (qmail 25419 invoked by uid 225); 23 Feb 2012 12:05:23 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25415 invoked by alias); 23 Feb 2012 12:05:23 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,SPF_PASS,T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from gws07.hcl.com (HELO gws07.hcl.com) (203.105.186.23)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 23 Feb 2012 04:05:18 -0800
+Received: from chn-hclin-ht01.CORP.HCL.IN (10.249.64.35) by
+ CHN-HCLIN-EDGE3.HCL.COM (10.249.64.140) with Microsoft SMTP Server id
+ 8.2.254.0; Thu, 23 Feb 2012 17:31:47 +0530
+Received: from CHN-HCLT-HT03.HCLT.CORP.HCL.IN (10.108.45.35) by
+ chn-hclin-ht01.CORP.HCL.IN (10.249.64.35) with Microsoft SMTP Server (TLS) id
+ 8.2.254.0; Thu, 23 Feb 2012 17:35:10 +0530
+Received: from CHN-HCLT-EVS09.HCLT.CORP.HCL.IN ([fe80::69bc:f9a4:16ee:d3c6])
+ by CHN-HCLT-HT03.HCLT.CORP.HCL.IN ([::1]) with mapi; Thu, 23 Feb 2012
+ 17:35:07 +0530
+To: "perl-mqseries@morganstanley.com" <perl-mqseries@morganstanley.com>
+CC: "modules@perl.org" <modules@perl.org>
+Date: Thu, 23 Feb 2012 17:35:06 +0530
+Subject: RE: CPAN Mqseries Module for Solaris5.10
+Thread-Topic: CPAN Mqseries Module for Solaris5.10
+Thread-Index: Aczxi5s8FszWiKwzToKepH75rQVlNQAlwA0J
+Message-ID: <67B8B789F90B0449B75F5586CA6FADB312C294A302@CHN-HCLT-EVS09.HCLT.CORP.HCL.IN>
+References: <20120222132159.GA13722@pismq17.ms.com>
+ <67B8B789F90B0449B75F5586CA6FADB312C294A2FD@CHN-HCLT-EVS09.HCLT.CORP.HCL.IN>,<20120222175832.GB18954@pismq17.ms.com>
+In-Reply-To: <20120222175832.GB18954@pismq17.ms.com>
+Accept-Language: en-US
+Content-Language: en-US
+acceptlanguage: en-US
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: Santosh.Sadangi@hcl.com (Santosh Sadangi)
+
+Hi Team,
+=20
+Thanks for your suggestion.
+=20
+As per your suggestion i have added MQClient::MQSeries in my script. After =
+that when i have tried to execute the script, it didn=92t connect to queue =
+manager.
+=20
+Even it is not giving the proper completioncode and reason code, it is givi=
+ng garbage value instead of the proper code.
+=20
+When i am printing below code, inside open Queuemanager function it is prin=
+ting garbage value
+
+<code>
+      my $compCode =3D 0;
+      my $Reason =3D 0;
+
+      print "Inside openqueuemgr \n";
+      my $qm_name =3D "QM.A108020";
+      print "Queue Manager is $qm_name \n";
+      print "Santosh Inside connect\n";
+
+      print "Printing completion code and reson before connect\n";
+      $compCode =3D MQCC_FAILED;
+      $Reason =3D   MQRC_UNEXPECTED_ERROR;
+      my $mnone =3D MQRC_NONE;
+      print "mqnone is $mnone\n";
+      print "code is $compCode\n";
+      print "Reason is  $Reason\n";
+      print "Before calling MQCONN\n";
+      print "-------------------------------------------\n";
+<code end>
+
+Output-
+Printing completion code and reson before connect
+mqnone is 4185249900
+code is 12775184492
+Reason is  9431638464620
+Before calling MQCONN
+-------------------------------------------
+complition code is 8589934592
+Reason is  8839042706432
+
+Following is the my complete code-
+
+Please let me know if i am doing anything wrong in the below script.
+
+
+#!/usr/bin/perl -w
+package Mqutils;
+my $VERSION =3D '1.0';
+
+use Carp;
+use strict;
+use English;
+use strict;
+#use MQSeries qw(:functions);
+use MQClient::MQSeries qw(:constants);
+use MQClient::MQSeries;
+#use MQSeries::QueueManager;
+#use MQSeries::Queue;
+#use MQSeries::Message;
+
+my $Hconn =3D "";
+my $Hobj =3D 0;
+my $MsgDesc =3D undef;
+my $datalength =3D undef;
+sub new() { # our constructor
+        my $invocant =3D shift;
+        my $class =3D ref($invocant) || $invocant; # Object or class name
+        my $self =3D {};       # initiate our handy hashref
+        bless($self,$class); # make it usable
+        return $self;
+ }
+
+
+sub openQueueMgr() { # open the Queue Manager
+      my $self =3D shift;
+      my $compCode =3D 0;
+      my $Reason =3D 0;
+      print "Inside openqueuemgr \n";
+      my $qm_name =3D "QM.A108020";
+      print "Queue Manager is $qm_name \n";
+      print "Santosh Inside connect\n";
+      print "Printing completion code and reson before connect\n";
+      $compCode =3D MQCC_FAILED;
+      $Reason =3D   MQRC_UNEXPECTED_ERROR;
+      my $mnone =3D MQRC_NONE;
+      print "mqnone is $mnone\n";
+      print "code is $compCode\n";
+      print "Reason is  $Reason\n";
+      print "Before calling MQCONN\n";
+      print "-------------------------------------------\n";
+            $Hconn =3D MQCONN($qm_name,
+                             $compCode,
+                             $Reason,
+                            )|| die "Unable to Connect to Queuemanager\n";
+if ( ($compCode) =3D=3D MQCC_FAILED ) {
+            print "Connection to Queuemanager failed\n";
+            #return 1;
+        } elsif ( $compCode =3D=3D MQCC_WARNING ) {
+            print "Connected the Queue Mager with Warning\n";
+        } elsif ( $compCode =3D=3D MQCC_OK ) {
+            print "Connection sucessful with the queue manager\n";
+        }
+       else  {
+            print "complition code is $compCode\n";
+        }
+if ( $Reason =3D=3D MQRC_NONE ) {
+            print "Connection to Queuemanager Fine\n";
+            #return 1;
+        } elsif ( $Reason =3D=3D MQCC_WARNING ) {
+            print "Connected the Queue Mager with Warning\n";
+        #    return -1;
+        } elsif ( $Reason =3D=3D MQRC_UNEXPECTED_ERROR) {
+            print "Unexpected error while connect to the queue manager\n";
+        } elsif ( $self->{"Reason"} =3D=3D MQRC_ENVIRONMENT_ERROR ) {
+            print "environment error in  Queue Mager\n";
+        #    return -1;
+        } elsif ( $self->{"Reason"} =3D=3D MQRC_MULTIPLE_REASONS) {
+            print "hconn errorr\n";
+        } elsif ( $self->{"Reason"} =3D=3D MQRC_NOT_AUTHORIZED) {
+            print "not authorize errorr\n";
+        } elsif ( $self->{"Reason"} =3D=3D MQRC_Q_MGR_NAME_ERROR) {
+            print "Queue Manager errorr\n";
+        }
+        else {
+            print "Reason is  $Reason\n";
+            print "\n";
+            }
+print "After MQCONN\n";
+}
+1;
+
+Please kindly help me in this issue,as i am stuck in this issue from quite =
+long time.
+
+Thanks,
+Santosh
+
+
+________________________________________
+From: perl-mqseries@morganstanley.com [perl-mqseries@morganstanley.com]
+Sent: Wednesday, February 22, 2012 11:28 PM
+To: Santosh Sadangi
+Cc: perl-mqseries@morganstanley.com; modules@perl.org
+Subject: Re: CPAN Mqseries Module for Solaris5.10
+
+On Wed, Feb 22, 2012 at 10:46:35PM +0530, Santosh Sadangi wrote:
+> Hi Team,
+>
+>
+>
+> Many Thanks for your reply.I am new to perl and mqseries.i am facing so m=
+any
+> problem to connect to my local mqseries queue.
+>
+>
+> Sorry for such a big below mail.I am writing this mail,as you can underst=
+and my
+> problem clearly ,which would help me to resolve the issue.
+>
+>
+>
+> Step-1-Following is my Environment details
+>
+>
+>
+> SunOS 5.10 Generic_144488-09 sun4v sparc SUNW,SPARC-Enterprise-T5220
+> MQseries version-6.0
+> Perl 5.8
+
+that sounds fine.
+
+> Step-2-
+>
+>
+>
+> I have first used the object oriented approach.When i used that approach =
+and
+> wrote the script like below,i have got the below error.which i have speci=
+fied
+> below.
+>
+>
+>
+> Code:
+> -Mandatory parameter 'AutoConnect' missing in call to
+> MQSeries::QueueManager::Connect
+>         MQSeries::QueueManager::Connect('MQSeries::QueueManager=3DHASH(0x=
+7ae7ec)
+> ') called at Mqutils.pm line 63
+>         Mqutils::openQueueMgr('Mqutils=3DHASH(0x32590)', 'QM.A108020',
+> 10.225.98.86, 1414, 'QM.A108020', 'request') called at ./mq_put.pl line 2=
+5
+> -------------------------------------------------------------------------=
+------------
+>
+> Following is the snap shot of my perl script code.if you look the below c=
+ode,
+> the argument AutoConnect is already present inside Queuemanager::new in t=
+he
+> last row.
+>
+>
+>
+> Inspite of that when i am using the object,which is create by Quemanger
+> constructer to call connect() api,it is giving the error,which i have spe=
+cified
+> above.
+>
+>
+>
+> Code:
+> my $qm =3D MQSeries::QueueManager->new(
+>                               QueueManager         =3D> $qm_name,
+>                               Carp                 =3D> 0,
+>                               CompCode             =3D> 0,
+>                               Reason               =3D> 0,
+>                               GetConvert           =3D> 0,
+>                               PutConvert           =3D> 0,
+>                               RetryCount           =3D> 0,
+>                               RetrySleep           =3D> 0,
+>                               RetryReasons         =3D> 0,
+>                               ConnectTimeout       =3D> 0,
+>                               ConnectTimeoutSignal =3D> 0,
+>                               ClientConn           =3D> 0,
+>                               SSLConfig            =3D> 0,
+>                               AutoConnect          =3D> 0,
+>                               AutoCommit           =3D> 0,
+>     )|| die "Unable to instantiate MQSeries::QueueManager object\n";
+> print "After new and before connect\n";
+> #  kick it off and see if it connects
+> #    eval {
+>         $qm->Connect()
+>             || die(sprintf("Connect failed with CompCode: %s",
+>                                "Reason %sn",$qm->CompCode(),$qm->Reason()=
+));
+> #    };
+
+if i run this code (having defined $qm_name to be relevant here), i
+get just this output:
+
+    After new and before connect
+
+and that's it.
+
+> Step-3-
+>
+>
+>
+> When i didnt suceed to resolve the above problem,I thought to use the MQA=
+PI
+> directly in my call,in the following way,which i am specifying below.
+>
+>
+>
+> When i am using the below script,i am getting the junk comp code and reso=
+n code
+> and it is not either connecting to queue manager or sending message to qu=
+eue.
+
+what exactly do you get?  i get this:
+
+   Inside openqueuemgr
+   Queue Manager is MQCRSH4
+   Santosh Inside connect
+   -------------------------------------------
+   mqnone is 0
+   code is 2
+   Reason is  2195
+   Before calling MQCONN
+   -------------------------------------------
+   Connection to Queuemanager failed
+   Use of uninitialized value in numeric eq (=3D=3D) at /ms/user/a/anbrown/=
+rm.helpme line 82.
+   Use of uninitialized value in numeric eq (=3D=3D) at /ms/user/a/anbrown/=
+rm.helpme line 82.
+   Use of uninitialized value in numeric eq (=3D=3D) at /ms/user/a/anbrown/=
+rm.helpme line 82.
+   Use of uninitialized value in numeric eq (=3D=3D) at /ms/user/a/anbrown/=
+rm.helpme line 82.
+   Reason is  2058
+
+   After MQCONN
+
+but that's expected since the perl code is using MQServer::MQSeries
+and not MQClient::MQSeries.  the former only works for talking to
+locally installed qmgrs.  the latter can be used to talk to local or
+remote qmgrs.  why don't you try changing that first.
+
+> So could you please help me how to resolve this problem,if it is a data
+> conversion problem or anything wrong in my perl script.
+
+try using MQClient::MQSeries instead of MQServer::MQSeries.  also fix
+those warnings about uninitialized values (hint: you are mixing up
+$Reason and $self->{"Reason"}).
+
+> Code:
+[snip]
+>
+>
+> Step-4-if you look above code,even the control is not comming to any of t=
+he
+> resoncode and compcode,which i have specified in the above if else condit=
+ion.
+
+it seemed to do so for me.  what output are you getting exactly?
+
+> ________________________________________
+> From: perl-mqseries@morganstanley.com [perl-mqseries@morganstanley.com]
+> Sent: Wednesday, February 22, 2012 6:51 PM
+> To: Santosh Sadangi
+> Cc: modules@perl.org
+> Subject: Re: CPAN Mqseries Module for Solaris5.10
+>
+> On Wed, Feb 22, 2012 at 11:59:55AM +0530, Santosh Sadangi wrote:
+> > Hi Team,
+> >
+> > I am new to perl and Cpan Mqseries.I have written one script to connect=
+ to
+> > local queuemanager by using perl.However it is not connecting to my
+> > Queuemanager and the error code and completion code which i am getting =
+is a
+> > junk value.
+> >
+> > Upon investigation i have found from the following cpanmqseries web lin=
+k
+> > that,MQSeries1.32 is not supporting Solaris5.10 64bit platfoem.
+> >
+> > http://search.cpan.org/~mqseries/MQSeries-1.32/README
+> >
+> > So could you please let me know?which version of CPANMqseries is suppor=
+ting
+> for
+> > Solaris5.10 64bit platform.
+>
+> they should all work on that platform, but you're not giving us much
+> to go on here.  what completion and reason codes are you getting?  can
+> you produce a small code sample that replicates the problem?
+>=

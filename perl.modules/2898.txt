@@ -1,0 +1,146 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2898
+Return-Path: <paulclinger@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27197 invoked from network); 18 Sep 2000 14:54:18 -0000
+Received: from web117.yahoomail.com (205.180.60.91)
+  by tmtowtdi.perl.org with SMTP; 18 Sep 2000 14:54:18 -0000
+Received: (qmail 11860 invoked by uid 60001); 18 Sep 2000 14:54:12 -0000
+Message-ID: <20000918145412.11859.qmail@web117.yahoomail.com>
+Received: from [207.238.241.195] by web117.yahoomail.com; Mon, 18 Sep 2000 07:54:12 PDT
+Date: Mon, 18 Sep 2000 07:54:12 -0700 (PDT)
+Subject: I'd like to conribute SOAP::Lite module and be registered as developer
+To: modules@perl.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: paulclinger@yahoo.com (Paul Kulchenko)
+
+Hi, CPAN keepers!
+
+name: Paul Kulchenko
+email: paulclinger@yahoo.com
+url: http://www.geocities.com/paulclinger/
+user-id: KULCHENKO
+
+contribution:
+  Module to implement interface to SOAP (Simple Object Access
+Protocol). Support for HTTP transport included (with CGI and daemon)
+implementations as well as interface for other protocols. Parser is
+builded around XML::Parser. HTTP transport depends on LWP.
+
+Name           DSLI  Description                                 
+Info
+-------------  ----  --------------------------------------------
+---------
+SOAP::Lite     bdpO  SOAP light-weight client & server interface 
+KULCHENKO
+
+There are currently only two modules with several classes:
+
+SOAP::Lite.pm
+ -- SOAP::Lite         -- Main class provides all logic
+ -- SOAP::Transport    -- Supports transport architecture
+ -- SOAP::Data         -- Provides extentions for serialization
+architecture
+ -- SOAP::Serializer   -- Serializes data structures to SOAP package
+ -- SOAP::Parser       -- Parse XML file into object tree
+ -- SOAP::Deserializer -- Deserializes result of SOAP::Parser into
+objects
+ -- SOAP::SOM          -- Provides access to deserialized object tree
+
+SOAP::Transport::HTTP.pm
+ -- SOAP::Transport::HTTP::Client  -- Client interface to HTTP
+transport
+ -- SOAP::Transport::HTTP::Server  -- Server interface to HTTP
+transport
+ -- SOAP::Transport::HTTP::CGI     -- CGI implementation of server
+interface
+ -- SOAP::Transport::HTTP::Daemon  -- Daemon implementation of server
+interface
+
+I know about existent module (SOAP/Perl) from Keith Brown and we
+discussed cooperation in short email conversation. Keith wrote he'll
+stay consistent with other SOAP implementations [from DevelopMentor]
+and won't change module's design, so I decided write my own module
+with new design and features I was looking for.
+
+I tried introduce as less interaction between my and Keith's module,
+so hopefully users will be able to use both (and I didn't get any
+compaints about it).
+
+This module introduced new features that unavailable in existent
+modules (and writen not only in Perl), and I fueled it with power of
+Perl, so you can write:
+
+  use SOAP::Lite +autodispatch => (
+    uri => 'http://simon.fell.com/calc',
+    proxy => 'http://www.razorsoft.net/ssss4c/soap.asp'
+  );
+
+  # here is your usual code, but doubler will be dispatched to SOAP
+call
+  # so you'll get result from remote server
+  print doubler([10,20,30,50,100])->[2];                             
+
+
+I doubt any other language will let you do it and I like this
+feature.
+
+This module was posted and discussed on SOAP mailing list
+(http://discuss.develop.com/soap.html) and got several kind reviews
+from different people:
+
+  Thanks a lot for making such a great package - its incredibly easy 
+  and simple to use for both client and server.
+                                                               Tony
+Hong 
+                                                             
+(XMethods)
+
+  Excellent. Looks good.
+                                                             James
+Snell 
+     (Co-author of forthcoming "Programming Web Applications with
+SOAP")
+
+  This looks extremely good.
+                                                          Duncan
+Cameron
+
+  Cool -- that looks like a *really* neat project!
+                                                          Lars
+Bergstrom 
+                                                            
+(Microsoft)
+
+  I'm starting to use SOAP::Lite now, and it's very good at
+interacting
+  with servers I've had trouble talking to before. Kudos on that.
+                                                         Chris
+Radcliff 
+                                                           
+(Velocigen)
+
+Installation includes ready to use server (CGI/Daemon)
+implementations, numerous examples and test suite (more than 50
+tests, >20 are to real public servers).
+
+I'd like to use SOAP::Lite name space and be registered as developer 
+for CPAN (id: KULCHENKO). 
+Can I have two levels of support (developer and maillist) at the same
+time? 
+Can I put two version of the same module (.tar.gz and .zip) into the
+same directory?
+
+Thank you.
+
+Best wishes, Paul.
+
+
+__________________________________________________
+Do You Yahoo!?
+Yahoo! Mail - Free email you can access from anywhere!
+http://mail.yahoo.com/

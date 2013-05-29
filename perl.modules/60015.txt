@@ -1,0 +1,122 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60015
+Return-Path: <jeffreykegler@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 26412 invoked from network); 13 Apr 2008 02:07:17 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 13 Apr 2008 02:07:17 -0000
+Received: (qmail 11686 invoked by uid 225); 13 Apr 2008 02:07:16 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11682 invoked by alias); 13 Apr 2008 02:07:15 -0000
+X-Spam-Status: No, hits=-8.5 required=8.0
+	tests=BAYES_00,MIME_QP_LONG_LINE,RCVD_IN_DNSWL_HI,SPF_NEUTRAL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Sat, 12 Apr 2008 19:07:10 -0700
+Received: (qmail 26401 invoked by uid 515); 13 Apr 2008 02:07:07 -0000
+To: modules@perl.org
+MBOX-Line: From news@google.com Sun Apr 13 02:07:06 2008
+Delivered-To: colobus-nntpmod@lists.develooper.com
+Received: (qmail 26391 invoked from network); 13 Apr 2008 02:07:06 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 13 Apr 2008 02:07:06 -0000
+Received: (qmail 11660 invoked by uid 225); 13 Apr 2008 02:07:05 -0000
+Delivered-To: news-moderator-perl.modules@perl.org
+Received: (qmail 11655 invoked by alias); 13 Apr 2008 02:07:05 -0000
+Received: from moderators.individual.net (HELO moderators.individual.net) (130.133.4.7)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 12 Apr 2008 19:07:02 -0700
+Received: from proxy.google.com ([66.102.9.4])
+          by moderators.individual.net (Exim 4.69)
+          for perl-modules@moderators.isc.org with esmtp
+          (envelope-from <news@google.com>)
+          id <1JkrcP-0001Fo-4s>; Sun, 13 Apr 2008 04:06:57 +0200
+Received: from AR020007
+	by proxy.google.com with ESMTP id m3D26ulY008409
+	for <perl-modules@moderators.isc.org>; Sat, 12 Apr 2008 19:06:56 -0700
+Received: (from news@localhost)
+	by Google Production id m3D26taH008949
+	for perl-modules@moderators.isc.org; Sat, 12 Apr 2008 19:06:55 -0700
+Subject: Never mind, it's a feature :-) -- was Re: Failed: PAUSE indexer 
+	report
+Date: Sat, 12 Apr 2008 19:06:55 -0700 (PDT)
+Organization: http://groups.google.com
+Lines: 53
+Message-ID: <de5359aa-0ab4-407b-9a29-3b1ae8de7791@p25g2000hsf.googlegroups.com>
+References: <200804111525.m3BFPfW7024605@pause.perl.org> <954E5BAA-6B92-4CE9-9F22-1ED4178BD54C@mac.com> 
+	<120420081401522356%brian.d.foy@gmail.com>
+NNTP-Posting-Host: 69.204.164.42
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+X-Trace: posting.google.com 1208052415 8948 127.0.0.1 (13 Apr 2008 02:06:55 GMT)
+X-Complaints-To: groups-abuse@google.com
+NNTP-Posting-Date: Sun, 13 Apr 2008 02:06:55 +0000 (UTC)
+Complaints-To: groups-abuse@google.com
+Injection-Info: p25g2000hsf.googlegroups.com; posting-host=69.204.164.42; 
+	posting-account=tAdDGQkAAAAsWXg901jKCR9-13WRV0r-
+User-Agent: G2/1.0
+X-HTTP-UserAgent: Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_4_11; en) 
+	AppleWebKit/525.13 (KHTML, like Gecko) Version/3.1 Safari/525.13,gzip(gfe),gzip(gfe)
+X-Posted-By: 63.251.223.186
+X-Old-Spam-Check-By: la.mx.develooper.com
+X-Old-Spam-Status: No, hits=-0.6 required=8.0
+	tests=BAYES_00,MIME_QP_LONG_LINE,SPF_SOFTFAIL
+Approved: news@nntp.perl.org
+From: jeffreykegler@gmail.com
+
+Never mind.  It's a feature, not a bug. :-)
+
+Turns out all the packages of which CPAN complained about the VERSION,
+and suppressed, were "internal" -- supposed to be hidden.  So CPAN
+refusing to index them was a good thing.  Though I wouldn't suggest
+anybody trying to hide packages from the CPAN listing do it through
+the mechanism of arranging their VERSION strings in a way that makes
+CPAN decide they're screwed up. :-)
+
+More seriously, I'm not entirely comfortable with CPAN looking at any
+version number except that of the top package.  In this case the
+messages were for packages that don't even have their own separate
+files -- they're used for namespace-hiding inside a single file.  Even
+if what I am doing is not wise, CPAN indexing checks are not the
+optimum way to establish best practices.
+
+Enforcing a discipline on the top level module name and version makes
+sense. Tracking internal package names and versions, even to enforce
+sensible-seeming restrictions will lead to trouble, I think.
+
+best, jeffrey
+
+On Apr 12, 3:01=A0pm, brian.d....@gmail.com (Brian D Foy) wrote:
+> [[ This message was both posted and mailed: see
+> =A0 =A0the "To," "Cc," and "Newsgroups" headers for details. ]]
+>
+> In article <954E5BAA-6B92-4CE9-9F22-1ED4178BD...@mac.com>, Jeffrey
+>
+> Kegler <jeffreykeg...@mac.com> wrote:
+> > I have only been defining VERSION for the highest level module, =A0
+> > Parse::Marpa. =A0The other modules and packages are not independent and =
+=A0
+> > I have not been separately versioning them. =A0Should I?
+>
+> I think that's a good idea. You don't always have to change the
+> version, but it allows you to identify that module.
+>
+> > If I should add VERSION information to these other packages, how does =
+=A0
+> > CPAN determine VERSION? =A0By a lexical examination of the files, which =
+=A0
+> > requires a VERSION line in a specific form, as MakeMaker does?
+>
+> Put your $VERSION statement on a single line by itself, probably just
+> like you do for your other modules.
+>
+> Good luck, :)
+>
+> --
+> brian d foy (one of many PAUSE admins),http://pause.perl.org
+> archives athttp://www.xray.mpe.mpg.de/mailing-lists/modules
+> please send all messages back to modu...@perl.org
+

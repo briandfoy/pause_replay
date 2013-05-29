@@ -1,0 +1,124 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8567
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 88743 invoked by uid 75); 1 Nov 2001 12:43:25 -0000
+Received: from [159.134.237.58] (HELO manjula.eircom.net) (159.134.237.58)
+  by onion.perl.org (qpsmtpd/0.04) with SMTP; Thu Nov  1 12:43:25 2001 -0000
+Received: from p974.as1.limerick1.eircom.net ([159.134.167.206] helo=dansat.data-plan.com)
+	by manjula.eircom.net with esmtp (Exim 2.05 #2)
+	id 15zHBJ-0004GA-00; Thu, 1 Nov 2001 12:42:49 +0000
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id fA1ChUp45466;
+	Thu, 1 Nov 2001 12:43:30 GMT
+	(envelope-from timbo)
+Date: Thu, 1 Nov 2001 12:43:30 +0000
+To: Nick Tonkin <nick@rlnt.net>
+Cc: Philip Newton <Philip.Newton@gmx.net>, modules@perl.org
+Subject: Re: Requesting user ID
+Message-ID: <20011101124330.D44943@dansat.data-plan.com>
+References: <87m1ut8hhijqfgs1rm259iaf7isb9lhpgv@4ax.com> <Pine.BSF.4.21.0110312137350.16372-100000@world.tonkinresolutions.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <Pine.BSF.4.21.0110312137350.16372-100000@world.tonkinresolutions.com>; from nick@rlnt.net on Wed, Oct 31, 2001 at 09:55:23PM -0800
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+I think MySQL::DateReformat might be a more appropriate module name.
+
+Tim.
+
+On Wed, Oct 31, 2001 at 09:55:23PM -0800, Nick Tonkin wrote:
+> 
+> On Thu, 1 Nov 2001, Philip Newton wrote:
+> 
+> > Disclaimer: I am not a PAUSE admin.
+> > 
+> > On Wed, 31 Oct 2001 14:44:04 -0800 (PST), in perl.modules you wrote:
+> > 
+> > >        Date::MySQL -- Manipulate dates back and forth between
+> > >        human-readable and MySQL formats
+> > 
+> > Um, I think you *really* should discuss this on datetime@perl.org before
+> > submitting this module to CPAN. There are, at last count, about two
+> > squillion modules already on CPAN which deal with dates in some form or
+> > another. That mailing list should help you determine whether your
+> > module's functionality deserves a separate module, what its name should
+> > be, or which module it could be merged into.
+> 
+> Um, I sent an RFC there too.
+> 
+> > 
+> > For example, parsing dates is handled by Date::Parse [among others] and
+> > outputting them in various formats by Date::Format [among others], both
+> > from Graham Barr's TimeDate distribution.
+> > 
+> 
+> Um, I talked with Graham about it too. He said: "The module seems fine,
+> but I don't think it belongs under Date::Format. Maybe just Date::MySQL"
+> 
+> > > SYNOPSIS
+> > >         use Date::MySQL;
+> > >         my $md = Date::MySQL->new();
+> > >         print $md->toMySQL("5/31/87");    # prints "1987-05-31"
+> > >         print $md->frMySQL("1987-05-31"); # prints "05-31-1987"
+> > 
+> > I can imagine (without having tested this) that these could be reduced
+> > to something like
+> > 
+> >     use Date::Parse;
+> >     use Date::Format;
+> >     print time2str("%Y-%m-%d", str2time('5/31/87'));
+> >     print time2str("%m-%d-%Y", str2time('1987-05-31'));
+> >     # or if you want DD/MM/YY:
+> >     print time2str("%D",       str2time('1987-05-31'));
+> > 
+> > That wheel has already been invented -- and in more flexible ways, to
+> > boot.
+> 
+> This is just supposed to be a tool to do one thing cleanly and
+> easily. I'm well aware of the Date::Parse and Date::Format modules, and
+> made mention in my post that I am aware there are multiple ways to do
+> this. 
+> 
+> In my experience it has proven much more convenient to encapsulate these
+> routines in their own little package that can be used throughout multiple
+> applications, etc. I believe that others may find the same thing to
+> be true. Not all others, and evidently not you. Just some others.
+> 
+> > 
+> > > DESCRIPTION
+> > >        The MySQL RDBMS requires dates to be supplied in
+> > >        YYYY-MM-DD format[1,2], but humans expect dates to be
+> > >        presented, and to be able to enter them, in MM-DD-YY
+> > >        format or similar. This module converts dates back and
+> > >        forth between human-readable and MySQL format.
+> > 
+> > Um, make that: *some* humans. MM-DD-YY is common in America, but much of
+> > Europe prefers DD-MM-YY, and Japan uses YY-MM-DD. A format allowing you
+> > to specify the order of the date parts would be better, in my opinion.
+> 
+> Um, did you bother to RTFM before slamming this proposal? The module
+> allows you to specify several format options (e.g. like this: $md =
+> Date::MySQL->new(format=>'euro') ...), and if you prefer to have
+> the year at the beginning you can always not use the code at all.
+> 
+> > 
+> > And even though my "native" date order is DD-MM-YY (I'm in Germany), I
+> > have no problem with YYYY-MM-DD (but that may be because I'm a
+> > programmer and like that format for its sorting properties), so I don't
+> > "expect dates to be presented, and to be able to enter them" in another
+> > way.
+> 
+> Yes, well, unfortunately as a programmer I find that, suprisingly, 
+> non-programmers often use my applications. Therefore I make the interface
+> convenient for them.
+> 
+> - nick
+> 
+> 
+> 

@@ -1,0 +1,57 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1541
+Return-Path: <k@ak-71.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9240 invoked from network); 5 Apr 2000 12:40:46 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (0@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 5 Apr 2000 12:40:46 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id OAA29278;
+	Wed, 5 Apr 2000 14:40:32 +0200
+Sender: k@ak-71.mind.de
+To: cpan@perl.org
+Cc: modules@perl.org, "Elaine M. Ashton" <elaine@chaos.wustl.edu>,
+        Jarkko Hietaniemi <jhi@iki.fi>
+Subject: Reworking CPAN/authors/id/
+Date: 05 Apr 2000 14:40:32 +0200
+Message-ID: <m3bt3ozpof.fsf@ak-71.mind.de>
+Lines: 31
+User-Agent: Gnus/5.070098 (Pterodactyl Gnus v0.98) Emacs/20.6
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+I believe, the CPAN/authors/id/ directory needs a gentle cleanup.
+Currently there is no simple algorithm to generate the directory of an
+author from the userid. The only way to find out that JHI has the
+directory JHI/ is by trying which of JHI/ and J/JH/JHI/ exists.
+
+It would be a simple job to make the transition with backwards
+compatibility like so (tested):
+
+  use File::Path qw(mkpath);
+  opendir DIR, "."; # from authors/id
+  for (readdir DIR){
+    next if /^\./ or length($_)==1;
+    my $targ = substr($_,0,1) . "/" . substr($_,0,2);
+    mkpath $targ;
+    rename $_, "$targ/$_";
+    symlink "$targ/$_", $_;
+  }
+
+But that will cause a huge avalanche of mirror traffic (both for
+mirror and rsync). So I suppose we'd have a sleep 3600 after each loop
+so that the job takes 12 days until all 290 directories are relocated.
+
+The question is: do you see any other problems I am not seeing? Is
+sleep 3600 OK? Is the whole idea sound? If nobody has objections, I'll
+start tomorrow by relocating my own directory, wait a week and if no
+problems are reported run the job with the sleep 3600. Otherwise,,,
+
+Opinions?
+
+-- 
+andreas

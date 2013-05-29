@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:50868
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11495 invoked from network); 17 Sep 2006 04:30:28 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 17 Sep 2006 04:30:28 -0000
+Received: (qmail 12294 invoked by uid 225); 17 Sep 2006 04:30:28 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12287 invoked by alias); 17 Sep 2006 04:30:26 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO,UNPARSEABLE_RELAY
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 16 Sep 2006 21:30:24 -0700
+Received: from pause.perl.org (localhost.localdomain [127.0.0.1])
+	by pause.perl.org (8.13.4/8.13.4/Debian-3sarge1) with ESMTP id k8H4UA4k019065;
+	Sun, 17 Sep 2006 06:30:10 +0200
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.4/8.13.4/Submit) id k8H4U95D019064;
+	Sun, 17 Sep 2006 06:30:09 +0200
+Date: Sun, 17 Sep 2006 06:30:09 +0200
+Message-ID: <200609170430.k8H4U95D019064@pause.perl.org>
+Subject: Module submission DBIx::Timeout
+Reply-To: modules@perl.org
+To: modules@perl.org, samtregar@cpan.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       DBIx::Timeout
+  DSLIP:       RmpOp
+  description: provides safe timeouts for DBI calls
+  userid:      SAMTREGAR (Sam Tregar)
+  chapterid:   7 (Database_Interfaces)
+  communities:
+    dbi-users mailing list
+
+  similar:
+    none
+
+  rationale:
+
+    This module provides a safe method of timing out DBI requests. An
+    unsafe method is described in the DBI docs:
+
+    http://search.cpan.org/~timb/DBI/DBI.pm#Signal_Handling_and_Canceling_Operations
+
+    The problem with using POSIX sigaction() (the method described
+    above) is that it relies on unsafe signals to work. Unsafe signals
+    are well known to cause instability. To understand why, imagine the
+    DB client code is in the middle of updating some global state when
+    the signal arrives. That global state could be left in an
+    inconsitent state, just wait for the next time it is needed to cause
+    problems. Since this will likely occur far from the cause, and only
+    ocur rarely, it can be a very difficult problem to track down.
+
+    Instead, this module:
+
+    - Forks a child process which sleeps for $timeout seconds.
+
+    - Runs your long-running query in the parent process.
+
+    - If the parent process finishes first it kills the child and
+    returns.
+
+    - If the child process wakes up it kills the parent's DB thread and
+    exits with a code so the parent knows it was timed out.
+
+  enteredby:   SAMTREGAR (Sam Tregar)
+  enteredon:   Sun Sep 17 04:30:09 2006 GMT
+
+The resulting entry would be:
+
+DBIx::
+::Timeout         RmpOp provides safe timeouts for DBI calls         SAMTREGAR
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=52e00000_ea8ded9557b9c0b3&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=52e00000_ea8ded9557b9c0b3&SUBMIT_pause99_add_mod_insertit=1

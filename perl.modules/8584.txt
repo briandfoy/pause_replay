@@ -1,0 +1,49 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8584
+Return-Path: <sam@vilain.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 86030 invoked by uid 75); 2 Nov 2001 04:23:21 -0000
+Received: from [213.1.118.146] (HELO hoffman.vilain.net) (213.1.118.146)
+  by onion.perl.org (qpsmtpd/0.04) with SMTP; Fri Nov  2 04:23:21 2001 -0000
+Received: from hoffman.vilain.net
+	([127.0.0.1] helo=hoffman ident=sam)
+	by hoffman.vilain.net with smtp (Exim 3.32 #1 (Debian))
+	id 15zVrL-0000vR-00; Fri, 02 Nov 2001 04:23:11 +0000
+Date: Fri, 2 Nov 2001 04:23:11 +0000
+To: Kirrily Robert <skud@infotrope.net>
+Cc: modules@perl.org
+Subject: Re: Pod::Constants
+In-Reply-To: <E15z5Oe-0000BE-00@tanqueray.infotrope.net>
+References: <E15vlbl-0000FD-00@hoffman.vilain.net>
+	<E15z5Oe-0000BE-00@tanqueray.infotrope.net>
+X-Mailer: Sylpheed version 0.6.1 (GTK+ 1.2.10; i386-debian-linux-gnu)
+X-Face: NErb*2NY4\th?$s.!!]_9le_WtWE'b4;dk<5ot)OW2hErS|tE6~D3errlO^fVil?{qe4Lp_m\&Ja!;>%JqlMPd27X|;b!GH'O.,NhF*)e\ln4W}kFL5c`5t'9,(~Bm_&on,0Ze"D>rFJ$Y[U""nR<Y2D<b]&|H_C<eGu?ncl.w'<
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Message-ID: <E15zVrL-0000vR-00@hoffman.vilain.net>
+Approved: news@nntp.perl.org
+From: sam@vilain.net (Sam Vilain)
+
+On Wed, 31 Oct 2001 19:07:48 -0500
+Kirrily Robert <skud@infotrope.net> wrote:
+
+> >Has this already been done?
+> >       Pod::Constants - Include constants from POD
+> I don't know, but will it solve the eternal $VERSION problem?
+
+Sure, but you have to work around MakeMaker:
+
+=head2 MODULE RELEASE
+
+$VERSION = 1.05
+
+=cut
+
+use vars qw($VERSION);
+use Pod::Constants -trim => 1, 'MODULE RELEASE' => \$VERSION;
+BEGIN { $VERSION =~ s/^\$VERSION\s*=\s*// };
+
+Sam

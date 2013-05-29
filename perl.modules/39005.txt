@@ -1,0 +1,79 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:39005
+Return-Path: <dstorrs@bigpanda.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2748 invoked from network); 11 Mar 2005 16:51:08 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 11 Mar 2005 16:51:08 -0000
+Received: (qmail 22442 invoked by uid 225); 11 Mar 2005 16:51:08 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22438 invoked by alias); 11 Mar 2005 16:51:07 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from megazone.bigpanda.com (HELO megazone.bigpanda.com) (64.147.171.210)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 11 Mar 2005 08:51:03 -0800
+Received: by megazone.bigpanda.com (Postfix, from userid 1031)
+	id 119B4351AF; Fri, 11 Mar 2005 08:51:00 -0800 (PST)
+Date: Fri, 11 Mar 2005 08:51:00 -0800
+To: modules@perl.org
+Cc: David Storrs <dstorrs@dstorrs.com>
+Subject: Re: RFC: Test::Output::CGI
+Message-ID: <20050311165059.GA19235@megazone.bigpanda.com>
+References: <20050311051458.GE86088@megazone.bigpanda.com> <110320051007391000%comdog@panix.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <110320051007391000%comdog@panix.com>
+User-Agent: Mutt/1.4.1i
+Approved: news@nntp.perl.org
+From: dstorrs@dstorrs.com (David Storrs)
+
+On Fri, Mar 11, 2005 at 10:07:39AM -0600, _brian_d_foy wrote:
+
+> In article <20050311051458.GE86088@megazone.bigpanda.com>, David Storrs
+> <dstorrs@dstorrs.com> wrote:
+> 
+> > I've got a module half written but I'm starting to question whether
+> > it's a good idea or not.
+> > 
+> > Test::Output::CGI is (would be) a module which simplifies the process
+> > of doing "known good" testing.  You give it some information about
+> > your CGI (its URL, whether you are testing the brower output or output
+> > to a disk file, location of that disk file, etc).  You can then say
+> > things like "if I call it with these parameters, does the output match
+> > up to this file (the 'known good' version)"?
+> 
+> I like the idea, but I don't see how it has anything to do with CGI,
+> unless you also want it to specifically separate the CGI headers
+> from the message body, then start testing. For instance, the headers
+> don't have to match extactly (in order, field name case, and so on).
+> 
+> If that's the case, *::CGI sounds fine, although *::HTTP might (might)
+> also fit, but so might *::RFC822 (or whatever number they are using
+> now).
+
+
+Yes, HTTP would probably be better.  The original reason for the third
+level was to allow for a plug-in hierarchy (these names are totally
+pulled out of thin air and would probably not be the real choices):
+
+      Test::Output::ShellScript
+      Test::Output::MSWord
+      Test::Output::Excel
+      Test::Output::PDF
+      ...etc...
+
+The ::CGI (or ::HTTP) specialization would use WWW::Mechanize
+internally and would be able to test either against the HTML page that
+came back or against a disk file that was output as a side effect.
+
+That's the theory, anyway.
+
+
+--Dks
+
+      

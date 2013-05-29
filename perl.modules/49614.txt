@@ -1,0 +1,159 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:49614
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22407 invoked from network); 28 Jun 2006 02:58:58 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 28 Jun 2006 02:58:58 -0000
+Received: (qmail 8484 invoked by uid 225); 28 Jun 2006 02:58:58 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8479 invoked by alias); 28 Jun 2006 02:58:58 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 27 Jun 2006 19:58:43 -0700
+Received: from pause.perl.org (localhost.localdomain [127.0.0.1])
+	by pause.perl.org (8.13.4/8.13.4/Debian-3sarge1) with ESMTP id k5S2wGMb026751;
+	Wed, 28 Jun 2006 04:58:16 +0200
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.4/8.13.4/Submit) id k5S2wGHI026750;
+	Wed, 28 Jun 2006 04:58:16 +0200
+Date: Wed, 28 Jun 2006 04:58:16 +0200
+Message-ID: <200606280258.k5S2wGHI026750@pause.perl.org>
+Subject: Module submission IPC::System::Simple
+Reply-To: modules@perl.org
+To: modules@perl.org, pjf@cpan.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       IPC::System::Simple
+  DSLIP:       idpfp
+  description: system() made simple
+  userid:      PJF (Paul Jamieson Fenwick)
+  chapterid:   5 (Networking_Devices_IPC)
+  communities:
+    http://perlmonks.org/?node_id=557107
+
+  similar:
+    IPC::Run::Simple
+
+  rationale:
+
+    The following was posted to modules@perl.org on 25th June, and is
+    my original motivation for the module. I'm not sure if it was caught
+    by any filters or moderation on the way in, so I'm reproducing it
+    below.
+
+    ---cut here---
+
+    Greetings, my module overlords,
+
+    I'm currently in the process of preparing course materials on using
+    Perl for system administration, and I've hit a snag. I can't find
+    *any* way to make system() as simple and easy as I would like for
+    the most simple and common cases. The full discussion can be found
+    on PerlMonks[1], but in short my ideal module would look like this:
+
+    use Some::Module qw(run);
+
+    # Run some command. Throw an exception on core-dump, #
+    signal-death, or non-zero exit value. This calls # single-argument
+    system underneath.
+
+    run("some_command");
+
+    # Run some command as above, but use multi-argument # system.
+
+    run("some_command",@arguments);
+
+    # Run some command, but allow an exit-status of 0..2 # to be
+    non-fatal. Returns the exit value. my $exit_value = run([0..2],
+    "some_command");
+
+    The intent is to make it both simple and easy to "do the right
+    thing" in terms of error-checking for the most simple cases when
+    using system(). I'm not looking for fancy pipes or process control,
+    but I am looking for something that will give excellent diagnostics
+    (and exceptions) when things go wrong.
+
+    This is about making "simple things easy"; we already have lots of
+    modules that make hard things possible. I feel such a module would
+    have great use with system administrators, who often know enough
+    Perl to call system(), but not enough to properly check (and unpack)
+    $? and $! .
+
+    Unfortunately, I can't find any such module. IPC::Run3 comes close,
+    but looking over the source code it doesn't appear to check for
+    signals, core-dumps, or give an easy way to get to the error-status.
+    IPC::Run fails the simplicity test, and Perl6::Builtins requires the
+    developer to actually check their return values. IPC::Cmd is
+    actually very close, but doesn't do the diagnostics that I'm after.
+
+    As such, I'm intending to write a module to fulfill these
+    requirements, and hence I need a module name, or convincing that I
+    really am reinventing yet another wheel. My current choice of names
+    is "IPC::System::Simple", which I believe both fits into the
+    existing namespace tree, and makes it reasonably clear about what it
+    does. I'd actually love to call it "System::Simple", but I feel that
+    doesn't follow namespace conventions, although I'd like to be
+    convinced otherwise.
+
+    Any advice, discussion, criticism, or questions would be
+    appreciated.
+
+    Many thanks!
+
+    Paul
+
+    [1] http://perlmonks.org/?node_id=557107
+
+    ---cut here---
+
+    As it happened, in response to my discussion on PerlMonks Steve
+    Fink produced IPC::Run::Simple, which implements a related idea.
+    Steve's module doesn't throw exceptions by default, and requires
+    much longer arguments to check return values. As such,
+    IPC::Run::Simple doesn't actually meet my goal of making it as
+    simple as possible to complete the task at hand.
+
+    The discussion on IPC::Run::Simple versus what I'm tentatively
+    calling IPC::System::Simple is continuing on PerlMonks, and it
+    appears that Steve and I actually have different design goals. I
+    feel that throwing exceptions is the Right Thing to do on failure,
+    as well as having the easiest-possible path forward should a
+    developer wish to insist on a command's exit status.
+
+    Reading the thread on Perlmonks should help explain things further.
+    However I would very much appreciate any feedback, comments, ideas,
+    or discussion that you may have.
+
+    Many thanks,
+
+    Paul
+
+  enteredby:   PJF (Paul Jamieson Fenwick)
+  enteredon:   Wed Jun 28 02:58:15 2006 GMT
+
+The resulting entry would be:
+
+IPC::System::
+::Simple          idpfp system() made simple                         PJF
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=62f00000_0edd8050dae655e4&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=62f00000_0edd8050dae655e4&SUBMIT_pause99_add_mod_insertit=1

@@ -1,0 +1,189 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21125
+Return-Path: <jgorman@webbysoft.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 59210 invoked by uid 76); 14 May 2003 19:07:38 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Wed, 14 May 2003 12:07:38 -0700
+Received: (qmail 21634 invoked by uid 225); 14 May 2003 19:07:37 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 21629 invoked by uid 507); 14 May 2003 19:07:37 -0000
+Received: from nx.eastlink.ca (HELO mx2.eastlink.ca) (24.222.0.30) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Wed, 14 May 2003 12:07:34 -0700
+Received: from localhost.localdomain ([24.222.6.16]) by mx2.eastlink.ca (iPlanet Messaging Server 5.2 HotFix 1.12 (built Feb 13 2003)) with ESMTP id <0HEW008A74YZDE@mx2.eastlink.ca> for modules@perl.org; Wed, 14 May 2003 16:04:12 -0300 (ADT)
+Date: Wed, 14 May 2003 16:04:11 -0300
+Subject: Re: Module submission DBIx::CodeKit
+In-reply-to: <659270BA-8620-11D7-B7C5-000393CB5BC4@nanisky.com>
+To: Arthur Bergman <sky@nanisky.com>
+Cc: modules@perl.org
+Message-ID: <1052939051.8615.1532.camel@webian>
+MIME-version: 1.0
+X-Mailer: Ximian Evolution 1.0.5
+Content-type: text/plain
+Content-transfer-encoding: 7BIT
+References: <659270BA-8620-11D7-B7C5-000393CB5BC4@nanisky.com>
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-1.0 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_02_03 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: jgorman@webbysoft.com (John Gorman)
+
+On Wed, 2003-05-14 at 12:26, Arthur Bergman wrote:
+> 
+> On onsdag, maj 14, 2003, at 15:49 Europe/Stockholm, Perl Authors Upload 
+> Server wrote:
+> 
+> >
+> >     BabelKit and CodeKit both embody interfaces to universal code
+> >     tables that provide unlimited virtual database code tables with no
+> >     schema changes or programming. Code tables store code sets and 
+> > their
+> >     associated descriptions and sort orders. In the case of BabelKit 
+> > the
+> >     code descriptions are multilingual.
+> >
+> >     They both use DBI so they are respectively:
+> >
+> >     DBIx::BabelKit
+> >
+> >     DBIx::CodeKit
+> >
+> 
+> What are universal code tables, and why do we have two? The fact that 
+> one is multilingual and the other doesn't make sen in two different 
+> namespaces.
+
+Thanks, this will make a good addition to the FAQ!
+
+> What are universal code tables?
+
+Lets start with the unilingual universal code table
+which is called CodeKit.
+
+The usual approach to database codes is to create one
+database table for each code set.  For each table
+you need the code itself, the name or description,
+the display order, and a deprecated flag which allows
+you to turn off data entry of obselete codes:
+
+CREATE TABLE city (
+  city_id       smallint(6),
+  city_name     varchar(64),
+  display_order smallint(6),
+  deprecated    smallint(1),
+  primary key   (city_id)
+);
+
+CREATE TABLE state (
+  state_cd      varchar(2),
+  state_name    varchar(64),
+  display_order smallint(6),
+  deprecated    smallint(1),
+  primary key   (city_id)
+);
+
+...
+
+And so forth.  Eighteen code tables later you have
+twenty code add/update/delete code administration
+interfaces to write and twenty variations of
+&select_city_dropdown(), &select_state_dropdown()
+HTML user selection interfaces to program.
+Lots of code, lots of bugs, lots of wasted time.
+
+A universal code table (my term, I have never seen
+this anywhere else) is where you create a single
+database table that can hold any number of virtual
+code tables like this:
+
+CREATE TABLE ck_code (
+  code_set      varchar(16),
+  code_code     varchar(32),
+  code_desc     varchar(255),
+  code_order    smallint(6),
+  code_flag     smallint(1),
+  PRIMARY KEY  (code_set, code_code)
+);
+
+Notice the 'code_set' field.  This holds the code set
+name that each record belongs to, such as 'city', 'state',
+'month', etc.  So that single table can very
+efficiently hold any number of code sets.
+
+I have already programmed the single generic code
+add/update/delete administration interface and the
+CodeKit module generates any kind of HTML select
+element one can wish for. This takes all of the
+programming work away from the code administation
+and HTML interface part of a database project.
+
+Now to briefly explain the multilingual universal
+code table which is called BabelKit.
+
+It turns out that the database table structure and
+the programming API to support multilingual codes
+is more complex than the unilingual case.  The reason
+for this is that instead of one name or description for
+each code you have 5, 10, or 15, one description for
+each language that your database and web site
+need to support.  Instead of a one-to-one relationship
+between codes and their descriptions you have
+a one-to-many, which is a different beast.
+
+If CodeKit saves programmer time, BabelKit saves
+*huge* amounts of time, because multilingual code
+tables are not pleasant to work with, especially
+many of them.  You end up in cut-and-paste hell.
+
+> Why do we have two?
+
+The majority of databases are unilingual.  For unilingual
+database projects it is best to skip the complexity
+and overhead of multilingual support and use CodeKit.
+
+True, in theory BabelKit will do the job.  However
+it really is overkill for most projects so I made a
+slimmed down schema, code administration interface
+and programming API for the 95% of projects with
+don't need the complexity.
+
+> The fact that one is multilingual and the other
+> doesn't make sen in two different namespaces.
+
+I am not sure what you are getting at here.
+They have different APIs, so they need different
+names.  One API carries the language concept
+throughout all of the methods, the other doesn't.
+
+There seems to be plenty of room under DBIx::
+for both of them.  No need to:
+
+DBIx::UniversalCodeTable::Unilingual
+DBIx::UniversalCodeTable::Multilingual
+
+Besides, they are already known as CodeKit and
+BabelKit at the top level of the PHP world,
+at Freshmeat, and so forth.  There are PHP
+versions of both and I may provide other
+languages such as C# as well.  This was
+actually a port from PHP to Perl since I
+had to start with PHP but I like Perl better.
+
+Let me know if anything is unclear.  There is
+voluminous documentation on the web site as well.
+Here are the project home pages:
+
+http://www.webbysoft.com/codekit
+http://www.webbysoft.com/babelkit
+
+There are running live demos there if you want to
+see them in action.
+
+Cheers, John
+
+John Gorman
+Senior Database Architect
+WebbySoft Ltd
+jgorman@webbysoft.com
+

@@ -1,0 +1,123 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45514
+Return-Path: <cpan@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28951 invoked from network); 25 Oct 2005 08:20:37 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 25 Oct 2005 08:20:37 -0000
+Received: (qmail 27519 invoked by uid 225); 25 Oct 2005 08:20:37 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27513 invoked by alias); 25 Oct 2005 08:20:36 -0000
+X-Spam-Status: No, hits=-4.4 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Tue, 25 Oct 2005 01:20:33 -0700
+Received: (qmail 28943 invoked by uid 515); 25 Oct 2005 08:20:29 -0000
+To: modules@perl.org, Rob Kinyon <rob.kinyon@gmail.com>
+Message-ID: <435DEA9F.7000801@ali.as>
+Date: Tue, 25 Oct 2005 18:19:43 +1000
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+CC: modules@perl.org, Stevan Little <stevan.little@iinteractive.com>
+Subject: Re: Registration of distribution/modules names
+References: <70384420510240845n5d41ed9apf8ed6775177121f0@mail.gmail.com>
+In-Reply-To: <70384420510240845n5d41ed9apf8ed6775177121f0@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 202.90.48.125
+Approved: news@nntp.perl.org
+From: cpan@ali.as (Adam Kennedy)
+
+http://cpants.dev.zsi.at/dist/Tree-Binary
+
+Moving Tree::Binary in is fine, if it breaks compatibility that is the
+authors perogative, and it's up to him to make the call on incompatible 
+API changes. You may wish to make sure you add in a check in the 
+installer for copies of the module prior to the critical changeover and 
+stop, or warn them of the change. Changing an API for Tree::Binary 
+sounds like something that would badly hurt the code of anyone using it.
+
+Also, you are aware that it contains half a dozen classes other than 
+Tree::Binary right? Will all those stay compatible? And I presume you'll 
+need to hande Tree::Visualize as well.
+
+But that's all cool.
+
+The two points that concern me a bit is your us of a "brand name" module 
+without actually implementing anything there (Forest.pm consumes another 
+top level namespace while not providing anything of value, code or 
+otherwise) and your use of the top level Tree.pm.
+
+Firstly, while branded distributions are normal, they tend to stick to 
+their own branded namespace, and deal with specific issues... Maypole, 
+Catalyst, etc etc.
+
+Branding the distribution and not actually using the branded namespace 
+is not something we want to encourage.
+
+Secondly, Tree:: as it stands now is a flat namespace. Everything uses 
+Tree::Something as there is no particularly obvious candidate to become 
+a logical parent for the entire namespace.
+
+We already have Tree::Nary, and Tree.pm seems like an alternative 
+implementation of a generic N-ary tree. While alternative modules are 
+just fine, is there anything in particular that you think warrants 
+elevating your Tree.pm to be at the top of a namespace containing 
+several hundred classes, when nobody to date (including SCWERN) has 
+considered they have something that deserves to be called Tree.pm
+
+Adam K
+
+Rob Kinyon wrote:
+> To whom it may concern -
+> 
+>     I'd like to register the following names:
+> 
+> Distribution:
+>     Forest
+> 
+> Modules:
+>     Forest
+>     Tree
+>     Tree::Null (contained with the Tree source file)
+>     Tree::Fast
+>     Tree::Binary
+>     Tree::Persist
+>     Tree::Persist::Base
+>     Tree::Persist::File
+>     Tree::Persist::File::XML
+>     Tree::Persist::DB
+>     Tree::Persist::DB::SelfReferential
+> 
+> These are all in the distribution named Forest I just uploaded to
+> CPAN. The version is 0.99_01 (developer release).
+> 
+> Purpose:
+>     For work, I need to have transparent backing for trees to an
+> arbitrary datastore, specified at runtime. None of the existing Tree
+> modules lent themselves to the necessary patches. As the author of
+> Tree::Simple and Tree::Binary (STEVAN) is a coworker, he recommended
+> that I start from scratch, in order to provide the API he wished he
+> had when writing his tree modules.
+> 
+> Conflicts:
+>     * There is a Tree::Binary currently registered to STEVAN (Stevan Little).
+>         - As he is a co-author for Forest, he has said that he's
+> willing to move the name over. This would be considered an
+> incompatible API upgrade, requiring a new major version number.
+>     * There is a "Tree" distribution by MSCHWERN.
+>         - There is no "Tree" package anywhere in the distribution.
+>         - It was last updated October, 1999.
+>         - It doesn't actually implement a tree - it reimplements
+> hashes using a self-balancing tree.
+> 
+>     As such, I do not feel that there are any conflicts to granting us
+> the names I have requested.
+> 
+> Thanks,
+> Rob Kinyon

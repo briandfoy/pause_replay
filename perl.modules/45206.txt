@@ -1,0 +1,71 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45206
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19319 invoked from network); 10 Oct 2005 21:53:33 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 10 Oct 2005 21:53:33 -0000
+Received: (qmail 19459 invoked by uid 225); 10 Oct 2005 21:53:32 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19452 invoked by alias); 10 Oct 2005 21:53:31 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO k75.linux.bogus) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 10 Oct 2005 14:53:20 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.13.5/8.13.5/Debian-1) with ESMTP id j9ALqbEJ026449;
+	Mon, 10 Oct 2005 23:52:37 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.5/8.13.5/Submit) id j9ALqb8N026446;
+	Mon, 10 Oct 2005 23:52:37 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: Burak =?utf-8?Q?G=C3=BCrsoy?= <burakgursoy@gmx.net>
+Cc: "Andreas J. Koenig" <andreas.koenig.gmwojprw@franz.ak.mind.de>,
+        modules@perl.org
+Subject: Re: indexer fails to find $VERSION
+References: <200510041900.j94J0Prd010213@pause.perl.org>
+Reply-To: modules@perl.org
+Date: Mon, 10 Oct 2005 23:52:36 +0200
+In-Reply-To: <200510041900.j94J0Prd010213@pause.perl.org> (Burak
+ =?utf-8?Q?G=C3=BCrsoy's?=
+	message of "Tue, 4 Oct 2005 22:01:06 +0300")
+Message-ID: <874q7p6nvf.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Tue, 4 Oct 2005 22:01:06 +0300, Burak G=C3=BCrsoy <burakgursoy@gmx=
+.net> said:
+
+  > Hello,
+  > I'm getting this indexer error third or fourth time. I've tried to re-i=
+ndex
+  > 1.56 but got that error. And now 1.57 gives the same.=20
+
+  > I've tried modules@perl.org before (as suggested inside the report), but
+  > that list seems to be dead and it is filled with spam. So, nobody respo=
+nded.
+
+  > Is this a PAUSE indexer bug or is there a bug in my distribution?
+
+It's a bug in your packaging. All your directories have a permission
+of 666 which means that the indexer can untar your distribution but
+cannot read the files.
+
+I'd recommend, you use 'make dist' and 'make disttest' to distribute
+your modules.
+
+I apologize that the indexer is not smart enough to write a proper
+report to you. On first sight a fix to that end seems to involve quite
+a view parts of the code, so I must defer such a fix....
+
+Regards,
+--=20
+andreas

@@ -1,0 +1,72 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:23566
+Return-Path: <root@schmorp.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 90456 invoked by uid 76); 15 Sep 2003 23:32:19 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Mon, 15 Sep 2003 16:32:19 -0700
+Received: (qmail 12600 invoked by uid 225); 15 Sep 2003 23:32:14 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12595 invoked by uid 507); 15 Sep 2003 23:32:14 -0000
+Received: from islay.mach.uni-karlsruhe.de (HELO mailout.schmorp.de) (129.13.162.92) by one.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Mon, 15 Sep 2003 16:32:10 -0700
+Received: from [10.0.0.1] (helo=cerebro.laendle)	by mailout.schmorp.de with esmtp (Exim 4.20)	id 19z2ou-0005TR-I7	for modules@perl.org; Tue, 16 Sep 2003 01:31:48 +0200
+Received: from root by cerebro.laendle with local (Exim 4.22)	id 19z2ov-0001cI-6v	for modules@perl.org; Tue, 16 Sep 2003 01:31:49 +0200
+Date: Tue, 16 Sep 2003 01:31:48 +0200
+To: modules@perl.org
+Subject: request for module name :)
+Message-ID: <20030915233147.GA1760@schmorp.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-Operating-System: Linux version 2.4.21-rc7 (root@cerebro) (gcc version 3.3 (Debian)) 
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: pcg@goof.com (( Marc) (A.) (Lehmann ))
+
+[I am not on the list, please consider sending me a cc]
+
+Hi,
+
+While developing Net-FCP, I implemented a very primitive wrapper around
+the Event, Coro::Event, Glib and Tk event models - it basically offers a
+somewhat limited Event-like API on top of whatever event library is loaded
+(or can be autodetected).
+
+I haven't seen something similar on CPAN yet (but I am blind), and since
+the problem (using Event-driven I/O in modules) is definitely real (at
+least for me), having a library that offers me simple readable/writable
+events, signals (not unix-signals but general "wait for something async to
+happen") that work under Gtk2 _and_ Tk _and_ Event etc. seems useful.
+
+That's why I think unbundling this functionality into a somewhat cleaner
+module is useful.
+
+I don't know which name to use, though. AnyEvent (a'la AnyDBM) comes to
+mind. Or maybe Event::Generic (bah), or..
+
+Here is a summary of what it would be and what it wouldn't be:
+
++ It abstracts readable/writable events on sockets or pipes.
++ It abstracts certain forms of signalling.
++ Maybe timeouts (that is difficult already :)
+- It won't be the definite library for everything (I don't want to set
+  a kind of event standard), just a bandaid to enable module users
+  using some form of event mechanism without forcing every user
+  to do the same.
+
+I'd be happy to hear suggestions about a) wether this is useful at all
+b) how it should be named.
+
+TIA,
+
+-- 
+      -----==-                                             |
+      ----==-- _                                           |
+      ---==---(_)__  __ ____  __       Marc Lehmann      +--
+      --==---/ / _ \/ // /\ \/ /       pcg@goof.com      |e|
+      -=====/_/_//_/\_,_/ /_/\_\       XX11-RIPE         --+
+    The choice of a GNU generation                       |
+                                                         |

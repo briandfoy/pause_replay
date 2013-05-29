@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2188
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14839 invoked from network); 21 Jun 2000 20:02:20 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 21 Jun 2000 20:02:20 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id WAA02363;
+	Wed, 21 Jun 2000 22:02:01 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: "Kurt D. Starsinic" <kstar@chapin.edu>
+Cc: "Sullivan N. Beck" <sbeck@cise.ufl.edu>, modules@perl.org
+Subject: Re: CPAN directories out-of-date
+References: <20000620163013.D0EF1DC91@mail.cise.ufl.edu>
+	<20000620140304.B8761@O2.chapin.edu>
+Date: 21 Jun 2000 22:02:01 +0200
+In-Reply-To: "Kurt D. Starsinic"'s message of "Tue, 20 Jun 2000 14:03:04 -0400"
+Message-ID: <m3k8fidcqu.fsf@ak-71.mind.de>
+Lines: 41
+User-Agent: Gnus/5.0806 (Gnus v5.8.6) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Tue, 20 Jun 2000 14:03:04 -0400, "Kurt D. Starsinic" <kstar@chapin.edu> said:
+
+>> authors/id/SBECK:
+>> DateManip-5.21.tar.gz
+>> DateManip-5.38.tar.gz
+>> 
+>> modules/by-module/Date
+>> DateManip-5.21.tar.gz
+>> 
+>> modules/by-category/06_Data_Type_Utilities/Date
+>> DateManip-5.21.tar.gz
+>> 
+>> 
+>> Is there something I need to do to keep these links up-to-date?  I've
+>> checked out PAUSE and didn't see anything to do this.  I really need
+>> those links though since version 5.21 is REALLY old.
+
+ >     I think that Andreas will have to explain why there are only links to
+ > one version of your module.
+
+The reason is here:
+
+% tar xvzf ~ftp/pub/CPAN/authors/id/S/SB/SBECK/DateManip-5.38.tar.gz 
+DateManip-5.38/
+DateManip-5.38/.#Manip.pm
+[...]
+
+% ls -la DateManip-5.38/
+total 412
+drwxr-xr-x    3 k        k            4096 May 23 17:26 ./
+lrwxrwxrwx    1 k        k              38 Jun 21 21:42 .#Manip.pm -> sbeck@cave.cise.ufl.edu.1182:950277877
+[...]
+
+This symlink caused an error on open() that was not anticipated by the
+job and it died miserably. I've now made the cronjob more forgiving in
+such a case and rescheduled the indexer on it. Will be fixed within an
+hour.
+
+Regards,
+-- 
+andreas

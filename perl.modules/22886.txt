@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:22886
+Return-Path: <Robert.Price@emapdigital.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 78595 invoked by uid 76); 14 Aug 2003 13:59:37 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Thu, 14 Aug 2003 06:59:37 -0700
+Received: (qmail 26267 invoked by uid 225); 14 Aug 2003 13:59:33 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26262 invoked by uid 507); 14 Aug 2003 13:59:33 -0000
+Received-SPF: unknown (domain of sender Robert.Price@emapdigital.com does not designate mailers: NXDOMAIN)
+Received: from mail1.emap.com (HELO MailSweeper06.emap.com) (217.33.194.194) by one.develooper.com (qpsmtpd/0.27-dev) with SMTP; Thu, 14 Aug 2003 06:59:25 -0700
+Received: from mappinmail01.emap.com (unverified) by MailSweeper06.emap.com (Content Technologies SMTPRS 4.2.5) with ESMTP id <T640d647b900a030a5c43c@MailSweeper06.emap.com> for <modules@perl.org>; Thu, 14 Aug 2003 15:03:38 +0100
+Received: by MAPPINMAIL01 with Internet Mail Service (5.5.2653.19)	id <Q7ZRN1F6>; Thu, 14 Aug 2003 14:59:10 +0100
+Message-ID: <F1C32CD48B89D411AD2B00D0B78EC38909CD2A49@MAPPINMAIL01>
+To: "'modules@perl.org'" <modules@perl.org>
+Subject: Namespace suggestion for UAProf module
+Date: Thu, 14 Aug 2003 14:59:03 +0100
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2653.19)
+Content-Type: text/plain; charset="iso-8859-1"
+X-SMTPD: qpsmtpd/0.27-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.8 required=7.0 tests=CARRIAGE_RETURNS,EXCHANGE_SERVER,SPAM_PHRASE_05_08 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: Robert.Price@emapdigital.com (Robert Price)
+
+Hi,
+
+I've written a pair of modules to detect and parse UAProf
+(http://www.wapforum.org/what/technical/SPEC-UAProf-19991110.pdf) details,
+that I now need to find a suitable namespace for.
+
+UAProf is a "User Agent Profile" and it is an XML/RDF document that contains
+the details of a WAP devices capabilities, i.e. it's screen size, what type
+of images it can accept etc. It is a subset of the W3C's CC/PP (Composite
+Capabilities/Preference Profile) specification. 
+
+When a WAP browser visits a site, it sends an HTTP header giving the URL
+where the XML/RDF document describing the devices capabilities can be found.
+I download this, parse it, and provide a nice object orientated way to query
+what the device is capable of. 
+
+At present I am thinking of calling it
+ HTTP::UAProf		- for the detecting and downloading, that then calls
+
+ HTTP::UAProf::Parser	- the XML/RDF parser and data extractor itself.
+
+I have seperated the detecting and the downloading of the XML from the
+parsing as it will give others a way to handle that side of things for
+themselves if they prefer.
+
+Does HTTP::* seem like a suitable namespace to place the modules under? I
+notice there are other modules that try to do similar things like browser
+detection there. This module doesn't appear to be suitable for agregation
+into those modules as it returns far more information, so I think it should
+be standalone. Would I be better off placing it under WAP::*?
+
+Thanks for any suggestions,
+
+Rob
+
+
+** For great Emap magazine subscription & gift offers visit http://www.emapmagazines.co.uk **
+
+--------------------------------------------------------------------------------
+The information in this email is intended only for the addressee(s) named above.
+Access to this email by anyone else is unauthorised.
+If you are not the intended recipient of this message any disclosure, copying, 
+distribution or any action taken in reliance on it is prohibited and may be unlawful. 
+
+Emap plc and or its subsidiaries do not warrant that any attachments are free from 
+viruses or other defects and accept no liability for any losses resulting from 
+infected email transmissions.
+
+Please note that any views expressed in this email may be those of the originator 
+and do not necessarily reflect those of this organisation.
+--------------------------------------------------------------------------------
+

@@ -1,0 +1,106 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:85213
+Return-Path: <rt-cpan-org-return@perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 847 invoked from network); 16 Mar 2013 19:55:03 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 16 Mar 2013 19:55:03 -0000
+Received: (qmail 3752 invoked by uid 225); 16 Mar 2013 19:55:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3734 invoked by alias); 16 Mar 2013 19:55:01 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=ALL_TRUSTED,BAYES_00,MISSING_HEADERS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from cpan.rt.develooper.com (HELO cpan.rt.develooper.com) (207.171.7.181)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 16 Mar 2013 12:54:58 -0700
+Received: by cpan.rt.develooper.com (Postfix, from userid 536)
+	id 3BB4D704A; Sat, 16 Mar 2013 12:54:55 -0700 (PDT)
+Subject: [rt.cpan.org #82814] More information and patch
+Reply-To: bug-Class-DBI-DATA-Schema@rt.cpan.org
+In-Reply-To:
+References: <RT-Ticket-82814@rt.cpan.org>
+Message-ID: <rt-3.8.HEAD-21045-1363463694-629.82814-7-0@rt.cpan.org>
+X-RT-Loop-Prevention: rt.cpan.org
+RT-Ticket: rt.cpan.org #82814
+Managed-BY: RT 3.8.HEAD (http://www.bestpractical.com/rt/)
+RT-Originator: wftk@vivtek.com
+CC: modules@perl.org
+MIME-Version: 1.0
+X-RT-Original-Encoding: utf-8
+Content-Type: multipart/mixed; boundary="----------=_1363463694-21045-9"
+Date: Sat, 16 Mar 2013 15:54:55 -0400
+Approved: news@nntp.perl.org
+From: bug-Class-DBI-DATA-Schema@rt.cpan.org ("Michael Roberts via RT")
+
+------------=_1363463694-21045-9
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+
+<URL: https://rt.cpan.org/Ticket/Display.html?id=82814 >
+
+A little more information about this long-standing bug (RT ticket 
+#82814).
+
+First, the change in behavior in SQL::Translator probably happened about 
+2008 and involved wrapping transaction commit statements around the 
+return value.  The problem was that if SQL::Translator's SQLite output 
+module didn't find any actionable statements, it would still return 
+begin transaction/commit statements, so your groovy fall-back code that 
+would just use the INSERT didn't get a chance to work - it made it 
+appear that SQL::Translator had translated them.
+
+I didn't like the idea of cluttering your code with an explicit INSERT 
+detector, so I've submitted a patch to the SQLite output module (with 
+the agreement of the SQL::Translator maintainers) and hopefully that 
+will be cleared up next time they post a new version to CPAN.
+
+Once that was working, though, it revealed another problem with the 
+tests - your scheme of letting the error for reinvocation of the setup 
+fall through to the caller doesn't work any more.  I added a flag 
+(already_called) and an explicit check for the flag, which also allows 
+us to return a better error message.  Once the SQL::Translator patch is 
+in the CPAN distro, this patch will allow Class::DBI::DATA::Schema to 
+install cleanly again.
+
+I've attached a patch to this bug report; alternatively, I've also set 
+up a version update to 1.01 on Github at 
+https://github.com/Vivtek/Class-DBI-DATA-Schema if you don't want to 
+mess with it (in other words, I'm offering to take over co-maintainer 
+status, which shouldn't make much difference, since honestly very little 
+should ever need much maintenance in this module.)
+
+------------=_1363463694-21045-9
+Content-Type: text/plain; charset="utf-8"; name="Class-DBI-patch.txt"
+Content-Disposition: inline; filename="Class-DBI-patch.txt"
+Content-Transfer-Encoding: 7bit
+RT-Attachment: 82814/1191646/628720
+
+*** Class-DBI-DATA-Schema-1.00/lib/Class/DBI/DATA/Schema.pm	2005-09-03 22:19:23.000000000 +0200
+--- Class-DBI-DATA-Schema/lib/Class/DBI/DATA/Schema.pm	2013-03-16 20:39:41.744198600 +0100
+***************
+*** 120,134 ****
+--- 120,139 ----
+  		chomp(my $sql = <$h>);
+  		return grep /\S/, split /;/, $translating ? $transform->($sql) : $sql;
+  	};
+  
+  	my %cache;
++ 	
++ 	my $already_run = 0;
+  
+  	no strict 'refs';
+  	*{"$caller\::run_data_sql"} = sub {
+  		my $class = shift;
++ 		die "Data SQL already run" if $already_run;
+  		no strict 'refs';
+  		$cache{$class} ||= [ $get_statements->(*{"$class\::DATA"}{IO}) ];
+  		$class->db_Main->do($_) foreach @{ $cache{$class} };
++ 		$already_run = 1;
+  		return 1;
+  		}
+  
+
+------------=_1363463694-21045-9--

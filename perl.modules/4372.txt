@@ -1,0 +1,95 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4372
+Return-Path: <Ross.Ferguson@cibc.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19455 invoked from network); 31 Jan 2001 09:21:52 -0000
+Received: from relay2.bt.net (194.72.6.62)
+  by tmtowtdi.perl.org with SMTP; 31 Jan 2001 09:21:52 -0000
+Received: from [194.74.48.2] (helo=lnns0016.uk.cibcwm.com)
+	by relay2.bt.net with smtp (Exim 3.15 #1)
+	id 14NtRX-0007ir-00; Wed, 31 Jan 2001 09:20:47 +0000
+Received: from 167.26.156.249 by lnns0016.uk.cibcwm.com (InterScan E-Mail VirusWall NT); Wed, 31 Jan 2001 09:27:58 -0000 (GMT Standard Time)
+Received: by LNNS0016 with Internet Mail Service (5.5.2650.21)
+	id <Z55YRFZZ>; Wed, 31 Jan 2001 09:27:57 -0000
+Message-ID: <D51CE5DD980FD411A09E00805F153A48020A828E@LNNS0030>
+To: 'Joshua Chamas' <joshua@chamas.com>
+Cc: modules@perl.org, Mod Perl <modperl@apache.org>
+Subject: RE: Apache::ASP::Lite -> CGI::ASP::Lite ( Please )
+Date: Wed, 31 Jan 2001 09:27:56 -0000
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain
+Approved: news@nntp.perl.org
+From: Ross.Ferguson@cibc.co.uk ("Ferguson, Ross")
+
+
+ I'm more than happy to have it renamed to CGI::ASP::Lite 
+ 
+ I will upload a CGI-ASP-Lite-1.01.tar.gz
+
+And delete the existing one. 
+
+thanks and sorry for any mis-interpretation.
+ 
+-Ross
+
+
+-----Original Message-----
+From: Joshua Chamas [mailto:joshua@chamas.com]
+Sent: Wednesday, January 31, 2001 4:27 AM
+To: Ferguson, Ross
+Cc: modules@perl.org; Mod Perl
+Subject: Apache::ASP::Lite -> CGI::ASP::Lite ( Please )
+
+
+Ross,
+
+I believe I already expressed this, but would like to 
+revisit that I think Apache::ASP::Lite is not appropriately
+named, and detracts from the current Apache::ASP namespace,
+which I maintain.
+
+I believe Apache::ASP::Lite should be named CGI::ASP::Lite
+because it creates ASP objects for use in perl CGI scripting.  
+Further, unlike most Apache::* modules, it does not run under 
+mod_perl which is what the Apache::* namespace is for.  It is built
+for the CGI model of execution, which Apache does in fact do, but
+the Apache::* namespace is misleading in this regard. 
+
+Further, there may be a namespace collision one day as 
+Apache::ASP currently relies on a variety of sub Apache::ASP::*
+modules to do its dirty work, such as:
+
+> grep ^package src/ASP.pm
+package Apache::ASP;
+package Apache::ASP::STDERR;
+package Apache::ASP::GlobalASA;
+package Apache::ASP::Request;
+package Apache::ASP::Response;
+package Apache::ASP::Server;
+package Apache::ASP::Application;
+package Apache::ASP::Session;
+package Apache::ASP::State;
+package Apache::ASP::CGI;
+package Apache::ASP::Collection;
+package Apache::ASP::CollectionItem;
+package Apache::ASP::Load;
+
+What if you wanted to create your own objects as you extend
+the framework, or I create a Apache::ASP::Lite for use in 
+Apache::ASP ( very possible ).
+
+Again, I beg you to pick another namespace for your work.
+Note that it will likely be used by others if more appropriately
+named in the CGI::* namespace.
+
+Thanks,
+
+Josh
+
+
+
+
+This e-mail, its content and any files transmitted with it are intended solely for the addressee(s) and may be legally privileged and/or confidential. If you are not the named addressee you should not disseminate, distribute or copy this e-mail.  Please notify the sender immediately by e-mail if you have received this e-mail by mistake and delete this e-mail from your system. E-mail transmission cannot be guaranteed to be secure or error-free as information could be intercepted, corrupted, lost, destroyed, arrive late or incomplete, or contain viruses.  The sender therefore does not accept liability for any errors or omissions in the contents of this message and any attachments  which arise as a result of e-mail transmission.  If verification is required please request a hard-copy version.  This message is provided for information purposes and should not be construed as a solicitation or offer to buy or sell any securities or related financial instruments.

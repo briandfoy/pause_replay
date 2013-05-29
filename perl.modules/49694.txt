@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:49694
+Return-Path: <el.dodgero@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 1581 invoked from network); 2 Jul 2006 21:30:49 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 2 Jul 2006 21:30:49 -0000
+Received: (qmail 26865 invoked by uid 225); 2 Jul 2006 21:30:48 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26860 invoked by alias); 2 Jul 2006 21:30:48 -0000
+X-Spam-Status: No, hits=-2.4 required=8.0
+	tests=BAYES_00,DK_SIGNED,DK_VERIFIED,DNS_FROM_RFC_ABUSE,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of el.dodgero@gmail.com designates 64.233.166.182 as permitted sender)
+Received: from py-out-1112.google.com (HELO py-out-1112.google.com) (64.233.166.182)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 02 Jul 2006 14:30:45 -0700
+Received: by py-out-1112.google.com with SMTP id c59so1274831pyc
+        for <modules@perl.org>; Sun, 02 Jul 2006 14:30:40 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=pfNUGlDwJsH+UVY5/xHsBZpSJrLOCqtmUgfRh6K6dUrV3YlZD/QW0E5S94007fCdiGZDQoV8obw+r8u1Wd9yaLrAQ7Cswm6tEYh9/ZIX4RHQDUTqSmgiZTcAyvgNqT+YYCLJ4B/U2ubmK4U6qZIs4mywjRqvm5QIu4aLFPq2tss=
+Received: by 10.35.88.18 with SMTP id q18mr2248011pyl;
+        Sun, 02 Jul 2006 14:30:40 -0700 (PDT)
+Received: by 10.35.108.8 with HTTP; Sun, 2 Jul 2006 14:30:40 -0700 (PDT)
+Message-ID: <92aa63be0607021430w5d7a4723oc467a31957b4e75d@mail.gmail.com>
+Date: Sun, 2 Jul 2006 14:30:40 -0700
+To: modules@perl.org
+Subject: Re: Module submission WebPresence
+In-Reply-To: <44a80705.07f8dc0b.302b.6109SMTPIN_ADDED@mx.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <200606262317.k5QNHdL2014469@pause.perl.org>
+	 <44a80705.07f8dc0b.302b.6109SMTPIN_ADDED@mx.gmail.com>
+Approved: news@nntp.perl.org
+From: el.dodgero@gmail.com (Dodger)
+
+On 7/2/06, brian d foy <brian.d.foy@gmail.com> wrote:
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+>
+> In article <200606262317.k5QNHdL2014469@pause.perl.org>, Perl Authors
+> Upload Server <upload@pause.perl.org> wrote:
+>
+> > The following module was proposed for inclusion in the Module List:
+> >
+> >   modid:       WebPresence
+> >   DSLIP:       RdpOp
+> >   description: OO online presence data retrieval interface
+>
+> What does that really mean, and how are you doing it? The description
+> you gave doens't seem to have anything to do with the idea of presence
+> so much as spidering.
+
+It's prepackaged screen-scraping routines in submodules. See my
+WebPresence::Profile module.
+
+The module (and intended related modules) retrieves relevant data
+*about* a presence online, where a presence can be anything in a 'noun
+sense'. The modules don't *create* presence, they *retrieve* it.
+
+Screen-scraping, yes. But not spidering for the most part. Just one or
+two hit pulls really, then that is parsed into relevant data and the
+rest discarded, returning you a data structure.
+
+Effectively, this stuff is something people are doing all the time --
+and rewriting the same thing over and over. LiveJournal has even
+started an 'OpenID' effort, to the same ends as the Profile stuff,
+though that's limited to Profile and in general the 'People' aspect of
+nouns, where the idea of the WebPresence modules is that other sister
+modules like WebPresence::Product will fetch the same sort of relevant
+data about, say, an Amazon book, for instance.
+
+The idea is that rather than all the effort people normally go into
+rewqriting this specific stuff over and over, with these modules they
+can simply do:
+
+my $user = 'the_dodger';
+
+my $lj = WebPresence::Profile::LiveJournal->new(user => $user) or die
+"Can't retrieve user data for $user\n";
+
+print "It looks like $lj->{profile}->{num_friends} pretend to like
+you, and, in fact, these ", scalar(@{$lj->profile->{friends}}), "
+people do: ", join(', ', @{$lj->{profile}->{friends}}), "\n";
+
+-- 
+Dodger

@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13004
+Return-Path: <stas@stason.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 38776 invoked by uid 76); 2 Aug 2002 11:32:54 -0000
+Received: from smtp26.singnet.com.sg (HELO smtp26.singnet.com.sg) (165.21.101.225)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Fri Aug  2 11:32:54 2002 -0000
+Received: from stason.org (bb-203-125-10-151.singnet.com.sg [203.125.10.151])
+	by smtp26.singnet.com.sg (8.12.3/8.12.2) with ESMTP id g72BWPRc017541;
+	Fri, 2 Aug 2002 19:32:25 +0800
+Received: from stason.org (localhost.localdomain [127.0.0.1])
+	by stason.org (Postfix) with ESMTP
+	id 7D9703221F; Fri,  2 Aug 2002 19:31:53 +0800 (SGT)
+Message-ID: <3D4A6DA9.30602@stason.org>
+Date: Fri, 02 Aug 2002 19:31:53 +0800
+Organization: Hope, Humanized
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020510
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Tim Bunce <Tim.Bunce@pobox.com>
+Cc: modules@perl.org
+Subject: Re: Module submission Debug::SIGSEGVTrace
+References: <200208020313.g723D0v29182@pause.perl.org> <20020802121108.D23836@dansat.data-plan.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: stas@stason.org (Stas Bekman)
+
+Tim Bunce wrote:
+> On Fri, Aug 02, 2002 at 05:13:00AM +0200, Perl Authors Upload Server wrote:
+> 
+>>The following module was proposed for inclusion in the Module List:
+>>
+>>  modid:       Debug::SIGSEGVTrace
+>>  DSLIP:       adhOa
+>>  description: Extract A Backtrace on SegFault
+>>  userid:      STAS (Stas Bekman)
+>>  chapterid:    3 (Development_Support)
+>>  communities:
+>>    modperl@perl.apache.org
+>>
+>>  similar:
+>>    Devel::CoreStack
+>>
+>>  rationale:
+>>
+>>    This module attempts to automatically extract a backtrace when a
+>>    segfault happens, rather then letting the core file be dumped.
+> 
+> 
+> Cool.
+> 
+> I think the name shouldn't contain SEGV since that's just one of the
+> causes of a core. Another fairly common one is a Bus Error.
+
+What signals result in the core dump? BUS SEGV PIPE ABRT? any others?
+
+Currently the module traps only SIGSEGV, hence the name. Can you really 
+fork and fire up gdb on SIGBUS and other SIGs?
+
+> How about Debug::CoreStackTrace?
+
+The point of this module is that there is no core involved here ;) But I 
+guess it's fine, assuming that the module gets extended to other signals 
+as well.
+
+The module also includes Debug::SIGSEGVFault which dereferences a NULL 
+pointer and causes SIGSEGV. how should it be renamed then? 
+Debug::CoreDump? I guess I could release it separately. I bundled it up 
+because it's needed to test Debug::SIGSEGVTrace. What do you think?
+
+BTW, meanwhile I put it on CPAN here:
+http://search.cpan.org/search?mode=module&query=SIGSEGVTrace
+
+> Have you looked at the sigtrap module? Your work may be a natutral
+> extension to that.
+
+It cannot be used, because the sighandler must be assigned on the C 
+level. If you do it on the perl level, under 5.8.0 it won't work because 
+of the way the signals handling is delayed in 5.8.0.
+
+
+
+__________________________________________________________________
+Stas Bekman            JAm_pH ------> Just Another mod_perl Hacker
+http://stason.org/     mod_perl Guide ---> http://perl.apache.org
+mailto:stas@stason.org http://use.perl.org http://apacheweek.com
+http://modperlbook.org http://apache.org   http://ticketmaster.com
+

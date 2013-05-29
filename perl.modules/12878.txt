@@ -1,0 +1,104 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12878
+Return-Path: <dk@dklab.ru>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 65699 invoked by uid 76); 26 Jul 2002 20:16:00 -0000
+Received: from [213.248.5.184] (HELO alpha.kombat.ru) (213.248.5.184)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Fri Jul 26 20:16:00 2002 -0000
+Received: from dk ([194.135.2.0])
+	by alpha.kombat.ru (8.11.6/8.12.1) with ESMTP id g6QHBYM03161
+	for <modules@perl.org>; Fri, 26 Jul 2002 21:11:34 +0400
+Date: Fri, 26 Jul 2002 21:13:08 +0400
+X-Mailer: The Bat! (v1.53d)
+Reply-To: Dmitry Koteroff <dk@dklab.ru>
+Organization: dk lab
+X-Priority: 3 (Normal)
+Message-ID: <216957854.20020726211308@dklab.ru>
+To: modules@perl.org
+Subject: Please register me in PAUSE
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: dk@dklab.ru (Dmitry Koteroff)
+
+Hello.
+
+Please register me at https://pause.perl.org/pause/
+to allow to contribute some modules to CPAN.
+
+Name: Dmitry Koteroff
+Email: dk@dklab.ru
+Homepage: http://dklab.ru/
+Preferred user-ID: KOTEROFF
+
+Description:
+~~~~~~~~~~~~
+
+I  have  at  least  two modules (CGI::WebIn and CGI::WebOut) for CPAN.
+These  modules  allows  to  write  Perl CGI "a-la" PHP and can be used
+instead of CGI.pm at all (and they have more features than CGI.pm).
+
+Features:
+
+CGI::WebOut v1.10:
+- 100% errors & warnings to browser (plain text, hidden etc.)
+- output buffering like:
+  my $s = grab { print "test" };
+- work with HTTP output headers (buffering)
+- try-catch-warnings-throw support (for better error handling)
+
+CGI::WebIn v1.10:
+- form data parsing like PHP does. Supports multi-dimensional
+  parameter names (arrays & hashes):
+  a{ab}{cd}=10&a{ab}{e}=20&a{}=1&a{}=2&a[10]=10&a[20]=20...
+  All the form-data placed in %IN, %GET, %POST etc.
+- full file upload support a-la PHP
+- work with cookies (not only scalars, but arrays & hashes too;
+  cookie data is automaticaly serialized/deserialized).
+- on-demand form variables exporting
+- in the future - builtin session support
+
+PREVIOUS versions of these modules with documentation
+inside are at http://dklab.ru/chicken/mod/cpan/
+
+New  version  of  CGI::WebIn has a lot of changes and bugfixes (that's
+why I decided to post it to CPAN):
+
+1.10
+  Thu Jul 11 18:00:00 2002:
+    - No C-code now, only Perl (URLEncode/URLDecode) to simplify 
+      the module.
+    - Now module uses strict.
+    - Fixed bug with possibility of overwrite exist variables by
+      exported parameters.
+    - Fixed bug with parameter names like "A::b". Now parameter 
+      keys must be alphanumerical only.
+    - No \r cutting now, only \r\n|\n\r -> \n, maybe good for Macs.
+    - _processPar completely re-written.
+    - Added warning messages for parameter name like a[N]. N must 
+      be numerical only and < 10000.
+    - Added warning for bad parameter names (like "{a}{b}" instead 
+      of "a{b}").
+    - Now "a[]=b" means "a[-1]=b", and "a{}=b" still means "a{b}=b".
+    - Fixed bug with incorrect processing of "a{'a\'}{b'}".
+    - Now types are controlled strictly, warning messages are added.
+      For example, this QUERY_STRING generates warning (mismatched 
+      parameter type ARRAY instead of SCALAR): "a=10&a{b}=20".
+  Fri Jul 12 18:00:00 2002:
+    - _parseMultipart completely re-written (some optimizations).
+    - Now module uses File::Temp to create temporary upload files
+      (instead of own functions), maybe more universal and good 
+      for Macs.
+  Sat Jul 13 18:00:00 2002:
+    - Fixed bug with incorrect processing of upload parameter
+      names like F[] or F{}.
+
+Thanks before.
+      
+--
+W.b.r.,
+  Dmitry Koteroff (dk@dklab.ru)
+

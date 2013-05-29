@@ -1,0 +1,58 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:2294 perl.modules:35
+Return-Path: <rjk@linguist.dartmouth.edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15159 invoked from network); 14 Oct 1999 15:46:53 -0000
+Received: from linguist.dartmouth.edu (129.170.24.92)
+  by tmtowtdi.perl.org with SMTP; 14 Oct 1999 15:46:53 -0000
+Received: (from rjk@localhost)
+	by linguist.dartmouth.edu (8.9.3/8.9.3) id LAA301815;
+	Thu, 14 Oct 1999 11:46:51 -0400 (EDT)
+Date: Thu, 14 Oct 1999 11:46:51 -0400
+To: Michael King <mike808@my-Deja.com>
+Cc: modules@perl.org, perl5-porters@perl.org
+Subject: Re: NEW MODULE (pragma): import.pm
+Message-ID: <19991014114651.A298208@linguist.dartmouth.edu>
+References: <CGEEOHONIIJBAAAA@my-deja.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.4i
+In-Reply-To: <CGEEOHONIIJBAAAA@my-deja.com>; from Michael King on Thu, Oct 14, 1999 at 08:29:13AM -0700
+Approved: news@nntp.perl.org
+From: rjk@linguist.dartmouth.edu (Ronald J Kimball)
+
+On Thu, Oct 14, 1999 at 08:29:13AM -0700, Michael King wrote:
+> On Mon, 11 Oct 1999 22:52:57   Tom Christiansen wrote:
+> >I'm also concerned about
+> >    use CGI;
+> >versus
+> >    use import 'CGI';
+> >versus
+> >    import CGI;
+> >I just don't see those as different enough.
+> 
+> The WHOLE POINT of the module/pragma is to make
+> Really::Long::Namespaces::That::Programmers::Hate::To::Type *alot* easier
+> to use without cluttering up their program with FQPNs. IMHO, it only adds
+> noise to the code.
+
+I would suggest a different syntax for that functionality, which I think
+has several advantages.  Something like this:
+
+use alias qw(Really::Long::Package::Name Name);
+
+which would require Really/Long/Package/Name.pm, call its import function,
+and then alias Name to the long package name.
+
+Most of my objections to your module come from the wildcard inclusion of
+arbitrary modules from a directory.  Although my proposal would mean a use
+statement for each module to include, it would still save you from the long
+package names in the rest of the program.  It also forces you to explicitly
+name the modules, which I think is good, and it allows you to specify
+arbitrary aliases for the packages, so that you don't have to worry about
+clobbering packages that share the same rightmost part.
+
+Ronald
+

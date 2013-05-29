@@ -1,0 +1,135 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11338
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 78803 invoked by uid 76); 22 Apr 2002 13:06:55 -0000
+Received: from root@franz.ak.mind.de (HELO k242.linux.bogus) (212.42.235.66)
+  by onion.perl.org (qpsmtpd/0.07) with SMTP; Mon Apr 22 13:06:55 2002 -0000
+Received: (from k@localhost)
+	by k242.linux.bogus (8.11.6/8.11.6) id g3MD6fg14982;
+	Mon, 22 Apr 2002 15:06:41 +0200
+X-Authentication-Warning: k242.linux.bogus: k set sender to andreas.koenig@anima.de using -f
+To: joop@fokus.gmd.de (Robert Joop)
+Cc: "Andreas J. Koenig" <andreas.koenig@anima.de>, modules@perl.org,
+   Ron
+ Savage <ron@savage.net.au>
+Subject: Re: X500::DN namespace
+References: <20020422094918.GB12619@yoda.fokus.gmd.de>
+	<m34ri4j8ks.fsf@anima.de> <20020422112801.GC12619@yoda.fokus.gmd.de>
+Date: Mon, 22 Apr 2002 15:06:40 +0200
+In-Reply-To: <20020422112801.GC12619@yoda.fokus.gmd.de> (joop@fokus.gmd.de's
+ message of "Mon, 22 Apr 2002 13:28:01 +0200")
+Message-ID: <m3znzvj31b.fsf@anima.de>
+Lines: 104
+User-Agent: Gnus/5.090005 (Oort Gnus v0.05) Emacs/21.2 (i686-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+(CC'd to modules@perl.org, but not anymore to cpan@perl.org, where the
+thread started.)
+
+>>>>> On Mon, 22 Apr 2002 13:28:01 +0200, joop@fokus.gmd.de (Robert Joop) said:
+
+  > On 02-04-22 13:06:59 CEST, Andreas J. Koenig wrote:
+ >> >>>>> On Mon, 22 Apr 2002 11:49:18 +0200, joop@fokus.gmd.de (Robert Joop) said:
+ >> 
+ >> > hi,
+ >> > i've got a problem understanding namespaces.
+ >> > i've written a module that provides X500::DN objects, it parses them
+ >> > from RFC2253 strings and formats them into that format, among other
+ >> > things.
+ >> > it installs like this:
+ >> 
+ >> > Installing /tmp/X500/DN.pod
+ >> > Installing /tmp/X500/DN.pm
+ >> > Installing /tmp/X500/RDN.pm
+ >> > Installing /tmp/X500/RDN.pod
+ >> > Installing /tmp/local/man/man3/X500::DN.3pm
+ >> > Installing /tmp/local/man/man3/X500::RDN.3pm
+ >> 
+ >> > there is an older module that is just a parser object, X500::DN::Parser
+ >> > from RSAVAGE.
+ >> > it installs like this:
+ >> 
+ >> > Installing /tmp/X500/DN/Parser.pm
+ >> > Installing /tmp/local/man/man3/X500::DN::Parser.3pm
+ >> > Writing /tmp/i386-linux/auto/X500/DN/Parser/.packlist
+ >> > Appending installation info to /tmp/i386-linux/perllocal.pod
+ >> 
+ >> > as you can see, they don't collide on a technical level.
+ >> 
+ >> > but do they collide on a namespace level?
+ >> 
+ >> No.
+
+  > fine, which namespace shall i pick?
+
+ >> > what are the correct namespaces for the two modules?
+
+  > i didn't see any answer to this question, i'm afraid.
+
+Oops, sorry, see below...
+
+ >> the whole process more transparent. Let us know which questions remain
+ >> open.
+
+  > what is the relation between modules and namespaces?
+
+In many cases it's a one to one relationship, but sometimes it's a
+many to many relationship: one module can use several namespaces and
+one namespace may appear in several modules.
+
+CPAN is optimized for the case of a one to one relationship. The other
+cases sometimes require people talking with each other.
+
+  > the RSAVAGE module that gives you X500::DN::Parser objects is under
+  > the X500::DN namespace in the long modules list.
+  > is this correct?
+
+Yes, I missed this in my first answer.
+
+  > shouldn't this be X500::DN::Parser?
+
+Apparently, yes! Sorry, needs fixing.
+
+  > if the X500::DN namespace is correct for X500::DN::Parser, do i need to
+  > register the X500 namespace for my module that gives you X500::DN objects?
+
+No, we want a sane mapping of namespace X500::DN::Parser to
+X500/DN/Parser.pm as it is enforced by perl itself.
+
+  > but for Net::Daemon::SSL or Math::Calc::Units or Tie::Hash::Regex
+  > (random picks from 00modlist.long.html) the package name and the namespace
+  > are the same!
+
+What a relief:-)
+
+  > so, there some inconsistency which confuses me.
+
+I have manually corrected the database, so that Ron's entry will change from
+
+X500::
+::DN               MdpO? X500 Distinguished Name parser               RSAVAGE
+
+to
+
+X500::DN::
+::Parser           MdpO? X500 Distinguished Name parser               RSAVAGE
+
+
+This has the side effect that X500::DN is again an unused namespace.
+
+If you should pick it or not should be clarified between you and Ron
+directly. If you two can agree, it's likely everybody else will agree.
+
+  > the more i look at it the more i think that X500::DN::Parser is not
+  > registered with the right namespace...?
+
+Yes, but fixed.
+
+-- 
+andreas

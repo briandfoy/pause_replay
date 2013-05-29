@@ -1,0 +1,119 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:50617
+Return-Path: <jmccarrell@infoblox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 28971 invoked from network); 30 Aug 2006 18:14:38 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 30 Aug 2006 18:14:38 -0000
+Received: (qmail 30598 invoked by uid 225); 30 Aug 2006 18:14:37 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30594 invoked by alias); 30 Aug 2006 18:14:37 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of jmccarrell@infoblox.com designates 128.242.99.209 as permitted sender)
+Received: from cerberus.infoblox.com (HELO infoblox.com) (128.242.99.209)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 30 Aug 2006 11:14:33 -0700
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by infoblox.com (Postfix) with ESMTP id 2DFAADCC05A
+	for <modules@perl.org>; Wed, 30 Aug 2006 11:11:30 -0700 (PDT)
+X-Virus-Scanned: Debian amavisd-new at infoblox.com
+Received: from infoblox.com ([127.0.0.1])
+	by localhost (cerberus.infoblox.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ya2y55nwzCBL for <modules@perl.org>;
+	Wed, 30 Aug 2006 11:11:26 -0700 (PDT)
+Received: from hermes.infoblox.com (hermes.infoblox.com [67.155.111.211])
+	by infoblox.com (Postfix) with ESMTP id 58F46DCC056
+	for <modules@perl.org>; Wed, 30 Aug 2006 11:11:26 -0700 (PDT)
+Received: from thor.infoblox.com ([67.155.111.196]) by hermes.infoblox.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 30 Aug 2006 11:14:23 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Subject: RE: distributing private modules via CPAN
+Date: Wed, 30 Aug 2006 11:14:22 -0700
+Message-ID: <823645BD0D7A9C4BAC69BB495F80EF3C054CC192@thor.infoblox.com>
+Thread-Topic: distributing private modules via CPAN
+Thread-Index: AcbMSX5xkcTBadVTRtmZXELi3tTxKwAE6f3g
+To: <modules@perl.org>
+X-OriginalArrivalTime: 30 Aug 2006 18:14:23.0734 (UTC) FILETIME=[1F19A960:01C6CC60]
+Approved: news@nntp.perl.org
+From: jmccarrell@infoblox.com ("Jeff McCarrell")
+
+Hi Brian.  Thanks for the reply.
+
+re: what have we tried?
+
+First a bit of context.  My firm builds an appliance that gets installed
+in enterprise networks.  The model we are trying to achieve is to let
+our customers get the perl interface modules from the appliance itself.
+These appliances may or may not have general network connectivity to the
+internet at large depending on where the customer puts them in their
+infrastructure, so any design that requires our module repository on our
+appliance to have internet connectivity won't fly.  Of course, we can
+require clients of our API to connect to the internet at large to
+resolve our external dependencies (Crypt::SSLeay at the moment, likely
+others later), then talk to our appliance for our particular modules.
+Our customers are running the usual mix of MSWin32, *nix and MacOSX and
+we would like to support them all.
+Our appliance interface is pure perl at this point, and is likely to
+stay that way (no XS/C code).  Our development environment is linux.
+
+Now to what we have tried.
+I've used Randy Kobes' PPM::Make on linux to build a ppm distribution
+that I can install on win32.  With a few patches that Randy was gracious
+enough to provide, I was also able to build a module that installed on
+linux using Murray Nesbitt's PPM.  There were a few patches needed to
+Murray's PPM to make this work as well.  For the win32 side of the
+problem, using PPM::Make seems like the right solution and we are well
+underway there.
+The issues I ran into with PPM on linux lead me to believe that not many
+people out there in the world are trying to install stuff on *nix with
+PPM.  So the PPM way on *nix seems more fraught with peril, and I am
+much less certain of success using the PPM on *nix method.
+The other, more minor, issue with the PPM way in general, is that it
+doesn't install the tests (t/*.t); I would prefer that our customers
+have some of these to use as samples of how to talk to our appliance.
+
+In parallel, a colleague of mine has been going down the CPAN path:
+Rudynell Millian wrote:
+>
+> I've looked into CPAN::Mini and CPAN::Mini::Inject. CPAN::Mini is just
+
+> another mirror, which is not what we want to do. Also=20
+> CPAN::Mini::Inject only (claims to) works with CPAN::Mini.
+
+The model that our appliance acts as a general CPAN server for some or
+all of the module space isn't going to work because of the connectivity
+issues noted above.  We would immediately have a stale index the second
+we shipped, and the boxes without internet connectivity could never
+update.
+
+We also messed around a bit with generating the 00index, et al. files
+ourselves.  The issues here are with the cpan client's assumption that
+each server is a full copy (well, it _is_ the Comprehensive Perl Archive
+Network, so I guess I should call it a design goal, not an issue).  So
+we were having different problems, the most obvious was that we could
+only get cpan to see our module if our repository was the first in the
+urllist.
+=20
+This morning my colleague is looking into CPAN::Site.
+Both he and I read the summary and passed over it because of the
+"pre-alpha" bit in the description.  May I humbly suggest that you
+remove that description if you want people to use it...
+
+In any case, thanks for any advice and pointers you may have.
+
+-- jeff
+
+-----Original Message-----
+From: brian d foy [mailto:brian.d.foy@gmail.com]=20
+
+What have you tried? I found a minicpan along with CPAN::Mini::Inject
+worked quite well.

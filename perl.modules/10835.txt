@@ -1,0 +1,395 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10835
+Return-Path: <wilhelm.haager@htlstp.ac.at>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21170 invoked by uid 76); 25 Mar 2002 22:51:33 -0000
+Received: from [195.70.255.136] (HELO wibs.at) (195.70.255.136)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Mon Mar 25 22:51:33 2002 -0000
+Received: from htlstp.ac.at [195.70.255.129] by wibs.at with ESMTP
+  (SMTPD32-5.01) id A75BDFAC006E; Mon, 25 Mar 2002 23:48:43 +0100
+Message-ID: <3C9FA9AF.E86B2B3A@htlstp.ac.at>
+Date: Mon, 25 Mar 2002 23:50:23 +0100
+Organization: HTL St.Poelten
+X-Mailer: Mozilla 4.7 [de]C-CCK-MCD   (WinNT; U)
+X-Accept-Language: de
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Registration
+Content-Type: multipart/mixed;
+ boundary="------------9D8A91C9C70B97F7A5743698"
+Approved: news@nntp.perl.org
+From: wilhelm.haager@htlstp.ac.at (Wilhelm Haager)
+
+--------------9D8A91C9C70B97F7A5743698
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi,
+I would like to register for CPAN.
+
+I have written a small package named EPS which facilitates the
+generation of encapsulated Postsript
+images, consisting of a background color (or gradient), arbitrary shapes
+(lines, polygons, circles etc.)
+and text. Additionaly, any arbitrary Postscript command can be included
+(with the aid of
+AUTOLOAD) as a method.
+
+- My name: Wilhelm Haager
+- email: wilhelm.haager@htlstp.ac.at
+- homepage: none
+- description: see above
+
+Attachment: Package EPS.
+
+Wilhelm Haager
+
+
+--------------9D8A91C9C70B97F7A5743698
+Content-Type: text/plain; charset=us-ascii;
+ name="eps.pm"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="eps.pm"
+
+# =============================================================================
+# Package EPS V1.0                                       (W.Haager, 2002-03-25)
+# Creation of Encapsulated Pstscript Images
+# =============================================================================
+
+package EPS;
+use Carp;
+
+# ---------------------------------------------------------------------------
+# new - create a new picture
+# ---------------------------------------------------------------------------
+sub new
+{
+   my $class = shift;
+   my @lt=localtime(time);
+   my $year=$ld[5]+1900;
+   my $month=substr("0".($ld[4]+1), -2);
+   my $day=substr("0".$ld[3], -2);
+   my $date="$year-$month-$day";
+   $_[0] or croak "** ERROR ** Missing picture size".(caller 1)[3];
+   $_[1] or $_[1] = $_[0];
+   our $bbx =    ($_[0]*72/25.4    );
+   our $bby =    ($_[1]*72/25.4    );
+
+   my $header ="\%!PS-Adobe-3.0 EPSF-3.0\n";
+   $header.="\%\%BoundingBox: 0 0 $bbx $bby\n";
+   $header.="\%\%Title:\n";
+   $header.="\%\%Creator: Perl\n";
+   $header.="\%\%For: all people who love Postscript\n";
+   $header.="\%\%Pages: 1\n";
+   $header.="\%\%CreationDate: $date\n";
+   $header.="\%\%EndComments\n";
+   $header.="save 72 25.4 div dup scale\n";
+
+   my $trailer="showpage\n";
+   $trailer.="\%\%Trailer\n";
+   $trailer.="restore\n";
+   $trailer.="\%\%DocumentFonts:\n";
+   $trailer.="\%\%DocumentNeededFonts:";
+
+   my $self = [$header, $trailer];
+   bless ($self, $class);
+   return $self;
+}
+
+# ---------------------------------------------------------------------------
+# clone - clone a picture
+# ---------------------------------------------------------------------------
+sub clone
+{
+   my $to_be_cloned = $_[0];
+   my $cloned = [@$to_be_cloned];
+   my $class = ref($to_be_cloned);
+   bless ($cloned, $class);
+   return $cloned;
+}
+
+# ---------------------------------------------------------------------------
+# background - setting the background color or a color gradient
+# ---------------------------------------------------------------------------
+sub background
+{
+   my ($self,$r1,$g1,$b1,$r2,$g2,$b2,$x1,$y1,$x2,$y2,$exp)=@_;
+   defined($r1) or $r1=0;
+   defined($g1) or $g1=0;
+   defined($b1) or $b1=0;
+   defined($r2) or $r2=$r1;
+   defined($g2) or $g2=$g1;
+   defined($b2) or $b2=$b1;
+   defined($x1) or $x1=0;
+   defined($y1) or $y1=0;
+   defined($x2) or $x2=0;
+   defined($y2) or $y2=$bby;
+   defined($exp) or $exp=1;
+   my $string = <<EOS;
+<</ShadingType 2 /ColorSpace  /DeviceRGB
+/Coords [$x1 $y1 $x2 $y2] /BBox [0 0 $bbx $bby]
+/Extend [true true] /Function
+<< /FunctionType 2 /Domain [0 1]
+/C0 [$r1 $g1 $b1]
+/C1 [$r2 $g2 $b2] /N $exp>> >> shfill
+EOS
+   splice @$self, -1, 0, $string;
+}
+
+# ---------------------------------------------------------------------------
+# AUTOLOAD  - translate Perl-subroutines into Postscript code
+# ---------------------------------------------------------------------------
+sub AUTOLOAD
+{
+   my ($self,@args)=@_;
+   my $string='';
+   foreach (@args) {$string.=$_; $string.=' ';}
+   $AUTOLOAD=~s/EPS:://;
+   splice @$self, -1, 0, "$string$AUTOLOAD\n";
+}
+
+# ---------------------------------------------------------------------------
+# line - draw concatenated lines
+# ---------------------------------------------------------------------------
+sub line
+{
+   my ($self,@args)=@_;
+   my $point = shift(@args);
+   my $x = $point->[0];
+   my $y = $point->[1];
+   splice @$self, -1, 0, "newpath\n$x $y moveto\n";
+   while (@args)
+   {
+      $point = shift(@args);
+      $x = $point->[0];
+      $y = $point->[1];
+      splice @$self, -1, 0, "$x $y lineto\n";
+   }
+   splice @$self, -1, 0, "stroke\n";
+}
+
+# ---------------------------------------------------------------------------
+# polygon - draw an outlined polygon
+# ---------------------------------------------------------------------------
+sub polygon
+{
+   my ($self,@args)=@_;
+   my $point = shift(@args);
+   my $x = $point->[0];
+   my $y = $point->[1];
+   splice @$self, -1, 0, "newpath\n$x $y moveto\n";
+   while (@args)
+   {
+      $point = shift(@args);
+      $x = $point->[0];
+      $y = $point->[1];
+      splice @$self, -1, 0, "$x $y lineto\n";
+   }
+   splice @$self, -1, 0, "closepath\n";
+   splice @$self, -1, 0, "stroke\n";
+}
+
+# ---------------------------------------------------------------------------
+# filled_polygon - draw a filled polygon
+# ---------------------------------------------------------------------------
+sub filled_polygon
+{
+   my ($self,@args)=@_;
+   my $point = shift(@args);
+   my $x = $point->[0];
+   my $y = $point->[1];
+   splice @$self, -1, 0, "newpath\n$x $y moveto\n";
+   while (@args)
+   {
+      $point = shift(@args);
+      $x = $point->[0];
+      $y = $point->[1];
+      splice @$self, -1, 0, "$x $y lineto\n";
+   }
+   splice @$self, -1, 0, "closepath\n";
+   splice @$self, -1, 0, "fill\n";
+}
+
+# ---------------------------------------------------------------------------
+# circle - draw an outlined circle
+# ---------------------------------------------------------------------------
+sub circle
+{
+   my ($self,@args)=@_;
+   my ($x,$y,$r) = @args;
+   defined($x) or croak "** ERROR ** Missing point".(caller 1)[3];
+   defined($y) or croak "** ERROR ** Missing point".(caller 1)[3];
+   defined($r) or croak "** ERROR ** Missing radius".(caller 1)[3];
+   splice @$self, -1, 0, "newpath $x $y $r 0 360 arc stroke\n";
+}
+
+# ---------------------------------------------------------------------------
+# filled_circle - draw a filled circle
+# ---------------------------------------------------------------------------
+sub filled_circle
+{
+   my ($self,@args)=@_;
+   my ($x,$y,$r) = @args;
+   defined($x) or croak "** ERROR ** Missing point".(caller 1)[3];
+   defined($y) or croak "** ERROR ** Missing point".(caller 1)[3];
+   defined($r) or croak "** ERROR ** Missing radius".(caller 1)[3];
+   splice @$self, -1, 0, "newpath $x $y $r 0 360 arc closepath fill\n";
+}
+
+# ---------------------------------------------------------------------------
+# rawcode - include Postscript Code
+# ---------------------------------------------------------------------------
+sub rawcode
+{
+   my ($self,@args)=@_;
+   while (@args)
+   {
+      splice @$self, -1, 0, shift(@args)."\n";
+   }
+}
+
+# ---------------------------------------------------------------------------
+# write - write to file
+# ---------------------------------------------------------------------------
+sub write
+{
+   my ($self,@args)=@_;
+   @args or croak "** ERROR ** Missing filename".(caller 1)[3];
+   open (OUTFILE, ">@args[0]") or croak
+        "** ERROR ** Cannot open File @args[0]".(caller 1)[3];
+   foreach (@$self) {print OUTFILE $_;}
+   close OUTFILE;
+}
+
+# ---------------------------------------------------------------------------
+# color - setting the (RGB-)color
+# ---------------------------------------------------------------------------
+sub color
+{
+   my ($self,@args)=@_;
+   my ($r,$g,$b)=@args;
+   splice @$self, -1, 0, " $r $g $b setrgbcolor\n";
+}
+
+# ---------------------------------------------------------------------------
+# font - setting the font and size (in pt)
+# ---------------------------------------------------------------------------
+sub font
+{
+   my ($self,@args)=@_;
+   my $fontname=$args[0];
+   my $fontsize=254/72;
+   if ($args[1]) {$fontsize=$args[1]*25.4/72;}
+   splice @$self, -1, 0, "/$fontname findfont $fontsize scalefont setfont\n";
+}
+
+# ---------------------------------------------------------------------------
+# text - write text
+# ---------------------------------------------------------------------------
+sub text
+{
+   my ($self,@args)=@_;
+   my ($string,$align)=@args;
+   $align="l" unless $align;
+   if ($align=~/l/i) # linksbuendig
+   {
+      splice @$self, -1, 0, "($string) show\n";
+   }
+   if ($align=~/c/i) # zentriert
+   {
+      splice @$self, -1, 0, "gsave ($string) stringwidth exch neg 2 div\n";
+      splice @$self, -1, 0, "exch rmoveto ($string) show grestore\n";
+   }
+   if ($align=~/r/i) # rechtsbuendig
+   {
+      splice @$self, -1, 0, "gsave ($string) stringwidth exch neg exch\n";
+      splice @$self, -1, 0, "rmoveto ($string) show grestore\n";
+   }
+}
+
+1;
+__END__
+
+=head1 NAME
+
+EPS - Routines for creating Encapsulated-Postscript Images
+
+=head1 SYNOPSIS
+
+  use EPS;
+  p = EPS -> new(150, 100); # new image with 150x100 mm size
+  q = p -> clone;           # clone the image p
+  p -> background(0,0,1);       # blue to background (RGB values)
+  p -> background(0,0,1,0,0,0); # color gradient blue-black
+  p -> line([10,10],[20,10],[30,20]);
+  p -> circle(50,20,15);
+  p -> filled_circle(50,20,15);
+  p -> polygon([20,20],[30,20],[40,40],[20,50]);
+  p -> filled_polygon([20,20],[30,20],[40,40],[20,50]);
+  p -> color(1,0.5,0);      # setting RGB values
+  p -> rawcode("0 0 moveto 20 10 lineto stroke");
+  p -> font('Helvetica',10); # setting font (10 pt size)
+  p -> text('This is a left justified text','l');
+  p -> text('This is a centered text','c');
+  p -> text('This is a right justified text','r');
+  p -> any_postscript_command($a,$b,$c,$d);
+  p -> Write("picture.eps");
+
+=head1 DESCRIPTION
+
+This Perl package allows the creation of Encapsulated Postscript images
+(level 3) with a single color or a color gradient as background,
+containing simple shapes (as lines, polygons, circles etc.) and text.
+Additionally, any Postscript code can be included verbatim.
+
+All dimensions (except for the fontsize, which is given in points)
+are assumed to be millimeters.
+
+The methods stated above should be self-explanatory.
+Additional to those, any Postscript command can be declared as a method,
+which will be translated via AUTOLOAD into the respective
+Postscript command in the following way:
+
+  p -> any_postscript_command($a,$b,$c,$d,...)
+
+is translated to
+
+  $a $b $c $d ... any_postscript_command
+
+Thus, basic knowledge of the Postscript language is helpful.
+
+=head2 Examples
+
+  p -> newpath;
+  p -> setlinewidth(0.35);
+  p -> translate(100,20);
+  p -> scale(2,2);
+  p -> rotate(45);
+  p -> setrgbcolor(1,0.5,0);
+  p -> moveto(10,10);
+  p -> lineto(10,20);
+  p -> stroke;
+  ... etc. etc. ...
+
+=head1 VERSION
+
+EPS 1.0 (2002-03-25)
+
+=head1 AUTHOR
+
+Wilhelm Haager, HTL St.Poelten, Austria C<(wilhelm.haager@htlstp.ac.at)>
+
+=head1 COPYRIGHT
+
+  Copyright 2002, Wilhelm Haager
+
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+=cut
+
+--------------9D8A91C9C70B97F7A5743698--
+

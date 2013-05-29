@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:25
+Return-Path: <jdporter@min.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10449 invoked from network); 14 Oct 1999 14:28:12 -0000
+Received: from min.net (jdporter@208.222.210.19)
+  by tmtowtdi.perl.org with SMTP; 14 Oct 1999 14:28:12 -0000
+Received: (from jdporter@localhost)
+	by min.net (8.9.3/8.9.3) id KAA00778;
+	Thu, 14 Oct 1999 10:27:55 -0400 (EDT)
+Date: Thu, 14 Oct 1999 10:27:55 -0400
+To: doctor jest <ix@maz.org>
+Cc: modules@perl.org
+Subject: Re: Properties class
+Message-ID: <19991014102754.B25407@min.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.1us
+In-Reply-To: <Pine.LNX.4.10.9910132222220.29531-100000@uzi.jonezware.com>
+Approved: news@nntp.perl.org
+From: jdporter@min.net (John Porter)
+References: <Pine.LNX.4.10.9910132222220.29531-100000@uzi.jonezware.com>
+
+
+ix@maz.org wrote:
+> its basically just a hashtable on steroids:
+> 
+> 1) you can load a stream of name/value pairs into a hash,
+> and write that hash back out to a stream. this is an
+> alternative to say, Data::Dumper and eval, or XML::Writer
+> and XML::Parser.
+> 
+> 2) you can associate a default properties object, which can
+> itself have its own default properties, etc.
+
+Uh Huh.  "Steroids"?
+
+My thoughts:
+
+1. "Properties" is a lame name.  Says nothing about what this
+    module is good for or how it works.
+
+2. It should be compatible with Data::Dumper and any other
+   serialization technique of the user's choice.  We don't need
+   another one.
+
+3. It would probably work well as a TIEHASH class.
+
+This is what I envision:
+
+use Tie::HashDefaults; # your module
+
+tie my %h, 'Tie::HashDefaults', 
+  # some defaults:
+  increment => 1,
+  limit  => 10;
+
+$h{'limit'} = 20; # override one field
+
+my $serialized = Data::Dumper->Dump( [ tied(%h) ], [ 'h' ] );
+
+# ...later:
+
+tie my %k, 'Tie::HashDefaults', eval $serialized;
+
+# so that %k looks exactly like %h did, including what
+# the defaults were, and which ones had been overridden.
+
+
+Of course, there may be a better way to serialize
+tied hashes.  This is what I came up with off the top
+of my head.
+
+-- 
+John Porter
+

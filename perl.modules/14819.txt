@@ -1,0 +1,144 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:14819
+Return-Path: <music@pjb.com.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 41868 invoked by uid 76); 30 Oct 2002 05:00:28 -0000
+Received: from jazz-1.trumpet.com.au (HELO jazz-1.trumpet.com.au) (203.5.119.62) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-10-30 05:00:28Z
+Received: from localhost (hob-138.dialup.trump.net.au [203.17.184.152])	by jazz-1.trumpet.com.au (8.9.3/8.9.3) with SMTP id PAA28533;	Wed, 30 Oct 2002 15:59:55 +1100 (EST)
+Date: Wed, 30 Oct 2002 15:59:55 +1100 (EST)
+Message-ID: <200210300459.PAA28533@jazz-1.trumpet.com.au>
+To: comdog@panix.com, tassilo.parseval@post.rwth-aachen.de, modules@perl.org
+Subject: Re: Attn. Module List Maintainers
+Reply-To: Peter Billam <music@pjb.com.au>
+Content-Type: text/plain; charset="iso-8859-1"
+X-Mailer: mail.pl
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: music@pjb.com.au
+
+Sorry this is a long post, but then of course there is a rather large
+backlog of things to be discussed.  brian d foy wrote:
+
+> there is already a Crypt::TEA, so i suggest working with that author
+> or extending his module
+
+I corresponded with Abhijit Menon-Sen back in 2001 when the module was
+introduced. I wrote:
+
+> Greetings.  I've just registered the Crypt::Tea namespace at CPAN,
+> without noticing that you already have the Crypt::TEA namespace :-(
+> I was working from an old module list which I downloaded when I
+> started developing, and the similarity wasn't picked up when registering.
+>
+> The functionality of my Tea.pm is quite different from your TEA.pm;
+> the encryption (and subsequent ascii encoding) is done in pure Perl,
+> and notably there is a subroutine to return JavaScript code which
+> implements compatible functions in JavaScript.  I wrote Tea.pm to
+> give me an encryption engine which I could drop into both ends of
+> an http connection, in Perl at the CGI end and in JavaScript at the
+> browser end.  To achieve this, Tea.pm depends on no other CPAN
+> modules, because of course they don't offer JavaScript equivalents.
+>
+> The names Crypt::TEA and Crypt::Tea are close, but they are different.
+>
+> If the namespace Crypt::Tea annoys you, I will try to register some
+> other name, perhaps Crypt::Tea2 or Crypt::Tea4cgi or something, before
+> too many people start using it.
+>
+> If you're content to live with the presence of Crypt::Tea, I will
+> put messages in the README and the pod to refer to Crypt::TEA and
+> yourself so people don't get confused.
+
+and Abhijit replied
+
+> > If the namespace Crypt::Tea annoys you, I will try to register some
+> > other name
+> It doesn't bother me in the least, but if you decide to change the name,
+> you may want to adopt the (unfortunately rather ugly, IMO :) Crypt::*_PP
+> convention for pure-Perl cipher implementations.
+>
+> > If you're content to live with the presence of Crypt::Tea, I will
+> > put messages in the README and the pod to refer to Crypt::TEA and
+> > yourself so people don't get confused.
+> Sounds good to me.
+
+So on that basis I stayed with Crypt::Tea.  I don't think Tea_PP is
+appropriate, for two reasons; firstly half the code is JavaScript, which
+hardly qualifies as Pure Perl, and also I'm not committed to retaining
+even the server end in Perl if someone wants to squeeze higher performance
+by translating it into C or something.  There is no commonality in the
+code between Crypt::Tea and Crypt::TEA.
+
+If you think there is a conflict then perhaps you could arrange for
+the "Register Your Namespace" cgi should be changed to reflect that.
+
+I had foreseen Crypt::Tea as providing security.  It has quite a few
+users, though they mostly seem to use it to implement pay-per-view
+business models.  There are (not free, unfortunately) Java classes
+out there which improve on the performance of my JavaScript code.
+I would like to ask that if the name is changed at this late stage,
+the original Crypt::Tea namespace could also be reserved for the
+next few years to avoid confusion.
+
+> CGI::Htauth makes me nervous.  based on just the documentation
+> the system doesn not seem secure, although that seems to be your
+> intent.  Htauth has a different meaning for most people, too, since
+> the apache ht* files use another scheme.  i might register this
+> under a different name if the security issues could be worked out.
+
+Htauth is, as the README says, early alpha. As you know from the
+documentation, it offers various configurable levels of authentication,
+some appropriate to a standalone machine, some to a trusted lan behind
+a firewall, some to the open net. Nothing is secure. If you have a
+specific hack that I could better defend against please let me know.
+
+"ht" are the first two letters of "http", and I don't see them as an
+apache patent.  I admit that Ht is tautologous with CGI:: ...
+I did consider CGI::Authenticate or CGI::Auth but they confuse with
+the utterly unrelated CGI::Authent and didn't fit the Htui Htauth
+Vtui Vtauth Tkui Tkauth scheme.  I'd also like to do a compatible
+implementation in PHP, so that the same config files and the same
+user behaviour could be shared across a whole website, and in that
+context the Ht is no longer tatologous with CGI:: .  A lot of thought
+has gone into the name.  Are you aiming at any particular alternative
+name, or are you just committed to making it "different" ?
+
+> Term::Clui needs a better name, i think
+
+Several years ago it was called Vtui, complementing Tkui implementing
+the same routines using Tk, and Htui which I am using myself but no
+longer working on because CGI-FormBuilder does some of the same stuff.
+
+But Clui is pronouncable, which Vtui isn't, and the Vt is tautologous
+with Term:: , and there's a whole generation out there now who have never
+heard of a vt100.  Have you used Term::Clui ? I think you'll agree that
+as a user interface its command-line orientation is the most distinctive
+part of its look-&-feel.
+
+Term::Clui is also quite widely used, so if it a "better" name can be
+devised then I would like to ask that Term::Clui also be reserved for
+a couple of years during the changeover.  I'm sorry that you consider
+Term::Clui to be "bad". Can you explain why ?  Do you find Term::Vtui
+to be "better" ?
+
+The names as they are have of course enjoyed the unanimous approval
+of all module list maintainers already for a year or so :-)
+
+> no one is really pushing for decisions on all of the module submissions.
+>
+Well I've been pushing ...
+
+> sometimes no one steps forward with anything to say and it slips
+> through the cracks.
+>
+Yes, but every time ?   For years ?
+
+Regards,  Peter Billam
+
+Peter Billam  http://www.pjb.com.au music@pjb.com.au  (03) 6236 9410
+GPO Box 669, Hobart TAS 7001, Australia.  Original compositions made
+to be played, and Arrangements of Bach, Schubert, Brahms...  Special
+Offer ! Everything Free ! And, soon . . . November at the Carousel !
+

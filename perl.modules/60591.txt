@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60591
+Return-Path: <eric.roode.cpan@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 14346 invoked from network); 23 May 2008 14:16:33 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 23 May 2008 14:16:33 -0000
+Received: (qmail 30724 invoked by uid 225); 23 May 2008 14:16:33 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30719 invoked by alias); 23 May 2008 14:16:32 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_SIGNED,HTML_MESSAGE,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from rn-out-0910.google.com (HELO rn-out-0910.google.com) (64.233.170.184)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 23 May 2008 07:16:29 -0700
+Received: by rn-out-0910.google.com with SMTP id j77so542014rne.7
+        for <modules@perl.org>; Fri, 23 May 2008 07:16:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
+        bh=VhvbBRW7dWv7UcBFKTGk8SJXWhkSlcHeZi4CgpytO0w=;
+        b=tHi61JvDJNBZy7ZeYGjsyWMOUarGw0GSGgfZvuvkJhZyiUKJ7K3AEbjd3mLNBVgHhxFaxLujZ5PvNYzLtEoJ60rp8z3EpRslh8EO47CW2HX4jzGeyBzjIjY2HLratkAU1gqpBfVUWzIarZ7eBe/3Egqd2vCY7JDmGe8Cy2GPq+A=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type;
+        b=VDZYj3M/jGJql4lxvVKgzzbX8mjbh6TCnKavifnfUTwlsieOa4luWTJRT3tr04bKhVFxIZK0J80uqUh1RuyWvFj99EYZ2OLubeOD/NPTDpvUJNOxOjpaidwyRnfb0JNw+NmgQegN2cP2fGDzxVLo62wfqYqX/Vg1qN9QzFk4bkc=
+Received: by 10.142.237.20 with SMTP id k20mr617566wfh.228.1211552185656;
+        Fri, 23 May 2008 07:16:25 -0700 (PDT)
+Received: by 10.143.38.21 with HTTP; Fri, 23 May 2008 07:16:24 -0700 (PDT)
+Message-ID: <9bb5594d0805230716l2a031891l20b4154aba8f220@mail.gmail.com>
+Date: Fri, 23 May 2008 10:16:24 -0400
+To: modules@perl.org
+Subject: Locale month/weekday name overrides
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_27346_19599420.1211552185412"
+Approved: news@nntp.perl.org
+From: eric.roode.cpan@gmail.com ("Eric Roode")
+
+------=_Part_27346_19599420.1211552185412
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+[meta: This arose from a discussion on the ActiveState perl mailing list]
+
+I have some modules (Time::Format, Regexp::Common::time, Time::Normalize)
+that need to know the month and weekday names, and their abbreviations, in
+the user's current locale.  Those modules currently get this information
+from I18N::Langinfo (and fall back on English names/abbreviations).
+
+Since I18N::Langinfo is not reliably available, I would like to provide a
+way for the user to explicitly specify the month/weekday names/abbreviations
+that they would like to use.  My first thought was to provide a set of
+functions in each module: set_month_names(), set_weekday_names(), etc.
+But... why should the user have to set the names once for each module?  They
+should be able to do it once and be done.
+
+So I am considering having a new central module whose only purpose in life
+is to wrap I18N::Langinfo and allow the user to specify month and weekday
+names and abbreviations (or override them if the module exists and works but
+the caller wants a different set of names for some reason).  And it should
+probably allow the user to specify the other strings that I18N::Langinfo
+provides.
+
+I'm posting this here to stimulate discussion about the merits of this
+idea.  Is it good?  Is it awful?  Does this sort of thing exist already?
+
+Should it be incorporated into I18N::Langinfo?  I suspect that is a bad
+idea.  If it should be a new module, should it be under I18N? Maybe
+I18N::Langinfo::Fake?  I18N::Langinfo::Override?  Should it be under
+Locale:: or even Lingua::?
+
+Thanks in advance,
+Eric Roode
+
+PS: I am also posting this to use.perl.org.
+
+------=_Part_27346_19599420.1211552185412
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+[meta: This arose from a discussion on the ActiveState perl mailing list]<br><br>I have some modules (Time::Format, Regexp::Common::time, Time::Normalize) that need to know the month and weekday names, and their abbreviations, in the user&#39;s current locale.&nbsp; Those modules currently get this information from I18N::Langinfo (and fall back on English names/abbreviations).<br>
+<br>Since I18N::Langinfo is not reliably available, I would like to provide a way for the user to explicitly specify the month/weekday names/abbreviations that they would like to use.&nbsp; My first thought was to provide a set of functions in each module: set_month_names(), set_weekday_names(), etc.&nbsp; But... why should the user have to set the names once for each module?&nbsp; They should be able to do it once and be done.<br>
+&nbsp;<br>So I am considering having a new central module whose only purpose in life is to wrap I18N::Langinfo and allow the user to specify month and weekday names and abbreviations (or override them if the module exists and works but the caller wants a different set of names for some reason).&nbsp; And it should probably allow the user to specify the other strings that I18N::Langinfo provides.<br>
+<br>I&#39;m posting this here to stimulate discussion about the merits of this idea.&nbsp; Is it good?&nbsp; Is it awful?&nbsp; Does this sort of thing exist already?<br><br>Should it be incorporated into I18N::Langinfo?&nbsp; I suspect that is a bad idea.&nbsp; If it should be a new module, should it be under I18N? Maybe I18N::Langinfo::Fake?&nbsp; I18N::Langinfo::Override?&nbsp; Should it be under Locale:: or even Lingua::?<br>
+<br>Thanks in advance,<br>Eric Roode<br><br>PS: I am also posting this to <a href="http://use.perl.org">use.perl.org</a>.<br><br>
+
+------=_Part_27346_19599420.1211552185412--

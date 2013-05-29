@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:15210
+Return-Path: <muir@idiom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30535 invoked by uid 76); 11 Nov 2002 19:16:52 -0000
+Received: from root@idiom.com (HELO idiom.com) (216.240.32.1) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-11-11 19:16:52Z
+Received: from idiom.com (localhost [127.0.0.1])	by idiom.com (8.12.6/8.12.6) with ESMTP id gABJGmMx074885;	Mon, 11 Nov 2002 11:16:48 -0800 (PST)	(envelope-from muir@idiom.com)
+Received: (from muir@localhost)	by idiom.com (8.12.6/8.12.6/Submit) id gABJGmsG074878;	Mon, 11 Nov 2002 11:16:48 -0800 (PST)	(envelope-from muir)
+Date: Mon, 11 Nov 2002 11:16:48 -0800 (PST)
+Message-ID: <200211111916.gABJGmsG074878@idiom.com>
+To: _brian_d_foy <comdog@panix.com>
+Cc: modules@perl.org
+Subject: Re: Tie::LookupAsFunction
+References: <0BBD61E4-F48B-11D6-8CF8-003065D64CBE@contiller.se> <200211102012.gAAKCo0U036444@idiom.com> <20021111104220.PCOG20487.sccrmhc02.attbi.com@10-0-1-2>
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: muir@idiom.com (David Muir Sharnoff)
+
+
+* In article <200211102012.gAAKCo0U036444@idiom.com>, David Muir Sharnoff <muir@idiom.com> wrote:
+* 
+* > * 
+* > * Or even better, Hash::ComputedValue  ?
+* 
+* > Hmmm.  The way I think it will be used is mostly to do minor
+* > transformations on values like adding commas to a number eg: 1,000.
+* 
+* that's still a computed value, though.
+* 
+* > So, how about Hash::Transforms?
+* 
+* i don't like that one so much.  it is much less clear.
+
+Okay, that one is nixed.
+
+* and, just out of curiousity, what advantage does your module
+* have over a closure?  it seems you have to do more work to get
+* the same effect.
+
+How so?  I don't use closures that often so maybe I'm missing
+something, but it seems to me that there isn't any similarity
+at all.  The purpose of my module is to save a few characters.
+
+Instead of:
+
+	sub xyz {
+		code
+	}
+
+	" some string @{[ xyz(abc) ]} "
+
+You have
+
+	use my_module;
+	tie %xyz, 'my_module', 
+		sub {
+			code
+		};
+
+	" some string $xyz{abc} "
+
+
+Useful if you're going to want to interpolate a function a lot.
+Worse that useless otherwize.
+
+-Dave

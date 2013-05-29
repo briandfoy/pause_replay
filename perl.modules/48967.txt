@@ -1,0 +1,476 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:48967
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9687 invoked from network); 22 May 2006 20:09:52 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 May 2006 20:09:52 -0000
+Received: (qmail 2054 invoked by uid 225); 22 May 2006 20:09:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2047 invoked by alias); 22 May 2006 20:09:51 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO k75.linux.bogus) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 22 May 2006 13:09:14 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.13.6/8.13.6/Debian-1) with ESMTP id k4MK8rSW031464;
+	Mon, 22 May 2006 22:08:53 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.6/8.13.6/Submit) id k4MK8iPf031463;
+	Mon, 22 May 2006 22:08:44 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: Kip Hampton <khampton@totalcinema.com>
+Cc: "Scott R. Godin" <scott.g@mhg2.com>, modules@perl.org
+Subject: XML::SAX::Base 1.04: IVth birthday
+Date: Mon, 22 May 2006 22:08:43 +0200
+Message-ID: <87zmh9256c.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+Hi Kip,
+
+I thought four years after the release of XML::SAX::Base 1.04 should
+be birthday present time. You find appended the mails I could find
+easily about the unfortunate inability of the CPAN indexer to deal
+with the package. The indexer has learned to deal with META.yml files
+in the meantime and so I made another attemt to produce a patch that
+makes the package indexable. It's really just a few lines this time
+and not vague suggestions what might work but a real patch.
+
+I've tested this patch to the best of my knowledge that it will be
+accepted and recognized by the CPAN indexer and so 1.04 will become
+the current version instead of the 1.02 that is still being treated as
+current.
+
+If you wouldn't mind to take this patch and apply it and make a new
+release, you could make the perl community and Scott and me happy. If
+you're not interested, please nominate a new maintainer. If you want
+to find a new maintainer, it would probably help to rewrite the README
+and let the world know what's the plan. If you want me to do that for
+you, I'd be happy to act as an interim maintainer just to get the ball
+rolling. I'm not interested in the code itself, I haven't used it, but
+as the maintainer of the CPAN indexer I'm ashamed that I could not fix
+the problem earlier. Please have a glance over the next 129 lines,
+most of which are comments by makepatch, the patch itself is only 60
+lines.
+
+----8<----8<----8<----
+# This is a patch for XML-SAX-Base-1.04 to update it to XML-SAX-Base-1.04a
+# 
+# To apply this patch:
+# STEP 1: Chdir to the source directory.
+# STEP 2: Run the 'applypatch' program with this patch file as input.
+#
+# If you do not have 'applypatch', it is part of the 'makepatch' package
+# that you can fetch from the Comprehensive Perl Archive Network:
+# http://www.perl.com/CPAN/authors/Johan_Vromans/makepatch-x.y.tar.gz
+# In the above URL, 'x' should be 2 or higher.
+#
+# To apply this patch without the use of 'applypatch':
+# STEP 1: Chdir to the source directory.
+# If you have a decent Bourne-type shell:
+# STEP 2: Run the shell with this file as input.
+# If you don't have such a shell, you may need to manually create
+# the files as shown below.
+# STEP 3: Run the 'patch' program with this file as input.
+#
+# These are the commands needed to create/delete files/directories:
+#
+touch 'META.yml'
+chmod 0644 'META.yml'
+#
+# This command terminates the shell and need not be executed manually.
+exit
+#
+#### End of Preamble ####
+
+#### Patch data follows ####
+diff -u 'XML-SAX-Base-1.04/MANIFEST' 'XML-SAX-Base-1.04a/MANIFEST'
+Index: ./MANIFEST
+--- ./MANIFEST	Mon Apr 29 19:21:18 2002
++++ ./MANIFEST	Thu May 18 08:34:52 2006
+@@ -2,6 +2,7 @@
+ Changes
+ README
+ MANIFEST
++META.yml
+ lib/XML/SAX/placeholder.pl
+ t/00basic.t
+ t/01exception.t
+@@ -22,4 +23,3 @@
+ t/15parentswitch.t
+ t/16gethandlers.t
+ t/events.pl
+-
+diff -u /dev/null 'XML-SAX-Base-1.04a/META.yml'
+Index: ./META.yml
+--- ./META.yml	Thu Jan  1 01:00:00 1970
++++ ./META.yml	Sat May 20 18:39:17 2006
+@@ -0,0 +1,14 @@
++--- #YAML:1.0
++name: XML-SAX-Base
++version: 1.04
++author:
++  - Kip Hampton
++license: perl
++provides:
++  XML::SAX::Base:
++    file: lib/XML/SAX/Base.pm
++    version: 1.04
++  XML::SAX::Exception:
++    file: lib/XML/SAX/Exception.pm
++    version: 1.01
++generated_by: manually
+diff -u 'XML-SAX-Base-1.04/Makefile.PL' 'XML-SAX-Base-1.04a/Makefile.PL'
+Index: ./Makefile.PL
+Prereq:  1.10 
+--- ./Makefile.PL	Mon Apr 29 19:25:29 2002
++++ ./Makefile.PL	Sat May 20 18:39:05 2006
+@@ -11,9 +11,16 @@
+ 
+ WriteMakefile(
+     'NAME'	=> 'XML::SAX::Base',
+-    'VERSION_FROM' => 'lib/XML/SAX/Base.pm', # finds $VERSION
++    'VERSION' => '1.04a',
+ );
+ 
++sub MY::metafile {
++  <<'END';
++metafile: META.yml
++	cp META.yml $(DISTVNAME)/META.yml
++END
++}
++
+ sub build_xml_sax_base {
+     my $code = <<'EOHEADER';
+ package XML::SAX::Base;
+#### End of Patch data ####
+
+#### ApplyPatch data follows ####
+# Data version        : 1.0
+# Date generated      : Sat May 20 18:55:32 2006
+# Generated by        : makepatch 2.00_12*
+# Recurse directories : Yes
+# Excluded files      : (\A|/).*\~\Z
+#                       (\A|/).*\.a\Z
+#                       (\A|/).*\.bak\Z
+#                       (\A|/).*\.BAK\Z
+#                       (\A|/).*\.elc\Z
+#                       (\A|/).*\.exe\Z
+#                       (\A|/).*\.gz\Z
+#                       (\A|/).*\.ln\Z
+#                       (\A|/).*\.o\Z
+#                       (\A|/).*\.obj\Z
+#                       (\A|/).*\.olb\Z
+#                       (\A|/).*\.old\Z
+#                       (\A|/).*\.orig\Z
+#                       (\A|/).*\.rej\Z
+#                       (\A|/).*\.so\Z
+#                       (\A|/).*\.Z\Z
+#                       (\A|/)\.del\-.*\Z
+#                       (\A|/)\.make\.state\Z
+#                       (\A|/)\.nse_depinfo\Z
+#                       (\A|/)core\Z
+#                       (\A|/)tags\Z
+#                       (\A|/)TAGS\Z
+# p 'MANIFEST' 400 1147934092 0100644
+# c 'META.yml' 0 1148143157 0100644
+# p 'Makefile.PL' 29392 1148143145 0100644
+#### End of ApplyPatch data ####
+
+#### End of Patch kit [created: Sat May 20 18:55:32 2006] ####
+#### Patch checksum: 95 2653 34208 ####
+#### Checksum: 125 3723 58068 ####
+----8<----8<----8<----
+
+
+
+-------------------- Start of forwarded message --------------------
+Date: Mon, 22 May 2006 21:44:14 +0200
+From: Various
+Subject: Digested Articles
+
+Topics:
+   XML::SAX::Base still out of whack on CPAN
+   Re: CPAN reporting incorrect version as current for XML::SAX::Base
+   CPAN reporting incorrect version as current for XML::SAX::Base
+   Re: XML::SAX::Base cpan version incorrect
+   XML::SAX::Base cpan version incorrect
+   CPAN showing wrong version for XML::SAX::Base
+
+
+----------------------------------------------------------------------
+
+Date: Thu, 01 Dec 2005 08:23:53 -0500
+From: "Scott R. Godin" <scott.g@mhg2.com>
+To: "Andreas J. Koenig" <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Subject: XML::SAX::Base still out of whack on CPAN
+Message-Id: <1133443433.18369.2.camel@localhost.localdomain>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+
+
+Don't think we ever heard back from the author. Just jogging your memory
+again about it. 
+
+- - 
+  Scott Godin, Programmer           | p: 302.368.5640
+  M A D House Graphics              | c: 302.750.MAD1 (6231)
+  PO Box 7619, Newark DE 19714 USA  | w: www.MadHouseGraphics.com
+...................................................................
+  Comprehensive Expertise in Web and Print
+  
+
+
+
+------------------------------
+
+Date: Sun, 14 Aug 2005 13:43:16 +0200
+From: andreas.koenig.gmwojprw@franz.ak.mind.de (Andreas J. Koenig)
+To: Kip Hampton <khampton@totalcinema.com>
+Cc: "Andreas J. Koenig" <andreas.koenig.gmwojprw@franz.ak.mind.de>,
+        scott.g@mhg2.com
+Subject: Re: CPAN reporting incorrect version as current for XML::SAX::Base
+Message-ID: <87vf28kaln.fsf@k75.linux.bogus>
+References: <1123700069.4838.3.camel@localhost.localdomain>
+Content-Type: text/plain; charset=us-ascii
+MIME-Version: 1.0
+
+>>>>> On Wed, 10 Aug 2005 14:54:29 -0400, "Scott R. Godin" <scott.g@mhg2.com> said:
+
+ cpan> m XML::SAX::Base
+  > Module id = XML::SAX::Base
+  >     CPAN_USERID  KHAMPTON (Kip Hampton <khampton@totalcinema.com>)
+  >     CPAN_VERSION 1.02
+  >     CPAN_FILE    K/KH/KHAMPTON/XML-SAX-Base-1.02.tar.gz
+  >     MANPAGE      XML::SAX::Base - Base class SAX Drivers and Filters
+  >     INST_FILE    /usr/lib/perl5/site_perl/5.8.6/XML/SAX/Base.pm
+  >     INST_VERSION 1.04
+
+Kip,
+
+you see Scott's message above, he's sending it for the third time and
+I have always been to busy to react. But thanks to his stubbornness,
+we have a chance to reconsider. I have written more or less the same
+mail to many authors, so the following lines are nearly a form letter.
+I hope this helps you a bit and let me know if you need some help.
+
+Yes, it's because .pm file is written by a script. There are several
+possible solutions:
+
+1. Write a different file on the fly, say XML/SAX/Local.pm and have that be
+   required by Base.pm and let Base.pm be just
+
+   package ....::Base;
+   $VERSION = "1.05";
+   require ....::Local;
+
+2. Write only a few configuration variables into some
+   XML/SAX/Config.pm and the common logic in Base.pm. This is really
+   the same thing as above, just the sizes of the files are different.
+
+3. I have not yet enough experience with Module::Build instead. M:B
+   writes a good META.yml file that would be parsed by the indexer.
+   That would be an interesting approach but would probably need some
+   more support both on Module::Build and the PAUSE side.
+
+4. The least intrusive for the author would probably be to let
+   Makefile.PL or Build.PL care for the distribution of a bare minimum
+   of a .pm file and overwrite it during installation. I have tried
+   this before and it seemed to work, but I know of no distribution
+   that is persuing such a dangerous idea. Such a solution has the
+   disadvantage of being a bit hard to debug if something goes wrong.
+
+
+
+Regards,
+- - 
+andreas
+
+
+------------------------------
+
+Date: Wed, 10 Aug 2005 14:54:29 -0400
+From: "Scott R. Godin" <scott.g@mhg2.com>
+To: Kip Hampton <khampton@totalcinema.com>
+Cc: "Andreas J. Koenig" <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Subject: CPAN reporting incorrect version as current for XML::SAX::Base
+Message-Id: <1123700069.4838.3.camel@localhost.localdomain>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+
+cpan> m XML::SAX::Base
+Module id = XML::SAX::Base
+    CPAN_USERID  KHAMPTON (Kip Hampton <khampton@totalcinema.com>)
+    CPAN_VERSION 1.02
+    CPAN_FILE    K/KH/KHAMPTON/XML-SAX-Base-1.02.tar.gz
+    MANPAGE      XML::SAX::Base - Base class SAX Drivers and Filters
+    INST_FILE    /usr/lib/perl5/site_perl/5.8.6/XML/SAX/Base.pm
+    INST_VERSION 1.04
+
+
+
+
+
+------------------------------
+
+Date: Sun, 24 Jul 2005 10:32:31 +0200
+From: andreas.koenig.gmwojprw@franz.ak.mind.de (Andreas J. Koenig)
+To: "Scott R. Godin" <nospam@webdragon.net>,
+        Kip Hampton <khampton@totalcinema.com>
+Cc: Andreas Koenig <andreas.koenig@anima.de>
+Subject: Re: XML::SAX::Base cpan version incorrect
+Message-ID: <87pst8a9k0.fsf@k75.linux.bogus>
+References: <42E119CF.9040107@webdragon.net>
+Content-Type: text/plain; charset=us-ascii
+MIME-Version: 1.0
+
+Kip,
+
+Scott made me aware of a wrong index in the CPAN indexing mechanism.
+I'm sorry that the indexer on pause.perl.org is not up to the task of
+indexing your module. Maybe the workaround outlined below will be
+something you want to try out?
+
+>>>>> On Fri, 22 Jul 2005 12:07:43 -0400, "Scott R. Godin" <nospam@webdragon.net> said:
+
+ cpan> m XML::SAX::Base 
+ srg>              Module id = XML::SAX::Base
+ srg>     CPAN_USERID  KHAMPTON (Kip Hampton <khampton@totalcinema.com>)
+ srg>     CPAN_VERSION 1.02
+ srg>     CPAN_FILE    K/KH/KHAMPTON/XML-SAX-Base-1.02.tar.gz
+ srg>     MANPAGE      XML::SAX::Base - Base class SAX Drivers and Filters
+ srg>     INST_FILE    /usr/lib/perl5/site_perl/5.8.6/XML/SAX/Base.pm
+ srg>     INST_VERSION 1.04
+
+The indexer has always a hard time when a package arrives that
+contains no *.pm files. XML-SAX-Base builds the *.pm files during the
+'perl Makefile.PL' run but the indexer cannot know that.
+
+I have tried the following patch to the Makefile.PL and found that it
+works quite well for the developer. It's just a suggestion, I'm sure
+there are plenty of alternative solutions too.
+
+The effect is that the *.pm files are distributed with just a package
+statement and a $VERSION assignment. This would be good enough for the
+indexer on PAUSE. The full *.pm files are still being built by 'perl
+Makefile.PL' on the user's box.
+
+- -- Makefile.PL~	2002-04-29 19:25:29.000000000 +0200
++++ Makefile.PL	2005-07-24 10:15:47.000000000 +0200
+@@ -12,8 +12,16 @@
+ WriteMakefile(
+     'NAME'	=> 'XML::SAX::Base',
+     'VERSION_FROM' => 'lib/XML/SAX/Base.pm', # finds $VERSION
++              dist => { DIST_DEFAULT => 'cut_pms tardist'  },
+ );
+ 
++sub MY::postamble {
++  return qq{
++cut_pms:
++	perl -i~ -nle 'print if /^(package|.VERSION)/' lib/XML/SAX/*.pm
++};
++}
++
+ sub build_xml_sax_base {
+     my $code = <<'EOHEADER';
+ package XML::SAX::Base;
+
+
+- - 
+andreas
+
+
+------------------------------
+
+Date: Fri, 22 Jul 2005 12:07:43 -0400
+From: "Scott R. Godin" <nospam@webdragon.net>
+To: Andreas Koenig <andreas.koenig@anima.de>
+Subject: XML::SAX::Base cpan version incorrect
+Message-ID: <42E119CF.9040107@webdragon.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+cpan> m XML::SAX::Base 
+ 
+              Module id = XML::SAX::Base
+     CPAN_USERID  KHAMPTON (Kip Hampton <khampton@totalcinema.com>)
+     CPAN_VERSION 1.02
+     CPAN_FILE    K/KH/KHAMPTON/XML-SAX-Base-1.02.tar.gz
+     MANPAGE      XML::SAX::Base - Base class SAX Drivers and Filters
+     INST_FILE    /usr/lib/perl5/site_perl/5.8.6/XML/SAX/Base.pm
+     INST_VERSION 1.04
+
+
+cpan> ls KHAMPTON 
+ 
+              Fetching with LWP:
+   http://cpan.binarycompass.org/authors/id/K/CHECKSUMS
+Fetching with LWP:
+   http://cpan.binarycompass.org/authors/id/K/KH/CHECKSUMS
+Fetching with LWP:
+   http://cpan.binarycompass.org/authors/id/K/KH/KHAMPTON/CHECKSUMS
+[snip]
+    18497 2001-11-20 KHAMPTON/XML-SAX-Base-1.00.tar.gz
+    21148 2002-01-17 KHAMPTON/XML-SAX-Base-1.02.tar.gz
+    16199 2002-05-14 KHAMPTON/XML-SAX-Base-1.04.tar.gz
+[snip]
+
+
+------------------------------
+
+Date: Wed, 17 Sep 2003 15:44:50 -0400 (EDT)
+From: "Scott R. Godin" <mactech@webdragon.net>
+To: Andreas J Koenig <andreas.koenig@anima.de>
+cc: Kip Hampton <khampton@totalcinema.com>
+Subject: CPAN showing wrong version for XML::SAX::Base
+Message-ID: <Pine.LNX.4.44.0309171542460.8646-100000@pcp01723902pcs.univde01.de.comcast.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+MIME-Version: 1.0
+
+
+cpan> m XML::SAX::Base
+Module id = XML::SAX::Base
+    CPAN_USERID  KHAMPTON (Kip Hampton <khampton@totalcinema.com>)
+    CPAN_VERSION 1.02
+    CPAN_FILE    K/KH/KHAMPTON/XML-SAX-Base-1.02.tar.gz
+    MANPAGE      XML::SAX::Base - Base class SAX Drivers and Filters
+    INST_FILE    /usr/lib/perl5/site_perl/5.8.0/XML/SAX/Base.pm
+    INST_VERSION 1.04
+
+an 'ls KHAMPTON' shows the presence of 
+
+   18497 2001-11-20 KHAMPTON/XML-SAX-Base-1.00.tar.gz
+   21148 2002-01-17 KHAMPTON/XML-SAX-Base-1.02.tar.gz
+   16199 2002-05-14 KHAMPTON/XML-SAX-Base-1.04.tar.gz
+
+so it does exist, and should be obvious to CPAN that it's existing. :) 
+
+Probably just a simple glitch, this one. 
+
+- - 
+Laughing Dragon Services
+http://www.webdragon.net/
+
+
+
+------------------------------
+
+End of forward28813OSh Digest
+*****************************
+
+-------------------- End of forwarded message --------------------
+
+-- 
+andreas

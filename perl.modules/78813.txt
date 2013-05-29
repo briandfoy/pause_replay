@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:78813
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3189 invoked from network); 12 Dec 2011 21:52:29 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 12 Dec 2011 21:52:29 -0000
+Received: (qmail 27954 invoked by uid 225); 12 Dec 2011 21:52:29 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27950 invoked by alias); 12 Dec 2011 21:52:28 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from rz1.akoenig.de (HELO rz1.akoenig.de) (83.223.90.65)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 12 Dec 2011 13:52:25 -0800
+Received: from franz.ak.mind.de (p4FC96B4A.dip.t-dialin.net [79.201.107.74])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(Client CN "franz.ak.mind.de", Issuer "franz.ak.mind.de" (not verified))
+	by rz1.akoenig.de (Postfix) with ESMTPS id 7679920032;
+	Mon, 12 Dec 2011 22:36:21 +0100 (CET)
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-9.4) with ESMTP id pBCLqGYH011717
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 12 Dec 2011 22:52:16 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id pBCLqGa1011716;
+	Mon, 12 Dec 2011 22:52:16 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Alex Efros <powerman@powerman.name>
+Cc: modules@perl.org
+Subject: Re: PAUSE "Safe" limitations on parsing module version
+References: <20111210075103.GA11441@home.power>
+Date: Mon, 12 Dec 2011 22:52:16 +0100
+In-Reply-To: <20111210075103.GA11441@home.power> (Alex Efros's message of
+	"Sat, 10 Dec 2011 09:51:03 +0200")
+Message-ID: <87d3bt1mr3.fsf@franz.ak.mind.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Sat, 10 Dec 2011 09:51:03 +0200, Alex Efros <powerman@powerman.name> said:
+
+  > Hi!
+  > I'm usually declare module version using this way:
+
+  >     use version; our $VERSION = qv('0.1.4'); # update POD & Changes & README
+
+  > and PAUSE was able to parse it successfully several months ago,
+  > but now it fail on this. I've also tried slightly different way
+  > recommended on `perldoc version`:
+
+  >     use version 0.77; our $VERSION = version->declare('0.1.5'); # update POD & Changes & README
+
+  > and PAUSE failed to parse this one too.
+
+  > How I should declare module version in PAUSE-compatible way in format
+  > '0.1.5' (i.e. not 'v0.1.5' and not '0.001005')?
+  > The 'v0.1.5' is incompatible with some tools (like g-cpan in Gentoo
+  > Linux), and '0.001005' is just ugly and hard to read.
+
+I just recently uploaded CPAN::Testers::ParseReport which has this line:
+
+    use version; our $VERSION = qv('0.2.0');
+
+and pause indexed it.
+
+I'm sorry that your variations thereof do not parse as you expect. I'm
+surprised myself. It's not easy to navigate through all the variations
+of version trickery. The above incantation is what Damian Conway has
+reommended in PBP and that is what pause tries to support as long as
+possible.
+
+-- 
+andreas

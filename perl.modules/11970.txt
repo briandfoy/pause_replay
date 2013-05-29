@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11970
+Return-Path: <swmcd@shell.TheWorld.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 92447 invoked by uid 76); 4 Jun 2002 16:27:58 -0000
+Received: from pcls4.std.com (HELO TheWorld.com) (199.172.62.106)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Tue Jun  4 16:27:58 2002 -0000
+Received: from shell.TheWorld.com (root@shell01.TheWorld.com [199.172.62.241])
+	by TheWorld.com (8.9.3/8.9.3) with ESMTP id MAA09876
+	for <modules@perl.org>; Tue, 4 Jun 2002 12:28:27 -0400
+Received: (from swmcd@localhost)
+	by shell.TheWorld.com (8.9.3/8.9.3) id MAA374333
+	for modules@perl.org; Tue, 4 Jun 2002 12:28:27 -0400 (EDT)
+Message-ID: <200206041628.MAA374333@shell.TheWorld.com>
+Subject: RFC: String::Levenshtein
+To: modules@perl.org
+Date: Tue, 4 Jun 2002 12:28:27 -0400 (EDT)
+X-Mailer: ELM [version 2.5 PL2]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: swmcd@TheWorld.com (Steven W McDougall)
+
+NAME
+    String::Levenshtein - Compute the Levenshtein distance between two
+    strings
+
+SYNOPSIS
+      use String::Levenshtein qw(distance prefix_distance);
+
+      $d = distance       ("abcd", "abxc")
+      $d = prefix_distance("Smith", "Smithson")
+
+DESCRIPTION
+    String::Levenshtein computes the *Levenshtein distance* between two
+    strings. The Levenshtein distance is defined as the minimum number of
+    characters that must be added, removed, or changed in order to transform
+    one string into another.
+
+    The Levenshtein distance is also called the *edit distance*.
+
+FUNCTIONS
+    *$d* = "distance"(*$string1*, *$string2*)
+        Returns the Levenshtein distance between *$string1* and *$string2*.
+
+        Returns -1 on error.
+
+    *$d* = "prefix_distance"(*$string1*, *$string2*)
+        Returns the smallest number of characters that must be added,
+        removed or changed in order to transform the shorter of *$string1*
+        and *$string2* into a prefix of the longer.
+
+        Returns -1 on error.
+
+EXAMPLES
+                               Levenshtein prefix
+        String1   String2      distance    distance
+        <empty>   <empty>      0           0
+        abc       <empty>      3           0
+        <empty>   xyz          3           0
+        abc       abc          3           0
+        abc       xyz          3           3
+        abc       abd          1           1
+        gumbo     bambol       2           1
+        aaaa      bbbbbbb      2           2
+        McDougall MacDougal    2           2
+        Smith     Smithson     3           0
+        Smithson  Smith        3           0
+
+EXPORTS
+  "@EXPORT"
+
+    Nothing
+
+  "@EXPORT_OK"
+
+    *   distance
+
+    *   prefix_distance
+
+DIAGNOSTICS
+    "distance" and "prefix_distance" return -1 on error. The only error is
+    memory allocation failure.
+
+AUTHOR
+    Steven McDougall, <swmcd@world.std.com>
+

@@ -1,0 +1,313 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60371
+Return-Path: <shanleiguang@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 1294 invoked from network); 6 May 2008 09:15:37 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 6 May 2008 09:15:37 -0000
+Received: (qmail 17160 invoked by uid 225); 6 May 2008 09:15:37 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17155 invoked by alias); 6 May 2008 09:15:36 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_SIGNED,HTML_MESSAGE,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from ug-out-1314.google.com (HELO ug-out-1314.google.com) (66.249.92.173)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 06 May 2008 02:15:32 -0700
+Received: by ug-out-1314.google.com with SMTP id m2so327195ugc.41
+        for <modules@perl.org>; Tue, 06 May 2008 02:15:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
+        bh=mLQREn0I9WP6IsXMXiIetXwCBAMPtH+Igyal99iAJoM=;
+        b=l8QKrOIPkJqxvQz8KpcmTrJXZzYlMjkMoZ594pH+oVUb8PsuiQANbHSMumFjwktd01/wvWhbEYWt9WnhOYueFeMw4cZE+PuZ28U34mKb+arzD7qhVSy3AgGmTl9DpM7tgCedBKiZlENb/vOB8kiz663gtdBYTlfMRKHeDU8KMYA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type;
+        b=BWkCoZXYHOFpwLOp45FExHsADo8Mek+j3tLOyWJ96YE7gmt8M3zl5Bcletmh8r2BunSM4obRiXumlc71Vh3Lj3OhT2JhbVx4GSJWE1YyeJgy2CGO7A24JF/hnsQIVW0HAdFrZog4moex/GE3/FtDzPciJsaqQmQR3jLICfJkgTE=
+Received: by 10.78.81.2 with SMTP id e2mr123803hub.13.1210065327345;
+        Tue, 06 May 2008 02:15:27 -0700 (PDT)
+Received: by 10.78.100.17 with HTTP; Tue, 6 May 2008 02:15:27 -0700 (PDT)
+Message-ID: <a5fccdcf0805060215p45e99906l36f4bcd8f4071d16@mail.gmail.com>
+Date: Tue, 6 May 2008 17:15:27 +0800
+To: modules@perl.org
+Subject: [RFC] Pretty::Table
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_16800_19720994.1210065327330"
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: shanleiguang@gmail.com ("Shan Leiguang")
+
+------=_Part_16800_19720994.1210065327330
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+Hello all
+
+I've written a new module called Pretty::Table that I'm planning to
+put on CPAN. Take a look at the documentation and tell me what you think.
+
+NAME
+Pretty::Table - to print pretty text table
+  --------------------------------------------------------------------------------
+
+ Example
+   use Pretty::Table;
+    my $pt = Pretty::Table->new(
+       data_type      => 'row',     #row mode
+       data_format    => 'ucfirst', #upper char
+       if_multi_lines => 1,         #enable multi-lines mode
+       max_col_length => 10,        #set max_col_length to 10
+   );
+    my $dr = [
+       ['id','name','sex','age','email'],
+       ['01','tommy','male',27],
+       ['02','jarry','male',26],
+       ['03','shanleiguang',26,'shanleiguang@gmail.com'],
+   ];
+    $pt->set_data_ref($dr);
+   $pt->set_title('Contacts');
+   $pt->set_align('left');
+   $pt->set_data_format('ucfirst');
+   $pt->insert(['05','jackie','male',27,'jakie@somedoain.com']);
+   $pt->insert(['04','marry','female',26], 4);
+   print $pt->output();
+    $pt->set_data_type('col');
+   $pt->set_deco_cross('*');
+   $pt->set_if_has_title(0);
+   print $pt->output();
+  --------------------------------------------------------------------------------
+
+ Example Output
+ +---------------------------------------------+
+ | Contacts                                    |
+ +----+------------+--------+-----+------------+
+ | id | name       | sex    | age | email      |
+ +----+------------+--------+-----+------------+
+ | 01 | tommy      | male   | 27  |            |
+ +----+------------+--------+-----+------------+
+ | 02 | jarry      | male   | 26  |            |
+ +----+------------+--------+-----+------------+
+ | 03 | shanleigua | male   | 26  | shanleigua |
+ |    | ng         |        |     | ng@gmail.c |
+ |    |            |        |     | om         |
+ +----+------------+--------+-----+------------+
+ | 04 | marry      | female | 26  |            |
+ +----+------------+--------+-----+------------+
+ *-------*-------*-------*------------*--------*
+ | id    | 01    | 02    | 03         | 04     |
+ *-------*-------*-------*------------*--------*
+ | name  | tommy | jarry | shanleigua | marry  |
+ |       |       |       | ng         |        |
+ *-------*-------*-------*------------*--------*
+ | sex   | male  | male  | male       | female |
+ *-------*-------*-------*------------*--------*
+ | age   | 27    | 26    | 26         | 26     |
+ *-------*-------*-------*------------*--------*
+ | email |       |       | shanleigua |        |
+ |       |       |       | ng@gmail.c |        |
+ |       |       |       | om         |        |
+ *-------*-------*-------*------------*--------*
+
+Methods
+Pretty::Table->set_data_type(<'row'|'col'])
+   my $dr = [
+       ['id','name','sex','age'],  #be a 'row' or a 'col'
+       [...],
+   ];
+ Pretty::Table->set_data_format(<'normal'|'uc'|'lc'|'ucfirst')
+   normal  - default, not format
+   uc      - upper character
+   lc      - lower character
+   ucfirst - upper first character
+Pretty::Table->set_data_ref(<$dr)
+   $dr is a 2D ArrayRef
+   my $dr = [
+       ['id','name','sex','age'],  #be a 'row' or a 'col'
+       [...],
+   ];
+ Pretty::Table->set_if_has_title(<1|0)
+   if has table header title, default is 1
+Pretty::Table->set_title(<$title)
+   default is __PACKAGE__ (Pretty::Table)
+Pretty::Table->set_indent(<$indent)
+   default is 2
+Pretty::Table->set_align(<'left'|'center'|'right')
+   default is 'left'
+Pretty::Table->set_margin_left(<$margin_left)
+   default is 1, no need to change
+
+=item C<Pretty::Table-E<gt>set_margin_right(<$margin_right>)
+   default is 1, no need to change
+Pretty::Table->set_deco_horizontal(<$deco_h)
+   default is '|', no need to change
+Pretty::Table->set_deco_vertical(<$deco_v)
+   default is '-', no need to change
+Pretty::Table->set_deco_cross(<$deco_c)
+   default is '+', '*' is also pretty
+Pretty::Table->set_empty_fill(<$empty_fill)
+   default is ' '(space), no need to change
+Pretty::Table->set_if_multi_lines(<1|0)
+   default is 1, enable multi-lines mode
+Pretty::Table->set_max_col_length(<$max_col_length)
+   default is 40, 'if_multi_lines' must enabled
+ --------------------------------------------------------------------------------
+
+ AUTHOR Shan LeiGuang shanleiguang@gmail.com
+
+-- 
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Gmail : shanleiguang@gmail.com
+MSN : shanleiguang@live.com
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+------=_Part_16800_19720994.1210065327330
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+<div><font face="courier new,monospace"></font>&nbsp;</div>
+<div><font face="courier new,monospace">Hello all</font></div>
+<div><font face="courier new,monospace"></font>&nbsp;</div>
+<div><font face="courier new,monospace">I&#39;ve written a new module called Pretty::Table that I&#39;m planning to </font></div>
+<div><font face="courier new,monospace">put on CPAN. Take a look at the documentation and tell me what you think. </font></div>
+<div><font face="courier new,monospace"></font>&nbsp;</div>
+<div><font face="courier new,monospace">NAME </font></div>
+<div><font face="courier new,monospace">Pretty::Table - to print pretty text table </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">-------------------------------------------------------------------------------- </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">Example </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;use Pretty::Table; </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;my $pt = Pretty::Table-&gt;new( </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;data_type &nbsp; &nbsp; &nbsp;=&gt; &#39;row&#39;, &nbsp; &nbsp; #row mode </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;data_format &nbsp; &nbsp;=&gt; &#39;ucfirst&#39;, #upper char </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;if_multi_lines =&gt; 1, &nbsp; &nbsp; &nbsp; &nbsp; #enable multi-lines mode </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;max_col_length =&gt; 10, &nbsp; &nbsp; &nbsp; &nbsp;#set max_col_length to 10 </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;); </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;my $dr = [ </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;[&#39;id&#39;,&#39;name&#39;,&#39;sex&#39;,&#39;age&#39;,&#39;email&#39;], </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;[&#39;01&#39;,&#39;tommy&#39;,&#39;male&#39;,27], </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;[&#39;02&#39;,&#39;jarry&#39;,&#39;male&#39;,26], </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;[&#39;03&#39;,&#39;shanleiguang&#39;,26,&#39;shanleiguang@gmail.com&#39;], </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;]; </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;$pt-&gt;set_data_ref($dr); </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;$pt-&gt;set_title(&#39;Contacts&#39;); </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;$pt-&gt;set_align(&#39;left&#39;); </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;$pt-&gt;set_data_format(&#39;ucfirst&#39;); </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;$pt-&gt;insert([&#39;05&#39;,&#39;jackie&#39;,&#39;male&#39;,27,&#39;jakie@somedoain.com&#39;]); </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;$pt-&gt;insert([&#39;04&#39;,&#39;marry&#39;,&#39;female&#39;,26], 4); </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;print $pt-&gt;output(); </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;$pt-&gt;set_data_type(&#39;col&#39;); </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;$pt-&gt;set_deco_cross(&#39;*&#39;); </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;$pt-&gt;set_if_has_title(0); </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;print $pt-&gt;output(); </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">-------------------------------------------------------------------------------- </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">Example Output </font></div>
+<div><font face="courier new,monospace">&nbsp;+---------------------------------------------+ </font></div>
+<div><font face="courier new,monospace">&nbsp;| Contacts &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| </font></div>
+<div><font face="courier new,monospace">&nbsp;+----+------------+--------+-----+------------+ </font></div>
+<div><font face="courier new,monospace">&nbsp;| id | name &nbsp; &nbsp; &nbsp; | sex &nbsp; &nbsp;| age | email &nbsp; &nbsp; &nbsp;| </font></div>
+<div><font face="courier new,monospace">&nbsp;+----+------------+--------+-----+------------+ </font></div>
+<div><font face="courier new,monospace">&nbsp;| 01 | tommy &nbsp; &nbsp; &nbsp;| male &nbsp; | 27 &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| </font></div>
+<div><font face="courier new,monospace">&nbsp;+----+------------+--------+-----+------------+ </font></div>
+<div><font face="courier new,monospace">&nbsp;| 02 | jarry &nbsp; &nbsp; &nbsp;| male &nbsp; | 26 &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| </font></div>
+<div><font face="courier new,monospace">&nbsp;+----+------------+--------+-----+------------+ </font></div>
+<div><font face="courier new,monospace">&nbsp;| 03 | shanleigua | male &nbsp; | 26 &nbsp;| shanleigua | </font></div>
+<div><font face="courier new,monospace">&nbsp;| &nbsp; &nbsp;| ng &nbsp; &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; &nbsp;| &nbsp; &nbsp; | ng@gmail.c | </font></div>
+<div><font face="courier new,monospace">&nbsp;| &nbsp; &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp;| &nbsp; &nbsp; | om &nbsp; &nbsp; &nbsp; &nbsp; | </font></div>
+<div><font face="courier new,monospace">&nbsp;+----+------------+--------+-----+------------+ </font></div>
+<div><font face="courier new,monospace">&nbsp;| 04 | marry &nbsp; &nbsp; &nbsp;| female | 26 &nbsp;| &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;| </font></div>
+<div><font face="courier new,monospace">&nbsp;+----+------------+--------+-----+------------+ </font></div>
+<div><font face="courier new,monospace">&nbsp;*-------*-------*-------*------------*--------* </font></div>
+<div><font face="courier new,monospace">&nbsp;| id &nbsp; &nbsp;| 01 &nbsp; &nbsp;| 02 &nbsp; &nbsp;| 03 &nbsp; &nbsp; &nbsp; &nbsp; | 04 &nbsp; &nbsp; | </font></div>
+<div><font face="courier new,monospace">&nbsp;*-------*-------*-------*------------*--------* </font></div>
+<div><font face="courier new,monospace">&nbsp;| name &nbsp;| tommy | jarry | shanleigua | marry &nbsp;| </font></div>
+<div><font face="courier new,monospace">&nbsp;| &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; | ng &nbsp; &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; &nbsp;| </font></div>
+<div><font face="courier new,monospace">&nbsp;*-------*-------*-------*------------*--------* </font></div>
+<div><font face="courier new,monospace">&nbsp;| sex &nbsp; | male &nbsp;| male &nbsp;| male &nbsp; &nbsp; &nbsp; | female | </font></div>
+<div><font face="courier new,monospace">&nbsp;*-------*-------*-------*------------*--------* </font></div>
+<div><font face="courier new,monospace">&nbsp;| age &nbsp; | 27 &nbsp; &nbsp;| 26 &nbsp; &nbsp;| 26 &nbsp; &nbsp; &nbsp; &nbsp; | 26 &nbsp; &nbsp; | </font></div>
+<div><font face="courier new,monospace">&nbsp;*-------*-------*-------*------------*--------* </font></div>
+<div><font face="courier new,monospace">&nbsp;| email | &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; | shanleigua | &nbsp; &nbsp; &nbsp; &nbsp;| </font></div>
+<div><font face="courier new,monospace">&nbsp;| &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; | ng@gmail.c | &nbsp; &nbsp; &nbsp; &nbsp;| </font></div>
+<div><font face="courier new,monospace">&nbsp;| &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; | om &nbsp; &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; &nbsp;| </font></div>
+<div><font face="courier new,monospace">&nbsp;*-------*-------*-------*------------*--------* </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace"></font>&nbsp;</div>
+<div><font face="courier new,monospace">Methods </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_data_type(&lt;&#39;row&#39;|&#39;col&#39;]) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;my $dr = [ </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;[&#39;id&#39;,&#39;name&#39;,&#39;sex&#39;,&#39;age&#39;], &nbsp;#be a &#39;row&#39; or a &#39;col&#39; </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;[...], </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;]; </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_data_format(&lt;&#39;normal&#39;|&#39;uc&#39;|&#39;lc&#39;|&#39;ucfirst&#39;) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;normal &nbsp;- default, not format </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;uc &nbsp; &nbsp; &nbsp;- upper character </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;lc &nbsp; &nbsp; &nbsp;- lower character </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;ucfirst - upper first character </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_data_ref(&lt;$dr) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;$dr is a 2D ArrayRef </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;my $dr = [ </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;[&#39;id&#39;,&#39;name&#39;,&#39;sex&#39;,&#39;age&#39;], &nbsp;#be a &#39;row&#39; or a &#39;col&#39; </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; &nbsp; &nbsp;[...], </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;]; </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_if_has_title(&lt;1|0) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;if has table header title, default is 1 </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_title(&lt;$title) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;default is __PACKAGE__ (Pretty::Table) </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_indent(&lt;$indent) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;default is 2 </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_align(&lt;&#39;left&#39;|&#39;center&#39;|&#39;right&#39;) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;default is &#39;left&#39; </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_margin_left(&lt;$margin_left) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;default is 1, no need to change </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp; </font></div>
+<div><font face="courier new,monospace">=item C&lt;Pretty::Table-E&lt;gt&gt;set_margin_right(&lt;$margin_right&gt;) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;default is 1, no need to change </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_deco_horizontal(&lt;$deco_h) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;default is &#39;|&#39;, no need to change </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_deco_vertical(&lt;$deco_v) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;default is &#39;-&#39;, no need to change </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_deco_cross(&lt;$deco_c) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;default is &#39;+&#39;, &#39;*&#39; is also pretty </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_empty_fill(&lt;$empty_fill) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;default is &#39; &#39;(space), no need to change </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_if_multi_lines(&lt;1|0) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;default is 1, enable multi-lines mode </font></div>
+<div><font face="courier new,monospace">Pretty::Table-&gt;set_max_col_length(&lt;$max_col_length) </font></div>
+<div><font face="courier new,monospace">&nbsp; &nbsp;default is 40, &#39;if_multi_lines&#39; must enabled </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">-------------------------------------------------------------------------------- </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">AUTHOR </font><font face="courier new,monospace">Shan LeiGuang <a href="mailto:shanleiguang@gmail.com">shanleiguang@gmail.com</a> </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace"></font>&nbsp;</div>
+<div><font face="courier new,monospace">-- </font></div>
+<div><font face="courier new,monospace"></font></div>
+<div><font face="courier new,monospace">~~~~~~~~~~~~~~~~~~~~~~~~~~~~ </font></div>
+<div><font face="courier new,monospace">Gmail : <a href="mailto:shanleiguang@gmail.com">shanleiguang@gmail.com</a> </font></div>
+<div><font face="courier new,monospace">MSN : <a href="mailto:shanleiguang@live.com">shanleiguang@live.com</a> </font></div>
+<div><font face="courier new,monospace">~~~~~~~~~~~~~~~~~~~~~~~~~~~~ </font></div>
+<div><font face="courier new,monospace"></font></div>
+
+------=_Part_16800_19720994.1210065327330--

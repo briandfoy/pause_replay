@@ -1,0 +1,155 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:61172
+Return-Path: <ignacio@sharedservices.com.ar>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 32416 invoked from network); 4 Jul 2008 05:46:45 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 4 Jul 2008 05:46:45 -0000
+Received: (qmail 12795 invoked by uid 225); 4 Jul 2008 05:46:45 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12786 invoked by alias); 4 Jul 2008 05:46:44 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from sd-green-bigip-83.dreamhost.com (HELO spunkymail-a19.g.dreamhost.com) (208.97.132.83)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 03 Jul 2008 22:46:40 -0700
+Received: from ignacio-desktop.local (unknown [190.244.3.146])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by spunkymail-a19.g.dreamhost.com (Postfix) with ESMTP id CDFC612000
+	for <modules@perl.org>; Thu,  3 Jul 2008 22:46:36 -0700 (PDT)
+Organization: Shared Services
+To: modules@perl.org
+Subject: My first module
+Date: Fri, 4 Jul 2008 02:49:27 -0300
+User-Agent: KMail/1.9.9
+MIME-Version: 1.0
+Content-Type: Multipart/Mixed;
+  boundary="Boundary-00=_nnbbIABMq+2nqhp"
+Message-ID: <200807040249.27450.ignacio@sharedservices.com.ar>
+Approved: news@nntp.perl.org
+From: ignacio@sharedservices.com.ar (Ignacio)
+
+--Boundary-00=_nnbbIABMq+2nqhp
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+Hi,
+I want to upload a module to CPAN. Do you think it would be useful to publish 
+it?.
+
+What it does is checking if a group of tags in an html file are improperly 
+nested with line and column. This module allows you to choose which tags you 
+want to check. So you can also use it to start fixing an html file choosing a 
+couple of tags first, then add more and more tags to check.
+
+I'm using HTML::Parser.
+
+
+Maybe you can guide me a little beat.
+
+Thanks!!
+
+Ignacio Regueiro
+
+ 
+
+--Boundary-00=_nnbbIABMq+2nqhp
+Content-Type: application/x-perl-module;
+  name="CheckNestedTags.pm"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename="CheckNestedTags.pm"
+
+package HTML::CheckNestedTags;
+
+use strict;
+
+use warnings;
+
+use diagnostics;
+
+use HTML::Parser;
+
+
+sub new {
+    my $class = shift;
+
+    my %config = @_;
+
+    my $self = {};
+
+    if($config{check_tags}){
+        map { $self->{check_tags}->{$_}= 1 } @{$config{check_tags}};
+    }else{
+        map { $self->{check_tags}->{$_}= 1 } qw /table caption thead tbody tfoot th tr td a b p div font marquee span/;
+    }
+
+    return bless $self, $class;
+}
+
+sub clean {
+
+    my $self = shift;
+
+    my $data = shift;
+
+    my @stack = ();
+
+    my %tags = ();
+
+
+    my $p = HTML::Parser->new( api_version => 3,
+        start_h     => [
+            sub {
+
+                my ($tag,  $line, $column) = @_;
+
+                if ( $self->{check_tags}{$tag} ) {
+
+
+                    $tags{scalar @stack} = "$line:$column";
+
+                    push @stack, $tag;
+                }
+            },
+            "tagname, line, column"],
+
+        end_h   => [sub {
+
+                my ($tag, $line, $column) = @_;
+
+                if ( $self->{check_tags}{$tag} ) {
+
+                    my $tag_to_compare = pop @stack;
+
+                    if($tag_to_compare ne $tag){
+
+                        die ('INVALID NESTED TAGS: '. $tag_to_compare.' ne '.$tag.':  starting at line ' . $tags{scalar @stack +1 }.' ending at line: '.$line .':' . (1 + $column));
+
+                    }
+
+                }
+
+
+            },
+            "tagname, line, column"],
+    );
+
+    $p->parse($data);
+
+    $p->eof;
+
+
+}
+
+
+
+1;
+
+--Boundary-00=_nnbbIABMq+2nqhp--

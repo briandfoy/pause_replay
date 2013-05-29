@@ -1,0 +1,62 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:734
+Return-Path: <andrew@icarus.demon.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11843 invoked from network); 17 Dec 1999 12:53:14 -0000
+Received: from finch-post-10.mail.demon.net (194.217.242.38)
+  by tmtowtdi.perl.org with SMTP; 17 Dec 1999 12:53:14 -0000
+Received: from icarus.demon.co.uk ([158.152.10.55])
+	by finch-post-10.mail.demon.net with esmtp (Exim 2.12 #1)
+	id 11ywsi-0000ps-0A
+	for modules@perl.org; Fri, 17 Dec 1999 12:53:12 +0000
+Received: (from andrew@localhost)
+	by icarus.demon.co.uk (8.8.7/8.8.7) id MAA21319;
+	Fri, 17 Dec 1999 12:55:12 GMT
+Date: Fri, 17 Dec 1999 12:55:12 GMT
+Message-ID: <199912171255.MAA21319@icarus.demon.co.uk>
+To: modules@perl.org
+CC: andrew@icarus.demon.co.uk
+Subject: Array::Virtual or Mmap::Array
+Reply-to: Andrew Ford <A.Ford@ford-mason.co.uk>
+Approved: news@nntp.perl.org
+From: andrew@icarus.demon.co.uk (Andrew Ford)
+
+I have an urgent need for a module to tie an array of integers to an
+mmap'ed file (a sparse array of several hundred million integers).  I
+have looked at Mmap.pm by Malcolm Beattie and seen the idea for
+Array::Virtual registered by Larry Wall and have started implementing
+the module I need.  But should it be called Array::Virtual (taking
+Larry's slot) or Mmap::Array?
+
+The interface I have in mind is:
+
+    use Array::Virtual;		# or Mmap::Array
+
+    my @array;
+    open(FH, "...");
+    my $nel  = 42;
+    my $prot = "rw";	# or "ro", or "wo" or should it be PROT_READ?
+    my $shared = 1;	# or should it be MAP_SHARED?
+    my $offset = 0;     # this would be the default anyway
+    my $type   = "int4"	# some set of (string) literals for 1, 2, 4, 8 
+			# byte integers in native or network byte
+			# order, plus floating point (default probably int4)
+
+    tie @array, $nel, $prot, $shared, FH, $offset, $type;
+
+    $array[0] = 42; 
+    #etc
+
+    undef @array;
+
+
+Any thoughts?
+
+Andrew
+-- 
+Andrew Ford,  Director       Ford & Mason Ltd           +44 1531 829900 (tel)
+A.Ford@ford-mason.co.uk      South Wing, Compton House  +44 1531 829901 (fax)
+http://www.ford-mason.co.uk  Compton Green, Redmarley   +44 385 258278 (mobile)
+http://www.refcards.com      Gloucester, GL19 3JB, UK   

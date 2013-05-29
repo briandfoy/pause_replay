@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:59722
+Return-Path: <l2ot9pa02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3272 invoked from network); 25 Mar 2008 17:10:52 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 25 Mar 2008 17:10:52 -0000
+Received: (qmail 10129 invoked by uid 225); 25 Mar 2008 17:10:52 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10116 invoked by alias); 25 Mar 2008 17:10:50 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from sd-green-bigip-81.dreamhost.com (HELO spunkymail-a18.g.dreamhost.com) (208.97.132.81)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 25 Mar 2008 10:10:30 -0700
+Received: from [10.12.0.101] (krlh-4d020c14.pool.mediaWays.net [77.2.12.20])
+	by spunkymail-a18.g.dreamhost.com (Postfix) with ESMTP id 2E5245B533;
+	Tue, 25 Mar 2008 10:10:24 -0700 (PDT)
+Message-ID: <47E93201.4090500@sneakemail.com>
+Date: Tue, 25 Mar 2008 18:10:25 +0100
+User-Agent: Thunderbird 2.0.0.6 (X11/20071022)
+MIME-Version: 1.0
+To: The missing <link@redbrick.dcu.ie>
+Cc: modules@perl.org
+Subject: Re: System Tray Applets
+References: <20080318223813.GA21373@carbon.redbrick.dcu.ie>
+In-Reply-To: <20080318223813.GA21373@carbon.redbrick.dcu.ie>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: l2ot9pa02@sneakemail.com (Steffen Mueller)
+
+Hi Peter,
+
+sorry for the delay in answering.
+
+The missing wrote:
+> I'm like to upload a module for writing simple system tray applets but 
+> I'm not sure what to call it.  The basic idea is the script provides a 
+> callback which sets the applets icon and hover text and the module does
+> the rest. Windows (using Win32::GUI) and Gnome (using Gtk2::TrayIcon)
+> will both be supported. 
+> 
+> Any suggestions about what to call the module and the desktop specific
+> modules?
+
+It's not easy to find a good place for that. Something with "SystemTray" 
+or "TrayIcon" in the name seems appropriate, but I'm not sure where to 
+put it since typically this kind of thing is put into the namespace of 
+the implementation - such as Gtk2::TrayIcon. A similar thing is 
+"Printer" which is an interface to various, OS dependent methods of 
+printing.
+
+ From your description, I can't really tell how much your module really 
+does (set the icon and hover text only?). Some suggestions:
+
+SystemTray::Applet
+SystemTray::Icon
+
+and the implementation specific submodules would naturally go into 
+namespaces below that such as:
+
+SystemTray::Applet::Win32
+SystemTray::Applet::Gnome
+etc.
+
+I'm not fond of creating a new top-level namespace for this, but I can't 
+think of a better fit.
+
+Any suggestions from other modules people?
+
+Best regards,
+Steffen

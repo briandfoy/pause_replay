@@ -1,0 +1,88 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:571
+Return-Path: <adam@thelonious.new.ox.ac.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18900 invoked from network); 20 Nov 1999 15:27:37 -0000
+Received: from thelonious.new.ox.ac.uk (205@163.1.145.129)
+  by tmtowtdi.perl.org with SMTP; 20 Nov 1999 15:27:37 -0000
+Received: (qmail 21646 invoked by uid 501); 20 Nov 1999 15:27:34 -0000
+Date: Sat, 20 Nov 1999 15:27:34 +0000
+To: "Andreas J. Koenig" <andreas.koenig@anima.de>
+Cc: modules@perl.org
+Subject: URI::Bookmark* namespace discussion
+Message-ID: <19991120152734.A21548@thelonious.new.ox.ac.uk>
+Reply-To: Adam Spiers <adam@spiers.net>
+References: <19990907175813.B12386@thelonious.new.ox.ac.uk> <19991109142936.A301@thelonious.new.ox.ac.uk> <sfc7ljikcha.fsf@hohenstaufen.in-berlin.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3i
+In-Reply-To: <sfc7ljikcha.fsf@hohenstaufen.in-berlin.de>
+X-URL: http://www.new.ox.ac.uk/~adam/
+X-OS: Linux 2.2.12 i686
+Approved: news@nntp.perl.org
+From: adam@spiers.net (Adam Spiers)
+
+Andreas J. Koenig (andreas.koenig@anima.de) wrote:
+> Maybe it's just me, but I find it fundamentally confusing to have two
+> namespaces xxxBookmark AND xxxBookmarks.
+
+I know, it's not great, but I put a lot of thought into this and still
+decided that it was best (in fact, necessary) to separate the two
+concepts:
+
+  1) a collection of bookmarks
+  2) a single entry in the collection
+
+Once you are aware of this separation, I think everything should become
+very intuitive.
+
+The reasoning for the necessity is as follows:
+
+I really wanted to use the excellent Tree::DAG_Node module.  You only
+have to read the documentation for this module to see that it's extremely
+powerful and worthwhile.  This meant that a single entry in a bookmark
+collection (be it bookmark, bookmark folder or anything else) should
+belong to a subclass derived from Tree::DAG_Node.  This in turn meant
+that a whole collection of bookmarks would be represented by the root
+node of the bookmark tree.  However, the collection as a whole needed to
+be able to have other information associated with it, e.g. where the
+collection originally came from (such as a Netscape bookmarks file, in
+foo/bar/.netscape/bookmarks.html).  Now, this other information should
+not be stored as attributes inside the root node of the bookmark tree,
+since one of the operations you should be able to do on a collection of
+bookmarks is change the root of the tree, and in this case that would
+mean having to move these attributes from the old root node to the new
+root node, which is ugly.
+
+As it is currently, I think that the overall design is (IMHO ;-) quite
+elegant.  The main problem is the namespace issue.  As is hopefully
+already clear, URI::Bookmarks and URI::Bookmarks::* relate to concept 1)
+above, i.e. a collection of bookmarks, whereas URI::Bookmark and
+URI::Bookmarks::* relate to single entries in the collection.  If you
+have better suggestions for a better choice of naming I'll gladly accept
+them.  May you'd rather that I changed them as follows?  (Using the
+seemingly unwritten convention that lowercase module names such as
+URI::file::* are sometimes private.)
+
+   old                 ->   new
+   URI::Bookmarks           URI::Bookmarks
+   URI::Bookmarks::XXX      URI::Bookmarks::XXX
+   URI::Bookmark            URI::Bookmarks::bookmark
+   URI::Bookmark::XXX       URI::Bookmarks::bookmark::XXX
+
+Eww, that's probably even uglier :-)  At least it would keep
+URI::Bookmarks* cleanly separate from other modules.  Like I said,
+suggestions welcome...  If you think the namespace problem could be
+solved by a complete redesign of the OO structure then I'd be equally
+interested in hearing how, since I spent a fair bit of time thinking
+about it and couldn't come up with anything else which satisfied me.
+
+Adam
+
+-- 
+--- adam@spiers.net --- musician and hacker --- http://www.new.ox.ac.uk/~adam/
+echo '$_=bless[q]]],q;_;;sub s;{local$_=shift;push@$_,++$0,pop(@$_).$s;;$_}($,
+=eval((join"\$_->[",qw)Just Another Perl Hacker)).q)$_->[1]]]])))=~s~((?<=.(?{
+++$*})))?_::~$*&&$"~egx,print""=>""=>'|perl -ln0e';s;s\;;_::AUTOLOAD$1;g;eval'

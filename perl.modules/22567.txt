@@ -1,0 +1,125 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:22567
+Return-Path: <schwern@schwern.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15108 invoked by uid 76); 28 Jul 2003 08:42:04 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Mon, 28 Jul 2003 01:42:03 -0700
+Received: (qmail 29064 invoked by uid 225); 28 Jul 2003 08:42:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29059 invoked by uid 507); 28 Jul 2003 08:42:02 -0000
+Received-SPF: unknown
+Received: from rwcrmhc13.comcast.net (HELO rwcrmhc13.comcast.net) (204.127.198.39) by one.develooper.com (qpsmtpd/0.27-dev) with SMTP; Mon, 28 Jul 2003 01:42:02 -0700
+Received: from windhund.schwern.org (12-225-147-148.client.attbi.com[12.225.147.148](untrusted sender))          by attbi.com (rwcrmhc13) with ESMTP          id <2003072808415901500o57dee>; Mon, 28 Jul 2003 08:41:59 +0000
+Received: by windhund.schwern.org (Postfix, from userid 501)	id 0E31A101BEC; Mon, 28 Jul 2003 01:41:52 -0700 (PDT)
+Date: Mon, 28 Jul 2003 01:41:52 -0700
+To: modules@perl.org
+Subject: Re: PAUSE indexer report MSCHWERN/ExtUtils-MakeMaker-6.11.tar.gz
+Message-ID: <20030728084152.GB21044@windhund.schwern.org>
+References: <200307280415.h6S4FkFT001535@pause.perl.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200307280415.h6S4FkFT001535@pause.perl.org>
+User-Agent: Mutt/1.4i
+X-SMTPD: qpsmtpd/0.27-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-2.7 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: schwern@pobox.com (Michael G Schwern)
+
+Looks like where were some goofs in the PAUSE indexer as well as a bunch
+of permissions fixes necessary.
+
+
+On Mon, Jul 28, 2003 at 06:15:46AM +0200, PAUSE wrote:
+> The following report has been written by the PAUSE namespace indexer.
+> Please contact modules@perl.org if there are any open questions.
+>   Id: mldistwatch 402 2003-07-27 12:37:30Z k 
+> 
+>                User: MSCHWERN (Michael G Schwern)
+>   Distribution file: ExtUtils-MakeMaker-6.11.tar.gz
+>     Number of files: 84
+>          *.pm files: 35
+>              README: ExtUtils-MakeMaker-6.11/README
+>   Timestamp of file: Mon Jul 28 04:00:19 2003 UTC
+>    Time of this run: Mon Jul 28 04:15:45 2003 UTC
+> 
+> The following packages have been found in the distro:
+
+...
+
+> ExtUtils::Install::Warn
+>     version: 1.32
+>     in file: ExtUtils-MakeMaker-6.11/lib/ExtUtils/Install.pm
+>      status: Not indexed because permissions missing. Visit PAUSE and
+>              click "View Permissions" to find the legitimate
+>              maintainer(s).
+
+This should be owned by me.  Its currently owned by JHI in the "first come"
+basis because he released it in 5.8.1 RC2.
+
+
+> ExtUtils::MakeMaker::bytes
+>     version: 0.01
+>     in file: ExtUtils-MakeMaker-6.11/lib/ExtUtils/MakeMaker/bytes.pm
+>      status: Not indexed because permissions missing. Visit PAUSE and
+>              click "View Permissions" to find the legitimate
+>              maintainer(s).
+
+Ditto.
+
+> ExtUtils::MakeMaker::vmsish
+>     version: 0.01
+>     in file: ExtUtils-MakeMaker-6.11/lib/ExtUtils/MakeMaker/vmsish.pm
+>      status: Not indexed because permissions missing. Visit PAUSE and
+>              click "View Permissions" to find the legitimate
+>              maintainer(s).
+
+Ditto.
+
+> MM
+>     version: 0.04
+>     in file: ExtUtils-MakeMaker-6.11/lib/ExtUtils/MM.pm
+>      status: Not indexed because permissions missing. Visit PAUSE and
+>              click "View Permissions" to find the legitimate
+>              maintainer(s).
+
+Ditto.
+
+> MY
+>     version: 6.11
+>     in file: ExtUtils-MakeMaker-6.11/lib/ExtUtils/MakeMaker.pm
+>      status: Not indexed because permissions missing. Visit PAUSE and
+>              click "View Permissions" to find the legitimate
+>              maintainer(s).
+
+The only mention of "package MY" in MakeMaker.pm is once in an eval and
+once in the documentation.  The indexer shouldn't pick that up.
+
+> in
+>     version: 0.03
+>     in file: ExtUtils-MakeMaker-6.11/lib/ExtUtils/Command/MM.pm
+>      status: Not indexed because permissions missing. Visit PAUSE and
+>              click "View Permissions" to find the legitimate
+>              maintainer(s).
+
+This is a bug.  There is a here-doc in MM.pm which contains /package in/, it
+must have picked up on that.
+
+
+> ExtUtils::MakeMaker::_version
+>     version: 1.38
+>     in file: ExtUtils-MakeMaker-6.11/lib/ExtUtils/MM_Unix.pm
+>      status: indexed
+
+It appears PAUSE is applying the $ExtUtils::MM_Unix::VERSION to
+ExtUtils::MakeMaker::_version.  This appears to be the general behavior
+when it finds an extra package without a version #.  Doesn't seem right
+at all.
+
+
+-- 
+Loon.

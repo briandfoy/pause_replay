@@ -1,0 +1,134 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2992
+Return-Path: <snowhare@nihongo.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14778 invoked from network); 2 Oct 2000 12:31:18 -0000
+Received: from high-mountain.nihongo.org (209.76.104.64)
+  by tmtowtdi.perl.org with SMTP; 2 Oct 2000 12:31:18 -0000
+Received: from localhost (localhost [127.0.0.1] (may be forged))
+	by high-mountain.nihongo.org (8.9.3/8.9.3) with ESMTP id FAA25123
+	for <modules@perl.org>; Mon, 2 Oct 2000 05:31:08 -0700
+Date: Mon, 2 Oct 2000 05:31:08 -0700 (PDT)
+To: modules@perl.org
+Subject: New Unicode module Unicode::MapUTF8
+Message-ID: <Pine.LNX.4.20.0010020518380.25102-100000@high-mountain.nihongo.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: snowhare@nihongo.org (Benjamin Franz)
+
+Due to needs here, I have created an adapter module that includes
+Unicode::String, Unicode::Map, Unicode::Map8 and Jcode into a single
+simple API for general charset<->UTF8 tranformation. I wrote the authors
+of the above modules, but received no feedback from them about it. So I'm
+announcing it to the modules list. If I don't hear screams within a day or
+two, I'll upload it to CPAN under this name.
+
+Name              DSLI  Description                                Info
+-------------     ----  ----------------------------------------- --------
+Unicode::MapUTF8  bdpf  General UTF8 to other charset conversion  SNOWHARE
+
+
+POD documentation
+
+NAME
+    Unicode::MapUTF8 - Conversions to and from arbitrary character
+    sets and UTF8
+
+SYNOPSIS
+     use Unicode::MapUTF8 qw(to_utf8 from_utf8 utf8_supported_charset);
+
+     # Convert a string in 'ISO-8859-1' to 'UTF8'
+     my $output = to_utf8({ -string => 'An example', -charset => 'ISO-8859-1' });
+
+     # Convert a string in 'UTF8' encoding to encoding 'ISO-8859-1'
+     my $other  = from_utf8({ -string => 'Other text', -charset => 'ISO-8859-1' });
+
+     # List available character set encodings
+     my @character_sets = utf8_supported_charset;
+
+     # Convert between two arbitrary (but largely compatible) charset encodings
+     # (SJIS to EUC-JP)
+     my $utf8_string   = to_utf8({ -string =>$sjis_string, -charset => 'sjis'});
+     my $euc_jp_string = from_utf8({ -string => $utf8_string, -charset => 'euc-jp' })
+
+     # Verify that a specific character set is supported
+     if (utf8_supported_charset('ISO-8859-1') {
+         # Yes
+     }
+
+DESCRIPTION
+    Provides an adaptor layer between core routines for converting
+    to and from UTF8 and other encodings. In essence, a way to give
+    multiple existing Unicode modules a single common interface so
+    you don't have to know the underlaying implementations to do
+    simple UTF8 to-from other character set encoding conversions. As
+    such, it wraps the Unicode::String, Unicode::Map8, Unicode::Map
+    and Jcode modules in a standardized and simple API.
+
+    This also provides general character set conversion operation
+    based on UTF8 - it is possible to convert between any two
+    compatible and supported character sets via a simple two step
+    chaining of conversions.
+
+    As with most things Perlish - if you give it a few big chunks of
+    text to chew on instead of lots of small ones it will handle
+    many more characters per second.
+
+    By design, it can be easily extended to encompass any new
+    charset encoding conversion modules that arrive on the scene.
+
+FUNCTIONS
+    utf8_supported_charset($charset_name);
+        Returns true if the named charset is supported. false if it
+        is not.
+
+        Example:
+
+            if (! utf8_supported_charset('VISCII')) {
+                # No support yet
+            }
+
+        If called in a list context with no parameters, it will
+        return a list of all supported character set names.
+
+        Example:
+
+            my @charsets = utf8_supported_charset;
+
+    to_utf8({ -string => $string, -charset => $source_charset });
+        Returns the string converted to UTF8 from the specified
+        source charset.
+
+    from_utf8({ -string => $string, -charset => $target_charset});
+        Returns the string converted from UTF8 to the specified
+        target charset.
+
+VERSION
+    1.00 2000.09.29 - Initial Release.
+
+COPYRIGHT
+    Copyright September, 2000 Benjamin Franz. All rights reserved.
+
+    This software is free software. You can redistribute it and/or
+    modify it under the same terms as Perl itself.
+
+AUTHOR
+    Benjamin Franz <snowhare@nihongo.org>
+
+TODO
+    Debugging.
+
+SEE ALSO
+    Unicode::String Unicode::Map8 Unicode::Map Jcode
+
+
+-- 
+Benjamin Franz
+
+   Perl - A post-modern programming language or a 
+   scripting tool gone horribly, horribly wrong? 
+                              -- Rob Malda
+

@@ -1,0 +1,69 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:20937
+Return-Path: <wcatlan@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 54829 invoked by uid 76); 8 May 2003 13:48:22 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Thu, 08 May 2003 06:48:22 -0700
+Received: (qmail 18328 invoked by uid 225); 8 May 2003 13:48:18 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18315 invoked by uid 507); 8 May 2003 13:48:17 -0000
+Received: from web13902.mail.yahoo.com (HELO web13902.mail.yahoo.com) (216.136.175.28) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Thu, 08 May 2003 06:48:15 -0700
+Message-ID: <20030508134813.43108.qmail@web13902.mail.yahoo.com>
+Received: from [207.44.192.117] by web13902.mail.yahoo.com via HTTP; Thu, 08 May 2003 06:48:13 PDT
+Date: Thu, 8 May 2003 06:48:13 -0700 (PDT)
+Subject: Module Guidelines
+To: modules@perl.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: wcatlan@yahoo.com (Bill Catlan)
+
+Hi,
+
+I have written a module based upon the popular
+HTML::Template module.  My module, which I plan to
+call TextPage::Template adds pagination, headers,
+footers, field-level formatting, and more for plain
+text pages, but uses the HTML::Template philosophy and
+methods to allow dynamic data to be inserted into a
+paginated text document.  I include a method in my
+module for sending the resulting output to a PDF file
+and plan to implement future enhancements that will
+allow pixel or point level placement of the templated
+text elements to facilitate precise placement of text
+over an image (form) background (overlay) for output
+to pdf and postscript printers.
+
+I am concerned about a particular element of my
+design.  I like to utilize a package global variable
+to store and retrieve a reference to my Config object.
+ This way, I only need to instantiate the Config
+object once and can conveniently refer to it from
+within other modules.  It also seems to me to be sort
+of a Singleton pattern implementation, so I don't have
+multiple Config objects floating around.
+
+However, the PAUSE upload guidelines state:
+"Avoid keeping any state information in your packages.
+It makes it difficult for multiple other packages to
+use yours. Keep state information in objects."
+
+Is creating a package global reference to my Config
+object (which contains data based upon values
+determined at runtime) a violation of this guideline? 
+Is there a better practice to achieve what I want?
+
+Thanks.
+
+Bill
+
+__________________________________
+Do you Yahoo!?
+The New Yahoo! Search - Faster. Easier. Bingo.
+http://search.yahoo.com

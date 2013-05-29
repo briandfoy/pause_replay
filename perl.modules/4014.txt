@@ -1,0 +1,232 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4014
+Return-Path: <simonm@evolution.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29041 invoked from network); 29 Dec 2000 06:57:05 -0000
+Received: from darwin.evolution.com (209.208.128.5)
+  by tmtowtdi.perl.org with SMTP; 29 Dec 2000 06:57:05 -0000
+Received: from stellar (stellar.evolution.com [209.208.128.71])
+	by darwin.evolution.com (8.9.1/8.9.1) with SMTP id BAA24157
+	for <modules@perl.org>; Fri, 29 Dec 2000 01:56:26 -0500 (EST)
+Message-ID: <200012290656.BAA24157@darwin.evolution.com>
+To: modules@perl.org
+Subject: ANNOUNCE: Class::MethodMaker v2.0
+Date: Fri, 29 Dec 2000 01:57:25 -0500
+Reply-To: "M. Simon Cavalletto" <simonm@evolution.com>
+X-Mailer: by Apple MailViewer (2.106)
+Approved: news@nntp.perl.org
+From: simonm@evolution.com ("M. Simon Cavalletto")
+
+Hello,
+
+I am soliciting feedback on a major revision of the Class::MethodMaker  
+module prior to releasing it to CPAN. Version 2 provides a wide range of  
+additional features while retaining nearly complete compatibility with  
+version 1.
+
+Class::MethodMaker allows module developers to quickly define object  
+constructor and accessor methods by reusing templates for these common  
+types of functions. I find it useful in almost all of the object-oriented  
+modules I create.
+
+The new distribution may be retrieved from here:
+  http://work.evolution.com/dist/Class-MethodMaker-2.0.5.tar.gz
+
+Please send any feedback to me, at simonm@evolution.com, or to this list  
+if of general interest (I will be checking for followups...).
+
+I would be particularly interested in:
+- knowing if this release breaks any existing code, beyond the  
+experimental or deprecated features discussed in the UPGRADING section  
+below;
+- any suggestions towards improving the documentation, particularly for  
+first-time users (do I need a tutorial of some type?);
+- any general feedback or suggested changes.
+
+After resolving any issues brought up in the current round of feedback,  
+I will be working with the current version's maintainer to post the new  
+version to CPAN.
+
+Thanks,
+
+-Simon
+
+--------------------------------------------------------
+
+NAME
+    Class::MethodMaker - Create common types of methods using templates
+
+SYNOPSIS
+      package MyObject;
+      use Class::MethodMaker::Hash (
+        'new'     => [ 'new' ],
+        'scalar'  => [ 'foo', 'bar' ]
+      );
+
+DESCRIPTION
+    Class::MethodMaker allows class module developers to define methods for
+    their class by using templates for common behaviors. When
+    Class::MethodMaker is used, it creates closures based on the provided
+    arguments and installs them as functions in the calling package.
+
+    Common types of methods are generalized into meta-method type
+    definitions. For example, the `new' meta-methods allow you to create
+    object instances, while the `scalar' meta-methods allow you to get and
+    set scalar values associated with those objects.
+
+    These meta-method types are grouped into implementations, subclasses of
+    Class::MethodMaker that provide a family of meta-methods that can be
+    used with the same calling class. For example, the `Hash' implementation
+    provides meta-methods that can be used with blessed hash objects, while
+    the `Static' implementation provides methods which access global
+    information.
+
+    Each meta-method type defines one or more behaviors, individual
+    functions which can be installed in a calling package, and naming
+    templates, which select from those behaviours and indicate the names to
+    install the functions under.
+
+    Each individual meta-method defined by a calling package requires a
+    method name, and may optionally include other key-value attributes,
+    which can control the operation of some meta-methods.
+
+EXAMPLES
+    The following examples indicate some of the capabilities and interface
+    of Class::MethodMaker.
+
+  Simple
+
+    Here's the declaration for a simple hash-based class with a constructor
+    and two accessors.
+
+      package MyStruct;
+      use Class::MethodMaker::Hash (
+        'new'     => 'new',
+        'scalar'  => 'foo',
+        'scalar'  => 'bar',
+      );
+
+    Here's a sample of how the above class could be used in a program.
+
+      package main;
+
+      require MyStruct;
+      my $obj = MyStruct->new( foo => "Foozle", bar => "Bozzle" );
+      print $obj->foo();
+      $obj->bar("Bamboozle");
+
+  Tree Structure
+
+    In this example we will create a pair of classes with references to
+    other objects.
+
+    The first class is a single-value data object implemented as a reference
+    to a scalar.
+
+      package MyTreeData;
+      use Class::MethodMaker::Scalar (
+        'new'     => 'new',
+        'string'  => 'value',
+      );
+
+    The second class defines a node in a tree, with a constructor, an
+    accessor for a data object from the class above, and accessors for a
+    list of child nodes.
+
+      package MyTreeNode;
+      use Class::MethodMaker::Hash (
+        'new'     => 'new',
+        'object --class MyTreeData'  => 'data',
+        'array_of_objects --class MyTreeNode' => 'children',
+      );
+
+      sub depth_first_data {
+        my $self = shift;
+        return $self->data, map { $_->depth_first_data() } $self->children;
+      }
+
+    Here's a sample of how the above classes could be used in a program.
+
+      package main;
+      use MyTreeData;
+      use MyTreeNode;
+
+      my $node = MyTreeNode->new(
+          data => { value=>'data1' },
+          children => [ { value=>'data2' } ]
+      );
+      $node->push_children( MyTreeNode->new( data => { value=>'data3' } ) );
+
+      foreach my $data ( $node->depth_first_data ) {
+        print $data->value();
+      }
+
+STATUS AND SUPPORT
+    There have been substantial changes in this package since version 1.
+    Proceed with caution, and revert to version 1 if needed.
+
+    There is not currently any offical discussion and support forum for this
+    pacakage. Contact simonm@evolution.com for version 2 development issues.
+
+    This module's summary in the CPAN DSLI should read:
+
+      Name            DSLI  Description
+      --------------  ----  ---------------------------------------------
+      Class::
+      ::MethodMaker   bdpO  Create common types of methods using templates
+
+PREREQUISITES
+    This module should work with Perl 5.003 or later. There are no
+    prerequisite modules beyond the standard distribution.
+
+    The Ref module is required to use the experimental Ref implementation.
+
+INSTALLATION
+    To install this package, download the distribution archive from the
+    below URL, unpack it, and execute the standard "perl Makefile.PL",
+    "make test", "make install" sequence.
+
+      http://work.evolution.com/dist/Class-MethodMaker-2.0.5.tar.gz
+
+    The t/ directory contains regression tests from the 0.92, 0.96, 1.0, and
+    2.0 versions of this package which should all pass on your system.
+
+UPGRADING
+    If you have used previous versions of MethodMaker, please review the
+    Class::MethodMaker::Compatibility manpage, which provides substantial
+    backward compatibility.
+
+    The documentation for that module also outlines three features which
+    were marked as experimental or deprecated in earlier versions and have
+    been expunged in this version.
+
+    The t.broken/ directory contains a few tests from the 0.92, 0.96, and
+    1.0 versions which no longer pass in version 2.0.
+
+SEE ALSO
+    For additional information, consult the following sections of the
+    Class::MethodMaker manpage:
+
+    *   USAGE - Calling syntax and argument interpretation
+
+    *   IMPLEMENTATION - Catalog of meta-methods supported by the
+        modules that come with Class::MethodMaker.
+
+    *   EXTENDING - Information about creating your own reusable
+        meta-methods.
+
+VERSION
+    This is Class::MethodMaker v2.0.5.
+
+LICENSE
+    Copyright (c) 1998, 1999, 2000 Evolution Online Systems, Inc.
+
+    Portions Copyright (c) 2000 Martyn J. Pearce.
+
+    Portions Copyright (c) 1996 Organic Online
+
+    This module is free software. It may be used, redistributed and/or
+    modified under the same terms as Perl.
+

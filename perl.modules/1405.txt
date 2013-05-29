@@ -1,0 +1,124 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1405
+Return-Path: <coopercc@netheaven.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10274 invoked from network); 28 Mar 2000 13:29:28 -0000
+Received: from coopercc.netheaven.com (HELO camel) (198.69.29.163)
+  by tmtowtdi.perl.org with SMTP; 28 Mar 2000 13:29:28 -0000
+Received: (from ccc@localhost) by camel (8.6.12/8.6.12) id IAA00201; Tue, 28 Mar 2000 08:26:45 -0500
+Date: Tue, 28 Mar 2000 08:26:45 -0500
+Message-ID: <200003281326.IAA00201@camel>
+To: perl-xml@listserv.activestate.com, xml-dev@ic.ac.uk
+Cc: modules@perl.org
+Subject: ANN: Version 2.28 or Perl module XML::Parser released
+Approved: news@nntp.perl.org
+From: coopercc@netheaven.com (Clark Cooper)
+
+
+I've uploaded Version 2.28 of XML::Parser to CPAN.
+
+This is likely to be the last release of the 2.xx branch of XML::Parser.
+I'm planning major structural changes that will become version 3.x.
+I'll talk about these plans in a later message to the perl-xml
+mailing list.
+
+The big change for this release are extensive patches to expat to allow
+me to remove the buggy parsing of declarations from Expat.xs. A couple of
+feature changes resulted from this:
+
+o Element declaration handlers now receive objects of type
+  XML::Parser::ContentModel for the model parameter (instead of strings).
+  Objects of this class represent the parsed structure of the model,
+  although they will still look like a string representation of the model
+  when referred to as a string. There a methods in this class to determine
+  the type of the model, the associated quantifier (if any), and to
+  return (for structured types) a list of components, also as objects of
+  type XML::Parser::ContentModel.
+
+o The doctype declaration handler is called prior to parsing the internal
+  or external subset of DTD declarations and no longer returns the internal
+  subset as a string, but passes a true or false value indicating whether or
+  not there is an internal subset.
+
+o There's a new DoctypeFin handler that's called at the end of processing the
+  DOCTYPE declaration.
+
+o One negative feature: inside declaration handlers only, the
+  recognized_string, original_string, and default_current methods no longer
+  return correct strings. Expat uses a different mechanism for
+  tokenizing and parsing DTDs (compared to the rest of a document), that
+  leads to loss of information about the "start" of an event.
+
+Other features (unrelated to surgery on expat):
+
+o Added a handler that gets called after parsing external entities. In
+  addition to allowing clean up, it allows balanced setting of the basename.
+  This occurs even if an exception occurs while parsing the external
+  entity.
+
+o the parsefile method and the default handlers file_ext_ent_handler and
+  lwp_ext_ent_handler now all set the basename.
+
+o Fixed a major bug where exceptions bypassed memory cleanup actions
+
+o Merged patches from Larry Wall that tag generated strings as UTF-8
+  for perl 5.6.0 and beyond, where appropriate.
+
+Here's the relevant portion of the Changes file:
+================================================================
+2.28 Mon Mar 27 21:21:50 EST 2000
+	- Junked local (Expat.xs) declaration parsing and patched expat to
+	  handle XML declarations, element declarations, attlist declarations,
+	  and all entity declarations. By eliminating both shadow buffers and
+	  local declaration parsing in Expat.xs, I've eliminated the two most
+	  common sources of serious bugs in the expat interface.
+	  o thus fixed the segfault and parse position bugs reported by
+	    Ivan Kurmanov <iku@fnmail.com>
+	  o and the doctype bug reported by Kevin Lund
+	    <Kevin.Lund@westgroup.com>
+	  o The element declaration handler no longer receives a string,
+	    but an XML::Parser::ContentModel object that represents the
+	    parsed model, but still looks like a string if referred to as
+	    a string. This class is documented in the XML::Parser::Expat
+	    pod under "XML::Parser::ContentModel Methods".
+	  o The doctype declaration handler no longer receives the internal
+	    subset as a string, but in its place a true or undef value
+	    indicating whether or not there is an internal subset. Also,
+	    it's called prior to processing either the internal or external
+            DTD subset (as suggested by Enno Derksen <enno@att.com>.)
+	  o There is a new DoctypeFin handler that's called after finishing
+	    parsing all of the DOCTYPE declaration, including any internal
+	    or external DTD declarations.
+	  o One bit of lossage is that recognized_string, original_string,
+	    and default_current no longer work inside declaration handlers.
+	- Added a handler that gets called after parsing external entities:
+	  ExternEntFin. Suggested by Jeff Horner <jhorner@netcentral.net>.
+	- parsefile, file_ext_ent_handler, & lwp_ext_ent_handler now all
+	  set the base path. This problem has been raised more than once
+	  and I'm not sure to whom credit should be given.
+	- The file_ext_ent_handler now opens a file handle instead of
+	  reading the entire entity at once.
+	- Merged patches supplied by Larry Wall to (for perl 5.6 and beyond)
+	  tag generated strings as UTF-8, where appropriate.
+	- Fixed a bug in xml_escape reported by Jerry Geiger <jgeiger@rios.de>.
+	  It failed when requesting escaping of perl regex meta-characters.
+	- Laurent Caprani <caprani@pop.multimania.com> reported a bug in the
+	  Proc handler for the Debug style.
+	- <chocolateboy@usa.net> sent in a patch for the element index
+	  mechanism. I was popping the stack too soon in the endElement fcn.
+	- Jim Miner <jfm@winternet.com> sent in a patch to fix a warning in
+	  Expat.pm.
+	- Kurt Starsinic pointed out that the eval used to check for string
+	  versus IO handle was leaving $@ dirty, thereby foiling higher
+	  level exception handlers
+	- An expat question by Paul Prescod <paul@prescod.net> helped me
+	  see that exeptions in the parse call bypass the Expat release method,
+	  causing memory leaks.
+	- Mark D. Anderson <mda@discerning.com> noted that calling
+	  recognized_string from the Final method caused a dump. There are
+	  a bunch of methods that should not be called after parsing has
+	  finished. These now have protective if statements around them.
+	- Updated canonical utility to conform to newer version of Canonical
+	  XML working draft.

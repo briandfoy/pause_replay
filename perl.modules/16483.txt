@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16483
+Return-Path: <john@dlugosz.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 90669 invoked by uid 76); 28 Dec 2002 18:45:52 -0000
+Received: from [64.127.185.1] (HELO unix231.hosting-network.com) (64.127.185.1) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2002-12-28 18:45:52Z
+Received: (qmail 55951 invoked from network); 28 Dec 2002 18:52:00 -0000
+Received: from unknown (HELO singer) (66.166.83.226)  by node-180.hosting-network.com with SMTP; 28 Dec 2002 18:52:00 -0000
+X-Comments: BlackMail headers - Mail to abuse@featureprice.com to report spam.
+X-Authenticated-Connect: 66.166.83.226
+X-Authenticated-Timestamp: 13:52:00(EST) on December 28, 2002
+X-HELO-From: singer
+X-Mail-From:  <john@dlugosz.com>
+X-Sender-IP-Address: 66.166.83.226
+To: <modules@perl.org>
+Subject: Exporter::VA Rdph Improved Exporter with Versioning and Alias
+Date: Sat, 28 Dec 2002 12:45:38 -0600
+Message-ID: <MIENIIPOOKJNCGHMLEALMEKGCNAA.john@dlugosz.com>
+MIME-Version: 1.0
+Content-Type: text/plain;	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: john@dlugosz.com ("John M. Dlugosz")
+
+Exporter::VA Rdph Improved Exporter with Versioning and Alias
+
+Exporter::VA.pm is a Perl module that is a replacement for the traditional
+Exporter module.
+
+I wanted to rewrite a couple simple modules to make them more capable, and I
+also wanted to remove the default exports.  After all, the new way would be
+object-oriented.  It would still have the function call for compatibility,
+but we don't want it as a default.  I figured playing around with VERSION
+and Exporter's export_to_level would do the trick, but it was not simple.  I
+did in fact redo two modules, but the compatibility mode stuff stalled me.
+
+Finally, I realized that the remove-default-exports issue should be a
+reusable module in itself.  After poking around and finding Exporter
+lacking, I decided to write an exporter from scratch.  I called it VA for
+"Versioning and Aliasing", the major features that distinguish it and
+provide it's reason for being.
+
+I figued I needed a more general-purpose engine that could export things
+(not just named things, but generated things) from a module to a
+possibly-different name.  Going from a named item to the same name is simply
+too restrictive.  Generalize it, and anything is possible.  That gave the
+Alias concept.  Then I needed to be able to specify different definitions
+for different versions.  I thought about totally different data structures
+for each version, but realized that they would have a lot in common and I
+really only want to give the changes.  The interface to this was the hardest
+part of the process.
+
+The concept is pretty open-ended, and it would not do to have something
+unruly.  Limiting it to versioned names and versioned tags in a single hash
+prooved to be workable, and the programmatic interface is still available
+for "anything else".  It is designed to be extended, treating the derived
+class user as another potentional customer and providing documentation and a
+proper interface for this purpose.
+
+I got some valuable feedback and ideas on the Perl Monks site.  Finally,
+Exporter::VA was the result.
+

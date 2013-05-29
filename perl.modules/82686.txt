@@ -1,0 +1,149 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:82686 perl.module-authors:9803
+Return-Path: <SRS0=1o0w=IJ=bowers.com=neil@srs.kundenserver.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 20939 invoked from network); 12 Oct 2012 08:54:45 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 12 Oct 2012 08:54:45 -0000
+Received: (qmail 18418 invoked by uid 225); 12 Oct 2012 08:54:45 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18410 invoked by alias); 12 Oct 2012 08:54:44 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS,T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from moutng.kundenserver.de (HELO moutng.kundenserver.de) (212.227.126.171)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 12 Oct 2012 01:54:41 -0700
+Received: from [192.168.0.13] (cpc9-rdng20-2-0-cust198.15-3.cable.virginmedia.com [86.2.0.199])
+	by mrelayeu.kundenserver.de (node=mreu2) with ESMTP (Nemesis)
+	id 0MWvfk-1SqePA0UKa-00WJJs; Fri, 12 Oct 2012 10:54:36 +0200
+Content-Type: multipart/alternative; boundary="Apple-Mail=_E1B6193E-DBF1-4720-903E-8BAE222762DC"
+Subject: Request for feedback: interface to 06perms.txt
+Date: Fri, 12 Oct 2012 09:54:28 +0100
+Message-ID: <99AB409A-49CA-4618-9B9D-83424180312A@bowers.com>
+To: module-authors@perl.org,
+ modules@perl.org
+Mime-Version: 1.0 (Apple Message framework v1283)
+X-Mailer: Apple Mail (2.1283)
+X-Provags-ID: V02:K0:79BJoNqNeAgsXCzO5ouq0xqTvCW4nwV6UEDP4Gla7UE
+ ExCjvAqpnqaZJmCTHYx1QGFRvL+rZG5lTP5prOreDnyAZVbpV9
+ 9cF13XOXGXLdCDxb1xgQC9emRMEUi4iR6mWJ31fJCuuYpi4udX
+ CuSTsnJdMrBFBs5Y8i9fFvMLjcmkNsDeYb3C/wmhmo1hveaNf+
+ lGsMiVNnYGHT6YBNQ91+S7XV2aSQxz2iFunz9JkpTwJvUrSryY
+ SvbUeuiJIpl/6nL6NBCwkjJ8NpojC6OJUdammRH/km0J3NRkph
+ gEaRuROhm0aLNbJQ/KlMn3zkun01tvN5thoxCYSEblCbtvRT2l
+ Q3UolzZQ56EEWQWImUiwZZC9ziDaE1Qu3kVUmJo/4
+Approved: news@nntp.perl.org
+From: neil@bowers.com (Neil Bowers)
+
+--Apple-Mail=_E1B6193E-DBF1-4720-903E-8BAE222762DC
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=us-ascii
+
+I've created an interface to PAUSE's 06perms.txt file, which currently =
+contains two classes:
+
+PAUSE::PermissionsFile
+Module::Permissions
+
+Here's example usage:
+
+use PAUSE::PermissionsFile;
+
+$pp =3D PAUSE::PermissionsFile->new;
+$mp =3D $pp->module_permissions('HTTP::Client');
+
+$owner    =3D $mp->owner;
+@comaints =3D $mp->co_maintainers;
+
+print "owner   : $owner\n";
+print "comaint : @comaints\n",=20
+
+Which would print:
+
+owner   : LINC
+comaint : NEILB
+
+By default PAUSE::PermissionsFile will mirror (using HTTP::Tiny's =
+mirror) 06perms.txt, and then work off the local copy. You can pass a =
+path to the constructor, if you've got your own local copy anyway. The =
+module_permissions method returns an instance of Module::Permissions for =
+the named module. This lets you get at the individual 'm', 'f', and 'c' =
+entries for the module, but also provides the 'owner' concept ('m' if =
+there is one, otherwise 'f').
+
+I'd be happy to hear any thoughts on:
+naming
+design of the interface
+other features you think this might need
+Cheers,
+Neil
+
+
+--Apple-Mail=_E1B6193E-DBF1-4720-903E-8BAE222762DC
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=us-ascii
+
+<html><head></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space; ">I've =
+created an interface to PAUSE's 06perms.txt file, which currently =
+contains two classes:<div><br></div><blockquote =
+class=3D"webkit-indent-blockquote" style=3D"margin: 0 0 0 40px; border: =
+none; padding: 0px;"><div><font class=3D"Apple-style-span" =
+face=3D"Courier">PAUSE::PermissionsFile</font></div><div><font =
+class=3D"Apple-style-span" =
+face=3D"Courier">Module::Permissions</font></div></blockquote><div><br></d=
+iv><div>Here's example usage:</div><div><br></div><blockquote =
+class=3D"webkit-indent-blockquote" style=3D"margin: 0 0 0 40px; border: =
+none; padding: 0px;"><div><font class=3D"Apple-style-span" =
+face=3D"Courier" style=3D"font-size: 12px;" =
+color=3D"#4f7a2a">use&nbsp;PAUSE::PermissionsFile;</font></div><div><font =
+class=3D"Apple-style-span" face=3D"Courier" style=3D"font-size: 12px;" =
+color=3D"#4f7a2a"><br></font></div><div><font class=3D"Apple-style-span" =
+face=3D"Courier" style=3D"font-size: 12px;" color=3D"#4f7a2a">$pp =
+=3D&nbsp;PAUSE::PermissionsFile-&gt;new;</font></div><div><font =
+class=3D"Apple-style-span" face=3D"Courier" style=3D"font-size: 12px;" =
+color=3D"#4f7a2a">$mp =3D =
+$pp-&gt;module_permissions('HTTP::Client');</font></div><div><font =
+class=3D"Apple-style-span" face=3D"Courier" style=3D"font-size: 12px;" =
+color=3D"#4f7a2a"><br></font></div><div><font class=3D"Apple-style-span" =
+face=3D"Courier" style=3D"font-size: 12px;" color=3D"#4f7a2a">$owner =
+&nbsp; &nbsp;=3D $mp-&gt;owner;</font></div><div><font =
+class=3D"Apple-style-span" face=3D"Courier" style=3D"font-size: 12px;" =
+color=3D"#4f7a2a">@comaints =3D =
+$mp-&gt;co_maintainers;</font></div><div><font class=3D"Apple-style-span" =
+face=3D"Courier" style=3D"font-size: 12px;" =
+color=3D"#4f7a2a"><br></font></div><div><font class=3D"Apple-style-span" =
+face=3D"Courier" style=3D"font-size: 12px;" color=3D"#4f7a2a">print =
+"owner &nbsp; : $owner\n";</font></div><div><font =
+class=3D"Apple-style-span" face=3D"Courier" style=3D"font-size: 12px;" =
+color=3D"#4f7a2a">print "comaint : =
+@comaints\n",&nbsp;</font></div></blockquote><div><br></div><div>Which =
+would print:</div><div><br></div><blockquote =
+class=3D"webkit-indent-blockquote" style=3D"margin: 0 0 0 40px; border: =
+none; padding: 0px;"><div><font class=3D"Apple-style-span" =
+face=3D"Courier">owner &nbsp; : LINC</font></div><div><font =
+class=3D"Apple-style-span" face=3D"Courier">comaint : =
+NEILB</font></div></blockquote><div><br></div><div>By default <font =
+class=3D"Apple-style-span" face=3D"Courier">PAUSE::PermissionsFile</font> =
+will mirror (using <font class=3D"Apple-style-span" =
+face=3D"Courier">HTTP::Tiny</font>'s mirror) <font =
+class=3D"Apple-style-span" face=3D"Courier">06perms.txt</font>, and then =
+work off the local copy. You can pass a path to the constructor, if =
+you've got your own local copy anyway. The <font =
+class=3D"Apple-style-span" face=3D"Courier">module_permissions</font> =
+method returns an instance of <font class=3D"Apple-style-span" =
+face=3D"Courier">Module::Permissions</font> for the named module. This =
+lets you get at the individual 'm', 'f', and 'c' entries for the module, =
+but also provides the 'owner' concept ('m' if there is one, otherwise =
+'f').</div><div><br></div><div>I'd be happy to hear any thoughts =
+on:</div><div><ul><li>naming</li><li>design of the =
+interface</li><li>other features you think this might =
+need</li></ul></div><div>Cheers,</div><div>Neil</div><div><br></div></body=
+></html>=
+
+--Apple-Mail=_E1B6193E-DBF1-4720-903E-8BAE222762DC--

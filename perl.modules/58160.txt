@@ -1,0 +1,60 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:58160
+Return-Path: <jpeacock@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 28620 invoked from network); 11 Dec 2007 14:35:42 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 11 Dec 2007 14:35:42 -0000
+Received: (qmail 17800 invoked by uid 225); 11 Dec 2007 14:35:42 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17788 invoked by alias); 11 Dec 2007 14:35:40 -0000
+X-Spam-Status: No, hits=-10.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_HI
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Tue, 11 Dec 2007 06:35:36 -0800
+Received: (qmail 28466 invoked by uid 515); 11 Dec 2007 14:35:32 -0000
+To: modules@perl.org, michael@insulin-pumpers.org
+Message-ID: <475EA033.3020904@cpan.org>
+Date: Tue, 11 Dec 2007 09:35:31 -0500
+User-Agent: Thunderbird 2.0.0.9 (X11/20071031)
+MIME-Version: 1.0
+Subject: Re: $VERSION in Safe compartment
+References: <475D47FB.23164.DB7CE7@michael.insulin-pumpers.org>
+In-Reply-To: <475D47FB.23164.DB7CE7@michael.insulin-pumpers.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 8.8.38.2
+Approved: news@nntp.perl.org
+From: jpeacock@cpan.org (John Peacock)
+
+michael@insulin-pumpers.org wrote:
+> One of the modules in a distribution does the following
+> 
+> 
+> $VERSION= do 'something.pm';
+
+This will never work.  The indexer (just like ExtUtils::MakeMaker and 
+Module::Build) uses a regex to extract the $VERSION assignment itself 
+and executes only that code snippet (with no external code called at 
+all).  There is no way that this module's $VERSION will be anything 
+except 'undef'.
+
+Moreover, it is bad design to make one module's $VERSION depend on some 
+other module, or other external value.  For the reasoning, you only have 
+to see that any module that has an interpreted $VERSION will report only 
+the current value of the module it depends on.  I was bitten by this 
+myself before I Saw The Light, when I upgraded the "parent" and the 
+matching "child" module wasn't upgraded because the existing installed 
+version "looked up to date."
+
+I would urge you to install PPI::PowerToys to do all of your mass 
+$VERSION updating, but Adam has released another broken version to CPAN 
+without full $VERSION support.  I'm going to go off and write him a 
+nastygram urging that he stop being so silly and just apply my patch to 
+support _all_ normal $VERSION assignments... ;-0
+
+John

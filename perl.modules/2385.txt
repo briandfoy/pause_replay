@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2385
+Return-Path: <schwern@blackrider.arena-i.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 546 invoked from network); 7 Jul 2000 08:26:43 -0000
+Received: from schwern.dialup.access.net (HELO blackrider.arena-i.com) (postfix@166.84.197.102)
+  by tmtowtdi.perl.org with SMTP; 7 Jul 2000 08:26:43 -0000
+Received: by blackrider.arena-i.com (Postfix, from userid 1000)
+	id 8EE9217541; Fri,  7 Jul 2000 04:26:39 -0400 (EDT)
+Date: Fri, 7 Jul 2000 04:26:39 -0400
+To: modules@perl.org
+Subject: Class::WhiteHole
+Message-ID: <20000707042639.A1219@blackrider.aocn.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+User-Agent: Mutt/1.1.2i
+Sender: schwern@blackrider.arena-i.com
+Approved: news@nntp.perl.org
+From: schwern@pobox.com (Michael G Schwern)
+
+Name                    DSLI    Description                     Info
+--------------------    ----    -----------------------------   --------
+Class::WhiteHole        adpO    Blocks autoloader inheritance   MSCHWERN
+
+
+So, this module might be a little silly, but I had a need.  This does
+the reverse of Class::BlackHole, all unhandled methods become normal
+errors as if no autoloader existed.  Useful if you've accidentally
+inherited an autoloader and its making your class's error messages
+look funny.  Class::DBI and Ima::DBI have such a problem.
+
+This is obviously a module that has to be used with care.  The docs
+cover the issues a bit.
+
+
+NAME
+       Class::WhiteHole - base class to treat unhandled method
+       calls as errors
+
+SYNOPSIS
+         package Bar;
+
+         # DBI inherits from DynaLoader which inherits from AutoLoader
+         # Bar wants to avoid this accidental inheritance of AutoLoader.
+         use base qw(Class::WhiteHole DBI);
+
+DESCRIPTION
+       Its possible to accidentally inherit an AUTOLOAD method.
+       Often this will happen if a class somewhere in the chain
+       uses AutoLoader or defines one of their own.  This can
+       lead to confusing error messages when method lookups fail.
+
+       Sometimes you want to avoid this accidental inheritance.
+       In that case, inherit from Class::WhiteHole.  All
+       unhandled methods will produce normal Perl error messages.
+
+CAVEATS
+       Be sure to have Class::WhiteHole before the class from
+       which you're inheriting AUTOLOAD in the ISA.  Usually
+       you'll want Class::WhiteHole to come first.
+
+       If your class inherits autoloaded routines this class may
+       cause them to stop working.  Choose wisely before using.
+
+COPYRIGHT
+       Copyright 2000 Michael G Schwern <schwern@pobox.com> all
+       rights reserved.  This program is free software; you can
+       redistribute it and/or modify it under the same terms as
+       Perl itself.
+
+AUTHOR
+       Michael G Schwern <schwern@pobox.com>
+
+
+-- 
+
+Michael G. Schwern   <schwern@pobox.com>    http://www.pobox.com/~schwern/
+Our business in life is not to succeed but to continue to fail in high
+spirits.
+		 -- Robert Louis Stevenson

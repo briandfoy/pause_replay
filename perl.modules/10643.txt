@@ -1,0 +1,225 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10643
+Return-Path: <pratik@ehp.saha.ernet.in>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 47910 invoked by uid 76); 15 Mar 2002 07:28:19 -0000
+Received: from petal.saha.ernet.in (HELO petal.saha.ernet.in) (202.41.94.2)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Fri Mar 15 07:28:19 2002 -0000
+Received: from ehp.saha.ernet.in (IDENT:root@ehp.saha.ernet.in [202.41.94.196])
+	by petal.saha.ernet.in (8.11.2/8.11.2) with ESMTP id g2F7PgX26393
+	for <modules@perl.org>; Fri, 15 Mar 2002 12:55:42 +0530
+Received: from ehp.saha.ernet.in ([172.16.11.12])
+	by ehp.saha.ernet.in (8.9.3/8.8.7) with ESMTP id VAA29805
+	for <modules@perl.org>; Thu, 14 Mar 2002 21:40:09 +0530
+Sender: pratik@ehp.saha.ernet.in
+Message-ID: <3C91A35D.EE2A42C6@ehp.saha.ernet.in>
+Date: Fri, 15 Mar 2002 13:01:41 +0530
+Reply-To: pratik@ehp.saha.ernet.in
+Organization: Saha Institute of Nuclear Physics
+X-Mailer: Mozilla 4.78 [en] (X11; U; Linux 2.4.7-10 i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Problem is using Syslog
+Content-Type: multipart/alternative;
+ boundary="------------FE58D7A45433D340D587991E"
+Approved: news@nntp.perl.org
+From: pratik@ehp.saha.ernet.in (Supratik Mukhopadhyay)
+
+--------------FE58D7A45433D340D587991E
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi all,
+
+I sent this message to the beginners mail list. As yet, I have not
+received any answer. So, I repeat my query here.
+
+
+I am working on a Intel PIII running RedHat 7.2 having perl5.6.0 which
+was installed along with the OS. I have copied an example
+program as follows:
+
+-------------------------------------------------------------------------------
+
+#!/usr/bin/perl -w
+
+use Sys::Syslog;                            #Misses setlogsock
+use Sys::Syslog qw(:DEFAULT setlogsock);    #Also gets setlogsock
+
+openlog($0, 'cons,ndelay,pid', 'user');
+print "program: $0\n";
+syslog('info', 'this is another test');
+syslog('mail|warning', 'this is a better test: %d', time);
+closelog();
+
+print "problem was $!\n";
+
+-------------------------------------------------------------------------------
+
+When I execute the program, I get the following output:
+
+program: ./syslog.pl
+problem was Bad file descriptor
+
+There is no output on the screen or any of the /var/log files. The
+
+/etc/syslog.conf file is as follow:
+
+# Log all kernel messages to the console.
+# Logging much else clutters up the screen.
+#kern.*                                                 /dev/console
+
+# Log anything (except mail) of level info or higher.
+# Don't log private authentication messages!
+*.info;mail.none;news.none;authpriv.none;cron.none
+/var/log/messages
+
+# The authpriv file has restricted access.
+authpriv.*                                              /var/log/secure
+
+# Log all the mail messages in one place.
+mail.*                                                  /var/log/maillog
+
+# Log all the warning messages in one place.
+*.warn                                                  /var/log/syslog
+
+
+# Log cron stuff
+cron.*                                                  /var/log/cron
+
+# Everybody gets emergency messages, plus log them on another
+# machine.
+*.emerg                                                 *
+
+# Save mail and news errors of level err and higher in a
+# special file.
+uucp,news.crit                                          /var/log/spooler
+
+# Save boot messages also to boot.log
+local7.*
+/var/log/boot.log
+
+#
+# INN
+#
+news.=crit
+/var/log/news/news.crit
+news.=err                                         /var/log/news/news.err
+
+news.notice
+/var/log/news/news.notice
+
+Any help will be greatly appreciated.
+
+Best regards,
+Supratik Mukhopadhyay
+
+--
+Supratik Mukhopadhyay
+Associate Professor
+
+Experimental High Energy Physics Division     !    ALICE (EP)
+Saha Institute of Nuclear Physics             !    Bat.26, Rm. 025
+1/AF, Sector - 1, Bidhannagar                 !    CERN
+Calcutta 700064, West Bengal                  !    CH-1211, Geneve 23
+INDIA                                         !    Switzerland
+
+Phone: 0091-33-337-0379 (Ext. 781)            !    Ph. - +41 22 76 76580
+Fax: 0091-33-337-4637
+
+
+
+--------------FE58D7A45433D340D587991E
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+Hi all,
+<p>I sent this message to the beginners mail list. As yet, I&nbsp;have
+not received any answer. So, I&nbsp;repeat my query here.
+<br>&nbsp;
+<p>I am working on a Intel PIII running RedHat 7.2 having perl5.6.0 which
+<br>was installed along with the OS. I have copied an example
+<br>program as follows:
+<p>-------------------------------------------------------------------------------
+<p>#!/usr/bin/perl -w
+<p>use Sys::Syslog;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+#Misses setlogsock
+<br>use Sys::Syslog qw(:DEFAULT setlogsock);&nbsp;&nbsp;&nbsp; #Also gets
+setlogsock
+<p>openlog($0, 'cons,ndelay,pid', 'user');
+<br>print "program: $0\n";
+<br>syslog('info', 'this is another test');
+<br>syslog('mail|warning', 'this is a better test: %d', time);
+<br>closelog();
+<p>print "problem was $!\n";
+<p>-------------------------------------------------------------------------------
+<p>When I execute the program, I get the following output:
+<p>program: ./syslog.pl
+<br>problem was Bad file descriptor
+<p>There is no output on the screen or any of the /var/log files. The
+<p>/etc/syslog.conf file is as follow:
+<p># Log all kernel messages to the console.
+<br># Logging much else clutters up the screen.
+<br>#kern.*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/dev/console
+<p># Log anything (except mail) of level info or higher.
+<br># Don't log private authentication messages!
+<br>*.info;mail.none;news.none;authpriv.none;cron.none
+<br>/var/log/messages
+<p># The authpriv file has restricted access.
+<br>authpriv.*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/var/log/secure
+<p># Log all the mail messages in one place.
+<br>mail.*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/var/log/maillog
+<p># Log all the warning messages in one place.
+<br>*.warn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/var/log/syslog
+<br>&nbsp;
+<p># Log cron stuff
+<br>cron.*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/var/log/cron
+<p># Everybody gets emergency messages, plus log them on another
+<br># machine.
+<br>*.emerg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+*
+<p># Save mail and news errors of level err and higher in a
+<br># special file.
+<br>uucp,news.crit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/var/log/spooler
+<p># Save boot messages also to boot.log
+<br>local7.*
+<br>/var/log/boot.log
+<p>#
+<br># INN
+<br>#
+<br>news.=crit
+<br>/var/log/news/news.crit
+<br>news.=err&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+/var/log/news/news.err
+<p>news.notice
+<br>/var/log/news/news.notice
+<p>Any help will be greatly appreciated.
+<p>Best regards,
+<br>Supratik Mukhopadhyay
+<pre>--&nbsp;
+Supratik Mukhopadhyay
+Associate Professor
+
+Experimental High Energy Physics Division&nbsp;&nbsp;&nbsp;&nbsp; !&nbsp;&nbsp;&nbsp; ALICE (EP)
+Saha Institute of Nuclear Physics&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; !&nbsp;&nbsp;&nbsp; Bat.26, Rm. 025
+1/AF, Sector - 1, Bidhannagar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; !&nbsp;&nbsp;&nbsp; CERN
+Calcutta 700064, West Bengal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; !&nbsp;&nbsp;&nbsp; CH-1211, Geneve 23
+INDIA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; !&nbsp;&nbsp;&nbsp; Switzerland
+
+Phone: 0091-33-337-0379 (Ext. 781)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; !&nbsp;&nbsp;&nbsp; Ph. - +41 22 76 76580
+Fax: 0091-33-337-4637</pre>
+&nbsp;</html>
+
+--------------FE58D7A45433D340D587991E--
+

@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:56283
+Return-Path: <brian.d.foy@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16473 invoked from network); 13 Sep 2007 21:59:40 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 13 Sep 2007 21:59:40 -0000
+Received: (qmail 1533 invoked by uid 225); 13 Sep 2007 21:59:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1525 invoked by alias); 13 Sep 2007 21:59:39 -0000
+X-Spam-Status: No, hits=-9.9 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_HI,SPF_NEUTRAL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Thu, 13 Sep 2007 14:59:18 -0700
+Received: (qmail 16204 invoked by uid 515); 13 Sep 2007 21:59:15 -0000
+To: modules@perl.org
+Subject: Indexing all of BackPAN
+Date: Thu, 13 Sep 2007 16:59:24 -0500
+Reply-To: modules@perl.org
+Message-ID: <130920071659240199%brian.d.foy@gmail.com>
+Organization: Perl Authors Upload Server
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+User-Agent: Thoth/1.7.2 (Carbon/OS X)
+X-Posted-By: 24.148.89.40
+Approved: news@nntp.perl.org
+From: brian.d.foy@gmail.com (brian d foy)
+
+I think I want to mirror BackPAN and index it, entirely. I'll do all of
+the work, but tell me if I'm missing something:
+
+I have this project I'm working on to make custom CPAN snapshots.
+Basically, the client wants to locally lock down a particular subset of
+CPAN and not update it.  They install exactly the versions they want
+from their own MiniCPAN no matter what is currently on CPAN.
+
+The trick here is figuring out what to put in that special MiniCPAN, no
+matter what is currently on CPAN. That shouldn't be a problem since
+BackPAN has everything. And, this is the sort of thing I find fun. :)
+
+The trick is figuring out which distro to get from BackPAN though. If I
+know that I have module Foo at version 1.2.3, which distro is that?
+And,
+is that the right distro, since some might have the same module
+versions.
+
+So, here's what I want to do, in roughly this order:
+
+* mirror BackPAN (I don't even know how big it is). This could happen
+slowly over a couple months so I don't pound a server to death, and I
+don't need all of it to start work.
+
+* start indexing the distros, and put that into some suitable form,
+maybe sqlite or whatever. This will be something simple that I can
+distribute easily. I keep rsyncing BackPAN and keep this up-to-date
+automatically.
+
+* write the apps to take a module name and option version, and spit out
+the distros.  Yeah, that might mean one [ module, version ] pair maps
+to multiple distros. But then...
+
+* write the app to take a list of module names and versions, and figure
+out the right distros. This can collapse any repeats as long as one of
+the modules in the distro increased it's version number.
+
+* then, (then!), most of the pieces should be there to take a Perl
+installation and generate from all of the installed modules which
+distros I need to get to put into MiniCPAN. There is some
+Module::Corelist magic in there somewhere too.
+
+* If I'm lucky, I can build a dependency tree along the way, sorta like
+David Cantrell for the CPAN Testers results, but that's a side thing.
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+archives at http://www.xray.mpe.mpg.de/mailing-lists/modules
+please send all messages back to modules@perl.org

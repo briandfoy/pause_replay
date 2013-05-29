@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16890
+Return-Path: <ntelleck@ic.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 90493 invoked by uid 76); 11 Jan 2003 15:17:11 -0000
+Received: from smtp.comcast.net (HELO smtp.comcast.net) (24.153.64.2) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-11 15:17:11Z
+Received: from cc96576a (bgp01049513bgs.southg01.mi.comcast.net [68.43.89.93]) by mtaout03.icomcast.net (iPlanet Messaging Server 5.2 HotFix 1.07 (built Nov 25 2002)) with SMTP id <0H8K00HFD2FT6I@mtaout03.icomcast.net> for modules@perl.org; Sat, 11 Jan 2003 10:16:42 -0500 (EST)
+Date: Sat, 11 Jan 2003 10:16:37 -0500
+Subject: uninstalling BerkeleyDB??
+To: modules@perl.org
+Message-ID: <LPBBIHACABIMICBCMKCCCEGFCEAA.ntelleck@ic.net>
+MIME-version: 1.0
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Content-type: text/plain; charset=iso-8859-1
+Content-transfer-encoding: 7BIT
+Importance: Normal
+X-Priority: 3 (Normal)
+X-MSMail-priority: Normal
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: ntelleck@ic.net (Ed Sickafus)
+
+If this is the wrong mailing list, please redirect me.
+
+Q1.
+I installed BerkeleyDB v. 0.19
+I then read its README file to discover that one should first install
+"Berkeley DB Version 2.6.4 or greater" (They got me on that one. :-) )
+Later I downloaded db-4.1.24.CN.tar.gz from SleepCat.com and installed it.
+I looked at the resulting directories, du -a, and discovered a lot of
+BerkeleyDB-0.19 stuff.
+So now I'm out of sync having installed db-4.1.24.CN after BerkeleyDB-0.19.
+Do I need to uninstall BerkeleyDB-0.19 and reinstall it? If so, how? I.e.,
+do I simply erase the BerkeleyDB-0.19 directories and repeat the install
+procedure. Will that remove all of the BerkeleyDB-0.19 stuff?
+SleepCat says they can't help me on this one.
+
+Q2.
+I'm using perl to write a simple data base management system: collect client
+data and append it to a db file. I can't get O_APPEND to work. All calls to
+the script overwrite the reseults of the previous call.
+
++++++++++++++++++++++++++++++++++
+	#!/usr/bin/perl
+
+	## Test from
+http://archive.devx.com/dbzone/articles/renaker01/Renaker01-3.asp with
+O_APPEND added
+
+	use strict;
+	use DB_File;
+
+	my %hash;
+
+	tie %hash, "DB_File", "myDB", O_RDWR|O_APPEND|O_CREAT, 0666, $DB_HASH
+	  or die "Could not create file 'myDB': $!\n";
+
+	$hash{'key1'} = 'value7';	## value_ numbers are changed on successive calls
+	$hash{'key2'} = 'value8';	## to see if the new values show up as appended
+	$hash{'key3'} = 'value9';	## values when printed below -- they don't??
+
+	untie %hash;
+
+	# Now open and read the contents of myDB
+	my $key;
+	tie %hash, "DB_File", "myDB", O_RDWR, 0666, $DB_HASH
+	  or die "Could not read file 'myDB': $!\n";
+
+	foreach $key (keys %hash) {
+	  print "$key => $hash{$key}\n";
+	}
+
+	untie %hash;
+
+	## This works on first run. But if 'value_'s are changed and this program
+run again
+	## it overwrites the myDB rather than appending to it.!!
+++++++++++++++++++++++++++++++++++++++++++++++++++
+What am I doing wrong?
+
+Thanks for your consideration
+Low-end-o-the-curve-learner
+Ed
+

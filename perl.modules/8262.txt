@@ -1,0 +1,53 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8262
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 79177 invoked from network); 12 Oct 2001 12:29:36 -0000
+Received: from mail1.tinet.ie (HELO apu.eircom.net) (159.134.237.21)
+  by onion.valueclick.com with SMTP; 12 Oct 2001 12:29:36 -0000
+Received: from p270.as1.limerick1.eircom.net ([159.134.165.14] helo=dansat.data-plan.com)
+	by apu.eircom.net with esmtp (Exim 2.05 #1)
+	id 15s1RO-0005mh-00; Fri, 12 Oct 2001 13:29:26 +0100
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id f9CCTgs15734;
+	Fri, 12 Oct 2001 13:29:42 +0100 (BST)
+	(envelope-from timbo)
+Date: Fri, 12 Oct 2001 13:29:41 +0100
+To: chromatic <chromatic@rmci.net>
+Cc: Tim Bunce <Tim.Bunce@pobox.com>, modules@perl.org
+Subject: Re: Module submission Devel::Constants
+Message-ID: <20011012132941.A15678@dansat.data-plan.com>
+References: <200110092224.AAA27512@pause.perl.org> <20011010023014.C17E87DF49@granite.pobox.com> <20011011213254.R6912@dansat.data-plan.com> <20011012003401.2284672508@wormwood.pobox.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20011012003401.2284672508@wormwood.pobox.com>; from chromatic@rmci.net on Thu, Oct 11, 2001 at 06:28:01PM -0600
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+On Thu, Oct 11, 2001 at 06:28:01PM -0600, chromatic wrote:
+> On Thursday 11 October 2001 14:32, Tim Bunce wrote:
+> 
+> > BTW, the Devel:: namespace isn't right for this. Devel:: is for
+> > development-time tools, not run-time.
+> 
+> That makes sense.  What would you suggest?
+> 
+> My first thought was constant::flags, but that's the pragma namespace.  
+> Something like Constant::Resolve would be okay, but it would create a new 
+> top-level namespace.
+
+Actually I think I'd prefer this functionality patched into constants.pm.
+It's small and could be hooked in with almost no overhead via the
+code that catches invalid names.
+
+	use constant 'PI:resolve' => 3;
+
+The mechanism could be extended to enable setting of any sub attributes
+(ala perl6).
+
+Tim.

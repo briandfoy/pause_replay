@@ -1,0 +1,112 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13417
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 37103 invoked by uid 76); 26 Aug 2002 06:11:43 -0000
+Received: from root@franz.ak.mind.de (HELO k242.linux.bogus) (212.42.235.66)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Mon Aug 26 06:11:43 2002 -0000
+Received: (from k@localhost)
+	by k242.linux.bogus (8.11.6/8.11.6) id g7Q6AnB04164;
+	Mon, 26 Aug 2002 08:10:49 +0200
+X-Authentication-Warning: k242.linux.bogus: k set sender to andreas.koenig@anima.de using -f
+Sender: k@k242.linux.bogus
+To: Peter Billam <music@pjb.com.au>
+Cc: modules@perl.org, "Gerrit P. Haase" <gp@familiehaase.de>
+Subject: Re: A Gentle Prod from PJB
+References: <200207120907.TAA19514@jazz-1.trumpet.com.au>
+Reply-To: modules@perl.org
+Date: Mon, 26 Aug 2002 08:10:49 +0200
+In-Reply-To: <200207120907.TAA19514@jazz-1.trumpet.com.au> (music@pjb.com.au's
+ message of "Fri, 12 Jul 2002 19:07:22 +1000 (EST)")
+Message-ID: <m3lm6u880m.fsf@k242.linux.bogus>
+Lines: 82
+User-Agent: Gnus/5.090005 (Oort Gnus v0.05) Emacs/21.2 (i686-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Fri, 12 Jul 2002 19:07:22 +1000 (EST), music@pjb.com.au said:
+
+ >> If you had a general module-related enquiry
+ >> -------------------------------------------
+ >> We'll try to get back to you within a week.  If we don't,
+ >> and the resources listed below don't help you find your answer,
+ >> please prod us (gently).
+
+  > On 23jan2002 and on 20may2002 and then on 4july2002 I wrote about
+  > the "Sorry, there are no modules registered belonging to PJB" message
+  > I was getting when I tried to "Edit Module Metadata". There should
+  > be CGI::Htauth, Term::Clui and Crypt::Tea.  There has been no reply.
+
+I'm very sorry.
+ 
+  > Until recently the modules did still appear in 00modlist.long.html
+  > but now they have vanished from there too.
+
+I started investigating for Crypt::Tea. Are you sure, it ever was
+registered in the module list? I don't think so. Crypt::TEA yes, but
+Crypt::Tea no. I'm not saying it should not be registered, but right
+now, for the sake of debugging, I need to know if it ever was in. I
+cannot find a record of it being registered.
+
+What you do not mention, but mention in your email to Gerrit, is the
+fact that new uploads are not recognized by the indexer. Now this is
+the root of all evil. In your upload PJB/Crypt-Tea-1.36.tar.gz you set
+
+$VERSION = '#VERSION#';
+
+PAUSE had big troubles with this version number containing "#". It
+decided to code this strange version as a v-string as you can easily
+verify by asking CPAN.pm:
+
+cpan> m Crypt::Tea                  
+Module id = Crypt::Tea
+    CPAN_USERID  PJB (Peter Billam <computing@pjb.com.au>)
+    CPAN_VERSION v35.86.69.82.83.
+    CPAN_FILE    P/PJ/PJB/Crypt-Tea-1.36.tar.gz
+    MANPAGE      Tea.pm - Perl module to implement TEA, the Tiny Encryption Algorithm
+    INST_FILE    (not installed)
+
+Since then any new upload with a $VERSION that doesn't beat v35.86...
+is not recognized as a new version.
+
+The solution to the problem is to delete Crypt-Tea-1.36.tar.gz and
+re-index the newest version as soon as Crypt-Tea-1.36.tar.gz is gone
+from CPAN. You have a menu item "Reindex" on your PAUSE menu.
+
+I'm not sure I can improve PAUSE's guess-work on v-strings, so I have
+no better solution for now. Perl 5.10 will most probably offer a
+better solution, but it's a long time until that will work.
+ 
+  > And yet, I am able to upload new versions and delete old ones, and
+  > receive the usual confirmatory emails. The modules still appear
+  > in $CPAN/authors/id/P/PJ/PJB so I'm still working on them and
+  > they have been through several significant revisions since 23jan.
+ 
+  > CPAN obviously isn't working for me.  Why not ?  Can it be revived ?
+  > What can I do to help ?  Have I been evicted without being informed ?
+
+Never, really never has such a thing happened on CPAN. We never evict
+anything. If things do not work as expected, there is a bug somewhere.
+
+  > Do I need to ask to re-register the namespaces and if I do will it
+  > work any better ?
+
+Being registered in the module list is only an additional approval,
+but strictly speaking not in any way a necessity.
+
+  > Assuming that there is no answer to this email, I will send one further
+  > such email in about ten days time and then give up working for CPAN.
+
+Please accept my apologies for not recognizing the problem earlier.
+And please don't give up.
+
+Please let me know if this resolves your problem for Crypt::Tea and
+probably also for your other modules on CPAN.
+
+Regards,
+-- 
+andreas

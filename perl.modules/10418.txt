@@ -1,0 +1,109 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10418
+Return-Path: <rhettbull@hotmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 49847 invoked by uid 76); 28 Feb 2002 01:11:05 -0000
+Received: from law2-f36.hotmail.com (HELO hotmail.com) (216.32.181.36)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Thu Feb 28 01:11:05 2002 -0000
+Received: from mail pickup service by hotmail.com with Microsoft SMTPSVC;
+	 Wed, 27 Feb 2002 17:10:38 -0800
+Received: from 216.126.162.100 by lw2fd.hotmail.msn.com with HTTP;
+	Thu, 28 Feb 2002 01:10:38 GMT
+X-Originating-IP: [216.126.162.100]
+To: modules@perl.org
+Bcc: 
+Subject: Proposed module: Statistics::Descriptive::Discrete
+Date: Thu, 28 Feb 2002 01:10:38 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; format=flowed
+Message-ID: <LAW2-F36I5RxGwIPvlK0001cf15@hotmail.com>
+X-OriginalArrivalTime: 28 Feb 2002 01:10:38.0513 (UTC) FILETIME=[BBB3C210:01C1BFF4]
+Approved: news@nntp.perl.org
+From: rhettbull@hotmail.com ("Rhet Turnbull")
+
+I propose a new module named Statistics::Descriptive::Discrete
+
+Background:
+I use the full version (Statistics::Descriptive::Full) of the
+Statistics::Descriptive module quite a bit and it works
+great.  However, because it stores a copy of all the data
+in an array (and also needs to sort this array), the module
+is quite slow for large datasets (> 1 million data values).
+I frequently use data sets of this size or larger so I
+devised a faster solution.
+
+My solution:
+Since most of the data I need to analyze is the
+output of satellite telemetry it has all been through an
+analog to digital conversion so there are a known, discrete
+number of "levels" or different values present in the data.
+For example, an 8 bit value would only have 2^8 possible
+values even though there might be 3 million such data
+points in my data set.
+
+Instead of storing every value in an array, I only store the
+particular values I've seen as hash keys then store the
+number of times I've seen each  value as the hash value.
+This lets me reconstruct the original data set  (but not the
+original order) with very little overhead -- particularly
+when  the number of discrete values is small compared to the
+total number of data  points.
+
+Performance:
+The results are VERY good.  For a real-world
+data set using 2.6 million 8-bit values,
+Statistics::Descriptive::Full took 561 seconds to produce
+results (min, max, mean, mode, median, standard deviation,
+and frequency  distribution) and my module took 40 seconds
+to produce the same results.   Futhermore,
+Statistics::Descriptive::Full required 400MB of RAM and my
+module required 3MB.  Statistics::Descriptive::Full scales
+somewhat exponentially with number of data points whereas
+my new module scales linearly.
+
+Testing:
+I've tested this module using quite a few data sets
+and performance is very  good as long as the number of
+discrete levels in the data is some fraction of the total
+number of data points (more testing needed to find exactly what that 
+fraction is).  Even with 2^20 possible levels, this
+beats Statistics::Descriptive::Full as long as the number
+of data points is high.
+
+Naming:
+Please note that this new module is NOT a
+replacement for  Statistics::Descriptive (which is a very
+good, well tested module) but it does perform much better
+for certain data sets.  So, I think I should stay in the
+Statistics::Descriptive namespace which is why I propose
+something like Statistics::Descriptive::Discrete or
+Statistics::Descriptive::Quantized.  Also note
+that I've kept the interface identical to
+Statistics::Descriptive as much as possible so this should
+be a drop-in replacement for most purposes.  I've changed several of my 
+scripts by simply changing the use statement and the call to new.
+
+I've tried to contact the maintainer of Statistics::Descriptive (Colin 
+Kuskie) at his PAUSE address as well as an address I found on usenet but 
+both messages bounced.  Therefore, I haven't run this by him.
+
+More info:
+You can read my write-up over at perlmonks.org:
+http://www.perlmonks.org/index.pl?lastnode_id=6364&node_id=146691
+
+Or see my post with some sample code on the module-authors archive:
+http://archive.develooper.com/module-authors@perl.org/msg00304.html
+
+I'd appreciate any input on the namespace for this module.  It's my first 
+CPAN submission.
+
+Regards, --Rhet Turnbull, RhetTbull_at_hotmail.com, CPAN ID: RHETTBULL
+
+
+
+_________________________________________________________________
+MSN Photos is the easiest way to share and print your photos: 
+http://photos.msn.com/support/worldwide.aspx
+

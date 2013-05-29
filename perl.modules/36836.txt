@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:36836
+Return-Path: <projS+perl@niss.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30949 invoked from network); 4 Dec 2004 16:24:03 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 4 Dec 2004 16:24:03 -0000
+Received: (qmail 5840 invoked by uid 225); 4 Dec 2004 16:24:03 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 5835 invoked by alias); 4 Dec 2004 16:24:02 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from niss.com (HELO crag.niss.com) (24.123.82.170)
+  by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 04 Dec 2004 08:23:59 -0800
+Received: from crag.niss.com (localhost [127.0.0.1])
+	by crag.niss.com (8.13.1/8.13.1) with ESMTP id iB4GNsTc041935
+	for <modules@perl.org>; Sat, 4 Dec 2004 10:23:55 -0600 (CST)
+	(envelope-from projS+perl@niss.com)
+Message-ID: <200412041623.iB4GNsTc041935@crag.niss.com>
+To: modules@perl.org
+Subject: RFC: Device::Profile (was XML::MDS2)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <41933.1102177434.1@crag.niss.com>
+Date: Sat, 04 Dec 2004 10:23:54 -0600
+Approved: news@nntp.perl.org
+From: projS+perl@niss.com (Scott Bolte)
+
+I've generalized the XML::MDS2 module quite a bit. It has now evolved
+into a reusable Device::Profile module along with a companion
+Device::Profile::MDS2.  I'd like your approval to submit the modules
+with those names.
+
+Goal:	Automate communication between manufacturers and buyers of
+	devices. The security characteristics of medical devices is
+	driving the effort, though the module has been generalized to
+	support other uses.
+
+Scenario:
+	1) An organization creates a set of questions that
+	   characterize a device. (HIMSS created the MDS2 for example.
+	   See below for links.)
+	2) The manufacturers answer the questions for each device type
+	   they sell.
+	3) The buyer of a device receives the completed profile(s) and
+	   use the information as appropriate. (To do risk assessments
+	   driven by HIPAA security regulations in this case.)
+
+Modules:
+	Device::Profile::Document
+		- Create device profile skeletons. (XML documents
+		  actually.)
+		- Store & retrieve documents using file names.
+		- Validate that a document conforms to a schema.
+
+	Device::Profile::Document::Common
+		- Public convenience class methods.
+
+	Device::Profile::Repository
+		- Store & retrieve related documents using their IDs.
+
+	Device::Profile::View::HTML
+		- View a specific profile using HTML.
+		- View the differences between two profiles.
+
+	Device::Profile::MDS2
+		- Populate a Device::Profile::Document with the
+		  specific questions and instructions that are
+		  provided by the HIMSS sponsored MDS2 (Manufacturer's
+		  Disclosure Statement for Medical Device Security).
+
+Links:
+	MDS2 press release
+	  http://www.himss.org/pressroom/ASP/releaseDetail.asp?ContentID=59072
+
+	MDS2 itself
+	  http://www.himss.org/content/files/MDS2FormInstructions.pdf
+
+Comments?

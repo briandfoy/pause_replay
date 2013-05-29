@@ -1,0 +1,125 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:48681
+Return-Path: <cpan@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14084 invoked from network); 4 May 2006 05:44:35 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 4 May 2006 05:44:35 -0000
+Received: (qmail 18504 invoked by uid 225); 4 May 2006 05:44:34 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18495 invoked by alias); 4 May 2006 05:44:33 -0000
+X-Spam-Status: No, hits=-4.4 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Wed, 03 May 2006 22:44:03 -0700
+Received: (qmail 13999 invoked by uid 515); 4 May 2006 05:43:58 -0000
+Message-ID: <20060504054358.13998.qmail@lists.develooper.com>
+To: modules@perl.org
+Date: Thu, 04 May 2006 15:41:03 +1000
+User-Agent: Thunderbird 1.5.0.2 (Windows/20060308)
+MIME-Version: 1.0
+Subject: Re: Module Namespaces (Xmldoom, Roma)
+References: <b989f2f70605031345n195d1e6r7b41f633fed85b50@mail.gmail.com>
+In-Reply-To: <b989f2f70605031345n195d1e6r7b41f633fed85b50@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 211.27.38.122
+Approved: news@nntp.perl.org
+From: cpan@ali.as (Adam Kennedy)
+
+David Snopek wrote:
+> Hello!
+> 
+> I have been working on a series of modules for binding database tables
+> to Perl objects (usually referred to as "Object Persistance" or
+> something like that).  Anyway, it began as a port from Python, so I
+> have been using the same basic namespace scheme which is at the
+> root-level.
+> 
+> Roma -- It is my generic SQL abstraction based on Propel and JDBC but
+> with a really complex high-level interface that is uniquely Roma.
+> 
+> Xmldoom -- Provides the object persistance stuff, built using Roma 
+> internally.
+> 
+> I know that it is frowned on to add new top-level namespaces (based on
+> reading the PAUSE FAQ and the modulelist document), which is why I am
+> sending this e-mail.  Here are the main arguments for keeping my
+> current namespace scheme:
+> 
+> * Roma/Xmldoom will be ported to as many programming languages as
+> possible.  So, it makes since to keep the same interface and namespace
+> scheme across them all.  As I already mentioned this mimicks the
+> Python interface, and the JavaScript version that I've just begun
+> mimicks it too.
+> 
+> * Roma contains 40 Perl modules and Xmldoom has 22.  This is quite a
+> few, with some of them getting 4 levels deep.  So, its just convenient
+> for typing.
+> 
+> * Oryx, Jifty and SLOOPS get their own top-level namespaces! ;-) These 
+> probably aren't the only ones, but I wanted to show that there
+> is precedent for naming a top-level namespace after a project name.
+> 
+> Anyway, let me know if this alright.  If its not, please send
+> suggestions on where I should place these.  I've already looked some
+> bit for similar projects on CPAN, and here is a short list (notice the
+> variety of places that they are hidden):
+> 
+> * Jifty::DBI
+> * Object::Mediator
+> * Oryx
+> * DBIx::Objects
+> * SLOOPS
+> 
+> You can find my Gna! project page with code available through GNU Arch, 
+> here:
+> 
+> https://gna.org/projects/xmldoom/
+
+The general convention for named modules is for situations where you 
+provide an framework with outside-in functionality. That is, you provide 
+a complete solution for a specific problem domain, with the user's code 
+customising it.
+
+Where it's more of a component struction, there is a strong preference 
+for "real" names, except in the few cases where there is so much 
+competition we've more or less run out.
+
+ORM (Object-Relational Mappers) is one such area, since there's probably 
+a dozen distributions, each with 20-40 modules, all doing more or less 
+the same thing in different ways.
+
+So you'll forgive me if I'm a little skeptical about anything much in 
+the ORM-space being unique these days. :)
+
+BUT, our job is not to be disruptive (mostly), just to catch things 
+you're missing. And the idea of a common API across arbitrary languages 
+is certainly novel enough.
+
+I think the one point of contention I have is that you're actually 
+asking for TWO top-level namespaces, not one. And frankly, that's 
+starting to get greedy.
+
+If you don't think it will excessively disrupt you, I'd much rather see 
+one as part of the other. Roma::XMLDoom (which BTW is probably the 
+Perlish capitalisation of Xmldoom... and now you have me curious why an 
+ORM mapper has "XML" in the name) or Roma::Xmldoom or XMLDoom::Roma etc.
+
+Since Roma is also more component shaped, and not a huge edifice like, 
+say, Rosetta (eep) you might also want to consider, say, DBIx::Roma 
+which would be a fairly common option as well.
+
+And the convention for SQL layers using DBIx:: is relatively strong (I'm 
+assuming you are using DBI under the covers of course).
+
+As for Xmldoom, personally I think XML::Doom is pretty neat :)
+
+All of those are suggestions. But I think asking to 2 top-levels might 
+be pushing it a bit.
+
+Adam K

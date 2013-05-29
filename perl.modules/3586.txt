@@ -1,0 +1,77 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3586
+Return-Path: <sam@daemoninc.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10622 invoked from network); 17 Nov 2000 09:54:52 -0000
+Received: from horrockscash.com (HELO daemonweb.daemoninc.com) (207.211.105.23)
+  by tmtowtdi.perl.org with SMTP; 17 Nov 2000 09:54:52 -0000
+Received: from daemonweb.daemoninc.com (localhost.localdomain [127.0.0.1])
+	by daemonweb.daemoninc.com (8.9.3/8.8.7) with ESMTP id BAA21103;
+	Fri, 17 Nov 2000 01:56:34 -0800
+To: andreas.koenig@anima.de (Andreas J. Koenig)
+cc: modules@perl.org
+Subject: Re: Proposed new module Sys::MemoryUsage 
+In-Reply-To: Your message of "08 Nov 2000 16:20:31 +0100."
+             <m3r94mze0w.fsf@ak-71.mind.de> 
+Date: Fri, 17 Nov 2000 01:56:34 -0800
+Message-ID: <21101.974454994@daemonweb.daemoninc.com>
+Approved: news@nntp.perl.org
+From: sam@daemoninc.com (Sam Horrocks)
+References: <m3r94mze0w.fsf@ak-71.mind.de>
+
+I think GTop will work - I'll try that.  Unfortunately it's very difficult
+to find because it's up at the root (why?), and its readme doesn't contain
+words like "memory" or "process" so it didn't show up in a search.
+
+Wouldn't Sys::GTop would be preferable to a root-level GTop.  At least
+Sys would sort-of categorize at as interfacing to the operating system.
+Putting in the root doesn't categorize it at all.
+
+Sam
+
+ > >>>>> On Wed, 01 Nov 2000 01:21:30 -0800, Sam Horrocks <sam@daemoninc.com> said:
+ > 
+ >  > This module would attempt to tell you how much memory your process
+ >  > is using, so your process could shutdown, restart or take other
+ >  > actions if it is getting too large.
+ > 
+ > Is there really no module that does this already? Have you looked at
+ > GTop?
+ > 
+ >  > The interface would be:
+ > 
+ >  >     Sys::MemoryUsage->total_vm;		# Total virtual memory in use.
+ >  >     Sys::MemoryUsage->data_segment;	# Data segment size
+ >  >     Sys::MemoryUsage->stack_segment;	# Stack segment size
+ >  >     Sys::MemoryUsage->text_segment;	# Text segment size
+ > 
+ > It has been violent agreement in the modules librarians circles that
+ > Sys:: is a bad prefix because it tends to become a bit basket. Maybe
+ > you could live with Unix::? Or Linux::? or BSD::? Or does your module
+ > really cover all platforms?
+ > 
+ >  > If any of the values are unknown that method would return undef.  On some
+ >  > OSes, all the methods might return undef.  Total_vm might either sum up
+ >  > all the known values, or might get the total value directly from the OS.
+ >  > It's possible total_vm may be more than the sum of the parts, depending
+ >  > on how the value is obtained.
+ > 
+ >  > Currently the only way I know to get a memory usage figure is to install
+ >  > mod_perl and then call &$Apache::SizeLimit::HOW_BIG_IS_IT().  The problems
+ >  > with this are:
+ > 
+ >  >     - This only retrieves one value
+ > 
+ >  >     - Finding out the amount of memory in use shouldn't require installing
+ >  >       mod_perl.
+ > 
+ >  >     - The HOW_BIG_IS_IT routine is not a documented interface for the
+ >  >       Apache::SizeLimit module.
+ > 
+ > Please keep us informed what you find out and what you decide.
+ > 
+ > Regards,
+ > -- 
+ > andreas

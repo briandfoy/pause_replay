@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3857
+Return-Path: <starfire@zipcon.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32587 invoked from network); 10 Dec 2000 21:50:34 -0000
+Received: from zipcon.net (qmailr@209.221.136.5)
+  by tmtowtdi.perl.org with SMTP; 10 Dec 2000 21:50:34 -0000
+Received: (qmail 3312 invoked from network); 10 Dec 2000 21:53:30 -0000
+Received: from gudgec-modem121.zipcon.net (HELO adcom133) (63.249.15.121)
+  by mail.zipcon.net with SMTP; 10 Dec 2000 21:53:30 -0000
+Message-ID: <037e01c062f3$4140bab0$700ff93f@adcom133>
+To: <andreas.koenig@anima.de>
+Cc: <modules@perl.org>
+References: <033101c062c5$f06d2ce0$700ff93f@adcom133> <m31yvgkp2t.fsf@ak-71.mind.de>
+Subject: Re: MakeMaker question
+Date: Sun, 10 Dec 2000 13:50:41 -0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4133.2400
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4133.2400
+Approved: news@nntp.perl.org
+From: starfire@zipcon.net ("Richard Anderson")
+
+And how do I hook this subroutine into Makefile.PL so that typing "perl
+Makefile.PL will insert the needed lines into the Makefile?  Or do I need to
+add another step to the normal installation procedure?
+
+I don't like using /usr/local/etc/http-webtest either, but I don't think it
+is appropriate to install a subdirectory structure in
+/usr/lib/perl5/site_perl/5.005/HTTP - this seems reserved for .pm files.  At
+least /usr/local/etc/http-webtest will persist even after an upgrade to perl
+v 6.0.  The only problem with that directory would be if another app uses
+/usr/local/etc/http-webtest, which seems unlikely.  Or is your point that
+even the mere presence of a subdirectory in /usr/local/etc give MYSQL
+problems?
+
+HTTP::Webtest only works on Unix and porting it to other OSes is more work
+than I (or anyone else, I suspect) would be willing to take on.  Good point,
+though, about using File::Spec
+
+Richard.Anderson@unixscripts.com            RayCosoft
+Perl/Java/SQL/Unix software engineering    www.unixscripts.com
+www.zipcon.net/~starfire/home                  Seattle, WA, USA
+----- Original Message -----
+From: "Andreas J. Koenig" <andreas.koenig@anima.de>
+To: "Richard Anderson" <starfire@zipcon.net>
+Cc: <modules@perl.org>
+Sent: Sunday, December 10, 2000 12:18 PM
+Subject: Re: MakeMaker question
+
+
+> >>>>> On Sun, 10 Dec 2000 08:26:17 -0800, "Richard Anderson"
+<starfire@zipcon.net> said:
+>
+>  > I am preparing a module for CPAN release.  There is a subdirectory tree
+>  > that should be copied recursively to /usr/local/etc when "make install"
+>  > is typed.  I assume that I should write a perl script that does the
+>  > copy, but I don't see anything in the ExtUtils::MakeMaker man page that
+>  > lets me indicate that this script should be run during "make install".
+>  > The PL_FILES attribute looks promising, but I don't think this does
+>  > what I need.
+>
+> PL_FILES isn't it. AFAIR, you need to define a subroutine that adds
+> the necessary lines to the Makefile. Something like
+>
+> sub MY::postamble {
+>         return qq{
+> install::
+>         $(CP) foo /usr/local/etc/http-webtest/
+>         $(CP) bar /usr/local/etc/http-webtest/
+> };
+> }
+>
+> Please consider using File::Spec instead of hardcoded slashes as
+> directory separators and be warned that the user really needs a chance
+> to decide if he considers /usr/local/etc/ being the right place. mysql
+> for example puts its databases there, nessus puts its configuration
+> there, and when I run
+>
+>     mysqlshow nessus
+>
+> I do get a very useless answer. Annoys me.
+>
+> --
+> andreas
+>
+

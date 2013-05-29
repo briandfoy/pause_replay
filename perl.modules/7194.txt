@@ -1,0 +1,94 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7194
+Return-Path: <aml@world.std.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 72411 invoked from network); 27 Aug 2001 04:21:09 -0000
+Received: from sgi04-e.std.com (199.172.62.134)
+  by onion.valueclick.com with SMTP; 27 Aug 2001 04:21:09 -0000
+Received: from world.std.com (world-f.std.com [199.172.62.5])
+	by sgi04-e.std.com (8.9.3/8.9.3) with ESMTP id AAA14188026;
+	Mon, 27 Aug 2001 00:21:07 -0400 (EDT)
+Received: (from aml@localhost)
+	by world.std.com (8.9.3/8.9.3) id AAA02755;
+	Mon, 27 Aug 2001 00:21:06 -0400 (EDT)
+Message-ID: <20010827002106.A9195@world.std.com>
+Date: Mon, 27 Aug 2001 00:21:06 -0400
+To: Kirrily Robert <skud@infotrope.net>, modules@perl.org
+Subject: Re: author ID request
+References: <20010825114908.A4444@world.std.com> <E15b9JM-0008Ig-00@tanqueray.infotrope.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91i
+In-Reply-To: <E15b9JM-0008Ig-00@tanqueray.infotrope.net>; from Kirrily Robert on Sun, Aug 26, 2001 at 07:27:24PM -0400
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: aml@world.std.com ("Andrew M. Langmead")
+
+On Sun, Aug 26, 2001 at 07:27:24PM -0400, Kirrily Robert wrote:
+> >The first thing I want to contribute is a cleaned up version of
+> >Data::MacResFile, a module for non-Macintosh systems to read
+> >compontents out of a Macintosh resource file.
+> 
+> Data:: is so generic it's almost meaningless... almost everything a Perl
+> module could deal with is data, and it wouldn't make sense to put every
+> perl module under Data.  So let's save Data for stuff that's really
+> generic data manipulation and which don't obviously fit elsewhere.
+> 
+> I'd suggest putting your module under the Mac:: namespace.  Although
+> Mac:: is mostly modules that run on Mac, there is at least one other
+> example of a platform-independent module in there
+> (Mac::FileSpec::Unixish).  The real issue, though, is where would people
+> look for a Mac-related module?  I'm thinking they'd look in Mac::
+
+
+I'm sorry, if I realize that I'd wind up defending the name, I'd have
+put the rational in my original message. The OS specific name spaces
+nearly universally run under the OS they are named for. Under the
+Macintosh, one would be best served by using the OS's native API (as
+accessed in perl with the Mac::Resource module) and not this perl
+level re-implementation. As a comparison, would you expect to find a
+Unix implementation of COM in Win32::OLE? A windows version of popen()
+in Unix::PipedFileHandle? 
+
+The example that you gave, "Mac::FileSpec::Unixish" although it can
+run on any platform is explicitly designed for running under
+MacOS. the docs claim that the two exported functions nativize and
+unixify are nearly no-ops under other OS's. A better example might be
+Mac::MacBinary, but doing this much work to find a module in the dozen
+OS specific hierarchies that doesn't run under that OS nearly proves
+the rule.
+
+When initially developing this module, I asked around for suggestions
+on both the name of the module and the design (although the only
+evidence I can find is this thread in comp.lang.perl.modules which the
+only common answer for a hierarchy is Mac::
+
+<URL:http://groups.google.com/groups?q=group:comp.lang.perl.modules+
+author:aml%40world.std.com&hl=en&safe=off&scoring=r&rnum=9&
+selm=F25vyu.IB5%40world.std.com>
+
+Yes, Data:: describes a lot of what computer programs do, but there
+are more specific hierarchies for more specific forms of processing
+than just data manipulation. The Net:: hierarchy is mostly handling
+the actual wire protocol. Some file formats have their own top level
+hierarchy, such as XBase, Spreadsheet::Lotus, FrameMaker:: and
+SystemC::. Some text formats are in the Text:: hierarchy, with similar
+situations with graphics and Image:: and sound in Audio:: Resource
+files, don't quite fit into one of those since one resource record can
+be not only text, graphics, audio, or any sort of arbitrary data. So
+yes, it is pretty vague, but what a resource fork contains is pretty
+arbitrary. A resource record is a chuck of data in any arbtrary
+format.
+
+For additional consideration, despite notice in
+comp.lang.perl.announce, Perl News, and The Perl Journal, no one else
+has ever brought up any objections to the name.
+
+I guess to bring it to a point, I strongly feel that Mac:: is the
+wrong hierarchy for the module to be in. The choice of Data:: wasn't
+done without any thought or consultation, although I agree it isn't
+ideal.
+
+Do you have any suggestions besides Mac:: for a namespace?

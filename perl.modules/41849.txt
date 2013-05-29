@@ -1,0 +1,94 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:41849
+Return-Path: <cpan@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20185 invoked from network); 22 Jul 2005 07:45:12 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 Jul 2005 07:45:12 -0000
+Received: (qmail 25921 invoked by uid 225); 22 Jul 2005 07:45:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25917 invoked by alias); 22 Jul 2005 07:45:11 -0000
+X-Spam-Status: No, hits=-5.9 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Fri, 22 Jul 2005 00:45:09 -0700
+Received: (qmail 20173 invoked by uid 515); 22 Jul 2005 07:45:05 -0000
+Message-ID: <20050722074505.20172.qmail@lists.develooper.com>
+To: modules@perl.org
+Date: Fri, 22 Jul 2005 17:44:06 +1000
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+Subject: Re: need a module name for a webserver / load balancer
+References: <Pine.LNX.4.58.0507212016220.6597@danga.com>
+In-Reply-To: <Pine.LNX.4.58.0507212016220.6597@danga.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 202.90.48.125
+Approved: news@nntp.perl.org
+From: cpan@ali.as (Adam Kennedy)
+
+If you are going to have a whole series of modules which match a 
+particular brand name (see the recent Cobalt::LCD module submission for 
+example) that doesn't really fit into anywhere else, then a root 
+namespace can be appropriate, because the modules refer specifically to 
+that brand name.
+
+This is especially the case when what you have _isn't_ a generic module 
+or a generic approach to a problem, and deals with a distinct standalone 
+application.
+
+Most objections to using a root namespace occur when people "brand" 
+something that is really a general approach to a problem (say... 
+Algorithm::Dependency, or CGI::Application) that can be used and reused 
+in a number of different ways. "Frameworks" that solve an entire problem 
+and that can't really be extended or included as a small part of 
+something larger, are appropriate for branding.
+
+I think in this case, especially given your application primarily runs 
+from a script, that using a root namespace would be fine.
+
+If you were to go with HTTPD::Perlbal, which would possibly be slightly 
+better, I'd recommend you put all the modules under that namespace, 
+rather than just the one.
+
+Adam K
+
+Brad Fitzpatrick wrote:
+> Hello Perl People,
+> 
+> I have a Perl library to do high-performance web load balancing and static
+> web serving (GET, PUT, DELETE...) based on the Danga::Socket event loop
+> and socket class.
+> 
+> It's a proper library (currently Perlbal.pm) and a whole suite of
+> submodules under the Perlbal:: namespace... Perlbal::ClientProxy,
+> Perlbal::ClientHTTP, Perlbal::ClientHTTPBase, Perlbal::BackendHTTP, etc...
+> 
+> The actual load balancer / webserver is all in a tiny file called
+> "perlbal" which just uses Perlbal and pipes a config file into
+> Perlbal.pm's management interface parser.
+> 
+> Also, our company has a distributed filesystem (google: MogileFS) written
+> in Perl, which depends on Perlbal.pm.  There are a number of
+> high-load sites using both Perlbal and MogileFS.
+> 
+> We've paid a Debian developer to make packages for all the parts and
+> dependencies, but we're also wondering whether this should go into CPAN.
+> 
+> If so, I think it might be dirty uploading it as "Perlbal".  But it's
+> known/used as that so much, I'm also reluctant to change it.
+> 
+> Can I just upload it to my homedir on CPAN and not register the namespace?
+> 
+> Or rename at least the front-end module to be "HTTPD::Perlbal"?
+> 
+> Any suggestions welcome!
+> 
+> Thanks,
+> Brad
+> 

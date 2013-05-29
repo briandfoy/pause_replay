@@ -1,0 +1,129 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:83597
+Return-Path: <nine@detonation.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 21670 invoked from network); 5 Dec 2012 20:18:14 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 5 Dec 2012 20:18:14 -0000
+Received: (qmail 14989 invoked by uid 225); 5 Dec 2012 20:18:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14985 invoked by alias); 5 Dec 2012 20:18:13 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from ns2.atikon.at (HELO mail.atikon.at) (81.19.152.31)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 05 Dec 2012 12:18:09 -0800
+Received: from localhost (localhost [127.0.0.1])
+	by mail.atikon.at (Postfix) with ESMTP id A4A08107724
+	for <modules@perl.org>; Wed,  5 Dec 2012 21:18:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at atikon.com
+Received: from mail.atikon.at ([127.0.0.1])
+	by localhost (smithers.atikon.at [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id yH7HUkpu7Q14 for <modules@perl.org>;
+	Wed,  5 Dec 2012 21:18:03 +0100 (CET)
+Received: from sphinx.localnet (cm249-156.liwest.at [81.10.249.156])
+	(Authenticated sender: nine@atikon.com)
+	by mail.atikon.at (Postfix) with ESMTPSA id 8F84F107718
+	for <modules@perl.org>; Wed,  5 Dec 2012 21:18:03 +0100 (CET)
+To: modules@perl.org
+Subject: Need help fixing my Makefile.PL
+Date: Wed, 05 Dec 2012 21:18:03 +0100
+Message-ID: <25567196.xW5oRbDG2q@sphinx>
+User-Agent: KMail/4.9.3 (Linux/3.7.0-rc6-5-desktop; KDE/4.9.3; x86_64; ; )
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="nextPart4111357.ymbnYD1mzI"
+Content-Transfer-Encoding: 7Bit
+Approved: news@nntp.perl.org
+From: nine@detonation.org (Stefan Seifert)
+
+--nextPart4111357.ymbnYD1mzI
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+
+Hi!
+
+I'm the author of WWW::WebKit and am trying to provide a smooth installation 
+for my users. I already found out how to add configure_requires and 
+build_requires information to the META files which improved the situation a 
+lot. But it seems like perl Makefile.PL also creates some MYMETA files which do 
+contain the configure_requires information, but for some unknown reason lacks 
+the build_requires, causing attempts to install on fresh perlbrew perl to 
+fail.
+
+I'm attaching the Makefile.PL in question. Any help on what I have to do to fix 
+this would be greatly appreciated. As would be pointers to some definitive 
+guide on how to prepare a module for release on CPAN because this whole 
+MakeMaker, Module::Install, Module::Build, DistZilla and whatnot stuff is 
+nothing but confusing.
+
+Thanks,
+Stefan Seifert
+--nextPart4111357.ymbnYD1mzI
+Content-Disposition: attachment; filename="Makefile.PL"
+Content-Transfer-Encoding: 7Bit
+Content-Type: application/x-perl; name="Makefile.PL"
+
+use 5.010000;
+use ExtUtils::MakeMaker;
+use ExtUtils::PkgConfig;
+use Glib::MakeHelper;
+use ExtUtils::Depends;
+
+my %pkg_info = ExtUtils::PkgConfig->find('gdk-3.0');
+my %gtk_info = ExtUtils::PkgConfig->find('gtk+-3.0');
+
+my @xs_files = qw(WebKit.xs);
+my %pm_files = (
+#  'XSHelper.pm' => '$(INST_LIBDIR)/XSHelper.pm',
+);
+
+my $deps = ExtUtils::Depends->new ('WWW::WebKit' => 'Glib');
+$deps->set_inc ($pkg_info{cflags}, $gtk_info{cflags});
+$deps->set_libs ($pkg_info{libs}, $gtk_info{libs});
+$deps->add_pm (%pm_files);
+$deps->add_xs (@xs_files);
+#$deps->save_config ('build/IFiles.pm');
+
+# See lib/ExtUtils/MakeMaker.pm for details of how to influence
+# the contents of the Makefile that is written.
+WriteMakefile(
+    NAME              => 'WWW::WebKit',
+    VERSION_FROM      => 'lib/WWW/WebKit.pm', # finds $VERSION
+    LICENSE           => 'perl',
+    META_MERGE        => {
+        configure_requires => {
+            'ExtUtils::MakeMaker' => 0,
+            'ExtUtils::PkgConfig' => 0,
+            'ExtUtils::Depends' => 0,
+            'Glib::MakeHelper' => 0,
+        },
+        build_requires => {
+            'URI' => 0,
+            'Test::More' => 0.88,
+        },
+    },
+    PREREQ_PM         => {
+        'Gtk3'              => 0,
+        'Gtk3::WebKit'      => 0.03,
+        Glib                => 0,
+        Moose               => 0,
+        'Time::HiRes'       => 0,
+        'X11::Xlib'         => 0,
+        Carp                => 0,
+    },
+    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
+      (ABSTRACT_FROM  => 'lib/WWW/WebKit.pm', # retrieve abstract from module
+       AUTHOR         => 'Stefan Seifert <nine@cpan.org>') : ()),
+    LIBS              => [ExtUtils::PkgConfig->libs_only_L('gdk-3.0')], # e.g., '-lm'
+    DEFINE            => '', # e.g., '-DHAVE_SOMETHING'
+    INC               => $pkg_info{cflags},
+	# Un-comment this if you add C files to link with later:
+    # OBJECT            => '$(O_FILES)', # link all the C files too
+    $deps->get_makefile_vars,
+);
+
+--nextPart4111357.ymbnYD1mzI--
+

@@ -1,0 +1,354 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2691
+Return-Path: <hbo@egbok.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17230 invoked from network); 18 Aug 2000 03:37:30 -0000
+Received: from dialup6.network-alchemy.com (HELO bigbsd.egbok.com) (204.87.183.134)
+  by tmtowtdi.perl.org with SMTP; 18 Aug 2000 03:37:30 -0000
+Received: from egbok.com (hbo [192.168.100.3])
+	by bigbsd.egbok.com (8.10.1/8.10.1) with ESMTP id e7I3bkp00556
+	for <modules@perl.org>; Thu, 17 Aug 2000 20:37:54 -0700 (PDT)
+Message-ID: <399CB0DB.96A248CC@egbok.com>
+Date: Thu, 17 Aug 2000 20:43:23 -0700
+Organization: EGBOK Consultants
+X-Mailer: Mozilla 4.74 [en]C-CCK-MCD {Sony}  (Win98; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Namespace Registration - Unix::Sysadmin::<many>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: hbo@egbok.com (Howard Owen)
+
+  
+This is a followup to my earlier post soliciting feedback on the
+right namespace for my object oriented Unix system administration
+framework. I've thought about the issues some more, and I've revised
+the names of the modules I've written.
+
+The PAUSE document states that "You need not wait for a response. Generally 
+a lack of response can be taken as acceptance of the module name being 
+proposed." Now, my previous proposal was so crappy, I can't take that
+statement too seriously. 8).
+
+Upon reflection it seems obvious that such a framework should live under 
+Unix::Sysadmin or something like that. Accordingly, I'd like to announce
+that I intend to upload modules in development under the following names:
+
+    Unix::Sysadmin::Ainf;  # Automount map entry class
+    Unix::Sysadmin::Ginf;  # Unix group entry class
+    Unix::Sysadmin::Hinf;  # Unix host entry class
+    Unix::Sysadmin::Nginf; # Netgroup class
+    Unix::Sysadmin::Uinf;  # Unix user entry class
+
+    Unix::Sysadmin::List;  # Abstract list class
+                      ::Ainf;  # Automount map
+                      ::Ginf;  # Group list
+                      ::Hinf;  # Host list
+                      ::Nginf; # Netgroup list
+                      ::Uinf;  # User list
+  
+    Unix::Sysadmin::Cmds;  # Unix commands base class
+                      ::FreeBSD;  # FreeBSD platform specific commands
+                      ::Linux;    # Linux platform specific commands
+                      ::SunOS;    # Solaris platform specific commands
+
+    Unix::Sysadmin::Files; # Unix file paths base class
+                      ::FreeBSD;  # FreeBSD platform specific files
+                      ::Linux;    # Linux platform specific files
+                      ::SunOS;    # Solaris platform specific files
+  
+    Unix::Sysadmin::Config;   # Framework-wide configuration class    
+    Unix::Sysadmin::Utility;  # Framework-wide utility class
+
+
+I'm about 90% finished designing, 80% finished documenting and 75% finished
+coding this puppy. (What? You're supposed to do those in sequence? Bah!)
+
+I'll wait a month or so to digest any feedback, or simmer in resentment
+over beeing ignored. Just kidding about the last part. 8)
+
+Here follows the toplevel Pod. Thanks for your attention and keep on saving 
+the world!
+  
+  
+NAME
+     Unix::Sysadmin - Object Oriented Framework for Unix System
+     Administration
+  
+SYNOPSIS
+    use Unix::Sysadmin::Ainf;  # Automount maps class
+    use Unix::Sysadmin::Ginf;  # Unix groups class
+    use Unix::Sysadmin::Hinf;  # Unix hosts class
+    use Unix::Sysadmin::Nginf; # Netgroup class
+    use Unix::Sysadmin::Uinf;  # Unix user class
+
+    use Unix::Sysadmin::List::<admin object>  # Lists of the above 
+  
+    use Unix::Sysadmin::Cmds::<OS>  # Platform specific commands classes
+    use Unix::Sysadmin::Files::<OS> # Platform specific files classes 
+  
+    use Unix::Sysadmin::Config  # Framework-wide configuration class    
+    use Unix::Sysadmin::Utility  # Framework-wide utility class
+  
+DESCRIPTION
+    Unix::Sysadmin is an object oriented Perl framework for Unix system    
+    administration. It's main features are platform independence (at least 
+    among FreeBSD, Linux and Solaris), secure transport and a
+    peer-to-peer management model that is in tune with many Unix networks 
+    we've seen.
+
+    This framework does much of what NIS does, but uses a secure transport
+    based on ssh. The trust model is therefore closely patterned on
+    ssh1. It's cross platform (across FreeBSD, Linux and SunOS) and hides
+    architectural differences from the user, so one can update passwd,
+    group and automount information to a heterogeneous groups of hosts
+    without regard to their OSen, or your own for that matter. Any host on
+    the network can manage any number of other hosts provided that the
+    managing host has the ssh key that enables root access on the managed
+    hosts, and also has access to the database of managed hosts and users.
+    Users may be granted access to one, some or all hosts on the network.
+    Automount maps work transparently with amd or autofs, and particular
+    keys may be distributed in the same way as users. Groups work
+    similarly.  Though managed users, hosts, groups and amd maps may be
+    distributed selectively, the framework provides a place to keep these
+    objects globally unique.
+  
+  Entity Classes
+  
+    Unix::Sysadmin provides several classes that represent entities that   
+    are frequently the target of Unix system administration activity. Of 
+    particular interest are the Hinf and Uinf classes, which represent   
+    hosts and users respectively. These are treated in detail in the 
+    section on "The Hinf Classes" and the section on "The Uinf Class"
+    below. Other classes that represent manageable entities are the Ainf 
+    class for automount maps (either amd or autofs), the     Ginf class 
+    for Unix groups and the Nginf class for "netgroups", an idea stolen 
+    from but not orthogonal with NIS.
+  
+  Support Classes
+  
+    In addition to entity classes, Unix::Sysadmin includes several classes
+    that augment manageable entities. The List class is a base class for
+    lists of the basic entity classes. This class provides storage,
+    iteration, sorting, addition, and deletion of lists of the basic
+    entities. The various subclasses of List provide methods to update
+    their corresponding Unix administrative files. The Cmds and
+    Files classes provide architecture dependant information about
+    their respective subject matter.The Config and Utility classes
+    contain the sort of information you'd expect.
+
+    The following sections provide a somewhat lower-level treatment of
+    each of these classes in turn Each class also has one or
+    more manpages which are referred to in the appropriate
+    section below.
+  
+ Entity Classes
+    Entity classes represent manageable objects or resources in the    
+    Unix::Sysadmin  framework.
+  
+  The Hinf Classes
+
+    Unix::Sysadmin::Hinf is a base class for several system specific
+    classes describing Unix hosts of various architectures:
+  
+    Unix::Sysadmin::Hinf::FreeBSD
+        Tested on FreeBSD versions from 2.2.5 to 4.0
+
+    Unix::Sysadmin::Hinf::Linux
+        Tested on Redhat 6.1 and 6.2
+
+    Unix::Sysadmin::Hinf::SunOS
+        Tested on SPARC Solaris 2.6 through Solaris 8.
+  
+    An Hinf object knows what its hardware and software architectures
+    are, what sorts of commands it can perform and where its
+    configuration files are. It can therefore take actions (methods) on
+    itself such as updating administrative files (with the help of
+    List:: objects). Any host can be nominated as a 'master' host for
+    all or a subset of Unix hosts on a network. All that is required for
+    this is that the host possess an ssh key allowing root access on the  
+    hosts to be managed, and access to a database of the various
+    entities. These databases are lists (see the section on "The List
+    Classes") of Hinf, Uinf, Ainf, Ginf and Nginf objects.
+
+    For a detailed look at the properties and methods of the Hinf class,
+    see the Unix::Sysadmin::Hinf(3) manpage.
+
+  The Uinf Class
+
+    The Uinf class describes users in a Unix network. Uinf objects
+    contain traditional Unix passwd information, as well as data
+    suitable for export to an LDAP or other directory format. The class
+    also keeps track of access permissions assigned to the user
+    represented. A user can be granted or denied access to all, some or
+    one host in the network. Though users may access different sets of
+    hosts, the Unix::Sysadmin framework provides a central place to store
+    UIDs and usernames so that these can be made unique across a set of
+    managed hosts.
+
+    For a detailed look at the properties and methods of the Uinf class,
+    see the Unix::Sysadmin::Uinf(3) manpage.
+
+  The Ainf Class
+
+    The Ainf class represents automount map entries (keys). Automount
+    keys may be applied to sets of hosts so that access to a particular
+    exported filesystem can be distributed to one, some or all hosts in
+    a network.
+
+    For a detailed look at the properties and methods of the Ainf class,
+    see the Unix::Sysadmin::Ainf(3) manpage.
+
+  The Ginf Class
+
+    The Ginf class represents Unix group entries. As with the other
+    entity classes, a Ginf object may be applied to one, some or all
+    hosts in a network. Like Uinf objects, Ginf objects can be made
+    globally unique with regard to group name and GID.
+
+    For a detailed look at the properties and methods of the Ginf class,
+    see the Unix::Sysadmin::Ginf(3) manpage.
+
+Support Classes
+    These classes serve support roles within the Unix::Sysadmin framework. 
+
+  The Nginf Class
+
+    The Nginf class represents netgroups. This object allows entity
+    objects to refer to sets of hosts with a single symbolic name. The
+    idea is stolen from NIS, of course. I don't run NIS or NIS+ so I
+    don't attempt to update its configuration. This class is therefore a
+    support class rather than an entity class.
+
+    For a detailed look at the properties and methods of the Nginf
+    class, see the Unix::Sysadmin::Nginf(3) manpage.
+
+  The List Classes
+
+    These classes are where much of the action is. Unix::Sysadmin::List is
+    a base class that provides storage, iteration, sorting, addition
+    and deletion of its underlying entity class in a list. The various
+    subclasses of List provide methods to produce the Unix
+    administrative file(s) corresponding to the entity class being
+    listed.
+
+   Unix::Sysadmin::List::Hinf
+        This class will produce a host file or DNS database from its
+        contents.
+
+        See the Unix::Sysadmin::List::Hinf(3) manpage for details of these
+        methods and the Unix::Sysadmin::List::Hinf(5) manpage for file
+        format.
+
+   Unix::Sysadmin::List::Uinf
+        If invoked by objects that belong to subclasses of Hinf, objects
+        of this class will produce password databases in whatever format
+        required by the invoking Hinf object. They may also enforce
+        access policies which means they may produce different passwd
+        entries depending on the rights assigned to a partcular user and
+        on which particular Hinf object is involved,
+
+        See the Unix::Sysadmin::List::Uinf(3) manpage for details of these
+        methods and the Unix::Sysadmin::List::Uinf(5) manpage for file
+        format.
+
+    Unix::Sysadmin::List::Ainf
+        If invoked by objects that belong to subclasses of Hinf, objects
+        of this class will produce automount maps in either amd or
+        automount format depending on the requirements of the invoking
+        Hinf object. In a manner similar to List::Uinf, objects of this
+        class may produce differing amd maps depending on the particular
+        invoking Hinf object.
+
+        See the Unix::Sysadmin::List::Ainf(3) manpage for details of these
+        methods and the Unix::Sysadmin::List::Ainf(5) manpage for file
+        format.
+
+    Unix::Sysadmin::List::Ginf
+        This class produces /etc/group files. In a manner similar to
+        List::Uinf, objects of this class may produce differing group
+        files depending on the particular invoking Hinf object.
+
+        See the Unix::Sysadmin::List::Ginf(3) manpage for details of these
+        methods and the Unix::Sysadmin::List::Ginf(5) manpage for file
+        format.
+
+    Unix::Sysadmin::List::Nginf
+        This class produces no corresponding Unix file. It could produce
+        an /etc/netgroup, but if you are running NIS, what do you need
+        this stuff for?
+
+        See the Unix::Sysadmin::List::Nginf(5) manpage for file format. 
+
+  The Cmds Classes
+
+    The Unix::Sysadmin::Cmds class is a base class for os specific Unix
+    commands. The base class provides "lowest common denominator"
+    definitions which the following classes may override or supplement: 
+
+    Unix::Sysadmin::Cmds::FreeBSD
+        FreeBSD specific commands. See the
+        Unix::Sysadmin::Cmds::FreeBSD(3) manpage.
+
+    Unix::Sysadmin::Cmds::Linux
+        Linux specific commands. See the Unix::Sysadmin::Cmds::Linux(3)
+        manpage.
+
+    Unix::Sysadmin::Cmds::SunOS
+        SunOS specific commands. See the Unix::Sysadmin::Cmds::SunOS(3)
+        manpage.
+
+  The Files Classes
+
+    The Unix::Sysadmin::Files class is a base class for os specific Unix
+    file paths. The base class provides "lowest common denominator"
+    definitions which the following classes may override or supplement: 
+
+    Unix::Sysadmin::Files::FreeBSD
+       FreeBSD specific files. See the Unix::Sysadmin::Files::FreeBSD(3)
+       manpage.
+
+     Unix::Sysadmin::Files::Linux
+       Linux specific files. See the Unix::Sysadmin::Files::Linux(3)
+       manpage.
+
+    Unix::Sysadmin::Files::SunOS
+      SunOS specific files. See the Unix::Sysadmin::Files::SunOS(3)
+      manpage.
+  
+SEE ALSO
+    the Unix::Sysadmin::Hinf(3) manpage,
+    the Unix::Sysadmin::Uinf(3) manpage, 
+    the Unix::Sysadmin::Ainf(3) manpage,
+    the Unix::Sysadmin::Ginf(3) manpage,
+    the Unix::Sysadmin::Nginf(3) manpage,
+
+    the Unix::Sysadmin::List::Hinf(3) manpage,
+    the Unix::Sysadmin::List::Unif(3) manpage,
+    the Unix::Sysadmin::List::Ainf(3) manpage,
+    the Unix::Sysadmin::List::Ginf(3) manpage,
+
+    the Unix::Sysadmin::List::Hinf(5) manpage,
+    the Unix::Sysadmin::List::Uinf(5) manpage, 
+    the Unix::Sysadmin::List::Ainf(5) manpage,
+    the Unix::Sysadmin::List::Ginf(5) manpage,
+    the Unix::Sysadmin::List::Nginf(5) manpage,
+
+    the Unix::Sysadmin::Cmds::FreeBSD(3) manpage,
+    the Unix::Sysadmin::Cmds::Linux(3) manpage,
+    the Unix::Sysadmin::Cmds::SunOS(3) manpage,
+
+    the Unix::Sysadmin::Files::FreeBSD(3) manpage,
+    the Unix::Sysadmin::Files::Linux(3) manpage, 
+    the Unix::Sysadmin::Files::SunOS(3) manpage
+  
+AUTHOR
+    Howard Owen <hbo@egbok.com>
+
+-- 
+Howard Owen  -  hbo@egbok.com  -  +1-831-477-1123
+"Even if you are on the right track, you'll get run over if you just sit there."

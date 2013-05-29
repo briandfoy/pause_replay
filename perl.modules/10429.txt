@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10429
+Return-Path: <perl@leeland.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20513 invoked by uid 76); 1 Mar 2002 02:30:52 -0000
+Received: from [209.6.171.144] (HELO mail.worldwideedge.com) (209.6.171.144)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Fri Mar  1 02:30:52 2002 -0000
+Received: from hellspawn ([209.6.171.130])
+	by mail.worldwideedge.com (8.9.3/8.9.2) with ESMTP id WAA07521
+	for <modules@perl.org>; Thu, 28 Feb 2002 22:23:46 -0500
+Message-ID: <4.2.0.58.20020228212645.06c61b40@qbert.yso.net>
+X-Sender: perl@mail.worldwideedge.com (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.2.0.58 
+Date: Thu, 28 Feb 2002 21:28:53 -0500
+To: modules@perl.org
+Subject: Namespace suggestions
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Approved: news@nntp.perl.org
+From: perl@leeland.net (Lee)
+
+I'm new to CPAN (as an developer) and I have a module that I would like to 
+upload to CPAN.
+
+I was hoping to get some feedback on an appropriate Namespace.
+It provides two @array processing functions.
+
+I was thinking it might have a place in the List:: namespace but it doesn't
+actually work on lists but arrays or references to them.
+
+Any suggestions are welcome.
+
+Thanks,
+
+-Lee
+
+#### MODULE INFO ####################
+findone
+usage: findone { coderef }, @array  , OPTIONAL start_index OPTIONAL end_index
+
+findfirst
+usage: findfirst { coderef }, @array  , OPTIONAL start_index OPTIONAL end_index
+
+This is a basically a lazy grep. Will return the first element found.
+On subsequent calls it will return subsequent elements.
+undef if none are left.
+
+If called in a list context, it will return ($match,$index);
+If called in a scalar context, just returns $match.
+
+
+
+# contrived examples.
+while (my ($sku,$index) = findone { $_->{'price'} > 100 && $_->{'desc'} 
+=~/^tv\b/  } @products ) {
+	# When called with a while/for/foreach it will keep track internally of 
+the last match.
+	print "Found a $sku at $index that matches criteria.";
+}
+
+my @tokens = qw(some words here);
+
+while (my $token = <>){
+	chomp($token);
+	die   "$token not in list!" unless findone { $_ eq @tokens }; # Won't keep 
+track because it's not what we want.
+}
+
+
+Internally it uses Filter::Simple to change any calls to
+findone with a call to findfirst unless the current line
+contains a do, for or foreach statement.
+
+This avoids the following gotcha.
+
+my @tokens = (tokens here);
+
+while ($line =<>){
+	chomp($line);
+	die "$line is not a valid token" unless findone { m/^$line/ } @tokens;
+}
+
+Because it keeps track of where and what it's called with,
+it will never match past the first match which means it will
+fail on the second block. (Unless there are multiple matches in @tokens.
+Then it will fail on the Matches+1 iteration.)
+
+findfirst doesn't store any info about previous calls so it avoids the problem.
+

@@ -1,0 +1,318 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1536
+Return-Path: <100265.2470@compuserve.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14815 invoked from network); 4 Apr 2000 21:01:09 -0000
+Received: from ds-img-2.compuserve.com (HELO spdmgaab.compuserve.com) (149.174.206.135)
+  by tmtowtdi.perl.org with SMTP; 4 Apr 2000 21:01:09 -0000
+Received: (from mailgate@localhost)
+	by spdmgaab.compuserve.com (8.9.3/8.9.3/SUN-1.9) id RAA26380
+	for modules@perl.org; Tue, 4 Apr 2000 17:00:42 -0400 (EDT)
+Date: Tue, 4 Apr 2000 17:00:02 -0400
+Subject: Register for pause
+Sender: Michael =?ISO-8859-1?Q?Schl=FCter?= <100265.2470@compuserve.com>
+To: pause <modules@perl.org>
+Message-ID: <200004041700_MC2-9FE7-77A6@compuserve.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	 charset=ISO-8859-1
+Content-Disposition: inline
+Approved: news@nntp.perl.org
+From: 100265.2470@compuserve.com (Michael =?ISO-8859-1?Q?Schl=FCter?=)
+
+Hi,
+
+I want to register to contribute to CPAN.
+
+My name:              Michael Schlueter
+My email:              100265.2470@compuserve.com
+Homepage:           none (though I have one on our non-public Intranet at=
+
+Philips)
+My preferred ID:  mschlue
+
+My plans:              implementing Object Modelling Technique with Perl
+objects, UML for Perl,
+                                some quality engineering related programs=
+
+
+First Module:       Class-Classgen-classgen-3.00.tar.gz: =
+
+                               new approach: creates Perl objects as
+separate .pm files from a simple control file
+
+consists of:
+adpo  Class::Classgen::classgen (script)
+adpo  Class::Classgen::Section.pm (identifies sections within the control=
+
+file)
+adpo  Class::Classgen::New.pm (writes new(); blesses $,% and @ into {})
+adpo  Class::Classgen::Attribute.pm (writes accessor and manipulator
+methods)
+adpo  Class::Classgen::Comments.pm (increases robustness of control file
+contents)
+
+ contains a directory with examples on getting_started, inheritance and
+peanuts
+
+advantage: any $,% or @ instance_variable is blessed and accessor and
+manipulator
+methods are created as source code, e.g.:
+
+   instance variables:   $s, @list, %map
+   methods: set_s(value), get_l_list(), get_h_map(), push_list() and many=
+
+others
+                                  (see perldoc classgen)
+
+   at the end of the .pm a skelton for perldoc-documentation is created.
+
+
+Discussion:
+
+I discussed the matter with a colleague at my office and demonstrated how=
+
+one can save time
+and write cleaner code with this approach. - About 3 weeks ago I mentione=
+d
+in a reply to a OOP
+related thread that I am going to prepare this module on
+comp.lang.perl.misc . I was asked what
+will be the difference to Class::Struct, for example. - At about the same=
+
+time Uri Guttman issued
+a warning on eval. I was not sure whether the code in my blessing part wi=
+ll
+fall into that trap.
+So I asked him to comment on that specific fragment, with a pleasing
+result.
+
+I think I use a different approach to object implementation in Perl. I
+focus less on handling instance
+variables within a Perl object and am more interested in adding the desir=
+ed
+functionality to my
+objects.
+
+With kind regards,
+Michael Schlueter
+
+
+#
+-------------------------------------------------------------------------=
+--
+---------------------------------
+
+Example: peanuts contains with focus ondesired actions:
+
+#!/usr/local/bin/perl -w
+
+        use Dog;
+        use Bird; =
+
+        use strict;
+
+# --- the next things could be achieved easier with conventional coding -=
+--
+
+        my $snoopy =3D Dog->new();
+        my $woodstock =3D Bird->new();
+
+        $snoopy->set_name('snoopy');
+        $woodstock->set_name('woodstock');
+
+        $snoopy->set_pos(0);
+        $woodstock->set_pos(10);
+
+
+speaker("Snoopy sits at ".$snoopy->get_pos().", Woodstock is at
+".$woodstock->get_pos());
+
+$woodstock->talk("'''''");
+$woodstock->meet($snoopy);
+$snoopy->think("The red baron meets his boloved friend.");
+$woodstock->talk("''' ''''' '''");
+$snoopy->think("Oh, you invite me for dinner? Thank you, yes I'll be
+there.");
+
+$woodstock->move(-10);
+speaker("Woodstock moved to".$woodstock->get_pos());
+$snoopy->think("He is so cute, when he is excited. <GRIN>");
+
+
+# --- try this with non OOP-coding -----------------
+#     more woodstock-fellows enter the scene
+
+        my $wood1 =3D Bird->new();
+        my $wood2 =3D Bird->new();
+        my $wood3 =3D Bird->new();
+        my $wood4 =3D Bird->new();
+        =
+
+        $wood1->set_name("woodstock minor");
+        $wood2->set_name("woodstock minor minor");
+        $wood3->set_name("woodstock senior");
+        $wood4->set_name("woodstocks twin ");
+
+
+$wood1->meet($woodstock);
+$wood2->meet($woodstock);
+$wood3->meet($woodstock);
+$wood4->meet($woodstock);
+
+speaker("some other woodstock-fellows have approached woodstock");
+$wood4->talk("... ## '''");
+$woodstock->talk("??? ... !!");
+$wood3->talk(" ' ' ' '   ''");
+$snoopy->think("oh my god, I hate family meetings");
+$snoopy->think("I hope they will not come over here");
+
+speaker("Some woodies are moveing now towards Snoopy");
+$wood4->move(5);
+$wood3->move(4);
+$wood2->move(3);
+
+
+speaker($wood4->get_name()." is at ".$wood4->get_pos()." now");
+speaker($wood3->get_name()." is at ".$wood3->get_pos()." now");
+speaker($wood2->get_name()." is at ".$wood2->get_pos()." now");
+speaker("");
+
+$wood4->talk("'' '', ' ' '?");
+$snoopy->think("oh gosh, they're coming");
+
+# ------------------------------------------------------
+
+sub speaker {
+        my $text =3D shift;
+        print "\n>>>$text\n";
+}
+
+# -------------------------------------------------------
+
+Dog.pm and Bird.pm were created by classgen with suitable instance
+variables. Dog's and Bird's
+inherit instance variables and methods from Creature.pm. The only methods=
+
+left for me to implement
+were Bird->talk(), Dog->think(), Creature->move() and Creature->meet(),
+which could not be created
+from the instance variables by definition.
+
+BTW, the control file bird.txt would look like
+
+        header:
+                package Bird;
+                use Creature;
+                @ISA=3D( "Creature" );
+        variables:
+                $a
+
+Bird.pm contains after enabling inheritance, adding talk() and adding som=
+e
+docu:
+
+# --- Generated by classgen 3.0 on Son Apr  2 17:53:23 MEST 2000 ---
+
+        package Bird;
+        use Creature;
+        @ISA=3D( "Creature" );
+;
+sub new {
+        my $self =3D shift;
+        my $type =3D ref($self)||$self;
+
+        # instance-variables:
+        my $a;  #justadummy
+
+        $self=3Dbless {
+                _a              =3D>      $a,
+        }, $type;
+        $self->inherit_from($self->Creature::new());    # adapt when
+inheriting
+        return $self;
+}
+
+# --- methods specific for this class ---------------------
+
+sub specific {                  # a dummy() used for copy & paste
+        my ($self) =3D @_;
+}
+
+sub talk {
+        my ($self,$text) =3D @_;
+        $self->make_noise($text);
+}
+
+# --- inheritance methode -----------------------------------
+
+sub inherit_from {
+        my ($self, $base_blessed) =3D @_;
+        my @l =3D keys %$base_blessed;
+        foreach (@l) {
+                $self->{$_} =3D $base_blessed->{$_};
+        }
+}
+
+# --- accessor methods -----------------------------------
+
+sub get_a {
+        my ($self) =3D @_;
+        $self->{_a};
+}
+
+# --- manipulator methods --------------------------------
+
+sub clear_a {
+        my ($self) =3D @_;
+        my $v =3D $self->set_a(undef);
+
+}
+
+sub set_a {
+        my ($self, $value) =3D @_;
+        $self->{_a} =3D $value;
+}
+
+1;
+
+__END__
+
+=3Dhead1 NAME =
+
+
+Bird - just another Creature.
+
+=3Dhead1 VERSION
+
+=3Dhead1 SYNOPSIS
+
+=3Dhead1 DESCRIPTION
+
+Whatch out, this bird will talk.
+
+=3Dhead1 ENVIRONMENT
+
+=3Dhead1 DIAGNOSTICS
+
+=3Dhead1 BUGS
+
+=3Dhead1 FILES
+
+=3Dhead1 SEE ALSO
+
+=3Dhead1 AUTHOR
+
+Name:  Michael Schlueter =
+
+
+email: 100265.2470@compuserve.com
+
+=3Dhead1 COPYRIGHT
+
+Copyright (c) 2000, Michael Schlueter. All Rights Reserved.
+This module is free software. It may be used, redistributed
+and/or modified under the same terms as Perl itself.

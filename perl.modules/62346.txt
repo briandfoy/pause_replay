@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62346
+Return-Path: <wyp3rlx02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17270 invoked from network); 24 Sep 2008 10:29:39 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 24 Sep 2008 10:29:39 -0000
+Received: (qmail 5708 invoked by uid 225); 24 Sep 2008 10:29:38 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 5703 invoked by alias); 24 Sep 2008 10:29:38 -0000
+X-Spam-Status: No, hits=-10.0 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_HI,SPF_SOFTFAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Wed, 24 Sep 2008 03:29:35 -0700
+Received: (qmail 17249 invoked by uid 515); 24 Sep 2008 10:29:31 -0000
+Message-ID: <20080924102931.17248.qmail@lists.develooper.com>
+To: modules@perl.org
+Date: Wed, 24 Sep 2008 12:29:29 +0200
+User-Agent: Thunderbird 1.5.0.10 (X11/20060911)
+MIME-Version: 1.0
+Subject: Re: Fwd: PAUSE indexer report DAMJANP/RWDE-518.tar.gz
+References: <200809231626.m8NGQnxk016103@pause.perl.org> <e46add430809232021j5d6e14c0jd32e852cbeece66c@mail.gmail.com>
+In-Reply-To: <e46add430809232021j5d6e14c0jd32e852cbeece66c@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 141.52.67.61
+Approved: news@nntp.perl.org
+From: wyp3rlx02@sneakemail.com (Steffen Mueller)
+
+Hi Damjan,
+
+Damjan Pelemis wrote:
+> Indexer reported AllOK, but:
+
+Essentially, it means all *packages* it found were okay.
+
+> cpan[16]> install RWDE
+> Running install for module 'RWDE'
+> 
+>   The module RWDE isn't available on CPAN.
+> 
+> ----
+> 
+> cpan[17]> m RWDE
+> Module id = RWDE
+>     DESCRIPTION  Rapid Web Development Environment (MVC type)
+>     CPAN_USERID  VKHERA (Vivek Khera <vivek@khera.org>)
+>     CPAN_VERSION undef
+>     CPAN_FILE    Contact Author Vivek Khera <vivek@khera.org>
+>     DSLIP_STATUS bdpOp (beta,developer,perl,object-oriented,Standard-Perl)
+>     INST_FILE    (not installed)
+> 
+> ----
+> 
+> Neither CPAN_FILE nor  CPAN_VERSION have been picked up. From the
+> documentation, I understood this was indexer's job. Is there something
+> I can do to fix this?
+
+Looking at your RWDE.pm file from
+http://search.cpan.org/src/DAMJANP/RWDE-518/RWDE.pm, I see that the file
+has no package statement. Yet you specify VERSION_FROM that file in the
+Makefile.PL. Quite frankly, I'm not surprised it's not being picked up
+by the indexer.
+
+The proper fix would be to add a
+
+package RWDE;
+
+to RWDE.pm.
+
+While you're at it, may I suggest that you move the .pm files under
+lib/? That's part of the best-practices for CPAN distribution structure.
+
+Best regards,
+Steffen

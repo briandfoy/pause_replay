@@ -1,0 +1,65 @@
+Newsgroups: perl.ithreads,perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.ithreads:324 perl.modules:12774 perl.module-authors:454
+Return-Path: <liz@dijkmat.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 47836 invoked by uid 76); 21 Jul 2002 18:23:21 -0000
+Received: from smtpzilla5.xs4all.nl (HELO smtpzilla5.xs4all.nl) (194.109.127.141)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Sun Jul 21 18:23:21 2002 -0000
+Received: from valizo (a80-127-231-41.dial.xs4all.nl [80.127.231.41])
+	by smtpzilla5.xs4all.nl (8.12.0/8.12.0) with ESMTP id g6LIMqAG047295;
+	Sun, 21 Jul 2002 20:22:52 +0200 (CEST)
+Message-ID: <4.2.0.58.20020721195048.0270e2b0@mickey.dijkmat.nl>
+X-Sender: lm@mickey.dijkmat.nl
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.2.0.58 
+Date: Sun, 21 Jul 2002 20:22:57 +0200
+To: module-authors@perl.org, modules@perl.org, perl-ithreads@perl.org
+Subject: [CAUTION] Thread-saving modules
+In-Reply-To: <rt-15273-30860.15.5115747543@perl> 
+References: <rt-15273@perl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Approved: news@nntp.perl.org
+From: liz@dijkmat.nl (Elizabeth Mattijsen)
+
+This may be of interest to module authors who are looking at making their 
+modules thread-safe.  This is particularly important if your module has a 
+DESTROY subroutine that actually does something, such as DBI drivers.
+
+Because of a bug in 5.8.0, the DESTROY method will be called too many times 
+when you have created threads in a threaded environment.  The extra times 
+(by the looks, once for each thread created + once for the main thread) it 
+_is_ called, the first parameter to DESTROY is defective (by the looks of 
+it, pointing to some random item).
+
+Please note that this problem only exists when threads have actually been 
+created.  It does not seem to occur when you are just executing your 
+program in a Perl built with thread-support, but without actually starting 
+any threads.  But since any module can start a thread without it being 
+visible to the outside world, it _is_ something to be aware of nonetheless.
+
+You should therefore _always_ check the validity of the first value passed 
+to DESTROY and make sure it is what you expect it to be.  If you don't, 
+you're looking at indeterminate (strange) execution errors or segfaults.
+
+The check could be as simple as:
+
+   return if ref($_[0]) ne 'your::class::name';
+
+Please note that you cannot use the isa() method, as you may not be dealing 
+with an object anymore at this stage.  So this makes it tough for 
+sub-classes.  So maybe:
+
+   return unless ref($_[0]);
+
+could be enough, but as value passed to DESTROY seems to be random, it 
+_could_ conceivably be pointing to another (valid) object.
+
+
+Hope this will save some people some time as it cost me most of today to 
+figure this one out...  ;-(
+
+
+Liz
+

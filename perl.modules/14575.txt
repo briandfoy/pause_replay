@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:14575
+Return-Path: <hardburn@runbox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 65049 invoked by uid 76); 23 Oct 2002 04:16:00 -0000
+Received: from aibo.runbox.com (HELO aibo.runbox.com) (193.71.199.94) by onion.perl.org (qpsmtpd/0.12-dev) with SMTP; 2002-10-23 04:16:00Z
+Received: from [10.9.9.110] (helo=snoopy.runbox.com)	by tramp.runbox.com with esmtp (Exim 4.05-VA-mm1)	id 184Cw0-0002WO-00; Wed, 23 Oct 2002 06:15:56 +0200
+Received: from [204.71.148.137] (helo=enterprise)	(Authenticated Sender=hardburn)	by snoopy.runbox.com with asmtp (Exim 3.35 #1)	id 184CvK-0006NK-00; Wed, 23 Oct 2002 06:15:14 +0200
+Content-Type: text/plain;  charset="iso-8859-1"
+Reply-To: hardburn@runbox.com
+To: _brian_d_foy <comdog@panix.com>
+Subject: Re: Freenet modules namespace
+Date: Tue, 22 Oct 2002 23:16:45 -0500
+X-Mailer: KMail [version 1.4]
+References: <200210221713.31413.hardburn@runbox.com> <E1849iN-00062F-00@pluto.runbox.com>
+In-Reply-To: <E1849iN-00062F-00@pluto.runbox.com>
+Cc: modules@perl.org
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Message-ID: <200210222316.49545.hardburn@runbox.com>
+X-SMTPD: qpsmtpd/0.12-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: hardburn@runbox.com (Timm Murray)
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+On Tuesday 22 October 2002 19:49, you wrote:
+> > I'm working on some modules for Freenet (www.freenetproject.org) and
+> > would like to register a namespace.  It appears that someone suggested
+> > the Net::Freenet:: namespace a few months ago
+> > (http://www.xray.mpe.mpg.de/mailing-lists/modules/2002-06/msg00366.html),
+> > but I haven't found anything about it since.
+>
+> i think we finally decided not to put such things under Net.
+>
+> is Freenet a new protocol, or does it ride on top of something else
+> (like nntp, http, or so on?).  if it is another layer, i don't think
+> it should be in Net.  if it's a new low-level protocol, you might
+> be ale to convince us.
+
+It's a new protocol.  Each "node" in the entire Freenet network communicates 
+using "Freenet Node Protocol" (FNP).  Though it is theoretically possible to 
+write a client program using FNP, it requires a lot of crypto key exchange 
+that is more complex than even the most complicated clients should have to go 
+through. 
+
+Thus, "Freenet Client Protocol" (FCP) was developed to make it easy for 
+clients to be written.  FCP is meant to be used only to connect to a node on 
+localhost.  FCP is where my current efforts are being directed.
+
+The current Freenet node implementation contains a gateway called "FProxy" 
+that allows any HTTP client to connect to Freenet (also only meant to be used 
+on localhost).  However, my module doesn't deal with HTTP at all.  Further, 
+FProxy is designed primarily for accessing Freenet through a web browser, not 
+for use as a general-purpose Freenet client layer.
+
+>
+> do you have other suggestions for names?  would it fit in WebService?
+
+WebService wouldn't do at all--FProxy is the only part of Freenet that knows 
+what HTTP is.
+
+>
+> Does anyone have an objection to a new top-level namespace?  Blog seems
+> similar and has its own namespace.
+
+- -- 
+"Mach is the biggest intellectual fraud of the decade."
+"What about X?"
+"I said 'intellectual.'"
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.4 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iEYEARECAAYFAj22IrAACgkQqpueKcacfLTigACcCcjYL4ni/c00QbuZKXSF+8sU
+n/sAnRLhyuM5ytx21xMaHyacuE6LRHGu
+=068Z
+-----END PGP SIGNATURE-----
+

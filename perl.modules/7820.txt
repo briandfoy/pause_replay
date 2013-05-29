@@ -1,0 +1,79 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7820
+Return-Path: <JGSmith@TAMU.Edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 70316 invoked from network); 27 Sep 2001 15:53:00 -0000
+Received: from moya.tamu.edu (root@128.194.103.45)
+  by onion.valueclick.com with SMTP; 27 Sep 2001 15:53:00 -0000
+Received: from moya.tamu.edu (jgsmith@localhost [127.0.0.1])
+	by moya.tamu.edu (8.11.4/8.11.4) with ESMTP id f8RFqBG24729;
+	Thu, 27 Sep 2001 10:52:12 -0500 (CDT)
+Message-ID: <200109271552.f8RFqBG24729@moya.tamu.edu>
+To: joe@ispsoft.de, amar@ispsoft.de, gbarr@pobox.com, taiy@cpan.org
+Cc: JGSmith@TAMU.Edu, modules@perl.org
+Subject: Reading LDAP Schema and related topics
+Reply-To: JGSmith@TAMU.Edu
+X-Office: 326A Teague
+X-Organization: TAMU CIS Operating Systems Group, Unix
+X-Pgp-Key: Get key 0x7991CC92 by sending message with subject: "get pgp key"
+X-Url: http://HeX.TAMU.Edu/
+X-Reposting-Policy: redistribute only with permission
+Date: Thu, 27 Sep 2001 10:52:11 -0500
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: JGSmith@TAMU.Edu (James G Smith)
+
+[ This is CC'd to the modules list so they can see some more of the
+background behind the requests.]
+
+I am trying to put together a set of modules that can give a meta-view of
+LDAP.  This would remove intimate knowledge of the LDAP structure from the
+scripts and place it in these modules.
+
+For example, here at Texas A&M University, we have our LDAP with three
+primary branches: 
+
+   ou={People, Mailusers, Roles and Organizations}, dc=tamu, dc=edu.  
+
+The entries in ou=People are a super-set of ou=Mailusers.  People (real,
+breathing, human beings) can be members of both branches due to the
+political history of the service.  Entries in ou=Roles and Organizations
+are role and organizational accounts and do not represent actual people.
+
+We try to ensure that information between branches that should be the same
+is indeed the same.  In addition, we maintain an ou=Administrative branch
+to track ownership of usernames, since usernames are not part of the dn and
+customers can change them at will.
+
+All this is written in PHP at the moment, but I am trying to rewrite
+everything in Perl.  PHP has too many constraints I have to work around
+(imho).  I'd like to make as much of the code as general as possible.
+
+The meta-LDAP modules would be able to look at a configuration file to
+gather any policy information and, together with a set of callbacks
+(perhaps by using a custom derivitive class), enforce those policies
+without having to put that logic in all the scripts that might make use of
+the LDAP.  This works for both reading and writing.
+
+Part of the configuration that is needed is the attribute type and object
+class configuration of the server.  This can be supplied in an RFC 2252
+specified format or in a server-specific format.  I currently have a module
+that can read at least the attribute types and object classes from an RFC
+2252 complient file.
+
+The big question comes down to: what should be the name of the module that
+reads the server (schema) configuration?
+
+I have requested the LDAP::* namespace for the meta-LDAP modules.  I have
+also requested Config::LDAP for the module that reads the LDAP server
+configuration.  If the LDAP::* namespace is approved, LDAP::ReadSchema or
+something similar might work.  
+
+This last request resulted in a `counter-request' that I contact the
+authors of some of the various LDAP modules on CPAN and see if anyone has a
+better idea for where to put things. :)
+--
+James Smith <JGSmith@TAMU.Edu>, 979-862-3725
+Texas A&M CIS Operating Systems Group, Unix

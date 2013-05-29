@@ -1,0 +1,356 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11829
+Return-Path: <jason.heddings@sun.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25619 invoked by uid 76); 24 May 2002 21:58:01 -0000
+Received: from nwkea-mail-2.sun.com (HELO nwkea-mail-2.sun.com) (192.18.42.14)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Fri May 24 21:58:01 2002 -0000
+Received: from bast.Central.Sun.COM ([129.147.4.36])
+	by nwkea-mail-2.sun.com (8.9.3+Sun/8.9.3) with ESMTP id OAA28788
+	for <modules@perl.org>; Fri, 24 May 2002 14:57:33 -0700 (PDT)
+Received: from sun.com (mi6.Central.Sun.COM [172.20.3.109])
+	by bast.Central.Sun.COM (8.10.2+Sun/8.10.2/ENSMAIL,v2.2) with ESMTP id g4OLvXI23732
+	for <modules@perl.org>; Fri, 24 May 2002 15:57:33 -0600 (MDT)
+Sender: Jason.Heddings@sun.com
+Message-ID: <3CEEB746.EC961A19@sun.com>
+Date: Fri, 24 May 2002 15:57:26 -0600
+X-Mailer: Mozilla 4.76 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Search::Google module
+Content-Type: multipart/mixed;
+ boundary="------------6C42BA940D1C434432DAC53C"
+Approved: news@nntp.perl.org
+From: jason.heddings@sun.com (Jason Heddings)
+
+--------------6C42BA940D1C434432DAC53C
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hello!
+
+Here's my first (very naive) attempt at a Perl module.  I'm trying to
+solve the API w/ Google.com's search.  I saw a place-holder on the CPAN
+list, but no implementation.
+
+You have to have a free key from google to run this
+(http://www.google.com/apis)...
+
+Simply:
+  use Search::Google;
+  my $search = new Search::Google($key);
+  my $response = $search->search($query);
+  my $search_results = $response->{results};
+  print " ~".$response->{estimated_hits}." results.";
+
+  foreach (@$search_results) {
+    print $_->{size};
+    print $_->{snippet};
+    print $_->{summary};
+    print $_->{url};
+    print $_->{title};
+    print $_->{host};
+  }
+
+How am I doing do far?  Is this even worth doing?
+
+Thanks!
+--Jason 
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      \\\|///                 Jason Heddings             ((
+     \\ ~ ~ //                303.272.5166 (x75166)    C|~~|
+     (/ @ @ /)                Jason.Heddings@Sun.COM    `__'
+ ~~oOOo~(_)~oOOo~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------6C42BA940D1C434432DAC53C
+Content-Type: text/plain; charset=us-ascii;
+ name="Google.pm"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="Google.pm"
+
+package Search::Google;
+
+use strict;
+use SOAP::Lite;
+
+sub new {
+  my ($class, $key, %conf) = @_;
+
+  return undef if (! $key);
+
+  my $hits = (exists $conf{hits} ? $conf{hits} : 10);
+  my $start = (exists $conf{start} ? $conf{start} : 0);
+  my $filter = (exists $conf{filter} ? $conf{filter} : "false");
+  my $restrict = (exists $conf{restrict} ? $conf{restrict} : "");
+  my $safe_search = (exists $conf{safe_search} ? $conf{safe_search} : "false");
+  my $lr = (exists $conf{lr} ? $conf{lr} : "");
+  my $ie = (exists $conf{ie} ? $conf{ie} : "latin1");
+  my $oe = (exists $conf{oe} ? $conf{oe} : "latin1");
+
+  my $wsdl = $conf{wsdl};
+  if (! $wsdl) {
+    foreach (map {"$_/Search/google.wsdl"} @INC) {
+      next if (! -f $_);
+      $wsdl = "file:".$_;
+      last;
+    }
+  }
+
+  my $self = bless {
+    key => $key,
+    hits => $hits,
+    start => $start,
+    filter => $filter,
+    restrict => $restrict,
+    safe_search => $safe_search,
+    lr => $lr,
+    ie => $ie,
+    oe => $oe,
+    wsdl => $wsdl,
+  }, $class;
+
+  return $self;
+}
+
+sub search {
+  my ($self, $query) = @_;
+
+  my $service = new SOAP::Lite->service($self->{wsdl});
+  my $response = $service->doGoogleSearch($self->{key}, $query,
+                                          $self->{start}, $self->{hits},
+                                          $self->{filter}, $self->{resrtict},
+                                          $self->{safe_search}, $self->{lr},
+                                          $self->{ie}, $self->{oe});
+  my $element;
+  my @formatted_elements;
+  my $elements = $response->{resultElements};
+  foreach (@$elements) {
+    $element->{size} = $_->{cachedSize};
+    $element->{host} = $_->{hostName};
+    $element->{snippet} = $_->{snippet};
+    $element->{summary} = $_->{summary};
+    $element->{url} = $_->{URL};
+    $element->{title} = $_->{title};
+    push @formatted_elements, $element;
+    $element = undef;
+  }
+
+  my $result;
+  $result->{filtering} = $response->{documentFiltering};
+  $result->{estimated_hits} = $response->{estimatedTotalResultsCount};
+  $result->{search_time} = $response->{searchTime};
+  $result->{results} = \@formatted_elements;
+
+  return $result;
+}
+
+1;
+
+--------------6C42BA940D1C434432DAC53C
+Content-Type: text/plain; charset=us-ascii;
+ name="google.wsdl"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="google.wsdl"
+
+<?xml version="1.0"?>
+
+<!-- WSDL description of the Google Web APIs.
+     The Google Web APIs are in beta release. All interfaces are subject to
+     change as we refine and extend our APIs. Please see the terms of use
+     for more information. -->
+
+<definitions name="urn:GoogleSearch"
+             targetNamespace="urn:GoogleSearch"
+             xmlns:typens="urn:GoogleSearch"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+  <!-- Types for search - result elements, directory categories -->
+
+  <types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" 
+                targetNamespace="urn:GoogleSearch">
+            
+      <xsd:complexType name="GoogleSearchResult">
+        <xsd:all>
+          <xsd:element name="documentFiltering"           type="xsd:boolean"/>
+          <xsd:element name="searchComments"              type="xsd:string"/>
+          <xsd:element name="estimatedTotalResultsCount"  type="xsd:int"/>
+          <xsd:element name="estimateIsExact"             type="xsd:boolean"/>
+          <xsd:element name="resultElements"              type="typens:ResultElementArray"/>
+          <xsd:element name="searchQuery"                 type="xsd:string"/>
+          <xsd:element name="startIndex"                  type="xsd:int"/>
+          <xsd:element name="endIndex"                    type="xsd:int"/>
+          <xsd:element name="searchTips"                  type="xsd:string"/>
+          <xsd:element name="directoryCategories"         type="typens:DirectoryCategoryArray"/>
+          <xsd:element name="searchTime"                  type="xsd:double"/>
+        </xsd:all>
+      </xsd:complexType>
+
+      <xsd:complexType name="ResultElement">
+        <xsd:all>
+          <xsd:element name="summary" type="xsd:string"/>
+          <xsd:element name="URL" type="xsd:string"/>
+          <xsd:element name="snippet" type="xsd:string"/>
+          <xsd:element name="title" type="xsd:string"/>
+          <xsd:element name="cachedSize" type="xsd:string"/>
+          <xsd:element name="relatedInformationPresent" type="xsd:boolean"/>
+          <xsd:element name="hostName" type="xsd:string"/>
+          <xsd:element name="directoryCategory" type="typens:DirectoryCategory"/>
+          <xsd:element name="directoryTitle" type="xsd:string"/>
+        </xsd:all>
+      </xsd:complexType>
+  
+      <xsd:complexType name="ResultElementArray">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+             <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="typens:ResultElement[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+
+      <xsd:complexType name="DirectoryCategoryArray">
+        <xsd:complexContent>
+          <xsd:restriction base="soapenc:Array">
+             <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="typens:DirectoryCategory[]"/>
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
+
+      <xsd:complexType name="DirectoryCategory">
+        <xsd:all>
+          <xsd:element name="fullViewableName" type="xsd:string"/>
+          <xsd:element name="specialEncoding" type="xsd:string"/>
+        </xsd:all>
+      </xsd:complexType>
+
+    </xsd:schema>
+  </types> 
+
+  <!-- Messages for Google Web APIs - cached page, search, spelling. -->
+             
+  <message name="doGetCachedPage">
+    <part name="key"            type="xsd:string"/>
+    <part name="url"            type="xsd:string"/>
+  </message>
+
+  <message name="doGetCachedPageResponse">
+    <part name="return"         type="xsd:base64Binary"/>
+  </message>
+
+  <message name="doSpellingSuggestion">
+    <part name="key"            type="xsd:string"/>
+    <part name="phrase"         type="xsd:string"/>
+  </message>
+
+  <message name="doSpellingSuggestionResponse">
+    <part name="return"         type="xsd:string"/>
+  </message>
+
+  <message name="doGoogleSearch">
+    <part name="key"            type="xsd:string"/>
+    <part name="q"              type="xsd:string"/>
+    <part name="start"          type="xsd:int"/>
+    <part name="maxResults"     type="xsd:int"/>
+    <part name="filter"         type="xsd:boolean"/>
+    <part name="restrict"       type="xsd:string"/>
+    <part name="safeSearch"     type="xsd:boolean"/>
+    <part name="lr"             type="xsd:string"/>
+    <part name="ie"             type="xsd:string"/>
+    <part name="oe"             type="xsd:string"/>
+  </message>
+
+  <message name="doGoogleSearchResponse">
+    <part name="return"         type="typens:GoogleSearchResult"/>           
+  </message>
+
+  <!-- Port for Google Web APIs, "GoogleSearch" -->
+
+  <portType name="GoogleSearchPort">
+
+    <operation name="doGetCachedPage">
+      <input message="typens:doGetCachedPage"/>
+      <output message="typens:doGetCachedPageResponse"/>
+    </operation>
+
+    <operation name="doSpellingSuggestion">
+      <input message="typens:doSpellingSuggestion"/>
+      <output message="typens:doSpellingSuggestionResponse"/>
+    </operation>
+
+    <operation name="doGoogleSearch">
+      <input message="typens:doGoogleSearch"/>
+      <output message="typens:doGoogleSearchResponse"/>
+    </operation>
+
+  </portType>
+
+
+  <!-- Binding for Google Web APIs - RPC, SOAP over HTTP -->
+
+  <binding name="GoogleSearchBinding" type="typens:GoogleSearchPort">
+    <soap:binding style="rpc"
+                  transport="http://schemas.xmlsoap.org/soap/http"/>
+
+    <operation name="doGetCachedPage">
+      <soap:operation soapAction="urn:GoogleSearchAction"/>
+      <input>
+        <soap:body use="encoded"
+                   namespace="urn:GoogleSearch"
+                   encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded"
+                   namespace="urn:GoogleSearch"
+                   encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+
+    <operation name="doSpellingSuggestion">
+      <soap:operation soapAction="urn:GoogleSearchAction"/>
+      <input>
+        <soap:body use="encoded"
+                   namespace="urn:GoogleSearch"
+                   encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded"
+                   namespace="urn:GoogleSearch"
+                   encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+
+    <operation name="doGoogleSearch">
+      <soap:operation soapAction="urn:GoogleSearchAction"/>
+      <input>
+        <soap:body use="encoded"
+                   namespace="urn:GoogleSearch"
+                   encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </input>
+      <output>
+        <soap:body use="encoded"
+                   namespace="urn:GoogleSearch"
+                   encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </output>
+    </operation>
+  </binding>
+
+  <!-- Endpoint for Google Web APIs -->
+  <service name="GoogleSearchService">
+    <port name="GoogleSearchPort" binding="typens:GoogleSearchBinding">
+      <soap:address location="http://api.google.com/search/beta2"/>
+    </port>
+  </service>
+
+</definitions>
+
+--------------6C42BA940D1C434432DAC53C--
+

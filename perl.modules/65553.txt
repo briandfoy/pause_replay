@@ -1,0 +1,101 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:65553
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5769 invoked from network); 25 Apr 2009 06:23:13 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 25 Apr 2009 06:23:13 -0000
+Received: (qmail 1364 invoked by uid 225); 25 Apr 2009 06:23:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1360 invoked by alias); 25 Apr 2009 06:23:13 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 24 Apr 2009 23:23:08 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-6) with ESMTP id n3P6MjuH007103;
+	Sat, 25 Apr 2009 08:22:45 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id n3P6MhFq007100;
+	Sat, 25 Apr 2009 08:22:43 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Nicholas Clark <nick@ccl4.org>
+Cc: modules@perl.org, Jarkko Hietaniemi <jhi@iki.fi>,
+        Dave Mitchell <davem@iabyn.com>, "Sean M. Burke" <sburke@cpan.org>
+Subject: Re: Transferring I18N::LangTags and I18N::LangTags::Detect to "p5p"
+References: <20090422144351.GP71149@plum.flirble.org>
+Reply-To: modules@perl.org
+Date: Sat, 25 Apr 2009 08:22:43 +0200
+In-Reply-To: <20090422144351.GP71149@plum.flirble.org> (Nicholas Clark's
+	message of "Wed\, 22 Apr 2009 15\:43\:51 +0100")
+Message-ID: <871vrh5k24.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/22.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Wed, 22 Apr 2009 15:43:51 +0100, Nicholas Clark <nick@ccl4.org> said:
+
+  > Please could modules@perl.org fix it for Sean?
+  > Specifically, I think what is best is to change the PAUSE permissions
+  > of I18N::LangTags I18N::LangTags::Detect and I18N::LangTags::List to be the
+  > same as modules that were only ever in the core, so that it's trivial for
+  > them to update.
+
+Done:
+
+mysql> update packages set dist = 'N/NW/NWCLARK/perl-5.8.9.tar.gz', file = 'lib/I18N/LangTags.pm' where packages.package = 'I18N::LangTags';
+Query OK, 1 row affected (0.75 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update packages set dist = 'N/NW/NWCLARK/perl-5.8.9.tar.gz', file = 'lib/I18N/LangTags/Detect.pm' where packages.package = 'I18N::LangTags::Detect';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update packages set dist = 'N/NW/NWCLARK/perl-5.8.9.tar.gz', file = 'lib/I18N/LangTags/List.pm' where packages.package = 'I18N::LangTags::List';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+I also changed the module list entry and the permissions. Should be
+settled now.
+
+cpan[9]> m I18N::LangTags
+Module id = I18N::LangTags
+    DESCRIPTION  compare & extract language tags (RFC3066)
+    CPAN_USERID  P5P (The Perl5 Porters Mailing List <perl5-porters@perl.org>)
+    CPAN_VERSION 0.35
+    CPAN_FILE    N/NW/NWCLARK/perl-5.8.9.tar.gz
+    UPLOAD_DATE  2008-12-14
+    DSLIP_STATUS Mdpfp (mature,developer,perl,functions,Standard-Perl)
+    MANPAGE      I18N::LangTags - functions for dealing with RFC3066-style language tags
+    INST_FILE    /home/src/perl/repoperls/installed-perls/perl/pVNtS9N/perl-5.8.0@32642/lib/5.10.0/I18N/LangTags.pm
+    INST_VERSION 0.35
+
+
+cpan[10]> m I18N::LangTags::Detect
+Module id = I18N::LangTags::Detect
+    CPAN_USERID  NWCLARK (Nicholas Clark <nwc10+please+use+perlbug+for+perl+queries@colon.colondot.net>)
+    CPAN_VERSION 1.03
+    CPAN_FILE    N/NW/NWCLARK/perl-5.8.9.tar.gz
+    UPLOAD_DATE  2008-12-14
+    MANPAGE      I18N::LangTags::Detect - detect the user's language preferences
+    INST_FILE    /home/src/perl/repoperls/installed-perls/perl/pVNtS9N/perl-5.8.0@32642/lib/5.10.0/I18N/LangTags/Detect.pm
+    INST_VERSION 1.03
+
+
+cpan[11]> m I18N::LangTags::List
+Module id = I18N::LangTags::List
+    CPAN_USERID  SBURKE (Sean M. Burke <sburke@cpan.org>)
+    CPAN_VERSION 0.35
+    CPAN_FILE    N/NW/NWCLARK/perl-5.8.9.tar.gz
+    UPLOAD_DATE  2008-12-14
+    MANPAGE      I18N::LangTags::List -- tags and names for human languages
+    INST_FILE    /home/src/perl/repoperls/installed-perls/perl/pVNtS9N/perl-5.8.0@32642/lib/5.10.0/I18N/LangTags/List.pm
+    INST_VERSION 0.35
+
+-- 
+andreas

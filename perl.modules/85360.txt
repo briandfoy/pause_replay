@@ -1,0 +1,79 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:85360
+Return-Path: <mst@shadowcat.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10642 invoked from network); 26 Mar 2013 18:42:20 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 26 Mar 2013 18:42:20 -0000
+Received: (qmail 26267 invoked by uid 225); 26 Mar 2013 18:42:20 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26263 invoked by alias); 26 Mar 2013 18:42:20 -0000
+X-Spam-Status: No, hits=-1.2 required=8.0
+	tests=BAYES_00,SPF_SOFTFAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from agaton.scsys.co.uk (HELO agaton.scsys.co.uk) (89.16.177.50)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 26 Mar 2013 11:42:16 -0700
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.72)
+	(envelope-from <mst@shadowcat.co.uk>)
+	id 1UKYp0-0005sO-W1; Tue, 26 Mar 2013 18:42:11 +0000
+Date: Tue, 26 Mar 2013 18:42:10 +0000
+To: Linda W <perl-diddler@tlinx.org>
+Cc: modules@perl.org
+Subject: Re: Module submission mem
+Message-ID: <20130326184210.GV6663@newagaton.scsys.co.uk>
+References: <20130320044811.4E0FE1F89B@pause.perl.org>
+ <220320131413272902%brian.d.foy@gmail.com>
+ <514D7263.7090809@tlinx.org>
+ <240320131033178006%brian.d.foy@gmail.com>
+ <514F65AF.4050108@tlinx.org>
+ <20130326003112.9135010AFFD@mxperim6.sea5.speakeasy.net>
+ <5150F5C5.2020907@tlinx.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5150F5C5.2020907@tlinx.org>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Mon, Mar 25, 2013 at 06:11:33PM -0700, Linda W wrote:
+> ----
+>     use mem doesn't load modules.
+> 
+> if it is put *in* a module, it directs perl to use the "in memory" copy
+> of the module rather
+> than searching for it on disk **when**, a user does a "use" of that
+> module, later in the file.
+
+Well, given everybody on this list apparently had the same misunderstanding,
+I think it probably needs a different name.
+
+Am I right that you're trying to create something where -
+
+  package Foo;
+  use Some::Thing;
+
+is equivalent to
+
+  package Foo;
+  $INC{"Foo.pm"} = __FILE__;
+
+?
+
+The last time I implemented that I called it register_inc_entry() and made it
+a subroutine exported by my class builder.
+
+I eventually went back to writing it by hand, because I pretty much only use
+it in testing code and I prefer that to be as simple/obvious as possible.
+
+Perhaps Inlined::Package or something similar would be appropriate as a name?
+
+-- 
+Matt S Trout - Shadowcat Systems - Perl consulting with a commit bit and a clue
+
+http://shadowcat.co.uk/blog/matt-s-trout/   http://twitter.com/shadowcat_mst/
+
+Email me now on mst (at) shadowcat.co.uk and let's chat about how our Catalyst
+commercial support, training and consultancy packages could help your team.

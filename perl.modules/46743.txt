@@ -1,0 +1,293 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46743
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7007 invoked from network); 5 Jan 2006 16:01:53 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 5 Jan 2006 16:01:53 -0000
+Received: (qmail 23022 invoked by uid 225); 5 Jan 2006 16:01:53 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 23018 invoked by alias); 5 Jan 2006 16:01:53 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 05 Jan 2006 08:01:41 -0800
+Received: from pause.perl.org (localhost [127.0.0.1])
+	by pause.perl.org (8.13.4/8.13.4/Debian-3) with ESMTP id k05G1ZIE012122
+	for <modules@perl.org>; Thu, 5 Jan 2006 17:01:36 +0100
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.4/8.13.4/Submit) id k05G1ZTn012120;
+	Thu, 5 Jan 2006 17:01:35 +0100
+Date: Thu, 5 Jan 2006 17:01:35 +0100
+Message-ID: <200601051601.k05G1ZTn012120@pause.perl.org>
+Subject: PAUSE ID request (HOLLY; Akira Horimoto)
+Reply-To: modules@perl.org
+To: modules@perl.org
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+Request to register new user
+
+fullname: Akira Horimoto
+  userid: HOLLY
+    mail: CENSORED
+homepage: 
+     why:
+
+    =head1 NAME
+
+    HTML::StripEvil - Escape EvilTag
+
+    =head1 VERSION
+
+    0.01
+
+    =head1 SYNPSIS
+
+    use HTML::StripEvil; my $stripevil = HTML::StripEvil->new; my
+    $evil_html = <<HTML; <script type="text/javascript"> <!--
+    alert("script is evil tags!!"); //--> </script> <a
+    href="alowalowalow.html" target="_blank">allow tag</a> HTML
+
+    $stripevil->parse($html); #from string
+    $stripevil->parse_file($html_file); #from file
+
+    my $clean_html = $stripevil->filtered_html; $stripevil->clear;
+
+    =head1 DESCRIPTION
+
+    The tag that doesn't want to permit escapes all.
+
+    =head1 METHOD
+
+    The implemented methods are :
+
+    =over 4
+
+    =item C<new>
+
+    create instance
+
+    Example :
+
+    my $stripevil = HTML::StripEvil->new( allow_comment => 1,
+    allow_declaration => 0, allow_process => 0, allow_tags => [qw(a l l
+    o w t a g s)], #allow_tags => "one",# OK );
+
+    Option :
+
+    allow_comment : allow comment. default 0.
+
+    allow_declaration : allow_declaration. default 0.
+
+    allow_process : allow_process. default 0.
+
+    allow_tags : set allow tags
+
+    allow_script : allow script tag. default 0(is_allow_tags("script")
+    OK)
+
+    allow_style : allow style tag. default 0(is_allow_tags("style") OK)
+
+    allow_entity_reference : allow entity reference. default 1
+
+    =item C<set_allow_tags>
+
+    The setting is returned to default.
+
+    Example :
+
+    $stripevil->set_allow_tags(qw(t a g s));
+
+    =item C<add_allow_tags>
+
+    The tag that wants to permit is added.
+
+    Example :
+
+    $stripevil->add_allow_tags(qw(t a g s));
+
+    =item C<deny_tags>
+
+    The specified tag is not permitted.
+
+    Example :
+
+    $stripevil->deny_tags(qw(t a g s));
+
+    =item C<get_allow_tags>
+
+    The list of the tag that has been permitted is returned.
+
+    Example :
+
+    my @list = $stripevil->get_allow_tags;
+
+    =item C<is_allow_tags>
+
+    Whether it is tag that has been permitted is checked.
+
+    Example :
+
+    print 'script is ', ($stripevil->is_allow_tags('script')) ?
+    'allowed' : 'not allowed';
+
+    =item C<deny_all>
+
+    No permission of all
+
+    Example :
+
+    $stripevil->deny_all;
+
+    =item C<allow_comment>
+
+    Whether the comment has been permitted is checked. Or, the setting
+    change of the comment permission.
+
+    Example :
+
+    print 'comment is ', ($stripevil->allow_comment) ? 'allowed' : 'not
+    allowed'; $stripevil->allow_comment(1); ## allow comment!
+
+    =item C<allow_declaration>
+
+    Whether the DOCTYPE declaration has been permitted is checked. Or,
+    the setting change of the DOCTYPE declaration permission.
+
+    Example :
+
+    print 'declaration is ', ($stripevil->allow_declaration) ?
+    'allowed' : 'not allowed'; $stripevil->allow_declaration(1); ##
+    allow declaration!
+
+    =item C<allow_process>
+
+    Whether the processing instruction has been permitted is checked.
+    Or, the setting change of the processing instruction.
+
+    Example :
+
+    print 'process is ', ($stripevil->allow_process) ? 'allowed' : 'not
+    allowed'; $stripevil->allow_process(1); ## allow process!
+
+    =item C<allow_entity_reference>
+
+    Whether the substance reference has been permitted is checked. Or,
+    the setting change of the substance reference.
+
+    Example :
+
+    print 'entity_reference is ', ($stripevil->allow_entity_reference)
+    ? 'allowed' : 'not allowed'; $stripevil->allow_entity_reference(1);
+    ## allow entity_reference!
+
+    =item C<allow_script>
+
+    Whether it permits is checked script tag. Or, the setting change of
+    script tag.
+
+    Example :
+
+    print 'script is ', ($stripevil->allow_script) ? 'allowed' : 'not
+    allowed'; $stripevil->allow_script(1); ## allow script!
+
+    =item C<allow_style>
+
+    Whether it permits is checked style tag. Or, the setting change of
+    style tag.
+
+    Example :
+
+    print 'style is ', ($stripevil->allow_style) ? 'allowed' : 'not
+    allowed'; $stripevil->allow_style(1); ## allow style!
+
+    =item C<processes>
+
+    The reference of the array of the processing instruction list is
+    acquired. (reading exclusive use)
+
+    Example :
+
+    foreach(@{$stripevil->processes}){
+
+    my $process = $_; #example: eval $process ,system $process etc.. }
+
+    =item C<filtered_html>
+
+    HTML that escapes in the tag not permitted is returned.
+
+    Example :
+
+    print $stripevil->filetered_html;
+
+    =item C<filtered_file>
+
+    HTML that escapes in the tag not permitted is written file.
+
+    Example :
+
+    $stripevil->filtered_file("./filtered_file.html");
+
+    =item C<clear>
+
+    Initialization of variable that liberates of HTML::Parser object
+    and is internal. Please execute it when processing is completed.
+
+    =back 4
+
+    =head1 CAUTION
+
+    Parse and parsefile are the methods of HTML::Parser. When using it,
+    the unexpected error is prevented from occurring by using eval.
+
+    Example :
+
+    eval{ $stripevil->parsefile("no_html_file.evil") }; if($@){
+    ##exception program }
+
+    Please filtered_file must specify passing the file and specify the
+    correct one. Die is executed when there are neither passing nor a
+    writing authority that cannot be.
+
+    Processes is a method only for reading. When the value is set, die
+    is done.
+
+    HTML::Parser
+    http://search.cpan.org/~gaas/HTML-Parser-3.46/Parser.pm
+
+    HTML::Filter
+    http://search.cpan.org/~gaas/HTML-Parser-3.46/lib/HTML/Filter.pm
+
+    Class::Accessor
+    http://search.cpan.org/~kasei/Class-Accessor-0.22/lib/Class/Accessor.pm
+
+    =head1 SEE ALSO
+
+    L<HTML::Filter> L<HTML::Parser> L<Class::Accessor>
+
+    =head1 COPYRIGHT
+
+    Copyright (c) 2005 Akira Horimoto
+
+    This library is free software; you can redistribute it and/or
+    modify it under the same terms as Perl itself.
+
+    =head1 AUTHOR
+
+    Akira Horimoto <kurt0027@gmail.com>
+
+    =cut
+
+
+The following links are only valid for PAUSE maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_user&USERID=08a00000_340e373c899d8122&SUBMIT_pause99_add_user_sub=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_user&USERID=08a00000_340e373c899d8122&SUBMIT_pause99_add_user_Definitely=1

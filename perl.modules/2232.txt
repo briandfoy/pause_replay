@@ -1,0 +1,103 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2232
+Return-Path: <lem@cantv.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24730 invoked from network); 26 Jun 2000 13:46:50 -0000
+Received: from rs5s2.datacenter.cha.cantv.net (200.44.32.55)
+  by tmtowtdi.perl.org with SMTP; 26 Jun 2000 13:46:50 -0000
+Received: from home-pc.cantv.net (as7r8-064.ras.cha.cantv.net [200.44.71.63] (may be forged))
+	by rs5s2.datacenter.cha.cantv.net (8.9.1a/8.9.1/1.0) with ESMTP id JAA26175;
+	Mon, 26 Jun 2000 09:46:40 -0400 (VET)
+Message-ID: <4.3.2.7.0.20000626093626.00aa5610@pop.cantv.net>
+X-Sender: lem@pop.cantv.net
+X-Mailer: QUALCOMM Windows Eudora Version 4.3.2
+Date: Mon, 26 Jun 2000 09:48:04 -0400
+To: andreas.koenig@anima.de (Andreas J. Koenig)
+Subject: Re: [lem@cantv.net] Digested Articles
+Cc: modules@perl.org
+In-Reply-To: <m3ya3svrta.fsf@ak-71.mind.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Approved: news@nntp.perl.org
+From: lem@cantv.net (=?iso-8859-1?Q?=22Luis_E=2E_Mu=F1oz=22?=)
+References: <m3ya3svrta.fsf@ak-71.mind.de>
+
+At 09:12 a.m. 26/06/00 +0200, Andreas J. Koenig wrote:
+>Topics:
+>    New Module: IP::Address
+>    NEW Modules: Net-Subnet-Count and Tie-IP-Address
+>----------------------------------------------------------------------
+>
+>lem> A while ago I uploaded a module called IP::Address. Since then it
+>lem> has been used by quite a few people in different platforms. Since
+>lem> it has been tested by a few tens of persons I would like to add
+>lem> it to the module list.
+>
+>lem> Is this name acceptable or does a new name need to be figured
+>lem> out?
+>
+>lem> These new modules have been available for a few months now.
+>
+>lem> Net-Subnet-Count is written to simplify collecting subnet
+>lem> statistics out of log files. Tie-IP-Address provides a hash
+>lem> interface to IP-Address.
+>
+>lem> I would like both to be included in the official module list.
+>
+>I find no mention of any of them in the archives at all, did you ever
+>discuss the namespaces anywhere?
+
+Nope. I coded first :)
+
+>IP:: would be new toplevel namespace, so I'm not fond of introducing
+>it without a discussion of alternatives.
+>
+>Net::Subnet::Count is a three level tier in which Net::Subnet:: is a
+>new namespace. Could you lend us a hand in justifying this new
+>namespace?
+
+I don't have arguments in favor or against this name. I came up with it 
+because what the module does is counting how many IP addresses in a log 
+file belong to a set of subnets. In order to fit it within the public 
+namespace there is going to be some renaming... that's why I'm asking ;)
+
+
+>Same goes for Tie::IP::Address.
+
+Tie::IP::Address got this name because it's a Tie interface to 
+IP::Address... I guess that if IP::Address needs to be renamed (as it 
+probably should), Tie::... should follow suit. Please read below to see 
+more proposals.
+
+>I'm not sure, but I could imagine somewhere in the NetPacket or
+>Network hierarchie or below the Net::DNS there might be a place to
+>consider settling.
+
+The modules I referred to deal specifically with representations of IP 
+addresses. They're protocol independent.
+
+Under 'Net' there is essentially stuff related to networking and actual 
+implementations (protocols, clients, servers, tools, etc). While logically 
+the modules I wrote about could fit in something like 'Net::IP', I'm not 
+sure if this approach would make sense in the long run.
+
+On the other hand, something like 'Net::Address::IP' might make more sense. 
+The Tie interface could then be Tie::Net::Address::IP so it could all boil 
+down to
+
+         IP::Address             -->     Net::Address::IP
+         Tie::IP::Address                -->     Tie::Net::Address::IP
+         Net::Subnet::Count      -->     Net::Address::IP::Count
+
+Please let me know what you think about this one, as I feel this makes more 
+sense.
+
+Regards.
+
+-lem
+
+>--
+>andreas
+

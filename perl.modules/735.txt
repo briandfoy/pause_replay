@@ -1,0 +1,71 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:735
+Return-Path: <Tim.Bunce@ig.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14382 invoked from network); 17 Dec 1999 14:22:34 -0000
+Received: from finch-post-11.mail.demon.net (194.217.242.39)
+  by tmtowtdi.perl.org with SMTP; 17 Dec 1999 14:22:34 -0000
+Received: from ignite.demon.co.uk ([158.152.8.99] helo=oink)
+	by finch-post-11.mail.demon.net with smtp (Exim 2.12 #1)
+	id 11yyHB-000L0H-0B; Fri, 17 Dec 1999 14:22:33 +0000
+Received: from toad by oink with SMTP (PP) id <19637-0@oink>;
+          Fri, 17 Dec 1999 14:12:34 +0000
+Received: by toad.ig.co.uk (SMI-8.6/SMI-SVR4) id OAA03782;
+          Fri, 17 Dec 1999 14:12:26 GMT
+Date: Fri, 17 Dec 1999 14:12:26 +0000
+To: Andrew Ford <A.Ford@ford-mason.co.uk>
+Cc: modules@perl.org, andrew@icarus.demon.co.uk
+Subject: Re: Array::Virtual or Mmap::Array
+Message-ID: <19991217141226.E3190@ig.co.uk>
+References: <199912171255.MAA21319@icarus.demon.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3i
+In-Reply-To: <199912171255.MAA21319@icarus.demon.co.uk>; from Andrew Ford on Fri, Dec 17, 1999 at 12:55:12PM +0000
+Organization: Paul Ingram Group, Software Systems, +44 1 483 862800
+Approved: news@nntp.perl.org
+From: Tim.Bunce@ig.co.uk (Tim Bunce)
+
+On Fri, Dec 17, 1999 at 12:55:12PM +0000, Andrew Ford wrote:
+> I have an urgent need for a module to tie an array of integers to an
+> mmap'ed file (a sparse array of several hundred million integers).  I
+> have looked at Mmap.pm by Malcolm Beattie and seen the idea for
+> Array::Virtual registered by Larry Wall and have started implementing
+> the module I need.  But should it be called Array::Virtual (taking
+> Larry's slot) or Mmap::Array?
+> 
+> The interface I have in mind is:
+> 
+>     use Array::Virtual;		# or Mmap::Array
+> 
+>     my @array;
+>     open(FH, "...");
+>     my $nel  = 42;
+>     my $prot = "rw";	# or "ro", or "wo" or should it be PROT_READ?
+>     my $shared = 1;	# or should it be MAP_SHARED?
+>     my $offset = 0;     # this would be the default anyway
+>     my $type   = "int4"	# some set of (string) literals for 1, 2, 4, 8 
+> 			# byte integers in native or network byte
+> 			# order, plus floating point (default probably int4)
+> 
+>     tie @array, $nel, $prot, $shared, FH, $offset, $type;
+> 
+>     $array[0] = 42; 
+>     #etc
+> 
+>     undef @array;
+> 
+> Any thoughts?
+
+The word 'Virtual' doesn't carry much meaning here. Maybe:
+
+	Tie::MmapArray
+
+I'd switch to using a hash of named parameters to the tie.
+
+I'd also use pack() letters to describe the element type (which would
+neatly expand to a string of letters for arrays of structures).
+
+Tim.

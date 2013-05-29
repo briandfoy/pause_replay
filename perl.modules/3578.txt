@@ -1,0 +1,108 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3578
+Return-Path: <jeff@vpservices.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15279 invoked from network); 16 Nov 2000 18:06:20 -0000
+Received: from tisch.mail.mindspring.net (207.69.200.157)
+  by tmtowtdi.perl.org with SMTP; 16 Nov 2000 18:06:20 -0000
+Received: from vpservices.com (pool-63.50.107.69.rlgh.grid.net [63.50.107.69] (may be forged))
+	by tisch.mail.mindspring.net (8.9.3/8.8.5) with ESMTP id NAA14558;
+	Thu, 16 Nov 2000 13:05:52 -0500 (EST)
+Message-ID: <3A14215F.12888CD7@vpservices.com>
+Date: Thu, 16 Nov 2000 10:03:11 -0800
+Organization: -
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Tim Bunce <Tim.Bunce@ig.co.uk>
+CC: modules@perl.org, Jeff Zucker <jeff@vpservices.com>
+Subject: Re: DBD::RAM.pm, DBD::AnyData.pm, and AnyData.pm
+References: <3A12D811.D7C8F140@vpservices.com> <20001116122900.D8961@ig.co.uk>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: jeff@vpservices.com (Jeff Zucker)
+
+Tim Bunce wrote:
+> 
+> On Wed, Nov 15, 2000 at 10:38:09AM -0800, Jeff Zucker wrote:
+>>
+>> The namespace would look like this:
+>>
+>> DBD/AnyData.pm               DBI access to in-memory & file-based data
+>> AnyData.pm                   access & convert many data formats
+>> AnyData/Parser/CSV.pm        parser for CSV (comma separated values)
+>> AnyData/Parser/XML.pm        parser for XML data & files
+>> AnyData/Parser/Ini.pm        parser for Ini style config data & files
+>> AnyData/Parser/FixedWidth.pm parser for fixed-width records
+>> AnyData/Parser/*.pm          parsers for other data formats
+>> AnyData/Storage/RAM.pm       storage manager for in-memory tables
+>> AnyData/Storage/File.pm      storage manager for file-based tables
+>> AnyData/Storage/Tie.pm       storage manager for tied structures
+>> AnyData/Storage/*.pm         other types of storage managers
+> 
+> The name 'Parser' is a little ambiguous.
+> 
+> Is it a custom SQL parser
+
+No, the SQL parsing bit (when I finally get back to it) will still live
+in the SQL/ tree since it will be designed to work with any kind of SQL
+parsing, not just AnyData or even just DBI.  The current changes do not
+impact on the SQL parsing at all: DBD::AnyData.pm continues to rely on
+SQL::Statement for the time being and AnyData.pm does its job blissfully
+ignorant of any such thing as SQL.
+
+> or, as implied above, of the data file.
+
+Yes, that's what these are, parsers for the data formats.  They are
+intentionally very dumb, basically only having information on how to
+recognize a record in the data format and split it into fields and how
+to take a list of fields and turn it back into a printable record in the
+format.  They receive a string or an array or a filehandle and do not
+need to know anything about how the things passed to them were retrieved
+from disk (or elsewhere) or about how the information they pass back
+will be used.  The dumbness of these parsers means a) it will be very
+easy for authors to write new ones for new formats and b) they can
+operate independently from the storage managers.
+
+> If the latter then how does it relate to the Storage modules?
+
+An example: the Parser/FixedWidth module will be fed data from the
+Storage/File module when  the user is accessing a plain text Fixed-width
+file and will be fed data from the Storage/Tie module when the user is
+accessing, e.g. a DBM file that has records serialized into a
+Fixed-width string as the value side of the key/value.
+
+More specifically, from within the DBD the user creates an association
+between a table name, a data format, and a file with a call along the
+lines of 
+
+   $dbh->func([
+       [$table_name, $data_format, $file_name, $hash_of_flags]
+   ],'ad_catalog');
+
+DBD::AnyData will create a catalog object for the table that includes
+one object from Parser/* tree and one object from the Storage/* tree. 
+The storage manager will default to Storage/File (text file) unless one
+of the flags specifies a tie or some other form of storage or unless the
+$data_format requires a specific storage manager (e.g. if the format is
+MLDBM, obviously the storage manager will become Storage/Tie).  When the
+DBD needs to fetch a row, it will consult the catalog entry for that
+table to find out which storage manager to use, then pass the catalog to
+the storage manager which will use the catalog to ask the data parser
+which record separator to use on that format, grab the data from the
+file, then pass that data to the data parser specified in the catalog
+for that table for parsing into fields and then pass the fields back to
+SQL::Statement.  The non-DBI version will behave similaraly but won't be
+operating within the context of SQL::Statement.
+
+Eventually, perhaps as part of the PerlDB project, someone might write a
+storage manager using some other kind of binary storage format which
+could then just be plugged into this system. 
+
+Make any sense?
+
+-- 
+Jeff

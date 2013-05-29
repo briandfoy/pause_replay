@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46427
+Return-Path: <ingham@i-pi.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 26536 invoked from network); 14 Dec 2005 22:26:36 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 14 Dec 2005 22:26:36 -0000
+Received: (qmail 21706 invoked by uid 225); 14 Dec 2005 22:26:34 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 21673 invoked by alias); 14 Dec 2005 22:26:33 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from Mercury.i-pi.com (HELO Mercury.i-pi.com) (198.49.217.133)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 14 Dec 2005 14:26:20 -0800
+Received: from [198.49.217.5] (Socrates.i-pi.com [198.49.217.5])
+	(authenticated bits=0)
+	by Mercury.i-pi.com (8.13.3/8.13.1) with ESMTP id jBEMQFHO009418
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT)
+	for <modules@perl.org>; Wed, 14 Dec 2005 15:26:15 -0700 (MST)
+	(envelope-from ingham@i-pi.com)
+Message-ID: <43A09C08.2090706@i-pi.com>
+Date: Wed, 14 Dec 2005 15:26:16 -0700
+User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050715)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Proposed namespace for IDS testing framework
+X-Enigmail-Version: 0.91.0.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: ingham@i-pi.com (Kenneth Ingham)
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+One part of my PhD work is comparing various intrusion detection
+algorithms.  I have a framework running, and I have a PAUSE ID.  The
+test framework has two parts, a data source, and a learning/testing
+algorithm (most of the testing I am doing is with anomaly detection
+algorithms, hence the learning part).
+
+I propose the following namespace:
+IDS::Test - the test framework itself.
+IDS::Source - the base of the IDS data source hierarchy.  I will be
+providing IDS::Source::HTTP, and possibly some generic sources as well.
+IDS::Algorithm - the base of the IDS algorithm hierarchy.  I will be
+providing several of these, such as IDS::Algorithm::DFA,
+IDS::Algorithm::HMM, IDS::Algorithm::Length, etc.
+
+The idea of the framework is that any algorithm should work with any
+data source.  I have it running on my machine now, with four functioning
+algorithms, and several more in varying stages of completion.
+
+Any objections or modifications to the proposed hierarchy?
+
+Kenneth Ingham
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.2 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iEYEARECAAYFAkOgnAcACgkQvBdLXm3WPsUCegCfWpzXurGyUklQKI6yJM7qtBL4
+5rIAnR3VciubCB+0fIt5zU4WaFtjhQ3B
+=KI0w
+-----END PGP SIGNATURE-----

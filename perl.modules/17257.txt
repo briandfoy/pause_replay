@@ -1,0 +1,124 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17257
+Return-Path: <markov@speeltuin.ATComputing.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23772 invoked by uid 76); 21 Jan 2003 10:07:43 -0000
+Received: from speeltuin.atcomputing.nl (HELO speeltuin.ATComputing.nl) (195.108.229.26) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-21 10:07:42Z
+Received: by speeltuin.ATComputing.nl (Postfix, from userid 1063)	id 8D85039AB; Tue, 21 Jan 2003 11:09:45 +0100 (CET)
+Date: Tue, 21 Jan 2003 11:09:45 +0100
+To: modules@perl.org
+Subject: Re: Module submission User::Identity
+Message-ID: <20030121110945.P10531@speeltuin.ATComputing.nl>
+References: <200301201009.h0KA9hg03482@pause.perl.org> <15916.30427.385683.89018@phoenix.squirrel.nl> <20030121073828.98A6D39AA@speeltuin.ATComputing.nl> <20030121085035.N10531@speeltuin.ATComputing.nl> <m3ptqq3npy.fsf@k242.linux.bogus>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <m3ptqq3npy.fsf@k242.linux.bogus>; from andreas.koenig@anima.de on Tue, Jan 21, 2003 at 09:34:49AM +0100
+Organization: MARKOV Solutions
+Sender: markov@speeltuin.ATComputing.nl
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: Mark@Overmeer.net (Mark Overmeer)
+
+* Andreas J. Koenig (andreas.koenig@anima.de) [030121 09:37]:
+> >>>>> On Tue, 21 Jan 2003 08:50:35 +0100, Mark Overmeer <Mark@Overmeer.net> said:
+> 
+>   > Please suggest something which is more suitable.
+> 
+> Have you had a look at AddressBook::Entry? I haven't, but I believe a
+> top level namespace like AddressBook or Rolodex would characterize the
+> role of the module better than a namespace in the Person/User/Identity
+> realm.
+
+I have seen the AddressBook name-space (with packages like AddressBook::Entry)
+and Mail::AddressBook::Convert, however, as their name predicts, their purpose
+is to keep address books, not is giving hands and feeds to work with the data
+which is found in it.
+
+For my feeling, the focus of all responses till now is that the main issue
+about user information is that it is stored in an address book.  For me, the
+main issue is that it is easily accessible and smart.
+
+Within the application, it doesn't matter a thing where the user data is
+coming from... it doesn't matter whether it is kept in an address book, a
+data base, or under fly created.  It doesn't matter at all if it is
+fetched from file, LDAP, SOAP, etc.  The only thing what matters is that
+the object describes a person.  So the name must tell that fact!
+
+AddressBook::Entry does exactly what it describes: it offers you an interface
+to write/read a free format entry in an AddressBook.  In one of the planned
+extension modules for User::Identity, there is some role for it:
+
+ my $db  = AddressBook->new(source => "DBI:CSV:f_dir=/tmp/data");
+ my $jan = User::Identity::Collection->search($db, 'jan') or die;
+ if($jan->isMale) { ... }      # true
+ print $jan->formalName;       # prints "prof. dr. J. Janssen"
+
+ sub User::Identity::Collection->search($$)
+ {   my ($db, $name) = @_;
+     my $raw    = $db->search($name) or return;
+     my $cooked = User::Identity->new($name,
+        gender => $raw->{sex}, firstname => $raw->{fn},
+        surname => $raw->{sn}, titles => 'prof. dr.');
+     return $cooked;
+ }
+
+User::Identity want to focus on interpreting the data, not on archieving
+the data.  There are more than enough modules for that.  Functionality it
+provides are wrappers around various sources of information.
+User::Identities do not persist by themselves.
+
+ my $myself  = User::Identity->new('mark', language => [ 'nl-NL', 'en', 'de'],
+    charset => 'iso-8859-15');
+
+ # I have two locations where I read e-mail
+ my $homeloc = $myself->Location('home', ....);
+ my $comploc = $myself->Location('work', ....);
+
+ # I have 12 different e-mail addresses, with sigs in different languages,
+ # different pgp-keys and default folder...
+
+ $myself->Email('private', signature => '@.sig/nl', pgpkey => '@.privpgp',
+     address => 'mark@overmeer.net', accept => qr/\@overmeer.net$/);
+
+ $myself->Email('private', language => 'en', signature => '@.sig.en');
+ $myself->Email('company', ..., location => $comploc);
+
+ $myself->Email('nlnet', language => 'en', fullname => 'Webmaster NLnet',
+     address   => 'webmast@nlnet.nl', accept => qw/\@nlnet.nl$/,
+     signature => '@.sig/nlnet', location  => $comploc);
+
+ # The target for me is integration with Mail::Box.  If this works, creating
+ # e-mail becomes even more abstract.
+
+ my $jan = User::Identity::Collection->search($db, 'jan');
+ my $priv = $myself->find(email => 'private', language => $jan->language);
+
+ my $msg = Mail::Message->build(From => $priv, To => $jan, ...);
+ $msg->send(via => 'smtp');
+
+ print $msg->sender;   #  Mark <mark@overmeer.net>
+
+ # And in procmail
+
+ my $incoming = Mail::Message->read(\*STDIN);
+ my $role = $myself->findBestFit(email => address => $incoming->get('To'),
+                 language => $incoming->language);
+
+ $incoming->reply(From => $role, group_reply => 1)->send;
+
+
+A User::Indentity combines information from many sources for a temporal
+existence.  Calling the module anything which implies that it is persistent
+information is wrong.  Calling it anything which restricts itself to a
+single source of data is a mistake as well.
+-- 
+               MarkOv       %-]
+
+------------------------------------------------------------------------
+drs Mark A.C.J. Overmeer                                MARKOV Solutions
+       Mark@Overmeer.net                          solutions@overmeer.net
+http://Mark.Overmeer.net                   http://solutions.overmeer.net

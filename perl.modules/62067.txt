@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62067
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1790 invoked from network); 3 Sep 2008 06:23:26 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 3 Sep 2008 06:23:26 -0000
+Received: (qmail 2971 invoked by uid 225); 3 Sep 2008 06:23:26 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2966 invoked by alias); 3 Sep 2008 06:23:25 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 02 Sep 2008 23:23:23 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-1) with ESMTP id m836NE9k022046;
+	Wed, 3 Sep 2008 08:23:14 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id m836NDwt022040;
+	Wed, 3 Sep 2008 08:23:13 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: harryfmudd@comcast.net
+Cc: modules@perl.org
+Subject: Re: Astro::SIMBAD::Client::WSQueryInterfaceService (co-) maintainership
+References: <090220081658.20265.48BD70B6000F0F9400004F2922092299270B0B9A0300979D9D0E08@comcast.net>
+Reply-To: modules@perl.org
+Date: Wed, 03 Sep 2008 08:23:13 +0200
+In-Reply-To: <090220081658.20265.48BD70B6000F0F9400004F2922092299270B0B9A0300979D9D0E08@comcast.net>
+	(harryfmudd@comcast.net's message of "Tue\, 02 Sep 2008 16\:58\:31
+	+0000")
+Message-ID: <87zlmpu4ry.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Tue, 02 Sep 2008 16:58:31 +0000, harryfmudd@comcast.net said:
+
+ >> So now I've looked closer and must admit that I see no reasonable way
+ >> to fix this on the side of the indexer. The problem is, in short, the
+ >> fact that the namespace is declared in your META.yml but is not
+ >> directly reachable by perl because you have the namespace (using
+ >> abbreviated names for better visibility) A:S:C:W in the file A/S/C.pm,
+ >> not in the file A:S:C:W.pm.
+ >> 
+
+  > For what it's worth, another of my modules (Win32::Process::Info)
+  > does the same kind of thing: puts namespace
+  > Win32::Process::Info::DummyRoutine in the same file with
+  > Win32::Process::Info::NT, and declares namespace
+  > Win32::Process::Info::DummyRoutine in META.yml. Yet
+  > Win32::Process::Info::DummyRoutine is listed as mine,
+  > "first-come".
+
+  > No, I'm not arguing, just providing an additional datum.
+
+Thanks, I'll keep that in mind when I come close to this code again.
+
+ >> So if we allow A:S:C:W to be indexed, we cause every other tool to
+ >> fail because they won't be able to find the namespace on disk even
+ >> when A:S:C is installed.
+ >> 
+ >> I'd suggest you move A:S:C:W into its own file. Is this feasible?
+
+  > Certainly. I'd love for this to be a private namespace, but as far
+  > as I know there is no such thing in Perl 5. If there's a way to
+  > prevent namespaces from being emitted into META.yml I don't know
+  > it, and even if it could be done it may not be a good idea.
+
+I don't know either, I'm not familiar with Module::Build.
+
+  > Fixed in next release (and the check is in the mail ...). Is this
+  > of enough interest to you that I should make a release to fix it?
+  > Should I let you know when I release, or will things come out
+  > right once the indexer sees a file to go with the namespace?
+
+I fear I cannot predict the exact outcome. I'm still a bit puzzled as
+to what exactly prevented you to become first-come. So a new upload
+would be interesting but no need to rush. Do it as you see fit. And
+yes, please remind me of the upload when it happens.
+
+  > Should I also do something with
+  > Win32::Process::Info::DummyRoutine, or should I just ignore it
+  > since it is indexed correctly? It will take a bit to get this one
+  > straight, since I don't have an MSWin32 system at my disposal at
+  > the moment.
+
+I see no urgent need to worry about namespaces of this deep level.
+Somehow so far we have not seen many namespace troubles even with much
+shorter module names. I also do not expect that users will trip over
+it, so I'd let it rest until a new release is due for other reassons.
+
+-- 
+andreas

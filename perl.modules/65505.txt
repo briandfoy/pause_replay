@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:65505
+Return-Path: <Roland.Huss@consol.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 10957 invoked from network); 21 Apr 2009 10:23:11 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 21 Apr 2009 10:23:11 -0000
+Received: (qmail 2208 invoked by uid 225); 21 Apr 2009 10:23:11 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2200 invoked by alias); 21 Apr 2009 10:23:11 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from border2.consol.net (HELO gw2.consol.de) (194.246.122.22)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 21 Apr 2009 03:23:04 -0700
+Received: from sol1.bb.consol.de (sol1.bb.consol.de [10.250.0.71])
+	by gw2.consol.de (8.14.2/8.14.3) with ESMTP id n3LAMxPd053579
+	for <modules@perl.org>; Tue, 21 Apr 2009 12:22:59 +0200 (CEST)
+	(envelope-from Roland.Huss@consol.de)
+Received: from [127.0.0.1] (gw1.consol.de [10.250.0.11])
+	by sol1.bb.consol.de (8.13.7+Sun/8.13.7) with ESMTP id n3LAMw0p004281;
+	Tue, 21 Apr 2009 12:22:58 +0200 (CEST)
+Message-ID: <C6581ABD-F3D6-47CF-A582-BB90E8816F87@consol.de>
+To: modules@perl.org
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
+Subject: New Namespace for a JMX-Access Module
+Mime-Version: 1.0 (Apple Message framework v930.3)
+Date: Tue, 21 Apr 2009 12:22:57 +0200
+X-Mailer: Apple Mail (2.930.3)
+X-Virus-Scanned: ClamAV 0.94.2/9264/Tue Apr 21 10:05:09 2009 on gw2.consol.de
+X-Virus-Status: Clean
+Approved: news@nntp.perl.org
+From: Roland.Huss@consol.de (=?ISO-8859-1?Q?Roland_Hu=DF?=)
+
+Hi,
+
+I'm about to finish a module for accessing Java JEE Server's JMX  
+MBeanServer
+remotely by transfering JSON entities. This contains a Java agent  
+part, which
+gets deployed as a WAR on the JEE Server and which exposes JMX  
+information via
+HTTP.
+
+The perl side encapsulates the HTTP request and JSON parsing. It  
+provides an
+OO style programming model which can be used for Nagios checks to  
+monitor
+JEE Servers. The question is, which is the appropriate namespace.
+
+The closest toplevel existing namespaces are "Nagios" and "SNMP", but  
+evidently
+JMX is something quite different. In a perfect world, they would be  
+all below
+a top level namespace like "Management".
+
+My suggestions for a module name are:
+
+JMX::JJAgent             - Top-Level "JMX" ("JJ" for "JMX JSON")
+Management::JMX::JJAgent - Top Level "Management", but this seems to  
+be overkill for
+                           a single module, or ?
+Nagios::JMX::JJAgent     - Since the module is probably most valuable  
+for nagios checks,
+                           but it is not related
+
+My prefered name for now is 'JMX::JJAgent', where I might consider to  
+provider alternative
+modules for accessing JMX information via perl modules (e.g. one based  
+on GCJ::Cni)
+
+What are your opinions on this ?
+--
+...roland@cpan.org
+
+
+
+

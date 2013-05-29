@@ -1,0 +1,72 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:2302 perl.modules:41
+Return-Path: <mike808@my-deja.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21025 invoked from network); 14 Oct 1999 16:36:10 -0000
+Received: from mc-qout4.whowhere.com (209.185.123.18)
+  by tmtowtdi.perl.org with SMTP; 14 Oct 1999 16:36:10 -0000
+Received: from Unknown/Local ([?.?.?.?]) by my-deja.com; Thu Oct 14 09:35:37 1999
+To: modules@perl.org
+Date: Thu, 14 Oct 1999 09:35:37 -0700
+Message-ID: <IEJJBCAGICNBAAAA@my-deja.com>
+Mime-Version: 1.0
+Cc: perl5-porters@perl.org
+X-Sent-Mail: on
+Reply-To: 
+X-Mailer: MailCity Service
+Subject: RE: NEW MODULE (pragma): import.pm 
+X-Sender-Ip: 207.239.112.18
+Organization: My Deja Email  (http://www.my-deja.com:80)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: mike808@my-Deja.com ("Michael King")
+
+On Thu, 14 Oct 1999 11:57:01   Redford, John wrote:
+>And just who are these programmers who object to typing 20 or 30 characters?
+
+It's not that, it's the 40-50 times I *USE* variables/functions/etc. from that namespace in 20-30 programs. I'm sorry, but I'm just lazier than you are.
+
+You sound like you've never had to port some Java code to perl...
+
+Also, I don't think CPAN can support arbitrarily large horizontal growth in namespaces. It's already pretty unwieldy, new top-level namespaces are getting scarce, and even some of the second-level ones are pretty crowded (Apache, CGI, DBI, etc.), since many modules revolve around certain popular areas.
+
+In part, I think this module could be very useful to open up namespaces like "OO" with multiple levels instead of the criticism that "OO" is too general for "MyOOSystem" and "YourOOSystem" and "BobsOOSystem". I'd like to see "OO::Frameworks::Mike", "OO::Frameworks::Bob", and "OO::Frameworks::John", "OO::Frameworks::CORBA", or whatever. Then, specific namespaces could be reserved for modules that implement a specific API and therefore could be labelled "Standard", yet be different implementations (ala DBI::DBD). We would not be limited to "making up" some new namespace just because the best one was already taken.
+
+And the 'import' pragma makes life for programmers easier in that viewpoint. I think of it as re-using an OK idea from the Javaspace and applying it to Perlspace. Just as Micro$oft's ASP has spawned countless "templating" systems in Perl, I don't think we should stick our heads in the sand to play nice with features Java programmers coming over to perl (or being required to by their employers) have come to expect from their "comfort zone" of programming.
+
+>Once I get my namespace manipulation module approved by modules@perl.org
+><mailto:modules@perl.org> , I would be happy to create it. Then you could
+>write a bundling module, like this:
+>		package MyCompany::CGIBundle;
+>		use MyCompany::CGI::BobsCode::Foo;
+>		use MyCompany::CGI::Test::Bar;
+>		use MyCompany::CGI::BobsBetterCode::Foo2;
+>		....
+>		use NameSpace::Transitive;
+>
+>And then people could just write:
+>
+>		use MyCompany::CGIBundle;
+>
+>to get all the symbols that were exported into MyCompany::CGIBundle
+>re-exported into their own namespace.
+
+That's great. Then I can change 'import' to automatically *write* that bundle module you describe for code where I want to alias 30-40 modules all from some horribly long namespace.
+
+But, then, it already does that now, so I don't have to wait for your module. :)
+
+
+I can't run a code profiler on the source to output what modules arn't used and then not import them in the first place, as the code could be creating objects using symbolic references constructed at runtime, which source profiling can't detect. (DWIM.pm?)
+
+But, that's a performance issue, which you can fix by explicitly coding a 'use' for only the modules you need. But then, you wouldn't be using 'import' anyway, so it's not a problem 'import' needs to or is supposed to solve.
+
+I am taking all the input to heart, so look for a revision within a week or so.
+
+Mike.
+
+
+--== Sent via Deja.com http://www.deja.com/ ==--
+Share what you know. Learn what you don't.

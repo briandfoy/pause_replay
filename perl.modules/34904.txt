@@ -1,0 +1,488 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:34904
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13365 invoked from network); 17 Sep 2004 21:39:01 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 17 Sep 2004 21:39:01 -0000
+Received: (qmail 12606 invoked by uid 225); 17 Sep 2004 21:39:00 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12595 invoked by alias); 17 Sep 2004 21:38:58 -0000
+X-Spam-Status: No, hits=-4.8 required=8.0
+	tests=BAYES_00,RCVD_IN_SORBS_DUL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from palladium2.baremetal.com (HELO pd2.baremetal.com) (208.184.111.59)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Fri, 17 Sep 2004 14:38:54 -0700
+Received: from [24.108.166.215] (S0106000393c33758.gv.shawcable.net [24.108.166.215])
+	by pd2.baremetal.com (8.12.10/8.12.9) with ESMTP id i8HLNtn7023553;
+	Fri, 17 Sep 2004 14:23:57 -0700
+Mime-Version: 1.0
+Message-ID: <p05200f01bd7104bb4943@[24.108.166.215]>
+In-Reply-To: <170920041505305079%comdog@panix.com>
+References: <p05200f01bd70de9257cb@[24.108.166.215]>
+ <170920041505305079%comdog@panix.com>
+Date: Fri, 17 Sep 2004 14:38:44 -0700
+To: modules@perl.org, _brian_d_foy <comdog@panix.com>
+Subject: Re: Module submission SQL::SyntaxModel
+Cc: darren@DarrenDuncan.net (Darren Duncan)
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+X-Scanned-By: MIMEDefang 2.36
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+At 3:05 PM -0500 9/17/04, _brian_d_foy wrote:
+>  > 1. A previous discussion about naming this module was had on
+>>  modules@perl.org and other lists about a year ago, mainly on
+>>  2003.09.15 and 2003.09.16,
+>
+>I didn't see anything in the modules@perl.org archives from
+>you on those dates.  do you have links to an archive that
+>has those messages?
+
+Okay, here is an ordered copy of all the discussion messages where 
+SQL::SyntaxModel was decided on; they were exchanged by private mail 
+between 2003.09.15 and 2003.09.26, since at the time modules@perl.org 
+seemed to be ineffective.  I did not follow up those messages with a 
+registration attempt for SQL::SyntaxModel, however.  I figured out 
+that perhaps the reason no one was accepting my module for 
+registration after multiple attempts was because it was so immature 
+at the time, talk without substance.  I decided to wait until the 
+module was actually ready to use before trying again; that is the 
+stage I'm at now in September of 2004.  (Meanwhile, I used the new 
+name for CPAN uploads and all documentation, references.)  There are 
+11 messages quoted below.
+
+In addition to the previous on-list conversation of 2003 August 
+(which itself references a previous on-list one of 2003 April/May), 
+this is about everything I have.  It demonstrates several people 
+agreeing with or seeming to agree with what I ended up choosing, 
+SQL::SyntaxModel.
+
+Of course, you can judge whether any of this is valid to you.
+
+I welcome any further questions should you not be ready to grant approval yet.
+
+Thank you. -- Darren Duncan
+
+--------------------------------------------------
+
+Date: Mon, 15 Sep 2003 15:04:22 -0700
+To: Tim Bunce <Tim.Bunce@pobox.com>, Matthew Simon Cavalletto 
+<simonm@cavalletto.org>, Malcolm Dew-Jones <yf110@victoria.tc.ca>, 
+Nathanael Kuipers <nkuipers@uvic.ca>, Ed Avis <ed.avis@kbcfp.com>, 
+Bob X <bobx@linuxmail.org>, Peter Scott <Peter@PSDT.com>, Dave Rolsky 
+<autarch@urth.org>, Sam Vilain <sam@vilain.net>, Dan Sully 
+<daniel@electricrain.com>
+From: Darren Duncan <darren@DarrenDuncan.net>
+Subject: RFC on renaming a SQL/database module
+
+P.S. Oops - forgot a subject line with this message on previous send.
+--------------
+
+Hello.  I am writing you because you responded to the RFC that I 
+posted on August 11th, or a related earlier RFC, regarding a name for 
+my SQL/database related module.
+
+I now have a related question, but given its nature, I thought it 
+would be better to just ask individuals this time rather than whole 
+lists.
+
+My distribution in question can be seen here (watch for version num updates):
+http://search.cpan.org/author/DUNCAND/Rosetta-0.16/
+
+My most developmentally advanced module in that distribution is 
+currently named 'SQL::ObjectModel' (and the last release had a large 
+update to it).  While the name is decent, I wanted to change it to a 
+better yet similar one. 
+
+In particular, I thought the word 'Object' should be removed, since 
+it is probably superfluous.  If it describes anything, it is the 
+conceptual nature of what the module creates or works with, and not 
+the module implementation.
+
+I am planning to simply rename to module to 'SQL::Model', which is 
+not currently in use, because that is what the objects created by the 
+module 'are'.  Also, code which would use it could probably look like 
+this (see the curent module's SYNOPSIS for a context):
+
+     my $model = SQL::Model->new();
+     # ... then use it
+
+Regarding what is 'special about the module: The module represents an 
+abstract syntax tree for all types of SQL.  However, no specific 
+database's syntax is represented; rather the module provides a 
+semantic representation.  And yet, this semantic representation is 
+very close to the common syntax representation as well.  It is only 
+abstracted a small amount.
+
+So I am debating whether to include either of the words 'Semantic' or 
+'Syntax' in the module name, and if so then which.  Possible new 
+module names are these:
+
+1. SQL::Model
+2. SQL::Semantic
+3. SQL::Syntax
+4. SQL::SemanticModel
+5. SQL::SyntaxModel
+
+In some ways I like #4 the best, but unfortunately it goes over the 
+11 character guideline for module name segments.  Though, other CPAN 
+modules do it too, so I'm not sure whether this is an important 
+requirement anymore.
+
+So if any of you have suggestions on which I should use, or have 
+other feedback, then please send it soon.
+
+Note that, if I get no feedback, then this is what I expect to be 
+doing (the short description may be updated to include words the name 
+doesn't):
+
+     SQL::
+     ::Model     adhOg An abstract syntax tree for all types of SQL DUNCAND
+
+Another thing I will mention is that I plan to split my current 
+module into two modules shortly, one subclassing the other.  I will 
+probably coincide my planned rename with the split, with the parent 
+class getting the new base name, and the subclass having a third name 
+segment.
+
+Thank you in advance and have a good day. -- Darren Duncan
+
+--------------------------------------------------
+
+Date: Mon, 15 Sep 2003 21:26:56 -0400
+Subject: Re: RFC on renaming a SQL/database module
+Mime-Version: 1.0 (Apple Message framework v552)
+From: Matthew Simon Cavalletto <simonm@cavalletto.org>
+To: Darren Duncan <darren@DarrenDuncan.net>
+
+On Monday, September 15, 2003, at 06:04  PM, Darren Duncan wrote:
+
+>My most developmentally advanced module in that distribution is 
+>currently named 'SQL::ObjectModel' (and the last release had a large 
+>update to it).  While the name is decent, I wanted to change it to a 
+>better yet similar one.
+>
+>In particular, I thought the word 'Object' should be removed, since 
+>it is probably superfluous.  If it describes anything, it is the 
+>conceptual nature of what the module creates or works with, and not 
+>the module implementation.
+
+Agreed.
+
+>Regarding what is 'special about the module: The module represents 
+>an abstract syntax tree for all types of SQL.  However, no specific 
+>database's syntax is represented; rather the module provides a 
+>semantic representation.  And yet, this semantic representation is 
+>very close to the common syntax representation as well.  It is only 
+>abstracted a small amount.
+
+I'd vote for SQL::SyntaxModel, or the former SQL::SyntaxTree.
+
+>In some ways I like #4 the best, but unfortunately it goes over the 
+>11 character guideline for module name segments.  Though, other CPAN 
+>modules do it too, so I'm not sure whether this is an important 
+>requirement anymore.
+
+You can definitely get away with breaking this rule -- it will only 
+affect users on some very weird platforms, like old DOS file systems.
+
+-Simon
+
+--------------------------------------------------
+
+Date: Mon, 15 Sep 2003 18:42:08 -0700
+To: Matthew Simon Cavalletto <simonm@cavalletto.org>
+From: Darren Duncan <darren@DarrenDuncan.net>
+Subject: Re: RFC on renaming a SQL/database module
+
+Hello Matthew, thank you for your feedback.
+
+You said:
+>I'd vote for SQL::SyntaxModel, or the former SQL::SyntaxTree.
+
+Coincidentally, I was thinking of SyntaxModel before I thought of 
+Model.  As for SyntaxTree, I had never used that name; it was only 
+brought up in discussions for something to change to.
+
+>You can definitely get away with breaking this rule -- it will only 
+>affect users on some very weird platforms, like old DOS file systems.
+
+Sounds good to me.
+
+-- Darren Duncan
+
+--------------------------------------------------
+
+Subject: RE: name for SQL module
+Date: Tue, 16 Sep 2003 08:11:05 +0100
+From: "Avis, Ed" <avised@kbcfp.com>
+To: "Darren Duncan" <darren@DarrenDuncan.net>,
+    "Tim Bunce" <Tim.Bunce@pobox.com>,
+    "Matthew Simon Cavalletto" <simonm@cavalletto.org>,
+    "Malcolm Dew-Jones" <yf110@victoria.tc.ca>,
+    "Nathanael Kuipers" <nkuipers@uvic.ca>, "Bob X" <bobx@linuxmail.org>,
+    "Peter Scott" <Peter@PSDT.com>, "Dave Rolsky" <autarch@urth.org>,
+    "Sam Vilain" <sam@vilain.net>, "Dan Sully" <daniel@electricrain.com>
+
+In database design, a 'model' sometimes means the arrangement of
+tables, constraints and so on used to represent (model) some
+real-world information.  So your proposed name is not appropriate
+I think.
+
+Of those you list, SQL::Syntax or SQL::SyntaxModel are best I
+think.  I'd favour SQL::Statement since that's what an instance
+of the class 'is'.
+
+--
+Ed Avis <avised@kbcfp.com>
+
+--------------------------------------------------
+
+Date: Tue, 16 Sep 2003 10:41:41 +0100
+From: Tim Bunce <Tim.Bunce@pobox.com>
+To: "Avis, Ed" <avised@kbcfp.com>
+Cc: Darren Duncan <darren@DarrenDuncan.net>, Tim Bunce <Tim.Bunce@pobox.com>,
+    Matthew Simon Cavalletto <simonm@cavalletto.org>,
+    Malcolm Dew-Jones <yf110@victoria.tc.ca>,
+    Nathanael Kuipers <nkuipers@uvic.ca>, Bob X <bobx@linuxmail.org>,
+    Peter Scott <Peter@PSDT.com>, Dave Rolsky <autarch@urth.org>,
+    Sam Vilain <sam@vilain.net>, Dan Sully <daniel@electricrain.com>
+Subject: Re: name for SQL module
+
+On Tue, Sep 16, 2003 at 08:11:05AM +0100, Avis, Ed wrote:
+>  In database design, a 'model' sometimes means the arrangement of
+>  tables, constraints and so on used to represent (model) some
+>  real-world information.  So your proposed name is not appropriate
+>  I think.
+>
+>  Of those you list, SQL::Syntax or SQL::SyntaxModel are best I
+>  think.  I'd favour SQL::Statement since that's what an instance
+>  of the class 'is'.
+
+SQL::Statement is a bit to general - and already taken anyway.
+
+SQL::<something>Model seems okay to me.
+
+Tim.
+
+--------------------------------------------------
+
+Date: Tue, 16 Sep 2003 11:21:07 -0700
+To: Tim Bunce <Tim.Bunce@pobox.com>, "Avis, Ed" <avised@kbcfp.com>
+From: Darren Duncan <darren@DarrenDuncan.net>
+Subject: Re: name for SQL module
+Cc: Darren Duncan <darren@DarrenDuncan.net>,
+    Matthew Simon Cavalletto <simonm@cavalletto.org>,
+    Malcolm Dew-Jones <yf110@victoria.tc.ca>,
+    Nathanael Kuipers <nkuipers@uvic.ca>, Bob X <bobx@linuxmail.org>,
+    Peter Scott <Peter@PSDT.com>, Dave Rolsky <autarch@urth.org>,
+    Sam Vilain <sam@vilain.net>, Dan Sully <daniel@electricrain.com>
+
+Thank you Ed and Tim for your feedback.  (And for the group's 
+information, Matthew also replied earlier to just me, yesterday.)
+
+At 8:11 AM +0100 9/16/03, Avis, Ed wrote:
+>In database design, a 'model' sometimes means the arrangement of
+>tables, constraints and so on used to represent (model) some
+>real-world information.  So your proposed name is not appropriate
+>I think.
+>
+>Of those you list, SQL::Syntax or SQL::SyntaxModel are best I
+>think.  I'd favour SQL::Statement since that's what an instance
+>of the class 'is'.
+
+One reason I thought of using 'Model' (aside from being influenced by 
+the XML standard name 'DOM'), is that a single object of my class can 
+and often does describe arrangements of tables, constraints, and so 
+on, at the same time as it represents DML or DDL queries or 
+statements.  My module represents two kinds of objects that work 
+together, Containers and Nodes (which correspond to XML DOM 
+documents, document fragments, and nodes).  An application would 
+usually create only one Container object (returned by the module's 
+'new' function), and then a set of Nodes which live within that 
+Container, and are related sometimes with single or multiple 
+cardinality to each other.  Some of said Nodes could, as a group, 
+describe the columns and constraints of a table.  Other said Nodes 
+could describe a DML command which acts on that table, or a DDL 
+command which modifies the table.  The reason that database schema 
+details are separated out like this, rather than always be being 
+parts of commands or 'statements', is so that you can have multiple 
+statements that work with the same table, and you don't have to 
+re-enter its details for each of them, and memory will be used more 
+efficiently.  So in this respect, my module does in fact work with 
+'Models'.
+
+Or, if that sounds confusing, a shorter explanation is that my module 
+can represent multiple statements at once, where parts of said 
+statements can be logically in common with each other, and only need 
+to be entered once.
+
+At 10:41 AM +0100 9/16/03, Tim Bunce wrote:
+>SQL::Statement is a bit to general - and already taken anyway.
+>
+>SQL::<something>Model seems okay to me.
+
+At 9:26 PM -0400 9/15/03, Matthew Simon Cavalletto wrote:
+>I'd vote for SQL::SyntaxModel, or the former SQL::SyntaxTree.
+>
+>>In some ways I like #4 the best, but unfortunately it goes over the 
+>>11 character guideline for module name segments.  Though, other 
+>>CPAN modules do it too, so I'm not sure whether this is an 
+>>important requirement anymore.
+>
+>You can definitely get away with breaking this rule -- it will only 
+>affect users on some very weird platforms, like old DOS file systems.
+
+-- Darren Duncan
+
+--------------------------------------------------
+
+Date: Tue, 16 Sep 2003 13:33:31 -0700 (PDT)
+From: Malcolm Dew-Jones <yf110@victoria.tc.ca>
+To: Tim Bunce <Tim.Bunce@pobox.com>
+cc: "Avis, Ed" <avised@kbcfp.com>, Darren Duncan <darren@DarrenDuncan.net>,
+    Matthew Simon Cavalletto <simonm@cavalletto.org>,
+    Nathanael Kuipers <nkuipers@uvic.ca>, Bob X <bobx@linuxmail.org>,
+    Peter Scott <Peter@PSDT.com>, Dave Rolsky <autarch@urth.org>,
+    Sam Vilain <sam@vilain.net>, Dan Sully <daniel@electricrain.com>
+Subject: Re: name for SQL module
+
+On Tue, 16 Sep 2003, Tim Bunce wrote:
+
+>  SQL::<something>Model seems okay to me.
+
+How about
+	SQL::QueryModel
+or
+	SQL::QueryInstanceModel	 (though it might be too long)
+$0.02
+
+--------------------------------------------------
+
+Date: Tue, 16 Sep 2003 13:40:30 -0700
+To: Malcolm Dew-Jones <yf110@victoria.tc.ca>
+From: Darren Duncan <darren@DarrenDuncan.net>
+Subject: Re: name for SQL module
+Cc: Tim Bunce <Tim.Bunce@pobox.com>, "Avis, Ed" <avised@kbcfp.com>,
+    Darren Duncan <darren@DarrenDuncan.net>,
+    Matthew Simon Cavalletto <simonm@cavalletto.org>,
+    Nathanael Kuipers <nkuipers@uvic.ca>, Bob X <bobx@linuxmail.org>,
+    Peter Scott <Peter@PSDT.com>, Dave Rolsky <autarch@urth.org>,
+    Sam Vilain <sam@vilain.net>, Dan Sully <daniel@electricrain.com>
+
+Thank you for your feedback Malcolm.
+
+At 1:33 PM -0700 9/16/03, Malcolm Dew-Jones wrote:
+>On Tue, 16 Sep 2003, Tim Bunce wrote:
+>  > SQL::<something>Model seems okay to me.
+>
+>How about
+>	SQL::QueryModel
+>or
+>	SQL::QueryInstanceModel	 (though it might be too long)
+>$0.02
+
+While this sounds reasonable at first, because the module largely 
+describes queries, and should be useful to third-party modules that 
+make queries, I have a problem with it because the word 'Query' is 
+redundant.  The first part of the name, 'SQL', already says 
+'Structured Query Language'. -- Darren Duncan
+
+--------------------------------------------------
+
+Date: Tue, 16 Sep 2003 14:04:48 -0700 (PDT)
+From: Malcolm Dew-Jones <yf110@victoria.tc.ca>
+To: Darren Duncan <darren@DarrenDuncan.net>
+cc: Tim Bunce <Tim.Bunce@pobox.com>, "Avis, Ed" <avised@kbcfp.com>,
+    Matthew Simon Cavalletto <simonm@cavalletto.org>,
+    Nathanael Kuipers <nkuipers@uvic.ca>, Bob X <bobx@linuxmail.org>,
+    Peter Scott <Peter@PSDT.com>, Dave Rolsky <autarch@urth.org>,
+    Sam Vilain <sam@vilain.net>, Dan Sully <daniel@electricrain.com>
+Subject: Re: name for SQL module
+
+On Tue, 16 Sep 2003, Darren Duncan wrote:
+
+>  Thank you for your feedback Malcolm.
+>
+>  At 1:33 PM -0700 9/16/03, Malcolm Dew-Jones wrote:
+>  >On Tue, 16 Sep 2003, Tim Bunce wrote:
+>  > > SQL::<something>Model seems okay to me.
+>  >
+>  >How about
+>  >	SQL::QueryModel
+>  >or
+>  >	SQL::QueryInstanceModel	 (though it might be too long)
+>  >$0.02
+>
+>  While this sounds reasonable at first, because the module largely
+>  describes queries, and should be useful to third-party modules that make
+>  queries, I have a problem with it because the word 'Query' is redundant.
+>  The first part of the name, 'SQL', already says 'Structured Query
+>  Language'. -- Darren Duncan
+
+The usual redundancy arguments apply...
+
+e.g. Imagine trying to ask the following without the "redundant" use of
+the word query.
+
+	"please compare this SQL query with this DEC-Datatrieve query"
+
+However, feel free to disagree...
+
+--------------------------------------------------
+
+Date: Tue, 16 Sep 2003 14:14:22 -0700
+To: Malcolm Dew-Jones <yf110@victoria.tc.ca>
+From: Darren Duncan <darren@DarrenDuncan.net>
+Subject: Re: name for SQL module
+Cc: Darren Duncan <darren@DarrenDuncan.net>, Tim Bunce <Tim.Bunce@pobox.com>,
+    "Avis, Ed" <avised@kbcfp.com>,
+    Matthew Simon Cavalletto <simonm@cavalletto.org>,
+    Nathanael Kuipers <nkuipers@uvic.ca>, Bob X <bobx@linuxmail.org>,
+    Peter Scott <Peter@PSDT.com>, Dave Rolsky <autarch@urth.org>,
+    Sam Vilain <sam@vilain.net>, Dan Sully <daniel@electricrain.com>
+
+At 2:04 PM -0700 9/16/03, Malcolm Dew-Jones wrote:
+>The usual redundancy arguments apply...
+>e.g. Imagine trying to ask the following without the "redundant" use of
+>the word query.
+>	"please compare this SQL query with this DEC-Datatrieve query"
+>However, feel free to disagree...
+
+Okay, you make a good point.
+
+In any event, I am still open to more feedback/suggestions.
+
+(FYI, it will likely be 48 hours or more until I am ready to post the 
+split-apart modules, which would use a new name.  Meanwhile, I will 
+be posting one more pre-split release in about an hour, under the 
+old/current name, which fixes the module's known memory leak bug.)
+
+-- Darren Duncan
+
+--------------------------------------------------
+
+Date: Fri, 26 Sep 2003 23:24:19 -0700
+To: Tim Bunce <Tim.Bunce@pobox.com>,
+         Matthew Simon Cavalletto <simonm@cavalletto.org>,
+         Malcolm Dew-Jones <yf110@victoria.tc.ca>,
+         Nathanael Kuipers <nkuipers@uvic.ca>, Ed Avis <ed.avis@kbcfp.com>,
+         Bob X <bobx@linuxmail.org>, Peter Scott <Peter@PSDT.com>,
+         Dave Rolsky <autarch@urth.org>, Sam Vilain <sam@vilain.net>,
+         Dan Sully <daniel@electricrain.com>
+From: Darren Duncan <darren@DarrenDuncan.net>
+Subject: Follow-up: re: RFC on renaming a SQL/database module
+Cc: darren@DarrenDuncan.net
+
+Hello.  As a follow-up to the message I sent you on Sept 15th, and 
+its ensuing short discussion, I am letting you know that I am now 
+using "SQL::SyntaxModel" for my module name.  Also, tonight I have 
+put the first version of that module under the new name on CPAN, in 
+the distro "Rosetta-0.18".  Thanks again for your feedback. -- Darren 
+Duncan
+
+--------------------------------------------------

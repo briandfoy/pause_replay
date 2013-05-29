@@ -1,0 +1,458 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10428
+Return-Path: <jcromie@divsol.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 88422 invoked by uid 76); 1 Mar 2002 00:30:31 -0000
+Received: from mail.powweb.com (HELO mail.powweb.com) (64.63.125.220)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Fri Mar  1 00:30:31 2002 -0000
+Received: from divsol.com (dnvr-dsl-gw22-poold12.dnvr.uswest.net [65.100.184.12])
+	by mail.powweb.com (Postfix) with ESMTP id 73F52D769
+	for <modules@perl.org>; Thu, 28 Feb 2002 16:30:05 -0800 (PST)
+Message-ID: <3C7ECB89.5050009@divsol.com>
+Date: Thu, 28 Feb 2002 17:30:01 -0700
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.8+) Gecko/20020222
+X-Accept-Language: en-us
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: register for CPAN ID
+Content-Type: multipart/mixed;
+ boundary="------------070702050204060305070008"
+Approved: news@nntp.perl.org
+From: jcromie@divsol.com (jim cromie)
+
+--------------070702050204060305070008
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+
+    *    your name
+    * your email address
+    * your homepage if you have one
+    * your preferred user-ID on CPAN. It must be between 4 and 9
+      characters long, all uppercase, letters only. One dash allowed.
+    * a short description of what you're planning to contribute
+
+
+Jim Cromie
+jcromie@divsol.com
+no homepage
+jcromie
+
+=head1 SYNOPSIS thisVersionIs
+
+thisVersionIs creates %VERSION in the calling package's namespace, and fills
+it with information extracted from the RCS identity string.
+
+=head1 USAGE
+
+package Foo;
+ use thisVersionIs ('$Id$');
+ use thisVersionIs ( '$Id: f.c,v 5.4 1993/11/09  17:40:15  eggert  Exp $' );
+ use thisVersionIs ( RCS => '$Id: f.c,v 5.4 1993/11/09  17:40:15  
+eggert  Exp $' );
+
+=head1 DESCRIPTION
+
+As the usage above shows, thisVersionIs is 'called' with an RCS_ID string as
+the 'symbol' to import.  This string is parsed, and the info is
+extracted and written into the calling package's %VERSION hash.
+
+Note that the RCS_ID string is single-quoted so its not subject to
+perl variable substitution, but is subject to RCS-tag substitution.
+When the calling file has been checked out readonly, its complete
+version information is available for various uses.
+
+The 1st example shows a file checked out for edit.  No version info is
+available via this package.  In the 2nd example, the RCS revision
+control system is assumed, the data are stored into the following
+keys; file, date, time, author, status.  In the 3rd example, RCS is
+explicitly named as the system of choice.
+
+Note also that in some contexts I use RCS as a generic term, referring
+to any such system.
+
+
+
+Attached is a pre-alpha version, but it runs..
+if youre not too busy getting to 5.8.0, give it a try.
+
+if you'll accept it in principle (or with lots of caveats ), I'll 
+package it up
+after fixing it accordingly.
+
+tia
+jimc
+
+
+
+
+--------------070702050204060305070008
+Content-Type: text/plain;
+ name="thisVersionIs.pm"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="thisVersionIs.pm"
+
+################ -*- perl -*-
+package thisVersionIs;
+# use base Exporter;
+
+use Carp();
+
+=head1 NOTE TO INTERESTED REVIEWERS
+
+I put this out for your consideration, hopefully you find it cool and
+potentially useful.  I invite your comments on even niggling little
+details, and on the grand scale 'what it might be useful for'.
+
+About terminology, Ive got some muddled names of things, but cant come
+up with better ones. Any suggestions?
+
+=head1 SYNOPSIS thisVersionIs
+
+thisVersionIs creates %VERSION in the calling package's namespace, and fills
+it with information extracted from the RCS identity string.
+
+=head1 USAGE
+
+ use thisVersionIs ('$Id$');
+ use thisVersionIs ( '$Id: f.c,v 5.4 1993/11/09  17:40:15  eggert  Exp $' );
+ use thisVersionIs ( RCS => '$Id: f.c,v 5.4 1993/11/09  17:40:15  eggert  Exp $' );
+
+=head1 DESCRIPTION
+
+As the usage above shows, thisVersionIs is 'called' with an RCS_ID string as
+the 'symbol' to import.  This string is parsed, and the info is
+extracted and written into the calling package's %VERSION hash.
+
+Note that the RCS_ID string is single-quoted so its not subject to
+perl variable substitution, but is subject to RCS-tag substitution.
+When the calling file has been checked out readonly, its complete
+version information is available for various uses.
+
+The 1st example shows a file checked out for edit.  No version info is
+available via this package.  In the 2nd example, the RCS revision
+control system is assumed, the data are stored into the following
+keys; file, date, time, author, status.  In the 3rd example, RCS is
+explicitly named as the system of choice.
+
+Note also that in some contexts I use RCS as a generic term, referring
+to any such system.
+
+=head2 IMPLEMENTATION
+
+thisVersionIs operates a bit differently than a typical exporting module;
+rather than creating a package-to-package typeglob alias, the import
+function creates tag value pairs directly into the caller package.
+
+The primary difference is that %VERSION info is not a shared, common
+item, but one built for each user.
+
+=head1 WHY BOTHER ?
+
+The following applications are possible, but their value is highly
+environmentally dependent.  Im hoping you'll help find real
+applications.
+
+ detailed build info available
+ independent check on code release contents
+ detect when release contains files that are checked-out-for-edit
+ author can be sent email on appropriate events
+ help identify version interactions in problem cases
+ verify expected results of $PERL5LIB, use lib, etc
+	(particularly for complex and hard to manage deployments) 
+ provide info to regression-test harness 
+ better info to feed automatic staging, promotional tools
+ info for inter-version-bug cataloging
+
+=head1 TO DO
+
+1st and foremost, its open to suggestion. Note the VERSION = 0.01
+
+Is this mis-use of the import/export mechanizm fundamentally flawed ?
+Are there any suprises in multiple use of this package (consider the
+conventional use-Once semantics of the use directive).  Any suprises
+when user modules are built with inheritance ?  Ive done some cursory
+tests myself, but these questions warrant a 2nd consideration.
+
+Add working tagset for SCCS and other RCS-type systems.
+
+Consider unifying tags from various RCS-types.  Currently the tags
+stored into %VERSION are nearly identical to the RCS-tags, but it
+might be useful to map all tags from all rcs-type systems into 1
+common set.  By default, the standard RCS tags would be used, and
+other tagsets would be mapped onto the default set.
+
+Is there any need for such unification ?  Id guess that 99% of
+individual sites would use a single RCS-type system, but we do have
+CPAN, which brings 'foreign' code into a site.  Ok, its basically
+native, but uniform use of RCS is a long way off, and its not clear
+that anyone is trying to go there.
+
+Consider using identical tags to those used in RCS, with the
+capitalization, see above.
+
+Consider adding traditional EXPORT_TAGS, something like :die-on-edit,
+:carp-on-edit.  The purpose of these example tags is to control
+policy; ie what to do when a file is checked-out-for-edit, and thus
+doesnt have useful VERSION information.
+
+Is @EXPORT_FAIL = (qw/ edit_carp edit_die/) a better way to handle
+this (ie the way Carp.pm handles 'verbose' ?  By inference from man
+Carp, this solves consistency problem.
+
+Consider partitioning into subclasses on policy decisions (and/or
+RCS-type).  This partially addresses the shortcoming of the
+tag-approach where consistent policy depends upon consistent use of
+this package.
+
+Build a Makefile.PL which prompts for site-wide policies, and sets
+appropriate defaults into installed package.
+
+Figure out how to make policy reflect the type of host-machine; devel,
+integration-test, system-test, production.
+
+$VERSION is overwritten with $VERSION{rev}, thus guaranteeing consistency.
+This might not be a good idea because theyre counting different things.
+
+note that 'use base Exporter' is commented out, code works without it.
+Should I be inheriting Exporter functionality rather than
+re-implementing part of its interface ?
+
+Can someone explain why all repeat uses work (accumulating and
+overwriting info) except for the double self-(ab)?use in the package
+itself?
+
+=cut
+
+use strict;
+
+my %tagsets;
+my $opt_v = 1;
+
+$thisVersionIs::VERSION = 1000;	# test override
+
+BEGIN {
+%tagsets = (
+	# top level keys have values which are hashes containing
+	#  tagsets for respective RCS-type systems
+    RCS => {
+	# keys validate the RCS-tags received from caller
+	# values are used to store the following info
+
+	Author	=> [qw/ author /],
+	Date	=> [qw/ date /],
+	Header	=> [qw/ path rev date time author state locker/],
+	Id	=> [qw/ file rev date time author state locker/],
+	Locker	=> [qw/ locker /],
+	Log	=> [qw/ log /],
+	Name	=> [qw/ name /],
+	RCSfile	=> [qw/ file /],
+	Revision=> [qw/ rev /],
+	Source	=> [qw/ path /],
+	State	=> [qw/ state /],
+    },
+    SCCS => {},
+    PVCS => {},
+);	
+	print "loading Module\n" if $opt_v;
+};
+
+sub carp {
+	# slightly more readable output
+	print STDERR "\t";
+	&Carp::carp;	# transparent @_ passthru
+}
+
+sub import {
+	my ($pkg) = caller;
+	shift; # dump this package name
+	# my ($tag, $info, @info, $rcstags);
+	my ($rcstags);
+
+	print "running thisVersionIs::import into '$pkg' with @_\n" if $opt_v;
+
+	carp "no RCSID string provided" unless @_;
+
+	# EXPORT_TAGS would be handled here
+
+	my $rcstype = 'RCS';	# default
+	# if more than 1 arg, treat as revision control system type
+	$rcstype = shift if @_ > 1;
+
+	# test if rcstype is known,
+	if (grep $rcstype eq $_, keys %tagsets) {
+		# explicit CSID, use it
+		$rcstags = $tagsets{$rcstype};
+	} else {
+		local $, = " ";
+		print "known types ", keys %tagsets, "\n" if $opt_v;
+		carp "unknown Rev Control System type: '$rcstype'";
+	}
+
+	# NOTE: heres where RCS specific handling starts
+
+	# chop RCS_ID string on spaces (generic?)
+	my ($tag, @info) = split(/\s+/, $_[0]);
+
+	# check RCS_ID string has populated format
+
+	if ($tag =~ /\$(\w+)\$/) {
+		carp "un-substituted format, file is checked out for edit";
+	}
+	elsif ($tag =~ /\$(\w+):/) {
+		# found tag with following colon, not checked out, OK
+
+		# now verify that tag is legitimate
+		$tag = $1;
+		carp "illegal tag '$tag' for $rcstype system"
+			if ! grep $tag eq $_, keys %$rcstags;
+		
+		# ok actually store the info
+		# array context assignment into hash, see camel pg 82
+		# (one of my favorite Perl-isms, how many lines in Java?)
+
+		# which of these 2 is 'better', and why ?
+		# local *hash = *{$pkg.'::VERSION'};
+		# local *hash = *{"${pkg}::VERSION"};
+
+		use vars ('*aglob');
+		no strict 'refs';
+		local *aglob = *{"${pkg}::VERSION"};
+		@aglob{@{@$rcstags{$tag}}} = @info;
+
+		# @{$pkg.'::VERSION'}{@{@$rcstags{$tag}}} = @info;
+
+		# overwrite $VERSION to insure consistency
+		$aglob = $aglob{rev};
+
+		if ($opt_v) {
+		print "\t${pkg}::VERSION{$_} => ", ${"${pkg}::VERSION"}{$_},"\n" 
+			foreach (keys %{$pkg.'::VERSION'});
+		}
+	}
+}
+
+# apply version feature to this package
+
+BEGIN {
+  print "in BEGIN block neither self-init does anything\n";
+  use thisVersionIs( '$Id: thisVersionIs.pm 0.01 1999/07/01  17:40:15  jimc Exp $' );
+  thisVersionIs->import( '$Id: thisVersionIs.pm 0.01 1999/07/01  17:40:15  jimc Exp $' );
+}
+
+print "w/o block either (but only 1) will work\n";
+
+use thisVersionIs( '$Id: thisVersionIs.pm 0.01 1999/07/01  17:40:15  jimc Exp $' );
+thisVersionIs->import( '$Id: thisVersionIs.pm 0.01 1999/07/01  17:40:15  jimc Exp $' );
+
+1;
+
+__END__
+
+=head TESTING: paste this into another file, and run it.
+
+ doing so from a different file seems to matter wrt to use mechanism
+ is there a pod tag that works like <pre> ?
+
+######## -*- perl -*-
+#!/usr/bin/perl -w
+
+# use a bunch of times to see what happens
+# create packages just for clearer reporting
+
+BEGIN { warn "\n RUN A BUNCH OF TESTS WHICH SHOULD GET ERRORS\n\n"; }
+
+package Empty;
+use thisVersionIs;
+
+package Editable;
+use thisVersionIs ('$Header$');
+
+package SCCS;
+use thisVersionIs ( SCCS => '$Header: swill $');
+
+package BadTag;
+use thisVersionIs ('$badTag: junk follows');
+
+package BadRCSType;
+use thisVersionIs ( BOGUS_RCS => '$Header$');
+use thisVersionIs ( BOGUS_RCS => '$Author: joeblow ');
+
+BEGIN { warn "THESE TESTS SHOULD RUN OK\n" }
+
+package main;
+
+use thisVersionIs ( '$Id: f.c,v 5.4 1993/11/09  17:40:15  eggert  Exp $' );
+use thisVersionIs ( '$Id: f.c,v 5.4 1993/11/09  17:40:15  eggert  Exp $' );
+
+foreach (keys %main::VERSION) {
+	print "\tVERSION{$_} => $VERSION{$_}\n";
+}
+print "VERSION = $VERSION\n";
+
+package Junk;
+use thisVersionIs ( '$Id: junk.pm 5.4 1993/11/09  17:40:15  eggert  Exp $' );
+
+package Junk::Swill;
+use base Junk;
+use thisVersionIs ( '$Id: swill.pm 5.4 1993/11/09  17:40:15  eggert  Exp $' );
+
+--------------070702050204060305070008
+Content-Type: text/plain;
+ name="thisVersionTest.pl"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="thisVersionTest.pl"
+
+#!/usr/bin/perl -w 
+# -*- perl -*-
+
+# use a bunch of times to see what happens
+# create packages just for clearer reporting
+
+BEGIN { warn "\nRUN A BUNCH OF TESTS WHICH SHOULD GET ERRORS\n\n"; }
+
+package Empty;
+use thisVersionIs;
+
+package Editable;
+use thisVersionIs ('$Header$');
+
+package SCCS;
+use thisVersionIs ( SCCS => '$Header: swill $');
+
+package BadTag;
+use thisVersionIs ('$badTag: junk follows');
+
+package BadRCSType;
+use thisVersionIs ( BOGUS_RCS => '$Header$');
+use thisVersionIs ( BOGUS_RCS => '$Author: joeblow $');
+
+BEGIN { warn "\nTHESE TESTS SHOULD RUN OK\n\n"; }
+
+
+package main;
+
+use thisVersionIs ( '$Author: joeblow $' );
+# augment info
+use thisVersionIs ( '$Id: f.c,v 5.4 1993/11/09  17:40:15  eggert  Exp $' );
+# override 1 field
+use thisVersionIs ( '$Author: joeblow $' );
+
+print "in main, VERSION = $VERSION\n";
+foreach (keys %main::VERSION) {
+	print "\tVERSION{$_} => $VERSION{$_}\n";
+}
+
+package Junk;
+use thisVersionIs ( '$Id: junk.pm 5.4 1993/11/09  17:40:15  eggert  Exp $' );
+
+package Junk::Swill;
+use base Junk;
+use thisVersionIs ( '$Id: swill.pm 5.4 1993/11/09  17:40:15  eggert  Exp $' );
+
+
+--------------070702050204060305070008--
+

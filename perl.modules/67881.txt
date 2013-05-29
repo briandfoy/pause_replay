@@ -1,0 +1,379 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:67881
+Return-Path: <pvenegas@infoweapons.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 31577 invoked from network); 29 Sep 2009 05:01:30 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 29 Sep 2009 05:01:30 -0000
+Received: (qmail 3164 invoked by uid 225); 29 Sep 2009 05:01:29 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3156 invoked by alias); 29 Sep 2009 05:01:29 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail0.infoweapons.com (HELO infoweapons.com) (204.2.248.50)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 28 Sep 2009 22:01:23 -0700
+Received: from ([58.71.34.146])
+	by mail0.infoweapons.com with ESMTP  id 4321444.5248884;
+	Tue, 29 Sep 2009 01:00:53 -0400
+Received: from ramandu.cebu.infoweapons.com ([10.3.1.74]) by cebexch01.cebu.infoweapons.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 29 Sep 2009 13:00:52 +0800
+To: GomoR <gomor@gomor.org>
+Cc: Steffen Mueller <nj88udd02@sneakemail.com>,  modules@perl.org
+Subject: Re: ICMPv6 patch
+References: <86skhzqqbg.fsf@roonwit.cebu.infoweapons.com>
+	<87ws3jb8sg.fsf@ramandu.cebu.infoweapons.com>
+	<4AC12035.7020405@sneakemail.com>
+	<20090929033957.GA44677@legion.enslaved.lan>
+Date: Tue, 29 Sep 2009 13:00:52 +0800
+In-Reply-To: <20090929033957.GA44677@legion.enslaved.lan> (gomor@gomor.org's message of "Tue\, 29 Sep 2009 05\:39\:57 +0200")
+Message-ID: <87ske6bb0b.fsf@ramandu.cebu.infoweapons.com>
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.1 (gnu/linux)
+MIME-Version: 1.0
+X-OriginalArrivalTime: 29 Sep 2009 05:00:52.0417 (UTC) FILETIME=[D1ADBB10:01CA40C1]
+Content-Type: multipart/mixed;
+	boundary="=-=-="
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: pvenegas@infoweapons.com ((Paolo Vanni M. =?utf-8?Q?Ve=C3=B1egas?=))
+
+--=-=-=
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+=0D=0AGood day all=2E=0D=0A=0D=0AGomoR <gomor@gomor=2Eorg> writes:=0D=0A=0D=
+=0A> Hi,=0D=0A>=0D=0A> I don't remember having received any patches for =0D=
+=0A> Net::Frame::Layer::ICMPv6 module ;)=0D=0A>=0D=0A> Anyhow, give me your=
+ patch, and I'll integrate it ASAP, if it =0D=0A> fits correctly with my mo=
+dule philosophy=2E=0D=0A=0D=0AGood to hear from you, Patrice=2E Pardon me, =
+I suppose I must have missed your correct email address=2E :)=0D=0A=0D=0AAt=
+tached is a patch against Net-Frame-Layer-ICMPv6-1=2E02 (with $VERSION unal=
+tered)=2E I am also including the details of my modifications from my previ=
+ous emails=2E Feel free to comment=2E=0D=0A=0D=0A=0D=0A-- =0D=0APaolo Vanni=
+ M=2E Ve=C3=B1egas=0D=0ASoftware Engineer=0D=0AInfoWeapons Corporation=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A =0D=0A --------=0D=0AThis email and any attachm=
+ents are CONFIDENTIAL and may also be=0Alegally privileged=2E If you are no=
+t the intended recipient, please=0Aimmediately delete this message and any =
+attachments, then notify=0Asecurity@infoweapons=2Ecom of such recipient err=
+or=2E Any forwarding,=0Adissemination, distribution, re-posting or copying =
+of this email=0Aand attachments is strictly prohibited=2E Thank you=2E=0D=
+=0A =0D=0A
+--=-=-=
+Content-Type: text/x-diff;
+	charset="utf-8"
+Content-Disposition: attachment; filename=Net-Frame-Layer-ICMPv6-1.02.diff
+Content-Transfer-Encoding: quoted-printable
+
+diff -ruN Net-Frame-Layer-ICMPv6-1=2E02-old/lib/Net/Frame/Layer/ICMPv6/Opti=
+on=2Epm Net-Frame-Layer-ICMPv6-1=2E02/lib/Net/Frame/Layer/ICMPv6/Option=2Ep=
+m=0D=0A--- Net-Frame-Layer-ICMPv6-1=2E02-old/lib/Net/Frame/Layer/ICMPv6/Opt=
+ion=2Epm	2009-05-31 23:13:20=2E000000000 +0800=0D=0A+++ Net-Frame-Layer-ICM=
+Pv6-1=2E02/lib/Net/Frame/Layer/ICMPv6/Option=2Epm	2009-06-15 17:14:15=2E000=
+000000 +0800=0D=0A@@ -44,7 +44,7 @@=0D=0A    my ($type, $length, $tail) =3D=
+ $self->SUPER::unpack('CC a*', $self->raw)=0D=0A       or return undef;=0D=
+=0A =0D=0A-   my $bLen =3D $length * 8;=0D=0A+   my $bLen =3D $length * 8 -=
+ 2; # minus two bytes for type and length -pmv=0D=0A    my ($value, $payloa=
+d) =3D $self->SUPER::unpack("a$bLen a*", $tail)=0D=0A       or return undef=
+;=0D=0A =0D=0Adiff -ruN Net-Frame-Layer-ICMPv6-1=2E02-old/lib/Net/Frame/Lay=
+er/ICMPv6/RouterAdvertisement=2Epm Net-Frame-Layer-ICMPv6-1=2E02/lib/Net/Fr=
+ame/Layer/ICMPv6/RouterAdvertisement=2Epm=0D=0A--- Net-Frame-Layer-ICMPv6-1=
+=2E02-old/lib/Net/Frame/Layer/ICMPv6/RouterAdvertisement=2Epm	1970-01-01 08=
+:00:00=2E000000000 +0800=0D=0A+++ Net-Frame-Layer-ICMPv6-1=2E02/lib/Net/Fra=
+me/Layer/ICMPv6/RouterAdvertisement=2Epm	2009-06-17 14:51:21=2E000000000 +0=
+800=0D=0A@@ -0,0 +1,271 @@=0D=0A+#=0D=0A+# Router Advertisement message wra=
+pper=0D=0A+# pvenegas@infoweapons=2Ecom=0D=0A+#=0D=0A+package Net::Frame::L=
+ayer::ICMPv6::RouterAdvertisement;=0D=0A+use strict; use warnings;=0D=0A+=
+=0D=0A+use Net::Frame::Layer qw(:consts :subs);=0D=0A+our @ISA =3D qw(Net::=
+Frame::Layer);=0D=0A+=0D=0A+our @AS =3D qw(=0D=0A+   curHopLimit=0D=0A+   f=
+lags=0D=0A+   reserved=0D=0A+   routerLifetime=0D=0A+   reachableTime=0D=0A=
++   retransTimer=0D=0A+);=0D=0A+our @AA =3D qw(=0D=0A+   options=0D=0A+);=
+=0D=0A+__PACKAGE__->cgBuildIndices;=0D=0A+__PACKAGE__->cgBuildAccessorsScal=
+ar(\@AS);=0D=0A+__PACKAGE__->cgBuildAccessorsArray (\@AA);=0D=0A+=0D=0A+use=
+ Net::Frame::Layer::ICMPv6 qw(:consts);=0D=0A+use Bit::Vector;=0D=0A+use Ne=
+t::Frame::Layer::ICMPv6::Option;=0D=0A+=0D=0A+# TODO: Double-check if defau=
+lts are sane=0D=0A+sub new {=0D=0A+   shift->SUPER::new(=0D=0A+      curHop=
+Limit    =3D> 0,=0D=0A+      flags          =3D> 0,=0D=0A+      reserved   =
+    =3D> 0,=0D=0A+      routerLifetime =3D> 0,=0D=0A+      reachableTime  =
+=3D> 0,=0D=0A+      retransTimer   =3D> 0,=0D=0A+      options        =3D> =
+[],=0D=0A+      @_,=0D=0A+   );=0D=0A+}=0D=0A+=0D=0A+sub getOptionsLength {=
+=0D=0A+   my $self =3D shift;=0D=0A+   my $len =3D 0;=0D=0A+   $len +=3D $_=
+->getLength for $self->options;=0D=0A+   return $len;=0D=0A+}=0D=0A+=0D=0A+=
+sub getLength {=0D=0A+   my $self =3D shift;=0D=0A+   return 12 + $self->ge=
+tOptionsLength;=0D=0A+}=0D=0A+=0D=0A+sub pack {=0D=0A+   my $self =3D shift=
+;=0D=0A+=0D=0A+   my $flags    =3D Bit::Vector->new_Dec(6, $self->flags);=
+=0D=0A+   my $reserved =3D Bit::Vector->new_Dec(2, $self->reserved);=0D=0A+=
+   my $v8       =3D $flags->Concat_List($reserved);=0D=0A+=0D=0A+   my $raw=
+ =3D $self->SUPER::pack("CcnLL",=0D=0A+                                $sel=
+f->curHopLimit, $v8->to_Dec, $self->routerLifetime,=0D=0A+                 =
+               $self->reachableTime, $self->retransTimer=0D=0A+      ) or r=
+eturn;=0D=0A+=0D=0A+   for ($self->options) {=0D=0A+      $raw =2E=3D $_->p=
+ack;=0D=0A+   }=0D=0A+=0D=0A+   $self->raw($raw);=0D=0A+}=0D=0A+=0D=0A+sub =
+_unpackOptions {=0D=0A+   my $self =3D shift;=0D=0A+   my ($payload) =3D @_=
+;=0D=0A+ =0D=0A+   my @options =3D ();=0D=0A+   while (defined($payload) &&=
+ length($payload)) {=0D=0A+      my $opt =3D Net::Frame::Layer::ICMPv6::Opt=
+ion->new(raw =3D> $payload)->unpack;=0D=0A+      push @options, $opt;=0D=0A=
++      $payload =3D $opt->payload;=0D=0A+      $opt->payload(undef);=0D=0A+=
+   }=0D=0A+   $self->options(\@options);=0D=0A+   return $payload;=0D=0A+}=
+=0D=0A+=0D=0A+sub unpack {=0D=0A+   my $self =3D shift;=0D=0A+=0D=0A+   my =
+($curHopLimit, $flagsReserved, $routerLifetime,=0D=0A+       $reachableTime=
+, $retransTimer, $payload) =3D=0D=0A+          $self->SUPER::unpack("CcnLL =
+a*", $self->raw);=0D=0A+=0D=0A+   my $v8 =3D Bit::Vector->new_Dec(8, $flags=
+Reserved);=0D=0A+=0D=0A+   $self->curHopLimit($curHopLimit);=0D=0A+   $self=
+->reserved($v8->Chunk_Read(2, 0));=0D=0A+   $self->flags   ($v8->Chunk_Read=
+(6, 2));=0D=0A+   $self->routerLifetime($routerLifetime);=0D=0A+   $self->r=
+eachableTime($reachableTime);=0D=0A+   $self->retransTimer($retransTimer);=
+=0D=0A+ =0D=0A+   if (defined($payload) && length($payload)) {=0D=0A+      =
+$payload =3D $self->_unpackOptions($payload);=0D=0A+   }=0D=0A+=0D=0A+   $s=
+elf->payload($payload);=0D=0A+=0D=0A+   return $self;=0D=0A+}=0D=0A+=0D=0A+=
+sub print {=0D=0A+   my $self =3D shift;=0D=0A+=0D=0A+   my $l =3D $self->l=
+ayer;=0D=0A+   my $buf =3D sprintf "$l: curHopLimit: %d  flags: 0x%02x  res=
+erved: 0x%02x\n" =2E=0D=0A+      "$l: routerLifetime: %d  reachableTime: %d=
+  retransTimer: %d",=0D=0A+      $self->curHopLimit,=0D=0A+      $self->fla=
+gs,=0D=0A+      $self->reserved,=0D=0A+      $self->routerLifetime,=0D=0A+ =
+     $self->reachableTime,=0D=0A+      $self->retransTimer;=0D=0A+=0D=0A+  =
+ for ($self->options) {=0D=0A+      $buf =2E=3D "\n" =2E $_->print;=0D=0A+ =
+  }=0D=0A+=0D=0A+   return $buf;=0D=0A+}=0D=0A+=0D=0A+1;=0D=0A+=0D=0A+__END=
+__=0D=0A+=0D=0A+=3Dhead1 NAME=0D=0A+=0D=0A+Net::Frame::Layer::ICMPv6::Route=
+rAdvertisement - ICMPv6 Router Advertisement type object=0D=0A+=0D=0A+=3Dhe=
+ad1 SYNOPSIS=0D=0A+=0D=0A+   use Net::Frame::Layer::ICMPv6::RouterAdvertise=
+ment;=0D=0A+=0D=0A+   my $layer =3D Net::Frame::Layer::ICMPv6::RouterAdvert=
+isement->new(=0D=0A+      curHopLimit   =3D> 64,=0D=0A+      flags         =
+=3D> NF_ICMPv6_FLAG_MANAGEDADDRESSCONFIGURATION,=0D=0A+   );=0D=0A+   $laye=
+r->pack;=0D=0A+=0D=0A+   print 'RAW: '=2E$layer->dump=2E"\n";=0D=0A+=0D=0A+=
+   # Read a raw layer=0D=0A+   my $layer =3D Net::Frame::Layer::ICMPv6::Rou=
+terAdvertisement->new(=0D=0A+      raw =3D> $raw,=0D=0A+   );=0D=0A+=0D=0A+=
+   print $layer->print=2E"\n";=0D=0A+   print 'PAYLOAD: '=2Eunpack('H*', $l=
+ayer->payload)=2E"\n"=0D=0A+      if $layer->payload;=0D=0A+=0D=0A+=3Dhead1=
+ DESCRIPTION=0D=0A+=0D=0A+This modules implements the encoding and decoding=
+ of the ICMPv6 Router Advertisement object=2E=0D=0A+=0D=0A+See also B<Net::=
+Frame::Layer> for other attributes and methods=2E=0D=0A+=0D=0A+=3Dhead1 ATT=
+RIBUTES=0D=0A+=0D=0A+=3Dover 4=0D=0A+=0D=0A+Refer to RFC 5175 for informati=
+on on these attributes=0D=0A+=0D=0A+=3Ditem B<curHopLimit>=0D=0A+   =0D=0A+=
+=3Ditem B<flags>=0D=0A+=0D=0A+=3Ditem B<reserved>=0D=0A+=0D=0A+=3Ditem B<ro=
+uterLifetime>=0D=0A+   =0D=0A+=3Ditem B<reachableTime>=0D=0A+   =0D=0A+=3Di=
+tem B<retransTimer>=0D=0A+=0D=0A+=3Ditem B<options>=0D=0A+=0D=0A+=0D=0A+=3D=
+back=0D=0A+=0D=0A+The following are inherited attributes=2E See B<Net::Fram=
+e::Layer> for more information=2E=0D=0A+=0D=0A+=3Dover 4=0D=0A+=0D=0A+=3Dit=
+em B<raw>=0D=0A+=0D=0A+=3Ditem B<payload>=0D=0A+=0D=0A+=3Ditem B<nextLayer>=
+=0D=0A+=0D=0A+=3Dback=0D=0A+=0D=0A+=3Dhead1 METHODS=0D=0A+=0D=0A+=3Dover 4=
+=0D=0A+=0D=0A+=3Ditem B<new>=0D=0A+=0D=0A+=3Ditem B<new> (hash)=0D=0A+=0D=
+=0A+Object constructor=2E You can pass attributes that will overwrite defau=
+lt ones=2E See B<SYNOPSIS> for default values=2E=0D=0A+   =0D=0A+=3Ditem B<=
+getOptionsLength>=0D=0A+=0D=0A+Returns the length in bytes of options, 0 if=
+ none=2E=0D=0A+=0D=0A+=0D=0A+=3Dback=0D=0A+=0D=0A+The following are inherit=
+ed methods=2E Some of them may be overriden in this layer, and some others =
+may not be meaningful in this layer=2E See B<Net::Frame::Layer> for more in=
+formation=2E=0D=0A+=0D=0A+=3Dover 4=0D=0A+=0D=0A+=3Ditem B<layer>=0D=0A+=0D=
+=0A+=3Ditem B<computeLengths>=0D=0A+=0D=0A+=3Ditem B<computeChecksums>=0D=
+=0A+=0D=0A+=3Ditem B<pack>=0D=0A+=0D=0A+=3Ditem B<unpack>=0D=0A+=0D=0A+=3Di=
+tem B<encapsulate>=0D=0A+=0D=0A+=3Ditem B<getLength>=0D=0A+=0D=0A+=3Ditem B=
+<getPayloadLength>=0D=0A+=0D=0A+=3Ditem B<print>=0D=0A+=0D=0A+=3Ditem B<dum=
+p>=0D=0A+=0D=0A+=3Dback=0D=0A+=0D=0A+=3Dhead1 CONSTANTS=0D=0A+=0D=0A+No con=
+stants here=2E=0D=0A+=0D=0A+=3Dhead1 SEE ALSO=0D=0A+=0D=0A+L<Net::Frame::La=
+yer::ICMPv6>, L<Net::Frame::Layer>=0D=0A+=0D=0A+=3Dhead1 AUTHOR=0D=0A+=0D=
+=0A+Patrice E<lt>GomoRE<gt> Auffret=0D=0A+Paolo Vanni Ve=C3=B1egas=0D=0A+=
+=0D=0A+=3Dhead1 COPYRIGHT AND LICENSE=0D=0A+=0D=0A+Copyright (c) 2006-2009,=
+ Patrice E<lt>GomoRE<gt> Auffret=0D=0A+Copyright (c) 2009, Paolo Vanni Ve=
+=C3=B1egas=0D=0A+=0D=0A+Based=0D=0A+=0D=0A+You may distribute this module u=
+nder the terms of the Artistic license=2E=0D=0A+See LICENSE=2EArtistic file=
+ in the source distribution archive=2E=0D=0A+=0D=0A+=3Dcut=0D=0Adiff -ruN N=
+et-Frame-Layer-ICMPv6-1=2E02-old/lib/Net/Frame/Layer/ICMPv6/RouterSolicitat=
+ion=2Epm Net-Frame-Layer-ICMPv6-1=2E02/lib/Net/Frame/Layer/ICMPv6/RouterSol=
+icitation=2Epm=0D=0A--- Net-Frame-Layer-ICMPv6-1=2E02-old/lib/Net/Frame/Lay=
+er/ICMPv6/RouterSolicitation=2Epm	1970-01-01 08:00:00=2E000000000 +0800=0D=
+=0A+++ Net-Frame-Layer-ICMPv6-1=2E02/lib/Net/Frame/Layer/ICMPv6/RouterSolic=
+itation=2Epm	2009-06-16 16:59:28=2E000000000 +0800=0D=0A@@ -0,0 +1,228 @@=
+=0D=0A+#=0D=0A+# Router Solicitation message wrapper, compliant to RFC 4861=
+=0D=0A+# pvenegas@infoweapons=2Ecom=0D=0A+#=0D=0A+package Net::Frame::Layer=
+::ICMPv6::RouterSolicitation;=0D=0A+use strict; use warnings;=0D=0A+=0D=0A+=
+use Net::Frame::Layer qw(:consts :subs);=0D=0A+our @ISA =3D qw(Net::Frame::=
+Layer);=0D=0A+=0D=0A+our @AS =3D qw(=0D=0A+   reserved=0D=0A+);=0D=0A+our @=
+AA =3D qw(=0D=0A+   options=0D=0A+);=0D=0A+__PACKAGE__->cgBuildIndices;=0D=
+=0A+__PACKAGE__->cgBuildAccessorsScalar(\@AS);=0D=0A+__PACKAGE__->cgBuildAc=
+cessorsArray (\@AA);=0D=0A+=0D=0A+use Net::Frame::Layer::ICMPv6 qw(:consts)=
+;=0D=0A+use Bit::Vector;=0D=0A+use Net::Frame::Layer::ICMPv6::Option;=0D=0A=
++=0D=0A+sub new {=0D=0A+   shift->SUPER::new(=0D=0A+      reserved =3D> 0,=
+=0D=0A+      options  =3D> [],=0D=0A+      @_,=0D=0A+   );=0D=0A+}=0D=0A+=
+=0D=0A+sub getOptionsLength {=0D=0A+   my $self =3D shift;=0D=0A+   my $len=
+ =3D 0;=0D=0A+   $len +=3D $_->getLength for $self->options;=0D=0A+   retur=
+n $len;=0D=0A+}=0D=0A+=0D=0A+sub getLength {=0D=0A+   my $self =3D shift;=
+=0D=0A+   return 4 + $self->getOptionsLength;=0D=0A+}=0D=0A+=0D=0A+sub pack=
+ {=0D=0A+   my $self =3D shift;=0D=0A+=0D=0A+   $self->raw(=0D=0A+      $se=
+lf->SUPER::pack(=0D=0A+         pack('L', $self->reserved)=0D=0A+      )) o=
+r return undef;=0D=0A+=0D=0A+   $self->raw;=0D=0A+}=0D=0A+=0D=0A+sub _unpac=
+kOptions {=0D=0A+   my $self =3D shift;=0D=0A+   my ($payload) =3D @_;=0D=
+=0A+ =0D=0A+   my @options =3D ();=0D=0A+   while (defined($payload) && len=
+gth($payload)) {=0D=0A+      my $opt =3D Net::Frame::Layer::ICMPv6::Option-=
+>new(raw =3D> $payload)->unpack;=0D=0A+      push @options, $opt;=0D=0A+   =
+   $payload =3D $opt->payload;=0D=0A+      $opt->payload(undef);=0D=0A+   }=
+=0D=0A+   $self->options(\@options);=0D=0A+   return $payload;=0D=0A+}=0D=
+=0A+=0D=0A+sub unpack {=0D=0A+   my $self =3D shift;=0D=0A+=0D=0A+   my ($r=
+eserved, $payload) =3D=0D=0A+      $self->SUPER::unpack('L a*', $self->raw)=
+=0D=0A+         or return undef;=0D=0A+=0D=0A+   $self->reserved($reserved)=
+;=0D=0A+   $self->payload($payload);=0D=0A+=0D=0A+   if (defined($payload) =
+&& length($payload)) {=0D=0A+      $payload =3D $self->_unpackOptions($payl=
+oad);=0D=0A+   }=0D=0A+=0D=0A+   $self->payload($payload);=0D=0A+=0D=0A+   =
+return $self;=0D=0A+}=0D=0A+=0D=0A+sub print {=0D=0A+   my $self =3D shift;=
+=0D=0A+=0D=0A+   my $l =3D $self->layer;=0D=0A+   my $buf =3D sprintf "$l: =
+reserved: 0x%02x",=0D=0A+      $self->reserved;=0D=0A+=0D=0A+   for ($self-=
+>options) {=0D=0A+      $buf =2E=3D "\n" =2E $_->print;=0D=0A+   }=0D=0A+=
+=0D=0A+   return $buf;=0D=0A+}=0D=0A+=0D=0A+1;=0D=0A+=0D=0A+__END__=0D=0A+=
+=0D=0A+=3Dhead1 NAME=0D=0A+=0D=0A+Net::Frame::Layer::ICMPv6::RouterSolicita=
+tion - ICMPv6 Router Solicitation type object=0D=0A+=0D=0A+=3Dhead1 SYNOPSI=
+S=0D=0A+=0D=0A+   use Net::Frame::Layer::ICMPv6::RouterSolicitation;=0D=0A+=
+=0D=0A+   my $layer =3D Net::Frame::Layer::ICMPv6::RouterSolicitation->new(=
+=0D=0A+      reserved      =3D> 0,=0D=0A+   );=0D=0A+   $layer->pack;=0D=0A=
++=0D=0A+   print 'RAW: '=2E$layer->dump=2E"\n";=0D=0A+=0D=0A+   # Read a ra=
+w layer=0D=0A+   my $layer =3D Net::Frame::Layer::ICMPv6::RouterSolicitatio=
+n->new(=0D=0A+      raw =3D> $raw,=0D=0A+   );=0D=0A+=0D=0A+   print $layer=
+->print=2E"\n";=0D=0A+   print 'PAYLOAD: '=2Eunpack('H*', $layer->payload)=
+=2E"\n"=0D=0A+      if $layer->payload;=0D=0A+=0D=0A+=3Dhead1 DESCRIPTION=
+=0D=0A+=0D=0A+This modules implements the encoding and decoding of the ICMP=
+v6 Router Solicitation object=2E=0D=0A+=0D=0A+See also B<Net::Frame::Layer>=
+ for other attributes and methods=2E=0D=0A+=0D=0A+=3Dhead1 ATTRIBUTES=0D=0A=
++=0D=0A+=3Dover 4=0D=0A+=0D=0A+Refer to RFC 4861 for information on these a=
+ttributes=0D=0A+=0D=0A+=3Ditem B<reserved>=0D=0A+=0D=0A+=3Ditem B<options>=
+=0D=0A+=0D=0A+=0D=0A+=3Dback=0D=0A+=0D=0A+The following are inherited attri=
+butes=2E See B<Net::Frame::Layer> for more information=2E=0D=0A+=0D=0A+=3Do=
+ver 4=0D=0A+=0D=0A+=3Ditem B<raw>=0D=0A+=0D=0A+=3Ditem B<payload>=0D=0A+=0D=
+=0A+=3Ditem B<nextLayer>=0D=0A+=0D=0A+=3Dback=0D=0A+=0D=0A+=3Dhead1 METHODS=
+=0D=0A+=0D=0A+=3Dover 4=0D=0A+=0D=0A+=3Ditem B<new>=0D=0A+=0D=0A+=3Ditem B<=
+new> (hash)=0D=0A+=0D=0A+Object constructor=2E You can pass attributes that=
+ will overwrite default ones=2E See B<SYNOPSIS> for default values=2E=0D=0A=
++=0D=0A+=3Ditem B<getOptionsLength>=0D=0A+=0D=0A+Returns the length in byte=
+s of options, 0 if none=2E=0D=0A+=0D=0A+=3Dback=0D=0A+=0D=0A+The following =
+are inherited methods=2E Some of them may be overriden in this layer, and s=
+ome others may not be meaningful in this layer=2E See B<Net::Frame::Layer> =
+for more information=2E=0D=0A+=0D=0A+=3Dover 4=0D=0A+=0D=0A+=3Ditem B<layer=
+>=0D=0A+=0D=0A+=3Ditem B<computeLengths>=0D=0A+=0D=0A+=3Ditem B<computeChec=
+ksums>=0D=0A+=0D=0A+=3Ditem B<pack>=0D=0A+=0D=0A+=3Ditem B<unpack>=0D=0A+=
+=0D=0A+=3Ditem B<encapsulate>=0D=0A+=0D=0A+=3Ditem B<getLength>=0D=0A+=0D=
+=0A+=3Ditem B<getPayloadLength>=0D=0A+=0D=0A+=3Ditem B<print>=0D=0A+=0D=0A+=
+=3Ditem B<dump>=0D=0A+=0D=0A+=3Dback=0D=0A+=0D=0A+=3Dhead1 CONSTANTS=0D=0A+=
+=0D=0A+No constants here=2E=0D=0A+=0D=0A+=3Dhead1 SEE ALSO=0D=0A+=0D=0A+L<N=
+et::Frame::Layer::ICMPv6>, L<Net::Frame::Layer>=0D=0A+=0D=0A+=3Dhead1 AUTHO=
+R=0D=0A+=0D=0A+Patrice E<lt>GomoRE<gt> Auffret=0D=0A+Paolo Vanni Ve=C3=B1eg=
+as=0D=0A+=0D=0A+=3Dhead1 COPYRIGHT AND LICENSE=0D=0A+=0D=0A+Copyright (c) 2=
+006-2009, Patrice E<lt>GomoRE<gt> Auffret=0D=0A+Copyright (c) 2009, Paolo V=
+anni Ve=C3=B1egas=0D=0A+=0D=0A+Based=0D=0A+=0D=0A+You may distribute this m=
+odule under the terms of the Artistic license=2E=0D=0A+See LICENSE=2EArtist=
+ic file in the source distribution archive=2E=0D=0A+=0D=0A+=3Dcut=0D=0Adiff=
+ -ruN Net-Frame-Layer-ICMPv6-1=2E02-old/lib/Net/Frame/Layer/ICMPv6=2Epm Net=
+-Frame-Layer-ICMPv6-1=2E02/lib/Net/Frame/Layer/ICMPv6=2Epm=0D=0A--- Net-Fra=
+me-Layer-ICMPv6-1=2E02-old/lib/Net/Frame/Layer/ICMPv6=2Epm	2009-05-31 23:13=
+:20=2E000000000 +0800=0D=0A+++ Net-Frame-Layer-ICMPv6-1=2E02/lib/Net/Frame/=
+Layer/ICMPv6=2Epm	2009-06-17 15:49:54=2E000000000 +0800=0D=0A@@ -35,9 +35,1=
+4 @@=0D=0A       NF_ICMPv6_TYPE_NEIGHBORADVERTISEMENT=0D=0A       NF_ICMPv6=
+_OPTION_SOURCELINKLAYERADDRESS=0D=0A       NF_ICMPv6_OPTION_TARGETLINKLAYER=
+ADDRESS=0D=0A+      NF_ICMPv6_OPTION_PREFIXINFORMATION=0D=0A+      NF_ICMPv=
+6_OPTION_REDIRECTEDHEADER=0D=0A+      NF_ICMPv6_OPTION_MTU=0D=0A       NF_I=
+CMPv6_FLAG_ROUTER=0D=0A       NF_ICMPv6_FLAG_SOLICITED=0D=0A       NF_ICMPv=
+6_FLAG_OVERRIDE=0D=0A+      NF_ICMPv6_FLAG_MANAGEDADDRESSCONFIGURATION=0D=
+=0A+      NF_ICMPv6_FLAG_OTHERCONFIGURATION=0D=0A    )],=0D=0A );=0D=0A our=
+ @EXPORT_OK =3D (=0D=0A@@ -68,10 +73,22 @@=0D=0A =0D=0A use constant NF_ICM=
+Pv6_OPTION_SOURCELINKLAYERADDRESS =3D> 0x01;=0D=0A use constant NF_ICMPv6_O=
+PTION_TARGETLINKLAYERADDRESS =3D> 0x02;=0D=0A+use constant NF_ICMPv6_OPTION=
+_PREFIXINFORMATION      =3D> 0x03;=0D=0A+use constant NF_ICMPv6_OPTION_REDI=
+RECTEDHEADER       =3D> 0x04;=0D=0A+use constant NF_ICMPv6_OPTION_MTU      =
+              =3D> 0x05;=0D=0A =0D=0A-use constant NF_ICMPv6_FLAG_ROUTER   =
+ =3D> 0x01;=0D=0A+use constant NF_ICMPv6_FLAG_ROUTER    =3D> 0x04;=0D=0A us=
+e constant NF_ICMPv6_FLAG_SOLICITED =3D> 0x02;=0D=0A-use constant NF_ICMPv6=
+_FLAG_OVERRIDE  =3D> 0x04;=0D=0A+use constant NF_ICMPv6_FLAG_OVERRIDE  =3D>=
+ 0x01;=0D=0A+=0D=0A+use constant NF_ICMPv6_FLAG_MANAGEDADDRESSCONFIGURATION=
+ =3D> 1 << 5;=0D=0A+use constant NF_ICMPv6_FLAG_OTHERCONFIGURATION         =
+ =3D> 1 << 4;=0D=0A+use constant NF_ICMPv6_FLAG_MOBILEIPv6HOMEAGENT        =
+ =3D> 1 << 3;=0D=0A+use constant NF_ICMPv6_FLAG_ROUTERSELECTIONPREFHIGH    =
+ =3D> 1 << 1; # 01b=0D=0A+use constant NF_ICMPv6_FLAG_ROUTERSELECTIONPREFME=
+DIUM   =3D> 0;      # 00b=0D=0A+use constant NF_ICMPv6_FLAG_ROUTERSELECTION=
+PREFLOW      =3D> 3 << 1; # 11b=0D=0A+use constant NF_ICMPv6_FLAG_ROUTERSEL=
+ECTIONPREFRESERVED =3D> 2 << 1; # 10b=0D=0A+use constant NF_ICMPv6_FLAG_NEI=
+GHBORDISCOVERYPROXY      =3D> 1;=0D=0A =0D=0A our @AS =3D qw(=0D=0A    type=
+=0D=0A@@ -109,6 +126,10 @@=0D=0A       &&  $wType eq NF_ICMPv6_TYPE_NEIGHBO=
+RADVERTISEMENT) {=0D=0A       return 1;=0D=0A    }=0D=0A+   elsif ($sType e=
+q NF_ICMPv6_TYPE_ROUTERSOLICITATION=0D=0A+      &&  $wType eq NF_ICMPv6_TYP=
+E_ROUTERADVERTISEMENT) {=0D=0A+      return 1;=0D=0A+   }=0D=0A    return 0=
+;=0D=0A }=0D=0A =0D=0A@@ -189,6 +210,12 @@=0D=0A       elsif ($type eq NF_I=
+CMPv6_TYPE_NEIGHBORADVERTISEMENT) {=0D=0A          return 'ICMPv6::Neighbor=
+Advertisement';=0D=0A       }=0D=0A+      elsif ($type eq NF_ICMPv6_TYPE_RO=
+UTERSOLICITATION) {=0D=0A+         return 'ICMPv6::RouterSolicitation';=0D=
+=0A+      }=0D=0A+      elsif ($type eq NF_ICMPv6_TYPE_ROUTERADVERTISEMENT)=
+ {=0D=0A+         return 'ICMPv6::RouterAdvertisement';=0D=0A+      }=0D=0A=
+    }=0D=0A =0D=0A    return NF_LAYER_NONE;=0D=0A@@ -254,6 +281,14 @@=0D=0A=
+ =0D=0A This modules implements the encoding and decoding of the ICMPv6 lay=
+er=2E=0D=0A =0D=0A+RFC: http://www=2Erfc-editor=2Eorg/rfc/rfc4861=2Etxt=0D=
+=0A+=0D=0A+RFC: http://www=2Erfc-editor=2Eorg/rfc/rfc4389=2Etxt=0D=0A+=0D=
+=0A+RFC: http://www=2Erfc-editor=2Eorg/rfc/rfc4191=2Etxt=0D=0A+=0D=0A+RFC: =
+http://www=2Erfc-editor=2Eorg/rfc/rfc3775=2Etxt=0D=0A+=0D=0A RFC: http://ww=
+w=2Erfc-editor=2Eorg/rfc/rfc2463=2Etxt=0D=0A =0D=0A RFC: http://www=2Erfc-e=
+ditor=2Eorg/rfc/rfc2461=2Etxt=0D=0A@@ -348,6 +383,8 @@=0D=0A =0D=0A =3Dover=
+ 4=0D=0A =0D=0A+Various types and codes for ICMPv6 header=2E=0D=0A+=0D=0A =
+=3Ditem B<NF_ICMPv6_CODE_ZERO>=0D=0A =0D=0A =3Ditem B<NF_ICMPv6_TYPE_DESTUN=
+REACH>=0D=0A@@ -392,7 +429,15 @@=0D=0A =0D=0A =3Ditem B<NF_ICMPv6_OPTION_SO=
+URCELINKLAYERADDRESS>=0D=0A =0D=0A-Various types and codes for ICMPv6 heade=
+r=2E=0D=0A+=3Ditem B<NF_ICMPv6_OPTION_TARGETLINKLAYERADDRESS>=0D=0A+=0D=0A+=
+=3Ditem B<NF_ICMPv6_OPTION_PREFIXINFORMATION>=0D=0A+=0D=0A+=3Ditem B<NF_ICM=
+Pv6_OPTION_REDIRECTEDHEADER>=0D=0A+=0D=0A+=3Ditem B<NF_ICMPv6_OPTION_MTU>=
+=0D=0A+=0D=0A+Various flags for some ICMPv6 messages=2E=0D=0A =0D=0A =3Dite=
+m B<NF_ICMPv6_FLAG_ROUTER>=0D=0A =0D=0A@@ -400,7 +445,21 @@=0D=0A =0D=0A =
+=3Ditem B<NF_ICMPv6_FLAG_OVERRIDE>=0D=0A =0D=0A-Various flags for some ICMP=
+v6 messages=2E=0D=0A+=3Ditem B<NF_ICMPv6_FLAG_MANAGEDADDRESSCONFIGURATION>=
+=0D=0A+=0D=0A+=3Ditem B<NF_ICMPv6_FLAG_OTHERCONFIGURATION>=0D=0A+=0D=0A+=3D=
+item B<NF_ICMPv6_FLAG_MOBILEIPv6HOMEAGENT>=0D=0A+=0D=0A+=3Ditem B<NF_ICMPv6=
+_FLAG_ROUTERSELECTIONPREFHIGH>=0D=0A+=0D=0A+=3Ditem B<NF_ICMPv6_FLAG_ROUTER=
+SELECTIONPREFMEDIUM>=0D=0A+=0D=0A+=3Ditem B<NF_ICMPv6_FLAG_ROUTERSELECTIONP=
+REFLOW>=0D=0A+=0D=0A+=3Ditem B<NF_ICMPv6_FLAG_ROUTERSELECTIONPREFRESERVED>=
+=0D=0A+=0D=0A+=3Ditem B<NF_ICMPv6_FLAG_NEIGHBORDISCOVERYPROXY>=0D=0A =0D=0A=
+ =3Dback=0D=0A =0D=0A=0D=0A
+--=-=-=
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+=0D=0A=0D=0AFrom: pvenegas@infoweapons=2Ecom (Paolo Vanni M=2E Ve=C3=B1egas=
+)=0D=0ASubject: ICMPv6 patches=0D=0ATo: gomor-cpan@gomor=2Eorg=0D=0ADate: W=
+ed, 17 Jun 2009 15:20:35 +0800=0D=0A=0D=0A=0D=0AGood day=2E=0D=0A=0D=0AI've=
+ been looking at your wrappers for ICMPv6, but realized that you didn't imp=
+lement router messages (Router Advertisments and Router Solicits), so I dec=
+ided to write those, based on your code=2E Figured might as well contrib ba=
+ck to CPAN=2E My PAUSE application is taking a while it seems, so I thought=
+ I'd email you first=2E Attached is the patch to ICMPv6-1=2E02, tested agai=
+nst live ICMPv6 dumps=2E=0D=0A=0D=0AIncluded in the patch are wrappers for =
+RA and RSol, additional flag and option constants in ICMPv6=2Epm, and a fix=
+ to the existing NeighborAdvertisement flag values -- I made the flag value=
+s ascending, as they are in the actual messages, and considering the way yo=
+u pack() them=2E Was there a reason you wrote it otherwise? I hope you find=
+ my code acceptable=2E=0D=0A=0D=0AIn RA, the following flags are reflected =
+as specified by the indicated RFCs=2E=0D=0A=0D=0A| RA Option Bit | Descript=
+ion                           | Reference |=0D=0A+---------------+---------=
+------------------------------+-----------+=0D=0A| 0             | M - Mana=
+ged Address Configuration     | [RFC4861] |=0D=0A|               | Flag    =
+                              |           |=0D=0A| 1             | O - Othe=
+r Configuration Flag          | [RFC4861] |=0D=0A| 2             | H - Mobi=
+le IPv6 Home Agent Flag       | [RFC3775] |=0D=0A| 3             | Prf - Ro=
+uter Selection Preferences    | [RFC4191] |=0D=0A| 4             | Prf - Ro=
+uter Selection Preferences    | [RFC4191] |=0D=0A| 5             | P - Neig=
+hbor Discovery Proxy Flag     | [RFC4389] |=0D=0A=0D=0A=0D=0ANote that I im=
+plemented Router Selection Preferences as one flag for each of the four pos=
+sible values (RFC 4191) -- they are not really flags but values=2E If you h=
+ave a better idea for this let me know=2E=0D=0A=0D=0ALastly in Option=2Epm,=
+ I subtract two bytes (for the type and length fields) from the length valu=
+e from the message before further reading that number of bytes for the opti=
+on value=2E You'll find that this is the correct behavior=2E=0D=0A=0D=0AIt =
+might also be useful to write wrappers for the various ICMP options, such a=
+s RA Prefix Information, in the future=2E Right now they have to be manuall=
+y constructed=2E If you want, I can work on that=2E=0D=0A=0D=0AI'm not sure=
+ how you prefer to have author tags in code, so I'll leave that for you to =
+decide=2E Assuming it's accepted, just put my name and email I guess=2E=0D=
+=0A=0D=0ACheers=2E=0D=0A=0D=0A=0D=0A =0D=0A --------=0D=0AThis email and an=
+y attachments are CONFIDENTIAL and may also be=0Alegally privileged=2E If y=
+ou are not the intended recipient, please=0Aimmediately delete this message=
+ and any attachments, then notify=0Asecurity@infoweapons=2Ecom of such reci=
+pient error=2E Any forwarding,=0Adissemination, distribution, re-posting or=
+ copying of this email=0Aand attachments is strictly prohibited=2E Thank yo=
+u=2E=0D=0A =0D=0A
+--=-=-=--
+

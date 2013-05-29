@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9946
+Return-Path: <dpavlin@dpavlinusic.pliva.hr>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22686 invoked by uid 76); 31 Jan 2002 16:33:07 -0000
+Received: from wall.pliva.hr (HELO viruswall.pliva.hr) (195.29.208.9)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Thu Jan 31 16:33:07 2002 -0000
+Received: from dpavlinusic.pliva.hr (IDENT:root@localhost [127.0.0.1])
+	by viruswall.pliva.hr (8.9.3/8.8.7) with ESMTP id RAA20466;
+	Thu, 31 Jan 2002 17:29:51 +0100
+Received: (from dpavlin@localhost)
+	by dpavlinusic.pliva.hr (8.9.3/8.9.3) id RAA12863;
+	Thu, 31 Jan 2002 17:32:06 +0100
+Date: Thu, 31 Jan 2002 17:32:06 +0100
+To: William R Ward <bill@wards.net>
+Cc: modules@perl.org
+Subject: Lingua::Spelling::Alternative namespace [Was: Re: PAUSE access request]
+Message-ID: <20020131173206.A12713@dpavlinusic.pliva.hr>
+References: <20020127181324.B12196@dpavlinusic.pliva.hr> <m2sn8qrnul.fsf@komodo.home.wards.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
+In-Reply-To: <m2sn8qrnul.fsf@komodo.home.wards.net>
+Approved: news@nntp.perl.org
+From: dpavlin@rot13.org (Dobrica Pavlinusic)
+
+On Mon, Jan 28, 2002 at 04:40:34PM -0800, William R Ward wrote:
+> The following message is a courtesy copy of an article
+> that has been posted to perl.modules as well.
+> 
+> dpavlin@rot13.org (Dobrica Pavlinusic) writes:
+> > My name is Dobrica Pavlinusic and I would like to contribute module which
+> > reads ispell affix file and returns all alternative spellings of a word.
+> > 
+> > Here is info for PAUSE:
+> > name:	Dobrica Pavlinusic
+> > e-mail:	dpavlin@rot13.org
+> > URL:	http://www.rot13.org/~dpavlin/
+> > preferred user-ID: DPAVLIN
+> > 
+> > Logical namespace is Text::Ispell::Affix. However, I don't like Text::Ispell
+> > dependency on ispell binary, and I would like to be able to use just my
+> > module (without rest of Ispell). That leads to Text::Affix namespace, but
+> > I will take suggesions to move is to some other namespace if that is more
+> > appropriate (Lingua::Affix also comes to mind).
+> 
+> Some other ideas you might consider:
+> 
+> First off, I don't think "Affix" is widely-enough known to be easily
+> recognized.  I think you need something in there to indicate it's
+> about spelling.  How about:
+> 
+> Text::Spelling::Affix
+> Lingua::Spelling::Affix
+> Lingua::Spelling::Alternative::Affix
+> 
+> Does your module also create or modify the affix file as well?  Is
+> your module written so that it depends on that file's format, or might
+> it be able to be extended easily to support other alternative-spelling
+> file formats?
+> 
+> Assuming the existence of a hypothetical "abc" and "xyz" file format
+> for alternative spelling, you could have a whole hierarchy of modules:
+> 
+> *::Spelling::Alternative        # the engine that does the work
+> *::Spelling::Alternative::affix # subclass that knows affix file fmt
+> *::Spelling::Alternative::abc   # subclass that knows abc file fmt
+> *::Spelling::Alternative::xyz   # subclass that knows xyz file fmt
+> 
+> (Substitute "Text", "Lingua", or whatever is finally chosen for "*")
+
+That is a great idea, especially since module will also be able to
+read files produced by findaffix utility before it is converted to
+proper affix file (which has limitation of 26 entries).
+
+Sould I cc: this message to somewhere and is there "official" way to
+request Lingua::Spelling::Alternative namespace?
+
+-- 
+Dobrica Pavlinusic               2share!2flame            dpavlin@rot13.org
+Unix addict. Internet consultant.             http://www.rot13.org/~dpavlin

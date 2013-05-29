@@ -1,0 +1,57 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:14809
+Return-Path: <module-support@clyman.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24823 invoked by uid 76); 29 Oct 2002 20:22:18 -0000
+Received: from blount.mail.mindspring.net (HELO blount.mail.mindspring.net) (207.69.200.226) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-10-29 20:22:18Z
+Received: from user-2inia5b.dialup.mindspring.com ([165.121.40.171] helo=jcnote.clyman.com)	by blount.mail.mindspring.net with esmtp (Exim 3.33 #1)	id 186csQ-0004Uj-00	for modules@perl.org; Tue, 29 Oct 2002 15:22:14 -0500
+Message-ID: <5.1.1.6.0.20021029121613.00a777f8@mail.clyman.com>
+X-Sender: module-support@mail.clyman.com (Unverified)
+X-Mailer: QUALCOMM Windows Eudora Version 5.1.1
+Date: Tue, 29 Oct 2002 12:18:21 -0800
+To: modules@perl.org
+Subject: module naming proposal: Text::Messages
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: module-support@clyman.com (John Clyman)
+
+Hello all,
+
+I'm preparing to upload an OO module to CPAN and would appreciate comments
+on the module name. Here's a quick excerpt of highlights from the doc:
+
+-begin-
+With the Text::Messages class, you can create objects that dynamically
+construct status, error, or other messages on behalf of your programs.
+Text::Messages is particularly useful in larger projects, where it can be
+used to create centralized collections of messages that are easier to
+maintain and document than string literals scattered throughout the code.
+
+   # create a list of messages
+     $error_messages = Messages->new({
+       bad_file_format  => 'File format not recognized!',
+       file_open_failed => sub{"Unable to open file $_[0]: $!"},
+       _default         => sub{"Unknown message " . shift() .
+                               " with params " . (join ",",@_)},
+     });
+
+   # generate messages
+     print $error_messages->bad_file_format;
+     print $error_messages->file_open_failed('myfile');
+     print $error_messages->no_such_message;  # falls back to _default
+-end-
+
+I was originally thinking of calling this Text::MessageLibrary but thought
+that Text::Messages sounded cleaner. Any thoughts or suggestions?
+
+A version of the code is posted on my site if you want to get further
+information about what the module does:
+   http://www.clyman.com/s/pm/messagelibrary/
+
+Thanks for your feedback,
+John
+

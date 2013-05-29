@@ -1,0 +1,106 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8144
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 67215 invoked from network); 10 Oct 2001 19:40:44 -0000
+Received: from dubravka.kbx.de (HELO pause.perl.org) (root@212.40.160.59)
+  by onion.valueclick.com with SMTP; 10 Oct 2001 19:40:44 -0000
+Received: (from nobody@localhost)
+	by pause.perl.org (8.9.3/8.9.3) id VAA07353;
+	Wed, 10 Oct 2001 21:40:42 +0200
+Date: Wed, 10 Oct 2001 21:40:42 +0200
+Message-ID: <200110101940.VAA07353@pause.perl.org>
+Reply-To: modules@perl.org
+Subject: Module submission Carp::Clan
+To: modules@perl.org, stbey@cpan.org
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Carp::Clan
+  DSLIP:       Rdpfp
+  description: Report errors f/ caller of "clan" of modules
+  userid:      STBEY (Steffen Beyer)
+  chapterid:    2 (Perl_Core_Modules)
+  communities:
+    personal email
+
+  similar:
+    Carp
+
+  rationale:
+
+    This module is based on "Carp.pm" from Perl 5.005_03. It has been
+    modified to skip all package names matching the pattern given in the
+    "use" statement inside the "qw()" term (or argument list).
+
+    Suppose you have a family of modules or classes named "Pack::A",
+    "Pack::B" and so on, and each of them uses "Carp::Clan qw(^Pack::);"
+    (or at least the one in which the error or warning gets raised).
+
+    Thus when for example your script "tool.pl" calls module "Pack::A",
+    and module "Pack::A" calls module "Pack::B", an exception raised in
+    module "Pack::B" will appear to have originated in "tool.pl" where
+    "Pack::A" was called, and not in "Pack::A" where "Pack::B" was
+    called, as the unmodified "Carp.pm" would try to make you believe
+    :-).
+
+    This works similarly if "Pack::B" calls "Pack::C" where the
+    exception is raised, etcetera.
+
+    In other words, this blames all errors in the "Pack::*" modules on
+    the user of these modules, i.e., on you. ;-)
+
+    The skipping of a clan (or family) of packages according to a
+    pattern describing its members is necessary in cases where these
+    modules are not classes derived from each other (and thus when
+    examining @ISA (as in the original "Carp.pm" module) doesn't help).
+
+    The purpose and advantage of this is that a "clan" of modules can
+    work together (and call each other) and throw exceptions at various
+    depths down the calling hierarchy and still appear as a monolithic
+    block (as though they were a single module) from the perspective of
+    the caller.
+
+    In case you just want to ward off all error messages from the
+    module in which you "use Carp::Clan", i.e., if you want to make all
+    error messages or warnings to appear to originate from where your
+    module was called (this is what you usually used to "use Carp;" for
+    ;-)), instead of in your module itself (which is what you can do
+    with a "die" or "warn" anyway), you do not need to provide a
+    pattern, the module will automatically provide the correct one for
+    you.
+
+    I.e., just "use Carp::Clan;" without any arguments and call "carp"
+    or "croak" as appropriate, and they will automatically defend your
+    module against all blames!
+
+    In other words, a pattern is only necessary if you want to make
+    several modules (more than one) work together and appear as though
+    they were only one.
+
+    So the module is backwards compatible to Carp from Perl 5.005_03
+
+  enteredby:   STBEY (Steffen Beyer)
+  enteredon:   Wed Oct 10 19:40:41 2001 GMT
+
+The resulting entry would be:
+
+Carp::
+::Clan            Rdpfp Report errors f/ caller of "clan" of modules STBEY
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=f3000000_5f5e1963219f7b69&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=f3000000_5f5e1963219f7b69&SUBMIT_pause99_add_mod_insertit=1

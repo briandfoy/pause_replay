@@ -1,0 +1,104 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:67477
+Return-Path: <jhietaniemi@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3046 invoked from network); 1 Sep 2009 17:52:02 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 1 Sep 2009 17:52:02 -0000
+Received: (qmail 8032 invoked by uid 225); 1 Sep 2009 17:52:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8027 invoked by alias); 1 Sep 2009 17:52:02 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=DK_SIGNED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-ew0-f211.google.com (HELO mail-ew0-f211.google.com) (209.85.219.211)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 01 Sep 2009 10:51:55 -0700
+Received: by ewy7 with SMTP id 7so137339ewy.31
+        for <modules@perl.org>; Tue, 01 Sep 2009 10:51:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:reply-to:received
+         :in-reply-to:references:date:x-google-sender-auth:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=QgY7Tq4l2WQA3KnEuWSgxGUa+m5d0TfngjooGoW2vUQ=;
+        b=J5qwm14XJQboONvwxYaV6zHc77GOHvAhNwpMl03/CdxByYLpc3n9mAI6//p1fatGEJ
+         wMxXT3jXSG1Om+B4rRquFDIvoW+MkOOdONsPCTE9vOUaSJ7t54mMKSAxaZZEveGv4NTm
+         uWdlxZ+9wOZlkIawU1zqRvhav2hVdyZBCktMI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:reply-to:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=JwhWyzSH+0eWPvAhLlduxuPmSYk0KF6oCZ9QRLp7Bizdbdnn0AjrT67IvHGH3FEzC3
+         bVyg8BmNz5yDncsJGQ4fGzS49kaqeaQMpTi4YyxUTarWM44ZeV8pkjaAMnF2TAH3gcdS
+         puNPtkrp+7sIzKTSn/k8ZMsNxFrP8kELvVskI=
+MIME-Version: 1.0
+Sender: jhietaniemi@gmail.com
+Reply-To: jhi@iki.fi
+Received: by 10.210.53.2 with SMTP id b2mr6534078eba.51.1251827511008; Tue, 01 
+	Sep 2009 10:51:51 -0700 (PDT)
+In-Reply-To: <4A9D5D95.2080606@sneakemail.com>
+References: <200909011614.49572.bastian.friedrich@collax.com>
+	 <4A9D5D95.2080606@sneakemail.com>
+Date: Tue, 1 Sep 2009 13:51:50 -0400
+X-Google-Sender-Auth: 54f490123fc65066
+Message-ID: <aa5b09f00909011051p4c141d00kdf758d3f61290011@mail.gmail.com>
+Subject: Re: Namespace for some modules
+To: Steffen Mueller <nj88udd02@sneakemail.com>
+Cc: Bastian Friedrich <bastian.friedrich@collax.com>, modules@perl.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: jhi@iki.fi (Jarkko Hietaniemi)
+
+I loudly object to the Sys:: prefix.  It's semantically empty and
+should be avoided.  Use rather a prefix that actually says something.
+If it is about filesystems/files, try File:: or FileSystem, or
+something that has some actual content.   Sys:: doesn't.  Yes, Perl's
+standard modules have those, probably as a legacy of, say,
+<sys/syslog.h>.  Bad legacy.
+
+On Tue, Sep 1, 2009 at 1:44 PM, Steffen Mueller<nj88udd02@sneakemail.com> w=
+rote:
+> Hi Bastian,
+>
+> Bastian Friedrich wrote:
+>>
+>> I have recently implemented some (more or less trivial) Perl interfaces
+>> for libraries. As I am considering uploading these to CPAN, I'd like you=
+ to
+>> review my choices of module names.
+>>
+>> * glibc function "getgrouplist". Returns a list of groups a user belongs
+>> =C2=A0to.
+>> =C2=A0There is just a single perl function in my "User::getgrouplist"
+>> =C2=A0package. Is that module name acceptable?
+>>
+>> * glibc functions "getdomainname", "setdomainname", "innetgr". Perl
+>> =C2=A0functions are equivalent to the glibc functions.
+>> =C2=A0I created Net::NIS::Netgroup for these functions. Is that acceptab=
+le?
+>>
+>> * libblkid. A (linux specific?) library that provides access to identity
+>> =C2=A0information of block devices, e.g. returns labels and uuids of fil=
+e
+>> =C2=A0systems.
+>> =C2=A0Still in the process of being implemented; probably will result in
+>> =C2=A0equivalent perl functions for all C functions provided in
+>> =C2=A0blkid/blkid.h
+>> =C2=A0I'd go for Sys::Blkid. Is that acceptable?
+>
+> I'd be fine with all of the above names.
+>
+> Cheers,
+> Steffen
+> (for the PAUSE admins)
+>
+
+
+
+--=20
+There is this special biologist word we use for 'stable'. It is
+'dead'. -- Jack Cohen

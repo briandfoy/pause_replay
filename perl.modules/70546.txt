@@ -1,0 +1,94 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:70546
+Return-Path: <michael@thegrebs.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 17018 invoked from network); 29 Mar 2010 23:25:06 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 29 Mar 2010 23:25:06 -0000
+Received: (qmail 24162 invoked by uid 225); 29 Mar 2010 23:25:06 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24158 invoked by alias); 29 Mar 2010 23:25:06 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=RCVD_IN_DNSWL_NONE,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-pw0-f41.google.com (HELO mail-pw0-f41.google.com) (209.85.160.41)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 29 Mar 2010 16:25:01 -0700
+Received: by pwi2 with SMTP id 2so3586145pwi.14
+        for <modules@perl.org>; Mon, 29 Mar 2010 16:24:57 -0700 (PDT)
+Received: by 10.140.58.15 with SMTP id g15mr5235558rva.96.1269905097665;
+        Mon, 29 Mar 2010 16:24:57 -0700 (PDT)
+Received: from passioncake.linlan (c-68-32-182-67.hsd1.nj.comcast.net [68.32.182.67])
+        by mx.google.com with ESMTPS id b2sm1660152rvn.12.2010.03.29.16.24.54
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 29 Mar 2010 16:24:56 -0700 (PDT)
+Sender: Michael Greb <mikegrb@thegrebs.com>
+Subject: Re: Module submission Archive::Tar::StreamingPile
+Mime-Version: 1.0 (Apple Message framework v1077)
+Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <290320101352440757%brian.d.foy@gmail.com>
+Date: Mon, 29 Mar 2010 19:24:52 -0400
+Cc: MIKEGRB@cpan.org
+Content-Transfer-Encoding: quoted-printable
+Message-ID: <BEEC7562-7C80-4BC3-9912-56A4A27F8D91@thegrebs.com>
+References: <201003290550.o2T5oADw015486@pause.fiz-chemie.de> <290320101352440757%brian.d.foy@gmail.com>
+To: modules@perl.org
+X-Mailer: Apple Mail (2.1077)
+Approved: news@nntp.perl.org
+From: michael@thegrebs.com (Michael Greb)
+
+
+On Mar 29, 2010, at 2:52 PM, brian d foy wrote:
+
+> [[ This message was both posted and mailed: see
+>   the "To," "Cc," and "Newsgroups" headers for details. ]]
+>=20
+> In article <201003290550.o2T5oADw015486@pause.fiz-chemie.de>, Perl
+> Authors Upload Server <upload@pause.perl.org> wrote:
+>=20
+>> The following module was proposed for inclusion in the Module List:
+>>=20
+>>  modid:       Archive::Tar::StreamingPile
+>=20
+> Heh, I originally read that as "steaming pile".
+
+That was not all together accidental.  It was suggested as a lark when I =
+asked for suggestions on IRC.
+
+>>  DSLIP:       bdpOp
+>>  description: create tars of giant files with min. memory
+>>  userid:      MIKEGRB (Michael Greb)
+>>  chapterid:   17 (Archiving_and_Compression)
+>=20
+>>    with minimal memory usage. Unlike C<<Archive::Tar>>, neither the =
+Tar
+>>    file nor any of the files added to it are kept in memory.
+>=20
+> They've been trying to get that feature into Archive::Tar for a long
+> time since it's one of their chief complaints. Is there anyway to =
+merge
+> what you've done with the core module instead of using a second =
+module?
+
+I've brought it up with the authors.  It may get merged but the module =
+will likely coexist as well, at least in the near term.  My need for the =
+module is in a very large cluster of machines with Perl 5.8.  There, =
+IO::Zlib, Package::Constants, and I believe a couple of other modules =
+that are core in 5.10 aren't in core.  I'm not an anti dependency guy, I =
+use and love Moose, Catalyst, etc.  Now that the work has been done to =
+write the module and some basic tests, I figure others may be in a =
+similar position, that the fewer dependencies are another plus if =
+compression isn't necessary.  Ideally, streaming support can make it =
+into to Archive::Tar eventually, as well as making some of the =
+dependencies, like IO::Zlib, optional if the features it provides aren't =
+necessary.
+
+> Do you also have stuff to untar big files in the same way?
+
+It will likely come eventually, Andy wants me to write an Ack plugin for =
+searching Tar archives and it could likely benefit from a streaming mode =
+as well.  I'd also like to write a quick tar header dumper similar to =
+/usr/bin/stat in Linux, giving the complete information for each Tar =
+header in an archive for which streaming would be ideal.=

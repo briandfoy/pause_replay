@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4903
+Return-Path: <daveo@obernet.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6390 invoked from network); 4 Apr 2001 02:51:36 -0000
+Received: from stmpy-2.cais.net (@205.252.14.72)
+  by tmtowtdi.perl.org with SMTP; 4 Apr 2001 02:51:36 -0000
+Received: from home (209-9-137-10.sdsl.cais.net [209.9.137.10])
+	by stmpy-2.cais.net (8.11.1/8.11.1) with SMTP id f342pXN22490;
+	Tue, 3 Apr 2001 22:51:33 -0400 (EDT)
+To: "Tim Bunce" <Tim.Bunce@ig.co.uk>
+Cc: "modules" <modules@perl.org>,
+   "Oberholtzer, Dave" <oberholtzerd@measurisk.com>
+Subject: RE: New Perl Module: FameHLI
+Date: Tue, 3 Apr 2001 22:53:15 -0400
+Message-ID: <015f01c0bcb2$65745fe0$0300a8c0@home.obernet.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+Importance: Normal
+In-Reply-To: <20010403124224.M18549@ig.co.uk>
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.2106.4
+Approved: news@nntp.perl.org
+From: daveo@obernet.com ("Dave Oberholtzer")
+References: <20010403124224.M18549@ig.co.uk>
+
+Thanks.
+
+I ask one more moment of assistance to ensure proper structure.  Do the 3
+groupings below make sense to you?  Elements of the "FameHLI::HLI" module
+will be regularly used by anyone using the functions in either of the other
+two sets.  Or would it be more appropriate to have "HLI" and "EXT" fall
+below "API" as in "FameHLI::API::HLI"?
+
+Additionally, I am so familiar with "HLI" that the redundancy doesn't bother
+me that much, although it looks a little silly.  Would "DEF" [FameHLI::DEF]
+(as in #DEFine) or "DOTH" (as in '.h') make more sense?  Suggestions
+appreciated greatly.
+
+I appreciate the time that you have already taken with this.
+
+--daveo
+
+---------------
+
+The components which I wish to deliver fall into 3 categories:
+
+1) #define elements from the '.h';
+2) core functions from the C-HLI;
+3) extension functions which aid in interacting with the C-HLI.
+
+Since our last discussion I felt compelled to arrange them thusly:
+
+1) FameHLI::HLI
+2) FameHLI::API
+3) FameHLI::EXT
+
+A sample program might call:
+
+;#======================
+use FameHLI::API;
+use FameHLI::HLI;
+use FameHLI::EXT;
+
+my	$rc = FameHLI::API::Cfmini();
+	printf("The initialization call said '%s'\n",
+		$FameHLI::EXT::ErrDesc($rc));
+	printf("If you really need to know, DAILY is '%d'\n",
+		FameHLI::HLI::HDAILY);
+
+;#======================
+

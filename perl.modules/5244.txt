@@ -1,0 +1,116 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5244
+Return-Path: <tayers@bridge.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12364 invoked from network); 27 Apr 2001 12:33:00 -0000
+Received: from bcfw1d.ext.bridge.com (HELO bcfw1d.bridge.com) (firewall-user@167.76.159.31)
+  by tmtowtdi.perl.org with SMTP; 27 Apr 2001 12:33:00 -0000
+Received: (from uucp@localhost)
+	by bcfw1d.bridge.com (8.10.2/8.10.2) id f3RCY7s29075
+	for <modules@perl.org>; Fri, 27 Apr 2001 07:34:07 -0500 (CDT)
+Received: from <tayers@bridge.com> (unknown [167.76.56.34]) by bcfw1d via smap (V2.1)
+	id xma028975; Fri, 27 Apr 01 07:33:44 -0500
+Received: from mnmailhost (mnmailhost.bridge.com [167.76.155.14]) by mail1srv.bridge.com (8.8.8/8.7.3) with SMTP id HAA02397 for <modules@perl.org>; Fri, 27 Apr 2001 07:32:35 -0500 (CDT)
+Received: from 89-7 by mnmailhost (SMI-8.6/SMI-4.1)
+	id IAA20672; Fri, 27 Apr 2001 08:32:27 -0400
+To: modules@perl.org
+Subject: Advice for name of new module
+Date: 27 Apr 2001 07:32:25 -0500
+Message-ID: <wv867cbq.fsf@tim.bridge.com>
+Lines: 87
+User-Agent: Gnus/5.0803 (Gnus v5.8.3) Emacs/20.5
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: tayers@bridge.com (Tim Ayers)
+
+I am intending to add new module to CPAN that calculates the Modulus
+10 Double-Add-Double checksum. This is also called the LUHN
+Formula. My current name is Algorithm::LUHN, since LUHN is way shorter
+than its other name. This checksum is used to validate credit card
+numbers. Also the Standard & Poor's company uses it to validate the
+security identifiers they administer (CUSIP, ISIN, and CINS). This is
+a precursor to Business::CUSIP and Business::CINS which I intend to
+add in a couple days.
+
+Does Algorithm::LUHN seem like a good name? Thanks!
+
+Hope you have a very nice day, :-)
+Tim Ayers (tayers@bridge.com)
+CPAN ID = TAYERS
+
+--------------------------- pod ----------------------------------------
+NAME
+    Algorithm::LUHN - Calculate the Modulus 10 Double Add Double checksum
+
+SYNOPSIS
+      use Algorithm::LUHN qw/check_digit is_valid/;
+
+      $c = check_digit("43881234567");
+      print "It works\n" if is_valid("43881234567$c");
+
+      $c = check_digit("A2C4E6G8"); # this will cause an error
+
+      print "Valid LUHN characters are:\n";
+      my %vc = Algorithm::LUHN::valid_chars();
+      for (sort keys %vc) {
+        print "$_ => $vc{$_}\n";
+      }
+
+      Algorithm::LUHN::valid_chars(map {$_ => ord($_)-ord('A')+10} A..Z);
+      $c = check_digit("A2C4E6G8");
+      print "It worked again\n" if is_valid("A2C4E6G8$c");
+
+DESCRIPTION
+    This module calculates the Modulus 10 Double Add Double checksum, also
+    known as the LUHN Formula. This algorithm is used to verify credit card
+    numbers and Standard & Poor's security identifiers such as CUSIP's and
+    ISIN's.
+
+    You can find plenty of information about the algorithm by searching the
+    web for "modulus 10 double add double".
+
+FUNCTION
+    is_valid CHECKSUMMED_NUM
+        This function returns true if the final character of CHECKSUMMED_NUM
+        is the correct checksum for the rest of the number. The final
+        character does not factor into the checksum calculation.
+
+        This function is equivalent to
+
+          substr $N,length($N)-1 eq check_digit(substr $N,0,length($N)-1)
+
+    check_digit NUM
+        This function returns the checksum of the given number.
+
+    valid_chars [LIST]
+        By default this module only recognizes 0..9 as valid characters, but
+        sometimes you want to consider other characters as valid, e.g.
+        Standard & Poor's identifers may contain 0..9, A..Z, @, #, *. This
+        function allows you to add additional characters to the accepted
+        list.
+
+        LIST is a mapping of c<character> => c<value>. For example, Standard
+        & Poor's maps A..Z to 10..35 so the LIST to add these valid
+        characters would be (A, 10, B, 11, C, 12, ...)
+
+        Please note that this *adds* or *re-maps* characters, so any
+        characters already considered valid but not in LIST will remain
+        valid.
+
+        If you do not provide LIST, this function returns the current valid
+        character map.
+
+AUTHOR
+    This module was written by Tim Ayers
+    (http://search.cpan.org/search?mode=author&query=tayers).
+
+COPYRIGHT
+    Copyright (c) 2001 Tim Ayers. All rights reserved
+
+LICENSE
+    This program is free software; you can redistribute it and/or
+    modify it under the same terms as Perl itself.
+

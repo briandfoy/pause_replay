@@ -1,0 +1,177 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12914
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 78895 invoked by uid 76); 29 Jul 2002 09:54:21 -0000
+Received: from mail02.svc.cra.dublin.eircom.net (HELO mail02.svc.cra.dublin.eircom.net) (159.134.118.18)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Mon Jul 29 09:54:21 2002 -0000
+Received: (qmail 7389 messnum 100184 invoked from network[159.134.166.151/p663.as1.limerick1.eircom.net]); 29 Jul 2002 09:44:50 -0000
+Received: from p663.as1.limerick1.eircom.net (HELO dansat.data-plan.com) (159.134.166.151)
+  by mail02.svc.cra.dublin.eircom.net (qp 7389) with SMTP; 29 Jul 2002 09:44:50 -0000
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id g6T9iWw02890;
+	Mon, 29 Jul 2002 10:44:32 +0100 (BST)
+	(envelope-from timbo)
+Date: Mon, 29 Jul 2002 10:44:32 +0100
+To: Elizabeth Mattijsen <liz@dijkmat.nl>
+Cc: modules@perl.org
+Subject: Re: CPAN Upload: E/EL/ELIZABETH/Thread-Needs-0.01.tar.gz
+Message-ID: <20020729104432.I2804@dansat.data-plan.com>
+References: <4.2.0.58.20020729004531.02b8f1d0@mickey.dijkmat.nl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <4.2.0.58.20020729004531.02b8f1d0@mickey.dijkmat.nl>; from liz@dijkmat.nl on Mon, Jul 29, 2002 at 12:51:51AM +0200
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+"Thread::Needs" isn't a very descriptive name - it's too general.
+Something like "Thread::NeedsModules" would be better.
+
+Tim.
+
+On Mon, Jul 29, 2002 at 12:51:51AM +0200, Elizabeth Mattijsen wrote:
+> In the category "really sick, but potentially really useful" modules, I 
+> would like to draw your attention to the Thread::Needs module (available 
+> from CPAN).  As usual, I'm interested in whether this makes sense to you 
+> guys or not.  For now, it seems to work in the application's I'm using it 
+> in and saves upto 25% memory for the stuff I'm using it for.
+> 
+> 
+> Liz
+> =======================================================================
+> The uploaded file
+> 
+>      Thread-Needs-0.01.tar.gz
+> 
+> has entered CPAN as
+> 
+>    file: $CPAN/authors/id/E/EL/ELIZABETH/Thread-Needs-0.01.tar.gz
+>    size: 3960 bytes
+>     md5: e983bbe92b496c3055684f405a8c656a
+> 
+> =head1 NAME
+> 
+> Thread::Needs - remove unneeded modules from CLONEd memory
+> 
+> =head1 SYNOPSIS
+> 
+>      use Thread::Needs;
+>      use Thread::Needs (Config Thread::Pool);
+>      no Thread::Needs (Config); # only if previously in -use-
+> 
+> =head1 DESCRIPTION
+> 
+> In many threaded applications, many threads do only very simple things that
+> do not need many (if any) modules.  The current threading module however,
+> copies all modules that are available at the moment a thread is started,
+> to the memory of the thread (ensuring an identical environment to the thread
+> from which it was started).  Memory that is not being used and which is
+> not being shared between processes.  In other words, pretty much wasted
+> memory.
+> 
+> The C<Thread::Needs> module is an B<experimental> module for reducing the
+> memory footprint of threaded Perl applications.  It attempts to reduce the
+> amount of memory used by removing B<all> modules, B<except> the ones it is
+> told to keep, from memory in any threads that are started from the thread
+> in which C<Thread::Needs> is invoked.
+> 
+> Please note that this module uses some dirty tricks that may crash your
+> application, specifically with segmentation faults.  A segmentation fault
+> is usually an indication that a module got removed when it shouldn't have
+> been.  But usually, you will just get an error when a thread starts (or
+> is already running for a while) indicating the absence of a particular
+> module.  In that case, you just need to add the name of the module to
+> the list of modules that you need to keep.  Beware though that this can be
+> a process that takes a number of iterations, as one module may be using
+> other modules that you are not aware of and which are needed anyway.
+> 
+> Memory savings are greatly dependent on the number and type of modules that
+> have been C<use>d when a threads is started.  It naturally also depends on
+> the number of threads that are started.  Observer memory savings have ranged
+> from 1% (with only a few modules and only 1 thread) upto more than 25%
+> (with 100 threads and some modules), effectively making the difference
+> between having a server go into swap or not on my development machine.
+> Your Mileage May Vary.
+> 
+> =head1 CLASS METHODS
+> 
+> There are only 2 class methods that can be called either explicitely or
+> implicitely.
+> 
+> =head2 import
+> 
+>   use Thread::Needs qw(Must::Keep::This::Module);
+>   Thread::Needs->import( qw(Must::Keep::This::Module) );
+> 
+> With the "import" class method you can specify additional modules that must
+> L<not> be removed in any threads that are started from the current thread.
+> 
+> The "import" method is called implicitely when parameters are specified with
+> C<use>.
+> 
+> =head2 unimport
+> 
+>   no Thread::Needs qw(Must::Not::Keep::This::Module);
+>   Thread::Needs->unimport( qw(Must::Not::Keep::This::Module) );
+> 
+> With the "unimport" class method you can specify modules that must be removed
+> from the list of modules to be removed.  It only makes sense to call with a
+> specific module name of it was previously (implicitely) specified with
+> L<import>.
+> 
+> The "unimport" method is called implicitely when parameters are specified
+> with C<no>.
+> 
+> =head1 EXAMPLE
+> 
+> A simple example when using Thread::Pool:
+> 
+>   use Thread::Pool;
+>   use Thread::Needs qw(Thread::Pool Thread::Conveyor);
+> 
+>   my $pool = Thread::Pool->new(
+>    {
+>     do => sub { warn "Hello $_[0]!\n" },
+>     workers => 10,
+>    }
+>   );
+> 
+>   $pool->job( 'Liz' );
+>   <>; # Look at "top" when "Hello Liz" is shown
+>   $pool->job( 'Wendy' );
+> 
+> With the C<Thread::Needs> the memory usage of the above is B<7928> KByte.
+> Without it, the memory usage is B<9104> KByte.  That's over 1 Mbyte of
+> memory saved, about 12%.  Well, at least on my (Linux) development machine.
+> 
+> =head1 CAVEATS
+> 
+> Currently only the namespaces of the modules are zapped.  And because the
+> namespaces need to continue to exist because of the random order in which
+> CLONE subroutines are executed (otherwise causing segmentation faults),
+> the namespaces are re-created with just a CLONE stub.  Hopefully it will
+> be possible to also have these removed and even other stuff that namespace
+> zapping doesn't remove.
+> 
+> =head1 AUTHOR
+> 
+> Elizabeth Mattijsen, <liz@dijkmat.nl>.
+> 
+> Please report bugs to <perlbugs@dijkmat.nl>.
+> 
+> =head1 COPYRIGHT
+> 
+> Copyright (c) 2002 Elizabeth Mattijsen <liz@dijkmat.nl>. All rights
+> reserved.  This program is free software; you can redistribute it and/or
+> modify it under the same terms as Perl itself.
+> 
+> =head1 SEE ALSO
+> 
+> L<threads>.
+> 
+> =cut
+> 

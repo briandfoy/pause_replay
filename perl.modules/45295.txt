@@ -1,0 +1,110 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45295
+Return-Path: <saper@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26541 invoked from network); 12 Oct 2005 08:30:13 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 12 Oct 2005 08:30:13 -0000
+Received: (qmail 12734 invoked by uid 225); 12 Oct 2005 08:30:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12729 invoked by alias); 12 Oct 2005 08:30:12 -0000
+X-Spam-Status: No, hits=1.7 required=8.0
+	tests=BAYES_00,RCVD_IN_NJABL_PROXY,RCVD_IN_SORBS_SOCKS,RCVD_IN_SORBS_WEB
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from smtp2-g19.free.fr (HELO smtp2-g19.free.fr) (212.27.42.28)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 12 Oct 2005 01:30:02 -0700
+Received: from imp6-g19.free.fr (imp6-g19.free.fr [212.27.42.6])
+	by smtp2-g19.free.fr (Postfix) with ESMTP id 56F5746C16;
+	Wed, 12 Oct 2005 10:29:57 +0200 (CEST)
+Received: by imp6-g19.free.fr (Postfix, from userid 33)
+	id 3929A28F77; Wed, 12 Oct 2005 10:29:57 +0200 (MEST)
+Received: from 80.70.42.214 ([80.70.42.214]) 
+	by imp6-g19.free.fr (IMP) with HTTP 
+	for <maddingue@212.27.48.2>; Wed, 12 Oct 2005 10:29:57 +0200
+Message-ID: <1129105797.434cc98514e21@imp6-g19.free.fr>
+Date: Wed, 12 Oct 2005 10:29:57 +0200
+To: "Andreas J. Koenig" <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Cc: modules@perl.org
+Subject: Re: XSLoader is not indexed
+References: <1128330668.4340f5ac8c7f8@imp3-g19.free.fr> <874q7n676b.fsf@k75.linux.bogus>
+In-Reply-To: <874q7n676b.fsf@k75.linux.bogus>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: Internet Messaging Program (IMP) 3.2.5
+X-Originating-IP: 80.70.42.214
+Approved: news@nntp.perl.org
+From: saper@cpan.org (=?iso-8859-1?b?U+liYXN0aWVu?= Aperghis-Tramoni)
+
+Hello Andreas,
+
+
+Andreas J. Koenig <andreas.koenig.gmwojprw@franz.ak.mind.de> wrote:
+
+> >>>>> On Mon, 03 Oct 2005 11:11:08 +0200, Sebastien Aperghis-Tramoni
+> <saper@cpan.org> said:
+>
+>   > Hello,
+>   > It appears that although I already uploaded two stable releases of
+>   > XSLoader, it is currently not indexed by PAUSE. Could this be fixed
+>   > so the module can be installed using the CPAN and CPANPLUS shells?
+>
+> Over the years I get the impression, this needs to be put into some
+> FAQ. Something like this (and the whole text is subject to radical
+> changes if needed and if alternative means via META.yml evolve):
+>
+> To satisfy the CPAN indexer, it's necessary to distribute one or more
+> *.pm files.
+
+Aha! This explains why several modules are "hidden" from PAUSE but
+present on Search CPAN. A FAQ or a document just stating that would
+be useful. If I may help..
+
+> If your distro contains no *.pm file, because for example,
+> your Foo.pm is written by a script during the execution of 'perl
+> Makefile.PL', then you need to take precautions if you want to be
+> acknowledged by the indexer. The META.yml by MakeMaker doesn't help.
+> There are several possible solutions:
+>
+> 1. Write a different file on the fly, say Foo/Local.pm and have that
+>    be required by Foo.pm and let Foo.pm be just
+>
+>    package Foo;
+>    $VERSION = "2.26";
+>    require Foo::Local;
+>
+> 2. Write only a few configuration variables into some Foo/Config.pm
+>    and the common logic into Foo.pm. This is really the same thing as
+>    above.
+
+As XSLoader is a core module that was CPAN-ized, I'm not really
+supposed to modify it for gratuitous reasons. I took maintainership
+of this module because nobody else wanted to :-)
+
+> 3. I have not yet enough experience with Module::Build instead of
+>    MakeMaker. M:B writes a bigger META.yml file that would be parsed
+>    by the indexer. That would be an interesting approach but would
+>    probably need some more support on the PAUSE side.
+>
+> 4. The least intrusive to you as an author would probably be to let
+>    Makefile.PL care for the distribution of a bare minimum of Foo.pm
+>    and overwrite it during installation. This approach is the
+>    trickiest and thus probably least maintainable one. But it is
+>    conceptually possible and is therefore mentioned as an alternative.
+>    An actual implementation is left as an exercixe to the reader:-)
+
+I'll probably use that solution, as it's the one that need less
+modifications: I'll just ship a generated XSLoader.pm with the
+distribution and unlink it from Makefile.PL. Advantage being that
+it doesn't touch any files being in core.
+
+
+Thank you for your help
+
+--
+Sébastien Aperghis-Tramoni
+
+Close the world, txEn eht nepO.

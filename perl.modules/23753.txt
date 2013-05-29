@@ -1,0 +1,71 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:23753
+Return-Path: <haim@babysnakes.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 86882 invoked by uid 1012); 28 Sep 2003 10:58:44 -0000
+Message-ID: <20030928105844.86878.qmail@onion.perl.org>
+To: modules@perl.org
+Subject: Net::SSH::Perl with dsa key problem
+Date: Sun, 28 Sep 2003 13:58:41 +0300
+Lines: 51
+User-Agent: KNode/0.7.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7Bit
+X-Posted-By: 62.90.139.134
+Approved: news@nntp.perl.org
+From: haim@babysnakes.org (Haim Ashkenazi)
+
+Hi
+
+I'm trying to write a simple ssh login script using Net::SSH::Perl. with
+regular password It's working without a problem, but when I try to use dsa
+key (my usual dsa key) it doesn't work.
+
+here's the scritp:
+
+----------------------------------------------------
+
+#!/usr/bin/perl -w
+
+
+use strict;
+use Net::SSH::Perl;
+use Net::SSH::Perl::Auth;
+
+my @ids = ("/home/haim/.ssh/identity");
+
+my %params = {
+    protocol => 2,
+    interactive => 1,
+    identity_files => \@ids,
+};
+    
+my $login = Net::SSH::Perl->new("coltrane", %params);
+
+
+my $auth = Net::SSH::Perl::Auth->new('PublicKey', $login);
+$auth->authenticate;
+
+
+$login->login("haim");
+
+$login->shell;
+
+--------------------------------------------------------------------------------
+
+When I run this script I get an error:
+Reference found where even-sized list expected at login.pl line 10.
+Can't call method "agent" on an undefined value at /usr/local/share
+perl/5.8.0/Net/SSH/Perl/Auth/PublicKey.pm line 39, <GEN0> line 1.
+
+I've looked into the Net::SSH::Perl::Agent manpage but I can't figure out
+how do I use it.
+
+can anyone please help?
+
+thanx
+--
+Haim

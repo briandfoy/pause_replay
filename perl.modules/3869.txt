@@ -1,0 +1,112 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3869
+Return-Path: <tabalon@cablecats.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19218 invoked from network); 11 Dec 2000 15:31:58 -0000
+Received: from helium.yatho.de (151.189.12.212)
+  by tmtowtdi.perl.org with SMTP; 11 Dec 2000 15:31:58 -0000
+Received: from panther.felidae.cablecats.de (pD9055B3B.dip.t-dialin.net [217.5.91.59])
+	by helium.yatho.de (8.9.3/8.9.3) with ESMTP id QAA19263;
+	Mon, 11 Dec 2000 16:31:44 +0100
+Received: (from tabalon@localhost)
+	by panther.felidae.cablecats.de (8.9.3/8.9.3) id QAA14977;
+	Mon, 11 Dec 2000 16:31:46 +0100
+Date: Mon, 11 Dec 2000 16:31:46 +0100
+To: Johan Vromans <JVromans@squirrel.nl>
+Cc: modules@perl.org
+Subject: Re: new templates module, beginners questions
+Message-ID: <20001211163146.B14483@panther.felidae.cablecats.de>
+References: <20001208183057.C4355@panther.felidae.cablecats.de> <m2zoi444q9.fsf@deirdre.squirrel.nl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <m2zoi444q9.fsf@deirdre.squirrel.nl>; from JVromans@squirrel.nl on Sun, Dec 10, 2000 at 05:32:14PM +0100
+Approved: news@nntp.perl.org
+From: jaekel@cablecats.de (Andreas Jaekel)
+
+Hi Johan,
+
+> Please do! If your module indeed is easier to use people will like it.
+
+I hope so :) In that case, I'd like to register. The PAUSE FAQ says
+I should do so here. So here it comes:
+
+
+Name    : Andreas Jaekel
+eMail   : tabalon@furry.de
+Homepage: http://www.furry.de/tabalon
+UserID  : AJAEKEL
+
+About this module:
+
+Desc    : a general-purpose caching template module with callbacks, error 
+          handling and directory traversing/template autoload
+DSLI    : RdpO templates with cache, callbacks and autoload
+
+This module was not discussed in public. It is the result of our group's
+internal expirience and discontentment with the CGI::FastTemplate module.
+We have collected ideas for a better API and some new features. I've
+implemented and tested it and it looks good. 
+
+The reasons we don't like the old API are:
+ o You have to 'define' a template before using it:
+    $tpl->define( a => a.tpl );
+    $tpl->parse( A => a );
+ o You can't parse a string. Only a template file.
+ o You assign values to markers. We could never remember the syntax 
+   because $tpl->assign( A => B );  assigns the value B to the marker A. :(
+   The new module uses $tpl->set( A => B ); or $tpl->set( A, B ) or
+   $tpl->{A} = B;
+ o $tpl->parse( RESULT => a ) doesn't return the parsed document. You can
+   only use $tpl->fetch( RESULT ) to get the data.
+ o CGI::FastTemplates mixes the data between instances if you have more
+   than one.
+
+
+
+> >  o what namespace should I use, ... However, since both
+> 
+> Template:: ?
+
+Well, Template:: is already given. It's a whole toolkit by Andy Wardley (ABW)
+and the 2.00 final release was five days ago :)  It's available from
+http://www.template-toolkit.org/ (*grin*) and seems to be _very_ complete.
+
+I've just read through the documentation, and I think the Template::
+toolkit is the definitve solution for all template needs. It might
+even be a little over-engineered.
+
+So why would anyone want to use my module? Some reasons I see:
+ o it's small (650 lines or so)
+ o it might be faster than Template.pm, but would be slower than
+   CGI::FastTemplate
+ o it allows no logic in the templates (loop, if/then/else) which I think
+   is an advantage. (try working with designers on one project and stop
+   them from using all possible bells and whistles. Good luck.)
+ o it's easier to use since the whole documentation has only 12 pages
+   (pod2man | nroff) including many examples.
+ o it has template autoloading included.
+
+
+Is that enough to justify yet another template module on CPAN?
+
+And again, what namepsace would I use? :)
+
+
+> I'm afraid there is no such module (yet?). When you use h2xs to
+> generate the stubs it will provide templates for the tests and
+> Makefile.PL as well. I can send you some samples, if you like.
+
+This works just fine. Thanks! And to Tels, too, who sent me the
+same hint.
+
+
+Greetings,
+       Andy
+
+-- 
+Andreas Jaekel, CableCats - Foest, Jaekel, Tegethoff GbR
+http://www.cablecats.de  Tel.: 030 - 916 11 77 3

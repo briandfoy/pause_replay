@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:34888
+Return-Path: <domi@komarr.grenoble.hp.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 338 invoked from network); 17 Sep 2004 16:30:28 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 17 Sep 2004 16:30:28 -0000
+Received: (qmail 6515 invoked by uid 225); 17 Sep 2004 16:30:27 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6507 invoked by alias); 17 Sep 2004 16:30:26 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with SMTP; Fri, 17 Sep 2004 09:30:24 -0700
+Received: (qmail 32639 invoked by uid 515); 17 Sep 2004 16:30:21 -0000
+To: modules@perl.org
+Cc: MLEHMANN@cpan.org, "brian d. foy" <comdog@panix.com>,
+  gbarr@pobox.com (Graham Barr)
+Subject: Re: Module submission Linux::DVB
+References: <20040908214720.GA19918@schmorp.de>
+Date: Fri, 17 Sep 2004 18:10:05 +0200
+Message-ID: <kgir7p0q3ky.fsf@komarr.grenoble.hp.com>
+User-Agent: Gnus/5.1006 (Gnus v5.10.6) Emacs/21.3 (gnu/linux)
+Cancel-Lock: sha1:2QYU7QsdAftXQvs6VOwZxyAMyQM=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Posted-By: 155.208.254.138
+Approved: news@nntp.perl.org
+From: domi@komarr.grenoble.hp.com (Dominique Dumont)
+
+
+Hello
+
+I've done some research around the (hot) topic regarding Marc's modules.
+
+What Mark failed to mention is that his module is just an XS wrapper
+around the 'linux-dvb' API project [1]. His module does not provide
+any kind of more perlish style API above DVB. Moreover, the
+'linux-dvb' project is currently linux specific.
+
+Some inquiries were made about porting 'linux-dvb' API to FreeBSD but
+nothing has been done yet. Moreover, FreeBSD will probably use
+something called DVB-ASI [2]. So having 'linux-dvb' API ported to
+other OSes is highly unlikely.
+
+So Mark's module is indeed specific to Linux *and* 'linux-dvb'
+project. (note the double specificity both contain 'linux'. This
+smells like trouble for us module list maintainers).
+
+As for the DVB acronym, the official name (Digital Video Broadcasting)
+is misleading: the DVB standard is already evolving to provide other
+services such as converging broadcast and mobile services [3]. (for
+instance DVB can already convey IP data). Hence I understand Mark's
+reluctance in putting his module under Video which is too narrow a
+definition for DVB (even if the acronym unfortunately suggests only
+video).
+
+Moreover, what can we do with DVB and Perl ? I don't think Perl can
+handle video and audio data for performance reasons. So what's left ?
+Some others things like network data, front-end (control of dish and
+head ?), conditional access (for scrambled programs) ... It's ironic
+that Perl can only handle non video part of the DVB API.
+
+So I agree not to force his module under Video::*.
+
+I do not approve the name Mark suggested ("Linux::DVB") because (IMO)
+it mostly gives the impression of a generic high level perl style API.
+It certainly does not hint at the linux-dvb project. A name like
+Linux::LinuxDVB would give a clue, but one may not like a name with
+2 'Linux' in it.
+
+So I'd like for this module a name that:
+- is under Linux::*
+- is not under Video
+- implies that the module is just a wrapper
+- implies that is a wrapper around the 'linux-dvb' project.
+- does not close the door for a more perlish Linux::DVB module 
+
+What do you all think ?
+
+[1] http://www.linuxtv.org/developer/dvbapi.xml
+[2] http://www.bsdforums.org/forums/showthread.php?threadid=18470
+[3] http://www.dvb.org/documents/white-papers/wp08.CBMS.final.pdf
+
+-- 
+Dominique Dumont 
+"Delivering successful solutions requires giving people what they
+need, not what they want." Kurt Bittner

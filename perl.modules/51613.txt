@@ -1,0 +1,84 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:51613
+Return-Path: <bix@sendu.me.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 21634 invoked from network); 6 Nov 2006 16:09:01 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 6 Nov 2006 16:09:01 -0000
+Received: (qmail 29579 invoked by uid 225); 6 Nov 2006 16:09:01 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29572 invoked by alias); 6 Nov 2006 16:09:00 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from ppsw-2.csi.cam.ac.uk (HELO ppsw-2.csi.cam.ac.uk) (131.111.8.132)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 06 Nov 2006 08:08:50 -0800
+X-Cam-SpamDetails: Not scanned
+X-Cam-AntiVirus: No virus found
+X-Cam-ScannerInfo: http://www.cam.ac.uk/cs/email/scanner/
+Received: from stirling.mrc-dunn.cam.ac.uk ([193.60.90.25]:44665)
+	by ppsw-2.csi.cam.ac.uk (ppsw.cam.ac.uk [131.111.8.132]:25)
+	with esmtp id 1Gh70j-00046c-7z (Exim 4.63) for modules@perl.org
+	(return-path <bix@sendu.me.uk>); Mon, 06 Nov 2006 16:07:46 +0000
+Received: from reading.mrc-dunn.cam.ac.uk ([193.60.85.115])
+	by stirling.mrc-dunn.cam.ac.uk with esmtp (TLSv1:DES-CBC3-SHA:168)
+	(Exim 4.41)
+	id 1Gh70L-0003dE-Q6
+	for modules@perl.org; Mon, 06 Nov 2006 16:07:21 +0000
+Received: from dhn02982.mrc-dunn.cam.ac.uk ([193.60.81.20])
+	by reading.mrc-dunn.cam.ac.uk with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.43)
+	id 1Gh70i-00045B-Kx; Mon, 06 Nov 2006 16:07:44 +0000
+Message-ID: <454F5DD0.50205@sendu.me.uk>
+Date: Mon, 06 Nov 2006 16:07:44 +0000
+User-Agent: Thunderbird 1.5.0.4 (Macintosh/20060516)
+MIME-Version: 1.0
+To:  modules@perl.org
+CC:  andreas.koenig.gmwojprw@franz.ak.mind.de
+Subject: Complex version numbers?
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: bix@sendu.me.uk (Sendu Bala)
+
+Hi,
+
+We have some modules in CPAN for bioperl, eg. BIRNEY/bioperl-1.4.tar.gz.
+For the future we would like to have better $VERSION strings than our 
+current '1.4'. We're not quite sure the best way to do this. We need 3 
+part version numbers, and a way to denote a developer-only release (that 
+won't automatically be downloaded as the latest version).
+
+For example, the next release will be called 1.5.2 and is a developer 
+release. After that there will be 1.6.0 which we want to be downloaded 
+automatically by people instead of 1.4. To further complicate matters, 
+we also want release candidates to be available on CPAN (to test that 
+CPAN will be happy with the final release, as well as make it easier for 
+people to try the candidate). So there might be 1.6.0 RC1 before the 
+final release of 1.6.0
+
+We are currently considering:
+
+$VERSION = 1.52_01; # RC1 of developer 1.5.2
+$VERSION = 1.52_10; # final release of developer 1.5.2
+$VERSION = 1.60_01; # RC1 of 1.6.0
+$VERSION = 1.6010;  # final release of 1.6.0
+
+OR
+
+$VERSION = 1.005002_001; # RC1 of developer 1.5.2
+$VERSION = 1.005002_100; # final release of developer 1.5.2
+$VERSION = 1.006000_001; # RC1 of 1.6.0
+$VERSION = 1.006000100;  # final release of 1.6.0
+OR
+$VERSION = 1.006000;     # final release of 1.6.0
+
+Any thoughts as to what would be most appropriate?
+
+
+Thank you,
+Sendu.

@@ -1,0 +1,72 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:19390
+Return-Path: <jbisbee@jbisbee.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 53634 invoked by uid 76); 12 Mar 2003 14:57:30 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-03-12 14:57:30Z
+Received: (qmail 20972 invoked by uid 225); 12 Mar 2003 14:57:29 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 20967 invoked by uid 507); 12 Mar 2003 14:57:29 -0000
+Received: from westhost14.westhost.net (HELO westhost14.westhost.net) (216.71.84.65) by one.develooper.com (qpsmtpd/0.21-dev) with SMTP; Wed, 12 Mar 2003 06:57:27 -0800
+Received: from biz.poponuts.com (adsl-34-5-128.mia.bellsouth.net [67.34.5.128])	by westhost14.westhost.net (8.11.6/8.11.6) with ESMTP id h2CEuwK18374	for <modules@cpan.org>; Wed, 12 Mar 2003 08:56:58 -0600
+Received: from jbisbee by biz.poponuts.com with local (Exim 3.36 #1 (Debian))	id 18t7fF-0006vC-00	for <modules@cpan.org>; Wed, 12 Mar 2003 09:57:05 -0500
+Date: Wed, 12 Mar 2003 09:57:05 -0500
+To: modules@cpan.org
+Subject: PoCo::RSSAggregator, RSS::Feed, and RSS::Feed::Headline
+Message-ID: <20030312145705.GA25927@biz>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Editor: Vim http://www.vim.org/
+X-Info: http://biz.br.seisint.com/
+X-Operating-System: Linux/2.4.20-mppe (i686)
+X-Uptime: 09:29:21 up 11 days, 10:05,  3 users,  load average: 0.00, 0.00, 0.07
+User-Agent: Mutt/1.5.3i
+Sender: Jeff Bisbee <jbisbee@jbisbee.com>
+X-SMTPD: qpsmtpd/0.21-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-0.9 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: cpan@jbisbee.com (Jeff Bisbee)
+
+Well this is my first go and getting something into CPAN and I'd like to
+submit the following modules for consideration
+
+    POE::Component::RSSAggregator
+    RSS::Feed
+    RSS::Feed::Headline
+
+This is how POE::Component::RSSAggregator works:
+
+    1.  init the component with
+	a. an array of hashs that represent rss urls you want to watch
+	b. a callback to handle new headlines when they show appear
+
+    2.  the states for the component are as followes
+
+        _start    takes the hashes and create RSS::Feed objects with them 
+	          the posts each one to the kernel to the 'check' state
+	check     attempts to fetch the url via PoCo::Client::HTTP and passes 
+		  control to 'response', check also posts back to itself
+		  with a delay set by the RSS::Feed object
+	response  response check for a valid page then attempts to parse
+	          the page with with XML::RSS and if it parses, passes
+		  control to 'parsed'
+	parsed    takes the structure returned by XML::RSS and set it
+	          in the current RSS::Feed object (which creates an 
+		  RSS::Feed::Headline object for each title
+		  It then does a test to see if there are any new
+		  headlines and if there are hands control to announce
+	announce  just calls callback with the new headlines it finds
+	          right now it just returns an array ref, but will 
+		  probably end up returning RSS::Headline objects
+
+I'm not sure where RSS::Feed and RSS::Feed::Headline should be
+XML::RSS::Feed and XML::RSS::Feed::Headline so that may be a
+consideration as well.
+
+-- Jeff Bisbee / cpan@jbisbee.com / jbisbee.com

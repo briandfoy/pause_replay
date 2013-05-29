@@ -1,0 +1,470 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62397
+Return-Path: <zed@resonant.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 27787 invoked from network); 25 Sep 2008 22:47:57 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 25 Sep 2008 22:47:57 -0000
+Received: (qmail 1419 invoked by uid 225); 25 Sep 2008 22:47:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1414 invoked by alias); 25 Sep 2008 22:47:56 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from static-71-246-207-60.washdc.fios.verizon.net (HELO resonant.org) (71.246.207.60)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 25 Sep 2008 15:47:50 -0700
+Received: by resonant.org (Postfix, from userid 1000)
+	id 6CE8B39C146; Thu, 25 Sep 2008 18:47:45 -0400 (EDT)
+Date: Thu, 25 Sep 2008 18:47:45 -0400
+To: modules@perl.org
+Subject: RFC: namespace EBook::Tools
+Message-ID: <20080925224745.GA1186@resonant.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="opJtzjQTFsWo+cga"
+Content-Disposition: inline
+X-No-Archive: Yes
+X-GPG-Fingerprint: FF 75 8D 70 57 8D A4 7D  3A DE 6D 2F 25 C3 E6 E7
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: zed@resonant.org (Zed Pobre)
+
+--opJtzjQTFsWo+cga
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+I've been writing a module containing a general toolkit for working
+with e-book data that is now far enough along to be useful (it can
+extract e-book specific metadata from certain HTML files, convert
+between OEB1.2 and OPF2.0 standards, and package up .epub files), and
+almost far enough along to be packageable, so I'd like some feedback
+on the name before I register for a PAUSE ID, package it, and upload.
+
+The last attempt to propose a similar namespace was in 2006, and
+didn't seem to go anywhere:
+
+http://www.xray.mpe.mpg.de/mailing-lists/modules/2006-04/msg00107.html
+
+I think EBook looks slightly better than Ebook, so I'd like to use
+that, if nobody minds.
+
+Current POD text follows:
+
+
+NAME
+    EBook::Tools -- A collection of tools to manipulate documents in Open
+    E-book formats.
+
+DESCRIPTION
+    This module provides an object interface and a number of related
+    procedures intended to create or modify documents centered around the
+    International Digital Publishing Forum (IDPF) standards, currently both
+    OEBPS v1.2 and OPS/OPF v2.0.
+
+DEPENDENCIES
+  Perl Modules
+    Archive::Zip
+    Date::Manip
+        Note that Date::Manip will die on MS Windows system unless the TZ
+        environment variable is set in a specific manner. See:
+
+        http://search.cpan.org/perldoc?Date::Manip#TIME_ZONES
+
+    File::Basename
+    File::MimeInfo::Magic
+    XML::Twig::XPath
+
+  Other Programs
+    Tidy
+
+CONFIGURABLE GLOBAL VARIABLES
+    $datapath
+        The location where various external files (such as tidy
+        configuration files) can be found.
+
+        Defaults to the subdirectory 'data' in whatever directory the
+        calling script is actually in. (See BUGS/TODO)
+
+    $tidycmd
+        The tidy executable name. This has to be a fully qualified pathname
+        if tidy isn't on the path. Defaults to 'tidy'.
+
+    $tidyconfig
+        The name of the tidy configuration file. It will be looked for as
+        "$datapath/$tidyconfig". Defaults to 'tidy-oeb.conf', but nothing
+        bad will happen if it can't be found.
+
+    $tidyxhtmlerrors
+        The name of the error output file from system_tidy_xhtml(). Defaults
+        to 'tidyxhtml-errors.txt'
+
+    $tidyxmlerrors
+        The name of the error output file from system_tidy_xml(). Defaults
+        to 'tidyxml-errors.txt'
+
+    $tidysafety
+        The safety level to use when running tidy. Potential values are:
+
+        <1: No checks performed, no error files kept, works like a clean
+            tidy -m
+
+            This setting is DANGEROUS!
+
+        1:  Overwrites original file if there were no errors, but even if
+            there were warnings. Keeps a log of errors, but not warnings.
+
+        2:  Overwrites original file if there were no errors, but even if
+            there were warnings. Keeps a log of both errors and warnings.
+
+        3:  Overwrites original file only if there were no errors or
+            warnings. Keeps a log of both errors and warnings.
+
+        4+: Never overwrites original file. Keeps a log of both errors and
+            warnings.
+
+ACCESSORS
+  opffile
+    Reads and writes the name of the OPF filename the object will use for
+    the "init" and "save" methods.
+
+  spec
+    The version of the OEB specification currently in use. Valid values are
+    "OEB12" and "OPF20". This value will default to undef until "fixoeb12"
+    or "fixopf20" is called, as there is no way for the object to know what
+    the format is until it attempts to enforce it.
+
+  twig
+    The main twig object used to store the OPF XML tree.
+
+  twigroot
+    The twig object corresponding to the root tag, which should always be
+    <package>. Modifying this will modify the twig.
+
+  error
+    Reads the last generated error message, if any.
+
+METHODS
+  new($filename)
+    Instantiates a new OEB::Tools object. If $filename is specified, it will
+    also immediately initialize itself via the "init" method.
+
+  init($filename)
+    Initializes the data from an existing OPF file. If $filename is
+    specified and exists, the OEB object will be set to read and write to
+    that file before attempting to initialize. Otherwise, if the object
+    currently points to an OPF file it will use that name. If there is no
+    OPF filename data, and $filename was not specified, it will make a
+    last-ditch attempt to find an OPF file first by looking in
+    META-INF/container.xml, and if nothing is found there, by looking in the
+    current directory for a single OPF file.
+
+    If no such files or found (or more than one is found), the method will
+    die horribly.
+
+  add_document($id,$href,$mediatype)
+    Adds a document to the OPF manifest and spine.
+
+   Arguments
+    $id The XML ID to use. This must be unique not only to the manifest
+        list, but to every element in the file.
+
+    $href
+        The href to the document in question. Usually, this is just a
+        filename (or relative path and filename) of a file in the current
+        working directory. If you are planning to eventually generate a
+        .epub book, all hrefs MUST be in or below the current working
+        directory.
+
+    $mediatype (optional)
+        The mime type of the document. If not specified, will default to
+        'application/xhtml+xml'.
+
+  epubinit ()
+    Generates the "mimetype" and "META-INF/container.xml" files expected by
+    a .epub container, but does not actually generate the .epub file itself.
+    This will be called automatically by "gen_epub".
+
+  fixmisc ()
+    Fixes miscellaneous potential problems in OPF data. Specifically:
+
+    *   Standardizes the date format in <dc:date> elements
+
+    *   Deletes any secondary <metadata> elements containing the "filepos"
+        attribute (potentially left over from Mobipocket conversions)
+
+    *   Verifies that the package ID corresponds to a proper dc:identifier,
+        and if not, creates a dc:identifier and assigns it.
+
+    *   Inserts an <output> metadata element if it is missing (to support
+        Mobipocket Creator)
+
+  fixopf20 ()
+    Modifies the OPF data to conform to the OPF 2.0 standard
+
+  fixoeb12 ()
+    Modifies the OPF data to conform to the OEB 1.2 standard
+
+  gen_epub($filename)
+    Creates a .epub format e-book. This will create (or overwrite) the files
+    'mimetype' and 'META-INF/container.xml' in the current directory,
+    creating the subdirectory META-INF as needed.
+
+   Arguments
+    $filename
+        The filename of the .epub output file. If not specifies, takes the
+        base name of the opf file and adds a .epub extension.
+
+  manifest_hrefs ()
+    Returns a list of all of the hrefs in the current OPF manifest
+
+  printopf ()
+    Prints the OPF file to the default filehandle
+
+  save ()
+    Saves the OPF file to disk
+
+PROCEDURES
+  create_epub_container($opffile)
+    Creates the XML file META-INF/container.xml pointing to the specified
+    OPF file.
+
+    Creates the META-INF directory if necessary. Will destroy any
+    non-directory file named 'META-INF' in the current directory.
+
+   Arguments
+    $opffile
+        The OPF filename (and path, if necessary) to use in the container.
+        If not specified, looks for a sole OPF file in the current working
+        directory. Fails if more than one is found.
+
+   Return values
+    Returns a twig representing the container data if successful, undef
+    otherwise
+
+  create_epub_mimetype ()
+    Creates a file named 'mimetype' in the current working directory
+    containing 'application/epub+zip' (no trailing newline)
+
+    Destroys and overwrites that file if it exists.
+
+    Returns the mimetype string if successful, undef otherwise.
+
+  fix_date($datestring)
+    Takes a date string and attempts to convert it to the limited subset of
+    ISO8601 allowed by the OPF standard (YYYY, YYYY-MM, or YYYY-MM-DD).
+
+    In the special case of finding MM/DD/YYYY, it assumes that it was a
+    Mobipocket-mangled date, and not only converts it, but will strip the
+    day information if the day is '01', and both the month and day
+    information if both month and day are '01'. This is because Mobipocket
+    Creator enforces a complete MM/DD/YYYY even if the month and day aren't
+    known, and it is common practice to use 01 for an unknown value.
+
+   Arguments
+    $datestring
+        A date string in a format recognizable by Date::Manip
+
+   Return values
+    Returns the corrected string, or undef on failure
+
+  get_container_rootfile($container)
+    Opens and parses an OPS/epub container, extracting the 'full-path'
+    attribute of element 'rootfile'
+
+   Arguments
+    $container
+        The OPS container to parse. Defaults to 'META-INF/container.xml'
+
+   Return values
+    Returns a string containing the rootfile on success, undef on failure.
+
+  print_memory($label)
+    Checks /proc/$PID/statm and prints out a line to STDERR showing the
+    current memory usage. This is a debugging tool that will likely fail to
+    do anything useful on a system without a /proc system compatible with
+    Linux.
+
+   Arguments
+    $label
+        If defined, will be output along with the memory usage.
+
+    Returns nothing
+
+  split_metadata($metahtmlfile)
+    Takes a psuedo-HTML containing one or more <metadata> segments (such as
+    in many files output by mobi2html) and splits out the metadata values
+    into an XML file in preparation for conversion to OPF. Rewrites the html
+    file without the metadata.
+
+    If tidy cannot be run, split_metadata MUST output the OEB 1.2 doctype
+    (and thus not conform to OPF 2.0, which doesn't use a dtd at all), as
+    the the metadata values may contain HTML entities and Tidy is needed to
+    convert them to UTF-8 characters
+
+   Arguments
+    $metahtmlfile
+        The filename of the pseudo-HTML file
+
+   Returns ($xmlstring,$basename)
+    $xmlstring: a string containing the XML
+    $basename: the base filename with the final extension stripped
+
+    Dies horribly on failure
+
+  system_tidy_xhtml($infile,$outfile)
+    Runs tidy on a XHTML file semi-safely (using a secondary file)
+
+    Converts HTML to XHTML if necessary
+
+   Arguments
+    $infile
+        The filename to tidy
+
+    $outfile
+        The filename to use for tidy output if the safety condition to
+        overwrite the input file isn't met.
+
+   Global variables used
+    $tidycmd
+        the location of the tidy executable
+
+    $tidyconfig
+        the location of the config file to use
+
+    $tidyxhtmlerrors
+        the filename to use to output errors
+
+    $tidysafety
+        the safety factor to use (see CONFIGURABLE GLOBAL VARIABLES, above)
+
+   Return Values
+    Returns the return value from tidy
+
+    0 - no errors
+    1 - warnings only
+    2 - errors
+    Dies horribly if the return value is unexpected
+
+  system_tidy_xml($infile,$outfile)
+    Runs tidy on an XML file semi-safely (using a secondary file)
+
+   Arguments
+    $infile
+        The filename to tidy
+
+    $outfile
+        The filename to use for tidy output if the safety condition to
+        overwrite the input file isn't met.
+
+   Global variables used
+    $datapath
+        the location of the config file
+
+    $tidycmd
+        the name of the tidy executable
+
+    $tidyconfig
+        the name of the tidy config file to use
+
+    $tidyxmlerrors
+        the filename to use to output errors
+
+    $tidysafety
+        the safety factor to use (see CONFIGURABLE GLOBAL VARIABLES, above)
+
+   Return values
+    Returns the return value from tidy
+
+    0 - no errors
+    1 - warnings only
+    2 - errors
+    Dies horribly if the return value is unexpected
+
+EXAMPLE
+     package OEB::Tools qw(split_metadata system_tidy_xml);
+     $OEB::Tools::tidysafety =3D 2;
+
+     my $opffile =3D split_metadata('ebook.html');
+     my $otheropffile =3D 'alternate.opf';
+     my $retval =3D system_tidy_xml($opffile,'tidy-backup.xml');
+     my $oeb =3D OEB::Tools->new($opffile);
+     $oeb->fixopf20;
+     $oeb->fixmisc;
+     $oeb->print;
+     $oeb->save;
+
+     $oeb->init($otheropffile);
+     $oeb->fixoeb12;
+     $oeb->save;
+
+BUGS/TODO
+    *   twig_fix_packageid only tests if a specified element exists -- it
+        needs to also check that the element actually has text associated
+        with it
+
+    *   need a twig procedure for sort_children to sort on GI + ID
+
+    *   $datapath points to a relatively useless location by default. While
+        nothing very useful is stored there yet, it needs to be fixed to a
+        usable system directory before initial release.
+
+    *   die() is called much too frequently for this to be integrated into
+        large applications yet. Fatalities need to be converted either into
+        exceptions or return values, and I haven't decided which way to go
+        yet. The error storage isn't used at all.
+
+    *   It might be better to use sysread / index / substr / syswrite in
+        &split_metadata to handle the split in 10k chunks, to avoid massive
+        memory usage on large files.
+
+        This may not be worth the effort, since the average size for most
+        books is less than 500k, and the largest books are rarely if ever
+        over 10M.
+
+    *   The only generator is currently for .epub books. PDF, PalmDoc,
+        Mobipocket, and iSiloX are eventually planned.
+
+    *   There are no import/extraction tools yet. Extraction from PalmDoc,
+        eReader, and Mobipocket is eventually planned.
+
+    *   There is not yet any way to initialize a blank OPF entry for
+        creation of ebooks from scratch.
+
+    *   Classic accessors aren't very readable. The object may be rebuilt
+        with Class::Meta to use semi-affordance accessors.
+
+AUTHOR
+    Zed Pobre <zed@debian.org>
+
+COPYRIGHT
+    Copyright =A9 2008 Zed Pobre
+
+    Licensed to the public under the terms of the GNU GPL, version 2
+
+--=20
+Zed Pobre <zed@resonant.org> a.k.a. Zed Pobre <zed@debian.org>
+PGP key and fingerprint available on finger; encrypted mail welcomed.
+
+--opJtzjQTFsWo+cga
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iQEVAwUBSNwVER0207zoJUw5AQK7cwf/aILASx3m7lHxzCpmEWzszHBEuhIz/NHO
+Ivna/O5k8UKffRft90hanQj3JRpXAxptB96b0WjP0AVp3G7AZY/nJMKUfwVpCzkp
+/AFKod3zebF3tFktCKxM17YD2pdbpo1Dnnr5vWPlXuegdrQdvT7q93hloFl5qHO+
+k0eRF+FYPSJy+zIfR9FUF8jF6gasxlhq39/NW8bcwOka7Ar38TAoZI5G5KKQ/5f0
+wAgTkfjtxJZngQ3ekWA7eL0bcoNqsjb1SqNGbXRr/J6T3hC15fArEuP4PN2kkk2A
+kPiqWKvtCGSbcblwQg3zrw/bLETMy6UIK5OpU28BvGagtNQjdodBIg==
+=DxVH
+-----END PGP SIGNATURE-----
+
+--opJtzjQTFsWo+cga--

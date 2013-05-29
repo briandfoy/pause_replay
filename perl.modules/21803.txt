@@ -1,0 +1,66 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21803
+Return-Path: <corion@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 97567 invoked by uid 76); 14 Jun 2003 00:29:42 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Fri, 13 Jun 2003 17:29:42 -0700
+Received: (qmail 16069 invoked by uid 225); 14 Jun 2003 00:29:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 16064 invoked by uid 507); 14 Jun 2003 00:29:40 -0000
+Received: from natsmtp00.webmailer.de (HELO post.webmailer.de) (192.67.198.74) by one.develooper.com (qpsmtpd/0.26) with SMTP; Fri, 13 Jun 2003 17:29:39 -0700
+Received: from brother.maischein-int.de (pD9504AAD.dip.t-dialin.net [217.80.74.173])	by post.webmailer.de (8.12.8/8.8.7) with ESMTP id h5E0TXAn004171;	Sat, 14 Jun 2003 02:29:33 +0200 (MEST)
+Received: from fightclub.maischein-int.de ([192.168.1.20] helo=fightclub)	by brother.maischein-int.de with smtp (Exim 3.35 #1 (Debian))	id 19QyvE-0000bO-00; Sat, 14 Jun 2003 02:29:32 +0200
+Message-ID: <000501c3320e$2dad02f0$1401a8c0@fightclub>
+Reply-To: "Max Maischein" <corion@cpan.org>
+To: <support@softwarediamonds.com>
+Cc: <modules@perl.org>
+Subject: Content of released documentation; scope and meaning of Test::TestUtil / Test::Tech
+Date: Sat, 14 Jun 2003 02:44:57 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.8 required=7.0 tests=CARRIAGE_RETURNS,DISCLAIMER,SPAM_PHRASE_00_01,USER_AGENT_OE version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: corion@cpan.org ("Max Maischein")
+
+Hello,
+
+I have been watching your releases on CPAN and read parts of the released
+documentation, and even though I do not understand much of the suggested
+SVD-process subject matter it, I did not find much meat beyond the
+description of the supposed contents in the documentation. Maybe you should
+add a disclaimer to the included SVD* files that they do not contain
+information relevant to the current module but only information relevant for
+the history of the module, and can be safely skipped when evaluating a
+module.
+
+A second thing that I would like you to reconsider is the naming of
+"Test::TestUtil" respectively "Test::Tech" - neither of those is descriptive
+of what the routines actually do or what the module implements. I would
+recommend renaming them to something closer to your other modules, maybe
+"Test::SVDMaker::Util" and "Test::SVDMaker::Tech", as some routines do not
+seem to be specific to the Test::-suite but rather general
+(format_array_table). Some parts (the "scrub" routines) might even better
+live in another module namespace, "Test::Util::ScrubData" or something like
+that.
+
+Other routines seem to me duplicated effort from File::Spec, POSIX or plain
+Perl, as Perl already does smart newline handling, (even though with the
+advent of 5.8 even Unix-people have to learn the word "binmode" now :-)) - I
+think that explaining why these methods are preferable over the other (core)
+methods would help me in evaluating this module. But I also think that these
+routines should have their own namespace, as they are not specific to
+testing.
+
+Thanks for reading,
+-max
+

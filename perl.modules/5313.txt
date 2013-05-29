@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5313
+Return-Path: <rpolzer@durchnull.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 95207 invoked from network); 3 May 2001 18:23:26 -0000
+Received: from unknown (HELO post.webmailer.de) (192.67.198.65)
+  by onion.valueclick.com with SMTP; 3 May 2001 18:23:26 -0000
+Received: from www42.t-offline.de (B1921.pppool.de [213.7.25.33])
+	by post.webmailer.de (8.9.3/8.8.7) with ESMTP id UAA08540;
+	Thu, 3 May 2001 20:23:18 +0200 (MET DST)
+Received: from localhost (rpolzer@localhost)
+	by www42.t-offline.de (8.11.2/8.11.2/SuSE Linux 8.11.1-0.5) with ESMTP id f43IeOE04821;
+	Thu, 3 May 2001 20:40:24 +0200
+Date: Thu, 3 May 2001 20:40:24 +0200 (CEST)
+To: <modules@perl.org>
+cc: "echo 'Rudolf Polzer'>/dev/null" <rpolzer@durchnull.de>
+Subject: Re: PAUSE
+In-Reply-To: <m38zkeecee.fsf@ak-71.mind.de>
+Message-ID: <Pine.LNX.4.31.0105032035580.3560-100000@www42.t-offline.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: rpolzer@durchnull.de ("echo 'Rudolf Polzer'>/dev/null")
+References: <m38zkeecee.fsf@ak-71.mind.de>
+
+On 3 May 2001, Andreas J. Koenig wrote:
+
+> >>>>> On Sun, 29 Apr 2001 01:04:07 +0200 (CEST), "echo 'Rudolf Polzer'>/dev/null" <rpolzer@durchnull.de> said:
+>
+>   > Name: Rudolf Polzer
+>   > Interface style: f
+>   > Mail: rpolzer@durchnull.de
+>   > UserID: rpolzer
+>
+> Done
+>
+>   > Module I am planning to contribute: autodetection of modules
+>   > DSLI: Mdpf
+>   > Description: Autodetect of modules: find available module
+>
+> What's the name of the module? Module::Detect sounds OK,
+> Module::Detect::Use sounds overkill. Module::Find would also be cute.
+
+You can import Use():
+
+use Module::Detect qw/:standard/;
+
+my $package = Use 'myCGI', 'CGI';
+
+or, the new interface:
+
+my $pack_obj = Load 'myCGI', 'CGI';
+$pack_obj->call_some_function ();
+# perhaps myCGI::call_some_function()
+${$pack_obj->(SCALAR => 'a')} = 13;
+# perhaps $myCGI::a = 13
+
+> Some function in it could return the path to the module without
+> actually trying to require it. Another function could then require it.
+
+This cannot be done using the detection method I use; I just do a
+'require' to find out if the module exists!
+
+> Or some such.
+
+Since the last bugs are fixed (misleading error messages when accessing
+package subs that do not exist) I think I can release it now.
+
+> If you've made up your mind, please apply for registration with the
+> "Apply for namespace registration" menu on PAUSE. Thank you!
+
+I'll do it.
+
+-- 
+#!/usr/bin/perl -- Exercise: prove _or_ disprove that _all_ digits
+############################ displayed are 1! s/^/4711081542426/g;
+use strict;$|=@_=$0=2;for(;;){do{++$0}while('@'x$0)=~/^(..+)\1+$/;
+push@_,$0;for((2-@_)..0){$_[-$_]=abs($_[-$_]-$_[1-$_])}print$_[0]}
+

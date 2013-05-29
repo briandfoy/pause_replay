@@ -1,0 +1,125 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7449
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9937 invoked from network); 7 Sep 2001 17:05:46 -0000
+Received: from unknown (HELO k242) (root@212.21.93.242)
+  by onion.valueclick.com with SMTP; 7 Sep 2001 17:05:46 -0000
+Received: (from k@localhost)
+	by k242 (8.9.3/8.9.3) id TAA11756;
+	Fri, 7 Sep 2001 19:04:29 +0200
+X-Authentication-Warning: k242: k set sender to andreas.koenig@anima.de using -f
+To: Michael G Schwern <schwern@pobox.com>
+Cc: modules@perl.org
+Subject: Re: Core modules and CPAN indexing priorities
+References: <20010905200448.I11386@blackrider>
+Reply-To: modules@perl.org
+Date: 07 Sep 2001 19:03:28 +0200
+In-Reply-To: <20010905200448.I11386@blackrider>
+Message-ID: <m3heuf3pcv.fsf@anima.de>
+Lines: 96
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+Your examples nearly conviced me, but...
+
+What if your module depends on version 2.102 of Data::Dumper? How many
+users will come and ask us where to find 2.102?
+
+Also consider the effect of a module that's in the core and not
+maintained on CPAN anymore. After a while, somebody will complain that
+CPAN is horribly outdated. Then either the author will delete the
+outdated version (complicating the indexer's logic) or we will need to
+adjust the indexer for that single module some other way.
+
+I don't think your proposal will work very well. And I think we should
+take every opportunity to encourage users to upgrade, otherwise they
+are hosed anyway.
+
+
+-- 
+andreas
+
+
+
+>>>>> On Wed, 5 Sep 2001 20:04:48 -0400, Michael G Schwern <schwern@pobox.com> said:
+
+  > The CPAN package index (ie. 02packages.details.txt.gz) currently list
+  > many modules as being inside perl distributions.  For example:
+
+  > Data::Dumper                      2.102  G/GS/GSAR/perl-5.6.1.tar.gz
+
+  > as a result, the CPAN shell tries to download perl for you when you
+  > ask 'install Data::Dumper'.  Even worse, it leaves you not knowing
+  > that there is an independent tarball version of it.
+
+  > I submit that the CPAN index should prefer the independent tarball
+  > version of a module over the perl distribution *even if it is of an
+  > older version*.
+
+  > For example, Data::Dumper would read:
+
+  > Data::Dumper                      2.101  G/GS/GSAR/Data-Dumper-2.101.tar.gz
+
+
+  > Ok, why?  Consider the following scenarios.
+
+  > 5.6.1 user, which has version 2.102, types "install Data::Dumper".
+
+  > Currently they get "Data::Dumper is up to date" and under the new
+  > scheme they'll get the same thing.  So that's good.
+
+
+  > 5.005_03 user, which has 2.101, types "install Data::Dumper".
+
+  > Currently, CPAN tries to install perl 5.6.1 for them!  Well
+  > that's not very helpful.
+
+  > Under the new scheme, they're told Data::Dumper is up to date.  Which
+  > while not technically true, it's as up-to-date as they can get without
+  > updating Perl.  And they don't have to stop CPAN from trying to
+  > install perl.
+
+
+  > 5.004_05 user, which didn't come with Data::Dumper at all.
+
+  > Currently, CPAN tries to install 5.6.1 for them!  Again, not useful.
+
+  > Under the new scheme, Data::Dumper 2.101 is installed for them.  Which
+  > is useful!  They've got Data::Dumper, which is what they set out to
+  > do.
+
+
+  > Digging down even deeper is the 5.003_07 user.
+
+  > Currently, it tries to upgrade perl.
+
+  > Under the new scheme, it grabs Data::Dumper 2.101, but the tests fail.
+  > Which is fine.
+
+
+  > Consider even further this.  I release a module which has a PREREQ_PM
+  > on Data::Dumper.  It otherwise works fine on a stock 5.004_05
+  > installation.  5.004_05 user downloads my module from CPAN.
+
+  > Currently, CPAN tries to install perl 5.6.1 for them.  Not helpful,
+  > and it probably means the module doesn't get installed.
+
+  > Under the new scheme, Data::Dumper 2.101 is installed as the prereq
+  > and the new module gets installed smoothly.
+
+
+  > -- 
+
+  > Michael G. Schwern   <schwern@pobox.com>    http://www.pobox.com/~schwern/
+  > Perl6 Quality Assurance     <perl-qa@perl.org>	     Kwalitee Is Job One
+  > <GuRuThuG> make a channel called #Perl, and infest it with joking and 
+  > 	   fun.... it doesnt make alot of sense.
+
+

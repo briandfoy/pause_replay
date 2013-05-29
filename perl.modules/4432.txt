@@ -1,0 +1,206 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4432
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13911 invoked from network); 9 Feb 2001 08:22:57 -0000
+Received: from palladium.baremetal.com (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 9 Feb 2001 08:22:57 -0000
+Received: from [24.66.166.9] (h24-66-166-9.gv.shawcable.net [24.66.166.9])
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id AAA18764;
+	Fri, 9 Feb 2001 00:13:13 -0800
+Mime-Version: 1.0
+Message-ID: <f04320401b6a958c9bfb2@[24.66.166.9]>
+Date: Fri, 9 Feb 2001 00:22:53 -0800
+To: modules@perl.org
+Subject: CORRECTION - request HTML::Application
+Cc: Darren Duncan <darren@DarrenDuncan.net>
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Oops, sorry about the previous message.  I used a previous request as 
+an email template for this one, and forgot to change the subject. 
+The subject should have read "request namespace for HTML::Application.
+Hopefully you are not confused.
+---------------------------
+
+I would like to register the namespace for a new module I am making:
+
+HTML::Application - cdpO - Framework for complex web applications   DUNCAND
+
+This module is designed to make building scalable and reusable web 
+applications easier by providing a framework for managing their 
+states and components.
+
+The module provides a consistent context that application components 
+can be written to, so that they can each act as if they are the "main 
+program", whether or not they actually are.
+
+When any component is started, it sees that it must construct an HTML 
+page of some kind as output, and that it is with provided a 
+hierarchical set of "preferences" to customize its behaviour, and 
+that it has a "virtual filesystem directory" that it can use to read 
+or write persistant data, and that it has its own branch in the 
+"virtual url hierarchy" to map its sub-functions (or "web pages") 
+into, and that it is provided with any user input details (usually 
+from the query) that it needs to know.
+
+An application designer can take any "subclassed" components that 
+they wish and organize them into a calling hierarchy where some 
+components can ask others to do a portion of their work.  All 
+components are called in exactly the same way, where the caller makes 
+sure that the environment for the called is right, and taking the 
+results of the called.  So you can use exactly one of them or more in 
+your application.
+
+My module takes care of many interaction details, so it is easy for a 
+component to use its own context, and to set up contexts for others.
+
+Since "preferences" are themselves hierarchical, the programmer using 
+some components has but to properly set the preferences for the top 
+level component, and those preferences say which other components the 
+first one calls, and say how to set up their environment.
+
+Part of the scalability is that "preferences" can be passed in either 
+as a literal hash ref or as a scalar filename of a file that can be 
+"do $filename" to return a hash ref, and this can be repeated to as 
+many or few hierarchy levels as desired.  My module takes care of 
+interpreting these things so that the caller can pass either type 
+without knowing what they passed, and the called always gets the hash 
+it expects.
+
+Components would not use global variables except where necessary, and 
+so as many instances of each kind can be made whose behaviour is 
+determined mostly on preferences and user input passed to them.
+
+A virtual filesystem (resembling UNIX) is provided for components to 
+use whose root is designated by the root application component and 
+managed by my module.  So components can just work with "relative 
+paths"; that is, they say things like "I want to cd into a 
+subdirectory of here" or "I want to open a file that is here". 
+Methods in my module would take care of translating virtual 
+filesystem requests into real ones, so when the component wants to 
+open a file, it asks my module for the physical file path associated 
+with the file they want, and issue the open system call themselves (I 
+save on complexity by letting them do the actual system 
+interactions).  Calling components set the starting place for called 
+components.  The advantage here is that components won't break if 
+their place in a hierarchy changes, and that they won't accidentally 
+wander outside of the application's support file directory, assuming 
+they stick to opening file paths that my module provides.
+
+Similarly, the virtual url hierarchy is provided for embedding in 
+callback urls that make it easy to designate which program function 
+(or site page) is called; each level in the hierarchy is used by 
+nested components to figure out which component to call next to 
+handle that branch of the tree.  You have complete freedom to decide 
+how many levels of one correspond to the other.  Also similarly to 
+above, you can designate "relative urls" for related pages, and my 
+module takes care of translating them into absolute urls.
+
+My module allows easy construction of "output" HTML pages by storing 
+their components internally, and any module can set or check its 
+results with methods like [body_init(), body_append(), 
+body_prepend(), title(), head_init(), etc].  For example, a "parent" 
+component that makes a menu of "program options" (child web pages) 
+can simply call body_prepend() to add that menu above whatever output 
+the child page made.  And it can either accept the page title that 
+the child made or change it as appropriate.  Parents have control 
+over the children, as they set up their input and do whatever they 
+want with output; children think they don't have any parents.
+
+My module also provides priortized search and replace functionality 
+for the output.  So, as preferences determine, some components could 
+find and interpret different "tokens" in the output page and replace 
+them with something else, such as formatting instructions or url 
+fragments not previously known.  This is particularly useful if some 
+of the html you are using is read from a static html source and you 
+have to insert self-referencing urls.
+
+My module saves on complexity by not actually doing any user input or 
+output by itself, but rather lets the main program which calls and 
+configures the top level component to do it.  The caller simply has 
+to: 1. provide a string saying the physical directory that is the 
+root for the application's data; 2. provide a query string (not 
+parsed or parsed) containing the user input; 3. take the completed 
+web page as a string (or as parts) and output it to the user.  This 
+situation gives the main program writer a lot of flexability on how 
+they want to obtain the user input (eg: using CGI.pm or some other 
+method), and on how they wish to output the result (eg: within a 
+mod_perl or CGI situation).
+
+That said, I will provide some sample code to demonstrate how to 
+obtain user input and plug it into my module, as well as get its 
+return result and give it to the user.  My sample would take input 
+from GET, POST, @ARGV, and STDIN for debugging, but it would not 
+handle file uploads.
+
+To get a preview idea of what I am going to do, you can consider my 
+"CGI-WebsiteGenerator" distribution as a loose prototype; several 
+instances of web applications are running right now in a production 
+environment, each one producing an entire web site dynamically (see 
+http://www.DarrenDuncan.net, http://www.chronology.net).  On that 
+note, look in particular at the modules [CGI::WPM::Globals, 
+CGI::WPM::Base, CGI::WPM::PageMaker, CGI::WPM::WebUserIO] as it is 
+relevant functionality from them that is being replaced by my new 
+HTML::Application module.  The above are missing most of their POD 
+(except PageMaker which is complete), so you may want to look at the 
+code itself.
+
+Now, my request wouldn't be complete without quickly addressing other 
+modules that may be considered "similar".  So here are the ones I 
+thought of:
+
+CGI::
+::Application     RmpO Framework for building reusable web-apps     JERLBAUM
+::Screen          adpO Create multi screen CGI-scripts              ULPFR
+HTML::
+::Mason           bdpO Build sites from modular Perl/HTML blocks    JSWARTZ
+
+Given the range of features and complexity, I would say that my 
+module would fit between the first two and the last one.  That is, my 
+module would provide a lot of functionality that CGI::Application and 
+CGI::Screen do not, while it is an order of magnitude or three less 
+complex than HTML::Mason.
+
+Significant differences between my module and HTML::Mason include:
+	- Mason, as I understand, uses an ASP or PHP like approach 
+that has otherwise complete HTML pages with embedded Perl code and/or 
+"include" syntax.  My approach does the opposite of having Perl files 
+first, and the HTML is either embedded in them or in separate data 
+files.
+	- My version works on functionality over form and serves 
+programmers first, making it more focused on actual "applications" 
+that do something rather than "web sites" that display content 
+(although my program can "be" a web site too").  Whereas, Mason is 
+more focused on keeping visual designers with their graphical HTML 
+editors in front, with code added for enhancement, as I understand it.
+	- I don't do any explicit user input or output myself whereas 
+Mason appears to do "the whole experience".
+	- Lots of other differences.
+
+Differences between my module and CGI::Application include:
+	- CGI::Application does not organize its "run modes" 
+hierarchically whereas I do.
+	- CGI::Application gathers user input using CGI.pm and it 
+prints page results to the browser, whereas I don't automatically use 
+a particular input method and I don't print things out.
+
+Differences from CGI::Screen include:
+	- CGI::Screen subclasses from CGI.pm and is therefore 
+strongly tied to it, and mine is not.
+	- My module doesn't generate form html and such.
+	- It is still a lot simpler than mine as far as added value goes.
+	- Likewise, no hierarchy for organizing screens.
+
+If you have any questions then email me.
+
+So I look forward to you granting my namespace request.
+
+Thanks for all your hard work.
+
+Good days,
+
+// Darren Duncan

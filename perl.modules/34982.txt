@@ -1,0 +1,184 @@
+Newsgroups: perl.dbi.users,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.dbi.users:24185 perl.modules:34982
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5695 invoked from network); 18 Sep 2004 07:05:10 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 18 Sep 2004 07:05:10 -0000
+Received: (qmail 17776 invoked by uid 225); 18 Sep 2004 07:05:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17751 invoked by alias); 18 Sep 2004 07:05:07 -0000
+X-Spam-Status: No, hits=-4.8 required=8.0
+	tests=BAYES_00,RCVD_IN_SORBS_DUL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from palladium2.baremetal.com (HELO pd2.baremetal.com) (208.184.111.59)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Sat, 18 Sep 2004 00:05:04 -0700
+Received: from [24.108.166.215] (S0106000393c33758.gv.shawcable.net [24.108.166.215])
+	by pd2.baremetal.com (8.12.10/8.12.9) with ESMTP id i8I6nvn7019801;
+	Fri, 17 Sep 2004 23:49:59 -0700
+Mime-Version: 1.0
+Message-ID: <p05200f01bd717acdf5c6@[24.108.166.215]>
+Date: Sat, 18 Sep 2004 00:04:52 -0700
+To: modules@perl.org, poop-group@lists.sourceforge.net, dbi-users@perl.org,
+        victoria-pm@pm.org
+Subject: [RFC] naming a module for SQL routines
+Cc: darren@DarrenDuncan.net
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+X-Scanned-By: MIMEDefang 2.36
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+This is a request for comment with the intent of determining a better 
+name for one of my CPAN modules prior to it being registered with the 
+Perl 5 Module List.  The module in question has been using the name 
+"SQL::SyntaxModel" since about September 26th of 2003, following a 
+previous RFC process which seemed to favor that name, but not 
+unanimously.  I have thought of some new ones, given below, and 
+welcome feedback on them or further suggestions.
+
+Please send all replies to both the list(s) and directly to me.
+
+I had been satisfied with the current/old name so far, but this has 
+changed during the last few days.  For one thing, there has been 
+resistence from the module list and alternate suggestions that I 
+didn't like.  For another thing, it seems that my module has evolved 
+significantly since last year's RFC process, and so I am open to a 
+new name that is adapted to the module's shifts of focus.
+
+Some constraints that the new name must follow:
+
+1. It must be a noun, rather than a verb.  The module is a rigorously 
+structured data container, and doesn't do anything besides storing 
+data within its own Perl variables.  The name should represent what 
+it *is* rather than what it does.  It is external code which uses the 
+module that does any "doing".
+
+2. It must be a level-2 name, under the SQL::* name space, like 
+"SQL::*".  SQL is the problem domain which the module addresses, so 
+it would fit best with the other SQL::* modules, that also address 
+this problem domain, such as SQL::Statement.  At the same time, this 
+module stands alone, is not based on or designed explicitly to work 
+with any other module, and is not one parallel member of a larger 
+framework, so a level-3 name (SQL::*::*) is not appropriate.
+
+3. The second-level portion of the name should be composed of only 
+one or two words, like the other SQL::* modules are, and the old name 
+is.
+
+FYI, this is a list of other CPAN modules that I have identified 
+which exist in the same problem domain (there are probably more):
+SQL::Statement SQL::Translator SQL::YASP SQL::Generator SQL::Schema 
+SQL::Abstract SQL::Snippet SQL::Catalog DB::Ent DBIx::Abstract 
+DBIx::AnyDBD DBIx::DBSchema DBIx::Namespace DBIx::SearchBuilder 
+TripleStore
+
+As usual, this new name should highlight what makes my module unique 
+compared to the other CPAN offerings, including what its focus is and 
+what it does best; hopefully that is one and the same of saying what 
+it *is*.
+
+A few new ideas of my own:
+
+- SQL::SchemaModel (note for similarity that "SQL::Schema" is already 
+taken by an existing framework that hasn't been updated in over 4 
+years)
+
+- SQL::RoutineModel (no similar names)
+- SQL::Routine (no similar names)
+- SQL::Routines (ditto)
+
+Under the circumstances, I am leaning towards the "Routine" set, 
+partly because no name even similar exists on CPAN.
+
+The main reason concerns a revisiting of one of the module's main 
+intended uses, which was to support the idea of any database-related 
+activity being representable by a SQL routine or imitation thereof. 
+An implementation of a SQL routine that my module 
+describes/models/defines could either be stored in a database schema 
+(eg: as a SQL stored procedure, function, or trigger), or it could be 
+stored on the client/application side (eg: as a fusion of Perl code 
+and DBI calls).  But from the application's point of view, the 
+routine simply exists in a locally addressable space and can be 
+invoked more or less like a Perl routine (function or procedure), 
+regardless of whether it is actually in the database or on the client.
+
+A routine is quite generic in scope and can hold complete 
+instructions for any kind of database activity, including arbitrarily 
+complex select queries, DML, schema creation or manipulation, user 
+management, transactions, and connections.  Therefore, saying that my 
+module supports or models routines means that it supports and models 
+all types of SQL.  It was also designed in the hindsight of 
+SQL-2003, and is not limited to SQL-1992.
+
+But while my module can represent SQL effectively, it is not exactly 
+the same as SQL, and can be used with both databases or applications 
+that don't want to talk SQL.  Hence, calling it a "SyntaxModel" is 
+somewhat archaic.
+
+The module is designed with a strong emphasis on portability, and it 
+is expected that one should be able to use it effectively when 
+porting an application between databases and/or porting a database 
+schema (plus data) from one product to another, including advanced 
+databases having multiple schemas per catalog, or schema objects for: 
+domains, schema generators, tables, views, routines.  All schema 
+objects, as well as client-side SQL, is broken down to an atomic 
+representation that can be easily understood by a computer, and 
+effectively converted with whatever variances are required by 
+different products.  This not only means being converted into SQL, 
+but also converted into Perl code when you want to emulate certain 
+features that a database engine doesn't natively support.  Even some 
+SQL can emulate other missing SQL features, such as emulating SQL 
+unions or intersections with SQL join operations.  My module makes it 
+a lot easier for external code to do this.
+
+I am resistent to using any names which describe too much about how 
+the module is internally structured.  For example, I don't want to 
+use the word "tree" anywhere even though the module POD mentions that 
+word constantly.
+
+So my alternate suggestions are:
+
+a. A focus on the fact it can represent complete schemas, both 
+database-side and application-side, which include routines.
+
+b. A focus on the fact that it represents everything with routines.
+
+Barring any further suggestions, I'm leaning towards the latter. 
+However, there is another matter to keep in mind when picking a name.
+
+For one thing, each primary object produced by my module can and does 
+represent an entire set of SQL routines at once.  In fact, the 
+intention is that a typical application will only ever use a single 
+"Container" object in which lives all of their database and 
+application descriptions, whose definitions overlap.
+
+One thing that concerns me is that a name like "Routine" may suggest 
+that each object just represents a single routine, rather than a 
+related set of them; "RoutineModel" seems less likely to suggest 
+this, though I could be wrong.
+
+So I welcome feedback on these matters.  Eg: Am I worried about 
+nothing with the one-vs-many implications?  Which of "SQL::Routine" 
+or "SQL::RoutineModel" is better?  Or is "SQL::SyntaxModel" still 
+best of all?  And what other good suggestions are there, if any. 
+Reasons are always helpful, but not required.
+
+At the very least, I would like to end up with a situation where 
+multiple people agree that one choice is best, the more the better, 
+and a consensus best of all.
+
+Thank you very much in advance for any help.  I really appreciate it.
+
+-- Darren Duncan
+
+P.S. Some helpful urls, but the documentation focus is out of date 
+relative to what I said above, as well as some structural issues:
+http://search.cpan.org/dist/SQL-SyntaxModel/
+http://search.cpan.org/dist/SQL-SyntaxModel/lib/SQL/SyntaxModel.pm
+http://search.cpan.org/dist/SQL-SyntaxModel/lib/SQL/SyntaxModel/Language.pod
+
+P.P.S. The module is close to completion, so about 90% of what you 
+see now in the module should stay that way for awhile.

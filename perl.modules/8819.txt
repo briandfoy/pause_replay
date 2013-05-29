@@ -1,0 +1,53 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8819
+Return-Path: <Philip.Newton@gmx.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 51278 invoked by uid 75); 18 Nov 2001 06:48:05 -0000
+Received: from mail.picon.de (HELO mail.picon.de) (62.214.2.230)
+  by onion.perl.org (qpsmtpd/0.04) with SMTP; Sun Nov 18 06:48:05 2001 -0000
+Received: (qmail 6986 invoked from network); 18 Nov 2001 06:47:55 -0000
+Received: from 47.139.hh1.ip.foni.net (212.7.139.47)
+  by mail.picon.de with SMTP; 18 Nov 2001 06:47:55 -0000
+To: andrea_holsten@yahoo.de (Andrea Holstein)
+Cc: modules@perl.org
+Subject: Re: Registration application
+Date: Sun, 18 Nov 2001 07:50:30 +0100
+Organization: very little
+Message-ID: <7dmevtopruv3dj2pa67rrrnvljqccpomc7@4ax.com>
+References: <200111162032.fAGKWis05137@wcl-l.bham.ac.uk> <3BF6BA53.ABECFA8C@yahoo.de>
+In-Reply-To: <3BF6BA53.ABECFA8C@yahoo.de>
+X-Mailer: Forte Agent 1.8/32.548
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: Philip.Newton@gmx.net (Philip Newton)
+
+On Sat, 17 Nov 2001 20:28:19 +0100, in perl.modules you wrote:
+
+> Brian McCauley wrote:
+> >=20
+> >                                    Unlike map and grep the elements
+> >     of LIST are not altered.
+>
+> Please excuse my stupid question :-)
+>=20
+> What's the difference to the map function.
+
+See above :)
+
+> What you've written above, would I have written as
+> @foo =3D map { s/\s+/ /g } @bar;
+
+$_ is an alias to the original values inside map and grep, so your code
+above would have modified @bar. An equivalent using map might be
+
+    @foo =3D map { my $x =3D $_; $x =3D~ s/\s+/ /g; $x; } @bar;
+
+, but that's more typing. As Brian said, it's possible to provide the
+same functionality already; 'apply' just saves you some typing.
+
+Cheers,
+Philip

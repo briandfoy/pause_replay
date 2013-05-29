@@ -1,0 +1,65 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53119
+Return-Path: <gbarr@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5643 invoked from network); 17 Feb 2007 15:18:10 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 17 Feb 2007 15:18:10 -0000
+Received: (qmail 874 invoked by uid 225); 17 Feb 2007 15:18:06 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 829 invoked by alias); 17 Feb 2007 15:18:02 -0000
+X-Spam-Status: No, hits=-1.4 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME,FORGED_RCVD_HELO,SPF_NEUTRAL
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: 67.19.103.170 is neither permitted nor denied by domain of gbarr@pobox.com)
+Received: from aa.67.1343.static.theplanet.com (HELO mail.goingon.net) (67.19.103.170)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 17 Feb 2007 07:17:58 -0800
+Received: from [10.50.21.2] (cust207.fchtwr.frvwtx.dfwair.net [63.249.42.207])
+	by mail.goingon.net (Postfix) with ESMTP id BA2B84915C;
+	Sat, 17 Feb 2007 09:17:48 -0600 (CST)
+In-Reply-To: <e72898600702121316q7c915eacle1885800c35706e7@mail.gmail.com>
+References: <e72898600702101920r39b0ca2j8dd76dba2680bb55@mail.gmail.com> <871wkwlox1.fsf@k75.linux.bogus> <e72898600702111522k6e41cf32ja23005c3578c545b@mail.gmail.com> <8764a73zh6.fsf@k75.linux.bogus> <e72898600702121316q7c915eacle1885800c35706e7@mail.gmail.com>
+Mime-Version: 1.0 (Apple Message framework v752.2)
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Message-ID: <DF65FA38-0D4F-4D32-A3D1-4E750181E5C8@pobox.com>
+Cc: modules@perl.org
+Content-Transfer-Encoding: 7bit
+Subject: Re: Module not registered? A mistake?
+Date: Sat, 17 Feb 2007 09:17:44 -0600
+To: "Shao Zhuo" <dzhuo@google.com>
+X-Mailer: Apple Mail (2.752.2)
+Approved: news@nntp.perl.org
+From: gbarr@pobox.com (Graham Barr)
+
+On Feb 12, 2007, at 3:16 PM, Shao Zhuo wrote:
+> thanks! i am not aware that the name has to match exactly. what i  
+> would like to do is add a short description and license to the  
+> following :
+>
+> http://search.cpan.org/~dzhuo/Google-Checkout-1.0/
+
+The License line on that page is taken from the META.yml file, which  
+you do not have in your distribution. ExtUtils::MakeMaker can make  
+that for you or you can write it yourself. Or use a module like  
+Module::Install
+
+As for a description on http://search.cpan.org/~dzhuo/. That would  
+appear if you had a module Google::Checkout. It would take the short  
+description from the NAME section of that POD.
+
+> what do you think is the best way to do this?  
+> Google::Checkout::General::GCO is the main one i want to register  
+> and all others are helper PMs.
+
+If Google::Checkout::General::GCO is your main module, then your  
+distribution really should be called Google-Checkout-General-GCO so  
+that it would not be confused with a Google-Checkout distribution for  
+a Google::Checkout module.
+
+On the other hand, I agree with Adam about adding a "loader" module  
+Google::Checkout and registering that.
+
+Graham.
+

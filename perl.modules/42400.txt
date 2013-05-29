@@ -1,0 +1,119 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:42400
+Return-Path: <a.r.ferreira@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26093 invoked from network); 8 Aug 2005 16:36:43 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 8 Aug 2005 16:36:43 -0000
+Received: (qmail 647 invoked by uid 225); 8 Aug 2005 16:36:42 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 642 invoked by alias); 8 Aug 2005 16:36:42 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,RCVD_BY_IP
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of a.r.ferreira@gmail.com designates 64.233.184.203 as permitted sender)
+Received: from wproxy.gmail.com (HELO wproxy.gmail.com) (64.233.184.203)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 08 Aug 2005 09:36:38 -0700
+Received: by wproxy.gmail.com with SMTP id i23so1144958wra
+        for <modules@perl.org>; Mon, 08 Aug 2005 09:36:34 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=b8a1cxrvUJ0nMUb92me9J3Cby51Qxvmg7lxbu1PHXOam51d8PV/mVy8F8izyfLmEuVlUsBmgFW7OlWZCYPPGq5f+xXN02MMCx+iDMt2HrsRv1cHuqqK0CYDtZDNfwgB8x3WiNEXZxKFrNutmDcm4CYQPhniBHctdvLvS8zoQvQc=
+Received: by 10.54.68.16 with SMTP id q16mr4906777wra;
+        Mon, 08 Aug 2005 09:36:33 -0700 (PDT)
+Received: by 10.54.26.32 with HTTP; Mon, 8 Aug 2005 09:36:32 -0700 (PDT)
+Message-ID: <73ddeb6c050808093678a9105a@mail.gmail.com>
+Date: Mon, 8 Aug 2005 13:36:32 -0300
+To: =?ISO-8859-1?Q?Jos=E9_Castro?= <jac@natura.di.uminho.pt>, modules@perl.org
+Subject: Re: Modules for validations
+In-Reply-To: <20050808144503.GE20105@natura.di.uminho.pt>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+References: <20050808144503.GE20105@natura.di.uminho.pt>
+Approved: news@nntp.perl.org
+From: a.r.ferreira@gmail.com (Adriano Ferreira)
+
+Hi, cog.
+
+On 8/8/05, Jos=E9 Castro <jac@natura.di.uminho.pt> wrote:
+> I have a module that validates Portuguese Postal Codes,
+> PT::PostalCode.
+>=20
+> Recently I was asked to do something to validate Portuguese NIFs
+> (Fiscal Identification Number, which is what identifies each entity
+> that has to pay taxes in Portugal).
+>=20
+> The first thought was to create a module for this, but afterwards I
+> realized, upon conversation with several people, that there should
+> also be a way to validate Portuguese BIs (Identity Card), Social
+> Security numbers and Passport numbers.
+
+Lately, I released alpha versions of modules intented for doing analog
+things for Brazilian codes. I have not progressed much by now, but I
+think it may eventually be useful.
+
+The actual distribution is Business::BR::Ids which is the unifying
+module, which delegates to others: Business::BR::CPF,
+Business::BR::CNPJ and Business::BR::IE (which respectively check
+identities of people and companies on nation-wide context and
+companies in state-wide contexts).
+
+> In a way, I feel there should be a module for each of these things,
+> but that might not be the way to go... a module for all these things
+> could be in order, but:
+=20
+> 1) would people searching for one of the functionalities easily find
+>    the module?
+
+If a namespace like Business::BR or Business::PT become the place to
+look for this kind of functionality, I think yes. Of course, if
+someone does not know anything about how to find something in CPAN, it
+could not be helped. But for example, if you type "CPF" at
+search.cpan.org, you find some modules which are a start.
+=20
+> 2) would this prevent standardization of APIs at world level from
+>    developing as they should? (imagine a module for doing several
+>    things with dates when one is only looking for holidays, or a
+>    module for *everything* regarding NLP when one is just looking for
+>    an hyphenation module)
+
+I have been trying a standardization which is very simple and small by
+now. I have methods like
+
+     test_<id>  - to test if an <id> is correct
+     canon_<id> - to transform an <id> to a canonical form
+     format_<id> - to transfom an <id> to a human-readable nice form
+     parse_<id> - to decompose an <id> into its constituent parts
+     random_<id> - to generate random correct and incorrect <ids>
+(mainly for tests)
+
+The idea is that other modules can be added and the suggestion is that
+they should try to implement a minimum set of functions like the ones
+above. I think code should mature before we can measure the benefits
+achieved.
+
+> So I guess my question is: should I create one module for each thing
+> or a module for all of those? The only thing that prevents me from
+> creating all these modules is that none of them will be that big a
+> module...
+
+By now I have one module by kind of <id>, in a way that I think it is
+similar to what someone will look for. Today you install CPF, CNPJ and
+IE together. But you can use only the ones you really need. Even
+through the mediation of Business::BR::Ids which requires specific
+modules only when needed.
+
+> What do you think?
+
+It is my suggestion to make the Business:: namespace (and national
+namespaces like Business::BR:: and Business::PT::) to flourish with
+such functionalities. I think it would be nice to have a uniform way
+to test for correct Portuguese NIF, Brazilian CPF, and etc.
+
+Regards,
+Adriano Ferreira.

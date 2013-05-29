@@ -1,0 +1,86 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:58123
+Return-Path: <jpeacock@havurah-software.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 24959 invoked from network); 9 Dec 2007 11:12:47 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 9 Dec 2007 11:12:47 -0000
+Received: (qmail 32442 invoked by uid 225); 9 Dec 2007 11:12:46 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 32437 invoked by alias); 9 Dec 2007 11:12:46 -0000
+X-Spam-Status: No, hits=-10.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_HI
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Sun, 09 Dec 2007 03:12:32 -0800
+Received: (qmail 24895 invoked by uid 515); 9 Dec 2007 11:12:29 -0000
+To: modules@perl.org, "B. Estrade" <estrabd@gmail.com>
+Message-ID: <475BCDB2.6080903@havurah-software.org>
+Date: Sun, 09 Dec 2007 06:12:50 -0500
+User-Agent: Thunderbird 1.5.0.8 (X11/20060911)
+MIME-Version: 1.0
+Subject: Re: Failed: PAUSE indexer report ESTRABD/FLAT-0.9.1.tar.gz
+References: <200712061631.lB6GVqca020357@pause.perl.org> <20071206163957.GO5369@bc1.hpc.lsu.edu>
+In-Reply-To: <20071206163957.GO5369@bc1.hpc.lsu.edu>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 72.83.136.110
+Approved: news@nntp.perl.org
+From: jpeacock@havurah-software.org (John Peacock)
+
+B. Estrade wrote:
+> How is 0.9.1 < 0.9.0 ?
+
+It's not, but 0.9.1 < 0.900.0 (see below for why that happened)
+
+> 
+>> Status: Decreasing version number
+>> =================================
+>>
+>>      module: FLAT
+>>     version: 0.009001
+>>     in file: FLAT-6913/lib/FLAT.pm
+>>      status: Not indexed because FLAT-9229/lib/FLAT.pm in
+>>              E/ES/ESTRABD/FLAT-0.9.0.tar.gz has a higher version number
+>>              (0.9)
+
+In FLAT-0.9.0.tar.gz you used this line in FLAT.pm:
+
+$VERSION = 0.9;
+
+NOTE only a single decimal point; this makes it a floating point version.
+
+In FLAT-0.9.1.tar.gz, on the other hand, you used this:
+
+$VERSION = 0.9.1;
+
+NOTE two decimal points; this a bare v-string, which some code will interpret
+correctly as a $VERSION.
+
+You are mixing your version declarations without the magic of version.pm to
+protect you.  You should either use floating point versions exclusively or use
+extended (multiple decimal places) versions exclusively.
+
+In particular, the conversion between floating point and extended versions works
+differently than you might suspect: floating point decimals are split on 3 digit
+boundaries for conversion to extended versions, so
+
+	0.9 => 0.900 => 0.900.0
+
+I see that you have already used PAUSE to reset the maximum version, so your new
+release is indexed now.  I strongly urge you to install and read the version.pm
+POD and convert your modules to using this form:
+
+	use version; $VERSION = qv(9.0.1);
+
+This is guaranteed to work, even if you only give it a single decimal place (qv
+forces the extended version mode for you).  This will even work with Perl 5.6.x
+(though I see you are limiting yourself to 5.8.0 or better based on your
+Makefile.PL).
+
+HTH
+
+John

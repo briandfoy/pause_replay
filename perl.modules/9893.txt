@@ -1,0 +1,164 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9893
+Return-Path: <jhi@cc.hut.fi>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 8015 invoked by uid 76); 27 Jan 2002 06:19:07 -0000
+Received: from tiku.hut.fi (HELO tiku.hut.fi) (130.233.228.86)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Sun Jan 27 06:19:07 2002 -0000
+Received: from alpha.hut.fi (jhi@alpha.hut.fi [130.233.228.21])
+	by tiku.hut.fi (8.9.3/8.9.3) with ESMTP id IAA10001
+	for <modules@perl.org>; Sun, 27 Jan 2002 08:19:03 +0200 (EET)
+Received: (from jhi@localhost)
+	by alpha.hut.fi (8.9.3/8.9.3) id IAA21889
+	for modules@perl.org; Sun, 27 Jan 2002 08:19:03 +0200 (EET)
+Date: Sun, 27 Jan 2002 08:19:03 +0200
+To: modules@perl.org
+Subject: naming v2
+Message-ID: <20020127081902.W21991@alpha.hut.fi>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+Approved: news@nntp.perl.org
+From: jhi@iki.fi (Jarkko Hietaniemi)
+
+Here's a slightly enhanced version.  Maybe we (and here I think I mean
+*someone else than me* :-) could annotate this a little bit with more
+real-life examples of bad suggestions from the past (maybe changed to
+protect the still living people...)
+
+[ --- cut here --- ]
+
+First and foremost: you are naming your module so that people
+can find your module.  It's as easy - and as difficult - as that.
+
+Suggest two-level namespaces only.  You can use deeper namespaces
+than that internally in your module, of course, but for namespace
+registration, only speak in two level namespaces.
+
+	An exception to this are frameworks and/or well-documented
+	practices, where the framework is the two-level top-level
+	namespace, and (for example) user contributed namespaces
+	are "attached" below that, leading into three- or four-
+	level namepaces.  The naming rules and other administration
+	of such namespaces are mostly outside this document and the
+	modules list, though the many of the below rules are probably
+	still applicable.
+
+If you are thinking of introducing a new top-level namespace,
+think carefully.  Does your module really not fit under any
+existing category?  Suggesting new top-level namespaces is
+likely to be met with great suspicion.
+
+	Even though the module naming is in practice a first-come
+	first-served process, it is quite impolite to grab top-level
+	names.  Yes, even if your project/product is named with
+	just a single word, please think of people trying to find
+	something that would help them in their problems.  Unless
+	they know of your project/product, they might not ever find
+	your module.
+
+Use as specific descriptive nouns, and even preferably, verbs, as
+possible as the components of your names.  Describe the function,
+not the implementation.  Avoid vague or generic words.
+
+Remember that though you may be the first to contribute to a namespace,
+you may well not be the last or the only one.  Someone might later want
+to use the namespace, for something unrelated to your modules.
+
+Stay away from qualitative (advertising) adjectives like "Fast" or
+"Small", or even worse, "Super", "Hyper" and its kind.  All these are
+relative virtues, and as modules develop and new modules are
+introduced, also volatile and transient virtues.  You are hoping that
+other programmers would use your module, and they are as suspicious
+and weary of hypewords as you are.
+
+Do not embed the implementation or interface of the module to your
+module name (Foo::XS, Foo::OO).  The user shouldn't care.  Instead,
+make your module clever enough to choose dynamically between
+implementations and interfaces.
+
+	We have unfortunately quite many "Object" or "OO", "XS"
+	or "PL", and "Tk" or "Gtk" examples.
+
+Co-operate.  If your module would work as a patch to an existing
+module, contact the author of that module and suggest this
+possibility.  Be polite.  Document your changes carefully
+and supply good tests.  Also, this way you can get someone else
+maintaining your code.
+
+If you are thinking of a funny cutesy ha-ha name, please reconsider.
+Trust us, the joke will feel much less funny in a month.  Note that
+there is nothing wrong with recreational programming, and if you want
+to show off some sort of clever trick, please use the "Acme::"
+top-level hierarchy.
+
+Do try to stay away from acronyms unless they are really widely
+known (standards or de facto standards, like HTML).  Unless people
+are familiar with your acronym, they will never look at your module.
+
+If you are thinking of a module name containing a trademark,
+please don't, unless you are working for the owner of the trademark.
+You don't like getting phone calls from lawyers, neither do we.
+
+	Trademark owners do have priority over deciding what
+	gets published under categories named after the trademarks.
+	If you were a company owning the trademark FooWare, wouldn't
+	you have an interest in someone unrelated you releasing
+	FooWare::Ping?  The FooWare::Ping might be either unrelated
+	to your FooWare, or related but a really badly written module,
+	or simply you do no want anyone thinking your company is
+	responsible for the module, or someone might be trying
+	to make a joke out of trademark.
+
+	Yes, this had happened.
+
+You don't work for the owner of the trademark but you got
+a verbal/email okay from some in the company?  Sorry, that's not
+enough.  Get it in writing from their lawyers, get the writing
+checked by a lawyer familiar with trademarking issues.
+
+You work for a company and you are thinking of releasing a module
+somehow related to your company's product?  That's excellent, but
+please check with your manager, and preferably with your lawyers.
+Are you really supposed to release that software publicly?
+
+	We have had this happening: someone working for a company
+	released a module he wasn't suppposed to, and then left
+	the company.  The company did learn of this and got
+	a little bit huffy-- but luckily in this case the person
+	was found, and they settled amicably.
+
+Top-level names to stay away from: Devel, Sys, Text, unicore,
+names all in lowercase.
+
+	Devel is mainly meant for modules to do with
+	low-level debugging of/inside Perl itself.
+	It does not stand for "development" or "developer"
+	in general.
+
+	Sys is a complete disaster.  Adding Sys:: in front
+	of something is completely redundant.  We are sorry
+	it ever got used.  Yes, we know there's Sys::Syslog
+	in the core, and we are we ashamed because of it.
+
+	Text is most often very low in information, too.
+	If your module is working with a natural language
+	or languages, use "Lingua::".  "Text::" is fine
+	if your module is dealing with formatting of text,
+	for example.  If you are thinking of using "Text"
+	because your data is "text", please don't.
+
+	Unicore/unicore is reserved for the use of the Perl
+	core for Unicode things.
+
+	All names consisting only of lowercase letters are reserved
+	for the use of the core Perl language.
+
+
+-- 
+$jhi++; # http://www.iki.fi/jhi/
+        # There is this special biologist word we use for 'stable'.
+        # It is 'dead'. -- Jack Cohen

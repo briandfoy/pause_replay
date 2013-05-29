@@ -1,0 +1,84 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:78203
+Return-Path: <ejstrom@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 27441 invoked from network); 30 Oct 2011 01:33:02 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 30 Oct 2011 01:33:02 -0000
+Received: (qmail 2945 invoked by uid 225); 30 Oct 2011 01:33:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2938 invoked by alias); 30 Oct 2011 01:33:02 -0000
+X-Spam-Status: No, hits=-0.8 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_PASS,T_TO_NO_BRKTS_FREEMAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-ey0-f169.google.com (HELO mail-ey0-f169.google.com) (209.85.215.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 29 Oct 2011 18:32:59 -0700
+Received: by eye4 with SMTP id 4so5913158eye.14
+        for <modules@perl.org>; Sat, 29 Oct 2011 18:32:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:from:date:message-id:subject:to:content-type;
+        bh=b6qQ21hN+kHivTK2YT6JyLHkSSUjZk0TO5SHd7Ahprw=;
+        b=FeVdZkRAzqnKGtn9QkNka0rag5kJREVrAqh2NNz2liG8w3/aZnNpNxTYkislCKKCVH
+         giq8I0ofhCU68E8LE2s+vhgatmXUCrhr8CWBWFQasCqTk9B+ZTjQuaGjrbfblEBwXUCs
+         FmBc/nxrX8TMSAm88Scel3pmY4+uI3PG2dvAE=
+Received: by 10.213.10.205 with SMTP id q13mr788447ebq.119.1319938374178; Sat,
+ 29 Oct 2011 18:32:54 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.213.14.17 with HTTP; Sat, 29 Oct 2011 18:32:23 -0700 (PDT)
+Date: Sat, 29 Oct 2011 21:32:23 -0400
+Message-ID: <CAL-uHDn+GbzCzwMYLCmd+PW2Sgpt954TXAD6+CPOgCLJ+tzUsQ@mail.gmail.com>
+Subject: Naming a module that injects new code into a file's source at compile time
+To: modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+Approved: news@nntp.perl.org
+From: ejstrom@gmail.com (Eric Strom)
+
+I am working on a module and set of tools for injecting source into
+another file at compile time.  It currently does this by using
+Filter::Util::Call to hook into the compilation process, inject the
+new code before the next line that perl will compile, and then remove
+itself handing control back to the compiler.
+
+I have tentatively named this module `eval.pm`
+
+    use eval 'my $x = 1';
+
+    use eval some_sub(...);
+
+since `use` implies compile time and it is injecting the source into
+the currently compiling `eval`.
+
+but I am considering any of the following names:
+
+    eval
+    insert
+    inject
+    inline
+    compile
+    here
+
+Since all of these names are single word/lowercase names, I wanted to
+put the name up for the Perl community to comment on.
+
+I have a fully written module with a decent test suite ready to upload
+once the name is finalized.
+
+The overall goal of the module is to allow people to write a macro function:
+
+    sub my_0 {map "my \$$_ = 0", @_}
+
+And then be able to write:
+
+     use eval my_0 qw(x y z);
+
+And have the compiler see `my $x = 0; my $y = 0; my $z = 0;`
+
+Thanks for your time,
+
+Eric Strom
+ASG@cpan.org
+https://metacpan.org/author/ASG

@@ -1,0 +1,99 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:41338
+Return-Path: <dom@idealx.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27863 invoked from network); 30 Jun 2005 15:12:13 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 30 Jun 2005 15:12:13 -0000
+Received: (qmail 8731 invoked by uid 225); 30 Jun 2005 15:12:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8704 invoked by alias); 30 Jun 2005 15:12:12 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of dom@idealx.com designates 213.41.87.90 as permitted sender)
+Received: from sarajevo.idealx.com (HELO sarajevo.idealx.com) (213.41.87.90)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 30 Jun 2005 08:12:09 -0700
+Received: from localhost (sarajevo [127.0.0.1])
+	by sarajevo.idealx.com (IDEALX S.A.S Mail Daemon) with ESMTP id 8C94B11DDEF
+	for <modules@perl.org>; Thu, 30 Jun 2005 17:12:04 +0200 (CEST)
+Received: from sarajevo.idealx.com ([127.0.0.1])
+	by localhost (sarajevo.idealx.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 06567-31 for <modules@perl.org>;
+	Thu, 30 Jun 2005 17:12:02 +0200 (CEST)
+Received: by sarajevo.idealx.com (IDEALX S.A.S Mail Daemon, from userid 10)
+	id D68F011DCED; Thu, 30 Jun 2005 17:12:02 +0200 (CEST)
+Received: from saperlipopette ([127.0.0.1])
+	by saperlipopette with esmtp (Exim 4.22)
+	id 1Do0iG-0000yX-TT; Thu, 30 Jun 2005 17:12:24 +0200
+Message-ID: <42C40BD8.3080900@idealx.com>
+Date: Thu, 30 Jun 2005 17:12:24 +0200
+User-Agent: Mozilla Thunderbird 1.0.2 (X11/20050331)
+X-Accept-Language: fr, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: "eval-after-load" Perl module
+X-Enigmail-Version: 0.91.0.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Approved: news@nntp.perl.org
+From: dom@idealx.com (Dominique Quatravaux)
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hi,
+
+I have a very short module that provides something like Emacs'
+"eval-after-load" feature, and it eases writing plug-in systems in
+Perl quite a lot. I'm looking for a name for it, I thought of
+Module::AfterInit. Synopsis:
+
+  package Foo;
+
+  use Module::AfterInit;
+
+  sub call_me {
+      # ...
+  }
+
+  sub now_is_the_time_I_initialize_myself {
+      # ...
+      Module::AfterInit::run_now(__PACKAGE__);
+  }
+
+  # Meanwhile, in another piece of code!
+
+  package Bar;
+
+  use Module::AfterInit;
+
+  run_after_init Foo sub {
+      Foo->call_me();
+  }
+
+
+and that latter sub would run either immediately (if
+Module::AfterInit::run_now() already run) or would be deferred until
+that time comes (possibly indefinitely e.g. if Foo is never loaded -
+which is great for weakening the dependency relationship between two
+pieces of the same framework for instance).
+
+Thanks in advance for your insight,
+
+- --
+Dominique QUATRAVAUX                           Ingénieur senior
+01 44 42 00 08                                 IDEALX
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.5 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFCxAvYMJAKAU3mjcsRAvr7AJ4870i2VDA+Oq+gtRxVCwEfU2adSgCaAvjG
+Yj9veXugzxCz1HCqeIKQ63s=
+=cR2Y
+-----END PGP SIGNATURE-----
+
+

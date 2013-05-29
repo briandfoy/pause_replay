@@ -1,0 +1,103 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:32197
+Return-Path: <pjf@perltraining.com.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 52458 invoked from network); 24 May 2004 06:04:00 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by onion.develooper.com with SMTP; 24 May 2004 06:04:00 -0000
+Received: (qmail 1550 invoked by uid 225); 24 May 2004 06:03:59 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1545 invoked by alias); 24 May 2004 06:03:58 -0000
+X-Spam-Status: No, hits=0.0 required=7.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from teddybear.perltraining.com.au (HELO teddybear.perltraining.com.au) (210.23.138.169)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Sun, 23 May 2004 23:03:58 -0700
+Received: from perltraining.com.au (jarich.perltraining.com.au [210.23.138.171])
+	by teddybear.perltraining.com.au (Postfix) with ESMTP id 45244A8033
+	for <modules@perl.org>; Mon, 24 May 2004 16:03:54 +1000 (EST)
+Message-ID: <40B1904B.9010105@perltraining.com.au>
+Date: Mon, 24 May 2004 16:03:55 +1000
+Organization: Perl Training Australia
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.6) Gecko/20040113
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Payroll::AU::PAYG and Secure::UID registrations
+X-Enigmail-Version: 0.83.5.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Rating: onion.develooper.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: pjf@perltraining.com.au (Paul Fenwick)
+
+G'day Modules List,
+
+	I'm in the process of developing a module for the consistent 
+manipulation of UIDs across POSIX operating systems, including concepts 
+such as saved and filesystem UIDs which Perl does not normally provide a 
+way of accessing.  This was previously dubbed Secure::UID.  I'll use 
+that name for the purposes of discussion in this mail.
+
+	I've also had some interest in a small piece of code, 
+Payroll::AU::PAYG, for calculating income tax payments in Australia. 
+I've uploaded a fairly rough'n'ready copy of this to PAUSE.
+
+	I requested namespace registration of both of these modules a while 
+ago, but either of them appear to be showing on the modules list.    A 
+scout around of the modules mailing list archive reveals that I missed 
+brian d foy's response to Secure::UID, although it appears there's been 
+no discussion either way on Payroll::AU::PAYG.
+
+	References to the original registrations are:
+
+	Secure::UID
+http://www.xray.mpe.mpg.de/mailing-lists/modules/2004-04/msg00728.html
+
+	Payroll::AU::PAYG
+http://www.xray.mpe.mpg.de/mailing-lists/modules/2003-08/msg00170.h
+
+	Secure::UID is the module that I'm most actively working upon, and part 
+of a presentation I'll be giving in August at the SAGE-AU conference 
+will cover ways to use Secure::UID to permanently drop privileges, 
+something which can be quite challenging on particular operating 
+systems, including Linux.  As such, this is the module for which I most 
+wish to finalise namespace registration.
+
+	The Secure::UID name was chosen after seeing that there existed a 
+Secure::File, without me realising that the Secure::* namespace does not 
+appear to be registered.  I don't want to cause the proliferation of 
+top-level namespaces, so a rename of the module should be in order.
+
+	brian d foy's suggestion was to consider the Unix::* or Proc::* 
+namespace.  Proc::UID is probably an excellent choice here as we're 
+manipulating UIDs of the currently running process.  For me, Unix::UID 
+conjures up images of the getpw* functions.
+
+	Having said that, the module is really only useful on Unix/POSIX 
+systems that present at least the basic concepts of real and effective 
+UIDs, so Unix::UID may be more appropriate.  It's most common 
+anticipated usage would be in writing secure programs which drop their 
+privileges, but there's no Unix::Security::* in the same way that we 
+have Win32::Security::*.
+
+	Feedback from the list would be greatly appreciated.  In particular:
+
+	* Are there any suggestions for a better name than Proc::UID ?
+
+	* Is the correct procedure for me to re-submit for
+	  registration, or should I request that my original
+	  registration be edited?
+
+Many thanks in advance,
+
+	Paul
+
+-- 
+Paul Fenwick <pjf@perltraining.com.au> | http://perltraining.com.au/
+Director of Training                   | Ph:  +61 3 9354 6001
+Perl Training Australia                | Fax: +61 3 9354 2681
+

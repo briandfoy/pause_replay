@@ -1,0 +1,281 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4081
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27043 invoked from network); 3 Jan 2001 06:41:59 -0000
+Received: from palladium.baremetal.com (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 3 Jan 2001 06:41:59 -0000
+Received: from [24.66.166.9] (h24-66-166-9.gv.shawcable.net [24.66.166.9])
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id WAA21549
+	for <modules@perl.org>; Tue, 2 Jan 2001 22:33:46 -0800
+Mime-Version: 1.0
+X-Sender: darren@DarrenDuncan.net (Unverified)
+Message-ID: <f04320402b6784f372f06@[24.66.166.9]>
+Date: Tue, 2 Jan 2001 22:41:51 -0800
+To: modules@perl.org
+Subject: request namespace for HTML::FormTemplate
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+I would like to register the namespace for the following module:
+
+HTML::FormTemplate - adpO - Store definition and make persist forms, reports.
+
+One sentence overview: Perl module that maintains a predefined html 
+input form definition with which it can generate form html, complete 
+with persistant and error-checked user input, as well as formatted 
+reports of the user input in html or plain text format (for emails).
+
+Note that my form definitions include the visible prompt/question 
+text that the user sees, as well as optional help and error text. 
+This is useful so that generated forms and reports are consistent 
+with each other.
+
+My authorname is DUNCAND.
+
+This module is my largest and most feature-filled to date, and is 
+currently on CPAN under the temporary name of HTML::FormMaker; it has 
+received several improvements since then.  Below I have printed some 
+of the POD for the updated version, although it may change some more.
+
+I chose the name HTML::FormTemplate because my module essentially 
+acts as a template, storing definitions in the form as a list of 
+hashes that are then used to make both forms and reports.  And that's 
+just the start of why the name fits so well.  It is not a template in 
+the way of being finished HTML that has variable substitution done on 
+it, but the definition hashes represent html structures, so it is 
+effectively the same thing.
+
+I have scoured CPAN and the module list especially hard for similar 
+modules, and while some may give the first impression of being the 
+same, they are all very different.  The next few paragraphs show my 
+analysis of existing modules and how mine is different:
+
+The majority of modules that deal with forms are either in the 
+business of parsing existing html, or they do various conversions 
+like converting to XML or text, or they work with Request and 
+Response objects.  Mine focuses on HTML creation from scratch only, 
+and does not parse anything; also, it doesn't do any HTML specialties 
+besides the form related stuff (although it subclasses 
+HTML::EasyTags).
+
+ From reading the POD, it seems that "CGI::QuickForm" has the most in 
+common with mine.  That is, you can define all the form fields with 
+one method call.  These field definitions are compatible with those 
+by CGI.pm, and it also extends those features with extra attributes 
+for the field.  It can generate both initial forms and subsequent 
+forms with persistant user input.  However, the module differs from 
+mine in these ways: it is functional while mine is object; it takes 
+care of user input and output, whereas mine expects the calling code 
+to provide and to print (I focus on HTML only); it has you define 
+your form in the same method call as generating the html, whereas 
+with mine the form definition and html generation are separate 
+methods, so you can have the choice of generating the whole form at 
+once or one field at a time (called by name); mine generates input 
+reports on demand and the other doesn't.
+
+HTML::FillInForm parses existing form html to insert persistant user 
+input (it subclasses HTML::Parser); mine does not start with any html 
+but a hash of field attributes.
+
+CGI.pm creates form html in the same method call as defining the field, and
+also takes care of getting user input.  Mine provides the option to 
+generate html with the same function as defining it, one field at a 
+time, but it also provides two ways to generate on separate method 
+calls from definition.
+
+HTML::StickyForms has an interface like CGI.pm for form field making, 
+but it is a front that uses either CGI.pm or mod_perl in the back end 
+to get persistant values; it appears simple on the surface.
+
+CGI::Form and HTML::Form are old and have no documentation that I 
+could find, so I don't know what they do; most likely not similar.
+
+So I hope that I have made my case that I have a very unique offering.
+
+Thanks in advance,
+
+// Darren Duncan
+
+---------------------------
+
+NAME
+
+HTML::FormTemplate - Store definition and make persist forms, reports.
+
+DEPENDENCIES
+
+Perl Version
+
+    5.004
+
+Standard Modules
+
+    I<none>
+
+Nonstandard Modules
+
+    CGI::MultiValuedHash
+    HTML::EasyTags
+
+SYNOPSIS
+
+    use strict;
+
+    use HTML::FormTemplate;
+
+    my @definitions = (
+       {
+          visible_title => "What's your name?",
+          type => 'textfield',
+          name => 'name',
+       }, {
+          visible_title => "What's the combination?",
+          type => 'checkbox_group',
+          name => 'words',
+          'values' => ['eenie', 'meenie', 'minie', 'moe'],
+          default => ['eenie', 'minie'],
+       }, {
+          visible_title => "What's your favorite colour?",
+          type => 'popup_menu',
+          name => 'color',
+          'values' => ['red', 'green', 'blue', 'chartreuse'],
+       }, {
+          type => 'submit',
+       },
+    );
+
+    my $query_string = '';
+    if( $ENV{'REQUEST_METHOD'} =~ /^(GET|HEAD)$/ ) {
+       $query_string = $ENV{'QUERY_STRING'};
+    } else {
+       read( STDIN, $query_string, $ENV{'CONTENT_LENGTH'} );
+    }
+
+    my $form = HTML::FormTemplate->new();
+    $form->form_submit_url( $ENV{'SCRIPT_NAME'} );
+    $form->field_definitions( \@definitions );
+    $form->user_input( $query_string );
+
+    my ($mail_worked, $mail_failed);
+    unless( $form->new_form() ) {
+       if( open( MAIL, "|/usr/lib/sendmail -t") ) {
+          print MAIL "To: perl\@DarrenDuncan.net\n";
+          print MAIL "From: perl\@DarrenDuncan.net\n";
+          print MAIL "Subject: A Simple Example Submission\n";
+          print MAIL $form->make_text_input_echo()."\n";
+          close ( MAIL );
+          $mail_worked = 1;
+       } else {
+          $mail_failed = 1;
+       }
+    }
+
+    print
+       'Content-type: text/html'."\n\n",
+       $form->prologue_tag,
+       $form->html_start,
+       $form->head_start,
+       $form->title( 'A Simple Example' ),
+       $form->head_end,
+       $form->body_start,
+       $form->h1( 'A Simple Example' ),
+       $form->make_html_input_form( 1 ),
+       $form->hr,
+       $form->new_form() ? '' : $form->make_html_input_echo( 1 ),
+       $mail_worked ? "<P>Your favorites were emailed.</P>\n" : '',
+       $mail_failed ? "<P>Error emailing your favorites.</P>\n" : '',
+       $form->body_end,
+       $form->html_end;
+
+DESCRIPTION
+
+This Perl 5 object class can create web fill-out forms as well as 
+parse, error-check, and report their contents.  Forms can start out 
+blank or with initial values, or by repeating the user's last input 
+values.  Facilities for interactive user-input-correction are also 
+provided.
+
+The class is designed so that a form can be completely defined, using 
+field_definitions(), before any html is generated or any 
+error-checking is done. For that reason, a form can be generated 
+multiple times, each with a single function call, while the form only 
+has to be defined once.  Form descriptions can optionally be read 
+from a file by the calling code, making that code a lot more generic 
+and robust than code which had to define the field manually.
+
+If the calling code provides a MultiValuedHash object or HASH ref 
+containing the parsed user input from the last time the form was 
+submitted, via user_input(), then the newly generated form will 
+incorporate that, making the entered values persistant. Since the 
+calling code has control over the provided "user input", they can 
+either get it live or read it from a file, which is transparent to 
+us. This makes it easy to make programs that allow the user to "come 
+back later" and continue editing where they left off, or to seed a 
+form with initial values. (Field definitions can also contain initial 
+values.)
+
+Based on the provided field definitions, this module can do some 
+limited user input checking, and automatically generate error 
+messages and help text beside the appropriate form fields when html 
+is generated, so to show the user exactly what they have to fix.  The 
+"error state" for each field is stored in a hash, which the calling 
+code can obtain and edit using invalid_input(), so that results of 
+its own input checking routines are reflected in the new form.
+
+Note that this class is a subclass of both Class::ParamParser and 
+HTML::EasyTags, and inherits all of their methods.
+
+HTML CODE FROM SYNOPSIS PROGRAM
+
+    Content-type: text/html
+
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+    <HTML>
+    <HEAD>
+    <TITLE>A Simple Example</TITLE>
+    </HEAD>
+    <BODY>
+    <H1>A Simple Example</H1>
+    <FORM METHOD="post" ACTION="localhost">
+    <TABLE CELLSPACING="5">
+    <INPUT TYPE="hidden" NAME=".is_submit" VALUE="1">
+    <TR>
+    <TD VALIGN="top" ALIGN="left"></TD>
+    <TD VALIGN="top" ALIGN="left">
+    <STRONG>What's your name?:</STRONG></TD>
+    <TD VALIGN="top" ALIGN="left">
+    <INPUT TYPE="text" NAME="name"></TD></TR>
+    <TR>
+    <TD VALIGN="top" ALIGN="left"></TD>
+    <TD VALIGN="top" ALIGN="left">
+    <STRONG>What's the combination?:</STRONG></TD>
+    <TD VALIGN="top" ALIGN="left">
+    <INPUT TYPE="checkbox" NAME="words" CHECKED VALUE="eenie">eenie
+    <INPUT TYPE="checkbox" NAME="words" VALUE="meenie">meenie
+    <INPUT TYPE="checkbox" NAME="words" CHECKED VALUE="minie">minie
+    <INPUT TYPE="checkbox" NAME="words" VALUE="moe">moe</TD></TR>
+    <TR>
+    <TD VALIGN="top" ALIGN="left"></TD>
+    <TD VALIGN="top" ALIGN="left">
+    <STRONG>What's your favorite colour?:</STRONG></TD>
+    <TD VALIGN="top" ALIGN="left">
+    <SELECT NAME="color" SIZE="1">
+    <OPTION VALUE="red">red
+    <OPTION VALUE="green">green
+    <OPTION VALUE="blue">blue
+    <OPTION VALUE="chartreuse">chartreuse
+    </SELECT></TD></TR>
+    <TR>
+    <TD VALIGN="top" ALIGN="left"></TD>
+    <TD VALIGN="top" ALIGN="left"></TD>
+    <TD VALIGN="top" ALIGN="left">
+    <INPUT TYPE="submit" NAME="nonamefield001"></TD></TR>
+    </TABLE>
+    </FORM>
+    <HR>
+    </BODY>
+    </HTML>

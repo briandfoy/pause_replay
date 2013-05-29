@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2478
+Return-Path: <mikeg@hops.lw.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29056 invoked from network); 16 Jul 2000 23:55:29 -0000
+Received: from hops.lw.net (HELO mail.lw.net) (mikeg@209.251.142.2)
+  by tmtowtdi.perl.org with SMTP; 16 Jul 2000 23:55:29 -0000
+Received: from localhost (mikeg@localhost)
+	by mail.lw.net (8.8.5/8.8.5) with ESMTP id TAA31336
+	for <modules@perl.org>; Sun, 16 Jul 2000 19:51:24 -0400
+Date: Sun, 16 Jul 2000 19:51:22 -0400 (EDT)
+To: modules@perl.org
+Subject: Request for Registration
+Message-ID: <Pine.LNX.4.05.10007161920170.30015-100000@hops.lw.net>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: mikeg@lw.net (mikeg)
+
+
+name : Mike Giles
+email address : modules@easyperl.com
+homepage : http://www.easyperl.com
+preferred user-ID on CPAN: MIKEG
+
+Name           DSLI  Description                                  Info
+-------------  ----  -------------------------------------------- -----
+Table          bdpO  In memory table operations on AoA   	  MIKEG
+
+
+This module has been in development for almost 1 year and is being used in
+production environments throughout 3 seperate web development companies.
+While new methods are being added on a regular basis, it has proven itself
+an invaluable tool primarily used as an intermediate processor on data
+moving between DBI calls and HTML templators.  A method is currently
+being added to allow final data to be exported to HTML::Template.
+
+We have also been wondering which namespace would be suitable. Up to now
+we have thought of Data::Table, Array::AoAUtils, AoA::Table, AoA::Utils
+and a few others we won't mention ;)
+
+Snippet from POD included to show use:
+
+use Table;
+$tb = new Table;
+    
+$tb->colnames('name','age','sex');
+@colnames = $tb->colnames();
+    
+$tb->addrow('Tiago','27','m');
+$tb->addrow({name => 'Marta',age => 25, sex=> 'f'});
+        
+$tb->addcol('nationality', 'Portuguese'); 
+# 'Portuguese' populates existing rows   
+
+$tb->addcol('rowcolor');
+$tb->fillcol('rowcolor','white','silver');
+# white and silver repeats to fill column named rowcolor
+    
+$tb->display(html);
+$tb->display(ascii); # default
+
+$sorted_table = $tb->sortrows('name'); # asciibetical sort (case independent)
+$sorted_table = $tb->sortrows('age','n');  # numerical sort
+$sorted_table = $tb->sortrows('age','-n'); # inverse numerical sort
+
+$sorted_table = $tb->sortrows('nationality',\&SomeSortFuntion); 
+# Sorting by function not yet implemented
+
+# get all men that are over 21 years old
+$men_table       = $tb->filter('sex','eq m');
+$legal_men_table = $men_table->filter('age','> 21');
+
+# get the average and total ages of all listed
+$average_age = $tb->mathcol('age','avg');
+$sum_age = = $tb->mathcol('age','sum');
+    
+$number_of_rows = $tb->countrows();
+$number_of_fields = $tb->countcols();
+
+$avg = $tb->AvgFieldLength($fieldname);
+($min,$max,$avg) = $tb->fieldlength($fieldname);
+    
+@allnames = $tb->fetchcol('name');
+@record = $tb->fetchrow(1);
+
+$tb->opcol("counter",$functionref);
+    
+$tb->debug();
+
+
+-- 
+Mike Giles <mikeg@lw.net>	ICQ: 65152812
+Systems Administrator		Livewire Incorporated
+http://www.lw.net/		(352) 373-7090
+

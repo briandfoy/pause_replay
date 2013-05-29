@@ -1,0 +1,79 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:38970
+Return-Path: <cbouvi@free.fr>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11238 invoked from network); 10 Mar 2005 15:52:05 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 10 Mar 2005 15:52:05 -0000
+Received: (qmail 24176 invoked by uid 225); 10 Mar 2005 15:52:05 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24172 invoked by alias); 10 Mar 2005 15:52:04 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,RCVD_IN_SORBS_WEB
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from postfix4-2.free.fr (HELO postfix4-2.free.fr) (213.228.0.176)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 10 Mar 2005 07:51:59 -0800
+Received: from cluny (unknown [62.147.155.183])
+	by postfix4-2.free.fr (Postfix) with ESMTP id 187CD2E0FB9
+	for <modules@perl.org>; Thu, 10 Mar 2005 16:51:55 +0100 (CET)
+Received: by cluny (Postfix, from userid 1000)
+	id A6F0222B; Thu, 10 Mar 2005 16:51:50 +0100 (CET)
+Date: Thu, 10 Mar 2005 16:51:50 +0100
+To: modules@perl.org
+Subject: advice on new namespace please
+Message-ID: <20050310155150.GE8429@cluny>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.5.6+20040907i
+Approved: news@nntp.perl.org
+From: cbouvi@free.fr (=?iso-8859-1?Q?C=E9dric?= Bouvier)
+
+Good localtime every one,
+
+I started writing a module, and I believe nothing currently exists on
+CPAN that would provide the same fonctionality. I am in need of a good
+name for that module, and after seeking advice on the modules-author
+mailing list, it looks like their is a need to start the new
+Distributed:: namespace.
+
+But let's start with the need that lead to the writing of the module.
+
+I had to conduct stress tests on a web based application. During the
+test session, many requests would be fired at the server at once.
+Unfortunately, I only had a low end computer to run the tests, a machine
+that would die of exhaustion before the server starts getting tired. So
+I let the same test program run on several machines at the same time.
+But I still had to run around the room and hit return on all these
+machines (ok, it's an image, I do know about ssh) so that "at the same
+time" really means something. And I had to use scp or something to
+collect the results from the tests on the different machines.
+
+I wanted to do this automatically, by writing a module. The module
+provides a server, a client, and a base Tester class to inherit from.
+The server will redefine some methods of the Tester class so that
+invoking them will in fact send a query to the connected clients. The
+client will run the "real" method and return the results.
+
+I first thought of calling this module Test::Distributed, but:
+- the fine folks at perl-qa didn't like it, because it's nothing to do
+  with Test::More.
+- come to think of it, it could be used for something other that
+  testing.
+
+In fact, it's only about running the same piece of code on several
+computers, hence the idea of Distribued. It is not about running several
+bits off the same code in parallel on the same computer, so I don't
+think it belongs to Parallel::, and Cluster:: carries a notion of high
+availability which is not what my module does.
+
+I'd like to call it Distributed::Process, what do you think ?
+
+Thank you in advance for your attention.
+
+-- 
+C é d r i c   B o u v i e r

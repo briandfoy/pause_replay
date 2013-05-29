@@ -1,0 +1,72 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60972
+Return-Path: <pjf@perltraining.com.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15086 invoked from network); 24 Jun 2008 05:34:25 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 24 Jun 2008 05:34:25 -0000
+Received: (qmail 9555 invoked by uid 225); 24 Jun 2008 05:34:24 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9549 invoked by alias); 24 Jun 2008 05:34:24 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from teddybear.perltraining.com.au (HELO teddybear.perltraining.com.au) (210.23.138.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 23 Jun 2008 22:34:20 -0700
+Received: from [210.23.138.172] (moemi.perltraining.com.au [210.23.138.172])
+	by teddybear.perltraining.com.au (Postfix) with ESMTP id C92C8A81D7
+	for <modules@perl.org>; Tue, 24 Jun 2008 15:34:15 +1000 (EST)
+Message-ID: <48608751.5040802@perltraining.com.au>
+Date: Tue, 24 Jun 2008 15:34:09 +1000
+Organization: Perl Training Australia
+User-Agent: Thunderbird 2.0.0.14 (Windows/20080421)
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Naming and module sanity check - Taint::More
+X-Enigmail-Version: 0.95.6
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: pjf@perltraining.com.au (Paul Fenwick)
+
+G'day modules list,
+
+I'm currently working on my Perl Security tutorial in preparation for OSCON, 
+and it's become apparent there's a number of things that taint mode should 
+be doing but can't in standard perl, and a number of things developers 
+should be doing but don't.
+
+These include things like:
+
+* Cleaning PERL5SHELL under Windows (this could be abused
+   before 5.8.8 and 5.10.0).
+
+* Increasing the vigilance of open() (which can be used to open
+   arbitrary files or even clone streams with tainted data).
+
+* Increasing the vigilance of other functions that can be manipulated
+   in similar ways.
+
+* Refusing to run if funny things are detected in PERL_HASH_SEED_DEBUG
+   and other environment variables (taint mode still honours these,
+   even though they reveal sensitive information).
+
+I've looked high and low for a similar module, but can't find one.  There 
+are a few modules out there for detecting tainted data (Taint, Taint::Util, 
+and Test::Taint), cleaning environment variables and applying extra caution 
+to CGI (CGI::Safe), or trying to do untainting for you (which may be quite 
+unwise).
+
+I'm thinking of using the name "Taint::More", since it will be implementing 
+extra taint checks and paranoia.  Any feedback on the name?
+
+Cheerio,
+
+	Paul
+
+-- 
+Paul Fenwick <pjf@perltraining.com.au> | http://perltraining.com.au/
+Director of Training                   | Ph:  +61 3 9354 6001
+Perl Training Australia                | Fax: +61 3 9354 2681

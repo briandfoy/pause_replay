@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21033
+Return-Path: <jay@infonium.ca>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 40111 invoked by uid 76); 11 May 2003 21:04:38 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Sun, 11 May 2003 14:04:38 -0700
+Received: (qmail 30385 invoked by uid 225); 11 May 2003 21:04:36 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30380 invoked by uid 507); 11 May 2003 21:04:36 -0000
+Received: from h117.c220.tor.velocet.net (HELO www.infonium.com) (216.138.220.117) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Sun, 11 May 2003 14:04:35 -0700
+Received: from infonium.ca (dhcp11.infonium.com [192.168.1.11])	by www.infonium.com (8.11.6/8.11.6) with ESMTP id h4BL4Wc07045;	Sun, 11 May 2003 17:04:32 -0400
+Date: Sun, 11 May 2003 17:04:26 -0400
+Subject: Re: Module submission Text::vFile
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Mime-Version: 1.0 (Apple Message framework v552)
+Cc: modules@perl.org, leo <lapmail@cuckoo.org>
+To: Arthur Bergman <sky@nanisky.com>
+In-Reply-To: <E6191F4A-83EF-11D7-9B8A-000393CB5BC4@nanisky.com>
+Message-ID: <26150F26-83F4-11D7-99CF-000393D61E84@infonium.ca>
+Content-Transfer-Encoding: 7bit
+X-Mailer: Apple Mail (2.552)
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-2.0 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,SPAM_PHRASE_03_05,USER_AGENT_APPLEMAIL version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: jay@infonium.ca (Jay Lawrence)
+References: <E6191F4A-83EF-11D7-9B8A-000393CB5BC4@nanisky.com>
+
+> I just feel that the modules should be connected somehow, how do they 
+> related to Net::iCal and and Net::vCard ?
+
+I authored Net::vCard - that name space did not meet enough support to 
+be registered. Subsequently Text::vCard is gaining sound approval from 
+module-authors lists plus Leo who has written a comparable 
+implementation. Leo and I are now collaborating on this project. Once 
+this name space matter is complete I will be removing that module and 
+directing all users to this work.
+
+Net::iCal is alpha code written to support RFC2445 originating from a 
+projected called Reefknot. It seems unlikely that this code will be 
+continued to be developed. [ some key issues have caused the module to 
+dead-end and requires complete revamping from what I understand ]
+
+> Text::vFile
+> Text::vFile::Card
+> Text::vFile::Calendar
+
+vCard can come in an RSS flavour as well ( The RSS form is in draft 
+RFC). I anticipate the same with iCalendar format. The data format is 
+expressed in what I have dubbed "vFile" and it is strikingly similar 
+between the two modules. But, as you can see they need not be expressed 
+exclusively in this form even though the actual information is 
+identical.
+
+We do feel that it would be of greater service to the developer to see 
+in their code:
+	use Text::vCard;
+	my $card = Text::vCard->new;
+
+than
+	use Text::vFile::vCard;
+	my $card = Text::vFile::vCard->new;
+
+  The vFile is really secondary - the prime object is vCard, vFile is 
+transport mechanism.
+
+Therefore I would suggest that the vFile be buried in favour of the 
+vCard taking the prominence.  Since we will use this parser cross 
+module it does make sense to separate it out and treat it as an 
+independent component as well.
+
+Perhaps the Text::vFile name is misleading - but from our perspective 
+was a core prerequisite to this whole process.
+
+Thanks again for your input and consideration,
+Jay Lawrence
+
+----
+Infonium Inc.
+Open Source Information Management
+http://www.infonium.ca/
+

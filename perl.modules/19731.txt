@@ -1,0 +1,109 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:19731
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 38916 invoked by uid 76); 24 Mar 2003 16:31:59 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.25) with SMTP; Mon, 24 Mar 2003 08:31:59 -0800
+Received: (qmail 4552 invoked by uid 225); 24 Mar 2003 16:31:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4528 invoked by uid 507); 24 Mar 2003 16:31:44 -0000
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.25) with SMTP; Mon, 24 Mar 2003 08:31:07 -0800
+Received: (from nobody@localhost)	by pause.perl.org (8.11.6/8.11.6) id h2OGV2u08601;	Mon, 24 Mar 2003 17:31:02 +0100
+Date: Mon, 24 Mar 2003 17:31:02 +0100
+Message-ID: <200303241631.h2OGV2u08601@pause.perl.org>
+Subject: Module submission MasonX::ApacheHandler::WithCallbacks
+Reply-To: modules@perl.org
+To: modules@perl.org, dwheeler@cpan.org
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.8 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.x.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       MasonX::ApacheHandler::WithCallbacks
+  DSLIP:       bmpOp
+  description: Execute code before Mason components
+  userid:      DWHEELER (David Wheeler)
+  chapterid:   15 (World_Wide_Web_HTML_HTTP_CGI)
+  communities:
+    mason-users@lists.sourceforge.net
+
+  similar:
+    MasonX::Request::WithApacheSession
+
+  rationale:
+
+    This module allows callbacks to be triggered by form field names
+    (or other Mason arguments) before any Mason components are loaded
+    and executed by Mason. Why would you want to do this? Well, there
+    are a number of reasons. Some I can think of offhand include:
+
+    Stricter separation of logic from presentation:
+    ---------------------------------------------- Most application
+    logic handled in Mason components takes place in <%init> blocks,
+    often in the same component as presentation logic. By moving the
+    application logic into subroutines in Perl modules and then
+    directing Mason to execute those subroutines as callbacks, you
+    obviously benefit from a cleaner separation of application logic and
+    presentation.
+
+    Wigitization: ------------ Thanks to their ability to preprocess
+    arguments, callbacks enable developers to develop easier-to-use,
+    more dynamic widgets that can then be used in any Mason components.
+    For example, a widget that puts many related fields into a form
+    (such as a date selection widget) can have its fields preprocessed
+    by a callback (for example, to properly combine the fields into a
+    unified date field) before the Mason component that responds to the
+    form submission gets the data.
+
+    Shared Memory ------------- Callbacks are just Perl subroutines in
+    modules loaded at server startup time. Thus the memory they consume
+    is all in the parent, and then shared by the Apache children. For
+    code that executes frequently, this can be much less
+    resource-intensive than code in Mason components, since components
+    are loaded separately in each Apache child process (unless they're
+    preloaded via the preloads parameter to the HTML::Mason::Interp
+    constructor).
+
+    Performance ----------- Since callbacks are executed before Mason
+    creates a component stack and executes the components, they have the
+    opportunity to short-circuit the Mason processing by doing something
+    else. A good example is redirection. Often the application logic in
+    callbacks does its thing and then redirects the user to a different
+    page. Executing the redirection in a callback eliminates a lot of
+    extraneous processing that would otherwise be executed before the
+    redirection, creating a snappier response for the user.
+
+    Testing ------- Mason components are not easy to test via a testing
+    framework such as Test::Harness. Subroutines in modules, on the
+    other hand, are fully testable. This means that you can write tests
+    in your application test suite to test your callback subroutines.
+
+    And if those are enough reasons, then just consider this: Callbacks
+    just way cool.
+
+  enteredby:   DWHEELER (David Wheeler)
+  enteredon:   Mon Mar 24 16:31:02 2003 GMT
+
+The resulting entry would be:
+
+MasonX::ApacheHandler::
+::WithCallbacks   bmpOp Execute code before Mason components         DWHEELER
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=f2400000_d5d41d0ac91b1383&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=f2400000_d5d41d0ac91b1383&SUBMIT_pause99_add_mod_insertit=1

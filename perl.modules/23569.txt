@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:23569
+Return-Path: <dngor@bellsouth.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17642 invoked by uid 76); 16 Sep 2003 13:23:55 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Tue, 16 Sep 2003 06:23:55 -0700
+Received: (qmail 18994 invoked by uid 225); 16 Sep 2003 13:23:54 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18988 invoked by uid 507); 16 Sep 2003 13:23:53 -0000
+Received: from imf21aec.mail.bellsouth.net (HELO imf21aec.mail.bellsouth.net) (205.152.59.69) by one.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Tue, 16 Sep 2003 06:23:51 -0700
+Received: from eyrie.homenet ([68.213.211.142])          by imf21aec.mail.bellsouth.net          (InterMail vM.5.01.05.27 201-253-122-126-127-20021220) with ESMTP          id <20030916132348.YETI1847.imf21aec.mail.bellsouth.net@eyrie.homenet>;          Tue, 16 Sep 2003 09:23:48 -0400
+Received: from eyrie.homenet (abuse@localhost [127.0.0.1])	by eyrie.homenet (8.12.9/8.12.9) with ESMTP id h8GDNlif008329;	Tue, 16 Sep 2003 09:23:47 -0400 (EDT)	(envelope-from troc@eyrie.homenet)
+Received: (from troc@localhost)	by eyrie.homenet (8.12.9/8.12.9/Submit) id h8GDNlH4008328;	Tue, 16 Sep 2003 09:23:47 -0400 (EDT)	(envelope-from troc)
+Date: Tue, 16 Sep 2003 09:23:46 -0400
+To: modules@perl.org
+Cc: "Marc A. Lehmann" <pcg@goof.com>
+Subject: Re: request for module name :)
+Message-ID: <20030916132346.GC571@eyrie.homenet>
+References: <20030915233147.GA1760@schmorp.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030915233147.GA1760@schmorp.de>
+User-Agent: Mutt/1.4.1i
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-0.5 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,RCVD_IN_ORBS,REFERENCES,SPAM_PHRASE_02_03,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: rcaputo@pobox.com (Rocco Caputo)
+
+On Tue, Sep 16, 2003 at 01:31:48AM +0200,  Marc A. Lehmann  wrote:
+> [I am not on the list, please consider sending me a cc]
+
+Cc sent.
+
+> While developing Net-FCP, I implemented a very primitive wrapper around
+> the Event, Coro::Event, Glib and Tk event models - it basically offers a
+> somewhat limited Event-like API on top of whatever event library is loaded
+> (or can be autodetected).
+> 
+> I haven't seen something similar on CPAN yet (but I am blind), and since
+> the problem (using Event-driven I/O in modules) is definitely real (at
+> least for me), having a library that offers me simple readable/writable
+> events, signals (not unix-signals but general "wait for something async to
+> happen") that work under Gtk2 _and_ Tk _and_ Event etc. seems useful.
+
+Have you seen POE?  It includes bridges to its own select() and IO::Poll
+event loops, Event, Gtk, Tk, and Tk with I/O polling for ActivePerl.
+
+Other bridges are welcome.  Gtk2 support has just been written (but not
+yet released), and people occasionally threaten to write ones for Qt and
+wxPerl.
+
+The POE::Loop man page discusses POE's event loop bridge.  It covers
+socket and pipe I/O, signals, and time.  It includes examples from
+existing bridges to help you get going.  All of POE's public interfaces
+and features are built atop this laper.  See:
+http://search.cpan.org/author/RCAPUTO/POE-0.26/POE/Loop.pm
+
+POE is migrating towards a pluggable design.
+
+POE's medium- and high-level event features (aliases, reference counts,
+user events, etc.) are moving to POE::Resource clasess.  The plug-in
+system will allow additional features, such as semaphores (for
+shared-memory events) and file locking events.
+
+POE's public interfaces will move to POE::API classes.  It will be
+possible to plug in replacement syntax and semantics, or to extend POE
+with entirely new interfaces.  The proof of concept is POE::API::Peek,
+deep introspection into POE's private data for developers and test
+writers.
+
+POE::Session subclasses provide ways to alter POE's callback semantics.
+The CPAN has a couple examples already:
+http://search.cpan.org/author/RCAPUTO/POE-Session-MessageBased-0.01/MessageBased.pm
+http://search.cpan.org/author/CWEST/POE-Session-MultiDispatch-1.3/MultiDispatch.pm
+
+You can tell I'm very excited about all this. :)
+
+-- 
+Rocco Caputo - rcaputo@pobox.com - http://poe.perl.org/

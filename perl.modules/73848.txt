@@ -1,0 +1,105 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:73848
+Return-Path: <rehsack@googlemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28312 invoked from network); 1 Dec 2010 06:13:51 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 1 Dec 2010 06:13:51 -0000
+Received: (qmail 21507 invoked by uid 225); 1 Dec 2010 06:13:50 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 21499 invoked by alias); 1 Dec 2010 06:13:50 -0000
+X-Spam-Status: No, hits=-0.8 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-bw0-f41.google.com (HELO mail-bw0-f41.google.com) (209.85.214.41)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 30 Nov 2010 22:13:47 -0800
+Received: by bwz16 with SMTP id 16so6330300bwz.14
+        for <modules@perl.org>; Tue, 30 Nov 2010 22:13:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:received:in-reply-to
+         :references:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=IqiOf44rLWoJvy2GB3dVQonOT/eJJN2TMwIu0+VrfMw=;
+        b=H+kaPsmVagDCoVZqg5zTNckGy9zbjIWScrjHFAD8iINcLprM/bqRIAMG5c1xYdNinm
+         kDj8nO0Za1HhPSV9J44X0oRSK0husr7GRQBqTlrZ6J2JFJ68I+KrnTETku0UGMZGujjP
+         hfxhbjVzRP2LmEXxCH6OutFi0mknCreBwp3us=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=Lp/rtUMno+fPbdguvJI3sC1hp7cj9SPNXqjEI+53c68pZRGvkNXP2X5dhtxQ+9Bivr
+         wy6ksjS8/nPvIjO+ODQnCx2r/xk2l2BWgam27iTasnM/lVYO/nUA76ASB65JHNqF66uf
+         XsedzST+xLvpuisBMuq22DtX2zfjxtGbYgFV0=
+MIME-Version: 1.0
+Received: by 10.204.120.141 with SMTP id d13mr3664406bkr.140.1291184023147;
+ Tue, 30 Nov 2010 22:13:43 -0800 (PST)
+Received: by 10.204.118.1 with HTTP; Tue, 30 Nov 2010 22:13:43 -0800 (PST)
+In-Reply-To: <AANLkTi=pCvwevKN0ELzZ0948JoDsLCMV_M3PF-EL5J2v@mail.gmail.com>
+References: <AANLkTinMoyCBjoLeVuTR51CsaVyHKwKaZokPZUtBbmSJ@mail.gmail.com>
+	<AANLkTi=13_O1E6CyAF_HKdXjBZ8Hp-vxvL0XyDKZR5--@mail.gmail.com>
+	<AANLkTind4VMx2xQ5H7WLybDNUUz7es2t9JWSKsGjfUOE@mail.gmail.com>
+	<AANLkTinzR_W6UV031ZxkjQ-wMXuJ0JtAWE307tb3Ehz5@mail.gmail.com>
+	<AANLkTimHGuwJWp76jucJ_WB55PNkWG50p3zw7qhk6qdq@mail.gmail.com>
+	<AANLkTi=pCvwevKN0ELzZ0948JoDsLCMV_M3PF-EL5J2v@mail.gmail.com>
+Date: Wed, 1 Dec 2010 07:13:43 +0100
+Message-ID: <AANLkTim9864YNndOCFubxc8YvjM--gB9czit_-g+pif-@mail.gmail.com>
+Subject: Re: List::MoreUtils maintainership
+To: Adam Kennedy <adam@ali.as>
+Cc: David Golden <xdaveg@gmail.com>, modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: rehsack@googlemail.com (Jens Rehsack)
+
+2010/12/1 Adam Kennedy <adam@ali.as>:
+> Since my releases seem to have "regressed" issues that were "fixed" in
+> the no-longer-existing 0.23 (and created problems for some people) my
+> plan to not have to touch the actual code seem to have been derailed a
+> bit.
+>
+> I'm going to see if I can apply some of the fixes suggested in RT, or
+> reapply some of the fixes from 0.23. If I can't knock out a decent
+> test-passing dev release I'm then going to rip out the leaking XS
+> versions of the functions as damage control.
+>
+> Alternatively, if Jens plans to work on it straight away then I'll yield.
+
+Current plan of order of tasks:
+- finish current task (SQL::Statement / DBI-bundled Pure-Perl-DBD's)
+- Proc::ProcessTable code merge from current $work on libstatgrab
+  (make it thread-safe, all fields available on all OS, ...)
+- List::MoreUtils (first (re)write tests to cover leak-test, then fix
+  and go on business as usual)
+
+> I'll see how far I can get now, but won't push a stable release
+> without Jens' approval.
+
+The meanwhile deleted releases had other issues - all XS related.
+I studied a bit since I got maintainership - should be easy to fix >:-)
+
+From my point of view, nothing beyond 0.22 didn't work for real.
+I hope I get P::PT managed this year, but could require some weeks
+at start of 2011.
+
+So you have a rough time line. I suggest you don't try to fix the
+leaks without tests :)
+
+Jens
+
+> Adam K
+>
+> On Tue, Nov 30, 2010 at 11:27 PM, David Golden <xdaveg@gmail.com> wrote:
+>> On Mon, Nov 29, 2010 at 4:57 PM, Adam Kennedy <adam@ali.as> wrote:
+>>> I'll try to replicate on a 5.8.8 system later today, but this should
+>>> not change your priority (although the existence of a Critical
+>>> Twiki-breaking bug might).
+>>
+>> Isn't it just so tempting to stall on 5.8.X bugs until April 20, 2011 ..=
+. =A0:-)
+>>
+>> -- David
+>>
+>

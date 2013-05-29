@@ -1,0 +1,62 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3852
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25016 invoked from network); 10 Dec 2000 20:18:26 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 10 Dec 2000 20:18:26 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id VAA14889;
+	Sun, 10 Dec 2000 21:18:18 +0100
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: "Richard Anderson" <starfire@zipcon.net>
+Cc: <modules@perl.org>
+Subject: Re: MakeMaker question
+References: <033101c062c5$f06d2ce0$700ff93f@adcom133>
+Reply-To: modules@perl.org
+Date: 10 Dec 2000 21:18:18 +0100
+In-Reply-To: "Richard Anderson"'s message of "Sun, 10 Dec 2000 08:26:17 -0800"
+Message-ID: <m31yvgkp2t.fsf@ak-71.mind.de>
+Lines: 33
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Sun, 10 Dec 2000 08:26:17 -0800, "Richard Anderson" <starfire@zipcon.net> said:
+
+ > I am preparing a module for CPAN release.  There is a subdirectory tree
+ > that should be copied recursively to /usr/local/etc when "make install"
+ > is typed.  I assume that I should write a perl script that does the
+ > copy, but I don't see anything in the ExtUtils::MakeMaker man page that
+ > lets me indicate that this script should be run during "make install".
+ > The PL_FILES attribute looks promising, but I don't think this does
+ > what I need.
+
+PL_FILES isn't it. AFAIR, you need to define a subroutine that adds
+the necessary lines to the Makefile. Something like
+
+sub MY::postamble {
+        return qq{
+install::
+        $(CP) foo /usr/local/etc/http-webtest/
+        $(CP) bar /usr/local/etc/http-webtest/
+};
+}
+
+Please consider using File::Spec instead of hardcoded slashes as
+directory separators and be warned that the user really needs a chance
+to decide if he considers /usr/local/etc/ being the right place. mysql
+for example puts its databases there, nessus puts its configuration
+there, and when I run
+
+    mysqlshow nessus
+
+I do get a very useless answer. Annoys me.
+
+-- 
+andreas

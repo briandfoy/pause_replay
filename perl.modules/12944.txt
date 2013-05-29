@@ -1,0 +1,94 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12944
+Return-Path: <JGSmith@TAMU.Edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 50104 invoked by uid 76); 30 Jul 2002 15:03:04 -0000
+Received: from root@moya.tamu.edu (HELO moya.tamu.edu) (128.194.103.45)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Tue Jul 30 15:03:04 2002 -0000
+Received: from moya.tamu.edu (jgsmith@localhost [127.0.0.1])
+	by moya.tamu.edu (8.11.4/8.11.4) with ESMTP id g6UF2Vj08827;
+	Tue, 30 Jul 2002 10:02:31 -0500 (CDT)
+Message-ID: <200207301502.g6UF2Vj08827@moya.tamu.edu>
+To: Tim Bunce <Tim.Bunce@pobox.com>
+cc: James G Smith <JGSmith@TAMU.Edu>, modules@perl.org
+Subject: Re: Request for Comments - module naming 
+Reply-To: JGSmith@TAMU.Edu
+X-Office: 326A Teague
+X-Organization: TAMU CIS Operating Systems Group, Unix
+X-Pgp-Key: Get key 0x7991CC92 by sending message with subject: "get pgp key"
+X-Url: http://HeX.TAMU.Edu/
+X-Reposting-Policy: redistribute only with permission
+In-reply-to: Your message of "Tue, 30 Jul 2002 15:28:12 BST."
+             <20020730152812.M598@dansat.data-plan.com> 
+Date: Tue, 30 Jul 2002 10:02:31 -0500
+Approved: news@nntp.perl.org
+From: JGSmith@TAMU.Edu (James G Smith)
+References: <20020730152812.M598@dansat.data-plan.com>
+
+Tim Bunce <Tim.Bunce@pobox.com> wrote:
+>On Thu, Jul 25, 2002 at 01:01:59PM -0500, James G Smith wrote:
+>> My questions for now are two:
+>>  (1) should I place the state machine outside the general application
+>>      namespace and, if so, what are some suggestions for where to put
+>>      it?  I am trying to place general modules in general locations.
+>
+>Tricky. We don't have a namespace for state machines and the 'control flow
+>utilities' section of the module list is a mish-mash of modules:
+>    http://search-beta.cpan.org/modlist/Control_Flow_Utilities
+>
+>Searching on state machine is interesting:
+>    http://search-beta.cpan.org/search?mode=all&query=state+machine
+>but offers little practical help. It seems that state machine modules
+>have always been closely tied to other modules (POE::Session,
+>Bio::Tools::StateMachine::AbstractStateMachine, Win32::CtrlGUI::State)
+>
+>Is there any chance you could reuse/extend/subclass POE::Session?
+
+Arthur Bergman raised a similar question, which I will try to answer
+here also.
+
+I did look at POE and (today, looked again) at the docs for
+POE::Session and POE::NFA.
+
+POE seems to assume that I know what state I want next, or at least
+what event to call next.  But I don't.  All I have are the previous
+state of the machine and a bunch of data (in this case, from a web
+form).  I need to use the data to find the next state and then
+transition to that state, calling any code that might be associated
+with that transition.
+
+Basically, once the object is set up, you feed it any existing
+context (e.g., existing state) and a hash of data.  Based on the hash
+and the existing state, it will attempt to transition to a new state,
+producing a new context and a new hash of (possibly munged) data.
+The state machine in this case is a passive beast (though images of
+ribosomes come to mind, which aren't at all passive).
+
+I also need to be able to sub-class and inherit any transitions,
+states, and associated code in the process.
+
+I'm not finding this likely with POE, at least not without writing a
+lot of code, which I already have (though not involving POE) -- then
+POE becomes a bit heavy just to track state.
+
+>Otherwise perhaps StateMachine::Gestinanna would be a reasonable
+>name (showing the association with the Gestinanna framework) and
+>distribute it as a separate module - if it really is separate.
+
+It doesn't access any other modules in the Gestinanna:: namespace.
+It doesn't assume it is running in a web environment (I think it
+might be possible to use it in a Perl/Tk environment, but haven't
+looked yet -- of course, I'd love to use the xml views to create Tk
+dialogs :)
+
+I think it would be reasonable to make it a separate distribution.
+
+Another possible name would be StateMachine::Wizard, since it is
+designed to drive wizard-like applications.  That might interfere
+with the Wizard::  namespace though if Wiedmann ever wanted to move
+part of his Wizard::State code to the StateMachine:: namespace.
+-- 
+James Smith <JGSmith@TAMU.Edu>, 979-862-3725
+Texas A&M CIS Operating Systems Group, Unix

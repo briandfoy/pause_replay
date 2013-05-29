@@ -1,0 +1,384 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:33504
+Return-Path: <bnegrao@uol.com.br>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32175 invoked from network); 13 Jul 2004 02:10:40 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by onion.develooper.com with SMTP; 13 Jul 2004 02:10:40 -0000
+Received: (qmail 22599 invoked by uid 225); 13 Jul 2004 02:10:39 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22555 invoked by alias); 13 Jul 2004 02:10:35 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from smtpout5.uol.com.br (HELO smtp.uol.com.br) (200.221.11.58)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Mon, 12 Jul 2004 19:10:31 -0700
+Received: from bahia (201008098083.user.veloxzone.com.br [201.8.98.83])
+	by scorpion5.uol.com.br (Postfix) with SMTP id 0A33C8C9C;
+	Mon, 12 Jul 2004 23:10:15 -0300 (BRT)
+Message-ID: <002001c4687b$86ace380$536208c9@bahia>
+To: <modules@perl.org>
+Subject: New Module: Time::Seconds::GroupedBy
+Date: Mon, 12 Jul 2004 23:18:36 -0230
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1409
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+X-Virus-Checked: Checked
+X-Spam-Rating: onion.develooper.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: bnegrao@uol.com.br (=?iso-8859-1?Q?Bruno_Negr=E3o?=)
+
+
+
+Hi all,
+
+I've made a new module, I'm thinking to call it Time::Seconds::GroupedBy. It
+is designed to convert an amount of seconds in other time units. I'm calling
+time units SECONDS, MINUTES, HOURS, DAYS, MONTHS, and YEARS . The user
+defines which will be the time unit to group the amount of seconds.
+
+Using my module, the following test code:
+
+my $seconds = 31556931;     # its equivalent to 1 year + 1 second.
+foreach ('MINS', 'HOURS', 'DAYS', 'MONTHS', 'YEARS') {
+    my $s = new GroupedBy ( $_ );
+    my ($secs, $mins, $hours, $days, $months, $years) =
+$s->calculate($seconds);
+    print "Grouping by $_, $seconds seconds are:\n ",
+          "$years years,\t$months months,\t$days days,\t$hours hours,\t$mins
+mins,\t$secs seconds.\n\n";
+}
+
+
+Will bring this output:
+
+Grouping by MINS, 31556931 seconds are:
+ 0 years,       0 months,       0 days,     0 hours,        525948 mins, 51
+seconds.
+
+Grouping by HOURS, 31556931 seconds are:
+ 0 years,       0 months,       0 days,     8765 hours,     48 mins,     51
+seconds.
+
+Grouping by DAYS, 31556931 seconds are:
+ 0 years,       0 months,       365 days,       5 hours,        48 mins,
+51 seconds.
+
+Grouping by MONTHS, 31556931 seconds are:
+ 0 years,       12 months,      5 days,         5 hours,        48 mins,
+51 seconds.
+
+Grouping by YEARS, 31556931 seconds are:
+ 1 years,       0 months,       0 days,          0 hours,        0 mins,
+1 seconds.
+
+
+
+
+
+
+package GroupedBy;
+
+sub new {
+
+            my $class = shift;
+
+            my $self = {};
+
+            bless ( $self, $class );
+
+            my $GroupedBy = shift;
+
+            # Amount of Seconds input by the user (set by calculate()
+method)
+
+            $self->{SECONDS};
+
+            # Initializing data about years, months, days, hours and
+minutes;
+
+            $self->{SECS}             = { result => 0 };
+
+            # A minute is 60 seconds
+
+            $self->{MINS}             = { inSecs => 60, opId => 1, took =>
+0, result => 0 };
+
+            # An hour is 60 * 60 seconds
+
+            $self->{HOURS}            = { inSecs => 3600, opId => 2, took =>
+0, result => 0 };
+
+            # A day is 60 * 60 * 24 seconds
+
+            $self->{DAYS}             = { inSecs => 86400, opId => 3, took
+=> 0, result => 0 };
+
+            # A month is 60 * 60 * 24 * 30 seconds
+
+            $self->{MONTHS} = { inSecs => 2592000, opId => 4, took => 0,
+result => 0 };
+
+            # Year is 60 * 60 * 24 * 365.24225 = 31556930.4 seconds (we'll
+ignore 0.4 secs)
+
+            $self->{YEARS}             = { inSecs => 31556930, opId => 5,
+took => 0, result => 0 };
+
+
+
+            # OPID - operation ID, is a number indentifying the kind of
+grouping that
+
+            # was chosen by the user. Each grouping requires a diferent
+operation to
+
+            # calculate the resulting values.
+
+            $self->{OPID} = $self->{$GroupedBy}->{opId};
+
+            die "Unvalid value. Valid values are 'MINS', 'HOURS', 'DAYS',
+'MONTHS', 'YEARS'"
+
+                        unless defined $self->{OPID};
+
+
+
+            return $self;
+
+}
+
+
+
+sub calculate { # returns: Array: the results of the calculus
+
+            my $self = shift;
+
+            $self->{SECONDS} = shift;
+
+            $self->_clean();
+
+            my @result = (             $self->_years(), $self->_months(),
+$self->_days(),
+
+                                                            $self->_hours(),
+$self->_mins(), $self->_secs() );
+
+            return reverse @result;
+
+}
+
+
+
+sub groupedBy {          # returns: String: the current GROUPED_BY type
+
+            my $self = shift;
+
+            my $GroupedBy = shift;
+
+            $self->{OPID} = $self->($GroupedBy)->{opId};
+
+            die "Unvalid value. Valid values are 'MINS', 'HOURS', 'DAYS',
+'MONTHS', 'YEARS'"
+
+                        unless defined $self->{OPID};
+
+            return $GroupedBy;
+
+}
+
+
+
+# Cleans(set to 0)the 'took' and 'result' counters for all groups
+
+sub _clean { # returns: nothing
+
+            my $self = shift;
+
+            foreach ( qw ( SECS MINS HOURS DAYS MONTHS YEARS ) ) {
+
+                        $self->{$_}->{took} = 0;
+
+                        $self->{$_}->{result} = 0;
+
+            }
+
+}
+
+
+
+sub _secs { # returns: Integer: the result
+
+            my $self = shift;
+
+            my $name = "SECS";
+
+            $self->{$name}->{result} = $self->{SECONDS} -
+$self->{YEARS}->{took}
+
+                                    - $self->{MONTHS}->{took} -
+$self->{DAYS}->{took} - $self->{HOURS}->{took}
+
+                                    - $self->{MINS}->{took};
+
+            return $self->{$name}->{result};
+
+}
+
+
+
+sub _mins { # returns: Integer: the result
+
+            my $self = shift;
+
+            my $name = "MINS";
+
+            if ( $self->{OPID} >= 1 ) {
+
+                        my $secsLeft = $self->{SECONDS} -
+$self->{YEARS}->{took}
+
+                                    - $self->{MONTHS}->{took} -
+$self->{DAYS}->{took} - $self->{HOURS}->{took};
+
+                        $self->{$name}->{result} = int($secsLeft /
+$self->{$name}->{inSecs});
+
+                        if ( $self->{$name}->{result} != 0 ) {
+
+                                    $self->{$name}->{took} =
+$self->{$name}->{result} * $self->{$name}->{inSecs};
+
+                        }
+
+            }
+
+            return $self->{$name}->{result};
+
+}
+
+
+
+sub _hours { # returns: Integer: the result
+
+            my $self = shift;
+
+            my $name = "HOURS";
+
+            if ( $self->{OPID} >= 2 ) {
+
+                        my $secsLeft = $self->{SECONDS} -
+$self->{YEARS}->{took}
+
+                                    - $self->{MONTHS}->{took} -
+$self->{DAYS}->{took};
+
+                        $self->{$name}->{result} = int($secsLeft /
+$self->{$name}->{inSecs});
+
+                        if ( $self->{$name}->{result} != 0 ) {
+
+                                    $self->{$name}->{took} =
+$self->{$name}->{result} * $self->{$name}->{inSecs};
+
+                        }
+
+
+
+            }
+
+            return $self->{$name}->{result};
+
+}
+
+
+
+sub _days { # returns: Integer: the result
+
+            my $self = shift;
+
+            my $name = "DAYS";
+
+            if ( $self->{OPID} >= 3 ) {
+
+                        my $secsLeft = $self->{SECONDS} -
+$self->{YEARS}->{took} - $self->{MONTHS}->{took};
+
+                        $self->{$name}->{result} = int($secsLeft /
+$self->{$name}->{inSecs});
+
+                        if ( $self->{$name}->{result} != 0 ) {
+
+                                    $self->{$name}->{took} =
+$self->{$name}->{result} * $self->{$name}->{inSecs};
+
+                        }
+
+            }
+
+            return $self->{$name}->{result};
+
+}
+
+
+
+sub _months { # returns: Integer: the result
+
+            my $self = shift;
+
+            my $name = "MONTHS";
+
+            if ( $self->{OPID} >= 4 ) {
+
+                        my $secsLeft = $self->{SECONDS} -
+$self->{YEARS}->{took};
+
+                        $self->{$name}->{result} = int($secsLeft /
+$self->{$name}->{inSecs});
+
+                        if ( $self->{$name}->{result} != 0 ) {
+
+                                    $self->{$name}->{took} =
+$self->{$name}->{result} * $self->{$name}->{inSecs};
+
+                        }
+
+            }
+
+            return $self->{$name}->{result};
+
+}
+
+
+
+sub _years { # returns: Integer: the result
+
+            my $self = shift;
+
+            my $name = "YEARS";
+
+            if ( $self->{OPID} == 5 ) {
+
+                        $self->{$name}->{result} = int($self->{SECONDS} /
+$self->{$name}->{inSecs});
+
+                        if ( $self->{$name}->{result} != 0 ) {
+
+                                    $self->{$name}->{took} =
+$self->{$name}->{result} * $self->{$name}->{inSecs};
+
+                        }
+
+            }
+
+            return $self->{$name}->{result};
+
+}
+

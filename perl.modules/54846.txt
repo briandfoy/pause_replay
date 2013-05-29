@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:54846
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25996 invoked from network); 13 Jun 2007 03:58:52 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 13 Jun 2007 03:58:52 -0000
+Received: (qmail 22275 invoked by uid 225); 13 Jun 2007 03:58:52 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22268 invoked by alias); 13 Jun 2007 03:58:51 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DKIM_POLICY_SIGNSOME,DK_POLICY_SIGNSOME,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 12 Jun 2007 20:58:41 -0700
+Received: from pause.perl.org (localhost.localdomain [127.0.0.1])
+	by pause.perl.org (8.13.4/8.13.4/Debian-3sarge3) with ESMTP id l5D3wBiN017908;
+	Wed, 13 Jun 2007 05:58:11 +0200
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.4/8.13.4/Submit) id l5D3wA08017907;
+	Wed, 13 Jun 2007 05:58:10 +0200
+Date: Wed, 13 Jun 2007 05:58:10 +0200
+Message-ID: <200706130358.l5D3wA08017907@pause.perl.org>
+Subject: Module submission Net::SSH::Cluster
+Reply-To: modules@perl.org
+To: modules@perl.org, vvu@cpan.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Net::SSH::Cluster
+  DSLIP:       adpOb
+  description: run a command on a cluster of machines
+  userid:      VVU (Alex White)
+  chapterid:   16 (Server_and_Daemon_Utilities)
+  communities:
+
+  similar:
+
+  rationale:
+
+    The core of this module was built from the core of one of my other
+    CPAN modules, Net::CascadeCopy, which also executes commands over
+    ssh on many servers in parallel. This module goes a step further and
+    will support running any arbitrary command. This is similar to the
+    'dsh' utility from the ClusterIt suite:
+
+    http://www.garbled.net/clusterit.html
+
+    I have been using ClusterIt for several years. ClusterIt contains a
+    lot of tools, but I mostly rely on a single tool in the ClusterIt
+    suite, dsh. Given a command and arguments, dsh will execute that
+    command on many systems in parallel using ssh. The systems can be
+    specified on the command line or can be configured into groups of
+    servers using a simple config file.
+
+    dsh is an invaluable tool, but unfortunately it has a few issues.
+    The primary problem with is that it discards the exit statuses of
+    each command. OpenSSH passes along the exit status of the remote
+    command, so it need not be discarded. On a related note, dsh doesn't
+    provide any way to determine which (if any) hosts succeeded or
+    failed. If I run a command on a hundred hosts, it can require
+    inspecting a lot of logs to determine if any failed. Also when there
+    is a very large amount of output (e.g. > 1GB) it sometimes hangs for
+    long periods or crashes. Also, it is not possible to check the
+    progress of arbitrary hosts--frequently the first host outputs at
+    normal speed and, on completion, the output of the rest of the hosts
+    comes all at once. Another minor annoyance is that it discards
+    stderr by default. Net::SSH::Cluster addresses all these issues.
+
+    I am providing a command line script (cssh) that will work similar
+    to dsh and will use the same format config file.
+
+  enteredby:   VVU (Alex White)
+  enteredon:   Wed Jun 13 03:58:10 2007 GMT
+
+The resulting entry would be:
+
+Net::SSH::
+::Cluster         adpOb run a command on a cluster of machines       VVU
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=0f110000_89be81f0f45eb787&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=0f110000_89be81f0f45eb787&SUBMIT_pause99_add_mod_insertit=1

@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:69425
+Return-Path: <perl@galumph.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 11884 invoked from network); 19 Jan 2010 13:17:57 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 19 Jan 2010 13:17:57 -0000
+Received: (qmail 13075 invoked by uid 225); 19 Jan 2010 13:17:57 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13056 invoked by alias); 19 Jan 2010 13:17:56 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pendrell.textdrive.com (HELO pendrell.textdrive.com) (207.7.108.149)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 19 Jan 2010 05:17:55 -0800
+Received: from emdaer.local (adsl-75-21-89-229.dsl.chcgil.sbcglobal.net [75.21.89.229])
+	by pendrell.textdrive.com (Postfix) with ESMTP id BAD76BB484;
+	Tue, 19 Jan 2010 13:17:50 +0000 (GMT)
+Message-ID: <4B55B0FD.7020907@galumph.com>
+Date: Tue, 19 Jan 2010 07:17:49 -0600
+User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en-US; rv:1.8.1.22) Gecko/20090605 Thunderbird/2.0.0.22 Mnenhy/0.7.5.0
+MIME-Version: 1.0
+To: modules@perl.org
+CC: "Andreas J. Koenig" <andreas.koenig.7os6VVqR@franz.ak.mind.de>, 
+ perlcritic <dev@perlcritic.tigris.org>
+Subject: Re: Permissions/indexing issue for Perl::Critic modules.
+References: <4B5358CD.7030500@galumph.com> <87iqay8tdm.fsf@franz.ak.mind.de>
+In-Reply-To: <87iqay8tdm.fsf@franz.ak.mind.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: perl@galumph.com (Elliot Shank)
+
+On 1/19/10 1:07 AM, Andreas J. Koenig wrote:
+>>>>>> On Sun, 17 Jan 2010 12:37:01 -0600, Elliot
+>>>>>> Shank<perl@galumph.com>  said:
+>
+>> If you look at
+>> http://search.cpan.org/~thaljef/Perl-Critic-1.105_01/, you'll note
+>> that a lot of them are marked as unauthorized.  However, if I go
+>> look at permissions in PAUSE, THALJEF does have rights to them via
+>> CRITICRE, e.g.
+>> https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=me&pause99_peek_perms_query=Perl%3A%3ACritic%3A%3APolicy%3A%3AValuesAndExpressions%3A%3AProhibitSpecialLiteralHeredocTerminator&pause99_peek_perms_sub=Submit
+>
+>>
+> If someone would address this, it would be appreciated.
+>
+> The relation between THALJEF and CRITICRE is such:
+>
+> mysql>  select * from list2user where maillistid='CRITICRE';
+> +------------+----------+
+> | maillistid | userid   |
+> +------------+----------+
+> | CRITICRE   | ELLIOTJS |
+> | CRITICRE   | THALJEF  |
+> | CRITICRE   | CDOLAN   |
+> +------------+----------+
+> 3 rows in set (0.00 sec)
+>
+> with the effect that these three users should have a menu item in
+> the PAUSE interface that lets them act on behalf of CRITICRE. The
+> meneu should be labeled "Select Mailinglist/Action" and when you
+> click on it you can select "Change Permissions". The upper right
+> corner will then tell you
+>
+> ELLIOTJS<...@...> acting as CRITICRE<No email???> encrypted session
+>
+> and on the page below you can change the perrmissions as if you were
+> CRITICRE.
+>
+> Would you please try it to see if my predictions work as described?
+> afaics it only effects
+> Perl::Critic::Policy::Objects::ProhibitIndirectSyntax,
+> Perl::Critic::Policy::ValuesAndExpressions::ProhibitComplexVersion,
+> and
+> Perl::Critic::Policy::ValuesAndExpressions::RequireConstantVersion
+
+Yes, I can get at CRITICRE fine.
+
+It looks like s.c.o is no longer showing unauthorized for most of the modules that were having issues yesterday; I don't know what's different about those because the permissions shown in PAUSE haven't changed.  The three you mention here didn't have correct ownership until yesterday, but this was fixed prior to my initial email.
+
+Just to clarify the way that mailinglist permissions are supposed to work, even though THALJEF is not listed as having co-maint on Perl::Critic::Policy::Objects::ProhibitIndirectSyntax, he should have full upload rights due to CRITICRE owning it, correct?

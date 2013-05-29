@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45698
+Return-Path: <cpan@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4336 invoked from network); 4 Nov 2005 06:36:20 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 4 Nov 2005 06:36:20 -0000
+Received: (qmail 7628 invoked by uid 225); 4 Nov 2005 06:36:20 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7623 invoked by alias); 4 Nov 2005 06:36:19 -0000
+X-Spam-Status: No, hits=-4.4 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Thu, 03 Nov 2005 22:36:06 -0800
+Received: (qmail 4305 invoked by uid 515); 4 Nov 2005 06:36:03 -0000
+Message-ID: <20051104063603.4298.qmail@lists.develooper.com>
+To: modules@perl.org
+Date: Fri, 04 Nov 2005 17:35:19 +1100
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+Subject: New root namespace Collection:: as an alternative to Bundle::
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 202.90.48.125
+Approved: news@nntp.perl.org
+From: cpan@ali.as (Adam Kennedy)
+
+I came late to the CPAN party, by the time I arrived it was already 5 or 
+6 years old and module dependencies were just something I took as a 
+given from the start.
+
+And Bundle:: made immediate sense to me too, a special namespace where 
+you could specify named groups of modules to install all at once.
+
+After creating my first Bundle:: module (Bundle::CVSMonitor), I 
+naturally just created a .pm file with a $VERSION, some pod describing 
+the bundle in a similar format to other bundles I'd seen, and then wrote 
+a Makefile details the exact needs of the application.
+
+But when I tried to install it, I found out that despite being no more 
+exotic than a special no-content case of a normal dist, it worked 
+completely differently.
+
+My makefile was ignored, it parsed the POD for some reason, and then 
+tried to intuit a list of modules out of the POD description, parsing an 
+  errant English comment into 4 or 5 modules it thought it should install.
+
+And this sort of functionality appears to be deeply hardwired into a 
+number of places.
+
+I don't see any reason why we should need magic for Bundles at the cost 
+of not working with the upcoming generation of module and dependency 
+scanners and other smarter tools.
+
+Although I'm sure Bundle:: won't be going anywhere soon, I'd like to 
+propose an alternative namespace, tentatively located at Collection::
+
+Modules in this namespace will be for the same or similar purpose that 
+Bundle:: is for, except it will allow the dependencies to be done via 
+the normal Makefile.PL process, allowing smarter functionality in the 
+selection of the modules to use (for example, allowing slightly 
+different module deps based on Perl versions and OS platform etc).
+
+I'm open to other root namespace names as an alternative to Collection:: 
+but it appears that having "Bundle" in it, particularly at the beginning 
+is dangerous from a magic point of view.
+
+Thoughts?
+
+Adam K

@@ -1,0 +1,104 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2134
+Return-Path: <mkul@zenon.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30190 invoked from network); 15 Jun 2000 09:59:17 -0000
+Received: from ns1.aha.ru (195.2.80.142)
+  by tmtowtdi.perl.org with SMTP; 15 Jun 2000 09:59:17 -0000
+X-BodyDigest: 94c0473bb25a2f9fcb23599e88a38d35
+Received: from pb.zenon.net (cleopatra.zenon.net [195.2.64.6])
+	by ns1.aha.ru (8.9.3/8.9.3/aha-r/0.04B) with ESMTP id NAA60424
+	for <modules@perl.org>; Thu, 15 Jun 2000 13:58:38 +0400 (MSD)
+Received: from aha.ru (mp.hq.zenon.net [192.168.9.150])
+	by pb.zenon.net (8.9.3/8.9.3) with ESMTP id NAA20475
+	for <modules@perl.org>; Thu, 15 Jun 2000 13:58:38 +0400 (MSD)
+	(envelope-from mkul@zenon.net)
+Received: from [192.168.9.39] (HELO zenon.net)
+  by aha.ru (CommuniGate Pro SMTP 3.3b1)
+  with ESMTP id 2061715 for modules@perl.org; Thu, 15 Jun 2000 13:58:37 +0400
+Sender: mkul@zenon.net
+Message-ID: <3948A8B7.D7BC883B@zenon.net>
+Date: Thu, 15 Jun 2000 13:58:15 +0400
+Organization: Zenon
+X-Mailer: Mozilla 4.71 [en] (X11; I; Linux 2.2.12 i686)
+X-Accept-Language: ru, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Net::Daemon::SSL
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: mkul@zenon.net (Michael Kulakov)
+
+Hello!
+
+This is my Net::Daemon::SSL module. In fact, this is an IO::Socket::SSL
+based extension for Net::Daemon.
+It was uploaded to the PAUSE server (my id is MKUL). The DSLI formatted
+description for this module follows:
+
+Name             DSLI  Description                                  Info
+-------------    ----  --------------------------------------------
+-----
+Net::Daemon::SSL RdpO  SSL extension for Net::Daemon                MKUL
+
+This is a documentation of this module:
+
+-------------------------
+NAME
+    Net::Daemon::SSL - perl extensions for portable ssl daemons
+
+SYNOPSIS
+     use Net::Daemon::SSL;
+     package MyDaemon;
+     @MyDaemon::ISA = qw (Net::Daemon::SSL);
+     sub Run
+     {
+         my $this = shift;
+         my $buffer;
+         $this->{socket}->print ( "vasja was here\n" );
+         $this->{socket}->sysread ( $buffer, 100 ); 
+            # Attention! getline() method
+            # do not work with IO::Socket::SSL
+            # version 0.73 see perldoc IO::Socket::SSL
+            # for more details
+     }
+     package main;
+     my $daemon = new MyDaemon ( {}, \ @ARGV ); # you can use --help
+command line key
+     $daemon || die "error create daemon instance: $!\n";
+     $daemon->Bind();
+
+DESCRIPTION
+    This class implements an IO::Socket::SSL functionality for
+    Net::Daemon class. See perldoc Net::Daemon for more information
+    about Net::Daemon usage.
+
+  Options
+
+    This method add IO::Socket::SSL specific options ( SSL_use_cert,
+    SSL_verify_mode, SSL_key_file, SSL_cert_file, SSL_ca_path,
+    SSL_ca_file ) to generic Net::Daemon options. See perldoc
+    IO::Socket::SSL for description of this options
+
+  Bind
+
+    This method creates an IO::Socket::SSL::SafeAccept socket,
+    stores this socket into $this->{socket} and passes control to
+    parent Net::Daemon::Bind. The IO::Socket::SSL::SafeAccept is a
+    class inherited from IO::Socket::SSL with the only difference
+    from parent class - the accept() method of this class returns
+    EINTR on *any* error. This trick is needed to "hack"
+    Net::Daemon::Bind functionality: if this method gets an error
+    from accept() ( Net::Daemon::SSL auth error, for example ) it
+    will call Fatal() method and die unless this is a EINTR error.
+
+
+-------------------------
+
+What is my next actions for register this module at CPAN?
+
+With best regards,
+  Michael Kulakov

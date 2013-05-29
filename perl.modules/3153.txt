@@ -1,0 +1,50 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3153
+Return-Path: <reichert@natto.numachi.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28978 invoked from network); 20 Oct 2000 19:53:08 -0000
+Received: from numachi.numachi.com (HELO mail.numachi.com) (198.175.254.2)
+  by tmtowtdi.perl.org with SMTP; 20 Oct 2000 19:53:08 -0000
+Received: (qmail 12674 invoked by uid 3001); 20 Oct 2000 19:52:54 -0000
+Received: from natto.numachi.com (198.175.254.216)
+  by numachi.numachi.com with SMTP; 20 Oct 2000 19:52:54 -0000
+Received: (qmail 14419 invoked by uid 1001); 20 Oct 2000 19:52:54 -0000
+Date: Fri, 20 Oct 2000 15:52:54 -0400
+To: modules@perl.org
+Subject: namespace for 'system'-like package
+Message-ID: <20001020155254.G12110@numachi.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Approved: news@nntp.perl.org
+From: reichert@numachi.com (Brian Reichert)
+
+I have cobbled together a perl module to act, in effect, as a
+varient of 'system', with the added feature of being able to get
+to both the STDOUT and STDERR of a child process.  More specialized
+and cheaper to run than Open3.
+
+Anyway, the way I'm privately using it:
+
+  use System2;
+
+  my @args = qw(ls -laF);
+
+  my ($status, $out, $err) = system2(@args);
+
+  print "OUT: $out\n";
+
+  my ($exit, $signal, $core) = &System2::exit_status($status);
+
+etc.
+
+Does anyone have any suggestions suggestions for a proper namespace for
+this?
+
+-- 
+Brian 'you Bastard' Reichert		<reichert@numachi.com>
+37 Crystal Ave. #303			Daytime number: (603) 434-6842
+Derry NH 03038-1713 USA			Intel architecture: the left-hand path

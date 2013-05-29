@@ -1,0 +1,49 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:14854
+Return-Path: <nick@flirble.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14027 invoked by uid 76); 30 Oct 2002 17:08:32 -0000
+Received: from exim@plum.flirble.org (HELO plum.flirble.org) (195.40.6.20) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-10-30 17:08:32Z
+Received: from nick by plum.flirble.org with local (Exim 3.20 #3)	id 186wK6-000Cld-00	for modules@perl.org; Wed, 30 Oct 2002 17:08:06 +0000
+Date: Wed, 30 Oct 2002 17:08:06 +0000
+To: modules@perl.org
+Subject: hardlink forests of file trees
+Message-ID: <20021030170806.Y82080@plum.flirble.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+X-Organisation: Tetrachloromethane
+Sender: Nicholas Clark <nick@flirble.org>
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: nick@ccl4.org (Nicholas Clark)
+
+gnu cp provides two options --link and --symbolic-link which respectively
+hard and symbolic link instead of copying. I find the first particularly
+useful as it lets me make a hardlink tree copy of an existing directory
+(typically the current development perl source) which uses very little
+extra disk space.
+
+I have a perl script which provides the hardlink tree copying functionality,
+and I think it would be easy to generalise it to do symbolic links (or
+regular copies). My motivation for e-mailing modules@perl.org is I'd like
+this functionality for an option I wish to add to the perl smoke testing,
+and I'd prefer to not to cut&paste my script code into the smoke program,
+but instead break it out into a distinct module available to all.
+
+I've looked at the File::* hierarchy on search.cpan.org, and I can't find
+any other module that seems to do this. File::Repl seems to come closest,
+but it doesn't yet seem to have the general "Process" function which would
+be needed to hardlink rather than copy, or sufficient functions to allow
+the copying of directory permissions (which is tricky, as you need to create
+new directories early, but change their permissions read only late, otherwise
+on Unix you can't create files in them)
+
+So I'm proposing to release a File tree replicating module to CPAN.
+However, I'm not sure of a good name, or whether I'm missing an easy way
+to do this with existing tools.
+
+Nicholas Clark

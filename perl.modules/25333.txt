@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:25333
+Return-Path: <dmitry@koteroff.ru>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6687 invoked by uid 76); 31 Dec 2003 18:50:33 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Wed, 31 Dec 2003 10:50:33 -0800
+Received: (qmail 8133 invoked by uid 225); 31 Dec 2003 18:50:31 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8129 invoked by alias); 31 Dec 2003 18:50:30 -0000
+Received: from alpha.host-ing.ru (HELO alpha.host-ing.ru) (213.248.61.28) by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Wed, 31 Dec 2003 10:50:18 -0800
+Received: from 213.248.61.39 (unknown [213.248.61.39])	by alpha.host-ing.ru (Postfix) with ESMTP id 24A887E022	for <modules@perl.org>; Wed, 31 Dec 2003 21:50:10 +0300 (MSK)
+Date: Wed, 31 Dec 2003 21:50:07 +0300
+X-Mailer: The Bat! (v2.00.6) Business
+Reply-To: Dmitry Koteroff <dmitry@koteroff.ru>
+X-Priority: 3 (Normal)
+Message-ID: <7918545968.20031231215007@koteroff.ru>
+To: modules@perl.org
+Subject: New modules
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Check-By: la.mx.develooper.com
+X-Spam-Status: No, hits=0.8 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: dmitry@koteroff.ru (Dmitry Koteroff)
+
+Hello.
+
+I'd like to introduce 2 new modules. They were developed for 2 or
+3 years. Now I want to put them to CPAN.
+
+CGI::WebIn  rdpf Perl extension for reading CGI form data (in PHP-style)  KOTEROFF
+-----------------------------------------------------------------
+
+This  module  offers  more comfortable way to read CGI input data
+than  standard  CGI.pm.  The basic concept have got from PHP: all
+the  form  data  is placed to multidimensional hashes (%IN, %GET,
+%POST,  %COOKIES).  Also  supported  complex  field  names in the
+manner of Address{Russia}{Moscow}, A{a}[1], A{a}[2] etc.
+
+Module  also  supports  file  uploading (data is placed to %IN as
+usual  field  data).  Uploaded file is put to temporary directory
+and could be copied anywhere.
+
+You  may  also  store  not  very long multidimensional structures
+(arrays, hashes) in one cookie. Serializer is compatible to PHP.
+
+Short example:
+~~~~~~~~~~~~~~
+
+Form:
+<form action=script.pl method=post enctype=multipart/form-data>
+    <input type=text name="Address{Russia}{Moscow}" value="house">
+    <input type=submit name=doGo value="Say hello">
+</form>
+
+Script:
+use CGI::WebIn;
+print "Hello from $Address{Russia}{Moscow}!";
+
+
+CGI::WebOut rdpf Perl extension to handle CGI output (in PHP-style)   KOTEROFF
+-------------------------------------------------------------------
+
+This   module   is  used  to  make  CGI  programmer's  work  more
+comfortable. The main idea is to handle output stream (STDOUT) to
+avoid any data to be sent to browser without Content-type header.
+Of  cource,  you  may also send your own headers to browser using
+Header().  Any  errors or warnings in your script will be printed
+at the bottom of the page ``in PHP-style''. You may also use Carp
+module together with CGI::WebOut.
+
+You may also handle any program block's output (using print etc.)
+and place it to the variable using grab {...} subroutine. It is a
+very useful feature for lots of CGI-programmers.
+
+Example:
+~~~~~~~~
+# Simple CGI script (no 500 Apache error!)
+use CGI::WebOut;
+NoAutoflush();
+print "Hello world!"; # wow, we may NOT output Content-type!
+Header("X-Powered-by: dklab");
+# Handle output for {}-block
+my $str=grab {
+  print "Hi there!\n";
+};
+$str=~s/\n/<br>/sg;
+print $str;
+
+--
+Best regards,
+  Dmitry Koteroff (dk@dklab.ru), chief programmer (http://www.dklab.ru).
+  
+

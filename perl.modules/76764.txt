@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:76764
+Return-Path: <frioux@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 31114 invoked from network); 12 Jul 2011 19:40:21 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 12 Jul 2011 19:40:21 -0000
+Received: (qmail 28424 invoked by uid 225); 12 Jul 2011 19:40:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28420 invoked by alias); 12 Jul 2011 19:40:20 -0000
+X-Spam-Status: No, hits=-0.8 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_PASS,T_TO_NO_BRKTS_FREEMAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-pz0-f41.google.com (HELO mail-pz0-f41.google.com) (209.85.210.41)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 12 Jul 2011 12:40:15 -0700
+Received: by pzk4 with SMTP id 4so5186853pzk.14
+        for <modules@perl.org>; Tue, 12 Jul 2011 12:40:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:from:date:message-id:subject:to:cc:content-type
+         :content-transfer-encoding;
+        bh=TXxD1Wutza5k4Ac5XMECwQXrOLEJBLY6jstgbtRZtd0=;
+        b=RgzD2jOdtT7RqG/YnjSJMksQXOu+y5+/Ih3+R4WM/AJ0dBnT9srenXXyboPQXAGkm1
+         pSA7QGPWBZ7xlx+bgvQSx0r+fLZW/AFk3/ibSXuVILd1QwEk45ocEAm0GHiMPLJQ1NY5
+         AuwjU8oIqkzGP2/wnKQUuZ5rEiFqs39ygMhQc=
+Received: by 10.142.248.12 with SMTP id v12mr126146wfh.134.1310499611268; Tue,
+ 12 Jul 2011 12:40:11 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.142.44.16 with HTTP; Tue, 12 Jul 2011 12:39:51 -0700 (PDT)
+Date: Tue, 12 Jul 2011 14:39:51 -0500
+Message-ID: <CADVrmKTUzYA3=tzTEhUgLGPo9g5bBnO_=y0fAnYe9FxKJBvv=Q@mail.gmail.com>
+Subject: File::NFSLock patches
+To: paul@seamons.com, bbb@cpan.org
+Cc: modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: frioux@gmail.com (fREW Schmidt)
+
+I'm including modules@perl.org because Robert Brown has more or less
+disappeared.=A0 I've sent messages to two of his emails, called the
+phone number listed for his whois, and called the phone number that is
+listed for his business.=A0 One of the emails (rob@roobik.com) bounced
+saying that the directory the mail is stored in is full.=A0 The other
+one (bbb@cpan.org) never replied.=A0 The first phone number was an ISP
+and couldn't help me, and the second was disconnected.=A0 If anyone
+knows how to get in touch with Rob *please* let me know.
+
+---------------------------------------SNIP--------------------------------=
+--------------------------------
+
+Hey fellas,
+
+So you may or may not have noticed that File::NFSLock doesn't work at
+all in windows.=A0 There are two reasons for this:
+
+1) pids in windows are negative numbers due to them actually being threads
+2) your tests use fork which windows perl doesn't fully support
+
+The first is easy to fix, and there's even a patch on RT to take care
+of it: https://rt.cpan.org/Ticket/Display.html?id=3D40185
+
+The second is trickier, and (I think) stems from the fact that windows
+perl emulates forks with threads, so memory is not shared.=A0 What I
+think you should do is just skip tests 200, 220, and 300 in windows.
+I'd gladly furnish you with a patch for this if you would be willing
+to release it.
+
+I also got started on a renovation of the code to use some more modern
+features (lexical filehandles and our, for example) with the hopes
+that that would solve some of the problems.=A0 I think it may have, but
+often people aren't willing to force their users to upgrade to 5.6, so
+I'll give you that code if you are interested, but I am not sure that
+you are.
+
+I look forward to hearing back from you.
+
+
+
+--
+fREW Schmidt
+http://blog.afoolishmanifesto.com

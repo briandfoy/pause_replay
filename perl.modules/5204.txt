@@ -1,0 +1,77 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5204
+Return-Path: <nate@west.sun.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25220 invoked from network); 20 Apr 2001 23:36:19 -0000
+Received: from mercury.sun.com (192.9.25.1)
+  by tmtowtdi.perl.org with SMTP; 20 Apr 2001 23:36:19 -0000
+Received: from postoffice.West.Sun.COM ([129.153.85.5])
+	by mercury.Sun.COM (8.9.3+Sun/8.9.3) with ESMTP id QAA21651
+	for <modules@perl.org>; Fri, 20 Apr 2001 16:36:18 -0700 (PDT)
+Received: from west.sun.com (jamul [129.153.85.30])
+	by postoffice.West.Sun.COM (8.9.3+Sun/8.9.3/ENSMAIL,v2.1) with ESMTP id QAA10435
+	for <modules@perl.org>; Fri, 20 Apr 2001 16:36:38 -0700 (PDT)
+Sender: Nathan.Wiger@Sun.COM
+Message-ID: <3AE0C7F2.7ED2370C@west.sun.com>
+Date: Fri, 20 Apr 2001 16:36:18 -0700
+Reply-To: nate@wiger.org, nate@Sun.COM
+Organization: Sun Microsystems
+X-Mailer: Mozilla 4.77 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Input - Regexp::Func - function regex manip
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: nate@west.sun.com (Nathan Wiger)
+
+Hey all-
+
+So, I'm working on Regexp::Func, a module designed to do function-based
+regex manipulation. This is based on Perl 6 RFC 164; it's designed as a
+proof-of-concept and Perl 5 module to test its usefulness.
+
+The module provides three methods:
+
+     m//    =>  match "//", $strings ...
+     s///   =>  replace "///", $strings ...
+     tr///  =>  trade "///", $strings...
+
+The goal is to provide a functional interface to Perl RE's for those
+situations when it's easier than the =~ binding mode (See
+http://dev.perl.org/rfc/164.pod for some examples).
+
+The problem is that I don't know of a way to get rid of the "" around
+the // in the functions above. I'd like to be able to say:
+
+    $new = replace /(\w+)=(\S+)/$1:$2/, $old;
+
+But this doesn't work for a variety of reasons. So, I played around with
+this syntax:
+
+     replace qr/from/, "to", $string;
+
+Since the right hand of a s/// is just a double-quoted string, but that
+didn't really work satisfactorily (I couldn't get the qr// to integrate
+back in with s///, but it could be I don't know what I'm doing).
+
+Right now, the internals of the module are simplistic - little more than
+eval() wrappers around the built-in Perl RE stuff w/ some wantarray()
+return things thrown in there. It actually works pretty well for its
+simplicity.
+
+I'm willing to expend some more energy if I can get it to work "right";
+that is, not having to say:
+
+     $new = trade '/a-z/A-Z/', $old;
+
+But if it's gonna take tons of time I'll probably just leave as-is.
+
+Any input? Is there something about prototypes or qr// I'm overlooking
+that could fix this?
+
+Thanks,
+Nate

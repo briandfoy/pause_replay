@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:61818
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14230 invoked from network); 16 Aug 2008 07:45:07 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 16 Aug 2008 07:45:07 -0000
+Received: (qmail 28557 invoked by uid 225); 16 Aug 2008 07:45:07 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28551 invoked by alias); 16 Aug 2008 07:45:06 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 16 Aug 2008 00:45:05 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-1) with ESMTP id m7G7lIA6021538;
+	Sat, 16 Aug 2008 09:47:18 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id m7G7lIsb021537;
+	Sat, 16 Aug 2008 09:47:18 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: belg4mit@MIT.EDU, jpierce@cpan.org
+Cc: andreas.koenig.7os6VVqR@franz.ak.mind.de (Andreas J. Koenig),
+        modules@perl.org
+Subject: Re: PAUSE indexer inquiry
+References: <200808141415.m7EEFplK003304@mass-toolpike.mit.edu>
+	<87wsiiha1g.fsf@k75.linux.bogus>
+Date: Sat, 16 Aug 2008 09:47:17 +0200
+In-Reply-To: <87wsiiha1g.fsf@k75.linux.bogus> (Andreas J. Koenig's message of
+	"Fri\, 15 Aug 2008 12\:01\:15 +0200")
+Message-ID: <87wsih9zay.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Fri, 15 Aug 2008 12:01:15 +0200, andreas.koenig.7os6VVqR@franz.ak.mind.de (Andreas J. Koenig) said:
+
+>>>>> On Thu, 14 Aug 2008 10:15:51 -0400, Jerrad Pierce <belg4mit@MIT.EDU> said:
+ >> How long do ACLs take to be applied?
+
+  > Thee should be no delay at all.
+
+ >> I was granted co-maint on
+ >> CGI::ImageMap yesterday, and uploaded a new version shortly
+ >> thereafter. The package has been loaded and seems to be
+ >> propogating across mirrors, but it has not been indexed...
+
+  > Watch your inbox and make sure that you missed no mail from
+  > pause.perl.org. Usually, if things don't work out, pause informs you
+  > in much detail about the problem.
+
+It turns out that you reached a code branch that doesn't trigger email
+being sent. The reason was that your tarball has an anomaly which
+manifests like so:
+
+  % gzip -t /home/ftp/pub/PAUSE/authors/id/J/JP/JPIERCE/CGI-Imagemap-2.00.tgz               
+
+  gzip: /home/ftp/pub/PAUSE/authors/id/J/JP/JPIERCE/CGI-Imagemap-2.00.tgz: decompression OK, trailing garbage ignored
+
+Normally pause rewrites such tarballs to prevent unnecessary
+bugreports but the code doing so was not activated for files with the
+suffix ".tgz". This is fixed now, so in the future if you upload
+tarballs with this defect, they will be rewritten on the fly by pause.
+
+Could you please try to upgrade your tar installation and upload
+another tarball?
+
+Thanks & sorry for the inconvenience,
+-- 
+andreas

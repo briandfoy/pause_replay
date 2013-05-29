@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13351
+Return-Path: <stas@stason.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 45700 invoked by uid 76); 22 Aug 2002 16:42:16 -0000
+Received: from smtp15.singnet.com.sg (HELO smtp15.singnet.com.sg) (165.21.6.35)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Thu Aug 22 16:42:16 2002 -0000
+Received: from stason.org (bb-203-125-7-72.singnet.com.sg [203.125.7.72])
+	by smtp15.singnet.com.sg (8.12.5/8.12.5) with ESMTP id g7MGfbxX014855;
+	Fri, 23 Aug 2002 00:41:38 +0800
+Received: from stason.org (localhost.localdomain [127.0.0.1])
+	by stason.org (Postfix) with ESMTP
+	id 7734931A28; Fri, 23 Aug 2002 00:41:28 +0800 (SGT)
+Message-ID: <3D651438.30704@stason.org>
+Date: Fri, 23 Aug 2002 00:41:28 +0800
+Organization: Hope, Humanized
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020510
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Graham Barr <gbarr@pobox.com>
+Cc: Arthur Bergman <arthur@contiller.se>, modules@perl.org
+Subject: Re: The Env::C namespace
+References: <0F463730-B5BD-11D6-B52B-003065D64CBE@contiller.se> <3D64C348.1030309@stason.org> <20020822135030.A93549@pobox.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: stas@stason.org (Stas Bekman)
+
+Graham Barr wrote:
+> On Thu, Aug 22, 2002 at 06:56:08PM +0800, Stas Bekman wrote:
+> 
+>>Arthur Bergman wrote:
+>>
+>>>On torsdag, augusti 22, 2002, at 10:12 , Stas Bekman wrote:
+>>>
+>>>
+>>>>Do what? Set env vars? Of course it should... if it's safe. But as you 
+>>>>can see from the recent mod_perl thread about Oracle DBD not working 
+>>>>with mod_perl 2.0 when %ENV was set in the registry script, since %ENV 
+>>>>isn't tied to environ, because it's not thread safe. I wrote this 
+>>>>module to debug the case, since I don't have Oracle to test with.
+>>>>
+>>>>This module was only needed for getenv() and dumpenv() so those who 
+>>>>don't know C can at least debug things. But I've generalized it and 
+>>>>added setenv() and unsetenv() while I was at it.
+>>>>
+>>>>
+>>>
+>>>%ENV{} should be identicial between all threads, anything else is surely 
+>>>a bug!
+>>
+>>Certainly. But this is a different issue.
+>>
+>>What I was saying is that %ENV doesn't have to be the same as environ.
+> 
+> 
+> I have only been following this thread a little. But is the underlying
+> problem not that perl only reads env variables once and caches the
+> result. so if a C library changes it, perl cannot read that variable.
+
+We are talking about mod_perl, where normal gravitation rules don't 
+always apply ;)
+
+But getting back to the point of my request. I developed a small module 
+that interfaces C functions for setting and reading environ. 
+Disregarding the reasons for doing that, have I picked a good name?
+
+__________________________________________________________________
+Stas Bekman            JAm_pH ------> Just Another mod_perl Hacker
+http://stason.org/     mod_perl Guide ---> http://perl.apache.org
+mailto:stas@stason.org http://use.perl.org http://apacheweek.com
+http://modperlbook.org http://apache.org   http://ticketmaster.com
+

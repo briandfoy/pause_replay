@@ -1,0 +1,88 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:39962
+Return-Path: <info@charlestonsw.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27349 invoked from network); 27 Apr 2005 03:04:28 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 27 Apr 2005 03:04:28 -0000
+Received: (qmail 29187 invoked by uid 225); 27 Apr 2005 03:04:28 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29183 invoked by alias); 27 Apr 2005 03:04:27 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from imf18aec.mail.bellsouth.net (HELO imf18aec.mail.bellsouth.net) (205.152.59.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 26 Apr 2005 20:04:22 -0700
+Received: from lancec2800 ([68.212.77.60]) by imf18aec.mail.bellsouth.net
+          (InterMail vM.5.01.06.11 201-253-122-130-111-20040605) with ESMTP
+          id <20050427030417.VHYJ2063.imf18aec.mail.bellsouth.net@lancec2800>
+          for <modules@perl.org>; Tue, 26 Apr 2005 23:04:17 -0400
+Reply-To: <info@charlestonsw.com>
+To: <modules@perl.org>
+Subject: RE: Module submission PGHandler
+Date: Tue, 26 Apr 2005 23:04:22 -0400
+Organization: Charleston Software Associates
+Message-ID: <000c01c54ad5$d28b6f50$0501a8c0@lancec2800>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.6626
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
+In-Reply-To: <260420051909586810%comdog@panix.com>
+Importance: Normal
+Approved: news@nntp.perl.org
+From: info@charlestonsw.com ("lcleveland")
+References: <260420051909586810%comdog@panix.com>
+
+Hi Brian -
+
+Thanks for the advice.
+
+Unfortunately the Postgres namespace is already used by a module that =
+hasn't
+been supported in 7 years.   I am concerned that if we publish under the
+Postgres root namespace that users will confuse the independent module I
+have written as a sub-class of the unrelated Postgres module.
+
+The top level Pg is unused, but there is no "root" super-class to go =
+with
+it.   I do not feel that our module is appropriate for such a generic
+high-level class name.=20
+
+Maybe a root Pg.pm super-class needs to be created that is just a simple
+shell?  But who should create that, and what should be in it?   To be =
+truly
+useful as a top-level Postgres "catch-all" class it should be an empty =
+class
+shell.   Then our module would become something like Pg::Handler.  That
+would open the door to other modules being put in that root namespace =
+like
+PG-Simple becoming Pg::Simple, etc.
+
+Best Regards,
+Lance P Cleveland
+Chief Technology Officer
+Charleston Software Associates
+http://www.charlestonsw.com/
+
+
+-----Original Message-----
+From: _brian_d_foy [mailto:comdog@panix.com]=20
+> The following module was proposed for inclusion in the Module List:
+>=20
+>   modid:       PGHandler
+>   DSLIP:       bdpOg
+>   description: Accessors for PostgreSQL data
+
+Postgres things should probably go in a Postgres::* top
+level namespace (although Pg::* would probably work, but
+isn't as telling).
+
+If you have an extension to DBI, you can put it into DBIx::*
+

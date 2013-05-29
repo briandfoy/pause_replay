@@ -1,0 +1,128 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:781
+Return-Path: <sander@mp3.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32137 invoked from network); 28 Dec 1999 21:43:13 -0000
+Received: from mail.mp3.com (HELO mp3.com) (192.215.249.224)
+  by tmtowtdi.perl.org with SMTP; 28 Dec 1999 21:43:13 -0000
+Received: (qmail 2509 invoked by uid 1014); 28 Dec 1999 21:42:38 -0000
+Date: Tue, 28 Dec 1999 13:42:38 -0800 (PST)
+Reply-To: Sander van Zoest <sander@mp3.com>
+To: modules@perl.org
+Subject: Request for PAUSE ID
+Message-ID: <Pine.GSO.4.10.9912281328160.29182-100000@mail.mp3.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: sander@mp3.com (Sander van Zoest)
+
+
+Name:		Sander van Zoest
+E-Mail:		sander@mp3.com
+Web:		http://www.vanzoest.com/sander/
+Preferred ID:	SVANZOEST
+
+
+I have been quite involved in the MP3 Audio, XML and Web space and have
+written several modules (internal to work and in private) that I would
+like to make available on CPAN.
+
+First would be MPEG::ID3v1Tag.pm which has been discussed at 
+http://www.id3.org and with the ID3 author Martin Nillson.
+
+Module Name	DSLI	Description
+-----------------------------------
+MPEG::ID3v1Tag 	MdpO	The ID3v1Tag routines are useful for setting 
+			and reading ID3v1 MPEG Audio Tags.  Just 
+			create an MPEG::ID3v1Tag Object with the 
+			path to the file of interest, and query any of
+			the methods below.
+
+
+Here is some pod:
+
+
+ID3Tag(3)      User Contributed Perl Documentation      ID3Tag(3)
+
+NAME
+       MPEG::ID3v1Tag - Retrieves/Sets ID3v1 Tags from an Audio MPEG.
+
+SYNOPSIS
+         use MPEG::ID3v1Tag;
+         $mp3_file = new MPEG::ID3v1Tag("filename.mp3");
+         $mp3_file->print_tag();
+         if($mp3_file->got_tag()) {
+            $mp3_file->set_title($title);
+            $save_status = $mp3_file->save();
+         }
+
+DESCRIPTION
+       The ID3v1Tag routines are useful for setting and reading ID3v1
+       MPEG Audio Tags.  Just create an MPEG::ID3v1Tag Object
+       with the path to the file of interest, and query any of
+       the methods below.
+
+       Print Full ID3 Tag
+       To get a print out of all the header information (Default
+       FileHandler), simply state the following
+       $mp3_file->print_tag();
+
+       Print Genre Chart
+       With an optional number of columns argument (default is 3)
+       this will return a list of genre numbers with their
+       appropriate genre.
+       $mp3_file->print_genre_chart($COLUMNS);
+
+       Checking for the Existance of ID3v1 Tags
+       There is a handy method named got_tag() that can be easily
+       used to determine if a particular MPEG file contains an
+       ID3v1 Tag.
+         if $mp3_file->got_tag() {
+            $mp3_file->print_tag();
+         }
+
+       Viewing Tag Compontents individually
+       There exist several methods that will return you the
+       individual components of the ID3v1 Tag.
+
+         $title     = $mp3_file->get_title();
+         $artist    = $mp3_file->get_artist();
+         $album     = $mp3_file->get_album();
+         $year      = $mp3_file->get_year();
+         $genre     = $mp3_file->get_genre();
+         $genre_num = $mp3_file->get_genre_num();
+         $comment   = $mp3_file->get_comment();
+
+       Editing and Removing Tags
+       Similar methods exist to allow you to change the
+       components of the Tag, but none of the changes will
+       actually be changed in the file until you call the save()
+       routine.
+         $mp3_file->set_title("New Title");
+         $mp3_file->set_artist("New Artist");
+         $mp3_file->set_album("New Album");
+         $mp3_file->set_year(1999);
+
+         $mp3_file->set_genre("Blues");
+         # Or use the genre numbers ->
+         $mp3_file->set_genre_num(0);
+
+       To remove an tag in its entirely just calling the
+       remove_tag() method should work for you.
+
+        $mp3_file->remove_tag() if $mp3_file->got_tag();
+
+       You could access all the components directly for a read only loop such
+       as the following
+       foreach (sort $mp3_file->tag) {
+           print "$_: " . $mp3_file->tag($_) . "\n"; 
+       }
+
+--
+Sander van Zoest                                             sander@mp3.com   
+High Geek                                                    (858) 623-7442
+MP3.com, Inc.  						http://www.mp3.com/
+		Your premiere Music Service Provider (MSP) 
+

@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:72221
+Return-Path: <smueller@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21663 invoked from network); 6 Aug 2010 15:07:09 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 6 Aug 2010 15:07:09 -0000
+Received: (qmail 30811 invoked by uid 225); 6 Aug 2010 15:07:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30807 invoked by alias); 6 Aug 2010 15:07:08 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from caiajhbdccac.dreamhost.com (HELO homiemail-a28.g.dreamhost.com) (208.97.132.202)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 06 Aug 2010 08:07:07 -0700
+Received: from homiemail-a28.g.dreamhost.com (localhost [127.0.0.1])
+	by homiemail-a28.g.dreamhost.com (Postfix) with ESMTP id 714E01B4086;
+	Fri,  6 Aug 2010 08:07:03 -0700 (PDT)
+Received: from [10.62.12.244] (ip-pi-2-188-vl602-devfly.devitalia.it [62.205.2.188])
+	(Authenticated sender: catch-all@steffen-mueller.net)
+	by homiemail-a28.g.dreamhost.com (Postfix) with ESMTPA id A5E421B406F;
+	Fri,  6 Aug 2010 08:07:02 -0700 (PDT)
+Message-ID: <4C5C2512.6060701@cpan.org>
+Date: Fri, 06 Aug 2010 17:06:58 +0200
+User-Agent: Thunderbird 2.0.0.24 (X11/20100411)
+MIME-Version: 1.0
+To: xiong@cpan.org
+CC: modules <modules@perl.org>
+Subject: Re: RFC: IO::Capture
+References: <1280790918.3450.74.camel@oz>
+In-Reply-To: <1280790918.3450.74.camel@oz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: smueller@cpan.org (Steffen Mueller)
+
+Hi,
+
+Xiong Changnian wrote:
+> I completely forgot about my dependency on IO::Capture and friends. 
+> 
+> IO::Capture::Tie_STDx 0.05, which does the heavy lifting for various
+> IO::Capture modules, has two bugs. It incorrectly handles say(); and it
+> fails to implement a TELL() method. 
+> 
+> I emailed the author, Mark REYNOLDS, over two months ago; no reply.
+> Granted, I haven't yet made a concerted effort to contact. Given, I
+> should. I needed these bugs fixed immediately so, that's what I did. 
+> 
+> I have written two modules, IO::Capture::Sayfix and
+> IO::Capture::Tellfix. Each, on load, makes a quick test to see if the
+> corresponding bug has been fixed in the currently loaded ::Tie_STDx; if
+> so, it does nothing; else it fixes the bug on the spot. ::Sayfix
+> redefines PRINT(); ::Tellfix defines TELL(). This approach is intended
+> to play well with the existing version of ::Tie_STDx as well as any
+> future version in which either, both, or neither of these bugs are
+> fixed. 
+> 
+> Before writing ::Sayfix, I patched a copy of the existing ::Tie_STDx. I
+> was told by others, in no uncertain terms, that even to install such a
+> thing locally was to ask for trouble. 
+> 
+> Seeking some direction on how to proceed. One or more of: 
+> 
+> (1) File formal bugs on RT. 
+> 
+> (2) Ping REYNOLDS heavily via email and any other available route. 
+> 
+> (3) Prepare a formal patch to ::Tie_STDx. 
+> 
+> (4) Open a GitHub fork for ::Tie_STDx. 
+> 
+> (5) Package ::Sayfix and ::Tellfix as (one module? two modules?),
+> together with appropriate POD, Build.PL, etc. and upload to CPAN. 
+> 
+> (6) Open a GitHub repo for the *fix modules. 
+> 
+> (7) Package the *fix modules together with those projects that depend
+> upon them and make them part of their installations. 
+> 
+> (8) Other: ________
+
+Yes. More or less in that order. See 
+http://pause.perl.org/pause/query?ACTION=pause_04about#takeover
+
+Cheers,
+Steffen
+

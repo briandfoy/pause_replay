@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3556
+Return-Path: <jeff@vpservices.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4271 invoked from network); 15 Nov 2000 18:39:44 -0000
+Received: from tisch.mail.mindspring.net (207.69.200.157)
+  by tmtowtdi.perl.org with SMTP; 15 Nov 2000 18:39:44 -0000
+Received: from vpservices.com (pool-63.50.107.163.rlgh.grid.net [63.50.107.163])
+	by tisch.mail.mindspring.net (8.9.3/8.8.5) with ESMTP id NAA13429;
+	Wed, 15 Nov 2000 13:39:33 -0500 (EST)
+Message-ID: <3A12D811.D7C8F140@vpservices.com>
+Date: Wed, 15 Nov 2000 10:38:09 -0800
+Organization: -
+X-Mailer: Mozilla 4.7 [en] (Win98; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: DBD::RAM.pm, DBD::AnyData.pm, and AnyData.pm
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: jeff@vpservices.com (Jeff Zucker)
+
+Hello, oh keepers of the modules namespace,
+
+Please give me your comments and suggestions on the following namespace
+changes and additions.
+
+After lengthy discussion in the DBI-users and DBI-dev lists, I propose
+to change the name of the DBD::RAM module to DBD::AnyData and to expand
+it in several ways.  The name change is necessary because the module now
+handles many types of file-based tables in addition to the in-memory
+tables referred to in the old name.  
+
+The expansions will 1) open an API for other authors to create sub
+modules to parse new data formats, automatically giving those formats a
+DBI interface and 2) create a non-DBI interface to those sub modules
+allowing tiedhash and other types of interfaces to the parsers. 
+Basically the AnyData.pm would be a "DBI for the rest of us" -- it would
+offer a uniform way to access records in many formats and would handle
+things like parsing, file locking, tieing hashes, etc. behind the scenes
+but would not require either the DBI modules or use of SQL.  AnyData.pm
+is basically like Text::CSV_XS or XML::Simple, except that it works with
+a single interface for many different data formats, it is extensible to
+include user-defined data formats, it provides automatic DBI
+accessibility, and it provides conversion between formats.  I hope to
+collaborate as fuly as possible with other authors so that, for example,
+there will hopefully eventually be folks from the XML lists who will
+help with or take over the XML portions to ensure that the AnyData
+modules do not conflict with or compete with other XML initiatives.
+
+The namespace would look like this:
+
+   DBD/AnyData.pm                   DBI access to in-memory & file-based
+data
+   AnyData.pm                       access & convert many data formats
+   AnyData/Parser/CSV.pm            parser for CSV (comma separated
+values)
+   AnyData/Parser/XML.pm            parser for XML data & files
+   AnyData/Parser/Ini.pm            parser for Ini style config data &
+files
+   AnyData/Parser/FixedWidth.pm     parser for fixed-width records
+   AnyData/Parser/*.pm              parsers for other data formats
+   AnyData/Storage/RAM.pm           storage manager for in-memory tables
+   AnyData/Storage/File.pm          storage manager for file-based
+tables
+   AnyData/Storage/Tie.pm           storage manager for tied structures
+   AnyData/Storage/*.pm             other types of storage managers
+
+For what it's worth, Tim Bunce and others on the DBI lists have said
+they like these proposals and no one has raised any objections.  I have
+an alpha almost ready to go.
+
+Shall I proceed with all this and upload an alpha to CPAN?
+
+TIA,
+
+-- 
+Jeff

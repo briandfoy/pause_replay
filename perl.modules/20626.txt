@@ -1,0 +1,109 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:20626
+Return-Path: <imacat@mail.imacat.idv.tw>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 85105 invoked by uid 76); 23 Apr 2003 14:57:14 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Wed, 23 Apr 2003 07:57:14 -0700
+Received: (qmail 15169 invoked by uid 225); 23 Apr 2003 14:57:11 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15164 invoked by uid 507); 23 Apr 2003 14:57:11 -0000
+Received: from rinse.wov.idv.tw (HELO rinse.wov.idv.tw) (211.20.30.100) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Wed, 23 Apr 2003 07:57:09 -0700
+Received: from [10.0.0.3] (cotton.wov.idv.tw [10.0.0.3])	by rinse.wov.idv.tw (8.12.8/8.12.8) with ESMTP id h3NEu8ms013643;	Wed, 23 Apr 2003 22:56:10 +0800
+Date: Wed, 23 Apr 2003 22:56:12 +0800
+To: Autrijus Tang <autrijus@autrijus.org>
+Subject: Re: Module submission Locale::Maketext::Gettext
+Cc: Arthur Bergman <sky@nanisky.com>, modules@perl.org, imacat@cpan.org
+In-Reply-To: <20030423110006.GA83935@aut.dyndns.org>
+References: <5BE8160A-757A-11D7-9FF0-000393CB5BC4@nanisky.com> <20030423110006.GA83935@aut.dyndns.org>
+Message-ID: <20030423225606.03ED.IMACAT@mail.imacat.idv.tw>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="===[PGP/MIME_RFC2015]===3EA6A986.3FF1==="; protocol="application/pgp-signature"; micalg="pgp-sha1"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Becky! ver. 2.05.08
+X-Virus-Scanned: by amavisd-milter (http://www.amavis.org/)
+X-Scanned-By: MIMEDefang 2.31 (www . roaringpenguin . com / mimedefang)
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-2.0 required=7.0 tests=GAPPY_TEXT,IN_REP_TO,PGP_SIGNATURE_2,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: imacat@mail.imacat.idv.tw (imacat)
+
+--===[PGP/MIME_RFC2015]===3EA6A986.3FF1===
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+
+On Wed, 23 Apr 2003 19:00:06 +0800
+Autrijus Tang <autrijus@autrijus.org> wrote:
+> In that case I'd be willing to bless L::M::G, of course, but
+> my capability at imaginatino is quite limited so I can't
+> easily see how they can be incompatible. :-)
+
+    Well, then, you are wrong. :)  They are not compatible.
+
+    It was, yes, possible to be merged into L::M::L::G yesterday, since
+at that time I was only trying to solve the problems of L::M::L::G.  But
+not now.  Currently I'm working on a subclass of Locale::Maketext, so
+that it works exactly "both the gettext and Locale::Maketext way".  It
+is designed solve all the major problem of Locale::Maketext, including:
+gettext-tools compatibility, encoding conversion, etc.  It'll be
+possible to share the system MO files with other C/PHP... application to
+some extent.
+
+    I believe L::M::L::G can benefit from my L::M::G code, but that's
+not my purpose.  L::M::L::G's interface doesn't make sense.  It runs at
+a pre-processed stage, which is not reasonable, and is not easy for a
+lot of users.  Application authors have to read the PO file in a BEGIN
+block, at least as currently documented.  But L::M::G is a subclass of
+Locale::Maketext.  It is thus transparent to the application authors, in
+the sense of "both GNU gettext and Locale::Maketext".
+
+    After all, working entirely at the pre-process stage in a BEGIN
+block is entirely not acceptable in mod_perl.  L::M::L's interface
+itself simply doesn't work.  It tries to serve the variety, in the cost
+of simplicity and efficiency.
+
+    In my L::M::G, methods like bindtextdomain, textdomain are
+implemented.  The encoding method will have significant meaning to the
+output.
+
+    Sorry the documentation is not ready yet.  It was finished about 12
+hrs ago, but I have to rewrite it entirely now for the new OO methods. 
+Although the coding is nearly finished.  I think the above infomation
+should be enough to explain the existence of a new L::M::G.
+
+    By the way, can anyone that remind me a module that can tell the
+best default encoding (and all possible encodings) for a language tag?
+For ex, zh-tw -> Big5, zh-cn -> GB2312, ja -> Shift-JIS, en-us ->
+US-ASCII.  I18N::LangTags doesn't seem to help.  Maybe I had missed
+something.
+
+    Another thing:  Autrijus, I had written to you a couple of days
+before about your ngettext patch to Locale::gettext.  I haven't heard
+from you yet.  Any news?  I'm still waiting.
+
+--
+Best regards,
+imacat ^_*' <imacat@mail.imacat.idv.tw>
+PGP Key: http://www.imacat.idv.tw/me/pgpkey.txt
+
+<<Woman's Voice>> News: http://www.wov.idv.tw/
+Tavern IMACAT's: http://www.imacat.idv.tw/
+TLUG List Manager: http://www.linux.org.tw/mailman/listinfo/tlug
+
+--===[PGP/MIME_RFC2015]===3EA6A986.3FF1===
+Content-Type: application/pgp-signature
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (MingW32)
+
+iEYEABECAAYFAj6mqYUACgkQi9gubzC5S1wmGgCgm5p3HzO1EU0c+GGq3mxFisDo
+n3YAnjNAkNvPj0QnW++KhcvaY1oKU7ps
+=deMs
+-----END PGP SIGNATURE-----
+
+--===[PGP/MIME_RFC2015]===3EA6A986.3FF1===--
+

@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4452
+Return-Path: <home@leegoddard.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14373 invoked from network); 13 Feb 2001 16:13:03 -0000
+Received: from jupiter.activeisp.com (213.188.128.14)
+  by tmtowtdi.perl.org with SMTP; 13 Feb 2001 16:13:03 -0000
+Received: from smtp.activeisp.com (smtp.activeisp.com [213.188.128.11])
+          by jupiter.activeisp.com (2.5 Build 2639 (Berkeley 8.8.6)/8.8.4) with ESMTP
+	  id RAA00109 for <modules@perl.org>; Tue, 13 Feb 2001 17:06:08 +0100
+Received: from leegoddard.com ([217.32.133.3]) by smtp.activeisp.com  with Microsoft SMTPSVC(5.5.1877.197.19);
+	 Tue, 13 Feb 2001 17:14:51 +0100
+Message-ID: <3A895CCA.C92FB191@leegoddard.com>
+Date: Tue, 13 Feb 2001 16:11:54 +0000
+Organization: LBL
+X-Mailer: Mozilla 4.7 [en-gb]C-NSCPCD  (Win98; I)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Maybe File::Copy Move ?
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: home@leegoddard.com (Lee Goddard)
+
+Several people have asked for this recently on the Win32 lists:
+probably not worth putting on CPANl or is it?  
+
+Any ideas?
+
+lee
+
+=head1 &move_dir
+
+Move the specified directory tree to the specified directory.
+
+Author:   Lee Goddard (additions by $Bill Luebkert)
+Requires: File::Copy
+Accepts:  Two scalars representing paths to the source and destination dirs.
+Returns:  Nothing.
+Eg. 
+
+        move_dir("D:/www/sussexjewishnews","D:/www/sussexjewishnews/_archives/test");
+
+=cut
+
+use File::Copy;
+
+sub move_dir { my ($source, $destination) = (shift, shift);
+        die "Sub move_dir requires a source dir!" if not $source;
+        die "Sub move_dir requires a destination dir!" if not $destination;
+        local *DIR;
+        chdir $source or die "Sub move_dir couldn't cd to dir <$source>:\n$!";
+        opendir DIR, "." or die "Sub move_dir couldn't open process dir: <$dir2check>:
+$!\n";
+
+        foreach ( readdir DIR ) {
+                next if /^\.{1,2}$/;
+                if (-d){
+                        &move_dir ("$source/$_", "$destination/$_");
+                } else {
+                        print "Move $source/$_ to $destination/$_\n";
+                        move("$source/$_","$destination/$_");
+
+                }
+        }
+        closedir DIR;
+}
+
+
+
+-- 
+
+Lee Goddard     <mail@leegoddard.com>
+-------------------------------------
+Perl : XML : XSLT : XHTML / JS : Java
+
+"Post-modernism....the meta-narrative that denies meta-narrative."
+                                           - Cedric Watts, Sussex 1997

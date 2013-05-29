@@ -1,0 +1,199 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:48891
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19414 invoked from network); 18 May 2006 19:33:24 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 18 May 2006 19:33:24 -0000
+Received: (qmail 12840 invoked by uid 225); 18 May 2006 19:33:23 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12833 invoked by alias); 18 May 2006 19:33:23 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 18 May 2006 12:33:05 -0700
+Received: from pause.perl.org (localhost.localdomain [127.0.0.1])
+	by pause.perl.org (8.13.4/8.13.4/Debian-3sarge1) with ESMTP id k4IJVsGx002172;
+	Thu, 18 May 2006 21:31:54 +0200
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.4/8.13.4/Submit) id k4IJVr5W002171;
+	Thu, 18 May 2006 21:31:53 +0200
+Date: Thu, 18 May 2006 21:31:53 +0200
+Message-ID: <200605181931.k4IJVr5W002171@pause.perl.org>
+Subject: Module submission Date::ISO8601
+Reply-To: modules@perl.org
+To: modules@perl.org, zefram@cpan.org
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Date::ISO8601
+  DSLIP:       Rdpfp
+  description: the three ISO 8601 numerical calendars
+  userid:      ZEFRAM (Andrew Main (Zefram))
+  chapterid:   6 (Data_Type_Utilities)
+  communities:
+
+  similar:
+    Date::Calc Date::Gregorian Date::ICal Date::ISO Date::Manip
+    Date::Object Date::Simple
+
+  rationale:
+
+    this module -----------
+
+    The international standard ISO 8601 "Data elements and interchange
+    formats - Information interchange - Representation of dates and
+    times" defines three distinct calendars by which days can be
+    labelled. It also defines textual formats for the representation of
+    dates in these calendars. This module provides functions to convert
+    dates between these three calendars and Chronological Julian Day
+    Numbers, which is a suitable format to do arithmetic with. It also
+    supplies functions that describe the shape of these calendars, to
+    assist in calendrical calculations. It also supplies functions to
+    represent dates textually in the ISO 8601 formats. ISO 8601 also
+    covers time of day and time periods, but this module does nothing
+    relating to those parts of the standard; this is only about
+    labelling days.
+
+    This module places no limit on the range of dates to which it may
+    be applied. All function arguments are permitted to be
+    "Math::BigInt" or "Math::BigRat" objects in order to achieve
+    arbitrary range. Native Perl integers are also permitted, as a
+    convenience when the range of dates being handled is known to be
+    sufficiently small.
+
+    naming ------
+
+    The Date:: namespace is already well established. The specific part
+    "ISO8601" is a clear reference to the standard that the module
+    implements. The module is based very much on that standard, rather
+    than on common practices that happen to intersect with it.
+
+    general comparison with other modules
+    -------------------------------------
+
+    Date manipulation is a popular subject for Perl modules.
+    Unfortunately it's usually done very badly. I didn't find any
+    satisfactory module doing what I want with the ISO 8601 calendars.
+    In searching, I found so many doing part of the job that I'm in a
+    position to generalise about their faults (as perceived by me).
+
+    Many of the interfaces involve stateful objects. Representing a
+    date as an object is a sensible thing to do, but it is an inherently
+    immutable object. It makes no sense to have an object that
+    represents the date 2006-05-18 and then change its year, but many of
+    the interfaces do this. What their object represents is not a date
+    per se but more like a typed register. That's awkward to program
+    with. Date::ISO8601 instead represents dates immutably. It actually
+    uses an integer of preexisting type, rather than its own class of
+    object, because there wasn't anything where a more complex object
+    would be useful.
+
+    Aside from a blessed object, the most popular date interchange
+    format is a Gregorian year/month/day triplet. This is awkward to
+    manage, because it's three objects instead of one, and it's
+    impossible to do arithmetic on. This means that library functions
+    are necessary in order to do any calculation. Date::ISO8601 uses
+    CJDNs as the interchange format. The user can do eir own arithmetic
+    on that without needing the module to help.
+
+    A lot of modules handle time of day as well as date. There's
+    definitely justification for doing this, but it's at minimum
+    conceptual clutter when one is actually only dealing with days. More
+    seriously, it forces one to deal with the module's concept of time
+    of day, which might not match the model one is using. I haven't seen
+    a single module (other than the ones I've written) that handles leap
+    seconds correctly, though I've seen more than one attempt to.
+    Whether leap seconds exist depends on which time scale one is using,
+    of course, which is a choice independent of calendar. Often these
+    modules feature a concept of time zone, and even DST, so one has to
+    deal with those too. Fundamentally, dates to label days are a
+    complete concept in themselves, and they work very differently from
+    time of day. I reckon there ought to be date-only modules that
+    implement calendars, and date+time modules should get their date
+    logic from them. Date::ISO8601 handles dates only.
+
+    Every single module that I looked at supported only a limited range
+    of dates. Some have arbitrary limits, and the rest will blithely
+    overflow if calculations exceed the range of native number types.
+    Date::ISO8601 supports bignum types as well as native types.
+
+    comparison with specific modules --------------------------------
+
+    Date::Calc Similarity: performs calculations on Gregorian dates and
+    the ISO 8601 week-based calendar. Functional interface. Problems:
+    minimum year 1, maximum limited by Perl native integer range.
+    Interface awkward because the common date representation is a
+    year/month/day triplet rather than a single number or object.
+    Incidental: takes on many other date-related subjects, even
+    including time-of-day features, with no overall plan. Thus the
+    concepts:interfaces ratio is too high. Documentation is cacophanous.
+
+    Date::Gregorian Similarity: converts between all three ISO 8601
+    calendars and performs date calculations. It's one of the better
+    preexisting modules. Problems: awful stateful OO model. Despite the
+    name it doesn't actually do the proleptic Gregorian calendar, but
+    instead switches to the Julian calendar for sufficiently early
+    dates. Limited to years [-1469871, 5879489].
+
+    Date::ICal Similarity: manipulates dates in the Gregorian calendar.
+    Problems: does time-of-day and timezone as well as date, and
+    mishandles them. Bad OO interface, very muddled about what the
+    object actually represents. Limited to the range of Perl native
+    numbers. Can't express dates in anything other than the Gregorian
+    calendar. Incidental: the internal date/time format, which it calls
+    "ICal format", is actually a substantial subset of ISO 8601, and
+    apparently the author is unaware of this.
+
+    Date::ISO Similarity: converts between the Gregorian calendar and
+    the ISO 8601 week-based calendar. Problems: subclasses Date::ICal,
+    so inherits its issues with time of day and its bad OO model.
+    Limited to the range of Perl native numbers. Incidental: the
+    week-based calendar is called the "ISO format" throughout, and it
+    speaks of "the iso year" and suchlike, thus displaying great
+    ignorance of ISO 8601 and the week-based calendar.
+
+    Date::Manip Similarity: uses the Gregorian calendar to express
+    dates, and does some date calculations. Problems: does time-of-day
+    and timezones too. Bad OO model (mutable date objects). Limited to
+    years [0, 9999].
+
+    Date::Object Similarity: uses the Gregorian calendar to specify
+    dates, and offers a couple of date calculation algorithms. Problems:
+    does time-of-day and timezone as well as date. Bad OO model (mutable
+    date objects). Can't express dates to anything other than Gregorian
+    and an undocumented single-number format. Limited to the range of
+    Perl native numbers. Code is unreadable.
+
+    Date::Simple Similarity: handles date alone, and uses the Gregorian
+    calendar. Clean interface. Problems: can't express dates in anything
+    other than the Gregorian calendar. Limited to the range of Perl
+    native numbers.
+
+  enteredby:   ZEFRAM (Andrew Main (Zefram))
+  enteredon:   Thu May 18 19:31:53 2006 GMT
+
+The resulting entry would be:
+
+Date::
+::ISO8601         Rdpfp the three ISO 8601 numerical calendars       ZEFRAM
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=29d00000_79a3fe6a519a4964&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=29d00000_79a3fe6a519a4964&SUBMIT_pause99_add_mod_insertit=1

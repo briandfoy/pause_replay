@@ -1,0 +1,165 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16799
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 69577 invoked by uid 76); 8 Jan 2003 18:41:35 -0000
+Received: from palladium2.baremetal.com (HELO pd2.baremetal.com) (208.184.111.59) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-08 18:41:35Z
+Received: from localhost (darren@localhost)	by pd2.baremetal.com (8.11.6/8.11.6) with ESMTP id h08IgtL32039;	Wed, 8 Jan 2003 10:42:55 -0800
+Date: Wed, 8 Jan 2003 10:42:55 -0800 (PST)
+X-X-Sender:  <darren@pd2.baremetal.com>
+To: <modules@perl.org>, Tim Bunce <Tim.Bunce@pobox.com>
+cc: Darren Duncan <darren@DarrenDuncan.net>
+Subject: Re: Module submission DBIx::Portable
+In-Reply-To: <20030108131949.GJ12778@dansat.data-plan.com>
+Message-ID: <Pine.LNX.4.33.0301080914090.3038-100000@pd2.baremetal.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+References: <20030108131949.GJ12778@dansat.data-plan.com>
+
+On Wed, 8 Jan 2003, Tim Bunce wrote:
+> I think this needs a framework name.
+> How about DuncanDB::* ?
+> Tim.
+
+P.S.  A new list of my name suggestions is at the end of this letter.
+
+Now that I have thought about it longer, I agree that your original
+suggestion is along the right track for what I should be doing.  That is,
+I should have my own top-level name, and it should be one appropriate for
+a "framework".  The name should be very distinct so it wouldn't be
+confused with any existing modules, it should be creative, and it should
+be not so much descriptive perhaps as implicative of the framework's
+function, perhaps like a metaphor?
+
+In an email that I sent out on monday night in response to _brian_d_foy,
+I had thought of...
+
+	- "PortableDB"
+	- "AbstractDB"
+
+... as possible framework names.  At the time I thought they seemed
+descriptive, and similar to what I had before.
+
+(On an aside, that monday email never appeared on the modules@perl.org
+archive site like my other letters, and I don't know why.  I got an
+auto-generated
+reply saying it would be looked at, which I don't usually get, though.
+This letter was sent differently from my others; since _brian_d_foy didn't
+cc me with his message as Tim does (which is very much appreciated; I
+don't subscribe to modules@...), I copied the text of his message from the
+web site and composed a new letter whose subject was "re:..." as if it
+were a reply.  That was sent with Eudora.  But the message Brian replied
+to was also sent from Eudora (my later ones were sent from Pine).  Maybe
+some required headers weren't propagated, perhaps.  But I would have at
+least expected the lost message to appear on the list as a new thread,
+which it didn't either.  Did I do something wrong?)
+
+In any event, I did some brainstorming last night, while doing more design
+work, and came up with some new ideas that were a significant shift from
+the old way of thinking, and I think that perhaps the answer to the naming
+question lies here.  That is, even if the functionality of the framework
+is largely unchanged, perhaps I was focusing on the wrong aspects to
+promote.  Or maybe I am just thinking of the same features from a
+different POV (a rose by any other name ...).
+
+Instead, how about a name that suggests the ability of the framework to
+ "translate" or "cipher" or "resolve" or "analyse" or "interpret" or
+"convert" or "explain" or "paraphrase" (yadda yadda) the intent of an
+application or user or data dictionary towards specific database activity,
+which also happens to work with any RDBMS regardless of the latter's
+native interface (binary or sql dialect or feature set)?
+
+The idea here is that part of the framework would maintain or use a "data
+dictionary" or "schema" that describes, not only what tables exist in a
+database and their relationships, but also describe "views" on the
+database, from which any DML activity can be generated.  One feature that
+I suspect is unique to my framework is that any "select" statement, no
+matter how complex, can be represented in a "parsed" form by my framework.
+That "select statement" is what a "view" is.  On one side, the framework
+can generate a select statement or a database view for reading data it
+represents into a matrix for the perl application and/or user
+display/editing screen.  On the other side, the framework can determine
+which of the columns output from a view can be edited and then saved, or
+when new rows can be inserted through the view, as if the view was a plain
+table.  Sometimes all visible columns can be edited and sometimes they
+can't.
+
+Eg: if the view said "select code || ' - ' || desc as list_item
+from list_table", then that one column would not likely be editable
+because we wouldn't know where to put the new value; but, if we said
+"select code, decode( :user_pref_language, 'fre', desc_fre, desc_eng ) as
+description from list_table", then we could determine later which column
+to save the result to when the user changes the single description they
+see, because the result column still corresponds to a single input column,
+even if there is a complex indirection when selecting one to the other in
+the first place.
+
+Okay, maybe that didn't say much.  But that example scales up to multiple
+tables joined, or several layers of subselects.
+
+The basic idea is that my framework maintains a data dictionary from which
+all schema or data management actions can be done, and the app using this
+doesn't have to know what RDBMS they are using.  On the side, the
+framework also facilitates backing up the whole content of a database into
+another one (which can be a different RDBMS) or to or from a flat file.
+
+It can also have adapters on top of it that take existing SQL as input and
+parse it into an internal representation.  So it is possible for apps that
+were already written, prior to the existence of my framework, for one
+database to work with another instead without having to be recoded
+(although there may be performance penalties).  There will probably be
+some exceptions if some really esoteric database features are used, but
+this should be rare.  The framework is designed to be fast and efficient,
+though, even if means to do much.
+
+What the framework does not intend to do is take concepts that are not
+grounded in RDBMS theory and connect those to databases.  Eg: it does not
+aim to emulate object-oriented databases, or hierarchical engines, or
+freeze/thaw random Perl objects, or that sort of thing.
+
+The "native file format" for storing schema or data dictionaries for this
+framework is in Perl data structures like "$rh_data = {...};", which can
+be stored in files, or generated from application-proprietary data
+dictionaries, or stored in a database.  While the last case would be
+useful for large apps, reading the data dictionary would be the same,
+implementation-wise, as reading anything else from the database.
+
+Likewise, the framework is meant to focus on supporting data-driven
+applications; by changing the data representing the data dictionary, you
+change the application behaviour.
+
+In any event, being a framework, it can adapt to new environments as the
+need comes.  That's the plan anyway.
+
+... ramble, ramble, ramble ...
+
+Anyway, here are some new ideas I thought of for a framework name:
+
+	- Cipher
+	- CipherDB
+	- DBCipher
+	- ResolveDB
+	- DBResolver
+	- InterpreDB
+	- DBInterpreter
+	- TranslateDB
+	- DBTranslator
+	- RosettaStone
+	- RosettaDB
+	... etc
+	- PortableDB
+	- AbstractDB
+
+Personally, I like the "Cipher" options best (hence, listed first).  What
+do you think?
+
+Hopefully it won't be confused with encryption or anything.  But "cipher"
+actually has a broader meaning than that.
+
+-- Darren Duncan
+

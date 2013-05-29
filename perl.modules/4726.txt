@@ -1,0 +1,167 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4726
+Return-Path: <vipul@tranceport.vipul.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27839 invoked from network); 18 Mar 2001 15:53:06 -0000
+Received: from munitions2.xs4all.nl (HELO ubik.vipul.net) (root@194.109.217.74)
+  by tmtowtdi.perl.org with SMTP; 18 Mar 2001 15:53:06 -0000
+Date: Sat, 17 Mar 2001 23:48:51 -0800
+To: modules@perl.org
+Subject: Suggestion for an appropriate name.
+Message-ID: <20010317234851.A27608@tranceport.vipul.net>
+Reply-To: mail@vipul.net
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0i
+X-Operating-System: Linux tranceport.vipul.net 2.2.16
+X-Privacy: If possible, encrypt your reply.  Key at http://vipul.net/
+Sender:  <vipul@tranceport.vipul.net>
+Approved: news@nntp.perl.org
+From: mail@vipul.net (Vipul Ved Prakash)
+
+Hi, 
+
+A while ago I sent you a mail asking you if Convert::ASCII::Armour was
+appropriate name for a module that converts binary octets to ASCII
+armoured data. The module is ready for publication and I was wondering if
+I should go ahead and put it up on CPAN. If you have suggestions toward a
+better name, please let me know. Here's the module's documentation:
+
+
+     * NAME
+     * SYNOPSIS
+     * DESCRIPTION
+     * METHODS
+       
+     * new()
+     * armour()
+     * unarmour()
+     * errstr()
+       
+     AUTHOR
+   
+     LICENSE
+   
+     SEE ALSO
+     _________________________________________________________________
+   
+                                     NAME
+                                       
+   Convert::ASCII::Armour - Convert binary octets into ASCII armoured
+   messages.
+     _________________________________________________________________
+   
+                                   SYNOPSIS
+                                       
+    my $converter = new Convert::ASCII::Armour;
+
+    my $message   = $converter->armour(
+                        Object   => "FOO RECORD",
+                        Headers  => {
+                                      Table   => "FooBar",
+                                      Version => "1.23",
+                                    },
+                        Content  => {
+                                      Key  => "0x8738FA7382",
+                                      Name => "Zoya Hall",
+                                      Pic  => "....",  # gif
+                                    },
+                        Compress => 1,
+                    );
+
+    print $message;
+
+    -----BEGIN COMPRESSED FOO RECORD-----
+    Version: 1.23
+    Table: FooBar
+    eJwzZzA0Z/BNLS5OTE8NycgsVgCiRIVciIAJg6EJg0tiSaqhsYJvYlFy...
+    XnpOZl5qYlJySmpaekZmVnZObl5+QWFRcUlpWXlFZRWXAk7g6OTs4urm...
+    Fh4VGaWAR5ehkbGJqZm5hSUeNXWKDsoGcWpaGpq68bba0dWxtTVmDOYM...
+    NzuZ
+    =MxpZvjkrv5XyhkVCuXmsBQ==
+    -----END COMPRESSED FOO RECORD-----
+
+    my $decoded   = $converter->unarmour( $message )
+                     || die $converter->errstr();
+
+     _________________________________________________________________
+   
+                                  DESCRIPTION
+                                       
+   This module converts hashes of binary octets into ASCII messages
+   suitable for transfer over 6-bit clean transport channels. The encoded
+   ASCII resembles PGP's armoured messages, but are in no way compatible
+   with PGP.
+     _________________________________________________________________
+   
+                                    METHODS
+                                       
+new()
+
+   Constructor.
+   
+armour()
+
+   Converts a hash of binary octets into an ASCII encoded message. The
+   encoded message has 4 parts: head and tail strings that act as
+   identifiers and delimiters, a cluster of headers at top of the
+   message, Base64 encoded message body and a Base64 encoded MD5 digest
+   of the message body. armour() takes a hash as argument with following
+   keys:
+   
+   Object
+          An identification string embedded in head and tail strings.
+          
+   Content
+          Content is a hashref that contains the binary octets to be
+          encoded. This hash is serialized, compressed (if specified) and
+          encoded into ASCII with MIME::Base64. The result is the body of
+          the encoded message.
+          
+   Headers
+          Headers is a hashref that contains ASCII headers that are
+          placed at top of the encoded message. Headers are encoded as
+          RFC822 headers.
+          
+   Compress
+          A boolean parameter that forces armour() to compress the
+          message body.
+          
+unarmour()
+
+   Decodes an armoured ASCII message into the hash provided as argument
+   to armour(). The hash contains Content, Object, and Headers.
+   unarmour() performs several consistency checks and returns a non-true
+   value on failure.
+   
+errstr()
+
+   Returns the error message set by unarmour() on failure.
+     _________________________________________________________________
+   
+                                    AUTHOR
+                                       
+   Vipul Ved Prakash, <mail@vipul.net>
+     _________________________________________________________________
+   
+                                    LICENSE
+                                       
+   Copyright (c) 2001, Vipul Ved Prakash. All rights reserved. This code
+   is free software; you can redistribute it and/or modify it under the
+   same terms as Perl itself.
+     _________________________________________________________________
+   
+                                   SEE ALSO
+                                       
+   MIME::Base64(3), Compress::Zlib(3), Digest::MD5(3)
+
+best,
+vipul.
+
+-- 
+
+Vipul Ved Prakash, http://www.vipul.net/
+PGP Fingerprint d5f78d9fc694a45a00ae086062498922
+

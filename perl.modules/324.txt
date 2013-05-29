@@ -1,0 +1,162 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:324
+Return-Path: <bbacker@rsnperf.rsn.hp.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20789 invoked from network); 27 Oct 1999 16:11:44 -0000
+Received: from palrel1.hp.com (156.153.255.242)
+  by tmtowtdi.perl.org with SMTP; 27 Oct 1999 16:11:44 -0000
+Received: from rsnperf.rsn.hp.com (rsnperf.rsn.hp.com [15.99.149.36])
+	by palrel1.hp.com (Postfix) with ESMTP
+	id F38D113E3; Wed, 27 Oct 1999 09:10:02 -0700 (PDT)
+Received: (from bbacker@localhost) by rsnperf.rsn.hp.com (8.8.6 (PHNE_13947)/8.7.1) id LAA28016; Wed, 27 Oct 1999 11:10:03 -0500 (CDT)
+Message-ID: <199910271610.LAA28016@rsnperf.rsn.hp.com>
+Subject: Re: Response Measurement (Was: registration request)
+To: jdporter@min.net (John Porter)
+Date: Wed, 27 Oct 1999 11:10:02 -0500 (CDT)
+Cc: modules@perl.org
+In-Reply-To: <19991027091149.A216@min.net> from "John Porter" at Oct 27, 99 09:11:49 am
+Reply-To: Bryan Backer <bbacker@rsn.hp.com>
+X-Mailer: ELM [version 2.4 PL25]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: bbacker@rsnperf.rsn.hp.com (Bryan Backer)
+References: <19991027091149.A216@min.net>
+
+> 
+> Andreas wrote:
+> > I could imagine Devel::, but maybe a new top level is in order. That
+> > could be Tune or Trace. Devel has the advantage of being there and
+> > being accurate. But it is already crowded. And most of Devel is
+> > special to perl while ARM is not perl specific.
+> > 
+> > I think, I'd like Tune or Tuning. Let's hear more opinions, please.
+> 
+> MHO, FWIW:
+> 
+> Unfortunately, Devel has a special place in perl's heart: the -d
+> command-line switch.  I.e. "-d:foo runs the program under the control
+> of a debugging, profiling, or tracing module installed as Devel::foo."
+> 
+> And besides, this ARM thing sounds too similar to Devel::DProf to
+> not be placed along side it. 
+> 
+> But if this -d: feature is not expected to be used, then probably 
+> a Perf top-level is needed.  If a new top-level is going to be
+> created, it should be broad enough that it doesn't end up
+> under-populated, as I fear Tune/Tuning would.
+> 
+> (Am I correct in inferring that this ARM module is not specific
+> to use with DBI?  That was the only context it was given.)
+> 
+> -- 
+> John Porter
+> 
+> 
+> 
+
+You're correct -- it could be used in many non-DBI or database
+applications. 
+
+
+In the past, this set of functions have been used in C source code:
+
+arm_init()
+arm_getid()
+arm_start()
+arm_update()
+arm_stop()
+arm_end()
+
+These routines are defined in libarm.sl (or your OS's shared lib 
+equivalent: libarm.dll libarm.so). The libarm.sl is supplied by a 
+metric collection tool like Tivoli, HP Measureware, etc, and correlated
+the starts, stops, and updates to get statistics on how long applications
+are taking for some user defined step, such as a business transaction.
+
+This isn't really development work, since the calls would be a permanent 
+part of your application code. The metric collection tools would provide 
+all the niceties of stats, historical trending, and alarming. It's really 
+more performance monitoring or measurement, but I suppose tracing is
+fairly accurate.
+
+I'd propose a top level of 
+Perf:: or PerfMeasurement:: or Perf::Measurement but I'd settle for 
+Tune:: or Tuning::  
+
+One could even make a case for this being related to system administration,
+since sysadmins and DBAs would be probable consumers of the data. It's
+not clear that someone browsing through the modules would guess 
+Sysadmin:: for a top level though...
+
+
+To further illustrate, an extremely brain dead example of old C code 
+would look something like this:
+
+/*********/
+main()
+{
+    arm_init(args);
+	    for(i=0;i<a_zillion;i++) {
+		arm_start(args);
+		access_a_database();
+		do_some_calculations();
+		arm_stop
+	    }
+    arm_end();
+}
+/*********/
+
+However, it's much nicer to do this sort of thing in perl, so as a first
+step, I'm doing this: 
+
+############
+use ARM;
+ARM::arm_init($args);
+
+    for ($i=0;$i<$limit;$i++) {
+        $tran_handle= ARM::arm_start($tran_id, $other_args);
+	# do calculations or DBI accesses to Oracle
+	$return_code= ARM::arm_stop($tran_handle, $other_args);
+    }
+
+ARM::end($args);
+############
+
+
+and, given more time and help from some perl object experts, something
+along these lines would be nice: 
+
+############
+use ARM;
+    my $application= new ARM::application;
+
+$application->arm_init($args);
+
+	my $transaction= new ARM::transaction;
+
+    for ($i=0;$i<$limit;$i++) {
+        $transaction->arm_start($other_args);
+	# do calculations or DBI accesses to Oracle
+	$transaction->arm_stop($other_args);
+    }
+
+$application->arm_end($args);
+############
+
+These would still be layers over vendor supplied libarm.sl routines, but
+much more perl friendly, and would be a good way for folks with perl 
+DBI or transaction processing apps or test to see their performance. 
+
+bb
+
+----- Bryan Backer -  bryan_backer@hp.com (972)497-4640 fax:(972)497-4245
+
+
+
+
+
+

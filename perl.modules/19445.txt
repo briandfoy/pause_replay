@@ -1,0 +1,62 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:19445
+Return-Path: <cmont@ste.sharp.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 48173 invoked by uid 76); 14 Mar 2003 14:31:52 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-03-14 14:31:52Z
+Received: (qmail 31297 invoked by uid 225); 14 Mar 2003 14:31:44 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 31258 invoked by uid 507); 14 Mar 2003 14:31:40 -0000
+Received: from [193.133.140.109] (HELO hades2.sharp.co.uk) (193.133.140.109) by one.develooper.com (qpsmtpd/0.21-dev) with SMTP; Fri, 14 Mar 2003 06:31:36 -0800
+Received: from s-pc34-w2k ([192.168.149.145]) by sharp1.ste.sharp.co.uk          (Post.Office MTA v3.5.3 release 223 ID# 635-60592U100L100S0V35)          with SMTP id uk; Fri, 14 Mar 2003 14:31:43 +0000
+Received: by s-pc34-w2k (sSMTP sendmail emulation); Fri, 14 Mar 2003 14:30:21 +0000
+Date: Fri, 14 Mar 2003 14:30:20 +0000
+To: chris@willmot.co.uk
+Cc: modules@cpan.org
+Subject: log of negative values in PostScript::Graph::Paper.pm v0.08
+Message-ID: <20030314143012.GA1508@ste.sharp.co.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4i
+X-SMTPD: qpsmtpd/0.21-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-0.3 required=7.0 tests=CARRIAGE_RETURNS,FROM_MALFORMED,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: cmont (Christian Montanari)
+
+Hi,
+
+I think your 
+
+package PostScript::Graph::Paper;
+$VERSION = '0.08';
+
+
+
+could work far better with log(abs()) in init_scale of $lhi10...
+
+
+
+...
+
+   #print "$axis spreads  = [", join(", ", @spread), "],   depth=$sc->{ldepth}\n";
+    $sc->{markmul} = ($#factor >= 0) ? ($sc->{markmax} - $sc->{markmin})/($#factor + 1) : 0;
+    
+    ## calculate any SI adjustment to labels
+    my $lhi10 = $sc->{lhi} != 0 ? log(abs($sc->{lhi}))/log(10) : 0;
+    my $si10 = $sc->{si} ? ($sc->{si} * int($lhi10/$sc->{si})) : 0;
+    my $si = 10 ** $si10;
+    if ($si != 1) {
+	$sc->{title} = "" unless (defined $sc->{title});
+...
+
+
+
+Cheers,
+
+Christian Montanari.

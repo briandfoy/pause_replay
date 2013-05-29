@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53299
+Return-Path: <jpeacock@rowman.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 29184 invoked from network); 2 Mar 2007 14:55:32 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 2 Mar 2007 14:55:32 -0000
+Received: (qmail 5827 invoked by uid 225); 2 Mar 2007 14:55:31 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 5798 invoked by alias); 2 Mar 2007 14:55:29 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME,DK_POLICY_TESTING,DK_SIGNED,DK_VERIFIED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of jpeacock@rowman.com designates 12.38.22.130 as permitted sender)
+Received: from ranger1.rlpgbooks.com (HELO ranger1.rlpgbooks.com) (12.38.22.130)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Fri, 02 Mar 2007 06:55:26 -0800
+Received: (qmail 19917 invoked from network); 2 Mar 2007 09:55:35 -0500
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=default; d=rowman.com;
+  b=KHbxAP+V1dlnTtIS5JxAnF8dWZVxL4ezWEqeU0xjA3qEHQuO/OGRb1pThjXCkNFkhqKYY/2bWBoGAp2TrFYBXwgCD2oddPKRiYawQLOVki94bCzGJZlKulTZbRer85EKo0jXAEOTBC0oIEBBO7BhE+U/JB04V8IxmT9wIUDUotU=  ;
+Received: from jpeacock2.internal (HELO [192.168.0.12]) (192.168.0.12)
+  (smtp-auth username jpeacock@rowman.com, mechanism cram-md5)
+  by ranger1.rlpgbooks.com (qpsmtpd/0.33-dev) with (AES256-SHA encrypted) ESMTP; Fri, 02 Mar 2007 09:55:35 -0500
+Message-ID: <45E83ADE.4020000@rowman.com>
+Date: Fri, 02 Mar 2007 09:55:26 -0500
+Organization: Rowman & Littlefield Publishing Group
+User-Agent: Thunderbird 1.5.0.9 (Windows/20061207)
+MIME-Version: 1.0
+To:  modules@perl.org
+CC:  andreas.koenig.gmwojprw+pause@franz.ak.mind.de
+Subject: Re: Failed: PAUSE indexer report JPEACOCK/SVN-Notify-Mirror-0.036.tar.gz
+References: <200703020302.l2232NnR011898@pause.perl.org>
+In-Reply-To: <200703020302.l2232NnR011898@pause.perl.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: jpeacock@rowman.com (John Peacock)
+
+PAUSE wrote:
+> Status of this distro: Falling version number
+                       ???Failing???
+
+> =============================================
+> 
+> The following packages (grouped by status) have been found in the distro:
+> 
+> Status: Falling version number
+        ???Failing???
+
+> ==============================
+> 
+>      module: SVN::Notify::Mirror::Rsync
+>     version: v
+>     in file: SVN-Notify-Mirror-0.036/lib/SVN/Notify/Mirror/Rsync.pm
+>      status: Not indexed because
+>              SVN-Notify-Mirror-0.035/lib/SVN/Notify/Mirror/Rsync.pm in
+>              J/JP/JPEACOCK/SVN-Notify-Mirror-0.035.tar.gz has a higher
+>              version number (undef)
+> 
+>      module: SVN::Notify::Mirror::SSH
+>     version: v
+>     in file: SVN-Notify-Mirror-0.036/lib/SVN/Notify/Mirror/SSH.pm
+>      status: Not indexed because
+>              SVN-Notify-Mirror-0.035/lib/SVN/Notify/Mirror/SSH.pm in
+>              J/JP/JPEACOCK/SVN-Notify-Mirror-0.035.tar.gz has a higher
+>              version number (undef)
+> 
+
+Bother!  Is there a way (short of hard-coding those modules) to have 
+PAUSE correctly index a module that inherits it's $VERSION from a parent 
+module?  I'm doing this:
+
+BEGIN {
+     use vars qw ($VERSION);
+     use base qw(SVN::Notify::Mirror);
+     $VERSION     = $SVN::Notify::Mirror::VERSION;
+}
+
+in both of the child modules.  I won't ever release the child modules 
+independently of the parent, but so I want to ensure that they are 
+always the same $VERSION as the parent (without having to manually 
+update them all of the time)...
+
+John
+
+-- 
+John Peacock
+Director of Information Research and Technology
+Rowman & Littlefield Publishing Group
+4501 Forbes Boulevard
+Suite H
+Lanham, MD  20706
+301-459-3366 x.5010
+fax 301-429-5748

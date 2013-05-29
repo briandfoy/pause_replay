@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7519
+Return-Path: <eray@oreilly.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30581 invoked from network); 13 Sep 2001 15:02:32 -0000
+Received: from sol.ora.com (HELO smtp2.oreilly.com) (209.58.173.10)
+  by onion.valueclick.com with SMTP; 13 Sep 2001 15:02:32 -0000
+Received: (from eray@localhost)
+	by smtp2.oreilly.com (8.11.2/8.11.2) id f8DF19p27841;
+	Thu, 13 Sep 2001 11:01:09 -0400 (EDT)
+Date: Thu, 13 Sep 2001 11:01:09 -0400 (EDT)
+Message-ID: <200109131501.f8DF19p27841@smtp2.oreilly.com>
+To: modules@perl.org
+Subject: module submission registration request
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: eray@oreilly.com (Erik Ray)
+
+Hi, I have a module that would be useful to people using Perl to
+process XML documents and I'd like to be registered to upload it. 
+Here's my personal info:
+
+name:               Erik Ray
+email:              eray@oreilly.com
+homepage:           http://world.std.com/~eray
+preferred user ID:  ERIKRAY
+
+DESCRIPTION:
+
+The module implements an object that would traverse a DOM tree, node
+by node, applying handler subroutines from a user-defined object (call
+it a handler package). The supported handlers would include one for
+each node type (e.g. XML_ELEMENT_NODE, XML_TEXT_NODE), handlers for
+different element types (called if it's an element and a handler with
+the same name exists in the handler package), and handlers for
+namespaces (again, called for elements provided a handler for the
+particular namespace prefix exists in the handler package). Each
+handler would be passed a reference to the DOM node as the only
+argument, allowing the user to process the node with DOM
+interfaces. After the tree has been traversed and processing is done,
+the user would then have an altered DOM tree with which they can do as
+they please. 
+
+There are three existing solutions I know about that are similar, but
+incomplete. One is the iterator() method in XML::LibXML::Node. This
+lets a user map a single subroutine to a tree of nodes. Another is
+XML::DOM::Twig which supports a tree "walker" feature that maps a
+subroutine to a particular node type. The third is the toSAX() method
+of some DOM implementations that call handlers for events and pass an
+entire node to them.
+
+The first and second solutions only allow the user to associate one
+handler routine to a node. While it could be used as a dispatcher to
+other handler routines, the work of writing a dispatcher can be
+abstracted out, as it is in my module. The third solution calls
+handlers based on SAX events (start and end tags of an element, for
+example), which don't really fit the tree processing model as well as
+a per-node handler system. You'd only need to write one handler per
+element, for example.
+
+To some extent, this overlaps the functionality of XSLT, where you
+write rules to handle nodes and elements. But XSLT has its weaknesses,
+and one of them is that it doesn't implement a rich programming
+language for processing text like Perl has. For example, I have used
+my module to add line numbers to code listings where the numbers had
+leading zeros (e.g. 001, 002, ...). This would have been very
+cumbersome to accomplish in XSLT. Also, XSLT has issues with entity
+resolution that cause results in much hair loss on my head. So I think
+this is a legitmate substitute for XSLT when the task demands a lot of
+text processing.
+
+I am not sure about a name yet, but I'm going with a working name of
+XML::DOMFilter at the moment. I've been in touch with the Perl-XML
+mailing list to see if it's a good name or if there is a better one.
+
+Thanks!
+
+
+-- 
+Erik Ray
+Senior Tools Specialist           O'Reilly and Associates
+mobile phone: 781.710.1162        desk phone: 617.499.7442
+email: eray@oreilly.com           web: http://world.std.com/~eray/
+
+Outside of a dog, a book is man's best 
+friend. Inside a dog, it's too dark to read.   --Groucho Marx
+

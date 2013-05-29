@@ -1,0 +1,115 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5250
+Return-Path: <jeff@unlocalhost.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 66925 invoked from network); 28 Apr 2001 20:29:30 -0000
+Received: from dsl-64-192-153-61.telocity.com (HELO willie-t.unlocalhost.com) (64.192.153.61)
+  by onion.valueclick.com with SMTP; 28 Apr 2001 20:29:30 -0000
+Received: by willie-t.unlocalhost.com (Postfix, from userid 0)
+	id 2CE5853A2D; Sat, 28 Apr 2001 16:34:20 -0500 (CDT)
+Subject: registration please
+To: modules@perl.org
+Date: Sat, 28 Apr 2001 16:34:20 -0500 (CDT)
+X-Mailer: ELM [version 2.5 PL3]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <20010428213420.2CE5853A2D@willie-t.unlocalhost.com>
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: jeff@unlocalhost.com ((Jeff Anderson))
+
+Jeffrey H. Anderson
+captvanhalen@yahoo.com
+http://www.perlmonks.org/index.pl?node_id=18800
+JEFFA
+
+Description:
+DBIx::XHTML_Table is a module for embedding the results from a SQL query in
+an XHTML table for the purpose of 'quick and dirty' reporting.  Features
+include the ability to set any attribute for any tag, ability to calculate
+totals and alternate row and column colors, and the ability to use an existing
+
+appropriate DBD handler.
+
+
+Name           DSLI  Description                                  Info
+-------------  ----  -------------------------------------------- -----
+XHTML_Table    cdpO  Contains methods to create an XHTML table     ???
+                     from an SQL query.
+
+
+I searched for this module after I was left unsatisfied with XML's lack of
+complete browser compatibility.  I needed a simple way to create tables from
+SQL queries, for simple tasks that would make using templating methods overkill. 
+I searched CPAN, came across two _very_ close modules, Data::Table, which
+seems like it traveled too far down the other road in the fork (if you catch
+my drift), and DBIx::XML_RDB, which is great for browsers that are XML and XSL
+compliant.  I have had (what appears to me) a good amount of interest from
+indivduals at the Perl Monks community.
+
+#####################################################################
+# Sample client (simple case):
+
+use DBIx::XHTML_Table;
+
+my $table = XHTML_Table->new(<DATABASE CONNECT INFO>);
+$table->exec_query("
+	SELECT FOO FROM BAZ
+");
+print $table->get_table;
+
+#####################################################################
+# Sample client (more complex):
+
+use DBI;
+use DBIx::XHTML_Table;
+
+my $DBH = DBI->connect(<DATABASE CONNECT INFO>);
+my $table = XHTML_Table->new($DBH);
+
+$table->exec_query("
+	SELECT FOO,BAR FROM BAZ
+");
+
+$DBH->disconnect; # or whenever, eliminates redundant connects in loops
+
+$table->modify_tag('TABLE', {
+	border => 6,
+	width  => '75%',
+	cellspacing => 0,
+	rules => 'groups',
+});
+
+# modify all TD tags that aren't modified by a column
+# rotate colors each column, overrided by rotate_colors()
+$table->modify_tag('TD', {
+	align => 'center',
+	bgcolor => ['#CCCCFF','#DDDDFF','BBBBFF'],
+});
+
+# divides rows into TBODY's and removes dups if requested
+$table->set_group('FOO',nodup=>'----');
+
+# alternate row colors for FOO
+$table->rotate_colors(
+	['#FFCCCC','#FFDDDD','#DDBBBB'],
+	'FOO',
+);
+
+# calculate sums and print a summary row (TFOOT), note
+# sprintf mask and also that any argument for a column
+# accepts a scalar or an array reference of scalars
+$table->calc_sums([qw(FOO BAR)],'%02d');
+
+print $table->get_table;
+
+
+
+
+
+
+
+

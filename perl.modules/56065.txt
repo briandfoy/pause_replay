@@ -1,0 +1,100 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:56065
+Return-Path: <l2ot9pa02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3441 invoked from network); 31 Aug 2007 09:40:28 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 31 Aug 2007 09:40:28 -0000
+Received: (qmail 25211 invoked by uid 225); 31 Aug 2007 09:40:27 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 25190 invoked by alias); 31 Aug 2007 09:40:25 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from fzkmail3.ka.fzk.de (HELO fzkmail3.ka.fzk.de) (141.52.32.200)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 31 Aug 2007 02:40:09 -0700
+Received: from /spool/local
+	by fzkmail3.ka.fzk.de with XMAIL
+	for <modules@cpan.org> from <l2ot9pa02@sneakemail.com>;
+	Fri, 31 Aug 2007 11:40:02 +0200
+Received: from FZKMSX7.ka.fzk.de [[141.52.92.58]]
+	by fzkmail3.ka.fzk.de with XMAIL;
+	Fri, 31 Aug 2007 11:40:00 +0200
+Received: from [141.52.67.61] ([141.52.67.61]) by FZKMSX7.ka.fzk.de with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 31 Aug 2007 11:40:00 +0200
+Message-ID: <46D7E1F0.9050402@sneakemail.com>
+Date: Fri, 31 Aug 2007 11:40:00 +0200
+User-Agent: Thunderbird 1.5.0.10 (X11/20060911)
+MIME-Version: 1.0
+To: Joe Foley <foley@MIT.EDU>
+CC:  modules@cpan.org
+Subject: Re: Weird DB issue in Math::Interpolate
+References: <AF57F840-E4C9-4787-80AF-485F5D4D24A5@mit.edu>
+In-Reply-To: <AF57F840-E4C9-4787-80AF-485F5D4D24A5@mit.edu>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 31 Aug 2007 09:40:00.0473 (UTC) FILETIME=[E65A4490:01C7EBB2]
+Approved: news@nntp.perl.org
+From: l2ot9pa02@sneakemail.com (Steffen Mueller)
+
+Hi Joe, hi modules@perl.org,
+
+Joe Foley wrote:
+> I was trying to use the CPAN module to install Math::Interpolate, but as
+> "i Math::Interpolate" shows:
+> Module id = Math::Interpolate
+>     DESCRIPTION  Polynomial interpolation of data
+>     CPAN_USERID  MATKIN (Mats Kindahl <mats@kindahl.net>)
+>     CPAN_VERSION undef
+>     CPAN_FILE    Contact Author Mats Kindahl <mats@kindahl.net>
+>     DSLIP_STATUS Rdpr? (released,developer,perl,references+ties,)
+>     INST_FILE    (not installed)
+> 
+> something is wrong.  This is not the same author as the one listed for
+> the module.
+
+Mats Kindahl registered the namespace with modules@perl.org at some
+point, but never uploaded a module with that name. Somebody else,
+however, uploaded a Math::Interpolate in the late nineties. I suppose
+the registration predates that.
+
+Thus, the actual existing "Math::Interpolate" is flagged as an
+"unauthorized release" on search.cpan.org (see
+http://search.cpan.org/~bzajac/Math-Interpolate-1.05/). It is not
+indexed by the PAUSE indexer and thus won't be installable from the CPAN
+shell via the normal "i Foo::Bar" command without specifying the author
+PAUSE id.
+
+Most likely, the registration on Math::Interpolate for MATKIN should be
+revoked since he never uploaded the module.
+
+There are various such registered-but-never-uploaded namespaces. I have
+suggested creating a time out of a year or so for registrations, but
+haven't received any comments from the fellow PAUSE admins.
+
+Now, I just wrote a little script to check how common this actually is.
+Based on the PAUSE indices and the module list, it tells me that there
+are 736 registered namespaces for which there has never been an upload*.
+This does *not* include cases like the above where somebody else
+uploaded under the registered name. That's because in order to do this
+right, you would need to check with the uploader's PAUSE permissions.
+They might be co-maintainers. Andreas is the only one who could do that,
+I guess.
+
+Even if we deduct, say, 200 which where registered "recently" or where
+dev-releases exist, then we still have a lot of possibly prime
+namespaces which are in the module list but lack any implementation.
+
+If we're not going to let registrations time out as suggested, how about
+purging any unused registrations which are older than two years just
+once? Andreas?
+
+Best regards,
+Steffen
+
+* or all versions have been deleted or all uploads have been marked as
+developer releases using _'s in the version or they haven't been indexed
+for other reasons.

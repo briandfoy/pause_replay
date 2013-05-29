@@ -1,0 +1,121 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12469
+Return-Path: <qnex@atlantis.ssw.krakow.pl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16913 invoked by uid 76); 2 Jul 2002 14:52:18 -0000
+Received: from root@atlantis.ssw.krakow.pl (HELO atlantis.ssw.krakow.pl) (62.233.209.66)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Tue Jul  2 14:52:18 2002 -0000
+Received: by atlantis.ssw.krakow.pl with ESMTP id <S.x6PrO370080>; Tue, 2 Jul 2002 16:51:06 +0200
+Date:	Tue, 2 Jul 2002 16:51:06 +0200 (CEST)
+To:	modules@perl.org
+Subject: new contributor... IPTables::IPv4
+Message-ID: <Pine.LNX.4.44.0207021545410.1475-100000@atlantis.ssw.krakow.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: bogus@nntp.perl.org (Unknown Sender)
+
+Hello, I'd like to register at PAUSE, information about me:
+
+ my name:  Dawid Kuroczko
+ my email: qnex@knm.org.pl
+ homepage: none yet
+ preffered user-ID:  QNEX
+
+
+I'm currently working on an IPTables::IPv4 module (I'm discussing
+whether the name is good on news:comp.lang.perl.moderated).
+
+There are two such modules in CPAN already -- IPTables and
+IPTables::IPv4::IPQueue...
+
+The latter, IPTables::IPv4::IPQueue is for userspace packet
+queueing routines, in other words is different from what I'm
+writing.
+
+IPTables module on the other hand is an interface to libiptc.a,
+which is more or less equivalent to the functionality of
+/sbin/iptables command.  Except it is done not the way I would
+like it to be, so I'm writing my own.  It is a good piece of
+code, but I think it would benefit from being done differently.
+
+Why?  First of all it's based on libiptc.a which leaks memory
+(it has caching routines which result in leaving orphaned
+mallocated space...).  Not a problem if you call this library
+from /sbin/iptables or write a "one pass" perl script.
+If you intend however to write a daemonish perl script which
+will read IPTables every minute and dump packet and byte
+counters -- the binary will grow and grow and grow.
+AFAICT there is no easy way of solving this problem. (I think
+of it as "broken by design").
+
+Secondly the libiptc.a implements functions for managing lists
+of chains (adding, inserting, moving, deleting).  Well I think
+that we should be quite happy with perl arrays and hashes to
+do the trick. :-)
+
+So, now that you know why, few words about how:
+
+1. The function get_table($name_of_table); returns a hashref
+   containing all the elements of given table, say "fitler".
+
+2. hashref keys are the names of the chains found in table,
+   (INPUT, FORWARD, user_defined, etc...) and each has an
+   associated array of rules.
+
+3. Each object is blessed into module responsible for managing,
+   say $rule->proto("tcp") will result in both setting proto
+   to appropriate number (6 in this case) and will make the
+   rule inherit options from Match::tcp.pm :-)))
+
+4. User does what she really wants with the stuff.  My idea is
+   that one could prepare the set of statistical rules,
+
+      my @statrules = # here a list of them
+
+   and insert them to INPUT chain...  Then she can do whatever
+   she pleases with INPUT thing -- add new rules to it or
+   whatever.  Then comes the time she wants to get the counters.
+   I would do this like this:
+
+      foreach (@statrules) {
+         my $rule = find_rule_in_chain($INPUT, $_);
+         # or my $rule = $INPUT->find_rule($_);
+         if ($rule) { print "$rule->pkts pkts $rule->bytes bytes\n";
+      }
+
+   Pretty nice... :-)
+
+5. And the trickiest part is when user wants to put chains into the
+   kernel table.  Involves converting perl vars to C structs, doable
+   although a bit tideous... :-)
+
+Obtaining tables from kernel is done, converting to hashref
+is halfdone (matching methods still need to be coded), perl
+object-oriented interface is done-differently (I've coded something
+like this, but with calling /sbin/iptables, needs to be tailored
+for needs of this module), and storing tables in kernel is not done
+(neither is convering hash to C structs)...
+
+############################
+
+Other thing I'm working on is an embedded perl (as a scripting
+language) for Tin Newsreader.  Some of the functionality is
+already present (signature generation, "wrote" string genreation,
+headers manipulation), some is somwehat present (for instance
+is is possible to score the articles using perl subroutine).
+
+But this thing will need some time before it reaches maturity
+(and I'm not yet sure it should be in PAUSE/CPAN -- the code
+is quite Tin specific...).
+
+   Regards,
+     Dawid
+-- 
+  ..................        ``The essence of real creativity is a certain
+ : *Dawid Kuroczko* `.         playfulness, a flitting from idea to idea
+ : q n e x@knm.org.pl :     without getting bogged down by fixated demands.''
+ `....................'  Sherkaner Underhill, A Deepness in the Sky, V. Vinge
+

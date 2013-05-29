@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60333
+Return-Path: <m6694ha392t@asahi-net.or.jp>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 13934 invoked from network); 3 May 2008 12:38:14 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 3 May 2008 12:38:14 -0000
+Received: (qmail 16343 invoked by uid 225); 3 May 2008 12:38:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 16335 invoked by alias); 3 May 2008 12:38:13 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,SPF_NEUTRAL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from msa102lp.auone-net.jp (HELO msa102lp.auone-net.jp) (222.3.140.165)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 03 May 2008 05:38:09 -0700
+Received: from [192.168.1.91] (KD210169096003.ppp.prin.ne.jp [210.169.96.3])
+	by msa102lp.auone-net.jp (au one net msa) with ESMTP id 8019A38C031;
+	Sat,  3 May 2008 21:38:00 +0900 (JST)
+Message-ID: <481C5C88.20002@asahi-net.or.jp>
+Date: Sat, 03 May 2008 21:37:28 +0900
+User-Agent: Thunderbird 2.0.0.12 (Windows/20080213)
+MIME-Version: 1.0
+To: cosimo@cpan.org
+CC: knok@daionet.gr.jp, modules@perl.org
+Subject: Re: [Fwd: [PATCH] File::MMagic updated with last magic.mime file
+ from Debian etch]
+References: <4816D047.10301@cpan.org> <481A72AF.5060107@asahi-net.or.jp> <481C2C3C.3000802@cpan.org>
+In-Reply-To: <481C2C3C.3000802@cpan.org>
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: m6694ha392t@asahi-net.or.jp (Yukio USUDA)
+
+Cosimo Streppone wrote:
+>> 1. MMagic.pm can read an external file, use it if it is necessary.
+>>   ex. $mm = File:: MMagic-new('/etc/magic');  #  use external magic file
+>
+> Yes, I knew this, but I thought it could be useful to
+> bring the File::MMagic database "up-to-date".
+I think so, too.
+However, we should be careful enough.
+>
+>> 2. Transaction speed becomes slow when  add mime data lines.
+>>   I am not going to add the low format of the use frequency as much 
+>> as possible.
+>
+> I didn't understand. Can you explain this more?
+Use Devel::Dprof.
+You can see how many times called magicMatchStr();
+If adding some magic data, the penalty when failing in the pattern match 
+increases.
+
+Many people use File::MMagic with Namazu.
+Namazu indexes  thousands  files one process.
+I want to keep the performance for Namazu.
+>
+>> 3. There were not enough sample files for the inspection of magic 
+>> data, I cannot judge your patch.
+>
+> I thought that including a new updated magic file would be enough.
+> But I realize that probably the debian magic file is not (entirely)
+> appropriate. Maybe the apache one? Did you use the plain apache
+> httpd magic file for File::MMagic 1.27?
+>
+>> 4. File-MMagic does not support a new format such as 'string/b'.
+>>   Do you come to be usable when you use your patch?
+>
+> I don't know really.
+> We had a bunch of sample files that mostly worked with 1.27.
+> Now they all work with this updated version.
+> I don't know what 'string/b' means.
+Read subroutines magicMatchStr and magicMatch() more carefully.
+There are no feature specification flags, after '/' of 'string/b'.
+It may be adventitious to pass your tests.
+
+I want to replace magic data to debian's one, too.
+But File::MMagic only support old type magic format.
+
+We need more help.
+

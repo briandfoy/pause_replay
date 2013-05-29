@@ -1,0 +1,90 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:58155 perl.module-authors:6119
+Return-Path: <Tim.Bunce@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 11330 invoked from network); 10 Dec 2007 23:30:12 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 10 Dec 2007 23:30:12 -0000
+Received: (qmail 30554 invoked by uid 225); 10 Dec 2007 23:30:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30543 invoked by alias); 10 Dec 2007 23:30:11 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from a-sasl-quonix.sasl.smtp.pobox.com (HELO sasl.smtp.pobox.com) (208.72.237.25)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 10 Dec 2007 15:30:02 -0800
+Received: from a-sasl-quonix (localhost [127.0.0.1])
+	by a-sasl-quonix.pobox.com (Postfix) with ESMTP id 4F97D323E;
+	Mon, 10 Dec 2007 18:29:51 -0500 (EST)
+Received: from timac.local (159-134-96-9.b-ras1.lmk.limerick.eircom.net [159.134.96.9])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by a-sasl-quonix.pobox.com (Postfix) with ESMTP id 01AB3323B;
+	Mon, 10 Dec 2007 18:29:44 -0500 (EST)
+Date: Mon, 10 Dec 2007 23:29:35 +0000
+To: Dominique Quatravaux <dominique@quatravaux.org>
+Cc: Tim Bunce <Tim.Bunce@pobox.com>, module-authors@perl.org,
+	modules@perl.org, Patrick Galbraith <patg@patg.net>
+Subject: Re: Naming convention for thin wrappers around C lib<foo>.so ?
+Message-ID: <20071210232935.GB2939@timac.local>
+References: <20071206221132.GB682@timac.local> <D2F46975-4C9A-48DD-B50C-D4CBD1C9FBC6@free.fr> <20071210110738.GD2856@timac.local> <475D203C.3030009@quatravaux.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <475D203C.3030009@quatravaux.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+On Mon, Dec 10, 2007 at 12:17:16PM +0100, Dominique Quatravaux wrote:
+> Tim Bunce wrote:
+>> I was thinking in terms of a low-level 'thin' extension called
+>> Lib::libmemcached with separate pure-perl modules implementing the Cache
+>> and Cache::Cache interfaces.
+>
+> Surely you found out about Cache::Memcached and friends? Basically what 
+> you're proposing is a refactoring of these. Are the current maintainers of 
+> same aware of your efforts? If so, perhaps they could hand over some 
+> namespace slots to you.
+
+It's not as simple as it may seem at first.
+Cache::Memcached is pure-perl. That's an advantage for some people.
+Cache::Memcached::XS is compiled but links to the libmemcache library
+(not the libmemcache*d* library that I'll be using).
+
+There is a need for a perl wrapper for the libmemcached library,
+but that doesn't invalidate the needs of others for other APIs.
+
+>> So, here's the point: does anyone have any good objections to my
+>> establishing a new precident by using the Lib:: namespace for this?
+>
+> +1, imho it makes good sense to have (some future version of) 
+> Cache::Memcached depend on Lib::Memcached.
+
+I'd rather say it makes good sense for the libmemcached library to be
+usable via multiple APIs, including an API compatible with
+Cache::Memcached, an API compatible with Cache, and an API compatible
+with Cache::Cache. Hence the two-level approach.
+
+Re the choice of name for the low level library...
+
+    Lib::Memcached
+    Lib::memcached
+    Lib::libmemcached
+
+My preference is for Lib::libmemcached because it emphasises the name
+of the library that it's a wrapper for. (Think of "libmemcached" as a
+brand name. It's certainly distinct from "memcached" and even distinct
+from "libmemcache".) I want people searching for libmemcached to also
+easily find Lib::libmemcached.
+
+My goal for this kind of thin wrapper is to be so thin that the
+documentation just defines a set of principles (type conversions etc)
+and then refers to the user to the documentation for the function in
+the underlying library. That's made easier in this case by libmemcached
+having a fairly well abstracted API.
+
+Tim.

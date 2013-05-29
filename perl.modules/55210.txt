@@ -1,0 +1,126 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:55210
+Return-Path: <bix@sendu.me.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 23570 invoked from network); 4 Jul 2007 08:09:44 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 4 Jul 2007 08:09:44 -0000
+Received: (qmail 15386 invoked by uid 225); 4 Jul 2007 08:09:43 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15358 invoked by alias); 4 Jul 2007 08:09:43 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,DKIM_POLICY_SIGNSOME,DK_POLICY_SIGNSOME,SPF_NEUTRAL
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from ppsw-0.csi.cam.ac.uk (HELO ppsw-0.csi.cam.ac.uk) (131.111.8.130)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 04 Jul 2007 01:09:31 -0700
+X-Cam-SpamDetails: Not scanned
+X-Cam-AntiVirus: No virus found
+X-Cam-ScannerInfo: http://www.cam.ac.uk/cs/email/scanner/
+Received: from stirling.mrc-dunn.cam.ac.uk ([193.60.90.25]:54011)
+	by ppsw-0.csi.cam.ac.uk (ppsw.cam.ac.uk [131.111.8.130]:25)
+	with esmtp id 1I5zvG-0000HZ-0s (Exim 4.63) for modules@perl.org
+	(return-path <bix@sendu.me.uk>); Wed, 04 Jul 2007 09:09:14 +0100
+Received: from reading.mrc-dunn.cam.ac.uk ([193.60.85.115])
+	by stirling.mrc-dunn.cam.ac.uk with esmtp (TLSv1:DES-CBC3-SHA:168)
+	(Exim 4.41)
+	id 1I5zuc-0003sd-5W
+	for modules@perl.org; Wed, 04 Jul 2007 09:08:34 +0100
+Received: from dhn02982.mrc-dunn.cam.ac.uk ([193.60.81.20])
+	by reading.mrc-dunn.cam.ac.uk with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.43)
+	id 1I5zvC-0002Ws-NQ; Wed, 04 Jul 2007 09:09:10 +0100
+Message-ID: <468B55A6.6020709@sendu.me.uk>
+Date: Wed, 04 Jul 2007 09:09:10 +0100
+User-Agent: Thunderbird 2.0.0.4 (Macintosh/20070604)
+MIME-Version: 1.0
+To: Adam Kennedy <adam@phase-n.com>
+CC:  modules@perl.org
+Subject: Re: 1 package -> 900 packages?
+References: <4688BB65.3000001@sendu.me.uk> <468B4E5E.7000109@phase-n.com>
+In-Reply-To: <468B4E5E.7000109@phase-n.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: bix@sendu.me.uk (Sendu Bala)
+
+Adam Kennedy wrote:
+> Speaking as the person that currently maintains more distributions on 
+> the CPAN than anyone else, I would strongly recommend against going 1 
+> package per module.
+
+Thanks for your feedback.
+
+
+> Looking at bioperl, I see examples like the following
+> 
+> Bio::Graphics::Glyph::line       The "line" glyph
+> Bio::Graphics::Glyph::minmax     The minmax glyph           
+> Bio::Graphics::Glyph::oval      The "oval" glyph
+> 
+> It would be very bad to split these into seperate distributions.
+> 
+> Not only does it increase the management overhead, but it will be 
+> hideously hard to make dependencies on it, if someone using 
+> Bio::Graphics has to list 400 dependencies in their Makefile.PL files.
+
+Is this actually a problem? If you find yourself using Bio::Graphics in 
+your code you would have to list Bio::Graphics as a dependency. That 
+would cause Bio::Graphics to be installed if the end-user didn't have 
+it. Bio::Graphics itself uses Bio::Graphics::Panel so would have that as 
+its own dependency. Bio::Graphics::Panel uses 
+Bio::Graphics::Glyph::Factory, and Bio::Graphics::Glyph::Factory (though 
+it isn't explicit in the code) uses all the Bio::Graphics::Glyph::* 
+modules, so would have those as dependencies.
+
+So in fact everything would get installed automatically just be having a 
+single dependency on Bio::Graphics.
+
+
+> It makes it an utter nightmare to maintain.
+
+And the idea being, its perhaps easier to take a 'pure', automated one 
+distribution per module (ODPM) approach that sorts all these things out 
+by itself, than for us to decide on the 'correct' and desirable groupings.
+
+Well, that was my thought anyway.
+
+
+> Personally, going on purely gut instinct, I look at the class list for 
+> bioperl and I see between 20 and 50 obvious packages to split that list 
+> into, as the first phase.
+> 
+> For example, I'd say you probably need to keep a "core" package.
+[snip]
+
+Yes, other Bioperl developers have suggested much the same. And we could 
+easily go down that route: it's a sound idea. But I ask, is it really 
+necessary to decide on these splits? Are there actually any practical 
+problems with ODPM?
+
+
+> Something like Bio::SeqIO::chadoxml probably deserves to be in it's own 
+> distribution, since it introduces a dependency on XML and is probably 
+> only needed in some situations.
+> 
+> These sorts of "driver" modules that aren't likely to change very often 
+> are the most likely things to be on their own.
+
+It wasn't clear to me from this context what a 'driver' module was. Can 
+you clarify?
+
+
+> I would strongly recommend against just doing a 1 for 1 split though.
+> 
+> CPAN itself could probably handle another 900 modules just fine, but the 
+> people that write code with dependencies on bioperl probably couldn't.
+
+Given what I've said above (that dependencies would ideally take care of 
+themselves), does your strong recommendation against still stand? Why?
+
+
+Thank you,
+Sendu.

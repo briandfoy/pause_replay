@@ -1,0 +1,118 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16317
+Return-Path: <mgreter@swissonline.ch>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 98188 invoked by uid 76); 19 Dec 2002 23:17:37 -0000
+Received: from isp247n.hispeed.ch (HELO smtp.hispeed.ch) (62.2.95.247) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2002-12-19 23:17:37Z
+Received: from swissonline.ch (dclient62-2-175-50.hispeed.ch [62.2.175.50])	by smtp.hispeed.ch (8.12.6/8.12.6/tornado-1.0) with ESMTP id gBJNHXQY005234	for <modules@perl.org>; Fri, 20 Dec 2002 00:17:33 +0100
+Message-ID: <3E0252E2.1070700@swissonline.ch>
+Date: Fri, 20 Dec 2002 00:14:42 +0100
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.1) Gecko/20020826
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: would like to have some feedback before contributing my module(-set)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: mgreter@swissonline.ch (Marcel Greter)
+
+Hello,
+
+My name is Marcel Greter and I'm from switzerland. I'm actually building 
+a website for an online-magazin (it's a spare-time website, not 
+professional). I do not program perl that long yet; about two and a half 
+years, but I allready had a lot background from different languages etc. 
+But I'm not really sure if it is "good enough" for cpan :-) Maybe you 
+could give me some short feedback if such a module could be usefull ??
+
+The whole thing is designed to run under mod_perl, but mod_cgi does also 
+! You may allready can imagine that it is a "dynamic content engine" (or 
+whatever you would call that). There are a lot of different "component" 
+which are mostly written by myself (I think, afterwards, that I often 
+could have just used a module from cpan, but ie. CGI was to memory-heavy 
+for me, so I wrote one myself, now I do know that there would have been 
+even others ...). I have session handling, input (request) handling, 
+users and files with permissions.
+
+Basically the process always looks the same, actually the apache handler 
+you need to create to run it: Within your own handler you first "use" 
+all needed modules and some also _need_ to be configured through 
+imported methods. Everything is based on files, so you can ie. use 
+ram-disks to store the sessions. After you configured the "suite" (with 
+mod_perl you do this just once), you're ready to handle requests. With 
+every request, you init some packages: request, session and user. Then 
+you start your real work, which is mostly just a oneliner. You load a 
+file (ie. /global/template) and pass this "code" to the taglib function.
+
+Now here comes the templating process. It will parse the code for 
+special-tags, which will then call the real tablib method. If you ie. 
+"use plato::libs::tags::if", the "if" tag will register itself to the 
+taglib module. So you can easily create new tags. Taglibs are also used 
+to" map" requests. If you want to map a request to a tag (you need to 
+give such an option to the tag), the mapper function (which is also 
+self-registerd) is called. Through this you can, ie. change data. I 
+actually extended it so much, that you even can create tables in tables 
+with cellspacings and more "gadgets" (I call this flexlib). Caching is 
+also implemented, as live-views on such complex sites do really need the 
+most cpu power.
+
+I will give you a listening of all tags I allready made so you may can 
+estimate what's possible :
+
+·    /plato/libs/tags/if.pm    :    if tests with else clause
+·    /plato/libs/tags/link.pm    :    inline some webpage from anywhere 
+(libwww)
+·    /plato/libs/tags/section.pm    :    overview of "content" files
+·    /plato/libs/tags/repository.pm    :    direct access to our filesystem
+·    /plato/libs/tags/loop.pm    :    loop a "plato" object
+·    /plato/libs/tags/content.pm    :    show "content"
+·    /plato/libs/tags/count.pm    :    simple couter (really silly :-)
+·    /plato/libs/tags/sql.pm    :    sql-data module - is used together 
+with loop/if ...
+·    /plato/libs/tags/locale.pm    :    localize data (ie sentences or 
+whatever)
+·    /plato/libs/tags/user.pm    :    interface to user module
+
+overall, there are 13 modules. 11 tags and another 15 tiny global 
+modules (could be merged if needed).
+
+I allready wrote quite a lot and I'm still nowhere; I actually allready 
+have ~35 pages of documentation here. I would really be happy if someone 
+may could review the code (I don't mean line by line, but overall). I 
+rather want to "fix" things (namespace) before releasing it. I would say 
+that about 95% of the work is done. Most of the code is allready 
+structured and reviewed by myself, but there is still a lot of stuff I 
+would like to implement. So you see, I'm not planning to release it this 
+year ;-)
+
+So what I would like to know is, if something like this is allready 
+available on cpan ? If you like the package than I really would like to 
+"presend" you the code so you can look at it and I can redo the stuff 
+you think should be made different. Would be also quite nice to hear 
+your opinion about performance. Another thing is that the whole stuff is 
+quite useless without documentation. My plan was, if I'm going to 
+release it, to create a website with the documentation and stuff. I'm 
+actually a total noob when it comes to (creating) POD; makefiles too :-|
+
+I'm sorry, that the letter got so long and to give you the required info 
+you want :
+
+your name : Marcel Greter
+your email address : mgreter@swissonline.ch
+your homepage if you have one : not yet !?
+your preferred user-ID on CPAN. : MAXX
+a short description of what you're planning to contribute : sorry that 
+it wasn't "short" !
+
+thank you for reading, hope I can contribute something usefull,
+Marcel Greter
+
+ps. If I'm totally wrong here; you may forward this to the proper mail 
+address ;-)
+pps. If you like I can give you whatever you need (ie. a working set of 
+data so you can "run" it yourself, or whatever)
+

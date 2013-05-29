@@ -1,0 +1,189 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:14779
+Return-Path: <philcrow2000@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 57240 invoked by uid 76); 29 Oct 2002 14:13:35 -0000
+Received: from web13709.mail.yahoo.com (HELO web13709.mail.yahoo.com) (216.136.175.251) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-10-29 14:13:35Z
+Message-ID: <20021029141333.84221.qmail@web13709.mail.yahoo.com>
+Received: from [12.41.204.3] by web13709.mail.yahoo.com via HTTP; Tue, 29 Oct 2002 06:13:33 PST
+Date: Tue, 29 Oct 2002 06:13:33 -0800 (PST)
+Subject: Remote Object Server Modules
+To: modules@perl.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: philcrow2000@yahoo.com (Phil Crow)
+
+Hello all,
+
+I'm working a scheme similar to Enterprise Java Beans
+(EJB) for Perl.  This allows servers to maintain
+persistent objects for remote (or local) clients.
+There's an example of the API below.  Let me know what
+you think at philcrow2000@yahoo.com.
+
+If you like this idea I'd like to get it a namespace
+perhaps Net::Prim.  Please advise on the best name. 
+Prim stands for Perl Remote Invocation of Methods (a
+dislexic revision of Perl RMI).
+
+SUMMARY OF PURPOSE
+
+Prim is an xml based tcp protocol which allows you to
+call Perl functions and methods inside a server Perl
+interpreter from a client Perl interpreter. To the
+client functions and methods look as if they are
+running in the client, to the server they look as if
+they are running in the server.  Helper modules enable
+client and server authors to quickly implement their
+code in the scheme.
+
+EXAMPLE
+
+Suppose we want to expose an object which is available
+on one server, but not on another (its not installed,
+or it needs data on the first server).  For our
+example, I'll use the following trivial object.
+
+The Class (Multiplier.pm):
+  use strict;
+
+  package Multiplier;
+
+  # Constructs an object which has one Attribute.
+  sub new {
+    my $class = shift;
+    my $number = shift || 2;
+
+    my $self = {};
+
+    $self->{NUMBER} = $number;
+    bless $self, $class;
+  }
+
+  # Takes a number, multiplies it by the object
+  # attribute, returns result.
+  sub multiply {
+    my $self          = shift;
+    my $second_number = shift;
+    return $self->{NUMBER} * $second_number;
+  }
+  1;
+
+This class stores one attribute called NUMBER which it
+receives as the only argument to its constructor. 
+Subsequent calls to its multiply method multiply the
+first argument by the NUMBER and return the result.
+
+The client:
+
+  #!/usr/bin/perl -T
+  use strict;
+
+  use Net::Prim::Client
+    'multiplier.mycompany.com' =>
+'host.mycompany.com';
+
+  my $multobj = $multiplier->new_multiplier_object(5);
+
+  my @numbers = (2, 6, 8);
+
+  foreach my $number (@numbers) {
+    print $multobj->multiply($number) . " ";
+    # prints 10 30 40
+  }
+  print "\n";
+
+List the servers you want to contact as hash keys in
+the use Net::Prim::Client statement.  If you want to
+use a server from aspecified host, include the host
+name as the hash value for the server.
+
+Net::Prim::Client has now exported the service into
+your namespace as multiplier.  Call methods exposed by
+the servers through their names, as shown for
+new_multiplier_object.  This method returns an object
+reference.  Use it as if the object lived in your
+local Perl interpreter.
+
+The server:
+  #!/usr/bin/perl -T
+  use strict;
+  use Net::Prim::Server;
+  use Multiplier;
+
+  Net::Prim::Server->new(
+    'multiplier.mycompany.com',
+    'multiplier.access',
+    new_multiplier_object =>
+      { CODE => \&make_multiplier,
+        DOC  => 'returns a new multiplier object',
+      },
+  );
+
+  sub make_multiplier {
+    return Multiplier->new(@_);
+  }
+
+To expose Multiplier objects use Multiplier.  To
+become a server use Net::Prim::Server, then call its
+constructor when you are ready for your script to
+become a server.  The call never returns.
+
+The call to new requires three arguments.
+
+1. The name for your server.
+
+2. An access control file to limit which hosts can run
+your methods.
+
+3. An API hash.  Keys are method names clients will
+use.  Values are hashes. Keys for these are CODE and
+DOC.  CODE's value is a code reference. DOC's value is
+a description of the method (or class).
+
+Since my example only exposes one class, and provides
+only the methods of that class, all I need is a
+wrapped constructor.  I called mine make_multiplier
+which I exposed to the client as
+new_multiplier_object.
+
+The server above is as complex as any you will ever
+need to serve objects of a single type.
+
+RATIONALE
+
+Java provides persistent objects called Enterprise
+Java Beans.  These are cumbersome in a veriety of
+ways.  To serve them, you need a bean server such as
+JBoss or Websphere.  These servers run with a web
+server such as Apache.  This involves substantial
+overhead.  Further, since the system is web based,
+there are no connected sessions.  Session state must
+be kept through some sort of cookie exchange scheme in
+which the client receives a cookie on her first visit
+which she must send with each subsequent visit. 
+Finally, the system is Java only.
+
+Prim answers these problems.  The servers are easy to
+write (see the example above).  They require nothing
+but IO::Socket and the prim server module.  The
+clients connect and stay connected, this allows real
+persistence instead of simulated persistence.  Best of
+all, the system is completely open.  The actual
+communications are xml delivered via tcp, so any other
+language that wants to use the system is welcome.  I
+have already written a Java client which does what the
+example client above does.
+
+CONTACT
+
+Let me know what you think of the idea via email to philcrow2000@yahoo.com.
+
+__________________________________________________
+Do you Yahoo!?
+HotJobs - Search new jobs daily now
+http://hotjobs.yahoo.com/

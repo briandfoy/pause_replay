@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:57346
+Return-Path: <rjbs@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 20761 invoked from network); 23 Oct 2007 19:21:20 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 23 Oct 2007 19:21:20 -0000
+Received: (qmail 2968 invoked by uid 225); 23 Oct 2007 19:21:20 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2950 invoked by alias); 23 Oct 2007 19:21:19 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from sceptre.pobox.com (HELO sceptre.pobox.com) (207.106.133.20)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 23 Oct 2007 12:21:12 -0700
+Received: from sceptre (localhost.localdomain [127.0.0.1])
+	by sceptre.pobox.com (Postfix) with ESMTP id 26E1A2EF
+	for <modules@perl.org>; Tue, 23 Oct 2007 15:21:15 -0400 (EDT)
+Received: from knight.manxome.org (office-gw.icgroup.com [66.92.52.243])
+	by sceptre.sasl.smtp.pobox.com (Postfix) with ESMTP id 164C68DD62
+	for <modules@perl.org>; Tue, 23 Oct 2007 15:21:14 -0400 (EDT)
+Received: by knight.manxome.org (Postfix, from userid 501)
+	id 40FDD1503FD; Tue, 23 Oct 2007 15:20:35 -0400 (EDT)
+Date: Tue, 23 Oct 2007 15:20:35 -0400
+To: modules@perl.org
+Subject: Re: unused registered namespaces
+Message-ID: <20071023192035.GA8131@knight.office.icgroup.com>
+References: <20071022225900.GA23663@knight> <231020071222537634%brian.d.foy@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <231020071222537634%brian.d.foy@gmail.com>
+X-Message-Flag: Warning: This sender thinks he is better than you.
+X-Planet: Planet of the Apes
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Approved: news@nntp.perl.org
+From: rjbs@cpan.org (Ricardo SIGNES)
+
+* brian d foy <brian.d.foy@gmail.com> [2007-10-23T13:22:55]
+> In article <20071022225900.GA23663@knight>, Ricardo SIGNES
+> <rjbs@cpan.org> wrote:
+> 
+> > I'd like to use Config::INI for common code found in Config::INI::Reader
+> > and ::Writer, but Config::INI is registered and not used.  (Well,
+> > Config::Ini is, and I'm not thrilled about the idea of having both exist at
+> > once.)
+> 
+> Is this an module you need as only a base module, or will users need to use
+> it directly? Would something like Config::INI::Base work so there isn't the
+> confusion with Ini/INI?
+
+::Base could work, but the confusion isn't likely to be an issue:  there *is*
+no Config::Ini, and has not been since 2000.
+
+What I am more interested in using it for is common documentation of the
+default format.  I realize that Config/INI/Format.pod could be used, but I am
+also thinking of it this way:  with a number of things under Config::INI::, it
+seems logical that Config::INI exist for documentation and for some of the most
+common code.
+
+This will be even more obnoxious when (if?) Config::Ini expires in December and
+someone else uses the namespace, meaning that the Config::INI stuff I've
+uploaded now seems related to random-cpan-author's Config::ini.
+
+That happened to me in the past.  I uploaded HTML::Widget::{Factory,Plugin} and
+not HTML::Widget.  HTML::Widget got used a little while later, and I ended up
+getting bug reports, and found it difficult to separate my product from the
+unrelated HTML::Widget in people's minds.
+ 
+> > I'd like to use App::Config for my long-sitting-around App::Config module,
+> > used by Rubric and other internal-to-(code (simply)) projects.  That one's
+> > uploaded by me, but the name is registered to ABW.
+> 
+> Are you sure that you want App::Config, considering that there's a well
+> known AppConig?
+
+While AppConfig is in some ways well known, I don't think confusion is likely
+to result.  App::Config is the natural (I think) way to parse the spoken phrase
+"Install App Config," and in writing it is clear.  I don't think AppConfig is
+very well known outside the Big CPAN Echo Chamber.  I think its primary role,
+these days, is to be a prereq of Template-Toolkit.
+
+Meanwhile, App::Config fits in with App::Cmd, and App::Deploy (under
+development but presented at PPW).  I could rename it App::Cfg or something, I
+suppose, but that seems unnecessarily ugly to me.
+
+-- 
+rjbs

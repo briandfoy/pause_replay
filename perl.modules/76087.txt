@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:76087
+Return-Path: <smueller@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29219 invoked from network); 15 May 2011 21:01:18 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 15 May 2011 21:01:18 -0000
+Received: (qmail 18231 invoked by uid 225); 15 May 2011 21:01:18 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18223 invoked by alias); 15 May 2011 21:01:18 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=RCVD_IN_DNSWL_NONE
+X-Spam-Check-By: la.mx.develooper.com
+Received: from caiajhbdcbbj.dreamhost.com (HELO homiemail-a24.g.dreamhost.com) (208.97.132.119)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 15 May 2011 14:01:16 -0700
+Received: from homiemail-a24.g.dreamhost.com (localhost [127.0.0.1])
+	by homiemail-a24.g.dreamhost.com (Postfix) with ESMTP id 943042C806C;
+	Sun, 15 May 2011 14:01:12 -0700 (PDT)
+Received: from [192.168.1.38] (212-182-132-170.ip.telfort.nl [212.182.132.170])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: catch-all@steffen-mueller.net)
+	by homiemail-a24.g.dreamhost.com (Postfix) with ESMTPSA id EE54F2C806B;
+	Sun, 15 May 2011 14:01:11 -0700 (PDT)
+Message-ID: <4DD03F15.2000304@cpan.org>
+Date: Sun, 15 May 2011 23:01:09 +0200
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.15) Gecko/20110419 Thunderbird/3.1.9
+MIME-Version: 1.0
+To: Tim Bergsma <bergsmat@gmail.com>
+CC: modules@perl.org
+Subject: Re: installer utils for third-party application
+References: <BANLkTimDyLV9SY0aX6eKinHbkaboGLeymw@mail.gmail.com>
+In-Reply-To: <BANLkTimDyLV9SY0aX6eKinHbkaboGLeymw@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: smueller@cpan.org (Steffen Mueller)
+
+Hi Tim,
+
+On 05/09/2011 04:22 PM, Tim Bergsma wrote:
+> I wrote/maintain a perl-based thing named NMQual
+> (http://nmqual.googlecode.com).  It creates value-added installations
+> of NONMEM(r), a licensed fortran program for fitting nonlinear mixed
+> effects models.
+>
+> One problem I have is that my scripts don't know unambiguously where
+> to find my subroutines (usually a .pm file in same directory).  "use
+> lib $FindBin::Bin;" seems to be guessing, and "rewriting" the scripts
+> on an installation-specific basis seems to be a hack.
+>
+> It occurred to me that perhaps I should communicate my routines
+> through CPAN, and let perl just find them on @INC.  If that is a good
+> idea, please comment on appropriate module name.
+>
+> Googling "nmqual" returns a first page with all-appropriate hits.
+> Should I consider NMQual (Nmqual?) as a top-level namespace?  More
+> than half my routines are convenience abstractions, borrowing heavily
+> from File::Spec.  A large chunk implements patching with context-style
+> diffs in a platform neutral way (relies on Text::Patch) so that I
+> don't have to worry about Windows users not having the system patch
+> utility (although I may have to worry about ActivePerl users not
+> finding my package).
+
+sorry for the super-long delay. modules@perl.org is *mostly* for 
+administrative issues around modules and the CPAN. Though we do try to 
+give advice, there's only a few of us admins. Generally speaking, you 
+will receive more feedback on discussion lists such as 
+module-authors@perl.org or forums such as Perlmonks or Stackoverflow.
+
+That being said, since this sounds like an application rather than a 
+module, you could use App::NMQual (with whatever casing of NMQual). In 
+the CPAN distribution that you'd create for it, you would put the 
+executable into the bin/ or scripts subdirectory and point the build 
+tools at that directory. See the EXE_FILES option in the 
+ExtUtils::MakeMaker documentation, for example. Those scripts will the 
+be installed into some directory within PATH on normal unixlike systems.
+
+Best regards,
+Steffen

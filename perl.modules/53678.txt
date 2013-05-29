@@ -1,0 +1,129 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53678
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26785 invoked from network); 23 Mar 2007 05:45:58 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 23 Mar 2007 05:45:58 -0000
+Received: (qmail 30521 invoked by uid 225); 23 Mar 2007 05:45:58 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30513 invoked by alias); 23 Mar 2007 05:45:57 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 22 Mar 2007 22:45:49 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by franz.ak.mind.de (8.13.8/8.13.8/Debian-2) with ESMTP id l2N5inMO020554;
+	Fri, 23 Mar 2007 06:44:49 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.8/8.13.8/Submit) id l2N5im3s020553;
+	Fri, 23 Mar 2007 06:44:48 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Gavin Carr <gavin@openfusion.com.au>
+Cc: modules@perl.org
+Subject: Re: FW: Failed: PAUSE indexer report GAVINC/Nagios-Plugin-0.16.tar.gz
+References: <20070322223235.GB7411@openfusion.com.au>
+Reply-To: modules@perl.org
+Date: Fri, 23 Mar 2007 06:44:48 +0100
+In-Reply-To: <20070322223235.GB7411@openfusion.com.au> (Gavin Carr's message
+	of "Fri\, 23 Mar 2007 09\:32\:35 +1100")
+Message-ID: <873b3w1pkf.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Fri, 23 Mar 2007 09:32:35 +1100, Gavin Carr <gavin@openfusion.com.au> said:
+
+  > Status: Successfully indexed
+  > ============================
+
+  >      module: Nagios::Plugin::Config
+  >     version: undef
+  >     in file: Nagios-Plugin-0.16/lib/Nagios/Plugin/Config.pm
+  >      status: indexed
+
+This means that the module Nagios::Plugin::Config now is known to have
+the $VERSION = "undef":
+
+Using the cpan shell I see:
+
+cpan[4]> m Nagios::Plugin
+Module id = Nagios::Plugin
+    CPAN_USERID  GAVINC (Gavin Carr <gavin@openfusion.com.au>)
+    CPAN_VERSION 0.15
+    CPAN_FILE    G/GA/GAVINC/Nagios-Plugin-0.15.tar.gz
+    UPLOAD_DATE  2006-12-18
+    INST_FILE    (not installed)
+
+
+cpan[5]> m Nagios::Plugin::Config
+Module id = Nagios::Plugin::Config
+    CPAN_USERID  GAVINC (Gavin Carr <gavin@openfusion.com.au>)
+    CPAN_VERSION undef
+    CPAN_FILE    G/GA/GAVINC/Nagios-Plugin-0.16.tar.gz
+    UPLOAD_DATE  2007-03-22
+    INST_FILE    (not installed)
+
+
+
+  > <snip>
+
+  > ------------------------------------------------------------------------
+
+
+  > The Nagios::Plugin version number failure, specifically. Version 0.15 contained:
+
+  >   our $VERSION = "0.15";
+
+  > Version 0.16 contains:
+
+  >   our $VERSION = $Nagios::Plugin::Functions::VERSION;
+
+Which means that whoever is looking at only this single file cannot
+determine its version.
+
+  > which we've changed because we just want to maintain a single version
+  > number for the set, and N::P::Functions is the lowest level package.
+
+Just to state the obvious: Humans tend to expect that in a package
+called Nagios-Plugin-X.YZ.tar.gz they will find a module
+Nagios::Plugin with the version number X.YZ. This is not necessarily
+the case though. In your current package they find Nagios::Plugin
+version "undef" or, depending how they try to find out the version
+number, some numerical version. If they only look at the file
+Nagios/Plugin.pm, they find out nothing, if they let perl look with
+'use Nagios::Plugin;' and everything is setup correctly, they find
+0.16. If something went wrong and they have an older N:P:Functions
+installed, they find that older version.
+
+  > So also:
+  > - what's the status of this upload now, if the main module failed to index?
+
+PAUSE has no concept of a main module. It has found at least one file
+that was either new or had an not decreasing version number and
+indexed it.
+
+  > - what are my options for fixing this (or getting this fixed)?
+
+Give all files a version number higher than the one that is most
+recent according to the indexer. Make it so that the version is
+contained in the first $VERSION assignement. You are not required to
+ever update a version number but your users will certainly expect that
+you make Nagios/Plugin.pm contain the same version as the one in the
+tarball. Feel free to keep all other files at arbitrary version
+numbers (but higher than what they already have reached at some point
+in time.
+
+You might also want to read the file
+ftp://ftp.perl.org/pub/CPAN/modules/04pause.html available from any
+cpan mirror or click on "About PAUSE" when logged into PAUSE.
+
+
+-- 
+andreas

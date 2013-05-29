@@ -1,0 +1,133 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:72088
+Return-Path: <xiong-cpan@xuefang.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 17698 invoked from network); 26 Jul 2010 10:11:20 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 26 Jul 2010 10:11:20 -0000
+Received: (qmail 20008 invoked by uid 225); 26 Jul 2010 10:11:19 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20002 invoked by alias); 26 Jul 2010 10:11:19 -0000
+X-Spam-Status: No, hits=1.6 required=8.0
+	tests=RCVD_IN_BRBL_LASTEXT
+X-Spam-Check-By: la.mx.develooper.com
+Received: from explorer.x10premium.com (HELO explorer.x10premium.com) (69.175.6.90)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 26 Jul 2010 03:11:17 -0700
+Received: from netblock-68-183-253-30.dslextreme.com ([68.183.253.30])
+	by explorer.x10premium.com with esmtpsa (SSLv3:AES256-SHA:256)
+	(Exim 4.69)
+	(envelope-from <xiong-cpan@xuefang.com>)
+	id 1OdKeL-0002Dv-Vq
+	for modules@perl.org; Mon, 26 Jul 2010 06:11:10 -0400
+Subject: Re: RFC: Smart::Comments::Any
+Reply-To: xiong@cpan.org
+To: modules <modules@perl.org>
+In-Reply-To: <250720100941246434%brian.d.foy@gmail.com>
+References: <1279958850.25359.169.camel@oz>
+	 <250720100941246434%brian.d.foy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: JAPH
+Date: Mon, 26 Jul 2010 03:11:07 -0700
+Message-ID: <1280139067.25359.178.camel@oz>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: quoted-printable
+X-x10premium-MailScanner-Information: Please contact the ISP for more information
+X-x10premium-MailScanner-ID: 1OdKeL-0002Dv-Vq
+X-x10premium-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
+X-x10premium-MailScanner-SpamCheck: 
+X-x10premium-MailScanner-From: xiong-cpan@xuefang.com
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - explorer.x10premium.com
+X-AntiAbuse: Original Domain - perl.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - xuefang.com
+X-Old-Spam-Status: No
+Approved: news@nntp.perl.org
+From: xiong-cpan@xuefang.com (Xiong Changnian)
+
+On Sun, 25 Jul 2010 09:41:24 -0500, brian d foy wrote:
+
+> Why fork and choose a different name? Could you incorporate your work
+> into the current Smart::Comments?
+
+I considered that. The short answer is: That was my first idea. Please=20
+check out the module at http://xuefang.com/perl/ and compare its code
+and POD with Vanilla. If you still feel the same way, I'd like to know.=20
+
+
+On Sat, 24 Jul 2010 01:07:30 -0700, Xiong Changnian wrote:
+
+> The more I rewrote, the less appropriate
+> this seemed to me. ... I've emailed current maintainer.
+
+I don't say 'inappropriate'. When I started work, I thought it was a=20
+trivial hack best submitted to current maintainer (CHORNY) as a patch. I
+committed to compatibility; '::Any' can be used exactly like Vanilla=20
+S::C. Currently, it passes all tests shipped with Vanilla 1.0.4=20
+(modified, of course, to load ::Any instead).=20
+
+Turned out that the work to be done was non-trivial. Vanilla prints
+smart output from different places and in different ways. The issue
+arose: What exactly is the scope of a use() of this module? If it is
+used with different args, how does it maintain state?=20
+
+Not to commit /l=C3=A8se majest=C3=A9/, I found the code itself hard going.=
+=20
+
+    "...almost every maintainability issue is, by itself, marginal.=20
+     It=E2=80=99s  only collectively that subtleties, clevernesses, and=20
+     esoterica begin to sabotage comprehensibility."    --PBP p165
+
+I have broken out a lot of compact code and added a large number of
+plain old dumb comments. I've changed many identifiers. My code may be
+too verbose. Diffs to Vanilla are starting not to make sense.=20
+
+The issues interact. I did not find any way to shoehorn state into some=20
+routines without rewriting them. I could not untangle some idioms
+without introducing a new variable, possibly caller-dependent. Adding
+$state_of($caller_id) to most subroutine calls meant that long lines
+became longer; named parameters made them longer still. Then breaking
+the long lines caused other issues.=20
+
+This process of rewriting is only going to continue as I implement=20
+features, eliminate bugs, and improve stability. So far, I speak only of
+fully compatible versions. But compatibility is a straitjacket and I can
+see the possibility of a 2.0 release that would not be a drop-in=20
+replacement for Vanilla 1.0.4.=20
+
+Meanwhile, although the current maintainer is, so far, silent, the=20
+original author, Damian Conway, has weighed in:
+[http://www.perlmonks.org/?node_id=3D851245]. He favors 'Devel::Comments',
+as does another PerlMonk.=20
+
+
+Brian, you *have* put your finger on the key point. If I release my
+work=20
+under a new name, any choice will please some devs and annoy others.
+The=20
+only choice which requires a different process is submission as=20
+Smart::Comments 1.1.0.=20
+
+Personally, I'm leaning (today) toward 'Smart::Comments::File'. I don't=20
+feel the 'Smart::' top level namespace was an ideal choice;
+'Devel::Comments' might have been more in line with general module
+naming conventions. But now, it may be unwise to put the current module
+anywhere except under 'Smart::Comments::'. This is where devs will
+search.=20
+
+I feel the code I've worked on is good and the stuff waiting to go in is
+better. It will be much better still if I can solicit comment and=20
+incorporate suggestions. I need to pick a name, so I can point to the=20
+work in progress. http://xuefang.com/perl/ is a clumsy workaround.=20
+
+Please let me emphasize that my opinions on the name issue carry no=20
+weight. The determining opinions are of developers who may want to use=20
+the new/upgraded module.=20
+
+--=20
+-Xiong
+

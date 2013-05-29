@@ -1,0 +1,101 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:39107
+Return-Path: <dbarth@idealx.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30929 invoked from network); 16 Mar 2005 15:47:59 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 16 Mar 2005 15:47:59 -0000
+Received: (qmail 32038 invoked by uid 225); 16 Mar 2005 15:47:58 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 32033 invoked by alias); 16 Mar 2005 15:47:58 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of dbarth@idealx.com designates 213.41.87.90 as permitted sender)
+Received: from sarajevo.idealx.com (HELO sarajevo.idealx.com) (213.41.87.90)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 16 Mar 2005 07:47:55 -0800
+Received: from localhost (sarajevo [127.0.0.1])
+	by sarajevo.idealx.com (IDEALX S.A.S Mail Daemon) with ESMTP id 071DD11DC78
+	for <modules@perl.org>; Wed, 16 Mar 2005 16:57:37 +0100 (CET)
+Received: from sarajevo.idealx.com ([127.0.0.1])
+	by localhost (sarajevo.idealx.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 22187-28 for <modules@perl.org>;
+	Wed, 16 Mar 2005 16:57:35 +0100 (CET)
+Received: from sniff.ird.idealx.com (sophia [213.41.87.89])
+	by sarajevo.idealx.com (IDEALX S.A.S Mail Daemon) with ESMTP id EBC2111DC77
+	for <modules@perl.org>; Wed, 16 Mar 2005 16:57:35 +0100 (CET)
+Received: (qmail 17845 invoked from network); 16 Mar 2005 16:44:00 -0000
+Received: from unknown (HELO [192.168.0.110]) ([192.168.0.110])
+          (envelope-sender <dbarth@idealx.com>)
+          by 0 (qmail-ldap-1.03) with SMTP
+          for <modules@perl.org>; 16 Mar 2005 16:44:00 -0000
+Message-ID: <4238552D.3070407@idealx.com>
+Date: Wed, 16 Mar 2005 16:47:57 +0100
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041207)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Help required to choose modules name
+X-Enigmail-Version: 0.90.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+Approved: news@nntp.perl.org
+From: dbarth@idealx.com (David Barth)
+
+Dear Perl meisters,
+
+Context:
+I've developped a library for managing plugins and extensions, with a
+model similar to the Eclipse platform.
+This library is already used in the IMC project (see
+http://imc.sourceforge.net/ ). You can find more information about IMC
+and the plugin framework in some slides I have presented in the past:
+http://www.idealx.org/prj/imc/dist/imc.pdf (or imc.swf for Flash users).
+
+For IMC, I've used the private IMC:: module namespace, knowing that I do
+not intend to maintain it on the CPAN in the near future.
+
+However, I've started extracting 2 modules that are not IMC specific:
+    * the plugin and extension framework (already uploaded as
+http://search.cpan.org/~dbarth/PXP-0.1.1/ )
+    * Struts4P : a port of Struts to Perl 5
+
+I intend to publish these modules on the CPAN so they can be more
+usefull to Perl developpers that don't need the full IMC environment
+(embeded Net::Server, Webmin connector, SQL log viewer module, LDAP
+account management, etc.).
+
+What is the best module name for a plugin and extension framework ?
+
+The plugin framework does not require that one inherits the base Plugin
+class : any CPAN module can be loaded and extended with this mechanism
+(thanks to Perl flexibility of course...) So it is sufficiently generic
+that it could just be :
+
+Plugin.pm
+Plugin/Extension.pm
+Plugin/ExtensionPoint.pm
+
+Or is PXP (Perl Xtensions & Plugins) a good name, knowing that it will
+pollute the top-level namespace with the PXP prefix ? Knowing also that
+this top-level PXP namespace will not be populated by PXP-based plugins,
+because precisely they do not and must not inherit the PXP::Plugin class.
+
+The question is a bit easier for Struts4P : it could go in
+HTTP::Struts4P as it relates to HTTP servers and requires other HTTP::*
+modules. It is not tied to Apache, so I don't want to use the Apache
+namespace.
+
+Is HTTP::Struts4P ok for you ?
+
+Thanks for any advice.
+
+-- 
+David Barth                | IDEALX - Le partenaire Open Source
+CTO - Directeur Technique  | de référence des grands comptes et
+Responsable des solutions  | administrations.
+Tél +33 (0) 1 44 42 00 00  | Consultez http://www.idealx.com/
+

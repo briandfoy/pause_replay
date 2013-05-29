@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3707
+Return-Path: <nate@west.sun.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20082 invoked from network); 28 Nov 2000 23:54:42 -0000
+Received: from mercury.sun.com (192.9.25.1)
+  by tmtowtdi.perl.org with SMTP; 28 Nov 2000 23:54:42 -0000
+Received: from westmail2.West.Sun.COM ([129.153.100.30])
+	by mercury.Sun.COM (8.9.3+Sun/8.9.3) with ESMTP id PAA13582
+	for <modules@perl.org>; Tue, 28 Nov 2000 15:54:41 -0800 (PST)
+Received: from matrix.West.Sun.COM (matrix.West.Sun.COM [129.153.51.97])
+	by westmail2.West.Sun.COM (8.9.3+Sun/8.9.3/ENSMAIL,v1.7) with ESMTP id PAA11415
+	for <modules@perl.org>; Tue, 28 Nov 2000 15:54:05 -0800 (PST)
+Received: from west.sun.com (localhost [127.0.0.1])
+	by matrix.West.Sun.COM (8.9.3+Sun/8.9.3) with ESMTP id PAA25373
+	for <modules@perl.org>; Tue, 28 Nov 2000 15:54:05 -0800 (PST)
+Sender: nwiger@matrix.West.Sun.COM
+Message-ID: <3A24459D.9253E65D@west.sun.com>
+Date: Tue, 28 Nov 2000 15:54:05 -0800
+X-Mailer: Mozilla 4.61 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Potential module - Module::Interface??
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: nate@west.sun.com (Nathan Wiger)
+
+Hey all-
+
+I've been thinking about this for a while. Even with all of the docs out
+there on how to construct a nice module, there's a lot of modules that
+have poor or inconsistent interfaces, which don't pass -T or even -w,
+and so on. So I was thinking: What if there was a Module::Interface that
+module authors could use to create simple, consistent modules so CPAN
+quality was potentially a little higher? Such a module might do
+something like:
+
+   1. provide a new() method that handled options
+      and subclass-able blessing
+
+   2. provide a config() method for dealing with
+      object and module option configs
+
+   3. provide easy hooks for hybrid modules that
+      need both function and OO hooks.
+
+   4. bundle certain tools that could validate
+      the "style" (indenting, etc) of a module
+      in at least rudimentary terms
+
+So, if I wanted to write a new module, I could just say:
+
+   use Module::Interface;
+
+at the top and my module would already be many steps towards providing
+proper blessing and configuration methods. Maybe error handling too.
+
+Anyone have any input on this? It seems like a simple module like this
+could potentially help CPAN. I tentatively chose the Module:: namespace
+because Module::Reload is in there, and this would be something just for
+use by other modules. Comments? Good idea? Bad idea?
+
+Cheers,
+Nate

@@ -1,0 +1,73 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4579
+Return-Path: <ben@rhumba.pair.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3893 invoked from network); 1 Mar 2001 08:49:05 -0000
+Received: from relay1.pair.com (209.68.1.20)
+  by tmtowtdi.perl.org with SMTP; 1 Mar 2001 08:49:05 -0000
+Received: (qmail 21668 invoked from network); 1 Mar 2001 08:48:34 -0000
+Received: from ignition-gw.customer.dsl.alter.net (HELO ?10.100.100.31?) (206.66.205.2)
+  by relay1.pair.com with SMTP; 1 Mar 2001 08:48:34 -0000
+X-pair-Authenticated: 206.66.205.2
+User-Agent: Microsoft-Outlook-Express-Macintosh-Edition/5.02.2022
+Date: Thu, 01 Mar 2001 00:46:44 -0800
+Subject: Namespace registration: IO::Buffer
+To: <modules@perl.org>
+Message-ID: <B6C34C74.8032%ben@rhumba.pair.com>
+Mime-version: 1.0
+Content-type: text/plain; charset="US-ASCII"
+Content-transfer-encoding: 7bit
+Approved: news@nntp.perl.org
+From: ben@rhumba.pair.com (Benjamin Trott)
+
+Hi--
+
+My CPAN ID is BTROTT. I'd like to contribute the following module to CPAN:
+
+Name         DSLI   Description                          Info
+---------------------------------------------------------------
+IO::Buffer   bdp0   Read/write string buffering class.   BTROTT
+
+IO::Buffer is used within Net::SSH::Perl to manage string buffers in packets
+sent between client and server. It has general purpose applicability, so I
+thought it might be useful to others.
+
+Below you'll find some of the POD.
+
+bye,
+Benjamin Trott
+
+
+=head1 NAME
+
+IO::Buffer - Read/write buffer class
+
+=head1 SYNOPSIS
+
+    use IO::Buffer;
+    my $buffer = IO::Buffer->new;
+
+    ## Add a 32-bit integer.
+    $buffer->put_int32(10932930);
+
+    ## Get it back.
+    my $int = $buffer->get_int32;
+
+=head1 DESCRIPTION
+
+I<IO::Buffer> implements a low-level binary buffer in which
+you can get and put integers, strings, and other data.
+Internally the implementation is based on C<pack> and C<unpack>,
+such that I<IO::Buffer> is really a layer on top of those
+built-in functions.
+
+All of the I<get_*> and I<put_*> methods respect the
+internal offset state in the buffer object. This means
+that, for example, if you call I<get_int16> twice in a
+row, you can be ensured that you'll get the next two
+16-bit integers in the buffer. You don't need to worry
+about the number of bytes a certain piece of data takes
+up, for example.
+

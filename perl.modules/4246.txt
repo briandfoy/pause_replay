@@ -1,0 +1,130 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4246
+Return-Path: <rfrancis@mindspring.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4590 invoked from network); 17 Jan 2001 02:01:38 -0000
+Received: from johnson.mail.mindspring.net (207.69.200.177)
+  by tmtowtdi.perl.org with SMTP; 17 Jan 2001 02:01:38 -0000
+Received: from mindspring.com (user-33qt8fc.dialup.mindspring.com [199.174.161.236])
+	by johnson.mail.mindspring.net (8.9.3/8.8.5) with ESMTP id VAA31407
+	for <modules@perl.org>; Tue, 16 Jan 2001 21:01:34 -0500 (EST)
+Message-ID: <3A64FCD0.CF866F7E@mindspring.com>
+Date: Tue, 16 Jan 2001 20:00:48 -0600
+X-Mailer: Mozilla 4.5 [en] (WinNT; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: SHA on solaris8
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: rfrancis@mindspring.com (Rick Francis)
+
+tried to compile this with gcc and solaris cc for egd/gpg, any ideas why
+this is failing?
+what is this for: CCCDLFLAGS = -KPIC
+
+thank you. rf
+
+Script started on Tue Jan 16 13:54:32 2001
+#make clean
+rm -rf SHA.c ./blib Makefile.aperl blib/arch/auto/SHA/extralibs.all
+perlmain.c mon.out core so_locations pm_to_blib *~ */*~ */*/*~ *.o *.a
+perl.exe SHA.bs SHA.bso SHA.def SHA.exp
+mv Makefile Makefile.old > /dev/null 2>&1
+#perl Makefile.PL
+Checking if your kit is complete...
+Looks good
+Writing Makefile for SHA
+Warning: overwriting endian.h
+Do you want to use the original SHA or the new standard SHA-1?
+Enter 0 for the original or 1 for the new standard. [1]
+#echo $CC
+/usr/bin/cc
+#more Makefile
+# This Makefile is for the SHA extension to perl.
+#
+# It was generated automatically by MakeMaker version
+# 5.4302 (Revision: 1.222) from the contents of
+# Makefile.PL. Don't edit this file, edit Makefile.PL instead.
+#
+#       ANY CHANGES MADE HERE WILL BE LOST!
+#
+#   MakeMaker ARGV: ()
+#
+#   MakeMaker Parameters:
+
+#       NAME => q[SHA]
+#       OBJECT => q[SHA$(OBJ_EXT) sha_func$(OBJ_EXT)]
+#       VERSION_FROM => q[SHA.pm]
+#       realclean => { FILES=>q[endian.h] }
+
+# --- MakeMaker post_initialize section:
+
+
+# --- MakeMaker const_config section:
+
+# These definitions are from config.sh (via
+/usr/perl5/5.00503/sun4-solaris/Conf
+
+# They may have been overridden via Makefile.PL or on the command line
+AR = ar
+CC = cc
+CCCDLFLAGS = -KPIC
+CCDLFLAGS = -R /usr/perl5/5.00503/sun4-solaris/CORE
+DLEXT = so
+DLSRC = dl_dlopen.xs
+LD = cc
+LDDLFLAGS = -G
+LDFLAGS =
+LIBC = /lib/libc.so
+LIB_EXT = .a
+OBJ_EXT = .o
+OSNAME = solaris
+OSVERS = 2.8
+RANLIB = :
+SO = so
+EXE_EXT =
+
+
+# --- MakeMaker constants section:
+#make
+mkdir blib
+mkdir blib/lib
+mkdir blib/arch
+mkdir blib/arch/auto
+mkdir blib/arch/auto/SHA
+mkdir blib/lib/auto
+mkdir blib/lib/auto/SHA
+mkdir blib/man3
+cp sha_driver.pl blib/lib/sha_driver.pl
+cp SHA.pod blib/lib/SHA.pod
+cp SHA.pm blib/lib/SHA.pm
+AutoSplitting blib/lib/SHA.pm (blib/lib/auto/SHA)
+/usr/perl5/5.00503/bin/perl -I/usr/perl5/5.00503/sun4-solaris
+-I/usr/perl5/5.00503 /usr/perl5/5.00503/ExtUtils/xsubpp  -typemap
+/usr/perl5/5.00503/ExtUtils/typemap -typemap typemap SHA.xs >xstmp.c &&
+mv xstmp.c SHA.c
+cc -c   -xO3 -xdepend    -DVERSION=\"1.2\" -DXS_VERSION=\"1.2\" -KPIC
+-I/usr/perl5/5.00503/sun4-solaris/CORE  SHA.c
+cc: unrecognized option `-KPIC'
+cc: language depend not recognized
+cc: SHA.c: linker input file unused since linking not done
+cc -c   -xO3 -xdepend    -DVERSION=\"1.2\" -DXS_VERSION=\"1.2\" -KPIC
+-I/usr/perl5/5.00503/sun4-solaris/CORE  sha_func.c
+cc: unrecognized option `-KPIC'
+cc: language depend not recognized
+cc: sha_func.c: linker input file unused since linking not done
+Running Mkbootstrap for SHA ()
+chmod 644 SHA.bs
+LD_RUN_PATH="" cc -o blib/arch/auto/SHA/SHA.so  -G SHA.o sha_func.o
+cc: SHA.o: No such file or directory
+cc: sha_func.o: No such file or directory
+cc: No input files
+make: *** [blib/arch/auto/SHA/SHA.so] Error 1
+
+script done on Tue Jan 16 13:55:09 2001
+
+

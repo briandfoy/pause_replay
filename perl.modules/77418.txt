@@ -1,0 +1,262 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:77418
+Return-Path: <toddr@cpanel.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 5914 invoked from network); 22 Aug 2011 23:01:52 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 22 Aug 2011 23:01:52 -0000
+Received: (qmail 20295 invoked by uid 225); 22 Aug 2011 23:01:52 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20291 invoked by alias); 22 Aug 2011 23:01:51 -0000
+X-Spam-Status: No, hits=-2.3 required=8.0
+	tests=HTML_MESSAGE,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mx1.cpanel.net (HELO mx1.cpanel.net) (208.74.121.68)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 22 Aug 2011 16:01:48 -0700
+Received: from ng1.cptxoffice.net ([208.74.121.102] helo=[10.1.4.99])
+	by mx1.cpanel.net with esmtps (TLSv1:AES128-SHA:128)
+	(Exim 4.69)
+	(envelope-from <toddr@cpanel.net>)
+	id 1QvdV1-0002Id-5q; Mon, 22 Aug 2011 18:01:43 -0500
+Mime-Version: 1.0 (Apple Message framework v1244.3)
+Content-Type: multipart/alternative; boundary="Apple-Mail=_85F521A7-080C-4B08-A380-539008FB9C06"
+Subject: Fwd: cpan out of sync with 5.14 (Exporter)
+Date: Mon, 22 Aug 2011 18:01:41 -0500
+References: <AF487321-F4F3-411A-BEE3-87B627168228@cpanel.net>
+Cc: modules@perl.org
+To: Jesse Vincent <jesse@fsck.com>
+Message-ID: <46C82DB9-92BA-40BE-8A72-A37A84D8B8F6@cpanel.net>
+X-Mailer: Apple Mail (2.1244.3)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - mx1.cpanel.net
+X-AntiAbuse: Original Domain - perl.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - cpanel.net
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: toddr@cpanel.net (Todd Rinaldo)
+
+--Apple-Mail=_85F521A7-080C-4B08-A380-539008FB9C06
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=us-ascii
+
+Jesse,
+
+I show "P5P" as the owner of Exporter. Adriano was unresponsive in May =
+when I emailed about updating it. As p5p is the maintainer, would you be =
+up for giving me co-maint bits to help get this up to date?
+
+Thanks,
+Todd
+
+=
+https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=3Dme&pause9=
+9_peek_perms_query=3DExporter&pause99_peek_perms_sub=3DSubmit
+
+
+Begin forwarded message:
+
+> From: Todd Rinaldo <toddr@cpanel.net>
+> Subject: Re: cpan out of sync with 5.14
+> Date: May 18, 2011 5:22:39 PM CDT
+> To: Steffen Mueller <smueller@cpan.org>, Adriano Ferreira =
+<a.r.ferreira@gmail.com>
+> Cc: Perl Porters <perl5-porters@perl.org>
+>=20
+>=20
+> On May 18, 2011, at 5:09 PM, Steffen Mueller wrote:
+>=20
+>> On 05/18/2011 11:41 PM, Todd Rinaldo wrote:
+>>> Data-Dumper and Exporter are newer in perl 5.14 that what is on =
+CPAN.
+>>> I show p5p as maintainer for both. Are there plans to release these
+>>> to CPAN?
+>>=20
+>> Have you checked the diff? I am semi-confident that that will =
+implicitly answer your question. If not, poke me for a DD release and =
+Adriano for an Exporter release.
+>>=20
+>> --Steffen
+>=20
+> Adriano,=20
+>=20
+> Exporter too has had some changes since 5.12 which have not made it up =
+to CPAN:
+>=20
+> $>git log --stat v5.12.0..v5.14.0 lib/Exporter*
+> commit 9bac1559a4f8ca714c2348d199ad2a13c4477b0b
+> Author: Steffen Mueller <smueller@cpan.org>
+> Date:   Sat Jul 3 17:07:06 2010 +0200
+>=20
+>    Exporter version bump
+>=20
+>    After being modified by 9b86bb5cacfb65a283299b005919058f8a61701a.
+>=20
+> lib/Exporter.pm |    2 +-
+> 1 files changed, 1 insertions(+), 1 deletions(-)
+>=20
+> commit 9b86bb5cacfb65a283299b005919058f8a61701a
+> Author: Todd Rinaldo <toddr@cpanel.net>
+> Date:   Sat Jul 3 15:32:08 2010 +0200
+>=20
+>    Fix RT #74472 Exporter.pm blocks Signal handling
+>=20
+>    Exporter.pm overrides SIG{__WARN__}. This means It's not possible =
+to
+>    write a test to trap warning events for this error. Since all the =
+line
+>    seems to do is make the warning more verbose, I suggest it not be =
+done
+>    if someone has defined a custom signal. At the moment =
+Test::NoWarnings
+>    cannot trap these warnings because of this.
+>=20
+> lib/Exporter.pm |    2 +-
+> 1 files changed, 1 insertions(+), 1 deletions(-)
+>=20
+> commit 2d7e78b1bd24d3af5881f95a996405c9c11b1d59
+> Author: Nicholas Clark <nick@ccl4.org>
+> Date:   Thu Jun 17 15:21:24 2010 +0100
+>=20
+>    Avoid creating @EXPORT_FAIL in every package using Exporter.
+>=20
+>    Previously, if package INKLE_KLINK is an Exporter, then the =
+Exporter code's
+>    symbolic lookup of \@{"INKLE_KLINK::EXPORT_FAIL"} would cause both =
+that array
+>    and the enclosing typeglob to be instantiated. Now the typeglob and =
+array are
+>    only created if present. (Strictly, if there's something in =
+INKLE_KLINK's
+>    symbol table for EXPORT_FAIL. But likely that will only ever be the =
+array.)
+>=20
+>    This saves about 200 bytes per package that uses Exporter but does =
+not need an
+>    @EXPORT_FAIL.
+>=20
+> lib/Exporter.pm |   11 +++++++----
+> 1 files changed, 7 insertions(+), 4 deletions(-)
+>=20
+
+
+
+
+
+
+
+
+--Apple-Mail=_85F521A7-080C-4B08-A380-539008FB9C06
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=us-ascii
+
+<html><head></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space; =
+">Jesse,<div><br></div><div>I show "P5P" as the owner of Exporter. =
+Adriano was unresponsive in May when I emailed about updating it. As p5p =
+is the maintainer, would you be up for giving me co-maint bits to help =
+get this up to =
+date?</div><div><br></div><div>Thanks,</div><div>Todd<br><div><br></div><d=
+iv><a =
+href=3D"https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=3Dm=
+e&amp;pause99_peek_perms_query=3DExporter&amp;pause99_peek_perms_sub=3DSub=
+mit">https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=3Dme&a=
+mp;pause99_peek_perms_query=3DExporter&amp;pause99_peek_perms_sub=3DSubmit=
+</a></div><div><br><div><br><div>Begin forwarded message:</div><br =
+class=3D"Apple-interchange-newline"><blockquote type=3D"cite"><div =
+style=3D"margin-top: 0px; margin-right: 0px; margin-bottom: 0px; =
+margin-left: 0px;"><span style=3D"font-family:'Helvetica'; =
+font-size:medium; color:rgba(0, 0, 0, 1.0);"><b>From: </b></span><span =
+style=3D"font-family:'Helvetica'; font-size:medium;">Todd Rinaldo &lt;<a =
+href=3D"mailto:toddr@cpanel.net">toddr@cpanel.net</a>&gt;<br></span></div>=
+<div style=3D"margin-top: 0px; margin-right: 0px; margin-bottom: 0px; =
+margin-left: 0px;"><span style=3D"font-family:'Helvetica'; =
+font-size:medium; color:rgba(0, 0, 0, 1.0);"><b>Subject: =
+</b></span><span style=3D"font-family:'Helvetica'; =
+font-size:medium;"><b>Re: cpan out of sync with =
+5.14</b><br></span></div><div style=3D"margin-top: 0px; margin-right: =
+0px; margin-bottom: 0px; margin-left: 0px;"><span =
+style=3D"font-family:'Helvetica'; font-size:medium; color:rgba(0, 0, 0, =
+1.0);"><b>Date: </b></span><span style=3D"font-family:'Helvetica'; =
+font-size:medium;">May 18, 2011 5:22:39 PM CDT<br></span></div><div =
+style=3D"margin-top: 0px; margin-right: 0px; margin-bottom: 0px; =
+margin-left: 0px;"><span style=3D"font-family:'Helvetica'; =
+font-size:medium; color:rgba(0, 0, 0, 1.0);"><b>To: </b></span><span =
+style=3D"font-family:'Helvetica'; font-size:medium;">Steffen Mueller =
+&lt;<a href=3D"mailto:smueller@cpan.org">smueller@cpan.org</a>&gt;, =
+Adriano Ferreira &lt;<a =
+href=3D"mailto:a.r.ferreira@gmail.com">a.r.ferreira@gmail.com</a>&gt;<br><=
+/span></div><div style=3D"margin-top: 0px; margin-right: 0px; =
+margin-bottom: 0px; margin-left: 0px;"><span =
+style=3D"font-family:'Helvetica'; font-size:medium; color:rgba(0, 0, 0, =
+1.0);"><b>Cc: </b></span><span style=3D"font-family:'Helvetica'; =
+font-size:medium;">Perl Porters &lt;<a =
+href=3D"mailto:perl5-porters@perl.org">perl5-porters@perl.org</a>&gt;<br><=
+/span></div><br><div><br>On May 18, 2011, at 5:09 PM, Steffen Mueller =
+wrote:<br><br><blockquote type=3D"cite">On 05/18/2011 11:41 PM, Todd =
+Rinaldo wrote:<br></blockquote><blockquote type=3D"cite"><blockquote =
+type=3D"cite">Data-Dumper and Exporter are newer in perl 5.14 that what =
+is on CPAN.<br></blockquote></blockquote><blockquote =
+type=3D"cite"><blockquote type=3D"cite">I show p5p as maintainer for =
+both. Are there plans to release =
+these<br></blockquote></blockquote><blockquote type=3D"cite"><blockquote =
+type=3D"cite">to CPAN?<br></blockquote></blockquote><blockquote =
+type=3D"cite"><br></blockquote><blockquote type=3D"cite">Have you =
+checked the diff? I am semi-confident that that will implicitly answer =
+your question. If not, poke me for a DD release and Adriano for an =
+Exporter release.<br></blockquote><blockquote =
+type=3D"cite"><br></blockquote><blockquote =
+type=3D"cite">--Steffen<br></blockquote><br>Adriano, <br><br>Exporter =
+too has had some changes since 5.12 which have not made it up to =
+CPAN:<br><br>$&gt;git log --stat v5.12.0..v5.14.0 =
+lib/Exporter*<br>commit =
+9bac1559a4f8ca714c2348d199ad2a13c4477b0b<br>Author: Steffen Mueller =
+&lt;<a =
+href=3D"mailto:smueller@cpan.org">smueller@cpan.org</a>&gt;<br>Date: =
+&nbsp;&nbsp;Sat Jul 3 17:07:06 2010 +0200<br><br> =
+&nbsp;&nbsp;&nbsp;Exporter version bump<br><br> &nbsp;&nbsp;&nbsp;After =
+being modified by 9b86bb5cacfb65a283299b005919058f8a61701a.<br><br> =
+lib/Exporter.pm | &nbsp;&nbsp;&nbsp;2 +-<br> 1 files changed, 1 =
+insertions(+), 1 deletions(-)<br><br>commit =
+9b86bb5cacfb65a283299b005919058f8a61701a<br>Author: Todd Rinaldo &lt;<a =
+href=3D"mailto:toddr@cpanel.net">toddr@cpanel.net</a>&gt;<br>Date: =
+&nbsp;&nbsp;Sat Jul 3 15:32:08 2010 +0200<br><br> &nbsp;&nbsp;&nbsp;Fix =
+RT #74472 Exporter.pm blocks Signal handling<br><br> =
+&nbsp;&nbsp;&nbsp;Exporter.pm overrides SIG{__WARN__}. This means It's =
+not possible to<br> &nbsp;&nbsp;&nbsp;write a test to trap warning =
+events for this error. Since all the line<br> &nbsp;&nbsp;&nbsp;seems to =
+do is make the warning more verbose, I suggest it not be done<br> =
+&nbsp;&nbsp;&nbsp;if someone has defined a custom signal. At the moment =
+Test::NoWarnings<br> &nbsp;&nbsp;&nbsp;cannot trap these warnings =
+because of this.<br><br> lib/Exporter.pm | &nbsp;&nbsp;&nbsp;2 +-<br> 1 =
+files changed, 1 insertions(+), 1 deletions(-)<br><br>commit =
+2d7e78b1bd24d3af5881f95a996405c9c11b1d59<br>Author: Nicholas Clark =
+&lt;<a href=3D"mailto:nick@ccl4.org">nick@ccl4.org</a>&gt;<br>Date: =
+&nbsp;&nbsp;Thu Jun 17 15:21:24 2010 +0100<br><br> =
+&nbsp;&nbsp;&nbsp;Avoid creating @EXPORT_FAIL in every package using =
+Exporter.<br><br> &nbsp;&nbsp;&nbsp;Previously, if package INKLE_KLINK =
+is an Exporter, then the Exporter code's<br> &nbsp;&nbsp;&nbsp;symbolic =
+lookup of \@{"INKLE_KLINK::EXPORT_FAIL"} would cause both that array<br> =
+&nbsp;&nbsp;&nbsp;and the enclosing typeglob to be instantiated. Now the =
+typeglob and array are<br> &nbsp;&nbsp;&nbsp;only created if present. =
+(Strictly, if there's something in INKLE_KLINK's<br> =
+&nbsp;&nbsp;&nbsp;symbol table for EXPORT_FAIL. But likely that will =
+only ever be the array.)<br><br> &nbsp;&nbsp;&nbsp;This saves about 200 =
+bytes per package that uses Exporter but does not need an<br> =
+&nbsp;&nbsp;&nbsp;@EXPORT_FAIL.<br><br> lib/Exporter.pm | &nbsp;&nbsp;11 =
++++++++----<br> 1 files changed, 7 insertions(+), 4 =
+deletions(-)<br><br></div></blockquote></div><br><div>
+<div style=3D"word-wrap: break-word; -webkit-nbsp-mode: space; =
+-webkit-line-break: after-white-space; "><div><br></div><div><a =
+href=3D"http://bootcamp.cpanel.net/"></a><br></div><div><br></div></div><b=
+r class=3D"Apple-interchange-newline"><br =
+class=3D"Apple-interchange-newline">
+</div>
+<br></div></div></body></html>=
+
+--Apple-Mail=_85F521A7-080C-4B08-A380-539008FB9C06--

@@ -1,0 +1,103 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:55238
+Return-Path: <brian.d.foy@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3293 invoked from network); 5 Jul 2007 19:37:22 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 5 Jul 2007 19:37:22 -0000
+Received: (qmail 6833 invoked by uid 225); 5 Jul 2007 19:37:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6826 invoked by alias); 5 Jul 2007 19:37:21 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,DKIM_POLICY_SIGNSOME,DK_POLICY_SIGNSOME,SPF_NEUTRAL
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: 63.251.223.186 is neither permitted nor denied by domain of brian.d.foy@gmail.com)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Thu, 05 Jul 2007 12:37:14 -0700
+Received: (qmail 2295 invoked by uid 515); 5 Jul 2007 19:30:29 -0000
+To: modules@perl.org
+Subject: Re: No first-come for Parrot::Configure::Data
+Date: Thu, 05 Jul 2007 14:30:34 -0500
+Reply-To: modules@perl.org
+Message-ID: <050720071430347929%brian.d.foy@gmail.com>
+References: <020720071620353062%brian.d.foy@gmail.com> <877ipif6if.fsf@k75.linux.bogus>
+Organization: Perl Authors Upload Server
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+User-Agent: Thoth/1.7.2 (Carbon/OS X)
+X-Posted-By: 24.148.86.38
+Approved: news@nntp.perl.org
+From: brian.d.foy@gmail.com (brian d foy)
+
+In article <877ipif6if.fsf@k75.linux.bogus>, (Andreas J. Koenig)
+<andreas.koenig.7os6VVqR@franz.ak.mind.de> wrote:
+
+> >>>>> On Mon, 02 Jul 2007 16:20:35 -0500, brian d foy <brian.d.foy@gmail.com>
+> >>>>> said:
+> 
+>   > I'm cleaning up the Parrot distribution and couldn't find a first-come
+>   > owner for Parrot::Configure::Data. I want to transfer that to PARROTRE
+>   > as the primary maintainer.
+> 
+>   > Is there a way that I can do that, or is it a manual intervaention in
+>   > the database?
+> 
+> I think not much has changed since I wrote this?
+>
+
+
+[quoted from earlier message:]
+
+> I have an explanation for Parrot::Configure::Data. The indexer trips
+> over the line
+> 
+>     if ( $Data::Dumper::VERSION =~ /([\d.]+)/ ) {
+
+I've submitted a patch to the parrot folks for this, but I'll explain
+it here too in case anyone else comes along with the same problem.
+(And, as I finished typing this, Bernhard tells me it's applied in
+r19621).
+
+The Parrot::Configure::Data module wants to create a method that uses
+Data::Dumper to pretty-print some data. If Data::Dumper has Sortkeys(),
+they want to use that, and not use it otherwise.
+
+In the current code, they use a kludge to look at the version number
+and later use the version number to decide what to do. This is broken
+in many ways:
+
+   * It failed on my box because I used a Perl that had a development
+   version of Data::Dumper (so it has an _ in it), even though my DD
+   has Sortkeys
+
+   * A greater version number does not say anything about the interface.
+
+   * On a grander scale, it breaks polymorphism. So what if it isn't DD
+   as long as it acts like it is? Mock objects would have to futz with
+   $Data::Dumper::VERSION too.
+
+Now, there are a couple of ways to fix this so PAUSE and Makemaker
+don't confuse themselves.
+
+   * Don't access global variables! Use the method call syntax
+   (Module->VERSION) if you can!
+
+   * Don't use the version number at all. Check for the particular
+   feature you want directly. In this case, I patched it by calling
+   can() to check for the method I wanted:
+
+      if( defined eval { Data::Dumper->can( 'Sortkeys' ) } )
+
+This doesn't fix the situation in PAUSE though. When the next distro is
+uploaded, everything should be fine and the indexer will be happy. It's
+probably not worth it to fix the current distro by uploading under a
+different name and repairing the pending upload because most people
+probably work right out of the SVN sandbox.
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+archives at http://www.xray.mpe.mpg.de/mailing-lists/modules
+please send all messages back to modules@perl.org

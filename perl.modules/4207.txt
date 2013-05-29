@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4207
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27519 invoked from network); 13 Jan 2001 15:33:50 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 13 Jan 2001 15:33:50 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id QAA17652;
+	Sat, 13 Jan 2001 16:33:39 +0100
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: "Richard Anderson" <starfire@zipcon.net>
+Cc: <andreas.koenig@anima.de>, <modules@perl.org>
+Subject: Re: MakeMaker question
+References: <033101c062c5$f06d2ce0$700ff93f@adcom133>
+	<m31yvgkp2t.fsf@ak-71.mind.de>
+	<037e01c062f3$4140bab0$700ff93f@adcom133>
+	<m3zoi26n44.fsf@ak-71.mind.de>
+	<02f101c07cb6$21a334d0$650ff93f@adcom133>
+Reply-To: modules@perl.org
+Date: 13 Jan 2001 16:33:39 +0100
+In-Reply-To: "Richard Anderson"'s message of "Fri, 12 Jan 2001 08:38:40 -0800"
+Message-ID: <m3puhrfovg.fsf@ak-71.mind.de>
+Lines: 42
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Fri, 12 Jan 2001 08:38:40 -0800, "Richard Anderson" <starfire@zipcon.net> said:
+
+ > O.K., here's how I think it should work:
+ > The Makefile.PL has a postamble subroutine that adds an additional step to
+ > "make install" that installs the http-webtest directory in /usr/local/etc.
+
+ > There is a Bourne shell script called "configure", to be run BEFORE "perl
+ > Makefile.PL", that prompts the user for where he/she wants to install the
+ > http-webtest directory.  If the desired location is not /usr/local/etc, the
+ > shell script modifies the Makefile.PL using sed.
+
+ > Sounds good?  The alternative is to have the "make install" step prompt the
+ > user for the location of the directory, but this seems non-standard to me
+ > and would be more difficult for me to program.
+
+Nope, one of the axioms of distributing software is that no
+distributed file ever modifies itself. It must be reproducable for the
+innocent user what happens, what has happened so far and there should
+always be a simple way to reestablish the state of all files as they
+were when the distribution was unpacked (this shouldn't need another
+untar).
+
+So among the possible solutions would be that the Makefile.PL itself
+runs a dialog with the user to find out the installation directory,
+e.g. [untested, off the top of my head]:
+
+use ExtUtils::MakeMaker qw(prompt);
+use File::Spec;
+my $default = "/usr/local/etc/webtest"; # or whatever
+my $instdir = prompt "Where should your foobar files be stored permanently?", $default;
+
+sub MY::postamble {
+    sprintf qq{install :: %s\n\t\${CP} %s %s},
+        File::Spec->catfile("etc", "permfile.txt"),
+        File::Spec->catfile("etc", "permfile.txt"),
+        File::Spec->catfile($instdir, "permfile.txt");
+}
+
+
+Hope that helps,
+-- 
+andreas

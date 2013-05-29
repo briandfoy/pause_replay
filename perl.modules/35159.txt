@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:35159
+Return-Path: <steve@fink.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20120 invoked from network); 25 Sep 2004 22:31:30 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 25 Sep 2004 22:31:30 -0000
+Received: (qmail 29487 invoked by uid 225); 25 Sep 2004 22:31:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29478 invoked by alias); 25 Sep 2004 22:31:29 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from uswest-dsl-142-101.cortland.com (HELO kevin.fink.com) (209.162.142.101)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Sat, 25 Sep 2004 15:31:28 -0700
+Received: from steve (helo=fink.com)
+	by kevin.fink.com with local-esmtp (Exim 3.36 #1 (Debian))
+	id 1CBL4e-00065e-00
+	for <modules@perl.org>; Sat, 25 Sep 2004 15:31:24 -0700
+Date: Sat, 25 Sep 2004 15:31:23 -0700
+To: modules@perl.org
+Subject: Instant messaging client support lib (Net::IMClient?)
+Message-ID: <20040925223123.GA3363@kevin.fink.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.6+20040722i
+Approved: news@nntp.perl.org
+From: steve@fink.com (Steve Fink)
+
+I have written a support library for creating daemons that send and
+receive commands via IM networks. Well, sorta -- at the moment, I only
+have a Jabber backend, but the library is split up into fairly general
+IM daemon management and protocol-specific support.
+
+The working name is Net::IMClient for the general module, and
+Net::IMClient::Jabber for the jabber support. I suppose I could use
+'XMPP' rather than 'Jabber' in the name, but apart from that, is this a
+good space? 'IMClient' seems a bit clunky, and oddly is normally (but
+not always) used to implement daemons. The "client" in the name is
+because they are always clients in the instant messaging protocol sense,
+which is independent from the sense of the functionality they implement.
+
+I think I'm confusing things here, so allow me a few examples to
+demonstrate.
+
+I have written a simple command-line jabber message sending script using
+these libraries. My libs provide a thin wrapper over Net::Jabber for
+this purpose, but I want to mention it because it's the simplest use of
+the libs.
+
+I have also hacked my tinderbox installation to use Jabber as the build
+box -> tinderbox server protocol in place of email. So I have a
+"tinderserve" subclass of Net::IMClient which waits for build status
+messages from the build boxes. It also accepts commands from regular
+users via IM -- things like "let me know if a build breaks", "what
+commands do you support", etc. It is this sort of usage that is the
+whole point of the library. The build boxes themselves use the library
+to send out their build status messages. I am also experimenting with
+making them listen for IM commands that would allow users to change
+their configuration, force a 'make clean', etc.
+
+I have a few other uses (most notably as the core piece of a distributed
+test framework's architecture), but I think the tinderbox example best
+illustrates what this is all about.
+
+I'm not sure if Net:: is even the right top-level namespace, since I do
+very little actual protocol manipulation; nearly everything goes through
+the Net::Jabber API.
+
+TIA,
+Steve
+

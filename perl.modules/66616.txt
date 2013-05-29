@@ -1,0 +1,217 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:66616
+Return-Path: <chris@u-club.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 19697 invoked from network); 11 Jul 2009 18:59:57 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 11 Jul 2009 18:59:57 -0000
+Received: (qmail 15207 invoked by uid 225); 11 Jul 2009 18:59:57 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15202 invoked by alias); 11 Jul 2009 18:59:56 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail.uscreen.net (HELO mail.uscreen.net) (62.67.233.10)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 11 Jul 2009 11:59:51 -0700
+Received: from localhost (unknown [127.0.0.1])
+	by mail.uscreen.net (Postfix) with ESMTP id C1BBAE5387A
+	for <modules@perl.org>; Sat, 11 Jul 2009 20:59:46 +0200 (CEST)
+X-Virus-Scanned: by kasperskyAV and clamAV at mail.uscreen.net
+Received: from mail.uscreen.net ([127.0.0.1])
+	by localhost (mail.uscreen.net [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id k+BlIZhauaKc for <modules@perl.org>;
+	Sat, 11 Jul 2009 20:59:46 +0200 (CEST)
+Received: from [192.168.24.88] (unknown [78.94.39.77])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.uscreen.net (Postfix) with ESMTP id 6DB3CE53878
+	for <modules@perl.org>; Sat, 11 Jul 2009 20:59:46 +0200 (CEST)
+Message-ID: <4A58E121.1030800@u-club.de>
+Date: Sat, 11 Jul 2009 20:59:45 +0200
+User-Agent: Mozilla-Thunderbird 2.0.0.19 (X11/20090103)
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: [Fwd: Net::Server::Mail::ESMTP::AUTH] BUG
+X-Enigmail-Version: 0.95.0
+Content-Type: multipart/mixed;
+ boundary="------------050803000100060708060607"
+Approved: news@nntp.perl.org
+From: chris@u-club.de (Christoph Rudorff)
+
+--------------050803000100060708060607
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hello list!
+
+I'm cc this to u ... the Net::Server::Mail::ESMTP::AUTH was made in 2004,
+the only bug report is from 2007 ... no one cares :(
+
+regards
+
+chris
+
+-------- Original-Nachricht --------
+Betreff: Net::Server::Mail::ESMTP::AUTH
+Datum: Sat, 27 Jun 2009 18:24:32 +0200
+Von: Christoph Rudorff <chris@u-club.de>
+An: scresto@gmail.com
+
+Hi Sylvain!
+
+Some years ago u made the Net::Server::Mail::ESMTP::AUTH Module?
+http://search.cpan.org/~scresto/Net-Server-Mail-ESMTP-AUTH-0.1/AUTH.pm
+
+I've been looking for you. Your email address on cpan seems to be outdated ;)
+
+There is that long outstanding bug:
+
+http://rt.cpan.org/Public/Bug/Display.html?id=36226
+
+The bug reporter is wrong: AUTH PLAIN works, AUTH LOGIN is broken.
+
+I had to fix it because my client uses that: patch attached.
+Also I added some lines to the example in the documentation.
+
+Please fix and upload that on cpan!
+
+Keep on the hacking!
+
+greetz from Germany
+
+chris
+
+
+
+--------------050803000100060708060607
+Content-Type: text/x-diff;
+ name="fix.smtp-auth.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="fix.smtp-auth.patch"
+
+commit e5fc552300d589c5ba056c4a07ff0a9d1cd4d5d0
+Author: chris <chris@ rudorff com>
+Date:   Fri Jun 26 19:16:41 2009 +0200
+
+    fix Net::Server::Mail::ESMTP::AUTH LOGIN
+
+diff --git a/lib/perl5/Net/Server/Mail/ESMTP/AUTH.pm b/lib/perl5/Net/Server/Mail/ESMTP/AUTH.pm
+index f87c106..29d9e4d 100644
+--- a/lib/perl5/Net/Server/Mail/ESMTP/AUTH.pm
++++ b/lib/perl5/Net/Server/Mail/ESMTP/AUTH.pm
+@@ -6,7 +6,7 @@ use base qw(Net::Server::Mail::ESMTP::Extension);
+ use MIME::Base64;
+ 
+ use vars qw( $VERSION );
+-$VERSION = '0.1';
++$VERSION = '0.1.1';
+ 
+ =pod
+ 
+@@ -29,6 +29,7 @@ support for SMTP Authentification with Net::Server::Mail::ESMTP module
+ 
+     # adding AUTH handler
+     $esmtp->set_callback(AUTH => \&validate_auth);
++    $esmtp->set_callback(DATA => \&queue_message);
+     $esmtp->process;
+   }
+ 
+@@ -38,6 +39,7 @@ support for SMTP Authentification with Net::Server::Mail::ESMTP module
+ 
+     if ($username eq 'ROBERT' and $password eq 'TOTO04') {
+       # AUTH SUCCESFULL
++      $session->{AUTH}->{ok} = 1;
+       return 1;
+     } else {
+       # AUTH FAILED
+@@ -45,9 +47,24 @@ support for SMTP Authentification with Net::Server::Mail::ESMTP module
+     }
+   }
+ 
++sub queue_message {
++    my($session, $data) = @_;
++
++    # providing AUTH doesn't make it mandatory.
++    # A client might not use AUTH at all!
++    # You must deal now with permissions:
++
++    unless ($session->{AUTH}->{ok}) {
++        # warn "no AUTH supplied!";
++        return(0, 530, 'Error: Authentication required');
++    }
++    ... do stuff
++}
++
+ =head1 FEATURES
+-* AUTH LOGIN method support
+-* AUTH PLAIN method support
++
++  * AUTH LOGIN method support
++  * AUTH PLAIN method support
+ 
+ =head1 DESCRIPTION
+ 
+@@ -93,7 +110,7 @@ sub process_authlogin_username
+ 	$self->{AUTH}->{password} = '';
+ 	$self->reply(334, "UGFzc3dvcmQ6");
+ 	$self->next_input_to(\&process_authlogin_password);
+-	return 1;
++	return ();
+ }
+ 
+ sub process_authlogin_password
+@@ -101,8 +118,7 @@ sub process_authlogin_password
+ 	my ($self, $operation) = @_;
+ 	$self->{AUTH}->{password} = decode_base64($operation);
+ 
+-	exec_auth_callback($self);
+-	return 1;
++	return exec_auth_callback($self);
+ }
+ 
+ sub exec_auth_callback
+@@ -120,8 +136,10 @@ sub exec_auth_callback
+ 
+ 	if ($authok) {
+ 		$self->reply(235, "Authentification successful.");
++		return ();
+ 	} else {
+  		$self->reply(535, "Authentification failed.");
++		return 1;
+ 	}
+ }
+ 
+@@ -145,12 +163,11 @@ sub process
+ 		} else {
+ 			$self->{AUTH}->{username} = $plaindata[@plaindata-2];
+ 			$self->{AUTH}->{password} = $plaindata[@plaindata-1];
+-			exec_auth_callback($self);
+-			return ();
++			return exec_auth_callback($self);
+ 		}
+ 	} elsif ($operation eq 'LOGIN') {
+ 		$param=decode_base64($param);
+-		warn " ==> LOGIN ==> $param\n";
++		# warn " ==> LOGIN ==> $param\n";
+ 		$self->reply(334, "VXNlcm5hbWU6");
+ 		$self->next_input_to(\&process_authlogin_username);
+ 		return ();
+@@ -176,6 +193,10 @@ Sylvain Cresto E<lt>tost@softhome.netE<gt>
+ 
+ Please send bug-reports to tost@softhome.net.
+ 
++=head1 VERSION
++
++0.1.1 06/26/2009 fixed AUTH LOGIN -- chr <chris at u- club.de>
++
+ =head1 LICENCE
+ 
+ This library is free software; you can redistribute it and/or modify
+
+
+
+--------------050803000100060708060607--

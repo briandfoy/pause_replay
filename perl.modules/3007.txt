@@ -1,0 +1,843 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3007
+Return-Path: <m.munari@nextra.it>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12837 invoked from network); 4 Oct 2000 12:27:02 -0000
+Received: from hh02.nextra.it (HELO nb.mar) (130.186.40.10)
+  by tmtowtdi.perl.org with SMTP; 4 Oct 2000 12:27:02 -0000
+Received: (from mar@localhost)
+	by nb.mar (8.11.0/8.11.0) id e94CQUG02619;
+	Wed, 4 Oct 2000 14:26:30 +0200
+X-Authentication-Warning: nb.mar: mar set sender to m.munari@nextra.it using -f
+Sender: mar@nb.mar
+To: modules@perl.org
+Subject: SQLI (SQL Interface)
+Organization: not very much
+Date: 04 Oct 2000 14:26:29 +0200
+Message-ID: <ywmem1wdc7e.fsf@nb.mar>
+Lines: 96
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="=-=-="
+Approved: news@nntp.perl.org
+From: mar@cf.nettuno.it (Marco Munari)
+
+
+I made an ambitious module to interact with database engines,
+with the optional capabylity to enclose sequence of operations in a single
+transaction call with extremely versatile parameters.
+actually the module is in a file called SQLI.pm, it use DBI.pm
+
+SQLI
+
+it is a post alpha release (working and tested on Oracle and mysql),
+i think to clean it in the future and generalize it more,
+with public contribution/suggestions
+
+Maybe it'is too early to give you the module, so anyway i give you a
+signal about my developping state.
+
+
+I use the username MAR since '92 in generally (so if you can give me
+this username for cpan uploading, i preferre)
+
+I use perl after i discover awk limits since '94 :-)
+
+Thanks,
+
+All the best,
+MARco
+
+
+
+USAGE:
+
+use SQLI;
+
+$dbh=DBI->connect('DBI:mysql:test:localhost','mar','password');
+
+$sqlobj=new SQLI($dbh);
+
+%sh=$sqlobj->sql("select * from test");
+
+$a{nome}='Rolando';
+$a{eta}=22;
+
+%b=(ID=>3,
+    nome=>'Alessandro',
+    cognome=>'Munari',
+    eta=>24);
+
+
+sub anon {
+  %c=(ID=>5,
+      nome=>'Cristiano',
+      cognome=>'Munari',
+      eta=>60)
+};
+
+#the powerful sql engine can be used such as in this way:
+
+$sqlobj->sql
+  (#"create table test (id decimal,name varchar2(20),lname varchar2(30),age decimal);",
+   "INSERT into prova values (1,'Marco','Munari',27);",
+   "INSERT into prova values (2,'updateme','Munari',0);",
+   ";UPDATE prova",\%a,"WHERE","id=?",[2],
+   \&anon,
+   ";INSERT into prova",\%b,
+   ";INSERT into prova",\%c,
+   sub {%d=(ID=>5,name=>'Cristiano',lname=>'Munari',age=>60)},
+   ";INSERT into prova",\%d,
+   sub {
+     %where=(name=>'Cristiano',lname=>'Munari');
+     %auxsh=$sqlobj->sql("select id,age from prova where",\%where);
+     %e=(id=>$auxsh{ID}[0]+1,
+	 name=>'Francesca',
+	 lname=>'Ciresa',
+	 agw=>$auxsh{ETA}[0]-6);
+   },
+   ";INSERT into prova",\%e,
+);
+
+# the sql statement similar to the last use, can be pushed/sliced
+# into an array and the sql method can be called when  that sql
+# operation sequence  is defined and desired to be "executed" (note the
+# capability to pass a coderef in the parameter... to eventually
+# commit.
+
+
+%sh=$sqlobj->sql("select * from prova");
+
+foreach (keys %sh) {
+  print "\n$_:\t".join("\t",@{$sh{$_}});
+}
+
+
+--=-=-=
+Content-Type: application/octet-stream
+Content-Disposition: attachment; filename=SQLI.pm
+Content-Description: SQLI-0.08 module
+
+#Class SQLI;
+
+package SQLI;
+
+$rcs = ' $Id: SQLI.pm,v 0.8 2000/10/04 09:27:04 mar Exp mar $ ' ;
+$VERSION = do {my @r=($rcs=~/\.\d+|\d+\./g);sprintf '%d'.'.%02d' x $#r,@r};
+
+
+require Exporter;
+@ISA=qw(Exporter);
+@EXPORT=qw(sql associa);
+
+#was NextraSQL 1.1.1.4 (Questa versione di NextraSQL va considerata
+#abbandonata, mentre dalla versione 0.4 di SQLI si rimpiazza lo sviluppo)
+
+=head1 NAME
+
+SQLI - This package defines a wrapper for SQL based on DBI,
+ so i call it SQLI (SQL Interface)
+
+=head1 SYNOPSIS
+
+use SQLI;
+
+=head1 DESCRIPTION
+
+You will have not to know DBI to use perl and connecting to Oracle or
+mysql or other database [datatesters are wellcome...].
+Simply call these method to make queries on DB
+
+=head1 AUTHOR
+
+Marco Munari <mar\@cf.nettuno.it>
+
+=cut
+
+
+
+
+
+
+
+
+
+
+
+
+# use Nfx::Exception; #vvv... usarle effettivamente
+
+use DBI;
+use Carp;
+
+#define some vars
+BEGIN {
+  if ($main::local) {
+    print "Esecuzione di SQLI in locale\n";
+  } else {
+    use vars qw($VERSION @ISA);
+    @ISA = ('Exporter');
+    @EXPORT=qw(DateFormat DateFormatLength LongDateFormat LongDateFormatLength);
+    $DateFormat = 'FMDD/MM/FMRR';
+    $DateFormatLength = 8;
+    $LongDateFormat = 'FMDD/MM/FMRR HH24:MI';
+    $LongDateFormatLength = 14;
+    if (!$ENV{ORACLE_HOME}) {
+      $ENV{'ORACLE_HOME'}=#'/usr/local/dbase/oracle/product/7.3.3';
+       '/local/db/oracle/8.0.5/';
+    }
+    if (!$ENV{'TNS_ADMIN'}) {
+      $ENV{'TNS_ADMIN'}=#'/usr/local/dbase/oracle/product/7.3.3/network/admin/cineca';
+      '/local/db/oracle/8.0.5/network/admin/';
+    }
+    #  $ENV{TWO_TASK} = 'nextra.cineca' unless $ENV{TWO_TASK};
+  }
+}
+
+# TODO (idee)
+#  NextraSQL::autocommit='';
+#  NextraSQL::errore; stringa vuota se non c'e` errore
+#  NextraSQL::commit();
+
+
+
+
+
+=pod
+
+=head2 new
+
+Create a new sqli object
+
+Example:
+
+$dbh=DBI->connect('DBI:mysql:test:localhost','munari','password');
+$sqlobj=new SQLI($dbh);
+
+=cut
+
+#crerate a new object and connect to db
+sub new {
+  my $proto = shift;
+  my $class = ref($proto) || $proto;
+  my $secondarg = shift;
+
+  my $this={};
+  bless $this,$class;
+  $this->{AutoCommit}=0;	# a meno che sia specificata dall'utente
+    # error=>undef
+    #DBH=>undef,		# alloc riferimento a data base handle
+  #*dbh=*{"this->{DBH}"};
+  if (ref($secondarg) ne 'DBI::db') {
+    my $dbUser = $secondarg;
+    my $dbPwd = shift;
+    #my DBD::mysql
+    #$dbh = DBI->connect('DBI:mysql:workflow:localhost:3306',$dbUser,$dbPwd)
+    $this->{DBH} = DBI->connect('', $dbUser, $dbPwd, 'Oracle')
+      || die "Impossibile collegarsi al database ($DBI::errstr)"; # db handler
+    $this->{DBH}->{RaiseError} = 1;
+    die $DBI::errstr if $DBI::err;
+    #$dbh->{AutoCommit}=$this{AutoCommit};
+    #$this->{AutoCommit}=\$dbh->{AutoCommit}; # mantiene aggiornati i puntatori
+    $this->{DBH}->{LongReadLen} = 4 * 1024 * 1024;  # Up to 4 Megabyte
+    #$this->{DBH}
+    $this->{DBH}->{LongTruncOk} = 1;
+    $this->{DBH}->do ("alter session set NLS_DATE_FORMAT='$DateFormat'");
+    $this->{disconnect}=sub {$this->{DBH}->disconnect};	# serve la disconnect automatica, chiamata da destroy
+  } else {
+    $this->{DBH}=$secondarg;
+    $this->{disconnect}=sub {};	# dato che il dbh era esterno la disconnect va fatta all'esterno
+  }
+
+  print "\nDriverName=",$this->{DBH}->{Driver}->{Name} if $main::DEBUG;
+  $this->{AutoCommitMin}=1 if $this->{DBH}->{Driver}->{Name} =~ m/my?sql/;
+
+  return $this;
+}
+
+
+
+
+#sub DESTROY {
+#  $this=shift;
+#  &{$this->{disconnect}};
+#}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=pod
+
+
+=head2 sql
+
+Warning!-)
+This is a generalized function with generalized generic prototyped
+contextual parameters: each parameter can be a scalar/string, an array
+reference (such as: []), an hashref (such as: {key=>val,...}), or a
+coderef (such as: sub {}).
+
+In case it's an arrayref, the array content is fully joined into a
+string with comma separator (or it's passed to execute statment if we
+are in ? context), than all resulting strings are joined together with
+one space.  Moreover you can use the ";" character to separe multiple
+SQL instructions inside an atomic cycle (closed by a connect).
+
+Result type depends on the SQL instruction specified.
+
+A particular note for the SELECT instruction: when "SELECT" is
+specified, the result is an hash of array, the keys of hash are the
+column names, and the contents are arrayrefs to the content of the
+column readed by db program. The relation inside a classical database
+column "row", is so referred to a fixed index of the columns of the hash.
+Other SQL instructions return the number of the execute DBI operator.
+
+
+Examples:
+%selecthash=$sqlobj->sql("select",\@a,"from $scope.$table");
+
+$sqlobj->sql
+  ("UPDATE prova",\%a,
+   "WHERE","id=?",[2],
+   sub {%c=(ID=>4,nome=>'Mariacristina',cognome=>'Munari',eta=>29)},
+   ";insert into prova",\%b,
+   ";insert into prova",\%c);
+
+=cut
+
+
+
+
+
+
+my $sql_recursion=-1;
+my $use_puntididomanda=0;	#diventa vero quando si usano
+                                # molteplici "?" nella stringa sql
+
+sub sql {
+  my $this=shift;
+  my $dbh=$this->{DBH};
+
+  if (!ref $self =~m/SQLI/) {
+    ;
+  }
+
+  $sql_recursion++;
+
+  print "<p>sql Debuginfo: sto per eseguire:\n <blink>\"$sql\"</blink>\n" if $main::DEBUG>1;
+
+
+  local %HoA;
+  local $select=0;
+  local $count=0;
+  local @arrays=[];		# lista di un array vuoto... sempre da allargare
+  local $sql="";
+  local @sqls=();
+
+  sub esegui {
+    $sql=shift;
+    warn "esegui: sql statement void...",return if $sql=~m/^\s*$/s;
+    my @arrays=@_;			# gli array rimanenti
+    local $count;
+    eval {
+      print "<p> sql Debuginfo current:<br><b>\n  $sql\n</b><br>\n" if $main::DEBUG;
+      my $sth = $dbh->prepare($sql)
+	|| die "prepare: ($DBI::errstr)";
+      my @res=map {
+	$sth->execute(@{$_})
+	  || die "execute: ($DBI::errstr)";
+      } @arrays;
+      #my $sth = $dbh->do($sql)
+      #  || die "do: ($DBI::errstr)";
+      if ($sql=~s/^([\$\@][A-Za-z_\{\}\[\]0-9]+\s*=)*\s*SELECT/SELECT/is) {
+	#assegna ad una variabile
+	$evalprefix=$1;
+	$select=1;
+	print " operazione di select individuata!\n" if $main::DEBUG;
+	# $#sqlarr==0 || die "select in una transaction multipla";
+
+	if (0 and $sql =~ m/(FROM\s+DUAL\s*\Z)|(count\s*\(\*\).*(?!group\s+by)\Z)/is) { # 0 and ... => never
+	  $select=2;		# su tabella dual=> una sola riga, (array)
+	  @arr=$sth->fetchrow_array;
+	  if ($#arr==0) {
+	    $select=3;
+	    $scal=$arr[0];
+	    eval "\$$evalprefix \$scal"; # valuta, poi la variabile servira` al ciclo successivo
+	  } else {
+	    eval "\@$evalprefix \@arr";
+	  }
+	} else {		# always (true -> else executed)
+	  #$gruppistr=$1,$sql=~/group\s+by\s+(\w+(?:\s*,\s*\w+))/i;
+	  #$gruppi=split /\s*,\s*/,$gruppistr; # ritornera (hash di)+ di array
+	  while ( $hr = $sth->fetchrow_hashref ) {
+	    print " hr=",values %$hr,"\n" if $main::DEBUG>1;
+	    #@HoA{ keys %{$hr} } [$count++] = values %{$hr}; # verificare!
+	    ;
+	    foreach $i (keys %$hr) {
+	      push @{$HoA{uc($i)}},$hr->{$i}; # es. Oracle da uc per default,
+	      #  io forzo uc nella chiave nome di colonna per genericita`
+	    }
+	    $count++;
+	    #map { push @{$HoA{$_}},$hr->{$_} } keys %{$hr},$count++; #verify!
+	  }
+	}
+      } else {		#non select
+	$count=$res[$#res];
+      }
+      $sth->finish;
+    };# end eval  $dbh->commit;		# commit the changes if we get this far
+    if ($@) {
+      #throw;			# vvv gestione errori alla nemifix
+      print #"print SQLI:<br>".
+	"<b>\n$sql\n</b><br>SQLI Transaction aborted because $@" if $main::DEBUG;
+      @{$this->{err}}=$@;
+      warn "NextraSQL: Transaction aborted because $@";
+      $dbh->rollback;		# undo the incomplete changes
+      # add other application on-error-clean-up code here
+      $this{error}="$@";
+      throw  if $^W; # -w switch = use warnings, v. man perllexwarn
+    } else {
+      # esecuzione andata a buon fine: svuota le variabili sql
+      $sql="";			# l'eventuale prossima stringa va ricominciata
+      @SQLI::arrays=[];		# reinizializza l'array
+      $use_puntididomanda=0;	# un sql reiniziato non richiede ??
+    }
+    @{$this->{res}}=@res;
+    $this->{count}=$count;
+  }				# END sub esegui
+
+
+
+
+  print "sql Debuginfo: count=$count\n" if $main::DEBUG;
+
+  #possibile ottimizzazione... trattare diversamente $_[$#_]
+  #(L'ultimo parametro di tipo array se la query contiene "?"
+
+  $dbh->{AutoCommit} = $this->{AutoCommitMin};  # enable transactions, if possible
+  $dbh->{RaiseError} = 1;
+
+  foreach $par (@_) {
+    $tipopar=ref $par;
+    if ($tipopar eq 'CODE') {
+      esegui($sql,@arrays);
+      unless ($sql_recursion) {
+	&$par;
+	$par='';
+      } else {
+	$par=[&$par];
+      }
+ # valuta semplicemente il coderef... +vvv gestione errori
+      $tipopar=ref $par;
+    }
+    if ($tipopar eq 'ARRAY') {
+      if ($use_puntididomanda) {
+	map {push @$_,@$par} @arrays; # puscha il parametro array a tutti i precedenti
+	# $sql.=" ".join(", ",map "?",@$par);
+      } else {
+	$sql.=" ".join(", ",@$par);
+      }
+    } elsif ($tipopar eq 'HASH') {
+      $sql =~ /^\s*(INSERT|UPDATE)[^;]*$/is,$lastsqli=uc($1); # mi interessano solo queste due istruzioni
+      if ($lastsqli eq 'INSERT') {
+	$sql.=" (".join(", ",keys %$par).") values";
+	($pkey,$pval)=each %$par;
+	unless ($use_sqlstrings) {
+	  $sql.=" (".join(", ",map {"?"} keys %$par).")";
+	  warn join(' ',caller).
+	    ": \@arrays=(@arrays) dovrebbe essere vuoto!" if $#arrays;
+	  if (ref $pval ne 'ARRAY') {
+	    #@arrays=map {[@$_,values %$par]} @arrays;
+	    @v=values %$par;
+	    map {push @$_,@v} @arrays;
+	  } else {
+	    for ($i=0;$i<$#$pval;$i++) {
+	      @v=map {$_[$i]} values %$par;
+	      push @arrays,[@v];
+	    }
+	    #esegui($sql,@arrays,[map {$i=$_;(map {$_[$i]} values %$par)} 0..$#$pval]);
+	  }
+	} else {
+	  if (ref $pval ne 'ARRAY') {
+	    $sql.=" (".join(", ",[map {
+	      # $dbh->$quote->{$_} #was: 
+	      s/'+/''/g;"'$_'"
+	    } values %$par]).")";
+	  } else {
+	    for ($i=0;$i<$#$pval;$i++) { #$#$pval=numero elementi degli array
+	      $sql.=" (".
+		join(", ",map {
+		  # $dbh->$quote->{$_} #was: 
+		  local $_=$_[$i];s/'+/''/g;"'$_'"
+		} values %$par)
+		  .")";
+	    }
+	  }
+	}
+	esegui($sql,@arrays);
+      } else {
+	#simile a insert 
+	$sql.=" SET" if $lastsqli eq 'UPDATE' and $sql!~m/\sSET\s*$/i; # update set col1=val1 col2=val2
+        unless ($use_sqlstrings) {
+	  local @k=keys %$par;
+	  local @v=values %$par;
+	  @v=@{$v[$#v]} if ref $v[$#v] eq 'ARRAY'; # prende l'ultimo
+	  if ($lastsqli eq 'UPDATE') {
+	    $sql.=join(',',map {" $_=?"} @k);
+	  } elsif ($sql=~m/WHERE|HAVING/i) {
+	    $sql.=join('and',map {
+	      $v[$_]=~s/^(like|[<>]?=?)?(.*)/$2/i; # >= <= < > =
+	      " $k[$_]".($1||"=")."?" # restituisce l'espressione desiderata
+	    } (0..$#k));
+	  }
+	  $use_puntididomanda=1;
+	  map {push @$_,@v} @arrays;
+	  #foreach $a (@arrays) { push @$a,@v }; # map {($k[$_],$v[$_])} (0..$#k) };
+	  #push @arrays,[map {($k,$par{$k})} keys %$par];
+	  $enlarge_arrays=1;
+	  #$sql.=" ".join(", ",[map {"?=?"} keys %$par]);
+	  #dopo questo caso array va enlargato
+	} else {
+	  $sql.=" ".join(", ",[map {$k=$_;local $_=$par{$k};s/'+/''/g;"$k='$_'"} keys %$par]);
+	}
+      }
+    } elsif ($tipopar eq 'SCALAR' or !$tipopar) {
+      $par=$$par if $tipopar;	# eventualmente dereferenzia lo scalare
+      if ($par=~/[^']+(\s*\?){1,}[^']$/ and ~(($`=~/'/)&1)) { # una sequenza di "?" preceduto da un numero pari di apici singoli
+	if ($par=~/\?/) {
+	  $sqltmp=join(",",split(/\s*/,$par)); # separa da virgole
+	  $sqltmp=~s/^,+//;	#toglie le virgole di troppo iniziali
+	  $sqltmp=~s/,+$//;	# e finali
+	} else {
+	  $sqltmp=$par;
+	}
+	$sql.=$sqltmp;
+	$use_puntididomanda=1;
+      } else {
+	@sqls=#grep {$_}
+	  split(/\s*;\s*/s,$par);
+	if ($#sqls) {
+	  $sql.=splice @sqls,0,1;
+	  $sqlchoped=pop @sqls;
+	  esegui($sql,@arrays);
+	  $sql="";@arrays=[];$use_puntididomanda=0;
+	  foreach $sql (@sqls) {
+	    esegui($sql,@arrays); # relativo agli compresi tra i il secondo e il penultimo
+	  }
+	  $sql=$sqlchoped; # prende l'ultimo dato che potrebbe proseguire come stringa
+	} else {
+	  $sql.=" $par";
+	}
+      }
+    } else {
+      warn "sql: <<$par>> di tipo sconosciuto ($tipopar)";
+    }
+  } #was: $sql = (join(" ",map {join(", ",@{$_}?@{$_}:$_)} @_)); # converto in UC
+  #v rendere piu` furba l'istruzione precedente DONE:
+  #es. se un parametro e` una stringa come sequenza di N "????" allora dal primo parametro successivo che risulta essere un vettore di N elementi e` da assegnare a quei valori nell'execute... complicato, pensarci bene, eventualmente passare subroutine come parametro per eseguire in runtime la sequenza..
+  # @sqlarr = grep {$_ ne ''} split(/\s*;\s*/s,$sql);
+
+  esegui($sql,@arrays) if $sql;
+
+  unless ($sql_recursion) {
+    $use_puntididomanda=0;
+    $dbh->commit if $this->{AutoCommit};
+  }
+
+  $sql_recursion--;
+  if ($select==1) {
+    return %HoA;
+  } elsif ($select==2) {
+    return @arr;
+  } elsif ($select==3) {
+    return $scal;
+  } else {
+    return $this->{count};
+  }
+}				# END sub sql
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=pod
+
+=head2 %keys2vals=associa(\@keys,\@values);
+
+crea un hash di assiciazioni con le chiavi prese dal primo array ed i
+valori dai successivi array (che devono essere della misma dimensione)
+
+ es.  %hrows=associa($sh{nomecolB},$sh{nomecolJ})
+
+ %hrows = (
+   elB1 => elJ1,
+   elB2 => elJ2,
+  ...
+   elBN => elJN
+ )
+
+ %hrows = (
+   elB1 => [ elJ1, elK1, elL1 ],
+   elB2 => [ elJ2, elK2, elL2 ],
+  ...
+   elBN => [ elJN, elKN, elLN ]
+ )
+
+a partire da
+
+ %sh = (
+   nomecolA => [ elA1, elA2, ... , elAN ],
+   nomecolB => [ elB1, elB2, ... , elBN ],
+  ...
+   nomecolJ => [ elJ1, elJ2, ... , elJN ],
+   nomecolK => [ elK1, elK2, ... , elKN ],
+   nomecolL => [ elL1, elL2, ... , elLN ],
+  ...
+   nomecolZ => [ elZ1, elZ2, ... , elZN ]
+ )
+
+NB: se le colonne aggiuntive sono un singolo elemeto, l'associazione
+ sara` diretta a quel solo elemento e non all'array delle colonne scelte.
+
+adatta per sql
+
+=cut
+
+
+sub associa {
+  local $colbase = shift;
+  local $coldassociare = \@_;
+  my %hrows,$k;
+  my $N=$#$colbase; #numero di righe (prese da col qualsiasi)
+  #if ($#$coldassociare>0) {
+    for ($i=0;$i<=$N;$i++) {
+      $hrows{$colbase->[$i]}.="," if $hrows{$colbase->[$i]};
+      $hrows{$colbase->[$i]}
+	.=join( "\t", map { $$coldassociare[$_][$i] } (0..$#$coldassociare));
+    }
+  #} else {
+    #@hrows{@$colbase[0..$N]} = @{$$coldassociare[0]}[0..$N];
+  #}
+  return %hrows;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+=pod
+
+=head2 sql2 associa2 sql3 associa3
+
+riservate ed in fase di sviluppo
+
+=cut
+
+
+
+sub sql2 {
+  local %AoH;
+  local $select=0,$count=0;
+
+  #possibile ottimizzazione... trattare diversamente $_[$#_] (L'ultimo parametro di tipo array se la query contiene "?"
+  my $sql = (join(" ",map {join(", ",@{$_}?@{$_}:$_)} @_)); # converto in UC
+  @sqlarr = grep {$_ ne ''} split(/;/,$sql);
+
+  print "<p>sql2 Debuginfo: sto per eseguire:\n <blink>\"$sql\"</blink>\n" if $main::DEBUG and $#sqlarr;
+
+  $dbh->{AutoCommit} = 0;  # enable transactions, if possible
+  $dbh->{RaiseError} = 1;
+  eval {
+    foreach $sql (@sqlarr) {
+      print "<p>sql2 Debuginfo current:<br><b>\n  $sql\n</b><br>\n" if $main::DEBUG;
+      my $sth = $dbh->prepare($sql)
+	|| die "prepare: ($DBI::errstr)";
+      my $res = $sth->execute()
+	|| die "execute: ($DBI::errstr)";
+      #my $sth = $dbh->do($sql)
+      #  || die "do: ($DBI::errstr)";
+      if ($sql=~m/^\s*SELECT/im) {
+	$select=1;
+	print " operazione di select individuata!\n" if $main::DEBUG;
+	$#sqlarr==0 || die "select in una transaction multipla";
+	while ( $hr = $sth->fetchrow_hashref ) {
+	  print " hr=",values %{$hr},"\n" if $main::DEBUG;
+	  push @AoH,$hr;
+	  $count++;
+	}
+      } else {   #non select
+      }
+      $sth->finish;
+    }
+    $dbh->commit;   # commit the changes if we get this far
+  };
+  if ($@) {
+    print "print NextraSQL:<br><b>\n$sql\n</b><br>NextraSQL Transaction aborted because $@";
+    warn "NextraSQL: Transaction aborted because $@";
+    $dbh->rollback; # undo the incomplete changes
+    # add other application on-error-clean-up code here
+    die;
+  }
+  if ($select==1) {
+    print "sql2 Debuginfo: count=$count\n" if $main::DEBUG;
+    return $count,%AoH;
+  } else {
+    return $res;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+=pod
+
+
+=head2 select2aoa
+
+=head2 SELECT
+
+SELECT TABLE
+IN table names
+   column names
+   where conditions
+   order by clause
+OUT num row fetched
+    NOMOREhash array defining a grid that contains data fetched
+    arrayofarray insted.
+
+=cut
+
+sub select2aoa {			# diversa da select di NextraDBI..
+  local *RetHash = shift;
+  local *tables = shift;
+  local *columns = shift;
+  my $wheres = shift;
+  local *order_by = shift;
+
+  my ($count);
+
+  my $tabs = join(', ',@tables);
+  my $cols = join(', ',@columns);
+  my $orderby = join(', ',@order_by);
+
+  $wheres = qq{WHERE $wheres} if $wheres;
+  $orderby = qq{ORDER BY $orderby} if $orderby;
+
+  my $more_clause = qq{$wheres \n $orderby};
+
+  if ($main::DEBUG) {
+    die qq{
+    Messaggio di Debug... sto per eseguire: 
+     SELECT $cols
+       FROM $tabs
+     $more_clause};
+  }
+
+  my($sth) = $dbh->prepare(qq{
+     SELECT $cols
+       FROM $tabs
+     $more_clause
+   });
+  $sth->execute();
+  while ( my( @vals ) = $sth->fetchrow_hashref()) { # completamente rifatto
+    ${@RetHash{$sth->{NAMES}}} [$count++] = @vals;
+  }
+  $sth->finish;
+  return $count,*RetHash;
+}
+
+
+END {
+  if (defined $dbh) {
+    $dbh->disconnect;
+  } else {
+    #die "remove \"use SQLI\", you don't use it!";
+  }
+}
+
+1;
+
+# That's all
+
+
+=pod
+
+=head1 BUGS
+
+Contact the maintainer (Marco Munari <mar@cf.nettuno.it>)
+
+=head1 AUTHORS
+
+=over
+
+=item Marco Munari <m.munari@nextra.it>	Jul 2000
+
+=back
+
+by Marco Munari Jul2000 #~select, +sql, +associa.
+(C)All right reserved by Marco Munari
+
+=cut
+
+
+
+-- 
+x(t),y(t) = th(3t-34.5)*e^[-(3t-34.5)^2]/2-4.3+e^(-1.8/t^2)/(.8*atg(t-
+3)+2)(t-1.8)-.3th(5t-42.5),(1.4e^[-(3t-34.5)^2]+1-sgn[|t-8.5|-.5]*1.5*
+|sin(pi*t)|^[2e^(-(t-11.5)^2)+.5+e^(-(.6t-3.3)^2)])/(.5+t)+1  ; 0<t<14
+
+--=-=-=--

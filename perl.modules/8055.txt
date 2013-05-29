@@ -1,0 +1,86 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8055
+Return-Path: <sam@vilain.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7553 invoked from network); 5 Oct 2001 20:17:31 -0000
+Received: from host213-121-123-78.in-addr.btopenworld.com (HELO hoffman.vilain.net) (213.121.123.78)
+  by onion.valueclick.com with SMTP; 5 Oct 2001 20:17:31 -0000
+Received: from hoffman.vilain.net
+	([127.0.0.1] helo=hoffman ident=sam)
+	by hoffman.vilain.net with smtp (Exim 3.32 #1 (Debian))
+	id 15pXva-0001Wd-00
+	for <modules@perl.org>; Fri, 05 Oct 2001 17:34:22 +0100
+Date: Fri, 5 Oct 2001 17:34:18 +0100
+To: modules@perl.org
+Subject: PAUSE access request
+X-Mailer: Sylpheed version 0.6.1 (GTK+ 1.2.10; i386-debian-linux-gnu)
+X-Face: NErb*2NY4\th?$s.!!]_9le_WtWE'b4;dk<5ot)OW2hErS|tE6~D3errlO^fVil?{qe4Lp_m\&Ja!;>%JqlMPd27X|;b!GH'O.,NhF*)e\ln4W}kFL5c`5t'9,(~Bm_&on,0Ze"D>rFJ$Y[U""nR<Y2D<b]&|H_C<eGu?ncl.w'<
+Mime-Version: 1.0
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ boundary="=.6v6t8NdK7RhEJa"
+Message-ID: <E15pXva-0001Wd-00@hoffman.vilain.net>
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: sam@vilain.net (Sam Vilain)
+
+--=.6v6t8NdK7RhEJa
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+Hi there.
+
+My name is Sam Vilain, I've been programming Perl for about 3 years and
+now it's time for me to start putting things back.  
+
+The first module I'm going to contribute is called Class::Tangram, which
+acts as a base class for Tangram persistent objects.  You place the
+section of the Tangram schema particular to each object within the package
+scope as $Object::schema, run Class::Tangram::import_schema("Object"), and
+then you get:
+
+   - Object->new(field => value) style constructor
+   - $o->set_field(value) field updating methods (implemented via
+     AUTOLOAD)
+   - $o->get_field() accessors (also aliased as $o->field())
+   - $o->clear_refs, which explicitly breaks any references in attributes,
+     empties Set::Object containers, etc.
+
+The set_field method performs simple type checking, so eg you can't set an
+int to a string, or a "ref" to a non-blessed object.
+
+It also extends the tangram schema specification by allowing you to
+specify, for each attribute, a "check_func" (a CODE ref that is called
+with the argument as first parameter and dies if there is a problem)
+and an "init_default" (either a basic data type that is used as a default
+or a code ref returing the default).
+
+In this respect, it is somewhat similar to Class::Contract, but you get
+the ability to store the objects in an RDBMS via Tangram instantly.  In
+fact, I will eventually try to roll support for this into Class::Contract.
+
+I would like to use the PAUSE id of SAMV.
+
+Cheers,
+--
+   Sam Vilain, sam@vilain.net     WWW: http://sam.vilain.net/
+    7D74 2A09 B2D3 C30F F78E      GPG: http://sam.vilain.net/sam.asc
+    278A A425 30A9 05B5 2F13
+
+Hi, I'm a .signature virus!  Copy me into your ~/.signature, please!
+
+--=.6v6t8NdK7RhEJa
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.6 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iEYEARECAAYFAju94Q4ACgkQpCUwqQW1LxM7MACcD1WEHcLFWkcuXsmR2S5KD0xY
+RdEAoM+TnsCMUCirXXP4QfAI3f/TiQk1
+=0pup
+-----END PGP SIGNATURE-----
+
+--=.6v6t8NdK7RhEJa--
+

@@ -1,0 +1,131 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:54069
+Return-Path: <at@altlinux.ru>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19133 invoked from network); 20 Apr 2007 05:38:34 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 20 Apr 2007 05:38:34 -0000
+Received: (qmail 26890 invoked by uid 225); 20 Apr 2007 05:38:34 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26886 invoked by alias); 20 Apr 2007 05:38:33 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from master.altlinux.org (HELO master.altlinux.org) (62.118.250.235)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 19 Apr 2007 22:38:25 -0700
+Received: from solemn.turbinal (localhost.localdomain [127.0.0.1])
+	by master.altlinux.org (Postfix) with ESMTP
+	id 3A89BE367A; Fri, 20 Apr 2007 09:38:18 +0400 (MSD)
+Received: by solemn.turbinal (Postfix, from userid 500)
+	id 8F1D435A958; Fri, 20 Apr 2007 09:38:17 +0400 (MSD)
+Date: Fri, 20 Apr 2007 09:38:17 +0400
+To: modules@perl.org, rjray@blackperl.com
+Subject: Perl-RPM-1.50 unofficial release
+Message-ID: <20070420053817.GP5165@solemn.turbinal>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="z4D23EFnZpzTzcHd"
+Content-Disposition: inline
+Approved: news@nntp.perl.org
+From: at@altlinux.ru (Alexey Tourbin)
+
+--z4D23EFnZpzTzcHd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+I have prepared Perl-RPM-1.50 (unofficial) release, and I am looking for
+a way to upload it on CPAN.  Unfortunately, the original Perl-RPM
+author, Randy J. Ray, was not quite willing to pass Perl-RPM maintenance
+to me (which was discussed last year, also on modules@perl mailing list).
+
+Now I argue that my effort is perfectly reasonable and sane.  The code
+has not been updated for almost 5 years.  In fact, it cannot be even
+compiled with (not-so-)recent rpm versions.
+
+Here is the changelog entry for Perl-RPM-1.50.
+I hope it is self-explaining and actually convincing.
+
+--- a/ChangeLog
++++ b/ChangeLog
+@@ -1,5 +1,60 @@
+ Revision history for Perl extension RPM.
+=20
++1.50	Fri Apr 20 2007
++
++	Maintenance taken over by Alexey Tourbin <at@altlinux.org>.  This
++	is not quite an official release but I hope I can upload it to CPAN.
++
++	This release has been tested on ALT Linux Sisyphus (rpm-4.0.4) and
++	Fedora Core 6 (rpm-4.4.2).
++
++	The version has been bumped up to 1.50 to match RPM.pm $VERSION.
++
++	This release includes about 100 changes from the previous version
++	0.40, which was released almost 5 years ago.  All known bugs and
++	memory leaks has been fixed; the code has been updated for recent
++	rpm-4.4 versions [rt.cpan.org #3930, #8710], as well as cleaned up
++	and simplified.
++
++	Detailed list of changes since version 0.40 is available at
++	http://git.altlinux.org/people/at/packages/?p=3Dperl-RPM.git;a=3Dsummary
++
++	The most important changes are as follows.
++
++	Many memory leaks have been fixed, including lack of headerFree()
++	in rpmdb_FETCH().  New file t/09_leaks.t implements tests for memory
++	leaks (requires Devel::Leak module).  [rt.cpan.org #12120]
++
++	RPM::Database caching layer was dropped, because of unacceptable
++	memory usage for database traversal.  However, due to Berkeley DB
++	caching facilities, which is used by RPM, the overall performance
++	seems much smoother.
++
++	RPM::Header caching layer was also dropped, due to many
++	inconsistencies which arise from the "cache by tag name" approach.
++	(For example, it was possible to assign different values for EPOCH
++	and SERIAL rpm header tags, which actually alias each other.)
++	However, ad-hoc cache for NAME, VERSION, and RELEASE tags has been
++	kept, along with SEGV bugfix.  [rt.cpan.org #14489]
++
++	XS code has been simplified by implementing RPM::Header and
++	RPM::Database object boxing (and unboxing) completely with typemap.
++
++	Conversion between RPM tag names to their numeric values is now
++	also handled with typemap.
++
++	Fixed wrong rpmError() usage, which expects printf-like format
++	string and arguments, not just plain string.
++
++	Implemented RPM::evrcmp(a,b) to compare [Epoch:]Version[-Release]
++	specification strings, possibly against RPM::Header objects.
++
++	Fixed wrong RPM_INT*_TYPE conversion in rpmhdr_STORE(), which
++	made RPM::evrcmp() implementation possible.
++
++	Update RPM::Constants for new rpm, based on perl-RPM-43.patch
++	from PLD Linux Distribution.
++
+ 0.40	Fri May 10 01:09:13 PDT 2002
+ 	-alpha thirteen
+=20
+
+
+--z4D23EFnZpzTzcHd
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.7 (GNU/Linux)
+
+iD8DBQFGKFHJfBKgtDjnu0YRAma6AKCHuKGlVqx5/FFMBr32OPqcAjoZCgCeKVkC
+2JdoY61GmhcqPbR4YP3HtOc=
+=Y8dA
+-----END PGP SIGNATURE-----
+
+--z4D23EFnZpzTzcHd--

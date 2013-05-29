@@ -1,0 +1,62 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9188
+Return-Path: <cbeaver2@eds.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29295 invoked by uid 1012); 10 Dec 2001 13:58:46 -0000
+Message-ID: <20011210135846.29287.qmail@onion.perl.org>
+To: modules@perl.org
+Subject: Using waitfor() in Net::Telnet
+Date: Mon, 10 Dec 2001 08:57:47 -0500
+Lines: 42
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Newsreader: Microsoft Outlook Express 5.00.2919.6700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6700
+X-Posted-By: 209.135.106.225
+Approved: news@nntp.perl.org
+From: cbeaver2@eds.com ("Chris Beaver")
+
+Hello everyone,
+
+I'm trying to cycle through a list of servers using Net::Telnet and run
+some commands.  My problem is this:  half the servers use one pair of
+username/password's and the other half use a different pair of username
+and password's.  My question:  how can I get my code to default to a second
+pair of username/password's if the first set fails.  I am trying to use the
+following:
+
+   $prev = $t->errmode("return");
+   $t->login($first_user_name, $first_password) or print "Login failed:
+         @{[ $t->errmsg() ]}\n";
+   $t->waitfor(String => 'login: ', Timeout => 30);
+   $t->login($second_user, $second_password) or print "Login failed:
+        @{[ $t->errmsg() ]}\n";
+
+The above does not seem to work.  The second login attempt yields the
+errmsg:   Logging failed: Timed-out waiting for the login prompt.  What I
+can't
+understand is (login: ) is the login prompt (yet it still doesn't work).
+I'm using the
+dump_log method ($fh = $t->dump_log($logfile)) to verify that 'login: ' is
+the
+correct prompt.
+
+I've also tried using Match but it yields no success:
+ ex: $t->waitfor(Match => '/login:\W*/i').
+
+Am I using the waitfor call incorrectly?  Does someone know of a better way
+to accomplish what I'm trying to do?
+
+Any help/direction would be very much appreciated.
+
+ Thanks
+
+ Chris
+
+
+
+
+
+

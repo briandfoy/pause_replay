@@ -1,0 +1,58 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4721
+Return-Path: <kevin@vaildc.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27885 invoked from network); 17 Mar 2001 19:19:40 -0000
+Received: from vailstar.his.com (HELO linuxppc-7200.vailstar.com) (205.177.111.193)
+  by tmtowtdi.perl.org with SMTP; 17 Mar 2001 19:19:40 -0000
+Received: from 192.168.0.7 (kevin-cube.vailstar.com [192.168.0.7])
+	by linuxppc-7200.vailstar.com (8.9.3/8.9.3) with ESMTP id OAA09188
+	for <modules@perl.org>; Sat, 17 Mar 2001 14:19:00 -0500
+Date: Sat, 17 Mar 2001 14:18:56 -0500
+Subject: Tie::StrictHash
+To: modules@perl.org
+X-Priority: 3
+Message-ID: <20010317141856-r01010600-682edda6@192.168.0.7>
+MIME-Version: 1.0
+Content-Type: text/plain; Charset=US-ASCII
+X-Mailer: Mailsmith 1.1.6 (Bluto)
+Approved: news@nntp.perl.org
+From: kevin@vaildc.net (Kevin Michael Vail)
+
+I've uploaded a proposed module, Tie::StrictHash, into my directory on
+CPAN:
+
+$CPAN/authors/id/K/KV/KVAIL/Tie-StrictHash-1.0.tar.gz
+
+It implements 'strict'-like semantics on hashes.  I looked into
+Tie::SecureHash, but it seemed like overkill for what I wanted, which
+was just a simple way to use hash members as instance variables in an
+object without worrying about mistyping one.
+
+One creates a strict hash by using the call:
+
+strict_hash %hash, key1 => value1, ...;
+
+This creates %hash with the given keys.  If the hash had any data before
+the strict_hash call, it will have that data as well.
+
+To add a key, use the return value from strict_hash (or call "tied
+%hash") and use the 'add' method; to delete one, use the 'delete'
+method; to clear the entire hash, use the 'clear' method.  That's it. 
+You can request that accesses to hash keys that don't exist, read or
+write, be treated as fatal errors or just as warnings, and you can have
+the output include a stack trace if you like.  These are controlled by
+the options on the 'use' statement.  Full POD included in the module.
+
+Information for the module list (if this gets added there):
+
+Name             DSLI  Abstract
+---------------  ----  --------------------------------------------
+Tie::StrictHash  RdpO  A hash with 'strict'-like semantics
+
+Sincerely,
+Kevin Michael Vail
+KVAIL@cpan.org
+kevin@vaildc.net

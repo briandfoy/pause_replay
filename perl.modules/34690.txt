@@ -1,0 +1,73 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:34690
+Return-Path: <will@spanner.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11600 invoked from network); 12 Sep 2004 19:39:44 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 12 Sep 2004 19:39:44 -0000
+Received: (qmail 26851 invoked by uid 225); 12 Sep 2004 19:39:43 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26847 invoked by alias); 12 Sep 2004 19:39:43 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from smtp810.mail.ukl.yahoo.com (HELO smtp810.mail.ukl.yahoo.com) (217.12.12.200)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with SMTP; Sun, 12 Sep 2004 12:39:40 -0700
+Received: from unknown (HELO ?10.0.1.2?) (modules@perl.org@81.135.134.151 with poptime)
+  by smtp810.mail.ukl.yahoo.com with SMTP; 12 Sep 2004 19:39:35 -0000
+Mime-Version: 1.0 (Apple Message framework v619)
+References: <200408311646.i7VGk4sL006089@pause.perl.org> <310820041247504732%comdog@panix.com> <9998E2A6-FB78-11D8-B531-00039398BC72@spanner.org>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-ID: <938CCF76-04F3-11D9-BC17-00039398BC72@spanner.org>
+Content-Transfer-Encoding: 7bit
+Subject: Re: Module submission Geo::Postcode
+Date: Sun, 12 Sep 2004 20:40:18 +0100
+To: modules@perl.org
+X-Mailer: Apple Mail (2.619)
+Approved: news@nntp.perl.org
+From: will@spanner.org (william ross)
+
+On 1 Sep 2004, at 18:25, _brian_d_foy wrote:
+
+> <snip>
+
+>> really it should be something like Geo::UK::Postcode, and
+>> Geo::US::Zipcode, no?
+>
+> No, the country code should be last.  Whether I call it "zip
+> code" and you call it "post code" is something the world can
+> tolerate, but it is still the same idea.  If you get there
+> first you can decide which to us (although Geo::PostalCode
+> seems to be the winner).
+
+erp. i have made a gaffe, I can see.
+
+and I do agree that Geo::Postalcode is first, though it hasn't been 
+updated for a year and describes itself as 'early alpha'. If the 
+consensus is that Geo::Postalcode::UK is the way to go, then I'll 
+happily call it that. Meanwhile, I shall try and talk strategy with the 
+author of that module before taking mine any further.
+
+I don't think I can exactly follow the interface to Geo::Postalcode, 
+though: it doesn't correspond well with the structure of postcode data. 
+We don't have city or state fields, but we do have electoral wards and 
+health service areas. We're more likely to use OS grid references than 
+latitude and longitude (though both are usually available), and UK 
+postcodes have meaningful internal structure that zip codes do not.
+
+Instead, I'll make it a requirement that the UK module can be dropped 
+into the place of the US module and just work. Some methods will only 
+approximate to their US functions - zip codes in a city - but they'll 
+try and do so in a sensible way.
+
+This won't be completely straightforward: Postalcode constructs a 
+processor that works on supplied codes where Postcode constructs an 
+individual postcode object so as to play nicely in poop applications. 
+It'll take a little while, but i'm sure it will work out.
+
+best
+
+will
+

@@ -1,0 +1,208 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3337
+Return-Path: <rvsutherland@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6398 invoked from network); 6 Nov 2000 23:57:31 -0000
+Received: from web4002.mail.yahoo.com (216.115.104.36)
+  by tmtowtdi.perl.org with SMTP; 6 Nov 2000 23:57:31 -0000
+Message-ID: <20001106235704.18180.qmail@web4002.mail.yahoo.com>
+Received: from [216.68.172.157] by web4002.mail.yahoo.com; Mon, 06 Nov 2000 15:57:04 PST
+Date: Mon, 6 Nov 2000 15:57:04 -0800 (PST)
+Subject: Request for Registration and Module Proposal
+To: modules@perl.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: rvsutherland@yahoo.com (Richard Sutherland)
+
+Name      :  Richard Sutherland
+Email     :  rvsutherland@yahoo.com
+Home Page :  None
+User ID   :  RVSUTHERL
+DLSI      :  adpO  Reverse engineers object DDL; also defrags
+
+I am requesting registration as a developer, and proposing a module
+currently called DDL::Oracle.  Word of this module was sent to
+comp.lang.perl.modules about a week ago -- it has not generated any
+traffic, yet.  It was also sent to comp.lang.perl.announce, but it hasn't
+appeared there either, yet.  It HAS received some traffic at
+SourceForge.net, interestingly -- there have been 19 downloads this past
+week.  I wouldn't have thought that Oracle DBA's spent much time there,
+but who knows?
+
+There was a discussion on
+http://www.xray.mpe.mpg.de/mailing-lists/modules/ back in April, 2000, of
+a similarly named proposal.  The discussion indicated it would be but a
+small subset of the now proposed module.  It didn't have the fullness of
+the features and flexibility of DDL::Oracle, and in particular didn't
+address the resizing capability and the defrag.pl.
+
+Below is a description and synopsis as posted on comp.lang.perl.modules,
+followed by the message included with Version 0.16 when released on
+SourceForge.net.  The tarball is available at:
+
+   
+<http://sourceforge.net/project/showfiles.php?group_id=12630&release_id=15436>
+
+
+DESCRIPTION
+
+DDL::Oracle is designed for Oracle DBA's and users.  It reverse engineers
+database objects (tables, indexes, users, profiles, tablespaces, roles,
+constraints, etc.).  It also enerates DDL to *resize* tables and indexes
+to the provided standard or to a user defined standard.
+
+We originally wrote a script to defrag tablespaces, but as DBA's we
+regularly find a need for the DDL of a single object or a list of objects
+(such as all of the indexes for a certain table).  So we are in the
+process of taking all of the DDL statement creation logic out of
+defrag.pl, and putting it into the general purpose DDL::Oracle module,
+then expanding that module to include tablespaces, users, roles, and all
+other dictionary objects.
+
+Oracle tablespaces tend to become fragmented (now THAT's an
+understatement).  Even when object sizing standards are adopted, it is
+difficult to get 100% compliance from users.  And even it you get a high
+degree of compliance, objects turn out to be a different size than
+originally thought/planned -- small tables grow to become large (i.e.,
+hundreds of extents), what was thought would be a large table ends up
+having only a few rows, etc.  So the main driver for DDL::Oracle is the
+object management needs of Oracle DBA's.  The "resize" method generates
+DDL for a list of tables or indexes.  For partitioned objects, the
+"appropriate" size of EACH partition is calculated and supplied in the
+generated DDL.  The original defrag.pl will be rewritten to use
+DDL::Oracle, and supplied with its distribution.
+
+Other uses.
+
+A hole in Oracle's Designer/2000 case tool is the DDL for changes to a
+table's structure.  It produces reports of tables that change, and
+handles adding columns if they are added to the end of the table. Our
+data model czar has a penchant for adding columns in the MIDDLE of the
+table (imagine that!).  This requires moving the data from the old table
+to the new structure.  Designer/2000 supplies no assistance for this
+situation.  DDL::Oracle will.
+
+Our user management mainly consists of creating a new user with the
+identical privileges of an existing user, so a "copy_user.pl" wrapper
+will supply this functionality.
+
+What if you have to create a copy of an instance for some reason -- a QA
+database, or a new host.  Oracle's export utility can move the instance
+objects if the new database exists, but it won't create the tablespaces
+and their datafiles.  Our data warehouse databases have dozens of
+tablespaces and hundreds of data files.  How do you create the DDL for
+that?  DDL::Oracle will have this capability.
+
+DBA's, what are your suggestions?
+
+
+SYNOPSIS
+
+use DBI;
+use DDL::Oracle;
+
+my $dbh = DBI->connect(
+                        "dbi:Oracle:dbname",
+                        "username",
+                        "password",
+                        {
+                         PrintError => 0,
+                         RaiseError => 1
+                        }
+    );
+
+# Use default resizing and schema options.
+# query default DBA_xxx tables (could use USER_xxx for non-DBA types)
+DDL::Oracle->configure( 
+                        dbh    => $dbh,
+                      );
+
+# Create a list of one or more objects
+my $sth = $dbh->prepare(
+       "SELECT
+               owner
+             , name
+        FROM
+               user_tables
+        WHERE
+               tablespace_name = 'MY_TBLSP'    -- your mileage may vary
+       "
+    );
+$sth->execute;
+my $list = $sth->fetchall_arrayref;
+
+my $obj = DDL::Oracle->new(
+                            type  => "table",
+                            list  => $list,                          );
+                          );
+
+my $ddl = $obj->create;      # or $obj->resize;  or $obj->drop;  etc.
+
+print $ddl;    # Use STDOUT so user can redirect to desired file.
+
+
+PROGRESS -- Version 0.16, November 5, 2000
+
+DDL::Oracle is advancing nicely, and is now considered usable by its
+author.
+
+It includes the RESIZE method for both tables and indexes.  It also
+includes all of the primary object types for the CREATE method, namely:
+
+    CONSTRAINT
+    DATABASE LINK
+    FUNCTION
+    INDEX
+    PACKAGE
+    PROCEDURE
+    PROFILE
+    ROLE
+    ROLLBACK SEGMENT
+    SEQUENCE
+    SYNONYM
+    TABLE
+    TABLESPACE
+    TRIGGER
+    TYPE
+    USER
+    VIEW
+
+In addition, it includes the object type TABLE FAMILY, which produces the
+DDL to create the table(s) along with the(ir) Comments (table & column),
+Constraints, Indexes and Triggers all in one call to DDL::Oracle.
+
+The DELETE method works for each of the above, plus a few more.
+
+Release 0.16 also includes 2 new files which show useful ways of taking
+advantage of DDL::Oracle.  [The "big" one -- defrag.pl -- will follow
+soon.]
+
+The first is 'copy_user.pl', which prompts for two arguments -- a
+"template" existing user, and a list of "new" users to create.  The DDL
+for each of the new users includes the CREATE USER statement, of course,
+plus all privileges of the template user -- roles, system privileges and
+object privileges.  copy_user.pl includes an example of including an
+arbitrarily derived password, and substituting this for the template
+user's password.
+
+The second file is 'copy_user.sh', a Unix shell script which calls
+copy_user.pl and automatically executes its output via SQL*Plus.  This is
+an example of the advantage of being able to execute generated DDL in
+batch mode.  That plus the list capability makes DDL::Oracle quite useful
+to DBA's, IMHO.
+
+
+=====
+Richard Sutherland
+rvsutherland@yahoo.com
+
+They know enough who know how to learn.
+  -Henry Adams (1838-1918)
+
+__________________________________________________
+Do You Yahoo!?
+Thousands of Stores.  Millions of Products.  All in one Place.
+http://shopping.yahoo.com/

@@ -1,0 +1,56 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:826
+Return-Path: <nick@ing-simmons.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15108 invoked from network); 9 Jan 2000 20:04:07 -0000
+Received: from mserv1b.u-net.net (195.102.240.137)
+  by tmtowtdi.perl.org with SMTP; 9 Jan 2000 20:04:07 -0000
+Received: from ni-s.u-net.com ([193.119.182.90] helo=bactrian.ni-s.u-net.com)
+	by mserv1b.u-net.net with esmtp (Exim 2.10 #63)
+	id 127OZ8-0002YX-00; Sun, 9 Jan 2000 20:03:54 +0000
+Content-Type: text/plain
+Content-Disposition: inline
+Mime-Version: 1.0
+X-Mailer: tkmail-0.011/Perl5 Mail::Internet v1.32
+Subject: Math::Matrix*
+To: Steffen Beyer <sb@sdm.de>, Rodolphe Ortalo <ortalo@laas.fr>, Ulrich Pfeifer <pfeifer@ls6.informatik.uni-dortmund.de>
+Cc: modules@perl.org
+Sender: Nick Ing-Simmons <nick@ing-simmons.net>
+Reply-To: Nick Ing-Simmons <nick@ing-simmons.net>
+Message-ID: <E127OZ8-0002YX-00@mserv1b.u-net.net>
+Date: Sun, 9 Jan 2000 20:03:54 +0000
+Approved: news@nntp.perl.org
+From: nick@ing-simmons.net (Nick Ing-Simmons)
+
+
+Are Matrix and/or MatrixReal still being maintained ?
+
+I am looking for something to do matrix/vector operations for 
+colour space conversions for a Tk app I am looking at.
+
+I was looking for something much simpler that Math::MatrixReal, but 
+with overloading, e.g. to convert xyz and rgb space : 
+
+my $xform  = new Matrix [[a,b,c],[d,e,f],[g,h,i]];
+
+my $xyz    = $xform * [$r, $g , $b];
+
+my $ixform = $xform->invert;
+
+my $rgb = $ixform * $xyz;
+
+My main issue with MatrixReal is not with the matrices but the vectors 
+- it would be good to be able to use raw perl arrays as vectors as above.
+- it would be even better if returned 'vector' took account  of context:
+
+my ($r,$g,$b ) = $ixform * $xyz;
+
+Is Math::Matrix up for additions or should I go for new class (say) 
+
+   Math::MatrixXform;
+
+-- 
+Nick Ing-Simmons
+

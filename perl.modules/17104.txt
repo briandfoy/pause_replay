@@ -1,0 +1,60 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17104
+Return-Path: <sturm@branewave.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 91221 invoked by uid 76); 17 Jan 2003 04:21:37 -0000
+Received: from postfix@pochacco.ex.dreamhost.com (HELO pochacco.ex.dreamhost.com) (66.33.206.17) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-17 04:21:37Z
+Received: from branewave.com (localhost [127.0.0.1])	by pochacco.ex.dreamhost.com (Postfix) with SMTP	id 4B6A890036; Thu, 16 Jan 2003 20:21:31 -0800 (PST)
+Received: from 66.41.48.160        (SquirrelMail authenticated user sturm@branewave.com)        by webmail.branewave.com with HTTP;        Thu, 16 Jan 2003 22:21:31 -0600 (CST)
+Message-ID: <60994.66.41.48.160.1042777291.squirrel@webmail.branewave.com>
+Date: Thu, 16 Jan 2003 22:21:31 -0600 (CST)
+Subject: Re: Module submission Tib::Rv
+To: <comdog@panix.com>
+Cc: <modules@perl.org>
+User-Agent: DreamHost Webmail
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: sturm@branewave.com ("Paul Sturm")
+
+> In article
+> <21375.66.41.48.160.1042737950.squirrel@webmail.branewave.com>, Paul
+> Sturm <sturm@branewave.com> wrote:
+>
+>> ... so I like the brevity of "Tib::Rv", since you end up having to
+>> type it quite a bit.  I can totally do whatever y'all think is
+>> appropriate, but I really like Tib::Rv.
+>
+> tib makes sense to you, but i don't think it will make sense to  most
+> people.
+>
+> your keystrokes concern sound more like a design problem than a
+> naming problem.  there is probably a way to solve both at the
+> same time :)
+
+
+Okay, so let's say I want to change it from Tib:: to Tibco::.  It's
+already been pushed out to CPAN as Tib::Rv 0.02.  Can I rename the module
+via PAUSE, or do I need to request the new Tibco namespace and just sort
+of ignore the existing Tib::Rv?  Or maybe you can do some
+behind-the-scenes trickery?
+
+As for the keystrokes thing, I'm gonna layer on a bunch of factory
+methods, so instead of doing:
+
+my ( $rv ) = new Tibco::Rv;
+my ( $timer ) = new Tibco::Rv::Timer(
+   $Tibco::Rv::Queue::DEFAULT, 4, \&mycallback );
+
+
+... you can do ...
+
+my ( $rv ) = new Tibco::Rv;
+my ( $timer ) = $rv->createTimer( 4, \&mycallback );
+
+
+

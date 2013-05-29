@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:34
+Return-Path: <John.Redford@fmr.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14093 invoked from network); 14 Oct 1999 15:40:26 -0000
+Received: from gw35e.fmr.com (HELO gw35i.fmr.com) (192.223.207.77)
+  by tmtowtdi.perl.org with SMTP; 14 Oct 1999 15:40:26 -0000
+Received: (from smtp@localhost)
+	by gw35i.fmr.com (8.8.7/8.8.7) id LAA29062
+	for <modules@perl.org>; Thu, 14 Oct 1999 11:39:54 -0400 (EDT)
+Received: from msgmro101nts.fmr.com(172.26.2.64) by gw35i.fmr.com via smap (V2.0)
+	id xma028710; Thu, 14 Oct 99 11:39:15 -0400
+Received: by msgmro101nts.fmr.com with Internet Mail Service (5.5.2448.0)
+	id <46YY2NVF>; Thu, 14 Oct 1999 11:39:44 -0400
+Message-ID: <C139F4D49384D2118EB60008C7A4337B57848C@MSGBOS675NTS.fmr.com>
+To: "'John Porter'" <jdporter@min.net>
+Cc: modules@perl.org
+Subject: RE: NameSpace module
+Date: Thu, 14 Oct 1999 11:38:58 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Approved: news@nntp.perl.org
+From: John.Redford@fmr.com ("Redford, John")
+
+Hmm.. yeah, I could easily make that kind of interface work. I can see how
+it would be worthwhile. If I was going to export the functions, I suppose
+I'd name them 'nsset' and 'nsget'.
+
+I took a look at the other module you mention. The other major difference to
+me is that the Symdump module seems geared to use in testing or debugging
+roles, more than in production code.
+
+
+		-----Original Message-----
+		From:	'John Porter' [mailto:jdporter@min.net]
+		Sent:	Thursday, October 14, 1999 11:22 AM
+		To:	Redford, John
+		Cc:	modules@perl.org
+		Subject:	Re: NameSpace module
+
+		Redford, John wrote:
+		> $ns = new NameSpace();    # The current package's
+namespace.
+		> $ns = new NameSpace("Foo::Bar");    # The named package's
+namespace. 
+		> 
+		> $value = $ns->get("SomeFunction", "CODE");
+		> $ns->set("MyFunction", $value);
+
+		Non-OO interface:
+
+			# use current package's namespace:
+			$value = NameSpace::get("SomeFunction", "CODE");
+			NameSpace::set("MyFunction", $value);
+
+			# use specified namespace:
+			$value = NameSpace::get("Foo::Bar", "SomeFunction",
+"CODE");
+			NameSpace::set("Foo::Bar", "MyFunction", $value);
+
+		This interface actually seems quite a bit more obvious to
+me.
+
+		By the way, this module bears a strong resemblance to an
+		existing one, Andreas' Devel::Symdump -- the main difference
+		being, AFAICT, that yours is geared more toward modifying
+		the symtable, rather than simply inspecting it.
+		Have you looked at Devel::Symdump?
+
+		-- 
+		John Porter

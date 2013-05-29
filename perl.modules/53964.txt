@@ -1,0 +1,103 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53964
+Return-Path: <damian.k.green@medtronic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 9971 invoked from network); 13 Apr 2007 19:41:44 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 13 Apr 2007 19:41:44 -0000
+Received: (qmail 6292 invoked by uid 225); 13 Apr 2007 19:41:44 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 6274 invoked by alias); 13 Apr 2007 19:41:43 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from mail85.messagelabs.com (HELO mail85.messagelabs.com) (216.82.240.99)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Fri, 13 Apr 2007 12:41:34 -0700
+X-VirusChecked: Checked
+X-Env-Sender: damian.k.green@medtronic.com
+X-Msg-Ref: server-5.tower-85.messagelabs.com!1176493287!32283104!1
+X-StarScan-Version: 5.5.10.7.1; banners=-,-,-
+X-Originating-IP: [144.15.157.121]
+Received: (qmail 21283 invoked from network); 13 Apr 2007 19:41:27 -0000
+Received: from postman.medtronic.com (HELO postman.medtronic.com) (144.15.157.121)
+  by server-5.tower-85.messagelabs.com with AES256-SHA encrypted SMTP; 13 Apr 2007 19:41:27 -0000
+Received: from MSPM1BMSGH01.ent.core.medtronic.com (localhost [127.0.0.1])
+	by postman.medtronic.com (8.13.6/8.13.6) with ESMTP id l3DJfQGw017645
+	for <modules@cpan.org>; Fri, 13 Apr 2007 14:41:26 -0500 (CDT)
+Received: from PHXM1BMSGM02.ent.core.medtronic.com ([172.24.216.171]) by MSPM1BMSGH01.ent.core.medtronic.com with Microsoft SMTPSVC(6.0.3790.2499);
+	 Fri, 13 Apr 2007 14:41:22 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+Subject: Found bug in module Uniq :: distinct
+Date: Fri, 13 Apr 2007 12:41:20 -0700
+Message-ID: <1BB3F8304E484D499CAFCF48CE5D1C6D874BF0@PHXM1BMSGM02.ent.core.medtronic.com>
+Thread-Topic: Found bug in module Uniq :: distinct
+Thread-Index: Acd+A7YNBOkSwBdLQdmN6VIsuJKYgA==
+To: <modules@cpan.org>
+X-OriginalArrivalTime: 13 Apr 2007 19:41:22.0686 (UTC) FILETIME=[B73209E0:01C77E03]
+Approved: news@nntp.perl.org
+From: damian.k.green@medtronic.com ("Green, Damian")
+
+
+Hi, I found and downloaded the following module:
+http://search.cpan.org/~syamal/Uniq-0.01/Uniq.pm
+
+And found that the "distinct" subroutine has a bug. I've Identified the
+problem, but don't know how to fix the module on the CPAN site...
+
+In the source:
+sub distinct{
+	# Eliminates values mentioned more than once from a list of
+	# sorted values presented.
+	my $prev =3D undef;
+	my $ctr =3D 0;
+	my @out;
+	foreach my $val (@_){
+		if ($prev){
+			if ($prev eq $val){
+				$ctr ++;
+				next;  			 #<--- this is a
+bug in the CPAN module...It needs to be removed...DKG
+			}
+			push(@out,$prev) if ($ctr =3D=3D 1);
+			$prev =3D $val;
+			$ctr  =3D 1;
+			next;
+		}else{
+			$prev =3D $val;
+			$ctr  =3D 1;
+		}
+
+	}
+	return @out;
+}
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+There are a couple ways to fix the problem, I'll leave it to someone
+else to figure out the best way, but the simplist way is just to remove
+the line I've identified above...
+
+
+Damian Green
+
+___________________________________________________________________________=
+________________________
+CONFIDENTIALITY AND PRIVACY NOTICE
+Information transmitted by this email is proprietary to Medtronic and is=
+ intended for use only by the individual or entity to which it is=
+ addressed, and may contain information that is private, privileged,=
+ confidential or exempt from disclosure under applicable law. If you are=
+ not the intended recipient or it appears that this mail has been forwarded=
+ to you without proper authority, you are notified that any use or=
+ dissemination of this information in any manner is strictly prohibited. In=
+ such cases, please delete this mail from your records.
+http://emaildisclaimer.medtronic.com

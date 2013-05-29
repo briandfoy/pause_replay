@@ -1,0 +1,119 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13550
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 36901 invoked by uid 76); 2 Sep 2002 18:39:04 -0000
+Received: from root@[212.40.160.59] (HELO pause.perl.org) (212.40.160.59)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Mon Sep  2 18:39:04 2002 -0000
+Received: (from nobody@localhost)
+	by pause.perl.org (8.11.6/8.11.6) id g82IcUE25588;
+	Mon, 2 Sep 2002 20:38:30 +0200
+Date: Mon, 2 Sep 2002 20:38:30 +0200
+Message-ID: <200209021838.g82IcUE25588@pause.perl.org>
+Reply-To: modules@perl.org
+Subject: Module submission Lingua::FeatureSet
+To: modules@perl.org, kahn@cpan.org
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Lingua::FeatureSet
+  DSLIP:       adpOp
+  description: define phonology-style features for emes
+  userid:      KAHN (Jeremy Kahn)
+  chapterid:   11 (String_Lang_Text_Proc)
+  communities:
+    comp.lang.perl.modules
+
+  similar:
+
+  rationale:
+
+    I need a tool that constructs objects representing the featureset
+    of a phoneme. The standard linguistic notation for this is (for the
+    'ch', the 'eh', and the 's' sound in chess"):
+
+    CH [ +stop +fric -voice +palat +cons -vow ] EH [ +vow -cons -low
+    -high +front -tense ] S [ +cons +fric -stop +alv -voice ]
+
+    Furthermore, I may want to be able to refer to "feature classes",
+    that is, composite features like "affricate":
+
+    class AFF [ +stop +fric ]
+
+    (this example would match 'CH' but not 'S' or 'EH').
+
+    To complicate things further, the list of primitive features is
+    linguistically controversial, the set of relevant classes varies
+    from language to language, even if you agree on the theoretical
+    primitives, and the choice of symbol set to represent the phoneme
+    (IPA, Sampa, DARPA-bet, etc) is varied and political.
+
+    Thus, in the finest Perl sense, TMTOWTDI. The dimensions of
+    flexibility provided are:
+
+    You, the user, define what you want to be the featureset by
+    subclassing "Lingua::FeatureMatrix::Eme", distributed with this
+    module. An added side bonus is that you decide whether the base unit
+    is a "Phone" or a "Phoneme" (or, for that matter, a "SoundUnit" or a
+    "Letter" -- that subclass is *your* module, and the goal is to
+    "[put] the focus not so much onto the problem to be solved, but
+    rather onto the person trying to solve the problem." (see
+    http://kiev.wall.org/~larry/pm.html).
+
+    You, the user, define what the feature set is, and you define how
+    the phones distribute among those features, using the best of
+    *Impatience* -- use the existing linguistic typographic conventions,
+    and this module takes care of constructing your objects for you. No
+    translating among conventions for us.
+
+    But let's go one step further. Languages include redundancy, and
+    sometimes it's boring (and not *Lazy*) to have to specify yourself
+    that something that is "[+stop]" is also "[-vow +cons]", especially
+    if you have to specify this for every single "[+stop]" consonant.
+
+    So this module also introduces the concept of an *implicature* -- I
+    can say, also in simple linguistically-familiar format, that
+
+    ( [+stop] => [-vow +cons] )
+
+    and this will apply for all phones in the current dataset (unless
+    I'm speaking Berber, where this isn't necessarily true...). It's
+    also *Lazy*, because the module also does the work of letting me
+    know whether I have forgotten to specify any of the features of a
+    given phone:
+
+    # probably missing a feature or six; would generate a # warning. T
+    [ +cons -vow ]
+
+    Along the way, we pick up some *Hubris*:
+
+    * Doesn't apply just to phones anymore -- we can use it for letters
+    and ligatures, if we want.
+
+    * It should be extensible to use these objects to connect to other
+    linguistics-style programs like "Lingua::SoundChange", not to
+    mention homebrew pronunciation algorithms like "Lingua::Soundex".
+
+  enteredby:   KAHN (Jeremy Kahn)
+  enteredon:   Mon Sep  2 18:38:29 2002 GMT
+
+The resulting entry would be:
+
+Lingua::
+::FeatureSet      adpOp define phonology-style features for emes     KAHN
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=92200000_3af935ca9af4a19f&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=92200000_3af935ca9af4a19f&SUBMIT_pause99_add_mod_insertit=1

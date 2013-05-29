@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1418
+Return-Path: <gbarr@dhcp69.uk.valueclick.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1659 invoked from network); 29 Mar 2000 12:59:48 -0000
+Received: from gw.valueclick.com (qmailr@216.246.25.50)
+  by tmtowtdi.perl.org with SMTP; 29 Mar 2000 12:59:48 -0000
+Received: (qmail 23803 invoked from network); 29 Mar 2000 12:59:47 -0000
+Received: from unknown (HELO dhcp69.uk.valueclick.com) (195.224.126.69)
+  by gw.valueclick.com with SMTP; 29 Mar 2000 12:59:47 -0000
+Received: (from gbarr@localhost)
+	by dhcp69.uk.valueclick.com (8.9.3/8.9.3/SuSE Linux 8.9.3-0.1) id NAA05673;
+	Wed, 29 Mar 2000 13:58:31 +0100
+Date: Wed, 29 Mar 2000 13:58:31 +0100
+To: Steffen Beyer <sb@sdm.de>
+Cc: modules@perl.org
+Subject: Re: Need additional namespace for Date::Calc
+Message-ID: <20000329135831.K552@pobox.com>
+Mail-Followup-To: Steffen Beyer <sb@sdm.de>, modules@perl.org
+References: <20000329131726.I552@pobox.com> <200003291231.OAA14270@muccpu1.muc.sdm.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3i
+In-Reply-To: <200003291231.OAA14270@muccpu1.muc.sdm.de>
+Approved: news@nntp.perl.org
+From: gbarr@pobox.com (Graham Barr)
+
+On Wed, Mar 29, 2000 at 02:31:21PM +0200, Steffen Beyer wrote:
+> > a shame to add a complete new module for this. But if a new module
+> > is require I would suggest a name under Carp::
+> 
+> Something like Carp::Date?
+
+Why limit it to Date ? It should be more general but I cannot think
+of a name. Carp::Package Carp::SkipHier ...
+
+> > I suspect the package is quite simple too.
+> 
+> The changes are quite minimal. Maybe one could change the Carp.pm in
+> the CORE so that "croak" and "carp" etc. would accept an additional
+> parameter or flag (or configuration global) to instruct Carp.pm to skip
+> certain packages; either the named package hierarchy, or the caller's
+> package hierarchy.
+> 
+> > > All "Date::*" modules can use and profit from this module.
+> > So can others
+> 
+> Yes, if one could change this into a more general solution, as described
+> above. Certainly.
+
+I was expecting something like
+
+sub carp {
+  my $pkg = caller;
+  $pkg =~ s/::.*//;
+  my $level = $Carp::CarpLevel;
+  local $Carp::CarpLevel = 1;
+  1 while caller($Carp::CarpLevel++) =~ /^$pkg(::|$)/;
+  $Carp::CarpLevel += $level;
+  Carp::carp @_;
+}
+
+And likewise for the other subs in Carp too.
+
+Graham.
+

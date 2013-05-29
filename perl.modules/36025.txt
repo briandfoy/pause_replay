@@ -1,0 +1,133 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:36025
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6166 invoked from network); 31 Oct 2004 03:52:34 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 31 Oct 2004 03:52:34 -0000
+Received: (qmail 26328 invoked by uid 225); 31 Oct 2004 03:52:33 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26319 invoked by alias); 31 Oct 2004 03:52:32 -0000
+X-Spam-Status: No, hits=-4.8 required=8.0
+	tests=BAYES_00,HTML_MESSAGE
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Sat, 30 Oct 2004 20:52:29 -0700
+Received: from pause.perl.org (localhost [127.0.0.1])
+	by pause.perl.org (8.12.3/8.12.3/Debian-7.1) with ESMTP id i9V3qN64001410
+	for <modules@perl.org>; Sun, 31 Oct 2004 04:52:24 +0100
+Received: (from nobody@localhost)
+	by pause.perl.org (8.12.3/8.12.3/Debian-7.1) id i9V3qLIK001408;
+	Sun, 31 Oct 2004 04:52:22 +0100
+Date: Sun, 31 Oct 2004 04:52:22 +0100
+Message-ID: <200410310352.i9V3qLIK001408@pause.perl.org>
+MIME-Version: 1.0
+Subject: PAUSE ID request (OPIATE; Shane Allen)
+Content-Type: Text/Plain; Charset=ISO-8859-1
+Reply-To: modules@perl.org
+To: modules@perl.org
+Content-Transfer-Encoding: 8bit
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+Request to register new user
+
+fullname: Shane Allen
+  userid: OPIATE
+    mail: CENSORED
+homepage: 
+     why:
+
+    I have written a module for my company, and they gave me permission
+    to release it to CPAN under the Perl license. Currently, the module
+    is similar in goals to HTML::Paging, however its design and output
+    are different. Additionally, it will be developed further for my
+    company to include sorting, and I am planning on writing an object
+    that uses the resulting Pager/Sorter to implement a simple HTML
+    report generator that receives simple configuration data from the
+    developer and generates page-able sort-able HTML templates from data
+    contained in a database.
+
+    The current module only supports MySQL, and at this time I have no
+    plans to support other databases, because of my desire to fully
+    implement the sorting and eventually the full report module.
+
+    An example of the current module in use:
+
+    ==== start ==== #!/usr/bin/perl -w
+
+    use strict; use lib qw(../../modules); use PM::Paging; use CGI; use
+    Template; use DBI;
+
+    my $template = Template->new(); my $paging = PM::Paging->new(); my
+    $co = new CGI; my $dbh = DBI->connect('DBI:mysql:foo', 'bar',
+    'baz');
+
+    my $sql = "SELECT SQL_CALC_FOUND_ROWS id, name, age FROM people";
+    my $limit = $paging->get_mysql_limit();
+
+    my $sth = $dbh->prepare("$sql $limit"); $sth->execute(); my
+    ($count) = $dbh->selectrow_array('SELECT FOUND_ROWS() AS num');
+
+    $paging->num_results($count);
+
+    while(my $href = $sth->fetchrow_hashref) { push
+    @{$vars{'results'}}, $href; } $vars{'paging'} =
+    $paging->get_paging_html();
+
+    $template->process('display.html', \%vars);
+
+    ==== end ====
+
+    and results in the following paging HTML (depending on result set):
+
+    ==== start ====
+
+    <style type="text/css">.paging-table {border: 0px solid
+    black;}.paging-td {padding: 4px;font-weight: none;color:
+    #555555;}.paging-a {color: black;font-weight: bold;text-decoration:
+    none;}</style> <td nowrap class="paging-td" style="font-size:
+    7pt;">Displaying Results 1 to 25 of 623</td> <td
+    class="paging-td">«</td> <td class="paging-td">&lt;</td> <td
+    class="paging-td">1</td> <td class="paging-td"><a class="paging-a"
+    href="/cgi-bin/pm/reports/activity.cgi?date1=10%2F10%2F2004;date2=11%2F11%2F2004;page=2">2</a></td>
+    <td class="paging-td"><a class="paging-a"
+    href="/cgi-bin/pm/reports/activity.cgi?date1=10%2F10%2F2004;date2=11%2F11%2F2004;page=3">3</a></td>
+    <td class="paging-td"><a class="paging-a"
+    href="/cgi-bin/pm/reports/activity.cgi?date1=10%2F10%2F2004;date2=11%2F11%2F2004;page=4">4</a></td>
+    <td class="paging-td"><a class="paging-a"
+    href="/cgi-bin/pm/reports/activity.cgi?date1=10%2F10%2F2004;date2=11%2F11%2F2004;page=5">5</a></td>
+    <td class="paging-td"><a class="paging-a"
+    href="/cgi-bin/pm/reports/activity.cgi?date1=10%2F10%2F2004;date2=11%2F11%2F2004;page=2">&gt;</a></td>
+    <td class="paging-td"><a class="paging-a"
+    href="/cgi-bin/pm/reports/activity.cgi?date1=10%2F10%2F2004;date2=11%2F11%2F2004;page=25">»</a></td>
+
+    ==== end ====
+
+    Since the namespace HTML::Paging is taken, and doesn't fully
+    represent the modules fully intended capacity, I was imagining
+    HTML::PagingAndSorting or something similar. I am extremely open to
+    naming ideas, as I personally think that name is silly.
+
+    The namespace that I would like to reserve (can we do that?) for my
+    future module is HTML::Reportwriter.
+
+    The report writer, in it own right, differs from other modules in
+    believing that the output of the report should be determined by a
+    template, not code. Ergo, instead of having header => 'foo' or
+    header_sub => \&bar, it will simply accept a list of parameters
+    identifying which data to select, how to page, what is sortable,
+    etc., and it will generate the report from there. The report
+    template would be overrideable, allowing for further flexibility.
+
+    Thoughts or comments?
+
+
+The following links are only valid for PAUSE maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_user&USERID=78700000_1c8d9a76f5679c12&SUBMIT_pause99_add_user_sub=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_user&USERID=78700000_1c8d9a76f5679c12&SUBMIT_pause99_add_user_Definitely=1

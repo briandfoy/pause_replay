@@ -1,0 +1,73 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45344
+Return-Path: <saper@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1382 invoked from network); 13 Oct 2005 08:27:02 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 13 Oct 2005 08:27:02 -0000
+Received: (qmail 2862 invoked by uid 225); 13 Oct 2005 08:27:01 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2855 invoked by alias); 13 Oct 2005 08:27:00 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,RCVD_IN_NJABL_PROXY
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from smtp4-g19.free.fr (HELO smtp4-g19.free.fr) (212.27.42.30)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 13 Oct 2005 01:26:52 -0700
+Received: from imp6-g19.free.fr (imp6-g19.free.fr [212.27.42.6])
+	by smtp4-g19.free.fr (Postfix) with ESMTP id 0E4DE40480;
+	Thu, 13 Oct 2005 10:26:48 +0200 (CEST)
+Received: by imp6-g19.free.fr (Postfix, from userid 33)
+	id D18D82BD05; Thu, 13 Oct 2005 10:26:47 +0200 (MEST)
+Received: from 80.70.42.214 ([80.70.42.214]) 
+	by imp6-g19.free.fr (IMP) with HTTP 
+	for <maddingue@212.27.48.2>; Thu, 13 Oct 2005 10:26:47 +0200
+Message-ID: <1129192007.434e1a47b3660@imp6-g19.free.fr>
+Date: Thu, 13 Oct 2005 10:26:47 +0200
+To: "Andreas J. Koenig" <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Cc: modules@perl.org
+Subject: Re: XSLoader is not indexed
+References: <1128330668.4340f5ac8c7f8@imp3-g19.free.fr> <874q7n676b.fsf@k75.linux.bogus> <1129105797.434cc98514e21@imp6-g19.free.fr> <87oe5u4kqo.fsf@k75.linux.bogus> <1129158001.434d9571b47bc@imp5-g19.free.fr> <87ek6p524t.fsf@k75.linux.bogus>
+In-Reply-To: <87ek6p524t.fsf@k75.linux.bogus>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: Internet Messaging Program (IMP) 3.2.5
+X-Originating-IP: 80.70.42.214
+Approved: news@nntp.perl.org
+From: saper@cpan.org (=?iso-8859-1?b?U+liYXN0aWVu?= Aperghis-Tramoni)
+
+Hello Andreas,
+
+
+Andreas J. Koenig <andreas.koenig.gmwojprw@franz.ak.mind.de> wrote:
+
+> A command that has to run only on the developer's box need not be that
+> portable.
+
+Oh, right. I didn't read EU::MM documentation about PREOP.
+
+>   > On the other hand, simply adding XSLoader.pm to MANIFEST and the
+> following
+>   > line to Makefile.PL before WriteMakefile():
+>   >     1 while unlink "XSLoader.pm";
+>
+>   > Just Works(tm) as expected.
+>
+> Much better if it works. It did not in the GD case: 'make disttest'
+> complained about missing GD.pm.
+
+Just tested on Cygwin and this time it generated the warning. So I
+moved the unlink() after WriteMakefile(): like this, WriteMakefile()
+can see XSLoader.pm and is happy, and just after the file is unlinked
+so that it's rebuilt. Just tried and it worked, so I'll stick with that.
+
+
+Thanks again for your help
+
+--
+Sébastien Aperghis-Tramoni
+
+Close the world, txEn eht nepO.

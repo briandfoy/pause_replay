@@ -1,0 +1,73 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:60268
+Return-Path: <amon@vnl.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 3593 invoked from network); 29 Apr 2008 10:25:09 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 29 Apr 2008 10:25:09 -0000
+Received: (qmail 836 invoked by uid 225); 29 Apr 2008 10:25:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 832 invoked by alias); 29 Apr 2008 10:25:08 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from grendel.barnhard.net (HELO grendel.barnhard.net) (216.181.81.34)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 29 Apr 2008 03:25:06 -0700
+Received: from localhost.localdomain (cpc2-glen1-0-0-cust682.belf.cable.ntl.com [81.99.78.171])
+	by grendel.barnhard.net (8.14.1/8.14.1) with ESMTP id m3T8hC8Y026784;
+	Tue, 29 Apr 2008 04:43:13 -0400
+Received: from amon by localhost.localdomain with local (Exim 4.63)
+	(envelope-from <amon@vnl.com>)
+	id 1Jqn15-00043M-Nt; Tue, 29 Apr 2008 11:24:55 +0100
+Date: Tue, 29 Apr 2008 11:24:55 +0100
+To: modules@perl.org
+Cc: Dale Amon <amon@vnl.com>
+Subject: Re: CPAN additions
+Message-ID: <20080429102454.GB14274@vnl.com>
+References: <20080427105612.GA20765@vnl.com> <290420080652022521%brian.d.foy@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <290420080652022521%brian.d.foy@gmail.com>
+X-Operating-System: Linux, the choice of a GNU generation
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Approved: news@nntp.perl.org
+From: amon@vnl.com (Dale Amon)
+
+On Tue, Apr 29, 2008 at 06:52:02AM +0200, brian d foy wrote:
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+> 
+> In article <20080427105612.GA20765@vnl.com>, Dale Amon <amon@vnl.com>
+> wrote:
+> *Something* like that would be better, but you also need to distinguish
+> your modules from other similar modules on CPAN. What sets apart your
+> module from Log::Dispatch or Log4perl? Find that exciting feature and
+> put it in the name somehow. :)
+
+Thanks for the feedback. I need to change the namespace anyway
+as there are some API changes I have been wanting to make for
+some time and making them would break a bunch of fielded systems.
+I have been procrastinating on this for a couple years so releasing
+it to the wild seems like a very good time to split off from the
+old by giving it a new namespace... and then gradually converting
+my customer systems as time allows.
+
+Given your advice I might lean towards Fault:: as the place
+to put everything as that is what the package is primarily
+about. The core operation is that the first appearance of the
+duple <processname, message> causes a fault to be raised;
+any further occurences are ignored until a fault clear on that
+duple is sent. Then any further clears on a no longer raised
+fault are ignored. The faults have syslog priorities attached
+to them and an extendable type name as well as a timesig. Raises
+and clears are logged; and if the delegate does not have database
+it can fall back on plain logging.
+
+So perhaps Fault:: it is?
+
+
+

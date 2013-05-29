@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:36231
+Return-Path: <joelh@piquan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14006 invoked from network); 9 Nov 2004 01:20:19 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 9 Nov 2004 01:20:19 -0000
+Received: (qmail 16748 invoked by uid 225); 9 Nov 2004 01:20:19 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 16722 invoked by alias); 9 Nov 2004 01:20:18 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from adsl-66-125-235-59.dsl.sntc01.pacbell.net (HELO thor.piquan.org) (66.125.235.59)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Mon, 08 Nov 2004 17:20:16 -0800
+Received: from thor.piquan.org (joelh@localhost [127.0.0.1])
+	by thor.piquan.org (8.12.10/8.12.10) with ESMTP id iA91K69W087491;
+	Mon, 8 Nov 2004 17:20:06 -0800 (PST)
+	(envelope-from joelh@piquan.org)
+Received: (from joelh@localhost)
+	by thor.piquan.org (8.12.10/8.12.10/Submit) id iA91K6qB087490;
+	Mon, 8 Nov 2004 17:20:06 -0800 (PST)
+	(envelope-from joelh@piquan.org)
+X-Authentication-Warning: thor.piquan.org: joelh set sender to joelh@piquan.org using -f
+To: modules@perl.org
+Subject: Request name ideas for OOP database lib
+X-Payment: hashcash 1.2
+ 1:23:041109:modules@perl.org::KAS0Ns66AR58ioe3:000000000000000000000000000000000000000000000JUMh
+X-Hashcash: 1:23:041109:modules@perl.org::KAS0Ns66AR58ioe3:000000000000000000000000000000000000000000000JUMh
+Date: Mon, 08 Nov 2004 17:20:05 -0800
+Message-ID: <87mzxres3e.fsf@thor.piquan.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Virus-Scanned: ClamAV 0.80/533/Sat Oct 16 18:09:44 2004
+	clamav-milter version 0.80j
+	on thor.piquan.org
+X-Virus-Status: Clean
+Approved: news@nntp.perl.org
+From: joelh@piquan.org (Joel Ray Holveck)
+
+I've written a new library, but don't know what to name it.  I was
+wondering if one of you fellas had a suggestion.
+
+This is a database library.  Its purpose is to allow you to write a
+site-specific library that describes your database.  In the minimal
+case, you can simply list the columns of your tables/views.  Each
+table/view becomes its own class.
+
+After that, my library provides all the generic methods you'd expect,
+such as Foo->new, Foo->select, $foo->delete, accessor methods such as
+$foo->mycolumnname, $foo->set_mycolumnname, etc.  These functions
+generate all the SQL, perform all the join logic, take care of the
+uniqueness issues, etc.
+
+The basic model involves three coders:
+  * Me, writing this library
+  * A site librarian, writing classes that include view descriptions,
+    and optionally any specialized methods they want
+  * Site program authors, which use the libraries that the site
+    librarian writes.
+Naturally, these may not be separate people; where I use this library,
+they're all the same.  But dividing it into three helps understand the
+usage model.
+
+In many ways, this is similar to Class::DBI, but differs in some
+design philosophy aspects.  All the underlying database access is
+through DBI.
+
+The inspiration for this is provided by Harlequin Common Lisp's SQL
+library, "Common SQL".  I lamented that Perl, which is such a great
+language for database work, didn't have a library like Common SQL, so
+I wrote it.
+
+My current provisional name is DBIx::SeeCool.  This is an abridgment
+of the conversation I had when showing this to a friend.  "See?" "Cool!"
+Of course, the homophone is nice too.  But cutesy names aren't that
+useful to somebody searching CPAN, so I'm looking for a better name.
+
+So, I think that's plenty of information... to give much more detail,
+I'd be pasting the PODs into this email.  So with all that said, any
+suggestions?
+
+Best,
+joelh
+
+-- 
+Joel Ray Holveck - joelh@piquan.org
+   Fourth law of programming:
+   Anything that can go wrong wi
+sendmail: segmentation violation - core dumped

@@ -1,0 +1,118 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53609
+Return-Path: <robm@fastmail.fm>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 11737 invoked from network); 19 Mar 2007 22:53:10 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 19 Mar 2007 22:53:10 -0000
+Received: (qmail 25561 invoked by uid 225); 19 Mar 2007 22:53:10 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24888 invoked by alias); 19 Mar 2007 22:52:25 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from out5.smtp.messagingengine.com (HELO out5.smtp.messagingengine.com) (66.111.4.29)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 19 Mar 2007 15:52:10 -0700
+Received: from out1.internal (unknown [10.202.2.149])
+	by out1.messagingengine.com (Postfix) with ESMTP id EE24020907D;
+	Mon, 19 Mar 2007 18:51:51 -0400 (EDT)
+Received: from heartbeat2.messagingengine.com ([10.202.2.161])
+  by out1.internal (MEProxy); Mon, 19 Mar 2007 18:51:51 -0400
+X-Sasl-enc: OlfrLoj7ECPMT/LGZOG3Ltc/fmE2I5SzpyfKz9S/42uh 1174344713
+Received: from robmhp (dsl-202-173-180-52.vic.westnet.com.au [202.173.180.52])
+	by mail.messagingengine.com (Postfix) with ESMTP id 6D5DD10C18;
+	Mon, 19 Mar 2007 18:51:51 -0400 (EDT)
+Message-ID: <076b01c76a79$56974610$8500a8c0@robmhp>
+To: "Ash Berlin" <ash_cpan@firemirror.com>,
+	<cpan@robm.fastmail.fm>
+Cc: <modules@perl.org>
+References: <45FE9051.9060600@firemirror.com>
+Subject: Re: Cache::FastMmap + Win32
+Date: Tue, 20 Mar 2007 09:52:53 +1100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=response
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.3028
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3028
+Approved: news@nntp.perl.org
+From: robm@fastmail.fm ("Rob Mueller")
+
+Hi
+
+> Seems like you never got round to it - so in the iterests of relasing
+> the code, I will be asking for temporary co-maint if you dont reply by
+> the end of the month (31st March - two weeks)
+>
+> Hope to hear from you soon.
+
+I did look at your patch, but unfortunately I wanted to make changes that I 
+never got around to.
+
+The main thing I didn't like was that the functions mmc_init(), mmc_close(), 
+mmc_lock(), mmc_unlock() copy code, rather than just factoring out the 
+unix/win32 specific bits into separate functions. Eg I'd really rather see 
+something like this:
+
+---
+
+int mmc_close(mmap_cache *cache) {
+  int res;
+
+  /* Shouldn't call if not init'ed */
+  ASSERT(cache->fh);
+  ASSERT(cache->mm_var);
+
+  /* Shouldn't call if page still locked */
+  ASSERT(cache->p_cur == -1);
+
+  /* Unlock any locked page */
+  if (cache->p_cur != -1) {
+    mmc_unlock(cache);
+  }
+
+  /* Close file */
+  if (cache->fh) {
+    mmc_close_filehandle(cache);
+  }
+
+  /* Unmap memory */
+  if (cache->mm_var) {
+    mmc_unmap_memory(cache);
+    if (res == -1) return -1;
+  }
+
+  free(cache);
+
+  return 0;
+}
+
+---
+
+And have specific versions of mmc_close_filehandle() and mmc_unmap_memory() 
+for unix/win32. Ditto the other functions. Otherwise if any of the common 
+logic needs changing in the future, it's a pain to have to modify two 
+different files to keep them in sync.
+
+Regarding _mmc_set_error(), the second parameter is a pain because of the 
+errno vs GetLastError() thing. My recommendation would be to do something a 
+bit hacky like make a magic value like:
+
+#define USE_SYSTEM_ERROR -1
+
+Be a magic value you can pass, and _mmc_set_error() will use 
+errno/GetLastError() itself if that value is passed.
+
+Thoughts? If you sent me a patch with these changes, I'd be happy to just 
+apply it and release a new version.
+
+Rob
+

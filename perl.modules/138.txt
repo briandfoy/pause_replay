@@ -1,0 +1,65 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:2651 perl.modules:138
+Return-Path: <mike808@my-deja.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31630 invoked from network); 21 Oct 1999 05:52:34 -0000
+Received: from mc-qout4.whowhere.com (209.185.123.18)
+  by tmtowtdi.perl.org with SMTP; 21 Oct 1999 05:52:34 -0000
+Received: from Unknown/Local ([?.?.?.?]) by my-deja.com; Wed Oct 20 22:52:07 1999
+To: "Redford, John" <John.Redford@fmr.com>, "Andreas J. Koenig" <andreas.koenig@anima.de>
+Date: Wed, 20 Oct 1999 22:52:07 -0700
+Message-ID: <BBHCMPFBGNNJAAAA@my-deja.com>
+Mime-Version: 1.0
+Cc: perl5-porters@perl.org, modules@perl.org
+X-Sent-Mail: on
+X-Mailer: MailCity Service
+Subject: Re: [p5p] Re: (Fwd) NEW MODULE (pragma): import.pm
+X-Sender-Ip: 209.96.12.21
+Organization: My Deja Email  (http://www.my-deja.com:80)
+Content-Type: text/plain; charset=us-ascii
+Content-Language: en
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: mike808@my-Deja.com ("Michael King")
+
+Ok, I've readied most of the changes from the feedback on this thread, and here goes:
+
+I would like to request the following namespaces:
+
+Import::ShortName - for the namespace aliasing thingy
+
+and
+
+Import::JavaPkg - for the auto-loading package
+loader (with aliasing)
+
+I'm splitting the docs, verifying all the weird syntax options and any other oddball cases I can throw at it.
+
+I haven't decided what to do with the issue of loading into an existing namespace. Part of me thinks this could be useful as an alternative way to implement inheritance for a performance boost by bypassing the virtual method lookup mechanism in @ISA.
+
+Thoughts? Or should that be relegated alongside the Damien Conway posts that use indirect syntax *and* implement pragmas. :)
+
+I thought about enforcing a two-level namespace in order to even use the module (so bozos who try stuff like 'use Import::JavaPkg "CGI";' get an exception telling them not to do that). But, then some people pointed to wanting to try something like "use Import::JavaPkg "IO";' (or Tk::somesuch).
+
+I decided to let those who wish to do so do so,
+and not shake my finger and tell them I won't
+let them do that. I don't presume to know
+someone else's intent and prevent them from
+doing something. Especially when I would have
+to put in extra code to prevent them.
+
+I didn't feel I should be the "code police" and publish crippleware. There are plenty of others on these lists that have egos big enough to take up my slack in that area.
+
+I also don't know what to do about multiple packages that are inside a single pm (a la XML::DOM, primarily). Any ideas?
+
+Make a second pass to hunt for qualifying
+namespaces to alias *after* I've 'use'd the
+module?
+
+Mike.
+
+
+--== Sent via Deja.com http://www.deja.com/ ==--
+Share what you know. Learn what you don't.

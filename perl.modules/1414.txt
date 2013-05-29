@@ -1,0 +1,107 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1414
+Return-Path: <sb@sdm.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30276 invoked from network); 29 Mar 2000 11:59:02 -0000
+Received: from world1.sdm.de (root@192.76.162.229)
+  by tmtowtdi.perl.org with SMTP; 29 Mar 2000 11:59:02 -0000
+Received: by world1.sdm.de (MTA) via esmtp for <modules@perl.org>
+	from muccpu1.muc.sdm.de ([193.102.180.11]) 
+	id 12aH7j-0000cn-00; Wed, 29 Mar 2000 13:58:59 +0200
+Received: by muccpu1.muc.sdm.de (Sendmail 8.9.3+Sun) for modules@perl.org
+	id NAA00369; Wed, 29 Mar 2000 13:59:00 +0200 (MET DST)
+Message-ID: <200003291159.NAA00369@muccpu1.muc.sdm.de>
+Subject: Need additional namespace for Date::Calc
+To: modules@perl.org
+Date: Wed, 29 Mar 2000 13:59:00 +0200 (MET DST)
+Reply-To: sb@sdm.de (Steffen Beyer)
+X-No-Archive: yes
+X-Disabled: Return-Receipt-To: sb@sdm.de
+X-W3-Page: http://www.engelschall.com/u/sb/download/
+X-Mailer: ELM [version 2.4ME+ PL61 (25)]
+Approved: news@nntp.perl.org
+From: sb@sdm.de (Steffen Beyer)
+
+Dear maintainers of the CPAN namespace,
+
+I would like to "apply" for some additional namespace (2 new modules)
+which I need in order to extend my "Date::Calc" package (oncoming
+version 4.4).
+
+The first module is called "Date::Carp" for obvious reasons:
+
+       This module is closely based on Carp.pm from Perl
+       5.005_03. It has been modified to skip all package names
+       matching /^Date::/. Thus when your script date.pl calls
+       module Date::A, and module Date::A calls module Date::B,
+       an exception raised in module Date::B will appear to have
+       originated from date.pl where Date::A was called, and not
+       in Date::A where Date::B was called, as the unmodified
+       Carp.pm would try to make you believe :-). This works
+       similarly if Date::B calls Date::C where the exception is
+       raised, etcetera.
+
+       In other words, this blames all errors in the Date::*
+       modules on the user of these modules, i.e., you. ;-)
+
+All "Date::*" modules can use and profit from this module.
+
+The proposed entry into The Perl 5 Module List would be:
+
+Name              DSLI Description                                  Info
+------------      ---- -------------------------------------------- ----
+Date::Carp        bdpf Throw exceptions outside Date::* packages    STBEY
+
+The second module is an object-oriented front-end to "Date::Calc" with
+overloaded operators.
+
+This module is intended to make frequent things easy (and infrequent or
+hard things possible), such as, for example:
+
+    use Date::Object;
+
+    $yesterday = Date::Object->today - 1;
+    $tomorrow  = Date::Object->today + 1;
+
+    Date::Object->date_format(3); # the most verbose
+
+    print "Yesterday was: $yesterday\n";
+    print "Tomorrow is:   $tomorrow\n";
+
+The proposed name is "Date::Object", also for obvious reasons.
+
+But maybe you'll think that this name is *too* generic, I don't know.
+The module's name should be something very short, however, because it
+will be something users will have to type frequently (as in the example
+above). Another idea for a name would be "Date::ooCalc" or "Date::OOCalc"
+(or "Date::CalcOO"?), but this looks a little queer ("OO" means "rest
+room" in many countries). I'd really prefer "Date::Object" for this
+reason.
+
+The proposed entry into The Perl 5 Module List would be:
+
+Name              DSLI Description                                  Info
+------------      ---- -------------------------------------------- ----
+Date::Object      bdpO Date::Calc OO frontend w/ overl'd operators  STBEY
+
+A beta version of "Date::Calc" 4.4 containing these two new modules can
+be downloaded from
+
+    http://www.engelschall.com/u/sb/download/pkg/Date-Calc-4.4.tar.gz
+
+Please see also
+
+    http://www.engelschall.com/u/sb/download/pkg/Date-Calc-4.4.README
+
+for a list of changes and new features and why it's still called "beta".
+
+Thank you very much in advance for your consideration and help!
+
+Best regards,
+-- 
+    Steffen Beyer <sb@engelschall.com>
+    http://www.engelschall.com/u/sb/whoami/ (Who am I)
+    http://www.engelschall.com/u/sb/gallery/ (Fotos Brasil, USA, ...)
+    http://www.engelschall.com/u/sb/download/ (Free Perl and C Software)

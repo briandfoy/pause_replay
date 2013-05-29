@@ -1,0 +1,65 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:30410
+Return-Path: <merlyn@stonehenge.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 43584 invoked by uid 76); 3 Apr 2004 22:57:04 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170)
+  by onion.perl.org (qpsmtpd/0.27.1) with SMTP; Sat, 03 Apr 2004 14:57:04 -0800
+Received: (qmail 26207 invoked by uid 225); 3 Apr 2004 22:57:01 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26201 invoked by alias); 3 Apr 2004 22:57:01 -0000
+X-Spam-Status: No, hits=0.0 required=7.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from blue.stonehenge.com (HELO blue.stonehenge.com) (209.223.236.162)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Sat, 03 Apr 2004 14:57:01 -0800
+Received: from localhost (localhost [127.0.0.1])
+	by blue.stonehenge.com (Postfix) with ESMTP
+	id B21C02F1B2; Sat,  3 Apr 2004 14:56:58 -0800 (PST)
+Received: from blue.stonehenge.com ([127.0.0.1])
+ by localhost (blue.stonehenge.com [127.0.0.1]) (amavisd-new, port 10024)
+ with LMTP id 23580-01-37; Sat,  3 Apr 2004 14:56:57 -0800 (PST)
+Received: by blue.stonehenge.com (Postfix, from userid 1001)
+	id C5EA32F622; Sat,  3 Apr 2004 14:56:57 -0800 (PST)
+To: Ryan Eatmon <reatmon@mail.com>
+Cc: modules@perl.org
+Subject: Re: XML::Stream::Namespace went retro-version
+References: <86isgiff7b.fsf@blue.stonehenge.com>
+Date: 03 Apr 2004 14:56:57 -0800
+In-Reply-To: <86isgiff7b.fsf@blue.stonehenge.com>
+Message-ID: <86brm8d612.fsf@blue.stonehenge.com>
+Lines: 26
+User-Agent: Gnus/5.09 (Gnus v5.9.0) Emacs/21.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: merlyn@stonehenge.com ((Randal L. Schwartz))
+
+>>>>> "Randal" == Randal L Schwartz <merlyn@stonehenge.com> writes:
+
+Randal> When I install XML::Stream-1.19, CPAN wants me to install
+Randal> XML::Stream-1.18 to restore XML::Stream::Namespace, but that of
+Randal> course means that on the next round, I need to install XML::Stream
+Randal> to update it back to 1.19!
+
+Randal> You need to delete all prior versions of XML::Stream from the CPAN,
+Randal> or release a new version of XML::Stream that includes a version
+Randal> of XML::Stream::Namespace.
+
+The problem is that XML/Stream/Namespace.pm in 1.19 does not define
+a $VERSION at all, so the version is "undef".
+
+This makes CPAN.pm think that 1.18 is "newer", because the version
+number went from "undef" (in 1.19) to "1.18" (1.18).
+
+Again, either release a new version, or delete all prior versions.
+Until then, CPAN.pm bitches at me daily, and I will continue to annoy
+you for a fix.
+
+-- 
+Randal L. Schwartz - Stonehenge Consulting Services, Inc. - +1 503 777 0095
+<merlyn@stonehenge.com> <URL:http://www.stonehenge.com/merlyn/>
+Perl/Unix/security consulting, Technical writing, Comedy, etc. etc.
+See PerlTraining.Stonehenge.com for onsite and open-enrollment Perl training!

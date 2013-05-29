@@ -1,0 +1,201 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:85364
+Return-Path: <perl-diddler@tlinx.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2557 invoked from network); 26 Mar 2013 22:49:13 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 26 Mar 2013 22:49:13 -0000
+Received: (qmail 10208 invoked by uid 225); 26 Mar 2013 22:49:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10204 invoked by alias); 26 Mar 2013 22:49:13 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,NORMAL_HTTP_TO_IP,T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from ishtar.tlinx.org (HELO Ishtar.hs.tlinx.org) (173.164.175.65)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 26 Mar 2013 15:49:07 -0700
+Received: from [192.168.4.12] (Athenae [192.168.4.12])
+	by Ishtar.hs.tlinx.org (8.14.5/8.14.4/SuSE Linux 0.8) with ESMTP id r2QMn1wX025517
+	for <modules@perl.org>; Tue, 26 Mar 2013 15:49:03 -0700
+Message-ID: <515225DD.6090403@tlinx.org>
+Date: Tue, 26 Mar 2013 15:49:01 -0700
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.8.1.24) Gecko/20100228 Lightning/0.9 Thunderbird/2.0.0.24 Mnenhy/0.7.6.666
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: Module submission mem
+References: <20130320044811.4E0FE1F89B@pause.perl.org> <220320131413272902%brian.d.foy@gmail.com> <514D7263.7090809@tlinx.org> <240320131033178006%brian.d.foy@gmail.com> <514F65AF.4050108@tlinx.org> <20130326003112.9135010AFFD@mxperim6.sea5.speakeasy.net> <5150F5C5.2020907@tlinx.org> <260320131004392176%brian.d.foy@gmail.com>
+In-Reply-To: <260320131004392176%brian.d.foy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: perl-diddler@tlinx.org (Linda W)
+
+
+brian d foy wrote:
+> Ah, okay, I misunderstood that. However, I still don't get that from
+> the name you're using.
+>
+> Still, I'm not at all arguing about what your module does or how it
+> does it or why it does it.
+Here are some pointers to the original discussion:
+
+http://grokbase.com/t/perl/perl5-porters/125eyf9ga6/perl-112916-please-enhance-use-and-use-parent-to-use-bases-modfind-ability
+
+http://markmail.org/message/4ycpsmrl5sy3nnj4
+
+http://comments.gmane.org/gmane.comp.lang.perl.perl5.porters/108859
+
+
+This work came out of those discussions  where
+"use base" has this feature built-in, but "use parent" required its own
+syntax, and "use" didn't work at all.
+
+I wrote:
+
+   I.e. usually if one has a 'cache', and one has loaded an object into the
+   cache, then one doesn't goto disk to load that object if they check the
+   in-memory copy first and find it present.
+
+   I can't think of any system that ignores in-memory versions an object in
+   preference to a disk copy -- by DEFAULT. 
+
+   Certainly with an override, or a cache-flush, forcing a reload from disk
+   is an oft' included feature.
+
+   But can anyone think of any systems or subsystems in computer science
+   where the default is to ignore in-memory copies of them in preference for
+   searching on disk?
+
+   I would go so far that if a computer found a copy of a file in memory or
+   a browser found an object in memory that had not been marked 'invalid',
+   and it defaulted to pulling it in off disk, most would consider it bug.
+
+   So why is perl backwards from what would seem to be the norm?   Why would
+   it be considered a bug to do that which not only is a default in other
+   cached v. disk copy algorithms, but usually a performance enhancement as
+   well?
+
+   Of course this presumes correct implementation of checking that a class's
+   code is in memory, and not just data.
+
+------------------------------
+
+One of the issues, of concern was using any sort of code in a CLIENT module
+that directed perl to not to follow the normal "scan LIB path".  A client
+module might try to include or use a module not designed to be used from
+memory and it could have unforeseen compatibility problems.
+
+I wanted something that worked orthogonally and transparently across 'use
+ base', 'use parent' and use'.  By transparently, I mean the client doesn't
+need to know the location of the module or where it is coming from.  All it
+knows is that it calls 'use'/'use parent'/'use base' and it is there.
+
+------
+
+Issues of whether or not a client should make some call change to look in
+memory for the class, first, before searching on disk.  Max Maischein
+explained problems with classes using 'base' to load a module, where base
+though the class was loaded but really wasn't.  (further down on
+http://comments.gmane.org/gmane.comp.lang.perl.perl5.porters/108859).
+
+In short, it was clear that it it could be a problem for a 'client' to have
+to, or even to 'even try to specify whether or not to use some 3rd party
+module providing a service, for a client to have to know anything was
+different from the 'norm'.
+
+So something needed to be created to
+1) work orthogonally
+2) transparently, from an OO standpoint (clients wouldn't need to be
+   changed)
+3) looked like part of the same group:
+
+   use
+   use parent
+   use base
+   require
+
+#3 is the main reason for the naming choice.  Like "use parent" and "use
+base", that modify the semantics of "use", I needed a simple word that
+also fell into that group, as that's what it does (i.e. modifies the
+semantics of "use";
+
+#2 and #1 bring in the requirements that the pragma NOT be in the same
+modules or places as those using the above keywords/pragma.  I.e. it would
+be used in the *defining* module as only the module author can ensure
+that it is appropriate to allow overriding the normal behavior.
+
+Req #4 -- it needs to work per-package, not per-file.
+
+Req #5 -- it needs to work across files -- affecting any client loaded
+AFTER it -- even if the client was in a different file.  I.e. it can only
+affect the above module-use/require calls if it is loaded into memory
+*before* any client that uses it, otherwise a using client will search
+for that module on disk in the regular way.
+
+Note: -- a Consequence of #5 means it shouldn't be confused with a
+normal Module or Package as is not order independent.  It's effects on
+an including Module are on all modules/packages including that module that
+are in the same namespace, 'top-level namespace (usually, the rest of the
+program).
+
+  Initially the RFE (perl #112916) was to have "use" and "use parent"
+enhanced to have the same abilities as base.  But this was thought to be
+problematic due to problems in base:
+(original at):
+
+http://corion.net/talks/Probleme-mit-base.pm/probleme-mit-base.pm-talk.html
+
+xlated at :
+
+http://98.139.168.220/babelfish/translate_url_content?.intl=de&lp=de_en&trurl=http%3A%2F%2Fcorion.net%2Ftalks%2FProbleme-mit-base.pm%2Fprobleme-mit-base.pm-talk.html
+
+
+Some thought this didn't belong in 'CORE':
+
+  doy (at tozt-net:) wrote:
+  As long as loading modules can have arbitrary effects in arbitrary
+  packages, I think that any heuristics about "has this module been loaded
+  already?" do not belong in core.
+
+Thus it became something that would only be used by a module designer, and
+require no changes to client modules but changes compilation behavior to no
+longer try to look for the module by searching through the library path.
+
+Modules 'use'ing a parent module already loaded from memory will still call
+it's 'import' method, if any, in the same way as if the module had been
+loaded from the @INC array.  I.e. I wanted location transparency for using
+modules -- whether they were in the same file after the 'used' module OR
+located in a separate file that was used subsequent to the initial file
+being loaded.
+
+Also, note,  If the module is in a file in the @INC 'library' path, using
+'mem' in the module won't cause any problems. 
+
+So...naming -- it shouldn't look like a Package or Module, as it has
+the wrong semantics for such -- it affects compiler behavior for the module
+that uses 'mem'.
+
+It should fit in to the same set as the calls it affects:
+
+   use
+   use parent
+   use base
+   require
+
+I didn't think 'cache' or 'cached' would be good names as I could see those
+being used by CORE -- likewise 'memory' would have been an equally bad
+choice for the same reason.  I reasoned that 'mem' would be too short and
+too unspecific for them to want to use, but it WOULD hold meaning in the
+context of the originally filed RFE and those wanting perl to search memory,
+first, before going to disk.  I.e. -- it is somewhat ironic that an argument
+against 'mem' is that it isn't specific enough to be a good choice --
+meaning it is unlikely to be used in CORE.  This did figure into the choice.
+However, that its length is exactly equal to the average length of the above
+4 statements it affects and is grouped with, is a coincidence.
+
+
+
+
+

@@ -1,0 +1,58 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:250
+Return-Path: <jgsmith@hex.tamu.edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7373 invoked from network); 25 Oct 1999 20:39:53 -0000
+Received: from hex.tamu.edu (165.91.250.23)
+  by tmtowtdi.perl.org with SMTP; 25 Oct 1999 20:39:53 -0000
+Received: from hex.tamu.edu (localhost [127.0.0.1])
+	by hex.tamu.edu (8.9.0/8.9.0) with ESMTP id PAA18413;
+	Mon, 25 Oct 1999 15:41:23 -0500 (CDT)
+Message-ID: <199910252041.PAA18413@hex.tamu.edu>
+X-Mailer: exmh version 2.0.2 2/24/98
+To: andreas.koenig@anima.de (Andreas J. Koenig)
+cc: JGSmith@TAMU.Edu, modules@perl.org
+Subject: Re: Ticket based authentication 
+Reply-To: JGSmith@TAMU.Edu
+X-Office: 326E Teague
+X-Organization: TAMU CIS Operating Systems Group, Unix
+X-Pgp-Key: Get key 0x7991CC92 by sending message with subject: "get pgp key"
+X-Url: http://HeX.TAMU.Edu/
+X-Reposting-Policy: redistribute only with permission
+In-reply-to: Your message of "12 Oct 1999 12:05:38 +0200."
+             <sfcr9j0nbbh.fsf@hohenstaufen.in-berlin.de> 
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Date: Mon, 25 Oct 1999 15:41:23 -0500
+Sender: jgsmith@hex.tamu.edu
+Approved: news@nntp.perl.org
+From: JGSmith@TAMU.Edu (James G Smith)
+References: <sfcr9j0nbbh.fsf@hohenstaufen.in-berlin.de>
+
+andreas.koenig@anima.de (Andreas J. Koenig) wrote:
+>
+>Authen:: is well established for authentication modules. Maybe
+>Authen::Tamu, if it's related to TAMU? Or maybe Authen::TicketMaster?
+>
+>That would, of course, lead to three level deep names for the actual
+>implementation. That's a trade off. You are the judge if it is a
+>worrysome trade-off. I could live with it, Tim is known to dislike
+>three level deep namespaces, but I see nothing shorter.
+
+What if the basic package is Authen::Ticket and the actual mod_perl handlers 
+are then Authen::Ticket::{Server,Client}.  The package would fit in the 
+two-level scheme.  The two main classes in the package are more abstract 
+classes to be sub-classed anyway.  Several helper classes may also be provided 
+such as Authen::Ticket::Sign for some helper routines in 
+signing/encrypting/decrypting tickets.
+
+If we go with two-level names for these, we get two or three packages out of 
+it (Master, Client, Helper).  It seems to make more sense to keep everything 
+together.
+-- 
+James Smith <JGSmith@TAMU.Edu>, 409-862-3725
+Texas A&M CIS Operating Systems Group, Unix
+
+

@@ -1,0 +1,120 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:29638
+Return-Path: <stevan@iinteractive.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 41296 invoked by uid 76); 19 Mar 2004 16:29:30 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170)
+  by onion.perl.org (qpsmtpd/0.27.1) with SMTP; Fri, 19 Mar 2004 08:29:30 -0800
+Received: (qmail 3838 invoked by uid 225); 19 Mar 2004 16:29:26 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3834 invoked by alias); 19 Mar 2004 16:29:25 -0000
+X-Spam-Status: No, hits=0.0 required=7.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail.iinteractive.com (HELO mail.iinteractive.com) (66.22.157.43)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Fri, 19 Mar 2004 08:29:05 -0800
+Received: from [67.172.11.152] [67.172.11.152] by mail.iinteractive.com with ESMTP
+  (SMTPD32-6.06) id AFA316D10138; Fri, 19 Mar 2004 11:28:19 -0500
+In-Reply-To: <20040319042405.GA30791@verizon.net>
+References: <200403181922.i2IJMhSe027110@pause.perl.org> <20040319042405.GA30791@verizon.net>
+Mime-Version: 1.0 (Apple Message framework v612)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-ID: <C9FC53EC-79C2-11D8-9CAA-003065CDC69C@iinteractive.com>
+Content-Transfer-Encoding: 7bit
+Cc: modules@perl.org
+Subject: Re: Module submission Iterator
+Date: Fri, 19 Mar 2004 11:30:52 -0500
+To: Kurt Starsinic <kstar@cpan.org>
+X-Mailer: Apple Mail (2.612)
+Approved: news@nntp.perl.org
+From: stevan@iinteractive.com (stevan little)
+
+Kurt,
+
+>     Also, Iterator isn't really encompassing enough to be worth of a
+> top-level name (C++ zealots should just sit out this conversation).
+
+I disagree, (and I am not a C++ zealot). Its certainly not up there 
+with Class, CGI, Devel, etc., but I cannot see it fitting appropriately 
+anywhere else. Of course that is not reason enough. But good iterators 
+are seriously valuable in large OO projects. I myself have a rather 
+large set of them I use regularly, which would serve as the basis of 
+this module set.
+
+>
+>>     I am not proposing to create across the board
+>>     consistency, but instead a base class, built for extension, which
+>>     could be used to create interchangeable and consistent iterators.
+>
+>     But that's precisely what people can't agree on, and that's why
+> there are so many iterator classes floating around.  Everybody has
+> his own idea about what the interface should be.
+
+I agree, there are a lot of iterator interfaces out there, but most of 
+them follow a similar pattern of (NOTE: these are descriptions not 
+actual method names) : are-there-any-more, give-me-the-next-one. 
+Occasionally you find a peek-ahead-at-the-next-one in there, and a 
+give-me-the-first-element, are-we-at-the-last-element and even 
+sometimes the occasional reset-this-iterator. I am not just planning to 
+create a basic Iterator and leave it there. But instead a set of 
+building blocks for iterators, and given perl's ease of symbol table 
+aliasing, there is little reason why the actual interfaces couldn't be 
+flexible (although I am not a fan of this, it is possible). Here is a 
+(really) quick example of this:
+
+package Iterator;
+
+# basic "functional" interface
+my $_has_more_elements = sub {}
+my $_next_element = sub {}
+my $_current_element = sub {}
+my $_first_element = sub {}
+my $_is_done = sub {}
+my $_peek_ahead = sub {}
+my $_reset = sub {}
+
+sub import {
+shift;
+my $interface = shift;
+if ($inteface eq "Java Iterator") {
+     # Java Iterator interface
+     *hasNext = $_has_more_elements;
+     *next = $_next_element;
+     # no remove
+}
+elsif ($interface eq "Java Enumeration") {
+     # Java Enumeration interface
+     *hasMoreElements = $_has_more_elements;
+     *nextElement = $_next_element;
+}
+elsif ($interface eq ".NET IEnumerator") {
+     # .NET IEnumerator compatablity
+     *MoveNext = $_next_element;
+     *Current = $_current_element;
+     *Reset = $_reset;
+}
+elsif ($interface eq "GoF") {
+     # GoF Design Pattern version (page 257)
+     *First = $_first_element;
+     *Next = $_next_element;
+     *IsDone = $_is_done;
+     *CurrentItem = $_current_element;
+}
+# ... etc etc etc and of course
+# there would be a default one.
+}
+
+Of course this example is not that great in terms of being able to be 
+subclassed, but I just wrote it and thought of it now, it is surely 
+riddled with problems and it thoroughly untested. But you get the 
+point. Interface compatibility could be possible.
+
+I don't think of Iterators as trivial throw away objects, I think they 
+are a basic building block for a modern OO language which is why you 
+will find them in every base class library out there. I think that perl 
+could use just such a thing.
+
+steve
+

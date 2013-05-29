@@ -1,0 +1,118 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46691
+Return-Path: <webmaster@simplemood.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17945 invoked from network); 2 Jan 2006 23:54:21 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 2 Jan 2006 23:54:21 -0000
+Received: (qmail 17158 invoked by uid 225); 2 Jan 2006 23:54:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17154 invoked by alias); 2 Jan 2006 23:54:20 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy includes SPF record at spf.trusted-forwarder.org)
+Received: from smtp107.sbc.mail.re2.yahoo.com (HELO smtp107.sbc.mail.re2.yahoo.com) (68.142.229.98)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Mon, 02 Jan 2006 15:54:13 -0800
+Received: (qmail 63410 invoked from network); 2 Jan 2006 23:54:09 -0000
+Received: from unknown (HELO ?192.168.90.223?) (dan.muey@sbcglobal.net@198.66.78.2 with plain)
+  by smtp107.sbc.mail.re2.yahoo.com with SMTP; 2 Jan 2006 23:54:09 -0000
+Mime-Version: 1.0 (Apple Message framework v623)
+In-Reply-To: <020120061303282434%brian.d.foy@gmail.com>
+References: <200601021558.k02Fw3CS024831@pause.perl.org> <020120061303282434%brian.d.foy@gmail.com>
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-ID: <62af985d3cfa1b5ece80268a44a7d887@simplemood.com>
+Content-Transfer-Encoding: 7bit
+Subject: Re: Module submission Mail::Sender::Simple
+Date: Mon, 2 Jan 2006 17:54:27 -0600
+To: modules@perl.org
+X-Mailer: Apple Mail (2.623)
+Approved: news@nntp.perl.org
+From: webmaster@simplemood.com (SimpleMood Webmaster)
+
+
+On Jan 2, 2006, at 3:03 PM, brian d foy wrote:
+
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+>
+> In article <200601021558.k02Fw3CS024831@pause.perl.org>, Perl Authors
+> Upload Server <upload@pause.perl.org> wrote:
+>
+>> The following module was proposed for inclusion in the Module List:
+>>
+>>   modid:       Mail::Sender::Simple
+>>   DSLIP:       Rdpfp
+>>   description: simple easy intuitive Mail::Sender interface
+>
+>>     It can get semi confusing when making semi complex mail.
+>
+> I know that Steffan suggested "Simple", but that's as meaningless as
+> "Easy". Words such as simple, easy, complex, and intuitive mean
+> different things to people. Your easy way of doing things is somebody
+> else's frustrating interface.
+>
+> A much better name describes how you make it easy or which class of
+> problems it makes simple.
+
+Ok, it makes it easy by giving you a single method (if you already have 
+an object) and a function (makes the object for you and calls the 
+method if you don't want to have an object first)  that  takes a user 
+friendly hashref to do everything from plain text to text and html and 
+attachments, inline or otherwise.
+
+That vs calling Open OpenMultipart Part EndPart Attach File SendEnc 
+Send Close $obj->{'errstr'} $obj->{'error'} $Mail::Sender::Error 
+properly and checking the return value, the erro or an eval of it all 
+to tell if it worked.
+
+Simple text:
+     email({
+         %mail_sender_config,
+         _text => 'Hello World',
+     }) or die "email() failed: $@";
+
+text and html with inline smiley for the html part and a pdf file 
+generated on the fly:
+
+     email({
+         'from'         => 'foo@bar.baz',
+         'to'           => 'you@ddre.ss',
+         'cc'           => 'your_pal@ddre.ss',
+         'subject'      => 'Perl is great!',
+         'auth'         => 'LOGIN',
+         'authid'       => 'foo@bar.baz',
+         'authpwd'      => 'protect_with_700_perms_or_get_it_from_input',
+         '_text'        => 'Hello World',
+         '_html'        => '<b>Hello World</b> <img src="cid:smile1" />',
+         '_attachments' => {
+             'smiley.gif' => {
+                 '_disptype    => 'GIF Image',
+                 '_inline'     => 'smile1',
+                 'description' => 'Smiley',
+                 'ctype'       => 'image/gif',
+                 'file'        => '/home/foo/images/smiley.gif',
+             },
+             'mydata.pdf' => {
+                 'description' => 'Data Sheet',
+                 'ctype'       => 'application/pdf',
+                  msg          => $pdf_guts,
+             }
+         },
+     }) or die "email() failed: $@";
+
+No need to remember how and in what order an when to call the multitude 
+of functions necessary to do simple or different complex things or 
+remeber how to check if it failed or not or how to get the error if it 
+did.
+
+So seeing as that is how it makes it "Simple" would "Concise" be good 
+or "Singularity" or "OneShot" or ??
+
+I'm welcome to ideas that would fit what would be proper :) I want to 
+be a good team player ;p
+
+Tell me what you think will work best and I'll register that. 
+

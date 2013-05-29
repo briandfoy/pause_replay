@@ -1,0 +1,74 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:47584
+Return-Path: <mvah@cyberporte.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 24807 invoked from network); 26 Feb 2006 18:07:31 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 26 Feb 2006 18:07:31 -0000
+Received: (qmail 12295 invoked by uid 225); 26 Feb 2006 18:07:31 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12290 invoked by alias); 26 Feb 2006 18:07:30 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from viefep17-int.chello.at (HELO viefep17-int.chello.at) (213.46.255.24)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 26 Feb 2006 10:07:28 -0800
+Received: from [192.168.0.181] (really [84.119.66.253])
+          by viefep17-int.chello.at
+          (InterMail vM.6.01.04.04 201-2131-118-104-20050224) with ESMTP
+          id <20060226180719.CHHM10477.viefep17-int.chello.at@[192.168.0.181]>
+          for <modules@perl.org>; Sun, 26 Feb 2006 19:07:19 +0100
+To: modules@perl.org
+Subject: Re: Module submission PDF::Easy
+Date: Sun, 26 Feb 2006 19:07:29 +0000
+User-Agent: KMail/1.7.1
+References: <200602261325.k1QDPGgX028456@pause.perl.org> <260220061135129529%brian.d.foy@gmail.com>
+In-Reply-To: <260220061135129529%brian.d.foy@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-ID: <200602261907.29183.mvah@cyberporte.com>
+Approved: news@nntp.perl.org
+From: mvah@cyberporte.com (Mark Howe)
+
+Hi,
+
+On Sunday 26 February 2006 17:35, brian d  foy wrote:
+
+> Easy doesn't tell people much about the module. What does your module
+> do?
+
+It seemed about as informative to me as API2 :) It's a library of functions 
+for creating PDF documents, aimed more at the one-page graphical variety than 
+the multipage structured document variety. So PDF::OnePage would be an 
+option, I suppose, except that I'll probably work out how to add extra pages 
+eventually. This afternoon I uploaded
+
+http://search.cpan.org/~melonman/PDF-EasyPDF_0_03b/lib/PDF/EasyPDF.pm
+
+which might give a better idea of what I'm trying to do.
+
+> And surely it does something at runtime. :)
+
+Well, yes. The specific issue for my (Windows) application is that PDF::API2 
+is a total pain to use with PerlApp. Each font is a separate PM, which 
+doesn't get loaded at compile time and there are at least 3 text files used 
+at runtime for constants such as page sizes, fonts and named colours. The 
+solution, apparently, is to bind each of these resources into the executable, 
+unpack them into a temporary directory at runtime, and then delete them after 
+execution. I couldn't get this to work properly, and I worked out that I 
+would need to either --bind or --lib over two dozen resources, which is 
+madness. That was when I decided to write a module that contained everything 
+in one file.
+
+Hope this helps,
+
+Regards,
+
+Mark

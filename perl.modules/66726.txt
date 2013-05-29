@@ -1,0 +1,191 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:66726
+Return-Path: <matthewt@agaton.scsys.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20299 invoked from network); 17 Jul 2009 18:18:24 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 17 Jul 2009 18:18:24 -0000
+Received: (qmail 32470 invoked by uid 225); 17 Jul 2009 18:18:23 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 32463 invoked by alias); 17 Jul 2009 18:18:23 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from jules.scsys.co.uk (HELO jules.scsys.co.uk) (217.168.153.160)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 17 Jul 2009 11:18:17 -0700
+Received: from [217.168.150.167] (helo=agaton.scsys.co.uk)
+	by jules.scsys.co.uk with esmtps (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1MRs0a-0007xt-9h; Fri, 17 Jul 2009 18:18:12 +0000
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1MRs0a-0000k8-5J; Fri, 17 Jul 2009 19:18:12 +0100
+Date: Fri, 17 Jul 2009 19:18:12 +0100
+To: Mons Anderson <mons@cpan.org>
+Cc: modules@perl.org
+Subject: Re: Module submission self::init
+Message-ID: <20090717181812.GQ17782@agaton.scsys.co.uk>
+References: <200907130905.n6D95oZc022033@pause.perl.org> <20090716181112.GH17782@agaton.scsys.co.uk> <200907171655.15475.mons@cpan.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200907171655.15475.mons@cpan.org>
+User-Agent: Mutt/1.5.11
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Fri, Jul 17, 2009 at 04:55:15PM +0400, Mons Anderson wrote:
+> On Thursday 16 July 2009 22:11:12 Matt S Trout wrote:
+> > On Mon, Jul 13, 2009 at 11:05:50AM +0200, Perl Authors Upload Server wrote:
+> > > The following module was proposed for inclusion in the Module List:
+> > >
+> > >   modid:       self::init
+> > >   DSLIP:       Rdppp
+> > >   description: Invoke package init methods at compile time
+> > >   userid:      MONS (Mons Anderson)
+> > >   chapterid:   27 (Pragma)
+> > >   communities:
+> > >
+> > >   similar:
+> > >
+> > >   rationale:
+> > >
+> > >     This module mainly used for initialization with such modules like
+> > >     Catalyst, DBIC, etc. So the main purpose is invoking self methods on
+> > >     "self". Since the usage is pragmatic, the name is in lower case
+> > >
+> > >   enteredby:   MONS (Mons Anderson)
+> > >   enteredon:   Mon Jul 13 09:05:49 2009 GMT
+> > >
+> > > The resulting entry would be:
+> > >
+> > > self::
+> > > ::init            Rdppp Invoke package init methods at compile time  MONS
+> >
+> > What would this achieve that simply having a BEGIN block wouldn't?
+> >
+> > BEGIN { __PACKAGE__->init }
+> >
+> > seems to me to achieve basically the same thing?
+> 
+> No, no
+> use self::init with out args is useless;
+> 
+> I'll give an example from live project:
+> 
+> package Friends::DB::Stream::Tags;
+> use strict;
+> use warnings;
+> use base 'DBIx::Class';
+> use self::init
+>   \-load_components => ("+Friends::DB::Core::Base", "Core"),
+>   \-table => ("tags"),
+>   \-add_columns => (
+>     id => {
+>       data_type => "integer",
+>       default_value => "nextval('tags_id_seq'::regclass)",
+>       is_nullable => 0,
+>       size => 4
+>     },
+>     title => {
+>       data_type => "character varying",
+>       default_value => undef,
+>       is_nullable => 0,
+>       size => 255
+>     },
+>     count => {
+>       data_type => "integer",
+>       default_value => 0,
+>       is_nullable => 1,
+>       size => 4
+>     },
+>   ),
+>   \-set_primary_key => ("id"),
+>   \-add_unique_constraint => ("tags_pkey", ["id"]),
+>   \-add_unique_constraint => ("idx_tags_title", ["title"]),
+> ;
+> 
+> 1;
+> ##########
+> It's the same as 
+> 
+> package Friends::DB::Stream::Tags;
+> use strict;
+> use warnings;
+> use base 'DBIx::Class';
+> BEGIN {
+>   __PACKAGE__->
+>   __PACKAGE__->load_components("+Friends::DB::Core::Base", "Core");
+>   __PACKAGE__->table("tags");
+>   __PACKAGE__->add_columns(
+>     id => {
+>       data_type => "integer",
+>       default_value => "nextval('tags_id_seq'::regclass)",
+>       is_nullable => 0,
+>       size => 4
+>     },
+>     title => {
+>       data_type => "character varying",
+>       default_value => undef,
+>       is_nullable => 0,
+>       size => 255
+>     },
+>     count => {
+>       data_type => "integer",
+>       default_value => 0,
+>       is_nullable => 1,
+>       size => 4
+>     },
+>   );
+>   __PACKAGE__->set_primary_key("id");
+>   __PACKAGE__->add_unique_constraint("tags_pkey", ["id"]);
+>   __PACKAGE__->add_unique_constraint => ("idx_tags_title", ["title"]);
+> }
+> 1;
+> #########
+> 
+> >
+> > And that's being called on the $class, not a $self object, so self::init
+> > would be the wrong name for it anyway.
+> Ok, agree.
+> Maybe rename it to class::init?
+> Or maybe you could propose more reasonable name?
+
+I still don't see what you gain over:
+
+for (__PACKAGE__) {
+  $_->load_components("+Friends::DB::Core::Base", "Core");
+  $_->table("tags");
+  $_->add_columns(
+    id => {
+      data_type => "integer",
+      default_value => "nextval('tags_id_seq'::regclass)",
+      is_nullable => 0,
+      size => 4
+    },
+    title => {
+      data_type => "character varying",
+      default_value => undef,
+      is_nullable => 0,
+      size => 255
+    },
+    count => {
+      data_type => "integer",
+      default_value => 0,
+      is_nullable => 1,
+      size => 4
+    },
+  );
+  $_->set_primary_key("id");
+  $_->add_unique_constraint("tags_pkey", ["id"]);
+  $_->add_unique_constraint => ("idx_tags_title", ["title"]);
+}
+
+-- 
+        Matt S Trout         Catalyst and DBIx::Class consultancy with a clue
+     Technical Director      and a commit bit: http://shadowcat.co.uk/catalyst/
+ Shadowcat Systems Limited
+  mst (@) shadowcat.co.uk        http://shadowcat.co.uk/blog/matt-s-trout/

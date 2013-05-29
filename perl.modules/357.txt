@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:357
+Return-Path: <k@hohenstaufen.in-berlin.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28745 invoked from network); 28 Oct 1999 20:20:53 -0000
+Received: from dubravka.in-berlin.de (HELO hohenstaufen.in-berlin.de) (0@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 28 Oct 1999 20:20:53 -0000
+Received: (from k@localhost)
+	by hohenstaufen.in-berlin.de (8.9.1a/8.9.1) id WAA01310;
+	Thu, 28 Oct 1999 22:20:08 +0200
+Sender: k@hohenstaufen.in-berlin.de
+To: Jimmy.Carpenter@chron.com
+Cc: modules@perl.org
+Subject: Re: Storm-Tracker bundle
+References: <008C3D3CBE3ED311AA0600A0C9EDA5B12FB986@boffice3.chron.com>
+Date: 28 Oct 1999 22:20:08 +0200
+In-Reply-To: Jimmy.Carpenter@chron.com's message of "Thu, 28 Oct 1999 14:36:20 -0500"
+Message-ID: <sfcln8nutjb.fsf@hohenstaufen.in-berlin.de>
+Lines: 71
+User-Agent: Gnus/5.070097 (Pterodactyl Gnus v0.97) Emacs/20.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Thu, 28 Oct 1999 14:36:20 -0500, Jimmy.Carpenter@chron.com said:
+
+ > My CPAN id is CARPENTER.  A few days ago I uploaded my Storm-Tracker bundle.
+ > This bundle is currently in the Geo::Storm_Tracker::bla namespace.  I am
+ > considering renaming it to be in the Geo::StormTracker::bla namespace for
+ > version 0.02.  The only problem with the new name being that StormTracker
+ > has 12 characters which is more than the recommended 11.  Any guidance here
+ > would be appreciated.
+
+The recommendation of 11 stems from very old unixes that didn't allow
+more than 14 characters for a filename (3 discounted for ".pm"). I
+believe, these systems aren't that widespread anymore.
+
+OTOH, StormTrack doesn't sound completely wrong does it?
+
+ > I have noticed that although I can search CPAN by author for CARPENTER and
+ > see my module listed, I can't search for Geo and find my module.  This works
+ > for Geo::METAR and Geo::WeatherNOAA but not for mine.  Have I done something
+ > wrong?
+
+I just did this:
+
+% perl -MCPAN -e shell
+[...]
+cpan> m /Geo::/
+Module          Geo::METAR      (J/JZ/JZAWODNY/Geo-METAR-1.12.tar.gz)
+Module          Geo::Storm_Tracker (C/CA/CARPENTER/Storm-Tracker_0.01.tar.gz)
+Module          Geo::Storm_Tracker::Advisory (C/CA/CARPENTER/Storm-Tracker_0.01.tar.gz)
+Module          Geo::Storm_Tracker::Data (C/CA/CARPENTER/Storm-Tracker_0.01.tar.gz)
+Module          Geo::Storm_Tracker::Main (C/CA/CARPENTER/Storm-Tracker_0.01.tar.gz)
+Module          Geo::Storm_Tracker::Parser (C/CA/CARPENTER/Storm-Tracker_0.01.tar.gz)
+Module          Geo::WeatherNOAA (MSOLOMON/Geo-WeatherNOAA-4.33.tar.gz)
+
+Looks good.  What did you try?
+
+ > I have yet another module that I may or may not release.  I would like to
+ > bundle it separte from my Storm-Tracker stuff although it is related.  It is
+ > currently named Bla::Graphics::GeoPlot (a namespace only used by my
+ > employer).  I have considered naming it either Geo::StormTracker::GeoPlot or
+ > maybe Graphics::GeoPlot but don't really know what namespace to use.  It is
+
+Geo::GNUPlot maybe? If it satisfies the needs of people drawing the
+earth with GNU-Plot, this sounds a natural name. The doubled "Geo" in
+the name is of no use. And Graphics? This isn't really core Graphics,
+it is applied Graphics and as such it may be listed where it is
+applied. IMHO.
+
+ > used to plot a position track (as returned by
+ > Geo::StormTracker::Data::position_track ) via gnuplot to generate track maps
+ > similar to what can be seen at http://www.chron.com/storm  It does not use
+ > any of the Gnuplot related modules on CPAN but rather just writes the
+ > gnuplot configuration files directly.  The advantage of leaving it as a
+ > separate independent bundle is that if my employer decides to release it at
+ > a later date (very possible), it will not require any additional work to
+ > integrate it into the Storm-Tracker bundle which will soon be maintained by
+ > Dr. Ruscher at the meterology department of Florida University rather than
+ > by myself.
+
+
+ > Jimmy Carpenter
+ > Systems Implementor
+ > Houston Chronicle
+ > 801 Texas Ave.
+ > Houston, TX 77006
+ > email: Jimmy.Carpenter@chron.com
+ > ph:(713)220-2937
+ > fax: (713)220-6685
+
+
+-- 
+andreas

@@ -1,0 +1,160 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:37698
+Return-Path: <paul@pauljacobs.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19344 invoked from network); 16 Jan 2005 22:31:41 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 16 Jan 2005 22:31:41 -0000
+Received: (qmail 10930 invoked by uid 225); 16 Jan 2005 22:31:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10925 invoked by alias); 16 Jan 2005 22:31:39 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from hobbiton.shire.net (HELO hobbiton.shire.net) (166.70.252.250)
+  by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 16 Jan 2005 14:31:35 -0800
+Received: from [70.32.233.193] (helo=[192.168.120.100])
+	by hobbiton.shire.net with esmtpa (Exim 4.43)
+	id 1CqIvh-0004qG-GH
+	for modules@perl.org; Sun, 16 Jan 2005 15:31:31 -0700
+Mime-Version: 1.0 (Apple Message framework v619)
+Message-ID: <59CB9B0E-680E-11D9-8E4B-003065F5E888@pauljacobs.net>
+To: modules@perl.org
+Date: Sun, 16 Jan 2005 14:31:22 -0800
+X-Pgp-Agent: GPGMail 1.0.2
+X-Mailer: Apple Mail (2.619)
+X-SA-Exim-Connect-IP: 70.32.233.193
+X-SA-Exim-Mail-From: paul@pauljacobs.net
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII; delsp=yes; format=flowed
+Subject: Module Naming Issue
+X-Spam-Checker-Version: SpamAssassin 3.0.0 (2004-09-13) on hobbiton.shire.net
+X-Spam-Level: 
+X-SA-Exim-Version: 4.1+cvs (built Mon, 23 Aug 2004 08:44:05 -0700)
+X-SA-Exim-Scanned: Yes (on hobbiton.shire.net)
+X-Virus-Checked: Checked
+X-Old-Spam-Status: No, score=0.0 required=5.0 tests=AWL,BAYES_50 
+	autolearn=disabled version=3.0.0
+Approved: news@nntp.perl.org
+From: paul@pauljacobs.net (Paul Jacobs)
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hi everyone,
+
+I have a (system of) module(s) I want to upload to PAUSE/CPAN, but I  
+need to relocate their namespace first. And this is non-trivial because  
+I'm not sure what new namespace to use, and I've put quite a lot of  
+thought into it.
+
+First, some background.
+
+I've heard a lot of claims about blackjack card-counting schemes,  
+grid-based programs for human players to interpret on the casino floor,  
+etc.. I've also heard that it's possible in casino blackjack for the  
+trained player to get a 5% or so advantage with 'ideal' strategy and  
+timing, over the long run. But there is considerable debate, it seems,  
+on WHICH strategy one should follow to get the maximum advantage. And  
+more importantly, there doesn't seem to be any objective source in the  
+market - no arguments are really being made by anyone who isn't trying  
+to sell a book or a training program. I want to see a study done  
+not-for-profit, with the data open to the public, with the algorithms  
+open to the public, and giving anyone the software and data to  
+duplicate the entire contest for themselves, if they want.
+
+So.. I decided to have a contest for blackjack bots, where the  
+tournament software is open-source, and require all entries to be  
+open-sourced as well. Everything is written in perl, as will be all the  
+entries (though I'm considering adding other interfaces). There are  
+many more details to the contest, many of which are yet to be worked  
+out, but it's looking like it'll probably start in March or April, and  
+will be open to entries for a few months. I am involved with the  
+Thousand Oaks Perl Mongers, they are going to sponsor/adopt the  
+contest. When the contest opens, I want to be able to tell users we  
+will simply be using the latest version of the X::X::X module, and they  
+can download and install (and help debug) the same tournament software  
+that we will be using with a simple CPAN command.
+
+The code I have ready is just about ready for upload of a public alpha  
+version, but when I originally wrote it I never imagined I'd be  
+uploading it to CPAN, thus it needs to be repackaged and moved to  
+another namespace (it's currently in the root namespace).
+
+About names.
+Games::Blackjack, the most obvious option, is taken, and I do not make  
+use of that module, so I don't feel comfortable using  
+Games::Blackjack::Tournament or some other derivative namespace.  
+Games::Tournament::Blackjack is good, but I don't currently have a  
+Games::Tournament module or equivalent - though I do plan on possibly  
+making tournaments for other games - poker, for example. So that's a  
+good option, except for it being a third-level name for what I have  
+ready now. Games::Cards is taken, and I like their system ok, but I  
+found out about it long after this code was written.  
+Games::Cards::Blackjack or Games::Cards::Blackjack::Tournament is a  
+good name but has the same problem as Games::BlackJack::Tournament. I  
+really want to get what I have written uploaded without rewriting much  
+other than the package names so I can get some parallelism going in  
+rewriting it where necessary, and deciding where that is..
+
+Reasons this module doesn't make use of the Games::BlackJack module  
+(yet, at least):
+   - I didn't like the way their card and deck representations worked.  
+Mine (in deck.pm) uses one scalar value per card,
+     Games::BlackJack uses an array reference. Mine can be printed  
+without any more preprocessing than a join, theirs
+     requires a loop or subroutine to interpret the cards.. We both  
+supply utility
+     functions to minimize the necessity for accessing the cards  
+directly in any case, but when you have to do so,
+     I believe my way is better. I prefer to offload as much effort as  
+possible from my users.
+   - I wasn't aware Games::Blackjack existed until after I already had a  
+working deck.pm, was happy with it's API, and had other code built on  
+top of it.
+   - Maybe a bit of NIH at first, but I think there's room for two  
+Blackjack modules. And mine has a different and more specific purpose.
+   - I haven't had time to try to integrate it, and I'm not sure I'm  
+willing to give up my deck representation. But I do plan to use what's  
+useful in the long run.
+
+Reasons this module doesn't make use of the Games::Cards module:
+   - I didn't know of it in time. It looks useful, I may want to  
+integrate it later.
+
+- -----------
+
+So that's the situation. I need to come up with a root namespace to put  
+all this under. In case it's interesting or helpful in deciding, you  
+can get at the original source release (the code on my personal drive  
+is a bit newer) at
+<  
+http://codehearted.com/for/thousand-oaks.pm/ 
+blackjack_tournament_pkg.tgz >.
+Please do not re-distribute the code until after I've had a chance to  
+clean it up a bit and move it to it's permanent CPAN namespace. And  
+anyone interested in entering the contest will be very welcome to, just  
+let me know and I'll pass along details when they become available.
+
+So, what should I name it? I've asked the TO.pm mailing list, and the  
+group in person after going over the blackjack code in detail at a  
+previous meeting. I'm still not sure and the naming problem is holding  
+back development. Please help.
+I'd also appreciate any advice anyone has to offer on how to promote  
+the contest.
+
+Thanks for your time,
+- - Paul Jacobs (pjacobs on PAUSE)
+paul@pauljacobs.net
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (Darwin)
+
+iD8DBQFB6utD8PscfQd/jB4RAt1lAKCPIBK2xks0isfAlkcAZ7Ow8ZZYOQCfTIW8
+A/vA3ykk847x8CvCDH+aeco=
+=y0O+
+-----END PGP SIGNATURE-----
+

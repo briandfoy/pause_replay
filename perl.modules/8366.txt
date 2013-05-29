@@ -1,0 +1,94 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8366
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 68818 invoked from network); 17 Oct 2001 13:46:53 -0000
+Received: from dubravka.kbx.de (HELO pause.perl.org) (root@212.40.160.59)
+  by onion.valueclick.com with SMTP; 17 Oct 2001 13:46:53 -0000
+Received: (from nobody@localhost)
+	by pause.perl.org (8.9.3/8.9.3) id PAA29683;
+	Wed, 17 Oct 2001 15:46:47 +0200
+Date: Wed, 17 Oct 2001 15:46:47 +0200
+Message-ID: <200110171346.PAA29683@pause.perl.org>
+Reply-To: modules@perl.org
+Subject: Module submission Astro::SkyCoords
+To: modules@perl.org, grixon@cpan.org
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Astro::SkyCoords
+  DSLIP:       bdpOp
+  description: celestial coordinates in astronomy
+  userid:      GRIXON (Guy Rixon)
+  chapterid:   23 (Miscellaneous_Modules)
+  communities:
+    comp.lang.perl.modules
+
+  similar:
+    Astro::Coords Astro::SLA
+
+  rationale:
+
+    The modules proposed as Astro::SkyCoords::* contain classes that
+    represent celestial positions in astronomy as objects. Specifically,
+    Astro::SkyCoords::RAdec represents the {Right Ascension,
+    Declination, Equinox} tuples that are needed for a useful
+    representation of position. The other classes are
+    Astro::SkyCoords::RA, Astro::SkyCoords::Dec,
+    Astro::SkyCoords::Equinox and Astro::SkyCoords::Angle; the latter
+    class is a base class for RA and Dec.
+
+    Each class is in a separate module nested in the Astro::SkyCoords
+    namespace. This approach was chosen over the alternative of putting
+    all the classes in one module after discussion on
+    comp.lang.perl.modules.
+
+    The intention is to make it easy for an application programmer to
+    parse and format position data, and to carry those data through a
+    programme as sensible units, instead of as separate scalars. In
+    particular, the classes try to make the code for parsing/formatting
+    sexagesimal numbers easily reusable and the calling code
+    self-documenting in respect of units and number formats. Examples:
+
+    my $ra = new RA ("12:34:30.2", unit => 'hr'); my $ra_degrees =
+    $ra->value (base => 10, unit => 'deg'); my $ra_string = $ra->value
+    (base => 60, unit => 'hr'); my $cos_ra = $ra->cos (); # No need to
+    fiddle the units!
+
+    A wide range of units is supported.
+
+    Higher mathematical functions - precession, calculation of
+    separation on the sky - are delegated to the existing Astro::SLA.
+    The proposed classes duplicate almost none of the functionality of
+    SLAlib.
+
+    Astro::Coords covers some of the same ground but it doesn't have
+    the OO style, doesn't group {RA dec equinox} into one structure and
+    doesn't handle unit-conversion usefully.
+
+    Astro::SkyCoords::* is working code in internal use at CASU.
+
+  enteredby:   GRIXON (Guy Rixon)
+  enteredon:   Wed Oct 17 13:46:46 2001 GMT
+
+The resulting entry would be:
+
+Astro::
+::SkyCoords       bdpOp celestial coordinates in astronomy           GRIXON
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=fb100000_9e3f481bbfc2eaea&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=fb100000_9e3f481bbfc2eaea&SUBMIT_pause99_add_mod_insertit=1

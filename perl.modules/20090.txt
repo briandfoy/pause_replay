@@ -1,0 +1,100 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:20090
+Return-Path: <hasantamir@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 65279 invoked by uid 76); 1 Apr 2003 19:39:46 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.25) with SMTP; Tue, 01 Apr 2003 11:39:46 -0800
+Received: (qmail 10081 invoked by uid 225); 1 Apr 2003 19:39:45 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10075 invoked by uid 507); 1 Apr 2003 19:39:45 -0000
+Received: from web12803.mail.yahoo.com (HELO web12803.mail.yahoo.com) (216.136.174.38) by one.develooper.com (qpsmtpd/0.25) with SMTP; Tue, 01 Apr 2003 11:39:43 -0800
+Message-ID: <20030401193941.90622.qmail@web12803.mail.yahoo.com>
+Received: from [203.130.239.187] by web12803.mail.yahoo.com via HTTP; Tue, 01 Apr 2003 11:39:41 PST
+Date: Tue, 1 Apr 2003 11:39:41 -0800 (PST)
+Subject: Re: Module submission Config::Merge
+To: Autrijus Tang <autrijus@autrijus.org>
+Cc: modules@perl.org
+In-Reply-To: <20030401172955.GA4292@not.autrijus.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-0.8 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: hasantamir@yahoo.com (Hasanuddin Tamir)
+References: <20030401172955.GA4292@not.autrijus.org>
+
+
+--- Autrijus Tang <autrijus@autrijus.org> wrote:
+> On Tue, Apr 01, 2003 at 08:41:13AM +0200, Perl Authors Upload
+> Server wrote:
+> >     Config::Merge merges configuration from at most three
+> sources.
+> 
+> Is the maximum number of three an arbitary decision, or
+> required by your design?
+
+That's the amount I always work with so I start from there. 
+Extending the number of sources is in my future plan (as in
+the POD).
+
+> >     application may allow users to define configuration in a
+> file, but
+> >     you also have set predefined (default) configuration. At
+> the end you
+> >     want single configuration by merging them with a certain
+> precedence.
+> >     This module will do just that.
+> 
+> What format of config does it take?
+
+If you use external config parser, then you follow the rules
+of the parser. The internal parser takes a plain teks file.
+It's meant for default parser on simple and common format,
+such as one pair of param=value per line (there's a section
+in the POD that explains the rules more detail).
+
+> 
+> >     Additionally, Config::Merge provides internal parser for
+> convenient
+> >     and historical reason, but allows users to provide
+> external parser
+> >     via CODE reference to suit their need.
+> 
+> Can you differentiate your module from this?
+> 
+>     use Config::General;
+>     my %merged = (
+> 	ParseConfig('file1.cfg'), 
+> 	ParseConfig('file2.cfg'), 
+> 	ParseConfig('file3.cfg'), 
+>     );
+
+This merges configuration from different files,
+Config::Merge merges configuration from different sources,
+one of them can be file. I think I can use above when
+I add capability to accept more than one file for "file"
+type (also in future plan).
+
+I have to add here that Config::Merge (currently) defines
+three types of configuration source: "default", "file", and
+"custom". "default" is some kind of predefined set of
+configuration, "file" is expected to contain configuration
+from parsed file, while "custom" can be arbitrary source.
+I usually use "cutom" to temporarily override the value in
+"file".
+
+
+thanks,
+
+=====
+san
+--
+
+__________________________________________________
+Do you Yahoo!?
+Yahoo! Tax Center - File online, calculators, forms, and more
+http://platinum.yahoo.com

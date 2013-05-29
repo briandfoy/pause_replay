@@ -1,0 +1,99 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12320
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 35583 invoked by uid 76); 25 Jun 2002 13:33:10 -0000
+Received: from mail03.svc.cra.dublin.eircom.net (HELO mail03.svc.cra.dublin.eircom.net) (159.134.118.19)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Tue Jun 25 13:33:10 2002 -0000
+Received: (qmail 4451 messnum 518651 invoked from network[159.134.165.25/p281.as1.limerick1.eircom.net]); 25 Jun 2002 13:28:25 -0000
+Received: from p281.as1.limerick1.eircom.net (HELO dansat.data-plan.com) (159.134.165.25)
+  by mail03.svc.cra.dublin.eircom.net (qp 4451) with SMTP; 25 Jun 2002 13:28:25 -0000
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id g5PDSTA69928;
+	Tue, 25 Jun 2002 14:28:29 +0100 (BST)
+	(envelope-from timbo)
+Date: Tue, 25 Jun 2002 14:28:25 +0100
+To: Ask Bjoern Hansen <ask@develooper.com>
+Cc: Doug MacEachern <dougm@covalent.net>, Stas Bekman <stas@stason.org>,
+   dev@perl.apache.org, tim.bunce@pobox.com, modules@perl.org
+Subject: Why two-level names (was: Apache::PhaseName::ModuleName convention?)
+Message-ID: <20020625142825.O87029@dansat.data-plan.com>
+References: <Pine.LNX.4.33.0206201027010.2590-100000@mako.covalent.net> <20020625032105.E22434-100000@miette.develooper.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <20020625032105.E22434-100000@miette.develooper.com>; from ask@develooper.com on Tue, Jun 25, 2002 at 03:22:08AM -0700
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+[CC'd to modules@perl.org]
+
+On Tue, Jun 25, 2002 at 03:22:08AM -0700, Ask Bjoern Hansen wrote:
+> On Thu, 20 Jun 2002, Doug MacEachern wrote:
+> 
+> > >    Apache::PostConfig::Whatever
+> > > instead of:
+> > >    Apache::PostConfigWhatever
+> >
+> > that's up to you for your examples.  but i personally won't be changing to
+> > that convention.  true facts that another level of namespace eat more
+> > memory and take longer to lookup, personally, i find it ugly.
+> > also, the more structures in memory the longer it will take for
+> > perl_clone() to run. both modperl use that as does threads.pm.
+> > so the argument of "memory is cheap" doesn't fly as well with threads.
+> >
+> > perhaps asking modules@perl.org why the module list says:
+> > "Please avoid using more than one level of nesting for module names
+> > (packages or classes within modules can, of course, use any number)."
+> >
+> > would shed more light.
+> 
+> I thought it was just because Tim (I think it was; cc'ed) likes it
+> better that way. =)  Maybe there's a more technical explanation.
+> Tim?
+
+Not "a more technical explanation". Naming things is far from a
+science (those who've spent N years learning to be a librarian
+might like to think it is).
+
+People like to categorize or group things but are actually pretty
+poor at it.  They tend to focus on one aspect of what they're naming.
+Not seeing that others may be more relevant to other people or may
+become more relevant over time.
+ 
+Even with two-level names there's the classic XML::RPC vs RPC::XML
+problem.
+ 
+Multi-level names tend to make the problem worse because they include
+a greater proportion of "categorization" and less of "naming".
+
+	Cat1::Cat2::Cat3::ShortName
+	Cat1::LongerName
+
+There are probably other reasons as well but this is the one that
+comes to mind.
+
+There are two main exceptions to the above...
+
+The first is 'frameworks' were a group of inter-related modules has it's
+own top level name. Below that name it can have whatever depth of
+structure it likes. Examples include POE::, and Server::.
+
+The second is where there's a top-level name that's very generic
+and is used by a large number of modules. Examples include Win32::,
+Apache::, Net::, and XML::.  In these cases the "Please avoid using
+more than one level of nesting for module names" guideline applies
+after ignoring the top-level name.
+
+Thus, in the case of Apache::* modules, aiming for Apache::Foo::Bar
+is good. Of course, picking the right "Foo" and "Bar" is the tricky part :)
+ 
+> The tricky and important part is to describe what
+> the module does; not when it runs.
+ 
+ ... and not how it does it.
+
+Tim.

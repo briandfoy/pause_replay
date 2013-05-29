@@ -1,0 +1,168 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:23893
+Return-Path: <root@schmorp.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 38587 invoked by uid 76); 7 Oct 2003 11:04:28 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Tue, 07 Oct 2003 04:04:28 -0700
+Received: (qmail 1287 invoked by uid 225); 7 Oct 2003 11:04:15 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1282 invoked by uid 507); 7 Oct 2003 11:04:15 -0000
+Received: from islay.mach.uni-karlsruhe.de (HELO mailout.schmorp.de) (129.13.162.92) by one.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Tue, 07 Oct 2003 04:03:44 -0700
+Received: from [10.0.0.2] (helo=fuji.laendle)	by mailout.schmorp.de with esmtp (Exim 4.20)	id 1A6pcp-0003xp-It; Tue, 07 Oct 2003 13:03:31 +0200
+Received: from root by fuji.laendle with local (Exim 4.22)	id 1A6p9o-0001xz-BA; Tue, 07 Oct 2003 12:33:32 +0200
+Date: Tue, 7 Oct 2003 12:33:32 +0200
+To: John Macdonald <jmm@algate.perlwolf.com>
+Cc: Andreas J Koenig <andreas.koenig@anima.de>, jmm@perlwolf.com,	modules@perl.org
+Subject: Re: Module submission Arary::Heap2
+Message-ID: <20031007103332.GC6873@schmorp.de>
+References: <87ekxq65b2.fsf@franz.ak.mind.de> <14DA5568-F7EB-11D7-8348-000393A57C94@media.mit.edu> <20031006104006.A15545@algate.perlwolf.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="OgqxwSJOaUobr8KG"
+Content-Disposition: inline
+In-Reply-To: <20031006104006.A15545@algate.perlwolf.com>
+X-Operating-System: Linux version 2.4.21-rc1 (root@fuji) (gcc version 2.95.4 20011002 (Debian prerelease)) 
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-0.5 required=7.0 tests=IN_REP_TO,REFERENCES,SPAM_PHRASE_02_03 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: pcg@goof.com (( Marc) (A.) (Lehmann ))
+
+--OgqxwSJOaUobr8KG
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+
+On Mon, Oct 06, 2003 at 10:40:06AM -0400, John Macdonald <jmm@algate.perlwolf.com> wrote:
+> However, I did write a much simpler package to manage
+> a caller-provided array as a heap.
+
+That sounds as if you had the exact same goal.
+
+> Marc (or Autrijus, whichever of you was the person
+
+Marc was it :)
+      
+> reply to me.  If you give me a few weeks to dig out
+> my original code, we can compare and decide where to
+> proceed.  Obviously, there is no large installed user
+> base that depends upon the unpublished Array::Heap
+> code.
+
+np. there is also no installed user base for my module (except my
+programs). if you want to compare, my version is on cpan:
+
+http://www.cpan.org/modules/by-authors/id/MLEHMANN/Array-Heap-0.01.tar.gz
+
+(I also attached the module documentation, so no need to download)
+
+> as a heap, while the Heap::* would be the inheritable
+> object-oriented heap mechanisms for which you provided
+> an Element sub-component for your own purposes - more
+> overhead in using them, but more power and flexibility
+> available as a result.
+
+That is what I gathered when doing a survey of the existing heap
+modules. However, what I needed was the ability to specifically treat an
+array as a heap, e.g. calling make_heap after I did some heap-destroying
+operations. The existing heap modules only do heaps, it's difficult to
+create higher-level data structures on top of them (or so it looked to
+me).
+
+-- 
+      -----==-                                             |
+      ----==-- _                                           |
+      ---==---(_)__  __ ____  __       Marc Lehmann      +--
+      --==---/ / _ \/ // /\ \/ /       pcg@goof.com      |e|
+      -=====/_/_//_/\_,_/ /_/\_\       XX11-RIPE         --+
+    The choice of a GNU generation                       |
+                                                         |
+
+--OgqxwSJOaUobr8KG
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: attachment; filename="array-heap.txt"
+
+NAME
+    Array::Heap - treat perl arrays as heaps (priority queues)
+
+SYNOPSIS
+     use Array::Heap;
+
+DESCRIPTION
+    There are a multitude of heap and heap-like modules on CPAN, you might
+    want to search for /Heap/ and /Priority/ to find many. They implement
+    more or less fancy datastructures that might well be what you are
+    looking for.
+
+    This module takes a different approach: It exports functions (i.e. no
+    object orientation) that are loosely modeled after the C++ STL's heap
+    functions. They all take an array as argument, just like perl's built-in
+    functions "push", "pop" etc.
+
+    The implementation itself is in C for maximum speed (although I doubt it
+    makes that much of a difference).
+
+FUNCTIONS
+    All of the following functions are being exported by default.
+
+    make_heap @heap (\@)
+        Reorders the elements in the array so they form a heap, with the
+        lowest value "on top" of the heap (corresponding to the first array
+        element).
+
+    make_heap_cmp { compare } @heap (&\@)
+        Just like "make_heap", but takes a custom comparison function.
+
+    push_heap @heap, $element, ... (\@@)
+        Adds the given element(s) to the heap.
+
+    push_heap_cmp { compare } @heap, $element, ... (&\@@)
+        Just like "push_heap", but takes a custom comparison function.
+
+    pop_heap @heap (\@)
+        Removes the topmost (lowest) heap element and repairs the heap.
+
+    pop_heap_cmp { compare } @heap (&\@)
+        Just like "pop_heap", but takes a custom comparison function.
+
+  COMPARISON FUNCTIONS
+    All the functions come in two flavours: one that uses the built-in
+    comparison function and one that uses a custom comparison function.
+
+    The built-in comparison function can either compare scalar numerical
+    values, or array refs. If the elements to compare are array refs, the
+    first element of the array is used for comparison, i.e.
+
+      1, 4, 6
+
+    will be sorted according to their numerical value,
+
+      [1 => $obj1], [2 => $obj2], [3 => $obj3]
+
+    will sort according to the first element of the arrays, i.e. "1,2,3".
+
+    The custom comparison functions work similar to how "sort" works: $a and
+    $b are set to the elements to be compared, and the result should be
+    either -1 if $a is less than $b, or ">= 0" otherwise.
+
+    The first example above corresponds to this comparison "function":
+
+      { $a <=> $b }
+
+    And the second example corresponds to this:
+
+      { $a->[0] <=> $b->[0] }
+
+    Unlike "sort", the default sort is numerical and it is not possible to
+    use normal subroutines.
+
+BUGS
+    This module does not work with tied or magical arrays or array
+    elements.
+
+AUTHOR
+     Marc Lehmann <pcg@goof.com>
+     http://www.goof.com/pcg/marc/
+
+
+--OgqxwSJOaUobr8KG--

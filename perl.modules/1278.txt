@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1278
+Return-Path: <lbrenner@gte.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25437 invoked from network); 8 Mar 2000 16:39:09 -0000
+Received: from unknown (HELO newman.gte.com) (132.197.8.26)
+  by tmtowtdi.perl.org with SMTP; 8 Mar 2000 16:39:09 -0000
+Received: from goldshoe.gte.com (goldshoe.gte.com [132.197.8.5])
+	by newman.gte.com (8.9.1/8.9.1) with ESMTP id LAA25541
+	for <modules@perl.org>; Wed, 8 Mar 2000 11:38:42 -0500 (EST)
+Received: from gte.com (beefcake.gte.com [132.197.138.40])
+	by goldshoe.gte.com (8.9.1/8.9.1) with ESMTP id LAA07210
+	for <modules@perl.org>; Wed, 8 Mar 2000 11:38:42 -0500 (EST)
+Sender: brenner@gte.com
+Message-ID: <38C682B2.F3CF7C1D@gte.com>
+Date: Wed, 08 Mar 2000 11:41:22 -0500
+X-Mailer: Mozilla 4.7 [en] (X11; I; Linux 2.2.5-15smp i686)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: XMLDB submission
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: lbrenner@gte.com (Leonhard Brenner)
+
+Lenny Brenner
+
+lbrenner@gte.com
+
+LENNY
+
+I have written a base level API for storing XML which allows facads such
+as the DOM,
+XQL, XSL, XLINK,... to be built on top. Originally, I designed the
+structures used here
+to allow JAVA to efficiently store real time XML event streams and have
+multiple models
+build around it. This current version is written in perl with
+XML::Parser::Expat and can
+load the neccessary information 20% faster then the XML::DOM. It provide
+compression
+by reusing strings and compresses children pointers so that 100 ->{101,
+102, 103, 105}
+and 3045 -> {3046, 3047, 3048, 3050} now both point to {0,1,2,4}. Using
+these and many
+other compression techniques I have reduced the memory needed by 60%.
+This memory is then
+used to keep indexes from the meta data to various elements or
+attributes. So if I want to find all
+/School/Class/Children/LastNames I have a VEC containing
+{10,56,76,34,...}. The combination
+of these indexes parent links, links from the strings to several
+elements or attributes and others
+allow me to do SQL style searching in a very constant order. In addition
+I have a level of indirection
+between element IDs and string IDs. This indirection make versioning as
+trivial as swaping
+the indirection vectors. I have recently figured out how to make this
+API work with  databases
+for long term storage so I will be adding the XMLDB:DBI. My reason for
+submiting this
+if to allow others to build complete versions of the DOM, XQL and even
+to build models
+around it for GUI generation while I handle the optimization for each
+additional module.
+I will be ready to provide version 0.01 in the next couple of weeks I am
+currently waiting
+for GTE Laboratories to sign off on the release. One more thing I intend
+on building
+XMLDB:HASH to allow nested hashtable and arrays to be seperated into
+meta data and
+actual values.
+
+XMLDB          adpO              Data model for loading and storing XML
+

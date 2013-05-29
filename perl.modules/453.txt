@@ -1,0 +1,108 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:453
+Return-Path: <schwern@toldyouso.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29480 invoked from network); 3 Nov 1999 22:07:09 -0000
+Received: from ns1.toldyouso.com (HELO toldyouso.com) (qmailr@208.29.34.129)
+  by tmtowtdi.perl.org with SMTP; 3 Nov 1999 22:07:09 -0000
+Received: (qmail 7580 invoked by uid 541); 3 Nov 1999 21:33:32 -0000
+Message-ID: <19991103163330.A5253@toldyouso.com>
+Date: Wed, 3 Nov 1999 16:33:30 -0500
+To: "Andreas J. Koenig" <andreas.koenig@anima.de>
+Cc: John Porter <jdporter@min.net>, modules@perl.org,
+  Tim Bunce <Tim.Bunce@ig.co.uk>
+Subject: Re: Tie::Cache::LRU
+References: <sfciu3nv4y1.fsf@hohenstaufen.in-berlin.de> <19991102144605.C23528@min.net> <19991103004139.K18518@ig.co.uk> <sfcso2nlwl7.fsf@hohenstaufen.in-berlin.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.93.2i
+In-Reply-To: <sfcso2nlwl7.fsf@hohenstaufen.in-berlin.de>; from Andreas J. Koenig on Wed, Nov 03, 1999 at 11:04:52AM +0100
+Approved: news@nntp.perl.org
+From: schwern@pobox.com (Michael G Schwern)
+
+On Wed, Nov 03, 1999 at 11:04:52AM +0100, Andreas J. Koenig wrote:
+> >>>>> On Wed, 3 Nov 1999 00:41:39 +0000, Tim Bunce <Tim.Bunce@ig.co.uk> said:
+>  > Personally I'd rather they were reserved for cases where they're of
+>  > significant benefit.
+> 
+>  > In this case Tie::CacheLRU or Tie::LRUCache works reasonably well,
+>  > if there's not going to be a family of related Tie::Cache::* modules.
+> 
+> Michael, would you mind renaming? I agree with Tim, for a single
+> module it's really not necessary to start the third level. I just
+> shouldn't do module list stuff at 6 in the afternoon, that's simply
+> too late :-)
+
+Hmmm... well, I'd argue a few points here (at the risk of cracking
+open an old issue just so I don't have to change my module name)
+
+	Putting a 2 level restriction on "official" CPAN modules seems
+a bit... restrictive?  I often use multilevel names to indicated
+familial relataion (if not inheritance).  Two levels strikes me as
+insufficient to express tight relationships, espcially in a large,
+multi-developer archive.  It promotes very broad groupings with
+divergent names for the same things.  For example, say I'm interested
+in modules which implement "improved" hashes by tying.  My choices are:
+
+	Tie::Hash
+	Tie::CPHash
+	Tie::HashDefaults
+	Tie::IxHash
+	Tie::ListKeyedHash
+	Tie::RndHash
+	Tie::SecureHash
+	Tie::SentientHash
+	Tie::ShadowHash
+	Tie::SubstrHash
+
+Would it not make more sense to promote names like
+"Tie::Hash::Defaults" and "Tie::Hash::Secure"?  It makes it easier to
+list modules in a logical fashion and reigns in board categories of
+modules such as "Tie::" The situation will only worsen as time goes
+on.
+
+
+	More specifically for Tie::Cache... there will be a family of
+related modules.  My original intention was to write Tie::Cache as a
+virtual base class (which would have been a bad idea, as Tie::Cache
+already exists) for writing tied caches, then derive an in memory
+cache off that (as opposed to on disk) then specialize that into an
+LRU.
+	Tie::Cache::Base may still appear, Tie::Cache::LRU would be
+made a subclass and Tie::Cache::LRU::File could be written as
+addiitonal subclass.  All should logically appear under the
+Tie::Cache:: heading in the module list, or do you expect me to write
+Tie::CacheLRUFile instead so it can appear on the module list?
+
+I will quote section 2.5 (Select a name for the module) of the modlist: 
+"This name should be as descriptive, accurate and complete as
+possible. Avoid any risk of ambiguity. Always try to use two or more
+whole words. Generally the name should reflect what is special about
+what the module does rather than how it does it. "
+
+"Since the CPAN is huge and growing daily, it's essential that module
+authors choose names which lend themselves to browsing."
+
+"To be portable each component of a module name should be limited to
+11 characters. If it might be used on DOS then try to ensure each is
+unique in the first 8 characters. Nested modules make this easier."
+[This one would be very much blown by Tie::CacheLRUFile]
+
+Seems to me that allowing deep nesting helps promote these guidelines.
+
+
+Anyhow, that's my $0.02
+
+
+PS  If you think Tie::Cache::LRU is bad... it could have been
+worse.  My original name was Tie::Cache::InMemory::LastUse.  At the
+many complaints from my co-workers and their aching fingers, I changed
+it to the less descriptive Tie::Cache::LRU.  
+
+-- 
+
+Michael G Schwern                                           schwern@pobox.com
+                    http://www.pobox.com/~schwern
+     /(?:(?:(1)[.-]?)?\(?(\d{3})\)?[.-]?)?(\d{3})[.-]?(\d{4})(x\d+)?/i

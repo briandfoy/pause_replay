@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:80904
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19743 invoked from network); 12 Jun 2012 03:25:17 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 12 Jun 2012 03:25:17 -0000
+Received: (qmail 17674 invoked by uid 225); 12 Jun 2012 03:25:17 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17670 invoked by alias); 12 Jun 2012 03:25:17 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.fiz-chemie.de) (195.37.231.65)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 11 Jun 2012 20:25:13 -0700
+Received: from pause.fiz-chemie.de (localhost.localdomain [127.0.0.1])
+	by pause.fiz-chemie.de (8.13.8/8.13.8/Debian-3) with ESMTP id q5C3P6iv021612;
+	Tue, 12 Jun 2012 05:25:06 +0200
+Received: (from nobody@localhost)
+	by pause.fiz-chemie.de (8.13.8/8.13.8/Submit) id q5C3P6cQ021611;
+	Tue, 12 Jun 2012 05:25:06 +0200
+Date: Tue, 12 Jun 2012 05:25:06 +0200
+Message-ID: <201206120325.q5C3P6cQ021611@pause.fiz-chemie.de>
+Subject: Module submission Win32::Async
+Reply-To: modules@perl.org
+To: modules@perl.org, bulkdd@cpan.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Win32::Async
+  DSLIP:       incOp
+  description: Win32 Async IO and threads on any event loop
+  userid:      BULKDD (Daniel Dragan)
+  chapterid:   22 (Microsoft_Windows_Modules)
+  communities:
+    http://www.nntp.perl.org/group/perl.module-authors/2012/06/msg9672.html
+
+  similar:
+
+  rationale:
+
+    Per the module-authors post, the library allows events to be
+    delivered to many event loops (anything that has a C API and is
+    thread safe, and is a event loop from a Perl level). The events are
+    Win32 kernel async I/O on kernel file handles and kernel sockets,
+    along with kernel thread synchronization objects, and from events
+    from C APIs that use thread pools were the C callbacks run in dozens
+    of random short lived threads. Currently its impossible to do any
+    kind of async File I/O or receive events from random threaded C
+    libraries on Perl on Windows. Since the Windows C Standard Lib
+    doesn't support non-blocking I/O, and "select" supports only socket
+    handles, no cross platform Perl event loops on Windows support
+    non-synchronous File/Disk I/O. Native Windows thread synchronization
+    primitives are unusable outside of the Win32::IPC event loop and
+    Win32::IPC module were they come from, my module fixes that. Of the
+    dozen async/non-blocking event loop modules on perl every one of
+    them use BSD, POSIX, or Linux specific APIs that are not available
+    on Windows. The design of my module does not use ithreads at all, so
+    the module is not for using multiple processors for data processing,
+    it is only for receiving events. No objections were raised to name
+    Win32::Async. Currently I have integration into Glib/GTK, Wx,
+    Perl/TK, Tkx/Tcl, Win32::Gui, Win32::IPC and perl signals event
+    loops so far and have tested the module with 1 perl interpreter
+    having 1000s of async pending file I/O operations in the kernel but
+    its a long way from being publishable.
+
+  enteredby:   BULKDD (Daniel Dragan)
+  enteredon:   Tue Jun 12 03:25:06 2012 GMT
+
+The resulting entry would be:
+
+Win32::
+::Async           incOp Win32 Async IO and threads on any event loop BULKDD
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=e6b00000_01a69cabf7e52aa3&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=e6b00000_01a69cabf7e52aa3&SUBMIT_pause99_add_mod_insertit=1
+Peek at the current permissions:
+  https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=me&pause99_peek_perms_query=Win32%3A%3AAsync

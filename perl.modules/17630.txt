@@ -1,0 +1,141 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17630
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 45004 invoked by uid 76); 7 Feb 2003 16:19:57 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-02-07 16:19:57Z
+Received: (qmail 11616 invoked by uid 225); 7 Feb 2003 16:19:55 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11606 invoked by uid 507); 7 Feb 2003 16:19:54 -0000
+Received: from root@[212.40.160.59] (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.21-dev) with SMTP; 2003-02-07 16:19:53Z
+Received: (from nobody@localhost)	by pause.perl.org (8.11.6/8.11.6) id h17GJnL08666;	Fri, 7 Feb 2003 17:19:49 +0100
+Date: Fri, 7 Feb 2003 17:19:49 +0100
+Message-ID: <200302071619.h17GJnL08666@pause.perl.org>
+Subject: Module submission Chipcard::CTAPI
+Reply-To: modules@perl.org
+To: modules@perl.org, whom@cpan.org
+X-SMTPD: qpsmtpd/0.21-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01 version=2.43
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.x.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Chipcard::CTAPI
+  DSLIP:       RdhOp
+  description: Communication with chipcard terminals
+  userid:      WHOM (Wolfgang Hommel)
+  chapterid:    4 (Operating_System_Interfaces)
+  communities:
+    comp.lang.perl.modules
+
+  similar:
+    PCSC::Lite
+
+  rationale:
+
+    This is a request for the approval of a new root namespace,
+    "Chipcard".
+
+    My recently released perl module, Chipcard::CTAPI, available as
+    $CPAN/modules/by-authors/id/W/WH/WHOM/Chipcard-CTAPI-0.1.tar.gz
+    provides access to chipcard terminals based on the standardized
+    CTAPI library, which is available for most, if not all, chipcard
+    readers. There are various C libraries and frameworks available for
+    accessing card terminals, the most popular platform-independed ones
+    being CTAPI and PC/SC.
+
+    Comparing PC/SC with CTAPI is a bit like comparing ODBC with
+    vendor-specific database drivers: like ODBC, PC/SC comes from the
+    Windows world, requires some work under UNIX-like OS to set up and
+    has certain overhead like an always running pcscd-daemon. CTAPI on
+    the other hand provides a standardized interface through a
+    vendor-specific C library which is easy to set up and has no runtime
+    overhead.
+
+    For natively accessing smartcards from Perl, there so far was only
+    one module available, PCSC::Lite, which, as the name implies, goes
+    the PC/SC way. There are several issues about PCSC::Lite I would
+    like to mention ahead of the further discussion:
+
+    1. The root namespace PCSC was never registered, according to the
+    archives, registration was requested on 2002/02/02 without
+    follow-ups.
+
+    2. The PCSC::Lite module does not seem to be actively maintained on
+    CPAN anymore. The latest version there, as well as on the website
+    specified with the CPAN account, is 1.0.8, but on the author's
+    homepage, there's a version 1.1.3 available:
+    http://ludovic.rousseau.free.fr/softwares/pcsc-perl/pcsc-perl.html
+
+    3. There are no other modules available below the PCSC rootlevel
+    namespace I'm avare of currently but PCSC::Lite.
+
+    Furthermore, except the PCSC-tools, by the same author as
+    PCSC::Lite, hardly any Perl program seems to use PCSC::Lite. In
+    fact, searching for chipcard-related Perl applications reveals that
+    almost all of them use external command line tools (like 'smartcard'
+    0.1.8), which are written in C and based on CTAPI, for their
+    communication with card terminals. I believe that this is not
+    because of PCSC::Lite, but because the PC/SC framework in general is
+    rather unattractive to home users due to its overhead, whereas the
+    lightweight CTAPI is much easier to get to work.
+
+    That, by the way, was also the reason for writing and releasing a
+    CTAPI-related Perl module, as it hopefully enables Perl programms to
+    communicate with card terminals directly and easily without having
+    to run external programs for doing so, or demanding from the end
+    user to install and configure PC/SC first.
+
+    Back to the namespace issue, here's my point of view regarding the
+    "Chipcard" root namespace:
+
+    1. I've browsed the module list from top to bottom and back to top
+    and didn't find an existing registered namespace where it would
+    really fit. Obviously, Perl has not been used too much for chipcard
+    programming yet, that's something with a definitive potential to
+    change, as card readers and blank card become cheaper and security
+    applications get more into mainstream. Also, it obviously does not
+    fit into the (not registered) PCSC namespace, as CTAPI and PCSC are
+    like apples and pears. If the module list maintainers know a better
+    place where the module would fit but a new root namespace, I'll
+    gladly change my implementation to fit any deliberate suggestions.
+
+    2. "Chipcard" is a relatively neutral name, as it applies to both
+    memory cards and processor cards, whereas "Smartcard" would only be
+    an alias for "processor cards" (although in public, "smartcard" is
+    often used erroneously for both types of cards).
+
+    3. A "Chipcard" rootlevel namespace could become home of both the
+    CTAPI and the PCSC module. About the PCSC module, this a) should not
+    be too big of a problem, because, as discussed above, there seem not
+    to be many applications using it. b) depends on whether its author
+    still wants his module on CPAN at all, see the version 1.0.8 <->
+    1.1.3 issue discussed above. Furthermore, such a common rootlevel
+    namespace could also be used by modules build on top of either CTAPI
+    or PCSC, for example drivers for various smartcard types with
+    specific features which are not covered yet.
+
+  enteredby:   WHOM (Wolfgang Hommel)
+  enteredon:   Fri Feb  7 16:19:49 2003 GMT
+
+The resulting entry would be:
+
+Chipcard::
+::CTAPI           RdhOp Communication with chipcard terminals        WHOM
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=b7200000_8db415545cc24706&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=b7200000_8db415545cc24706&SUBMIT_pause99_add_mod_insertit=1

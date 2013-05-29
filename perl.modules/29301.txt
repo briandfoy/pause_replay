@@ -1,0 +1,65 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:29301
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 89534 invoked by uid 76); 9 Mar 2004 23:04:28 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170)
+  by onion.perl.org (qpsmtpd/0.27-dev) with SMTP; Tue, 09 Mar 2004 15:04:28 -0800
+Received: (qmail 7853 invoked by uid 225); 9 Mar 2004 23:04:24 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7783 invoked by alias); 9 Mar 2004 23:04:04 -0000
+Received: from [208.184.111.59] (HELO pd2.baremetal.com) (208.184.111.59)
+  by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Tue, 09 Mar 2004 15:04:04 -0800
+Received: from [24.108.166.215] (h24-108-166-215.gv.shawcable.net [24.108.166.215])
+	by pd2.baremetal.com (8.12.10/8.12.9) with ESMTP id i29N4HYj002713;
+	Tue, 9 Mar 2004 15:04:18 -0800
+Mime-Version: 1.0
+Message-ID: <p05200f00bc73f8472f52@[24.108.166.215]>
+Date: Tue, 9 Mar 2004 15:03:58 -0800
+To: modules@perl.org, poop-group@lists.sourceforge.net, victoria-pm@pm.org
+Subject: Re: RFC: multi-package module best practices
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+X-Scanned-By: MIMEDefang 2.36
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on x1.develooper.com
+X-Spam-Status: No, hits=-4.9 required=8.0 tests=BAYES_00 autolearn=ham 
+	version=2.63
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+This email is a follow-up to my emails of March 4th and 5th, all 
+having the same email subject.  Have a look at them to see the 
+context for what I say here.
+
+I am writing to let any interested parties know what I actually did 
+do concerning the matters I asked about, where there were several 
+instances of multiple package declarations within a single module. 
+The modules in question were: Locale::KeyedText, SQL::SyntaxModel, 
+Rosetta.
+
+1. I removed all of the "::_::" from the package names that contained 
+it, so for example SQL::SyntaxModel::_::Node became 
+SQL::SyntaxModel::Node.
+
+2. I removed the obfuscation so all of the package names not get indexed.
+
+3. Any "*::Shared" private packages were removed as their own 
+package, and merged into the module name-sake package.
+
+4. I added a documentation section called CLASSES IN THIS MODULE just 
+beneath the DESCRIPTION in each module, to spell out what packages 
+are declared, so someone knows what they can invoke and what names to 
+not use for their own modules.
+
+5. I did *not* split up the modules so that each package was in its 
+own; it did not seem appropriate (though I won't rule it out some 
+time in the future).
+
+The changed versions have all been uploaded to CPAN, yesterday or earlier.
+
+So thanks to the 3 of you that gave me feedback, and to all have a good day.
+
+This thread is now closed.
+
+-- Darren Duncan

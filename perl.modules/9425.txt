@@ -1,0 +1,77 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9425
+Return-Path: <mark@swiftcamel.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 42745 invoked by uid 76); 28 Dec 2001 18:35:36 -0000
+Received: from [217.158.18.243] (HELO mark.swiftcamel.com) (217.158.18.243)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Fri Dec 28 18:35:36 2001 -0000
+Received: from swiftcamel.com (workstation [217.158.18.242])
+	by mark.swiftcamel.com (8.11.2/8.11.2) with ESMTP id fBSIeFW29289;
+	Fri, 28 Dec 2001 18:40:15 GMT
+Message-ID: <3C2CB315.97AF9D07@swiftcamel.com>
+Date: Fri, 28 Dec 2001 17:59:49 +0000
+Organization: SwiftCamel Software LTD
+X-Mailer: Mozilla 4.76 [en] (Win98; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: dougm@pobox.com, modules@perl.org
+Subject: Proposed module for the Apache::* namespace
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: mark@swiftcamel.com (Mark Maunder)
+
+Hi Doug and co,
+
+I've written an Apache module I've called Apache::AppCluster that I
+would like to propose for publication to CPAN in the Apache::*
+namespace.
+
+It allows one to use apache and mod_perl as a clustered/distrubited app
+server spawning remote processes/requests in paralell. It allows you to
+set up an object locally and then register 'requests' with it. Each
+request is a function call (and data structure) that will be sent to a
+remote apache/mod_perl app server via a POST (using freeze/thaw for
+encoding) and will be executed on that server. The results are returned,
+decoded and are accessable for each 'request' that was registered with
+the object using an index. The client module can be used under mod_perl
+or as standalone. The server component must run under mod_perl as a
+handler for a <Location> and wont interfere with any other handlers.
+
+The cool thing about this is (IMHO) that it uses non-blocking sockets to
+send off all requests at the same time (well, almost - it sends them off
+in rapid succession) so all processing on remote 'app servers' happens
+simultaneously. Results are then collected simultaneously from all
+sockets as they are received (loops through non-blocking sockets
+collecting data until all is received or a timeout occurs). When
+registering requests you specify the remote server and port for each
+request so you can have 1000 remote methods being called on 100 seperate
+app servers all processing at the same time and being consolidated on a
+single front end server within a single object.
+
+This was inspired by SOAP, but the difference is that every
+implementation of SOAP I've come accross uses blocking sockets which is
+a problem since thread support in Perl is not that great and you can't
+really use fork() under mod_perl - or at least I've never had the guts
+to try. So this allows you to do remote method calls on an app server in
+parralel while still having a single thread of execution in the calling
+process.
+
+The reason I didn't just write a non-blocking version of SOAP is because
+I want super fast performance, and I've found that SOAP is quite slow on
+the client and server side. We're using this in-house as part of a web
+service running  on a front end server (apache/mod_perl exposing a SOAP
+API) that then spawns a bunch of processes on some back-end servers also
+running apache/mod_perl using Apache::AppCluster.
+
+I already have a PAUSE ID and would like to know if I may include this
+in your namespace - and if there's anything out there like this already.
+If this sounds useful, let me know and I'll package it up and either
+upload it or send you the url for review.
+
+thanks,
+
+Mark Maunder.
+

@@ -1,0 +1,208 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:38352
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10091 invoked from network); 13 Feb 2005 04:14:56 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 13 Feb 2005 04:14:56 -0000
+Received: (qmail 19264 invoked by uid 225); 13 Feb 2005 04:14:55 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19236 invoked by alias); 13 Feb 2005 04:14:55 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 12 Feb 2005 20:14:52 -0800
+Received: from pause.perl.org (localhost [127.0.0.1])
+	by pause.perl.org (8.12.3/8.12.3/Debian-7.1) with ESMTP id j1D4El64012408
+	for <modules@perl.org>; Sun, 13 Feb 2005 05:14:48 +0100
+Received: (from nobody@localhost)
+	by pause.perl.org (8.12.3/8.12.3/Debian-7.1) id j1D4EkEP012406;
+	Sun, 13 Feb 2005 05:14:47 +0100
+Date: Sun, 13 Feb 2005 05:14:47 +0100
+Message-ID: <200502130414.j1D4EkEP012406@pause.perl.org>
+Subject: PAUSE ID request (ANONWB; Wanda B. Anon)
+Reply-To: modules@perl.org
+To: modules@perl.org
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+Request to register new user
+
+fullname: Wanda B. Anon
+  userid: ANONWB
+    mail: CENSORED
+homepage: 
+     why:
+
+    Patent::Retrieve is alpha software- my first module, and my intent
+    is to see if the perl community has any interest in the idea.
+
+    The module provides a consistent way to obtain patent documents
+    from various patent offices that make them available on the web.
+    Typically, doing this is relatively easy by hand, but involves
+    screen-scraping if you want to do it effectively for many pages or
+    doucments. The offices typically make it hard to get the whole
+    document, presumably because that is one source of revenue.
+
+    The module uses submodules, specific to patent offices, and comes
+    with working examples for the USPTO and EPO, which between them
+    supply granted patents in html and tiff (USPTO) and pdf (US, EP, and
+    much of the world...).
+
+    For casual users, this module should simplify life. Abusive users
+    will likely find their IP address banned by the patent office being
+    spidered.
+
+    I propose a new name space, "Patent", because I see no related
+    modules in another name space; I am happy to take suggestions. I
+    think it is reasonable to have a "Patent" namespace, since patents
+    involve a lot of text-wrangling that is single purpose. For example,
+    searches of the prior art, patent family relationships, patent
+    applications via XML, etc. With a namespace, related modules may be
+    grouped easily.
+
+    Here is the documentation as it now stands:
+
+    Patent::Retrieve
+
+    NAME Patent::Retrieve - retrieve a patent page (from United States
+    Patent and Trademark Office (uspto) website or the European Patent
+    Office (espace_ep). )
+
+    SYNOPSIS Please see the test suite for working examples. The
+    following is not guaranteed to be working or up-to-date.
+
+    use Patent::Retrieve;
+
+    my $patent_document = Patent::Retrieve->new(); # new object
+
+    my $document1 = $patent_document->provide_doc('6,123,456'); #
+    defaults: office => 'uspto', # country => 'US', # format => 'htm', #
+    page => '1', # typically htm IS "1" page # modules => qw/ us ep / ,
+
+    my $document2 = $patent_document->provide_doc('US_6_123_456',
+    office => 'espace_ep' , format => 'tif', page => 2 , );
+
+    my $pages_known = $patent_document->pages_available( # e.g. TIFF
+    document=> '6 123 456', );
+
+    DESCRIPTION Intent: Use public sources to retrieve patent documents
+    such as TIFF images of patent pages, html of patents, pdf, etc.
+    Expandable for your office of interest by writing new submodules..
+    Alpha release by newbie to find if there is any interest
+
+    USAGE See also SYNOPSIS above
+
+    To install the module...
+
+    perl Makefile.PL
+
+    make
+
+    make test
+
+    make install
+
+    If you are on a windows box you could try to use 'nmake' rather
+    than 'make'.
+
+    Examples of use:
+
+    $patent_document = Patent::Retrieve->new( doc_id =>
+    'US6,654,321(B2)issued_2_Okada', office => 'espace_ep' , format =>
+    'tif', page => 2 , agent => 'Mozilla/5.0 (Windows; U; Windows NT
+    5.0; en-US; rv:1.4b) Gecko/20030516 Mozilla Firebird/0.6', );
+
+    # 'Windows IE 6' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT
+    5.1)', # 'Windows Mozilla' => 'Mozilla/5.0 (Windows; U; Windows NT
+    5.0; en-US; rv:1.4b) Gecko/20030516 Mozilla Firebird/0.6', # 'Mac
+    Safari' => 'Mozilla/5.0 (Macintosh; U; PPC Mac OS X; en-us)
+    AppleWebKit/85 (KHTML, like Gecko) Safari/85', # 'Mac Mozilla' =>
+    'Mozilla/5.0 (Macintosh; U; PPC Mac OS X Mach-O; en-US; rv:1.4a)
+    Gecko/20030401', # 'Linux Mozilla' => 'Mozilla/5.0 (X11; U; Linux
+    i686; en-US; rv:1.4) Gecko/20030624', # 'Linux Konqueror' =>
+    'Mozilla/5.0 (compatible; Konqueror/3; Linux)',
+
+    my %attributes = $patent_document->get_patent('all'); # hash of all
+
+    my $document_id = $patent_document->get_patent('doc_id'); #
+    US6,654,321(B2)issued_2_Okada
+
+    my $office_used = $patent_document->get_patent('office'); # ep
+
+    my $country_used = $patent_document->get_patent('country'); #US
+
+    my $doc_id_used = $patent_document->get_patent('doc_id'); # 6654321
+
+    my $page_used = $patent_document->get_patent('page'); # 2
+
+    my $kind_used = $patent_document->get_patent('kind'); # B2
+
+    my $comment_used = $patent_document->get_patent('comment'); #
+    issued_2_Okada
+
+    my $format_used = $patent_document->get_patent('format'); #tif
+
+    my $pages_total = $patent_document->get_patent('pages_available');
+    # 101
+
+    my $terms_and_conditions = $patent_document->terms('us'); # and
+    conditions
+
+    my $document = $patent_document->get_patent('document'); # the loot
+
+    BUGS Pre-alpha release, to gauge whether the perl community has any
+    interest.
+
+    Code contributions, suggestions, and critiques are welcome.
+
+    Error handling is undeveloped.
+
+    By definition, a non-trivial program contains bugs.
+
+    For United States Patents (US) via the USPTO (us), the 'kind' is
+    ignored in method provide_doc
+
+    SUPPORT Yes, please. Checks are best. Or email me at
+    Wanda_B_A...@yahoo.com to arrange fund transfers.
+
+    AUTHOR Wanda B. Anon Wanda_B_A...@yahoo.com
+
+    COPYRIGHT This program is free software; you can redistribute it
+    and/or modify it under the same terms as Perl itself.
+
+    The full text of the license can be found in the LICENSE file
+    included with this module.
+
+    ACKNOWLEDGEMENTS Andy Lester for WWW::Mechanize, that got me
+    thinking, even if cygwin was trouble.,
+
+    The authors of Finance::Quote, which served as an example of
+    providing submodules,
+
+    Erik Oliver for patentmailer, serving as an example of getting
+    patent documents,
+
+    Howard P. Katseff of AT&T Laboratories for wsp.pl, version 2, a
+    proxy that speaks LWP and understands proxies,
+
+    and of course Larry and Randal and the gang.
+
+    SEE ALSO perl(1).
+
+    _countries_known() Usage : internal method only Purpose : list all
+    entities that could give a patent Returns : ref to a hash with keys
+    of abbreviations and values of entities (usually a country) ...
+
+
+The following links are only valid for PAUSE maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_user&USERID=50900000_60d44b705be678f2&SUBMIT_pause99_add_user_sub=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_user&USERID=50900000_60d44b705be678f2&SUBMIT_pause99_add_user_Definitely=1

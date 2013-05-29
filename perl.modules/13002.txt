@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13002
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25984 invoked by uid 76); 2 Aug 2002 03:13:29 -0000
+Received: from root@[212.40.160.59] (HELO pause.perl.org) (212.40.160.59)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Fri Aug  2 03:13:29 2002 -0000
+Received: (from nobody@localhost)
+	by pause.perl.org (8.11.6/8.11.6) id g723D0v29182;
+	Fri, 2 Aug 2002 05:13:00 +0200
+Date: Fri, 2 Aug 2002 05:13:00 +0200
+Message-ID: <200208020313.g723D0v29182@pause.perl.org>
+Subject: Module submission Debug::SIGSEGVTrace
+Reply-To: modules@perl.org
+To: modules@perl.org, stas@cpan.org
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Debug::SIGSEGVTrace
+  DSLIP:       adhOa
+  description: Extract A Backtrace on SegFault
+  userid:      STAS (Stas Bekman)
+  chapterid:    3 (Development_Support)
+  communities:
+    modperl@perl.apache.org
+
+  similar:
+    Devel::CoreStack
+
+  rationale:
+
+    This module attempts to automatically extract a backtrace when a
+    segfault happens, rather then letting the core file be dumped. This
+    has the following benefits:
+
+    *
+
+    no need to setup the environment to allow core file dumped.
+    Sometimes people just don't know how to set it up. Sometimes you
+    aren't allowed to set it up (e.g., when the webserver environment is
+    not under your control). *
+
+    if many Perl programs are run in a row and more than one program
+    segfaults it's possible to collect all backtraces, rathen then
+    aborting the run on the first segfault or staying with only the last
+    core file, which will overwrite all the previous ones. For example
+    consider a live webserver or a test suite which may segfault many
+    times for different reasons. *
+
+    for huge core files, this approach saves disk space. And can be a
+    saver when you don't have disk space left for various reasons
+    (passed the quota?), but still have a few kilo-bytes left.
+
+    ---
+
+    Devel::CoreStack tries to do the same but requires a core file,
+    which is sometimes hard or impossible to get. My module attempts to
+    achieve the same without any extra work.
+
+    ---
+
+    I've used the root Debug:: namespace instead of Devel::, since this
+    module is really for the end users not developers. We (developers)
+    want users to send us backtraces when they get segfaults. Users
+    shouldn't be intimidated by the Devel:: root namespace. I hope this
+    is a good reason for opening a new root namespace for this
+
+  enteredby:   STAS (Stas Bekman)
+  enteredon:   Fri Aug  2 03:12:59 2002 GMT
+
+The resulting entry would be:
+
+Debug::
+::SIGSEGVTrace    adhOa Extract A Backtrace on SegFault              STAS
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=6a100000_f360276d9c5471aa&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=6a100000_f360276d9c5471aa&SUBMIT_pause99_add_mod_insertit=1

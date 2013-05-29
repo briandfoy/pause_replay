@@ -1,0 +1,135 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:15640
+Return-Path: <jkeen@concentric.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3471 invoked by uid 76); 30 Nov 2002 18:16:28 -0000
+Received: from uhura.concentric.net (HELO uhura.concentric.net) (206.173.118.93) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-11-30 18:16:28Z
+Received: from cliff.concentric.net (cliff.concentric.net [206.173.118.90])	by uhura.concentric.net [Concentric SMTP Routing 1.0] id gAUIGOC06130 ;        Sat, 30 Nov 2002 13:16:25 -0500 (EST)
+Errors-To: <jkeen@concentric.net>
+Received: from crc3 (ts003d0068.nyc-ny.xod.concentric.net [66.236.160.68])	by cliff.concentric.net (8.9.1a)	id NAA18721; Sat, 30 Nov 2002 13:16:21 -0500 (EST)
+Message-ID: <000801c2989c$df999660$44a0ec42@concentric.net>
+To: <modules@perl.org>
+Cc: "Brian D Foy" <comdog@panix.com>
+References: <200211300412.gAU4CvO28290@pause.perl.org> <200211301623.gAUGNbO01827@buckpalace.concentric.net>
+Subject: Re: Module submission Data::Presenter
+Date: Sat, 30 Nov 2002 13:18:21 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.3018.1300
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.3018.1300
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: jkeen@concentric.net ("James E Keenan")
+
+
+----- Original Message -----
+From: "_brian_d_foy" <comdog@panix.com>
+To: <modules@perl.org>
+Cc: <JKEENAN@cpan.org>
+Sent: Saturday, November 30, 2002 11:23 AM
+Subject: Re: Module submission Data::Presenter
+
+
+> In article <200211300412.gAU4CvO28290@pause.perl.org>, Perl Authors
+> Upload Server <upload@p11.speed-link.de> wrote:
+>
+> >   modid:       Data::Presenter
+>
+> >   description: Reprocess information from database reports
+>
+>
+> >     In Perl terms, if the
+> >     data can be represented by a hash of arrays, where each element of
+> >     each array is a number or a string, it is suitable for manipulation
+> >     by Data::Presenter.
+>
+> is this module just an interface to a hash of arrays?  that seems
+> much more useful than just for database reports.
+
+A good intuition.  This module began as a way for me to reprocess data
+coming from what may charitably be called a "legacy" database, the reports
+from which contain valuable data but no longer have maintainers -- even
+though valuable data is input into the system daily.  Once I found a way to
+stuff the data into a hash of arrays, I realized that I could reprocess the
+data and present it in ways that are much more useful to me in my daily use.
+
+But more recently I've been developing another module (also in response to
+on-the-job needs) in which I construct a Perl hash-based database.  I
+discovered that if I constructed the object in this new module carefully, I
+could pass it as an argument to Data::Presenter and have all of
+Data::Presenter's output methods available to me.
+
+>
+> what does the module do?
+
+In my first posting I felt I should be brief.  But here's the complete
+DESCRIPTION section from a recent version of the POD.  I will be revising it
+to more fully reflect the generality of Data::Presenter's applicability.
+
+*** start DESCRIPTION ***
+Data::Presenter is an object-oriented module designed to facilitate the
+manipulation of database reports.  If the data can be represented by a
+row-column matrix, where for each data entry (row) (a) there are one or more
+fields containing data values (columns) and (b) at least one of those fields
+can be used as an index to uniquely identify each entry, then the data
+structure is suitable for manipulation by Data::Presenter.  In Perl terms,
+if the data can be represented by a hash of arrays, it is suitable for
+manipulation by Data::Presenter.
+
+Data::Presenter can be used to output some fields (columns) from a database
+while excluding others.  It can also be used to select certain entries
+(rows) from the database for output while excluding other entries.
+
+In addition, if a user has two or more database reports, each of which has
+the same field serving as an index for the data, then it is possible to
+construct either a:
+
+Data::Presenter::Combo::Intersect object which holds data for those entries
+found in common in all the source databases (the intersection of the source
+databases' entries); or a
+
+Data::Presenter::Combo::Union object which holds data for those entries
+found in any of the source databases (the union of the source databases'
+entries).
+
+Whichever flavor of Data::Presenter::Combo object the user creates, the
+module guarantees that each field (column) found in any of the source
+databases appears once and once only in the Combo object.
+
+Data::Presenter is not a database module per se, nor is it an interface to
+databases in the manner of DBI.  It cannot used to enter data into a
+database, nor can it be used to modify or delete data.  Data::Presenter
+operates on reports generated from databases and is designed for the user
+who:
+
+does not necessarily have direct access to a given database;
+
+receives reports from that database generated by another user; but
+
+needs to manipulate and re-output that data in simple, useful ways such as
+text files, Perl formats and HTML tables.
+
+Data::Presenter is most appropriate in situations where either has no access
+to (or chooses not to use) commercial desktop database programs or open
+source database programs.  Data::Presenter's installation and preparation
+require moderate knowledge of Perl, but the actual running of
+Data::Presenter scripts can be delegated to someone with less knowledge of
+Perl.
+*** end DESCRIPTION ***
+
+> can you post docs?
+>
+Here is a link to the latest *draft* version of the POD in HTML format:
+
+http://www.concentric.net/~Jkeen/datapresenter/Presenter.html
+
+Note:  the tarball found in the same directory represents an older version
+of DataPresenter.  I'm in the process of rewriting the POD, after which I'll
+write some tests and prepare a tarball in the proper fashion for CPAN.
+Thank you very much.
+

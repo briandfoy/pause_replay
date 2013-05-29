@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4002
+Return-Path: <markov@atcmpg.ATComputing.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14658 invoked from network); 28 Dec 2000 09:53:50 -0000
+Received: from proxy.atcomputing.nl (HELO atcmpg.ATComputing.nl) (195.108.229.1)
+  by tmtowtdi.perl.org with SMTP; 28 Dec 2000 09:53:50 -0000
+Received: (from markov@localhost)
+	by atcmpg.ATComputing.nl (8.9.0/8.9.0) id KAA05945
+	for modules@perl.org; Thu, 28 Dec 2000 10:53:43 +0100 (MET)
+Date: Thu, 28 Dec 2000 10:53:43 +0100
+To: modules@perl.org
+Subject: Mail folder handler
+Message-ID: <20001228105343.C3583@atcmpg.ATComputing.nl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre4i
+Approved: news@nntp.perl.org
+From: markov@ATComputing.nl (Mark Overmeer)
+
+
+Hi,
+
+I used the dark month of December (Northern Hemosphere) to have a
+look at mail folders.  I was a little disappointed by the popular
+Mail::Folder implementation, for quite some reasons (most importantly
+its long status as alpha and lack of development).
+
+There are other modules which can handle folders, but their are usually
+rather limited in their functionality.
+
+So: I gave it a try.  I have currently implemented:
+  - Mbox folders
+  - MH folders
+  - Delay loading (it uses MIME::Entity, but that is quite slow.  My
+    module try to keep messages un-parsed as long as possible.  Only
+    when the message-data is needed, the content of the message is
+    autoloaded and parsed.  This is an enormous speed improvement)
+  - Basic thread detection.
+  - Status labels and such.
+  - A folder manager, which keeps track of opened folders in your program.
+  - A tied interface to a folder.
+  - Locking mechanisms.
+
+All is written to be easily extendible: in cleanly seperated objects.
+
+Module's status:
+  - The functionality is implemented, but
+  - many tests have to be added (currently 53 tests, but some parts of
+    the code have never run, yet)
+  - Detailed manual-pages are included and describe everything what
+    is available now.
+
+Eryq adviced me to go for a name-space in Mail::  and I agree.
+I would like to go for   Mail::Box
+
+Version 0.3 of my package is already uploaded into my M/MARKOV
+directory.  Version 0.4 is underway and contains many more tests.
+-- 
+Sincerely,
+               MarkOv       %-]
+
+------------------------------------------------------------------------
+drs Mark A.C.J. Overmeer                           markov@ATComputing.nl
+AT Computing, UNIX Training and Consultancy    http://www.ATComputing.nl
+http://Mark.Overmeer.net                               Mark@Overmeer.net

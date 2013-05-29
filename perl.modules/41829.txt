@@ -1,0 +1,195 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:41829
+Return-Path: <samwyse@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22443 invoked from network); 21 Jul 2005 14:24:21 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 21 Jul 2005 14:24:21 -0000
+Received: (qmail 11565 invoked by uid 225); 21 Jul 2005 14:24:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11548 invoked by alias); 21 Jul 2005 14:24:21 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,RCVD_BY_IP
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of samwyse@gmail.com designates 64.233.184.199 as permitted sender)
+Received: from wproxy.gmail.com (HELO wproxy.gmail.com) (64.233.184.199)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 21 Jul 2005 07:24:16 -0700
+Received: by wproxy.gmail.com with SMTP id 50so235854wri
+        for <modules@perl.org>; Thu, 21 Jul 2005 07:24:10 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=alDdrb/3vNK+3Iy6DJ4Iv9q63GExIOQUD71ZeGJUwrrnfn2I4idOZI5x+tlUqOHrz5oAet1zD+yJEruSYE/eCOCLVl1yi+E8oAeuY+LG8k5jL4wQciY0KxX9uy+kjRuXxcOECsEUNiD8WtJ5siAK65O9yYmtcXy5BWDP8tU7pz0=
+Received: by 10.54.116.17 with SMTP id o17mr529484wrc;
+        Thu, 21 Jul 2005 07:23:41 -0700 (PDT)
+Received: by 10.54.153.2 with HTTP; Thu, 21 Jul 2005 07:23:41 -0700 (PDT)
+Message-ID: <9d455344050721072364dbaa81@mail.gmail.com>
+Date: Thu, 21 Jul 2005 09:23:41 -0500
+Reply-To: samwyse <samwyse@gmail.com>
+To: modules@perl.org
+Subject: problem using Memoize::Expire with DB_File
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Approved: news@nntp.perl.org
+From: samwyse@gmail.com (samwyse)
+
+Following the example in the Memoize::Expire perldoc, I tried to set
+up a disk-backed cache with an expiration time.  It doesn't seem to
+want to work for me.  Below is my test script and its results.=20
+Subroutine 'test0' is memoized via a simple cache, 'test1' uses a
+disk-backed cache, 'test2' uses an expiring cache, and 'test3' uses
+both.  The test program calls each subroutine twice and the program
+itself is run twice; the problem is evident during the first pass of
+the second run, where the message "inside test1()" doesn't appear (as
+expected, since the value can be found in the disk-based cache) but
+"inside test3()" does.
+
+Using 'od -c' against the db files indicates that the data for 'test3'
+is never written to disk.  Google doesn't seem to turn anything up,
+except for lots of copies of the perldoc, and querying the mailing
+list archives for Memoize doesn't find anything more recent than 2002.
+ I'm running this with Perl 5.6.? on a Sun under Solaris 2.6, but I've
+confirmed that the same behaivor exists using the native modules for
+Perl 5.8.6 running under Cygwin.  It also doesn't seem to matter if I
+use DB_File or Memoize::AnyDBM_File for my backing store.
+
+
+Script started on Tue Jul 19 17:21:03 2005
+$ cat test-me.pl
+#!/usr/bin/perl
+
+use strict;
+use Memoize;  # Make your functions faster by trading space for time
+use Memoize::Expire;  # automatic expiration of memoized values
+use DB_File;
+
+$Memoize::Expire::DEBUG =3D 1;
+my $lifetime =3D 60;
+
+sub test0 {
+  print "inside test0()\n";
+  return "test0($_[0])";
+}
+my %test0_hash;
+memoize 'test0',
+        LIST_CACHE =3D> 'FAULT',
+        SCALAR_CACHE =3D> [ HASH =3D> \%test0_hash ];
+
+sub test1 {
+  print "inside test1()\n";
+  return "test1($_[0])";
+}
+# Set up persistence
+tie my %test1_dbfile =3D> 'DB_File',
+        '/tmp/test1.db', O_CREAT|O_RDWR, 0666;
+# Set up memoization, supplying persistent hash for cache
+memoize 'test1',
+        LIST_CACHE =3D> 'FAULT',
+        SCALAR_CACHE =3D> [ HASH =3D> \%test1_dbfile ];
+
+sub test2 {
+  print "inside test2()\n";
+  return "test2($_[0])";
+}
+my %test2_hash;
+# Set up expiration policy, supplying hash as a target
+tie my %test2_cache =3D> 'Memoize::Expire',
+        LIFETIME =3D> $lifetime,    # In seconds
+        HASH =3D> \%test2_hash;
+# Set up memoization, supplying expiring hash for cache
+memoize 'test2',
+        LIST_CACHE =3D> 'FAULT',
+        SCALAR_CACHE =3D> [ HASH =3D> \%test2_cache ];
+
+sub test3 {
+  print "inside test3()\n";
+  return "test3($_[0])";
+}
+# Set up persistence
+tie my %test3_dbfile =3D> 'DB_File',
+        '/tmp/test3.db', O_CREAT|O_RDWR, 0666;
+# Set up expiration policy, supplying persistent hash as a target
+tie my %test3_cache =3D> 'Memoize::Expire',
+        LIFETIME =3D> $lifetime,    # In seconds
+        HASH =3D> \%test3_dbfile;
+# Set up memoization, supplying expiring persistent hash for cache
+memoize 'test3',
+        LIST_CACHE =3D> 'FAULT',
+        SCALAR_CACHE =3D> [ HASH =3D> \%test3_cache ];
+
+for (1..2) {
+  print "*** loop $_\n";
+  print "--- test0(1) =3D> ", scalar test0(1), "\n";
+  print "--- test1(1) =3D> ", scalar test1(1), "\n";
+  print "--- test2(1) =3D> ", scalar test2(1), "\n";
+  print "--- test3(1) =3D> ", scalar test3(1), "\n";
+}
+$ rm /tmp/test*.db
+$ ./test-me.pl
+*** loop 1
+inside test0()
+--- test0(1) =3D> test0(1)
+inside test1()
+--- test1(1) =3D> test1(1)
+ >> Exists 1
+    Not in underlying hash at all.
+inside test2()
+ >> Store 1 test2(1)
+--- test2(1) =3D> test2(1)
+ >> Exists 1
+    Not in underlying hash at all.
+inside test3()
+ >> Store 1 test3(1)
+--- test3(1) =3D> test3(1)
+*** loop 2
+--- test0(1) =3D> test0(1)
+--- test1(1) =3D> test1(1)
+ >> Exists 1
+    Time to live for this item: 60
+    (Still good)
+ >> Fetch cached value for 1
+ >>   (ttl: 60, nuses: 65535)
+--- test2(1) =3D> test2(1)
+ >> Exists 1
+    Time to live for this item: 60
+    (Still good)
+ >> Fetch cached value for 1
+ >>   (ttl: 60, nuses: 65535)
+--- test3(1) =3D> test3(1)
+$ ./test-me.pl
+*** loop 1
+inside test0()
+--- test0(1) =3D> test0(1)
+--- test1(1) =3D> test1(1)
+ >> Exists 1
+    Not in underlying hash at all.
+inside test2()
+ >> Store 1 test2(1)
+--- test2(1) =3D> test2(1)
+ >> Exists 1
+    Not in underlying hash at all.
+inside test3()
+ >> Store 1 test3(1)
+--- test3(1) =3D> test3(1)
+*** loop 2
+--- test0(1) =3D> test0(1)
+--- test1(1) =3D> test1(1)
+ >> Exists 1
+    Time to live for this item: 60
+    (Still good)
+ >> Fetch cached value for 1
+ >>   (ttl: 60, nuses: 65535)
+--- test2(1) =3D> test2(1)
+ >> Exists 1
+    Time to live for this item: 60
+    (Still good)
+ >> Fetch cached value for 1
+ >>   (ttl: 60, nuses: 65535)
+--- test3(1) =3D> test3(1)
+$ exit
+
+script done on Tue Jul 19 17:21:28 2005

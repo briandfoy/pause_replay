@@ -1,0 +1,47 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12835
+Return-Path: <kageneko@persian.evilkitten.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23985 invoked by uid 76); 24 Jul 2002 18:53:40 -0000
+Received: from root@dsl254-103-033.nyc1.dsl.speakeasy.net (HELO persian.evilkitten.org) (216.254.103.33)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Wed Jul 24 18:53:40 2002 -0000
+Received: from localhost (kageneko@localhost)
+	by persian.evilkitten.org (8.11.3/8.11.3/SuSE Linux 8.11.1-0.5) with ESMTP id g6OIpYx27879
+	for <modules@perl.org>; Wed, 24 Jul 2002 13:51:34 -0500
+Date: Wed, 24 Jul 2002 13:51:33 -0500 (EST)
+To: <modules@perl.org>
+Subject: Appropriate name for a module?
+Message-ID: <Pine.LNX.4.33.0207241335210.26938-100000@persian.evilkitten.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: kageneko@persian.evilkitten.org (Eric Kidder)
+
+I am working on some modules which use Storable to handle higher data
+structures.  This is mainly for some neat IPC:
+
+# CLIENT
+   my $queue	= Storable::Queue->new("queue.file");
+   $queue->push($reference_to_some_data);
+
+# SERVER
+   my $queue	= Storable::Queue->new("queue.file");
+   my $data	= $queue->peek();
+   my @data;
+
+   if ( $$data = "FRED" ) {
+        my @data	= $queue->pop_all();
+   } else {
+       $data		= $queue->pop();
+   }
+
+Anything "pushed" into the store file is kept in a queue/stack/whatever
+format.  Thus, you can have multiple programs pushing and popping and the
+data will come out in the right order.  Right now, I've called them
+Storable::Queue, Storable::Stack, etc., but I've been wondering if that's
+an appropriate place for them to go?
+
+Eric
+

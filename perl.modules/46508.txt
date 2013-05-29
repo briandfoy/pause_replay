@@ -1,0 +1,66 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46508
+Return-Path: <dtr8sin02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32309 invoked from network); 20 Dec 2005 08:22:28 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 20 Dec 2005 08:22:28 -0000
+Received: (qmail 26104 invoked by uid 225); 20 Dec 2005 08:22:27 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26089 invoked by alias); 20 Dec 2005 08:22:26 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_HELO_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from can01.de (HELO can01.de) (213.203.199.108)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 20 Dec 2005 00:22:19 -0800
+Received: from [10.0.0.18] (dslb-084-056-209-096.pools.arcor-ip.net [84.56.209.96])
+	by can01.de (can01.de) with ESMTP id D9E9A42C6FA;
+	Tue, 20 Dec 2005 09:22:11 +0100 (CET)
+Message-ID: <43A7BEDC.70906@sneakemail.com>
+Date: Tue, 20 Dec 2005 09:20:44 +0100
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041207)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: modules@perl.org
+Cc: ryochin@cpan.org
+Subject: Re: Module submission UNIVERSAL::clone
+References: <200512200134.jBK1YHkQ019131@pause.perl.org>
+In-Reply-To: <200512200134.jBK1YHkQ019131@pause.perl.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: dtr8sin02@sneakemail.com (Steffen Mueller)
+
+Hi,
+
+Perl Authors Upload Server wrote:
+[...]
+>     Loading the UNIVERSAL::clone module adds clone method to all
+>     classes and methods. I think using Clone::clone() or Storable:dclone
+>     module as a function to get a recursive copy is not so smart way
+>     because the clone() method should be provided as an built-in
+>     function. $obj->clone is a smart solution.
+
+In what way is this different from doing
+
+          use Clone;
+
+          push @Foo::ISA, 'Clone';
+
+          $a = new Foo;
+          $b = $a->clone();
+
+as suggested by the Clone.pm manpage? (Okay, I'd not push into another 
+packages @ISA that way.)
+
+I assume you'll answer "because that won't offer ->clone() globally". 
+Adding that method to *all* objects breaks encapsulation in a weird way. 
+It's not a good thing to do at all.
+
+Anyhow. Aside from my reservations against the purpose of the module, 
+I'd say the namespace choice fits.
+
+Steffen

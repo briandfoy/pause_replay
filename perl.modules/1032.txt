@@ -1,0 +1,69 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1032
+Return-Path: <Mike.Owens@state.nm.us>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13820 invoked from network); 2 Feb 2000 00:01:41 -0000
+Received: from ex1.state.nm.us (164.64.5.21)
+  by tmtowtdi.perl.org with SMTP; 2 Feb 2000 00:01:41 -0000
+Received: by ex1.state.nm.us with Internet Mail Service (5.5.2650.21)
+	id <D0MT1VV4>; Tue, 1 Feb 2000 16:58:57 -0700
+Message-ID: <83FC3C78A4D5D211A0250008C7F4CFE6055DAE@ex3.state.nm.us>
+To: "'modules@perl.org'" <modules@perl.org>
+Subject: Proposed Module - Net::FTP::JES
+Date: Tue, 1 Feb 2000 17:01:28 -0700 
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Approved: news@nntp.perl.org
+From: Mike.Owens@state.nm.us ("Owens, Mike")
+
+I am working on a module that I'd like to contribute to CPAN. Following 
+the guidelines in the CPAN Perl 5 Module List, I'd like to call this
+module Net::FTP::JES.
+
+This module submits JCL jobstreams to MVS systems through FTP.
+
+IBM mainframe MVS systems accept job input through the Job Entry
+Subsystem (JES). This input is in the form of 80-byte card images that
+correspond to the punch cards of ancient times. The new releases of MVS
+can accept this input via FTP to the MVS internal reader (equivalent
+to the physical card readers of older systems).
+
+This module basically wraps the ``Net::FTP'' module into an abbreviated
+interface for the sole purpose of submitting a jobstream file to an MVS
+system.
+
+The basic methods are:
+
+	$jes = Net::FTP::JES->open($host, $logonid, $password);
+
+		This method creates a connection to the MVS system JES at
+$host,
+		using FTP logon ID $logonid and password $password. If the
+		connection is made, ``open'' returns a reference $jes to the
+JES
+		connection; otherwise ``open'' returns `undefined'.
+
+	$jes->submit($job);
+
+		This method submits the jobstream contained in the file
+$job. If
+		the submission is successful, ``submit'' returns true;
+otherwise
+		``submit'' returns ``undefined''.
+
+	$jes->quit;
+
+		This method closes the connection to JES. It is just the
+		Net::FTP ``quit'' method.
+
+
+Is Net::FTP::JES suitable for the module name?
+
+-----
+Michael Owens
+mike.owens@state.nm.us
+(505) 827-2154

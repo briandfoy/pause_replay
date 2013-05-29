@@ -1,0 +1,240 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2250
+Return-Path: <sb@sdm.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20736 invoked from network); 26 Jun 2000 21:17:53 -0000
+Received: from unknown (HELO sdmmx1.sdm.de) (192.76.162.232)
+  by tmtowtdi.perl.org with SMTP; 26 Jun 2000 21:17:53 -0000
+Received: FROM muccpu1.muc.sdm.de BY sdmmx1.sdm.de ; Mon Jun 26 23:17:52 2000 +0100
+Received: by muccpu1.muc.sdm.de (Sendmail 8.9.3+Sun)
+	id XAA01434; Mon, 26 Jun 2000 23:17:36 +0200 (MET DST)
+Message-ID: <200006262117.XAA01434@muccpu1.muc.sdm.de>
+Subject: RFC: How to name date objects module?
+To: "comp.lang.perl.moderated post-via-mail-address" <mjd-clpm-submit@plover.com>
+Date: Mon, 26 Jun 2000 23:17:36 +0200 (MET DST)
+CC: Perl Modules <modules@perl.org>, Jarkko Hietaniemi <jhi@iki.fi>
+Reply-To: sb@sdm.de (Steffen Beyer)
+X-No-Archive: yes
+X-Disabled: Return-Receipt-To: sb@sdm.de
+X-W3-Page: http://www.engelschall.com/u/sb/download/
+X-Mailer: ELM [version 2.4ME+ PL61 (25)]
+Approved: news@nntp.perl.org
+From: sb@sdm.de (Steffen Beyer)
+
+Dear fellow Perl hackers,
+
+I was having a discussion with Jarkko Hietaniemi (another author of many
+fine Perl modules on CPAN, and the maintainer of the CPAN master site -
+for those of you who do not know him, shame on you! :-) ) on modules@perl.org
+about the naming of a new module included in my oncoming release of
+Date::Calc version 5.0, an object oriented wrapper with overloaded
+operators which allows to treat dates and times as though they were
+(almost) a Perl built-in data type.
+
+I would like to know if you share his or my views and why.
+
+I suggested "Date::Object" as the name of this OO frontend module,
+because that's what the module does: It offers the possibility
+to do calculations and comparisons with date objects very easily,
+thanks to the overloaded operators.
+
+Examples of use:
+
+1)
+
+  # Switch to summer time:
+
+  use Date::Object;
+
+  $now = Date::Object->now();
+  if (($now ge [2000,3,26,2,0,0]) and
+      ($now lt [2000,3,26,3,0,0]))
+  {   
+      $now += [0,0,0,+1,0,0]; # Plus 1 hour
+  } 
+
+2)
+
+  # Check age:
+
+  use Date::Calc qw(Decode_Date_EU Today);
+  use Date::Object;
+
+  Date::Object->date_format(3);
+
+  $birthday = Date::Object->new( Decode_Date_EU( scalar(<STDIN>) ) );
+
+  print "Your birthday is: $birthday\n";
+
+  # Prints something like this:
+  # Your birthday is: Friday, January 3rd 1964
+
+  if ($birthday + [18,0,0] <= [Today()])
+      { print "Ok, you are over 18.\n"; }
+  else
+      { print "Sorry, you are under 18!\n"; }
+
+3)
+
+  # When will I be the double of my current age?
+
+  use Date::Calc qw(Today);
+  use Date::Object;
+
+  $today = Date::Object->today();
+
+  $birthday = Date::Object->new(1964,1,3);
+
+  $diff = $today - $birthday;
+
+  print $diff + $today, "\n";
+
+Following below is the discussion we had and some more questions
+of mine:
+
+Jarkko Hietaniemi wrote:
+
+1> I think that the suggested name for the new OO interface,
+1> Date::Object, is a Very Bad Choice.  I severely dislike embedding
+
+Exactly *why* do you think so?
+
+1> either the interface style or the implementation style to the name of
+1> a module.
+
+*Why* do you think this is such a bad idea?
+
+1> Why don't you just continue using the Date::Calc namespace?
+1> Export the OO interface onlyt when so asked, e.g. using some export :tag?
+
+Steffen Beyer replied:
+
+2> That's an interesting idea indeed! I like it!
+2>
+2> However, I would like to separate the man pages for the functional (XS)
+2> part and the OO part of the user interface. (Because both man pages are
+2> already rather long, and a long Date::Calc.pm with lots of documentation
+2> only adds to the startup loading time - usually minimal, sure, but still
+2> unnecessary, and in often-used CGI scripts it might even amount to some
+2> substantial time loss).
+2> 
+2> Any suggestions for that?
+2> 
+2> Date::Calc.pod for the functional interface and Date::CalcOO.pod for the
+2> OO interface?
+2> 
+2> Or Date::CalcXS.pod and DateCalcOO.pod?
+2> Or Date::CalcPM.pod, Date::CalcXS.pod and DateCalcOO.pod?
+2> 
+2> (There are a few functions implemented in Perl in Date::Calc.pm, not in XS)
+2> 
+2> Or something else?
+2> 
+2> > Export the OO interface only when so asked, e.g. using some export :tag?
+2> 
+2> OO interfaces are never exported. That's the whole point of OO! You don't
+2> call (fully qualified or imported) functions but let Perl look for the
+2> method in the object's class!
+2> 
+2> And unfortunately I don't see how I could switch on and off the overloading
+2> easily on demand. Moreover, this would involve some ugly hacking and surely
+2> also some time overhead.
+2> 
+2> The best thing IMHO is to have a separate module which users can "use" (or
+2> even "require") on demand or not.
+2> 
+2> That way people can opt for more comfort and more speed penalty or less
+2> comfort and fastest possible speed.
+2> 
+2> Therefore I think it would in fact be better to keep the OO interface in a
+2> separate module. Now about the name of this module - anyone any suggestions?
+2> 
+2> Thanks for your help!
+
+Jarkko Hietaniemi replied:
+
+3> > Date::Calc.pod for the functional interface and Date::CalcOO.pod for the
+3> > OO interface?
+3> 
+3> This sounds okay.
+3> 
+3> > OO interfaces are never exported. That's the whole point of OO! You don't
+3> > call (fully qualified or imported) functions but let Perl look for the
+3> > method in the object's class!
+3> 
+3> Uhh, yes, that's what I get from composing an email message too late at night.
+
+Steffen Beyer replied:
+
+4> > > Date::Calc.pod for the functional interface and Date::CalcOO.pod for the
+4> > > OO interface?
+4> > 
+4> > This sounds okay.
+4> 
+4> But as I said, the problem is that users won't be able to decide whether they
+4> want to accept the speed penalty of the OO frontend or not if I put all
+4> together into one and the same module.
+4> 
+4> So I'd rather like to keep the core module and the OO wrapper separated.
+4> 
+4> Therefore I still need a good name for the OO frontend module.
+4> 
+4> Any suggestions? (I personally find Date::CalcOO pretty ugly)
+4> 
+4> > > OO interfaces are never exported. That's the whole point of OO! You don't
+4> > > call (fully qualified or imported) functions but let Perl look for the
+4> > > method in the object's class!
+4> > 
+4> > Uhh, yes, that's what I get from composing an email message too late at night.
+4> 
+4> Don't worry, happens to all of us, sometimes even at the day of light! :-)
+
+Jarkko Hietaniemi replied:
+
+5> > Any suggestions? (I personally find Date::CalcOO pretty ugly)
+5> 
+5> Date::OOCalc? :-) Date::CalcO?  Date::Calc_OO?  I see that some
+5> modules that have been first pure Perl have later developed _XS
+5> variants, or vice versa, _PM variants.
+
+Steffen Beyer replied:
+
+6> Any other opinions or suggestions?
+6> (Please?)
+6> 
+6> Many thanks in advance!
+6> 
+6> P.S.: How does this relate with your former statement? I.e.,
+6> 
+6> >> I severely dislike embedding either the interface style or the
+6> >> implementation style to the name of a module.
+
+Jarkko Hietaniemi replied:
+
+7> > P.S.: How does this relate with your former statement? I.e.,
+7> 
+7> Badly.  But I see no way out if you want to keep the OO (or O)
+7> in the name.  
+
+Steffen Beyer replied:
+
+8> Any ideas for a completely different name perhaps?
+8> 
+8> Maybe a name which reflects the fact that thanks to this module
+8> (thanks to the operator overloading), you can use dates almost
+8> as though this data type was a Perl built-in?
+8> 
+8> Such as Date::Type? Or something along this line?
+
+Or something like "Date::Easy"?
+
+Anyway, thanks to everyone for all sensible ideas, views, arguments!
+
+Regards,
+-- 
+    Steffen Beyer <sb@engelschall.com>
+    http://www.engelschall.com/u/sb/whoami/ (Who am I)
+    http://www.engelschall.com/u/sb/gallery/ (Fotos Brasil, USA, ...)
+    http://www.engelschall.com/u/sb/download/ (Free Perl and C Software)

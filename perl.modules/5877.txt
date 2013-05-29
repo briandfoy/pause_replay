@@ -1,0 +1,101 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5877
+Return-Path: <msielski@UU.NET>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 87669 invoked from network); 29 May 2001 14:05:44 -0000
+Received: from mimer.null.dk (qmailr@130.228.230.9)
+  by onion.valueclick.com with SMTP; 29 May 2001 14:05:44 -0000
+Received: (qmail 8244 invoked from network); 29 May 2001 14:04:20 -0000
+Received: from cmr2.ash.ops.us.uu.net (198.5.241.40)
+  by mimer.null.dk with SMTP; 29 May 2001 14:04:20 -0000
+Received: from instserve0.corp.us.uu.net by cmr2.ash.ops.us.uu.net with ESMTP 
+	(peer crosschecked as: instserve0.corp.us.uu.net [153.39.89.142])
+	id QQkrcq07653
+	for <modules@perl.org>; Tue, 29 May 2001 14:04:01 GMT
+Received: from tows208 by instserve0.corp.us.uu.net with SMTP 
+	(peer crosschecked as: localhost [127.0.0.1])
+	id QQkrcq08911
+	for <modules@perl.org>; Tue, 29 May 2001 10:03:34 -0400 (EDT)
+To: <modules@perl.org>
+Subject: RE: XML error
+Date: Tue, 29 May 2001 10:03:28 -0400
+Message-ID: <000101c0e848$22f90b90$ae892799@tows208>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+Importance: Normal
+In-Reply-To: <m3snhtuqil.fsf@ak-71.mind.de>
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4522.1200
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: msielski@UU.NET ("Matthew Sielski")
+References: <m3snhtuqil.fsf@ak-71.mind.de>
+
+Andreas,
+
+I'm not too sure what causes the error, but I think it could be the line at
+the top of 00modlist.long.html
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"DTD/xhtml1-transitional.dtd">
+
+I think that IE can't access the file at DTD/xhtml1-transitional.dtd.
+Either it's not there or since on FTP (where servers are often full) the
+request to the file is denied and IE can't gracefully handle that situation.
+This would account for the error only coming up on ftp versions of the page.
+
+For a solution, my guess would be to replace  DTD/xhtml1-transitional.dtd
+with an absolute URL off of a web server, like
+http://whatever.com/whatever/DTD/xhtml1-transitional.dtd  that way there is
+a greater chance that the file can be accessed.  It's just a guess, may not
+work at all.  I have no real XML knowledge, but that's the only XML document
+referenced in the code, and the error is an XML error for a "The system
+cannot locate the object specified."
+
+Hope it helps,
+- matt
+
+
+> -----Original Message-----
+> From: k@ak-71.mind.de [mailto:k@ak-71.mind.de]On Behalf Of Andreas J.
+> Koenig
+> Sent: Friday, May 25, 2001 4:24 PM
+> To: Matthew Sielski
+> Cc: modules@perl.org
+> Subject: Re: XML error
+>
+>
+> >>>>> On Wed, 23 May 2001 16:55:28 -0400, "Matthew Sielski"
+> <msielski@UU.NET> said:
+>
+>   > FYI...
+>   > You're probably already aware of this.. but IE 5.5 gives an
+> XML error on the
+>   > page:
+>   > ftp://ftp.nl.uu.net/pub/CPAN/modules/00modlist.long.html
+>
+>   > If you want more info about it, let me know.  It's been
+> duplicated on a
+>   > number of IE 5.5 machines.
+>
+> Thanks for the report. I had got some reports about it before but
+> without a Windows machine I had no chance tracking it down. Now I have
+> a Windows machine and IE 5.5 running and I can reproduce it. But I
+> have no idea what IE might have troubles with. Do you have more clue?
+>
+> Note that the same document gets displayed without complaints when
+> it is coming from an http server.
+>
+> Any advice welcome.
+>
+>
+> --
+> andreas
+>
+

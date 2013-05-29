@@ -1,0 +1,125 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:73852
+Return-Path: <adam@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 3983 invoked from network); 1 Dec 2010 06:45:18 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 1 Dec 2010 06:45:18 -0000
+Received: (qmail 24061 invoked by uid 225); 1 Dec 2010 06:45:17 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24056 invoked by alias); 1 Dec 2010 06:45:17 -0000
+X-Spam-Status: No, hits=-0.7 required=8.0
+	tests=RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wy0-f169.google.com (HELO mail-wy0-f169.google.com) (74.125.82.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 30 Nov 2010 22:45:15 -0800
+Received: by wyb42 with SMTP id 42so6807376wyb.14
+        for <modules@perl.org>; Tue, 30 Nov 2010 22:45:11 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.216.16.211 with SMTP id h61mr7090145weh.106.1291185910887;
+ Tue, 30 Nov 2010 22:45:10 -0800 (PST)
+Received: by 10.216.21.73 with HTTP; Tue, 30 Nov 2010 22:45:10 -0800 (PST)
+In-Reply-To: <AANLkTim9864YNndOCFubxc8YvjM--gB9czit_-g+pif-@mail.gmail.com>
+References: <AANLkTinMoyCBjoLeVuTR51CsaVyHKwKaZokPZUtBbmSJ@mail.gmail.com>
+	<AANLkTi=13_O1E6CyAF_HKdXjBZ8Hp-vxvL0XyDKZR5--@mail.gmail.com>
+	<AANLkTind4VMx2xQ5H7WLybDNUUz7es2t9JWSKsGjfUOE@mail.gmail.com>
+	<AANLkTinzR_W6UV031ZxkjQ-wMXuJ0JtAWE307tb3Ehz5@mail.gmail.com>
+	<AANLkTimHGuwJWp76jucJ_WB55PNkWG50p3zw7qhk6qdq@mail.gmail.com>
+	<AANLkTi=pCvwevKN0ELzZ0948JoDsLCMV_M3PF-EL5J2v@mail.gmail.com>
+	<AANLkTim9864YNndOCFubxc8YvjM--gB9czit_-g+pif-@mail.gmail.com>
+Date: Wed, 1 Dec 2010 17:45:10 +1100
+Message-ID: <AANLkTin0YRSgEeKPZPvMkW55tTw_2fsJ+4w2w8zY_C4D@mail.gmail.com>
+Subject: Re: List::MoreUtils maintainership
+To: Jens Rehsack <rehsack@googlemail.com>
+Cc: David Golden <xdaveg@gmail.com>, modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: adam@ali.as (Adam Kennedy)
+
+Agreed on the leaking.
+
+I've had a quick look through what is there at the moment and have
+concluded that I'm best to start by refactoring the test suite.
+
+The current test suite has two separate copy and pasted test scripts
+for the XS and pure perl cases. If I diff between the various
+releases, it appears that they are being synchronised largely by hand
+and in a fairly patchy fashion.
+
+So I've created a t::lib::Test module and I'm extracting the test code
+for each function into it's own test_uniq, test_whatever function, and
+changing both test scripts to use the common testing code.
+
+Once that is done, it should simplify the process of adding new tests
+for the various problems in only one place. After that, I might look
+at re-applying some of the simpler fixes that don't require XS-fu and
+expanding the tests for the relevant functions to test against more
+cases.
+
+There's also at least one CPAN Tester throwing out-of-memory errors in
+the tests, so I'm going to audit the size of the lists it uses to test
+with to try and reduce that problem.
+
+I'll assume that early in the new year you'll swoop in and do the hard
+stuff, hopefully the house will be clean and ready for you by then.
+
+Adam K
+
+
+On Wed, Dec 1, 2010 at 5:13 PM, Jens Rehsack <rehsack@googlemail.com> wrote=
+:
+> 2010/12/1 Adam Kennedy <adam@ali.as>:
+>> Since my releases seem to have "regressed" issues that were "fixed" in
+>> the no-longer-existing 0.23 (and created problems for some people) my
+>> plan to not have to touch the actual code seem to have been derailed a
+>> bit.
+>>
+>> I'm going to see if I can apply some of the fixes suggested in RT, or
+>> reapply some of the fixes from 0.23. If I can't knock out a decent
+>> test-passing dev release I'm then going to rip out the leaking XS
+>> versions of the functions as damage control.
+>>
+>> Alternatively, if Jens plans to work on it straight away then I'll yield=
+.
+>
+> Current plan of order of tasks:
+> - finish current task (SQL::Statement / DBI-bundled Pure-Perl-DBD's)
+> - Proc::ProcessTable code merge from current $work on libstatgrab
+> =A0(make it thread-safe, all fields available on all OS, ...)
+> - List::MoreUtils (first (re)write tests to cover leak-test, then fix
+> =A0and go on business as usual)
+>
+>> I'll see how far I can get now, but won't push a stable release
+>> without Jens' approval.
+>
+> The meanwhile deleted releases had other issues - all XS related.
+> I studied a bit since I got maintainership - should be easy to fix >:-)
+>
+> From my point of view, nothing beyond 0.22 didn't work for real.
+> I hope I get P::PT managed this year, but could require some weeks
+> at start of 2011.
+>
+> So you have a rough time line. I suggest you don't try to fix the
+> leaks without tests :)
+>
+> Jens
+>
+>> Adam K
+>>
+>> On Tue, Nov 30, 2010 at 11:27 PM, David Golden <xdaveg@gmail.com> wrote:
+>>> On Mon, Nov 29, 2010 at 4:57 PM, Adam Kennedy <adam@ali.as> wrote:
+>>>> I'll try to replicate on a 5.8.8 system later today, but this should
+>>>> not change your priority (although the existence of a Critical
+>>>> Twiki-breaking bug might).
+>>>
+>>> Isn't it just so tempting to stall on 5.8.X bugs until April 20, 2011 .=
+.. =A0:-)
+>>>
+>>> -- David
+>>>
+>>
+>

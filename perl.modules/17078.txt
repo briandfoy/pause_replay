@@ -1,0 +1,48 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17078
+Return-Path: <barries@slaysys.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1136 invoked by uid 76); 16 Jan 2003 21:37:41 -0000
+Received: from ipl-185-231.dsl.stargate.net (HELO sizzle.whoville.com) (208.40.185.231) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-16 21:37:40Z
+Received: (from barries@localhost)	by sizzle.whoville.com (8.9.3/8.9.3) id QAA30562;	Thu, 16 Jan 2003 16:28:50 -0500
+X-Authentication-Warning: sizzle.whoville.com: barries set sender to barries@slaysys.com using -f
+Date: Thu, 16 Jan 2003 16:28:50 -0500
+To: "Randal L. Schwartz" <merlyn@stonehenge.com>
+Cc: modules@perl.org
+Subject: Re: XML::Filter::Dispatcher went retrograde
+Message-ID: <20030116162840.A30536@sizzle.whoville.com>
+References: <86znq0eqle.fsf@red.stonehenge.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+In-Reply-To: <86znq0eqle.fsf@red.stonehenge.com>; from merlyn@stonehenge.com on Thu, Jan 16, 2003 at 01:23:41PM -0800
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: barries@slaysys.com (Barrie Slaymaker)
+
+On Thu, Jan 16, 2003 at 01:23:41PM -0800, Randal L. Schwartz wrote:
+> 
+> Ugh. XML::Filter::Dispatcher::Parser went backwards
+> from 1.05 to 1.02 beween -0.31 and -0.46 versions of the distro.
+
+That'll happen depending on what version of Parse::YAPP happens to be
+installed on my build system; that's a generated .pm file and I don't
+set the version manually.  I must have different versions of Parse::YAPP
+on two machines I do maintenance to X::F::D on.
+
+There is no $XML::Filter::Dispatcher::VERSION.  Whatever script is
+giving you grief must be scanning the file line by line and missing the
+fact that the $VERSION string it's finding is in a different package and
+does not refer to the file as a whole.
+
+> Please release a new distro that has higher version numbers than any
+> prior release.
+
+Thanks for pointing it out, I'll upgrade Parse::YAPP and rerelease
+X::F::D at some point, probably not immediately.  I'm not even sure
+it's a problem I need worry about, what issues is it causing?
+
+- Barrie

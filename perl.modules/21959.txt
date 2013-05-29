@@ -1,0 +1,88 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21959 perl.module-authors:984
+Return-Path: <enrico@sorcinelli.it>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 98015 invoked by uid 76); 23 Jun 2003 08:53:42 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Mon, 23 Jun 2003 01:53:42 -0700
+Received: (qmail 3740 invoked by uid 225); 23 Jun 2003 08:53:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3731 invoked by uid 507); 23 Jun 2003 08:53:40 -0000
+Received: from mall.pisa.iol.it (HELO mall.pisa.iol.it) (193.76.233.100) by one.develooper.com (qpsmtpd/0.26) with SMTP; Mon, 23 Jun 2003 01:53:39 -0700
+Received: from mall.pisa.iol.it (IDENT:bepi@localhost [127.0.0.1])	by mall.pisa.iol.it (8.9.3/8.9.3) with SMTP id LAA28856;	Mon, 23 Jun 2003 11:02:45 +0200
+Date: Mon, 23 Jun 2003 11:02:45 +0200
+To: module-authors@perl.org
+Cc: modules@perl.org
+Subject: [ANNOUNCE] Template::Plugin::Apache::SessionManager 0.01
+Message-ID: <20030623110245.54c7e611.enrico@sorcinelli.it>
+X-Mailer: Sylpheed version 0.9.0 (GTK+ 1.2.6; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: enrico@sorcinelli.it (Enrico Sorcinelli)
+
+Hi all,
+
+I'm glad to announce first public release of
+'Template::PLugin::Apache::SessionManager' module.
+
+Template::Plugin::Apache::SessionManager - Session manager Template Toolkit 
+plugin
+This Template Toolkit plugin provides an interface to Apache::SessionManager
+module wich provides a session manager for a web application.  This module
+allows you to integrate a transparent session management into your TT2 template
+documents (it handles for you the cookie/URI session tracking management of a
+web application)
+ 
+You can download it from CPAN:
+
+   http://www.cpan.org/authors/id/E/EN/ENRYS/Template-Plugin-Apache-SessionManager-0.01.tar.gz
+
+SYNOPSIS
+          [% USE my_sess = Apache.SessionManager %]
+ 
+          # Getting single session value
+          SID = [% my_sess.get('_session_id') %]
+ 
+          # Getting multiple session values
+          [% FOREACH s = my_sess.get('_session_id','_session_timestamp') %]
+          * [% s %]
+          [% END %]
+          # same as
+          [% keys = ['_session_id','_session_timestamp'];
+             FOREACH s = my_sess.get(keys) %]
+          * [% s %]
+          [% END %]
+ 
+          # Getting all session values
+          [% FOREACH s = my_sess.get %]
+          * [% s %]
+          [% END %]
+ 
+          # Setting session values:
+          [% my_sess.set('foo' => 10, 'bar' => 20, ...) %]
+ 
+          # Deleting session value(s)
+          [% my_sess.delete('foo', 'bar') %]
+          # same as
+          [% keys = ['foo', 'bar'];
+             my_sess.delete(keys) %]
+ 
+          # Destroying session
+          [% my_sess.destroy %] 
+
+
+For detailed module info, see:
+
+	perldoc Template::PLugin::Apache::SessionManager
+
+by
+
+	- Enrico
+

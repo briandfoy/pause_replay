@@ -1,0 +1,308 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:6020
+Return-Path: <u_arunkumar@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32097 invoked from network); 5 Jun 2001 17:51:14 -0000
+Received: from web10507.mail.yahoo.com (216.136.130.157)
+  by onion.valueclick.com with SMTP; 5 Jun 2001 17:51:14 -0000
+Message-ID: <20010605175112.80327.qmail@web10507.mail.yahoo.com>
+Received: from [203.199.239.223] by web10507.mail.yahoo.com; Tue, 05 Jun 2001 10:51:12 PDT
+Date: Tue, 5 Jun 2001 10:51:12 -0700 (PDT)
+Subject: Lightweight Access to PostgreSQL
+To: modules@perl.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: u_arunkumar@yahoo.com (Arun Kumar)
+
+Hi all,
+
+I am currently working on module that is aimed at
+providing lightweight access to PostgreSQL database
+engine. The module is named as PgLite (any suggestions
+for a better name/namespace are most welcome). I would
+like to discuss some of the features available in the
+module and would like to know how many people 
+would be interested in such a module. I would also be
+glad to know what other features would be desirable.
+With that short introduction let me jump straight into
+the feature list.
+
+* Ability to Create SQL Queries from XML files
+* Build SQL Queries in a OO-ish fashion 
+* Ability to clone a query from an XML template file  
+
+  and then add additional qualifiers using the OO 
+  interface
+* Convert the query built using the OO interface to
+XML   (which can be then used to write into any
+persistent 
+  storage, from where it can be later retrieved to 
+  execute the same SQL query)
+* Random access to retrived records (DBI allows only 
+  sequential access to records)
+* OO-ish interface to Rows and fields in the row.
+* Support for Transactions, by combining queries.
+* The 'where' expression supports all the different 
+  formats supported by the DBIx-Abstract Module.
+* Support for building SELECT, INSERT, UPDATE and 
+  DELETE SQL statements
+* Persistent Connection to the Database. Reconnects to
+
+  the Database when the connection disconnects. This 
+  happens transparent to the user.
+
+The following lists the interface available in the
+package for implementing the above mentioned features:
+
+* Ability to Create SQL Queries from XML files
+  
+  $RecSet = $PgLite->ExecuteQuery('UserInfo',
+$UserId);
+  $RecSet->FetchRow_ArrayRef();
+
+  $Row = $RecSet->GetRow(1);
+  $Name = $Row->GetField('name');
+
+* Build SQL Queries in a OO-ish fashion 
+
+  $Query = new PgLite::Query();
+  $Query->type('select');
+  $Query->table('table1');
+  $Query->fields(['name', 'address']);
+  $Query->where({ name => [ '<', 20'] });
+
+  $Query = new PgLite::Query()
+               ->type('select')
+               ->table('table1')
+               ->fields(['name', 'address'])
+               ->where({ name => [ '<', 20'] });
+
+* Ability to clone a query from an XML template file
+and then add addtitional qualifiers using the OO
+interface.
+  
+  $Query = $PgLite->CloneQuery('NewAccounts');
+  $Query->where('name LIKE ?');
+
+  $RecSet = $PgLite->ExecuteQuery($Query, 'A%');
+
+* Convert the query built using the OO interface to
+XML 
+  
+  $Query = new
+PgLite::Query()->table('sometable')->fields('*')->
+               where({ 'name' => ?, 'age' =  [ '<', 20
+] });
+  $Xml = $Query->ToXml();
+
+* Random access to retrived records (DBI allows only
+sequential access to records)
+
+  $RecSet = $PgLite->ExecuteQuery($Query, 'A%');
+
+  $Row3 = $RecSet->GetRow(3)->As_ArrayRef();
+  $Row2 = $RecSet->GetRow(2)->As_ArrayRef();
+
+  $Row = $RecSet->GetRow(5);
+  $Row->As_HashRef();
+
+  while ($ArrayRef = $RecSet->FetchRow_AsArrayRef()) {
+    print Dumper($ArrayRef),"\n";
+  }
+
+  $RecSet->Dump_Results();
+
+* OO-ish interface to Rows and fields in the row.
+
+  $Row = $RecSet->GetRow(5);
+  $Name = $Row->GetField('name');
+  ($Name, $Age) = $Row->GetFields('name', 'age');
+  @Fields = $Row->As_Array();
+  $FieldsArray = $Row->As_ArrayRef();
+  $FieldsHash  = $Row->As_HashRef();
+
+* Support for Transactions, by combining queries.
+  
+  $Query1 = $PgLite->CloneQuery('InsertTable1',
+$Data1);
+  $Query2 = $PgLite->CloneQuery('InsertTable2',
+$Data2);
+
+  $PgLite->Transaction([ $Query1, $Query2 ]);
+
+* The 'where' expression supports all the different
+formats supported by the DBIx-Abstract Module.
+
+$Query->where("name LIKE 'A%'");         ## Literal
+WHERE
+$Query->where({ name => 'Linus'});       ## WHERE name
+= 'Linus'
+$Query->where({ age  => [ '>', '10']});  ## WHERE age
+> 10
+
+## WHERE (age > 10 AND name LIKE 'Linus%')
+$Query->where({ age  => [ '>', '10'],   
+								name => [ 'LIKE', 'Linus%' ]});
+
+## WHERE (age > 10 AND name LIKE 'Linus%') OR (country
+= 'Finland')
+$Query->where([ { age  => [ '>', '10'],   
+									name => [ 'LIKE', 'Linus%' ]
+								}, 
+								'OR',
+								{ country => 'Finland' },
+							]);
+
+  and a lot more .....
+
+* The following are some of the attributes that can be
+  set using the XML template file
+
+  table
+  fields
+  relation
+  order_by
+  group_by
+  start
+  max
+  append 
+  distinct
+  where
+
+table       - the name of the table to act upon
+fields      - list of fields to retrieve (comma 
+              seperated if more than one)
+relation    - used to specify table joins
+order_by    - the order description for the output 
+              records
+group_by    - grouping specification
+start       - the offset from where to retrieve the 
+              records
+max         - maximum no of records to retrieve
+append      - the literal string to append at the end
+of the built SQL statement
+distinct    - specifies distinct field for the output
+records
+distinct_on - specifies distinct fields for the output
+where       - the SQL WHERE expression used for
+retrieving matching records 
+  
+$Query->relation("t1.ssn=t2.ssn");          ## Table
+JOIN
+$Query->order_by("name ASC, country DESC"); ##
+Ordering of Output Records
+$Query->group_by("country");                ##
+Grouping for aggregation
+$Query->start(0)->limit(1);                 ##
+Retrieve the 1st record alone
+$Query->distinct('country');               
+$Query->distinct_on(['name', 'country']);             
+ 
+
+* Sample XML template file 
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE datastore [
+  <!ENTITY CustomerInfoTable "Customer_info">
+  <!ENTITY AccountInfoTable  "Account_info">
+]>
+
+<datastore>
+  <sql id="NewCustomers">
+    <type        value="select"/>
+    <table       value="&AccountInfoTable;,
+&CustomerInfoTable;"/>
+    <fields     
+value="&CustomerInfoTable;.customer_id, name"/>
+    <start       value="0"/>
+    <max         value="100"/>
+    <distinct_on value="customer_id"/>
+    <order_by    value="customer_id ASC, name DESC"/>
+    <relation   
+value="&AccountInfoTable;.customer_id=&CustomerInfoTable;.customer_id"/>
+
+<!--<group_by  value="country"/> -->
+<!--<group_by  value="country HAVING MAX(age) > 26"/>
+-->
+
+    <where>
+      <literal value="activated = 'N'"/>
+    </where>
+
+<!--<where>
+      <expr tag="expr1" operator="or">
+        <field name="age"     value="20"
+operator="&gt;"/>
+        <field name="age"     value="27"
+operator="&lt;"/>
+      </expr>
+      <expr tag="expr2">
+        <field name="country" value="?" 
+operator="LIKE"/>
+      </expr>
+    </where> -->
+  </sql>
+
+  <sql id="CustomerDetails">
+    <type    value="select"/>
+    <table   value="&CustomerInfoTable;"/>
+    <fields  value="*"/>
+    <where>
+      <expr tag="expr1">
+        <field name="customer_id"  value="?"/>
+        <field name="activated"    value="Y"/>
+        <field name="frozen"       value="N"/>
+      </expr>
+    </where>
+  </sql>
+
+  <sql id="AtmToCustomerId">
+    <type    value="select"/>
+    <table   value="&AccountInfoTable;"/>
+    <fields  value="customer_id"/>
+    <where>
+      <literal value="atmcard_nos[1] = ? OR
+atmcard_nos[2] = ? OR 
+                      atmcard_nos[3] = ? OR
+atmcard_nos[4] = ? OR
+                      atmcard_nos[5] = ?"/>
+    </where>
+  </sql>
+
+  <sql id="AccountList">
+    <type    value="select"/>
+    <table   value="&AccountInfoTable;"/>
+    <fields  value="account_no, branch_code,
+scheme_code, scheme_type, tlb_facility"/>
+    <where>
+      <literal value="customer_id = ?"/>
+    </where>
+  </sql>
+
+  <sql id="UpdateCustomerInfo">
+    <type  value="update"/>
+    <table value="&CustomerInfoTable;"/>
+    <where>
+      <literal value="customer_id = ?"/>
+    </where>
+  </sql>
+</datastore>
+
+If you think this module would be useful, then 
+do drop me a line. I am keen to know how many 
+people are interested.
+
+Best Regards,
+Arun
+
+CPAN ID: UARUN
+
+
+__________________________________________________
+Do You Yahoo!?
+Get personalized email addresses from Yahoo! Mail - only $35 
+a year!  http://personal.mail.yahoo.com/

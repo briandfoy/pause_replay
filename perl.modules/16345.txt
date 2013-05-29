@@ -1,0 +1,273 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16345
+Return-Path: <muir@idiom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 42252 invoked by uid 76); 20 Dec 2002 20:53:47 -0000
+Received: from root@idiom.com (HELO idiom.com) (216.240.32.1) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2002-12-20 20:53:47Z
+Received: from idiom.com (localhost [127.0.0.1])	by idiom.com (8.12.6/8.12.6) with ESMTP id gBKKrjRc007184	for <modules@perl.org>; Fri, 20 Dec 2002 12:53:45 -0800 (PST)	(envelope-from muir@idiom.com)
+Received: (from muir@localhost)	by idiom.com (8.12.6/8.12.6/Submit) id gBKKrjeM007183;	Fri, 20 Dec 2002 12:53:45 -0800 (PST)	(envelope-from muir)
+Date: Fri, 20 Dec 2002 12:53:45 -0800 (PST)
+Message-ID: <200212202053.gBKKrjeM007183@idiom.com>
+To: modules@perl.org
+Subject: Re: need a module name - Cisco::Conf is taken
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: muir@idiom.com (David Muir Sharnoff)
+
+I haven't heard back yet on my Cisco module.  If I don't hear
+something soon, I'll go with Cisco::Reconfig.
+
+
+While I was waiting, I wrote another module.  It's in a crowded
+space: select()-wrappers.  It's most similar to IO::Multiplex but
+provides a complete Filehandle-like interface with event 
+callbacks.  It uses Event.pm to do the actuall select()s.
+
+Unless there are objections, I would like call it IO::Event.
+
+It's ready for an initial release.
+
+NAME
+    IO::Event - Tied Filehandles for Nonblocking IO with Object Callbacks
+
+DESCRIPTION
+    IO::Event provides a object-based callback system for handling
+    nonblocking IO. The design goal is to provide a system that just does
+    the right thing w/o the user needing to think about it much.
+
+    All APIs are kept as simple as possible yet at the same time, all
+    functionality is accesible if needed. Simple things are easy. Hard
+    things are possible.
+
+EXAMPLE SERVER
+            # This is a tcp echo server
+
+            my $listener = IO::Event::Socket::INET->new(
+                    Listen => 10,
+                    Proto => 'tcp',
+                    LocalPort => 2821,
+            );
+
+            Event::loop();
+
+            sub ie_connection
+            {
+                    my ($pkg, $lstnr) = @_;
+                    my $client = $lstnr->accept();
+                    printf "accepted connection from %s:%s\n",
+                            $client->peerhost, $client->peerport;
+            }
+
+            sub ie_input
+            {
+                    my ($pkg, $client, $ibufref) = @_;
+                    print $client <$client>;
+            }
+
+CONSTRUCTORS
+    IO::Event->new($filehandle, $handler)
+        The basic "new" constructor takes a filehandle and returns a
+        psuedo-filehandle. Treat the IO::Event object as a filehandle. Do
+        not use the original filehandle without good reason (let us know if
+        you find a good reason so we can fix the problem).
+
+        The handler is the class or object where you provide callback
+        functions to handle IO events. It defaults to the package of the
+        calling context.
+
+    IO::Event::Socket::INET->new( [ARGS] )
+        This constructor uses IO::Socket::INET->new() to create a socket
+        using the ARGS provided. It returns an IO::Event object.
+
+        The handler defaults as above or can be set with an additional
+        pseudo-parameter for IO::Socket::UNIX->new(): "Handler". A
+        description for the socket can be provided with an additional
+        psuedo-parameter: "Description".
+
+    IO::Event::Socket::UNIX->new( [ARGS] )
+        This constructor uses IO::Socket::UNIX->new() to create a socket
+        using the ARGS provided. It returns an IO::Event object.
+
+        The handler defaults as above or can be set with an additional
+        pseudo-parameter for IO::Socket::UNIX->new(): "Handler". A
+        description for the socket can be provided with an additional
+        psuedo-parameter: "Description".
+
+MANDATORY HANDLERS
+    These handler methods must be available in the handler object/class if
+    thit situation in which they would be called arises.
+
+    ie_input($self, $ieo, $input_buffer_reference)
+        Invoked when there is fresh data in the input buffer. The input can
+        be retreived via directly reading it from $$input_buffer_reference
+        or via "read()" from the $ieo filehandle, or by using a variety of
+        standard methods for getting data:
+
+                $ieo->get()             like Data::LineBuffer
+                $ieo->read()            like IO::Handle
+                $ieo->getline()         like IO::Handle
+                $ieo->getlines()        like IO::Handle
+                <$ieo>                  like IO::Handle
+
+    ie_connection($self, $ieo)
+        Invoked when a listen()ing socket is ready to accept(). It should
+        call accept:
+
+                sub ie_connection
+                {
+                        my ($ieo) = @_;
+                        my $newfh = $ieo->accept()
+                }
+
+    ie_read_ready($self, $underlying_file_handle)
+        If autoreading is turned off then this will be invoked.
+
+OPTIONAL HANDLERS
+    These handler methods will be called if they are defined but it is not
+    required that they be defined.
+
+    ie_output
+        This is invoked when data has just been written to the underlying
+        filehandle.
+
+    ie_outputdone
+        This is invoked when all pending data has just been written to the
+        underlying filehandle.
+
+    ie_connected
+        This is invoked when a "connect()" completes.
+
+    ie_connect_timeout
+        This is invoked when a "connect()" attempt times out.
+
+    ie_died($ieo, $method, $@)
+        If another handler calls "die" then ie_died will be called with the
+        IO::Event object, the name of the method just invoked, and the die
+        string.
+
+    ie_timer
+        This is invoked for timer events. These will only arise if set using
+        thing underlying Event object.
+
+    ie_exception
+        Invoked when an exceptional condition arises on the underlying
+        filehandle
+
+METHODS
+    In addition to methods described in detail below, the following methods
+    behave like their "IO" (mostly "IO::Socket") counterparts (except for
+    being mostly non-blocking...):
+
+            connect
+            listen
+            open
+            close
+            read
+            syswrite
+            print
+            eof
+
+    Through AUTOLOAD (see the SUBSTITUTED METHODS section) methods are
+    passed to underlying "Event" objects:
+
+            loop
+            unloop
+            and many more...
+
+    Through AUTOLOAD (see the SUBSTITUTED METHODS section) methods are
+    passed to underlying "IO" objects:
+
+            fileno
+            stat
+            truncate
+            error
+            opened
+            untaint
+            and many more...
+
+    IO::Event defines its own methods too:
+
+    ->accept($handler)
+        accept() is nearly identical to the normal IO::Socket::accpt()
+        method except that instead of optionally passing a class specifier
+        for the new socket, you optionally pass a handler object/class. The
+        returned filehandle is an IO::Event.
+
+    ->get()
+        get() is like getline() except that it pre-chomp()s the results.
+        This is like get() from Data::LineBuffer.
+
+    ->unget()
+        Push chomp()ed lines back into the input buffer. This is like
+        unget() from Data::LineBuffer.
+
+    ->ungetline()
+        Push un-chomp()ed lines back into the input buffer.
+
+    ->ie_handler($new_handler)
+        Sets the handler object/class if $new_handler is provided. Returns
+        the old handler.
+
+    ->ie_fh()
+        Returns the underlying "IO::Handle".
+
+    ->ie_event()
+        Returns the underling "Event".
+
+    ->ie_listening($listening)
+        Used to note that a filehandle is being used to listen for
+        connections (instead of receiving data). A passed parameter of 0
+        does the opposite. Returns the old value. This is mostly used
+        internally to IO::Event.
+
+    ->ie_autoread($autoread)
+        Get/set automatic reading if data when data can be read. Without
+        autoread turned on, the input buffer ins't filled and none of the
+        read methods will work. The point of this is for working with
+        non-data filehandles. This is an experts-only method that kinda
+        defeats the purpose of this module. This would be necessary using
+        recv() to get data.
+
+    ->ie_drain()
+        Used to start looking for write-ready events on the underlying
+        filehandle.
+
+    ->input_record_separator($new_sep)
+        IO::Handle doesn't allow input_record_separator's on a per
+        filehandle basis. IO::Event does. If you don't ever set a
+        filehandle's input record separator, then it defaults to the current
+        value of $/ at all times. If you set it, then it will use your value
+        and never look at $/ again.
+
+SUBSTITUED METHODS
+    Any method invications that fail because the function isn't defined will
+    by tried twice more: once using trying for a method on the inner
+    (hidden) filehanlde and once more trying the for a method on the event
+    object that's used to create the select loop for this module.
+
+SEE ALSO
+    The following perl modules do something that is kinda similar to what is
+    being done here:
+
+            IO::Multiplex
+            IO::NonBlocking
+            IO::Select
+            Event
+            POE
+            POE::Component::Server::TCP
+            Net::Socket::NonBlock
+            Net::Server::Multiplex
+            NetServer::Generic
+
+    The API borrows most heavily from IO::Multiplex. 
+
+BUGS
+    Nothing sane is done with excptional conditions. What causes them
+    anyway?
+
+LICENSE
+    Copyright (C) 2002 David Muir Sharnoff. This module may be
+    used/copied/etc on the same terms as Perl itself.
+

@@ -1,0 +1,64 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:56509
+Return-Path: <l2ot9pa02@sneakemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1732 invoked from network); 17 Sep 2007 19:52:14 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 17 Sep 2007 19:52:14 -0000
+Received: (qmail 1709 invoked by uid 225); 17 Sep 2007 19:52:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1698 invoked by alias); 17 Sep 2007 19:52:13 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from sd-green-bigip-145.dreamhost.com (HELO spunkymail-a1.g.dreamhost.com) (208.97.132.145)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 17 Sep 2007 12:52:03 -0700
+Received: from [10.59.0.18] (i3ED6E0BD.versanet.de [62.214.224.189])
+	by spunkymail-a1.g.dreamhost.com (Postfix) with ESMTP id F200BFFE36;
+	Mon, 17 Sep 2007 12:53:01 -0700 (PDT)
+Message-ID: <46EEDADA.5050504@sneakemail.com>
+Date: Mon, 17 Sep 2007 21:51:54 +0200
+User-Agent: Thunderbird 1.5.0.13 (X11/20070824)
+MIME-Version: 1.0
+To: "Ron Isaacson Ron.Isaacson-at-morganstanley.com |newsgroups5|" <ov1ajoive40t@sneakemail.com>
+Cc: modules@perl.org
+Subject: Re: Old CPAN namespace registration for AFS::Command
+References: <FZKMSX6vpFVjCRGryWt0001e174@FZKMSX6.ka.fzk.de>	<3ggfy1dgziw.wl_Ron.Isaacson@morganstanley.com>	<46EEADE2.6070906@sneakemail.com> <3gg8x75gr6w.wl_Ron.Isaacson@morganstanley.com>
+In-Reply-To: <3gg8x75gr6w.wl_Ron.Isaacson@morganstanley.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: l2ot9pa02@sneakemail.com (Steffen Mueller)
+
+Hi Ron,
+
+Ron Isaacson Ron.Isaacson-at-morganstanley.com |newsgroups5| schrieb:
+> Is there a recommended way to handle this situation -- where the
+> package name doesn't actually match the name of any module inside it?
+> In the next release, should I make a no-op AFS/Command.pm to avoid
+> this inconsistency?
+
+It's not bad per se to have a distribution name which differs from the 
+contained namespaces. libwww does this, for example. The reason for the 
+grief is just that the *registered* namespace (the one which was 
+manually registered with modules@perl.org) differs from all package 
+names. That's how my scripts thought there was no implementation on CPAN.
+
+The only workaround I know is to have such an empty package.
+
+package AFS::Command;
+use strict;
+1;
+
+__END__
+
+=pod here if you like
+
+I think I mentioned in my initial reply that it's up to you whether you 
+want to do that. Though it helps if somebody clicks on "AFS::Command" in 
+the modules list and actually gets to see the module :)
+
+Best regards,
+Steffen

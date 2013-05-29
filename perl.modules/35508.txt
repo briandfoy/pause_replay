@@ -1,0 +1,139 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:35508
+Return-Path: <james@pcxperience.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31368 invoked from network); 7 Oct 2004 14:06:18 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 7 Oct 2004 14:06:18 -0000
+Received: (qmail 7434 invoked by uid 225); 7 Oct 2004 14:06:18 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7428 invoked by alias); 7 Oct 2004 14:06:17 -0000
+X-Spam-Status: No, hits=-3.0 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,RCVD_IN_NJABL_DUL,RCVD_IN_SORBS_DUL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from 63-252-5-1.ip.mcleodusa.net (HELO mail.pcxperience.com) (63.252.5.1)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Thu, 07 Oct 2004 07:06:16 -0700
+Received: from [192.168.2.5] (sc1-24.217.167.185.charter-stl.com [24.217.167.185])
+	(authenticated bits=0)
+	by mail.pcxperience.com (8.13.1/8.13.1/Debian-12) with ESMTP id i97E65KN028714
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO)
+	for <modules@perl.org>; Thu, 7 Oct 2004 09:06:05 -0500
+Message-ID: <41654D4D.1080909@pcxperience.com>
+Date: Thu, 07 Oct 2004 09:06:05 -0500
+User-Agent: Mozilla Thunderbird 0.8 (X11/20040926)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: Module submission HTML::Object
+References: <200410070245.i972jvI2001344@pause.perl.org> <061020042355193234%comdog@panix.com>
+In-Reply-To: <061020042355193234%comdog@panix.com>
+X-Enigmail-Version: 0.86.1.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-xperience-MailScanner: Found to be clean
+X-xperience-MailScanner-SpamCheck: not spam, SpamAssassin (score=-4.7,
+	required 3.2, BAYES_00 -4.90, HTML_MESSAGE 0.10,
+	J_CHICKENPOX_32 0.10)
+X-MailScanner-From: james@pcxperience.com
+Approved: news@nntp.perl.org
+From: james@pcxperience.com ("James A. Pattie")
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+_brian_d_foy wrote:
+| [[ This message was both posted and mailed: see
+|    the "To," "Cc," and "Newsgroups" headers for details. ]]
+|
+| In article <200410070245.i972jvI2001344@pause.perl.org>, Perl Authors
+| Upload Server <upload@pause.perl.org> wrote:
+|
+|
+|>The following module was proposed for inclusion in the Module List:
+|>
+|>  modid:       HTML::Object
+|
+|
+|>  description: HTML Document Object
+|
+|
+|>    This module provides the ability to define a complete HTML document
+|>    that is sent to the browser via cgi. I created the HTMLObject module
+|>    because the CGI module didn't allow us to create the document (in
+|>    any order we wanted - cookies, javascript, head, body, etc.)
+|
+|
+| Are you talking about the CGI.pm module?  I haven't had trouble
+| doing things in any order that I like.
+
+When I looked at the CGI.pm module (5+ years ago), it did not allow you to
+generate content without having it sent immediately to the client.  The
+HTMLObject was developed to allow me to write my web apps with the following
+goals in mind:
+
+1) be able to generate <head> content at any time of the process, this includes
+cookies, javascript, etc.
+2) be able to throw away the current document and start on another document
+without the client knowing anything happened.  This is not possible if you have
+already sent down your doctype, cookies, etc.
+3) be able to delete parts of the generated document or do substitution on the
+body until the user has decided to start trickling the document to the client.
+
+|
+|
+|
+|>    Over time I have tried to implement many of the CGI like helpers so
+|>    that someone could potentially migrate from using CGI to the
+|>    HTMLObject and not feel too lost. It is not a drop-in replacement
+|>    and most of the functionality has been implemented as we needed
+|>    something for the projects we are creating.
+|
+|
+| What does your module really do?  It sounds like it might do more
+| than just HTML.
+|
+
+It's a framework to allow you to create HTML documents (framesets or
+non-frameset docs) and be able to build up the pieces, where the head, body,
+style, cookies, links, meta tags, javascript, etc. are all accessible via an OO
+interface.  We provide a CGI parser module (for getting the input from the
+browser) and a Form module that allows us to generate html forms, parse and
+validate the input and re-display the form hilighting any invalid entries.
+
+The CGI helpers I was referring to are the ability to do $doc->br or any other
+html tag (that is in the 4.01+ specs) and have the correct xhtml compatible
+output generated.
+
+If you want to see an example, download the website code for the content running
+on the SF site @ http://htmlobject.sf.net/.  That is a cgi script that is using
+the HTMLObject to present that content.
+
+- --
+James A. Pattie
+james@pcxperience.com
+
+Linux -- SysAdmin / Programmer
+Xperience, Inc.
+http://www.pcxperience.com/
+http://www.xperienceinc.com/
+http://www.pcxperience.org/
+
+GPG Key Available at http://www.pcxperience.com/gpgkeys/james.html
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFBZU1MtUXjwPIRLVERAtHZAKCU1GMXT+3X1NFSXLLP4V760x5QDgCgmB4/
+frt6PVanMcXvyGiCBH/Rksc=
+=MSjJ
+-----END PGP SIGNATURE-----
+
+-- 
+This message has been scanned for viruses and
+dangerous content by MailScanner, and is
+believed to be clean.
+MailScanner thanks transtec Computers for their support.
+

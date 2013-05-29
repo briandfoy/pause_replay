@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:84790
+Return-Path: <adam@radarlabs.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 32006 invoked from network); 17 Feb 2013 01:26:16 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 17 Feb 2013 01:26:16 -0000
+Received: (qmail 25311 invoked by uid 225); 17 Feb 2013 01:26:16 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25307 invoked by alias); 17 Feb 2013 01:26:16 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wi0-f181.google.com (HELO mail-wi0-f181.google.com) (209.85.212.181)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 16 Feb 2013 17:26:13 -0800
+Received: by mail-wi0-f181.google.com with SMTP id hm6so2381173wib.14
+        for <modules@perl.org>; Sat, 16 Feb 2013 17:26:08 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20120113;
+        h=mime-version:x-received:date:message-id:subject:from:to
+         :content-type:x-gm-message-state;
+        bh=eCe1kEpQRXJHJRkjPnXeaOYHg4kdYTrQVTuc25XziTM=;
+        b=gCL9HDE9tpKx73iLnwCr0AaPGH27aR5KVXUiNPnxasd2E0kPa8qziw9xx48TSkCSzf
+         9KUQoO1g/HA195QbqnNx+Wkp+DUcquD0Ex4nKPS4i4lCzljZzOu0U/Z5PW6upcuorqU6
+         gA3mg/PDiwEhr+fA+7ESkQK4s36eHaATR6HGh78P3DOnHAbvUminbV6GVwWh0LopPbay
+         FIotVjcBRjI6e6kvXBW0ZPuWQIft9i4hJf/Yt7JFRzZhd/H7dUSRVVPJrTltxCtwN7Hb
+         LX0g8MybMmc8EEAwdLCR+3t//AiKAdkmOfpPzx1YHaxBNak6CjzXrHmMF6Sbxy2PythI
+         E/iQ==
+MIME-Version: 1.0
+X-Received: by 10.180.82.33 with SMTP id f1mr12727441wiy.13.1361064368735;
+ Sat, 16 Feb 2013 17:26:08 -0800 (PST)
+Received: by 10.194.35.195 with HTTP; Sat, 16 Feb 2013 17:26:08 -0800 (PST)
+Date: Sat, 16 Feb 2013 19:26:08 -0600
+Message-ID: <CALRLLbD-Pff1sJwDemTiraL6LKnWUHwn=3f4V=X=CsfWZv_XLw@mail.gmail.com>
+Subject: DBIx::Generator Module Proposal
+To: modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+X-Gm-Message-State: ALoCoQm6CE5fX9mtur1Z/dyZlrXd9wqgBA6T7mSPZQ2c7ijUSKtJNQDs1V2qo2QWSAYz8v+r7kqy
+Approved: news@nntp.perl.org
+From: adam@jamradar.com (Adam)
+
+Hi,
+
+I have a module which is like DBIx::Factory except instead of taking a
+config file to load one type of DBI object, it has 1 config file that
+loads a multitude of DBI objects.
+
+
+So I can get my databases like such:
+my $dbh = DBIx::Generator->get_dbh( db => 'postgres1' );
+
+Or:
+my $dbh = DBIx::Generator->get_dbh(
+  db => 'postgres1',
+  config => '/config/file',
+  database => 'cool_stuff',
+);
+
+
+Can I get a recommendation on if this would be a good module to
+publish and if the name looks okay?  I searched for modules that
+replicate the same thing but didn't find any.
+
+
+Below is an example of a config file with 3 connector types described in it:
+[postgres1]
+user: username
+pass: password
+dsn: dbi:Pg
+ip: localhost
+default_db: contacts
+attr:
+  RaiseError: 0
+  PrintError: 1
+
+[mysql1]
+user: username
+pass: password
+dsn: dbi:mysql
+ip: 192.168.1.110
+default_db: customer
+attr:
+  RaiseError: 0
+  PrintError: 1
+
+[mysql2]
+user: username
+pass: password
+dsn: dbi:mysql
+ip: localhost
+default_db: finance
+attr:
+  RaiseError: 0
+  PrintError: 1

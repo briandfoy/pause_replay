@@ -1,0 +1,135 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:82689 perl.module-authors:9804
+Return-Path: <shlomif@shlomifish.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15935 invoked from network); 13 Oct 2012 09:25:21 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 13 Oct 2012 09:25:21 -0000
+Received: (qmail 19965 invoked by uid 225); 13 Oct 2012 09:25:20 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19957 invoked by alias); 13 Oct 2012 09:25:20 -0000
+X-Spam-Status: No, hits=0.8 required=8.0
+	tests=BAYES_20,RCVD_IN_DNSWL_NONE,SPF_NEUTRAL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from gateway13.websitewelcome.com (HELO gateway13.websitewelcome.com) (67.18.94.12)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 13 Oct 2012 02:25:17 -0700
+Received: by gateway13.websitewelcome.com (Postfix, from userid 5007)
+	id AEE8E3D165FF8; Sat, 13 Oct 2012 04:25:16 -0500 (CDT)
+Received: from gator245.hostgator.com (gator245.hostgator.com [74.53.88.50])
+	by gateway13.websitewelcome.com (Postfix) with ESMTP id A1BEC3D165FD8
+	for <modules@perl.org>; Sat, 13 Oct 2012 04:25:16 -0500 (CDT)
+Received: from [93.172.123.23] (port=48251 helo=lap.shlomifish.org)
+	by gator245.hostgator.com with esmtpa (Exim 4.80)
+	(envelope-from <shlomif@shlomifish.org>)
+	id 1TMxy5-0003lF-6e; Sat, 13 Oct 2012 04:25:13 -0500
+Received: from lap.shlomifish.org (lap.shlomifish.org [127.0.0.1])
+	by lap.shlomifish.org (Postfix) with ESMTP id BD1BF6B;
+	Sat, 13 Oct 2012 11:25:11 +0200 (IST)
+Date: Sat, 13 Oct 2012 11:25:11 +0200
+To: Neil Bowers <neil@bowers.com>
+Cc: module-authors@perl.org, modules@perl.org
+Subject: Re: Request for feedback: interface to 06perms.txt
+Message-ID: <20121013112511.2fe653fb@lap.shlomifish.org>
+In-Reply-To: <99AB409A-49CA-4618-9B9D-83424180312A@bowers.com>
+References: <99AB409A-49CA-4618-9B9D-83424180312A@bowers.com>
+X-Mailer: Claws Mail 3.8.0 (GTK+ 2.24.12; x86_64-mageia-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator245.hostgator.com
+X-AntiAbuse: Original Domain - perl.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - shlomifish.org
+X-BWhitelist: no
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (lap.shlomifish.org) [93.172.123.23]:48251
+X-Source-Auth: shlomif@shlomifish.org
+X-Email-Count: 1
+X-Source-Cap: c2hsb21pZjtzaGxvbWlmO2dhdG9yMjQ1Lmhvc3RnYXRvci5jb20=
+Approved: news@nntp.perl.org
+From: shlomif@shlomifish.org (Shlomi Fish)
+
+Hi Neil,
+
+thanks for your contribution. See below for my comments.
+
+On Fri, 12 Oct 2012 09:54:28 +0100
+Neil Bowers <neil@bowers.com> wrote:
+
+> I've created an interface to PAUSE's 06perms.txt file, which
+> currently contains two classes:
+>=20
+> PAUSE::PermissionsFile
+> Module::Permissions
+
+Preferably, those two classes should be under the same namespace.
+
+>=20
+> Here's example usage:
+>=20
+> use PAUSE::PermissionsFile;
+>=20
+> $pp =3D PAUSE::PermissionsFile->new;
+> $mp =3D $pp->module_permissions('HTTP::Client');
+>=20
+> $owner    =3D $mp->owner;
+> @comaints =3D $mp->co_maintainers;
+>=20
+> print "owner   : $owner\n";
+> print "comaint : @comaints\n",=20
+>=20
+
+It would be a good idea to add "my" to the synposis, so as to make it
+"use strict;"/"use warnings;"-compliant.
+
+> Which would print:
+>=20
+> owner   : LINC
+> comaint : NEILB
+>=20
+> By default PAUSE::PermissionsFile will mirror (using HTTP::Tiny's
+> mirror) 06perms.txt, and then work off the local copy.=20
+
+I would suggest against contacting remote sites by default, due to
+the "Test programs should not connect to Internet resources" item here:
+
+http://www.shlomifish.org/open-source/resources/how-to-contribute-to-my-pro=
+jects/HACKING.html
+
+Regards,
+
+	Shlomi Fish
+
+> You can pass a
+> path to the constructor, if you've got your own local copy anyway.
+> The module_permissions method returns an instance of
+> Module::Permissions for the named module. This lets you get at the
+> individual 'm', 'f', and 'c' entries for the module, but also
+> provides the 'owner' concept ('m' if there is one, otherwise 'f').
+>=20
+> I'd be happy to hear any thoughts on:
+> naming
+> design of the interface
+> other features you think this might need
+> Cheers,
+> Neil
+>=20
+
+
+
+--=20
+-----------------------------------------------------------------
+Shlomi Fish       http://www.shlomifish.org/
+List of Text Editors and IDEs - http://shlom.in/IDEs
+
+Yesterday I asked one of my students if she knew what an encyclopedia is, a=
+nd
+she said: =E2=80=9CIs it something like Wikipedia?=E2=80=9D.
+        =E2=80=94 http://twitter.com/alisonclement/status/8421314259
+
+Please reply to list if it's a mailing list post - http://shlom.in/reply .

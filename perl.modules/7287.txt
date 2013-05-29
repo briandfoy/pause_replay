@@ -1,0 +1,61 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7287
+Return-Path: <steve@fink.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 52766 invoked from network); 31 Aug 2001 00:32:10 -0000
+Received: from uswest-dsl-142-101.cortland.com (HELO kevin.fink.com) (mail@209.162.142.101)
+  by onion.valueclick.com with SMTP; 31 Aug 2001 00:32:10 -0000
+Received: from steve (helo=localhost)
+	by kevin.fink.com with local-esmtp (Exim 3.31 #1 (Debian))
+	id 15ccED-0004LL-00
+	for <modules@perl.org>; Thu, 30 Aug 2001 17:32:09 -0700
+Date: Thu, 30 Aug 2001 17:32:09 -0700 (PDT)
+To: modules@perl.org
+Subject: Re: Module submission Units::Calc
+In-Reply-To: <200108310030.CAA04493@pause.perl.org>
+Message-ID: <Pine.LNX.4.21.0108301731100.5717-100000@kevin.fink.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: steve@fink.com (Steve Fink)
+References: <200108310030.CAA04493@pause.perl.org>
+
+Bleh, that form did horrible reformatting! Sorry for the repeat, but here
+it is again with the original linebreaks:
+
+----
+
+Not sure where to put this in the hierarchy. This is a unit-aware desktop
+calculation module that attempts to figure out reasonable units to display
+values in. Example output (ucalc is a thin command-line wrapper for the
+module):
+
+% ./ucalc "8KB / (8KB/(20MB/sec) + 15ms)"
+532.3 byte / millisec
+1.785 gigabyte / hour
+42.83 gigabyte / day
+519.8 kilobyte / sec
+30.46 megabyte / minute
+
+(That calculation is an 8KB random I/O throughput estimate based on
+20MB/sec sequential transfers and 15ms average access time.)
+
+This is similar to Math::Units in that it involves unit conversions
+(though Math::Units is much more complete), and to Convert::Units in
+making some attempt at dealing with human-readable unit descriptions
+(Convert::Units goes much farther in that direction, since that is its
+primary focus). Neither of them tries out different possible outputs.
+Which, incidentally, was the reason why I couldn't really use either of
+them as a subroutine, though I'd like to add a way to plug them in with
+restricted functionality.
+
+It doesn't make sense to me to put it under Convert::, since conversion
+isn't the focus of its functionality. Math:: makes more sense, but calling
+it Math::Units::Calc implies a nonexistent relationship to Math::Units,
+and I'm not sure where else to put it in there. Math::Calc::Units?
+
+Suggestions appreciated.
+

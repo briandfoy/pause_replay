@@ -1,0 +1,200 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:32007
+Return-Path: <dave@grrok.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29501 invoked from network); 18 May 2004 20:06:21 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by onion.develooper.com with SMTP; 18 May 2004 20:06:21 -0000
+Received: (qmail 12594 invoked by uid 225); 18 May 2004 20:06:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12589 invoked by alias); 18 May 2004 20:06:20 -0000
+X-Spam-Status: No, hits=0.0 required=7.0
+	tests=HTML_MESSAGE
+X-Spam-Check-By: la.mx.develooper.com
+Received: from sls-ce10p18.dca2.superb.net (HELO kryten.creativision.com) (66.36.242.66)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with SMTP; Tue, 18 May 2004 13:06:19 -0700
+Received: (qmail 19215 invoked from network); 18 May 2004 20:21:49 -0000
+Received: from adsl-69-110-234-10.dsl.pltn13.pacbell.net (HELO grrok.com) (69.110.234.10)
+  by sls-ce10p18.dca2.superb.net with SMTP; 18 May 2004 20:21:49 -0000
+Date: Tue, 18 May 2004 13:06:17 -0700
+Mime-Version: 1.0 (Apple Message framework v553)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Subject: New module: HTML::Chunks
+To: modules@perl.org
+Content-Transfer-Encoding: 7bit
+Message-ID: <D27E8374-A906-11D8-9FF7-000A9571C864@grrok.com>
+X-Mailer: Apple Mail (2.553)
+X-Spam-Rating: onion.develooper.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: dave@grrok.com (Dave Balmer)
+
+Our template system works with HTML/XHTML/XML, but has primary utility 
+in Web development, so we're thinking HTML is the place to put it. 
+Attached is the readme and intro from the POD, please let me know if 
+there is a better place to put it.
+
+
+--- readme ---
+
+
+HTML-Chunks
+-----------
+
+A simple template system for HTML, XML and XHTML which completely 
+separates code
+from design. Designers can create a well-formed mockup for presentation 
+purposes
+which can immediately be used by developers to create a working system. 
+Or
+developers can create an interface which designers turn into something 
+pretty.
+This removes the "chicken and egg" problem which plagues traditional 
+template
+systems while making it easier to produce proper code that is easily 
+maintained.
+
+HTML::ChunkEngine - The core class
+
+HTML::ChunkLocal - A subclass which handles localization issues, based 
+on the
+       browser language preference codes (e.g. en, fr) to choose the 
+best chunk
+       to display data. Allows language fallback chaining as well, so 
+display
+       oriented chunks need not be copied tediously for each language.
+
+PREREQUISITES
+
+Perl 5.005 or higher.
+
+INSTALLATION
+
+Normal stuff:
+
+     perl Makefile.PL
+     make
+     make test
+     make install
+
+CREDITS
+
+Created and maintained by Mark W Blythe and Dave Balmer Jr.
+
+COPYRIGHT
+
+(C) 2001-2004 Mark W Blythe and Dave Balmer, Jr. All rights reserved.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+
+--- Chunks.pm POD ---
+
+
+NAME
+        Tanilai::ChunkEngine - A simple text-based template engine
+
+VERSION
+        $Revision: 1.5 $
+
+DESCRIPTION
+        This class implements a simple text-based template engine, 
+originally
+        intented to allow web applications to completely separate layout 
+HTML
+        from programming logic.  However, the engine is flexible enough 
+to be
+        applied to other text-based situations where templates are 
+helpful,
+        such as generating email messages, XML data files, etc.
+
+SYNOPSIS
+         use HTML::Chunks;
+
+         my $engine = new HTML::Chunks(@chunkFiles);
+         $engine->readChunkFile('morechunks.htm');
+         $engine->addChunk($smallChunk, \$hugeChunk);
+         $engine->addNamedChunk('myChunk', $chunk);
+
+         $engine->output('myChunk', {
+           firstName => 'Homer',
+           lastName => 'Simpson',
+           meals => \&outputMeals
+         }, @extraData);
+
+         my @names = $engine->getChunkNames();
+         my $chunk = $engine->getChunk('myChunk');
+         my $oldValue = $engine->setCrush(0);
+
+CHUNK SYNTAX
+        This template engine is based upon "chunks", which are merely 
+named
+        chunks of textual information such as HTML.  Each chunk may be 
+individ-
+        ually addressed by an application to produce output.  A chunk 
+defini-
+        tion may also contain data elements which will be replaced with 
+dynamic
+        data at runtime.  A simple chunk definition looks like:
+
+         <!-- BEGIN meal -->
+         <tr>
+           <td>##date##</td>
+           <td>##food##</td>
+         </tr>
+         <!-- END -->
+
+        This defines a chunk named meal.  This chunk contains two data 
+elements
+        named date and food.  These will both be replaced with real data 
+by the
+        application at runtime.  The leading and trailing ## characters 
+simply
+        identify them as data elements and are not part of the actual 
+names.
+
+        Chunk definitions can even be embedded within one another.  It's 
+possi-
+        ble (and recommended!) to construct a definition file as a full 
+HTML
+        file that you can preview in a web browser.  Embedding one chunk 
+defi-
+        nition within another does not imply any association or 
+positional
+        placement between the two chunks.  Things would turn out the 
+same if
+        you put the definitions in a straight list, one after another.  
+Embed-
+        ding is just a cool formatting convenience that you can choose 
+to take
+        advantage of -- or not.
+
+        You may optionally surround a data element with HTML comment 
+characters
+        so it won't show up when previewing a chunk file in a browser.  
+For
+        this to work, the data element must be the only thing in the 
+comment,
+        such as:
+
+         <!-- ##data## -->
+
+        The entire comment will be replaced with the data value at run 
+time, so
+        the resulting data will NOT be within a comment.
+
+        See the EXAMPLES section below for a sample.
+
+[...]
+
+---
+
+This module has been working in production websites since 2001 and has 
+thus far been solid. The code from these sites is pretty easy to 
+maintain because the Perl is completely separate from the HTML design.
+
+Thanks for your help,
+Dave (DBALMER)
+

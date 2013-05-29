@@ -1,0 +1,47 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3258
+Return-Path: <sam@daemoninc.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30090 invoked from network); 1 Nov 2000 09:19:57 -0000
+Received: from horrockscash.com (HELO daemonweb.daemoninc.com) (207.211.105.23)
+  by tmtowtdi.perl.org with SMTP; 1 Nov 2000 09:19:57 -0000
+Received: from daemonweb.daemoninc.com (localhost.localdomain [127.0.0.1])
+	by daemonweb.daemoninc.com (8.9.3/8.8.7) with ESMTP id BAA07820
+	for <modules@perl.org>; Wed, 1 Nov 2000 01:21:30 -0800
+To: modules@perl.org
+Subject: Proposed new module Sys::MemoryUsage
+Date: Wed, 01 Nov 2000 01:21:30 -0800
+Message-ID: <7818.973070490@daemonweb.daemoninc.com>
+Approved: news@nntp.perl.org
+From: sam@daemoninc.com (Sam Horrocks)
+
+This module would attempt to tell you how much memory your process is using,
+so your process could shutdown, restart or take other actions if it is
+getting too large.
+
+The interface would be:
+
+    Sys::MemoryUsage->total_vm;		# Total virtual memory in use.
+    Sys::MemoryUsage->data_segment;	# Data segment size
+    Sys::MemoryUsage->stack_segment;	# Stack segment size
+    Sys::MemoryUsage->text_segment;	# Text segment size
+
+If any of the values are unknown that method would return undef.  On some
+OSes, all the methods might return undef.  Total_vm might either sum up
+all the known values, or might get the total value directly from the OS.
+It's possible total_vm may be more than the sum of the parts, depending
+on how the value is obtained.
+
+Currently the only way I know to get a memory usage figure is to install
+mod_perl and then call &$Apache::SizeLimit::HOW_BIG_IS_IT().  The problems
+with this are:
+
+    - This only retrieves one value
+
+    - Finding out the amount of memory in use shouldn't require installing
+      mod_perl.
+
+    - The HOW_BIG_IS_IT routine is not a documented interface for the
+      Apache::SizeLimit module.

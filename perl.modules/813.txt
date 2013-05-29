@@ -1,0 +1,106 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:813
+Return-Path: <dharris@drh.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11874 invoked from network); 6 Jan 2000 17:39:41 -0000
+Received: from unknown (HELO w1.drh.net) (qmailr@209.123.159.11)
+  by tmtowtdi.perl.org with SMTP; 6 Jan 2000 17:39:41 -0000
+Received: (qmail 15675 invoked from network); 6 Jan 2000 18:34:45 -0000
+Received: from dyn21.maxbalt7.vma.verio.net (HELO delf) (@168.143.217.149)
+  by 209.123.159.11 with SMTP; 6 Jan 2000 18:34:45 -0000
+To: <modules@perl.org>
+Subject: new module DB_File::Lock
+Date: Thu, 6 Jan 2000 12:39:09 -0500
+Message-ID: <000201bf586c$f0555660$0500a8c0@delf>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+Importance: Normal
+Approved: news@nntp.perl.org
+From: dharris@drh.net ("David Harris")
+
+
+     basic information
+
+name: David Harris
+e-mail: dharris@drh.net
+homepage: http://www.davideous.com/
+preferred cpan user-id: DHARRIS
+
+     description of what I'm planning to contribute:
+
+Right now I have a DB_File::Lock module that I'm ready to contribute and have
+packaged up. I've also created a number of other modules for my job which may
+be generally useful. Here are two examples of things I might contribute,
+depending on the interest:
+
+FreezeThawLight -- my own light implementation of the FreezeThaw module which
+is twice as fast, which I created because FreezeThaw was just too slow and
+feature heavy for me.
+
+Pigeon::Server, Pigeon::Client -- library for creating a generic pre-forking
+multi-process server which will handle connections and
+generic requests for those connections, all with appropriate timeouts and
+concurrency limits. On top of this module I built a RPC system for my mod_perl
+fronted to call a slave backend which switches uid/gid and does stuff as user
+accounts.
+
+     description of what I've got to contribute now
+
+Right now I have the following module to contribute...
+
+Name           DSLI  Description                                  Info
+-------------  ----  -------------------------------------------- -----
+DB_File::Lock  RdpO  DB_File wrapper with flock-based locking     blank
+
+(I'm not sure if the interface style part of the DSLI should be "O" or left
+blank. This seems purely "object oriented", but the DB_File module DSLI lists a
+blank interface style.)
+
+The module is a wrapper for DB_File which properly adds locking. This makes
+DB_File usable in environments such as mod_perl where multiple accesses to the
+same file are expected. This also properly unlocks the database on object
+destruction , which is a must for mod_perl environments.
+
+A few months ago, I discovered a problem in the recommended locking procedure
+in the DB_File POD documentation and a small example locking wrapper in the
+mod_perl guide which was based on that code. I created a test harness and sent
+it to Stas Bekman (mod_perl guide maintainer) and Paul Marquess (DB_File
+author), who both verified the bug. In this bug report, I included a reference
+to a simple one-file proof-of-idea locking wrapper module I created called
+DB_Wrap. Paul changed his DB_File documentation on locking to refer to my
+simple module and asked me to submit it to CPAN so he could properly refer to
+it. Stas modified my module and inserted it in his mod_perl guide and is also
+waiting on it to be in CPAN.
+
+The bug report and my DB_Wrap module were also kicked out to the perl5-porters
+list and discussed here. People didn't have too much to say and no problems
+were found.
+
+Since then, it has taken me a while to get around to formally packaging my
+module up. I've packaged it up using the name DB_File::Lock and added in a few
+features. Paul Marquess has seen reviewed a copy of the module in it's final
+form.
+
+Another note: I asked Paul if he wanted to merge this into his DB_File
+distribution, and he said he didn't. He'd rather have me maintaining a separate
+module.
+
+BTW, this module is different than the current Tie::DB_Lock in its goals and
+locking method.
+
+     that's it, right?
+
+I think that covers everything. I hope I didn't provide too much detail.
+
+ - David Harris
+   Principal Engineer, DRH Internet Services
+
+

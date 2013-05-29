@@ -1,0 +1,72 @@
+Newsgroups: perl.qa,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.qa:1865 perl.modules:19316
+Return-Path: <afoxson@guild.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 39838 invoked by uid 76); 8 Mar 2003 14:27:51 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-03-08 14:27:51Z
+Received: (qmail 28402 invoked by uid 225); 8 Mar 2003 14:27:48 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28385 invoked by uid 507); 8 Mar 2003 14:27:47 -0000
+Received: from 64013@[209.166.167.23] (HELO guild.net) (209.166.167.23) by one.develooper.com (qpsmtpd/0.21-dev) with SMTP; Sat, 08 Mar 2003 06:27:45 -0800
+Received: (qmail 15888 invoked by uid 1002); 8 Mar 2003 14:27:42 -0000
+Date: Sat, 8 Mar 2003 09:27:42 -0500
+To: "Jos I. Boumans" <kane@dwim.org>
+Cc: Adam Foxson <afoxson@pobox.com>, gbarr@pobox.com, cpan-testers@perl.org,  cpanplus-devel@lists.sourceforge.net, perl-qa@perl.org, modules@perl.org
+Subject: Re: [Cpanplus-devel] [Announce] Test-Reporter-1.16
+Message-ID: <20030308142742.GA12663@magnonel.guild.net>
+References: <20030225161126.GA14576@magnonel.guild.net> <8267D390-5153-11D7-8A8A-000393B97AA4@dwim.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8267D390-5153-11D7-8A8A-000393B97AA4@dwim.org>
+User-Agent: Mutt/1.3.24i
+X-SMTPD: qpsmtpd/0.21-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-2.7 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: afoxson@pobox.com (Adam Foxson)
+
+On Sat, Mar 08, 2003 at 11:48:34AM +0100, Jos I. Boumans wrote:
+
+> hmm, doesn't want to work from my machine (darwin/5.8):
+> Writing 
+> /opt/perl/lib/site_perl/5.8.0/darwin/auto/Test/Reporter/.packlist
+> Appending installation info to /opt/perl/lib/5.8.0/darwin/perllocal.pod
+> Report Test-Reporter-1.20's testing result (PASS)?:  [y/N]: y
+> Sending report for Test-Reporter-1.20
+> Can't send report: Test::Reporter: Unable to send test report
+>  in CPANPLUS::Internals::Report::_send_report at Sat Mar  8 11:47:26 
+> 2003 at /Users/kane/p4/cpanplus/devel/lib/CPANPLUS/Internals/Report.pm 
+> line 269
+
+All,
+
+Jos and I have resolved this (through T::R's 'debug' object method). The issue
+was that Jos's local maildomain was unable to be determined, and thus when
+Net::SMTP (via T::R) went to send the mail it resulted in:
+
+MAIL FROM:<kane@freggel.local (kane)>
+450 Could not resolve freggel.local
+
+Since the mail was unable to be sent, T::R reported that it was unable to send
+the mail.
+
+There are three independant solutions:
+
+1 - Install Net::Domain (which is a T::R recommended prereq, but not a mandatory
+    prereq), which will make T::R try even harder at guessing the mail domain.
+2 - Install Mail::Send (which is a T::R recommended prereq, but not a mandatory
+    prereq), so T::R won't be forced to use Net::SMTP.
+3 - Explicitly set the 'from' method via the T::R object.
+
+Jos brought up the point that CPANPLUS's integration of T::R could use solution
+3, via explicitly setting T::R's 'from' based on the value of 'from' that
+CPANPLUS itself collects during its installation process. Of course, this means
+that CPANPLUS end-users should not be able to set CPANPLUS's 'from' to an
+arbitrary, non-resolvable value.
+
+-- 
+Adam J. Foxson

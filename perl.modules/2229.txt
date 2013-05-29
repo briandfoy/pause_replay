@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2229
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13171 invoked from network); 26 Jun 2000 08:01:38 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 26 Jun 2000 08:01:38 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id KAA29501;
+	Mon, 26 Jun 2000 10:01:01 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: h.camp@scm.de
+Cc: modules@perl.org
+Subject: Re: ESplit1.00.zip not findable via CPAN search
+References: <3954B432.7118.5F8BEF@localhost>
+Date: 26 Jun 2000 10:01:01 +0200
+In-Reply-To: "H.Camphausen"'s message of "Sat, 24 Jun 2000 13:14:26 +0200"
+Message-ID: <m3n1k8vpky.fsf@ak-71.mind.de>
+Lines: 70
+User-Agent: Gnus/5.0806 (Gnus v5.8.6) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Sat, 24 Jun 2000 13:14:26 +0200, "H.Camphausen" <h.camp@scm.de> said:
+
+ > Hi,
+ > How come that I can't find the file ESplit1.00.zip (containing the 
+ > Perl module Eplit.pm plus doc) via CPAN search?
+
+ > Checking for the author HCAMP (that's me) reveals the correct 
+ > directory, containing the desired files.
+
+ > Did I do anything wrong? Do I have to do anything to make ESplit.pm 
+ > available via CPAN search?
+
+That's probably because ESplit is not a registered toplevel namespace.
+Or it has some other reason, I don't know for sure.
+
+Anyway, we should probably discuss your previous posting as of June 11
+first:
+
+hc> I'd like to register for a home directory at the CPAN's Perl 
+hc> authors/id tree.
+
+hc> My name:        Hartmut Camphausen
+hc> email:          h.camp@creagen.de
+hc> www:            http://www.creagen.de/
+hc> pref. user ID:  HCAMP or HARC
+
+hc> I would like to upload a Perl module to the CPAN, ESplit.pm. I think 
+hc> it would fit into the Text::-namespace.
+
+hc> Description:
+
+hc> Esplit.pm, version 1.00 ESplit.pm provides one function,
+hc> e_split(), to split (sic!) scalar values (AKA strings) at
+hc> arbitrary characters/strings (may be given as regex). Usefull to
+hc> deal with CSV data.
+
+hc> - Delimiters contained in quoted strings will be ignored, as well as 
+hc> \- 
+hc>   escaped delimiters.
+hc> - Delimiters given in () will be returned as n + 1. elements in the
+hc>   resulting array (like split()).
+hc> - One can tell e_split() to return only the first n elements - or the
+hc>   last n elements.
+	  
+hc> e_split is 2-5 times faster than Text::ParseWords::parse_line.
+hc> e_split deals with quoted strings (fields) in a more reasonable way
+hc>   (well, IMHO :-)) than parse_line.
+hc> e_split deals correctly with mixed qoutes (e.g. double quotes at 
+hc> start of
+hc>   a field, a single one at the end).
+	
+hc> Any comments and suggestions are highly appreciated.
+
+We usually do not discuss in depth the usefulness of modules here, we
+rather try to concentrate on namespace issues and problem
+identification.
+
+Your module is definitely not suited for a top level namespace. The
+problem area it acts upon is "Parse" or "Text" related. You mention
+Text::ParseWords as a competitor and so maybe you could try to get a
+patch to Text::ParseWords approved. OTOH, I cannot imagine that many
+developers would agree with you that allowing 'mixed quotes" is a good
+idea and so such a patch might not be accepted. But still, you wrote
+partly an alternative to Text::ParseWords and so I could imagine e.g.
+the namespace Text::ParseWords::Fast. Other namespaces probably seem
+plausiblible too. But as said, this is no toplevel problem domain.
+
+Thanks,
+-- 
+andreas

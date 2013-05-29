@@ -1,0 +1,53 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:37414
+Return-Path: <jhi@iki.fi>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4571 invoked from network); 4 Jan 2005 05:30:56 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 4 Jan 2005 05:30:56 -0000
+Received: (qmail 28090 invoked by uid 225); 4 Jan 2005 05:30:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28086 invoked by alias); 4 Jan 2005 05:30:55 -0000
+X-Spam-Status: No, hits=-3.1 required=8.0
+	tests=BAYES_00,RCVD_IN_NJABL_DUL,RCVD_IN_SORBS_DUL
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from fep32-0.kolumbus.fi (HELO fep32-app.kolumbus.fi) (193.229.0.63)
+  by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 03 Jan 2005 21:30:51 -0800
+Received: from [80.186.161.60] by fep32-app.kolumbus.fi with ESMTP
+          id <20050104053047.EZXN5992.fep32-app.kolumbus.fi@[80.186.161.60]>;
+          Tue, 4 Jan 2005 07:30:47 +0200
+Message-ID: <41DA2A06.6050305@iki.fi>
+Date: Tue, 04 Jan 2005 07:30:46 +0200
+User-Agent: Mozilla Thunderbird 1.0 (Macintosh/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: "David A. Golden" <david@hyperbolic.net>,  modules@perl.org
+Subject: Re: Module submission Test::Float
+References: <200412270254.iBR2sODR010115@pause.perl.org> <200412290803.iBT834nW027624@janus.hyperbolic.net> <41D2C488.8070407@hyperbolic.net> <030120051758516224%comdog@panix.com> <41DA15DE.2080401@hyperbolic.net>
+In-Reply-To: <41DA15DE.2080401@hyperbolic.net>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: jhi@iki.fi (Jarkko Hietaniemi)
+
+> On the interface, I'm leery of another optional parameter when I'm 
+> trying to match the style of other test functions.  The test name is 
+> already optional, I wouldn't want to shift to named parameters since the 
+> other test functions don't use them, and I'd prefer to avoid hackery 
+> around testing for three or four parameters and then testing if the 
+> third one looks like a number or not.
+
+You can have a default module-wide delta specified by either as a part
+of the compile-time import or via a runtime setting, but you really need
+to allow giving your own delta for single tests since the delta depends
+on the operations and the operands.  For example, a delta of 1e-9 is
+fine for many operations for operands of, say, magnitude 1e1..1e2 but
+for operands of magnitude 1e9..1e12 a delta like that would be quite
+ambitious.
+
+-- 
+Jarkko Hietaniemi <jhi@iki.fi> http://www.iki.fi/jhi/ "There is this special
+biologist word we use for 'stable'.  It is 'dead'." -- Jack Cohen

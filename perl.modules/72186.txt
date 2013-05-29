@@ -1,0 +1,100 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:72186
+Return-Path: <xiong-cpan@xuefang.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 18777 invoked from network); 2 Aug 2010 23:15:34 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 2 Aug 2010 23:15:34 -0000
+Received: (qmail 7438 invoked by uid 225); 2 Aug 2010 23:15:33 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7433 invoked by alias); 2 Aug 2010 23:15:33 -0000
+X-Spam-Status: No, hits=1.6 required=8.0
+	tests=RCVD_IN_BRBL_LASTEXT
+X-Spam-Check-By: la.mx.develooper.com
+Received: from explorer.x10premium.com (HELO explorer.x10premium.com) (69.175.6.90)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 02 Aug 2010 16:15:32 -0700
+Received: from netblock-68-183-253-205.dslextreme.com ([68.183.253.205])
+	by explorer.x10premium.com with esmtpsa (SSLv3:AES256-SHA:256)
+	(Exim 4.69)
+	(envelope-from <xiong-cpan@xuefang.com>)
+	id 1Og4E6-0008Db-4e
+	for modules@perl.org; Mon, 02 Aug 2010 19:15:22 -0400
+Subject: RFC: IO::Capture
+Reply-To: xiong@cpan.org
+To: modules <modules@perl.org>
+Content-Type: text/plain; charset="UTF-8"
+Organization: JAPH
+Date: Mon, 02 Aug 2010 16:15:18 -0700
+Message-ID: <1280790918.3450.74.camel@oz>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
+X-x10premium-MailScanner-Information: Please contact the ISP for more information
+X-x10premium-MailScanner-ID: 1Og4E6-0008Db-4e
+X-x10premium-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
+X-x10premium-MailScanner-SpamCheck: 
+X-x10premium-MailScanner-From: xiong-cpan@xuefang.com
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - explorer.x10premium.com
+X-AntiAbuse: Original Domain - perl.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - xuefang.com
+X-Old-Spam-Status: No
+Approved: news@nntp.perl.org
+From: xiong-cpan@xuefang.com (Xiong Changnian)
+
+I completely forgot about my dependency on IO::Capture and friends. 
+
+IO::Capture::Tie_STDx 0.05, which does the heavy lifting for various
+IO::Capture modules, has two bugs. It incorrectly handles say(); and it
+fails to implement a TELL() method. 
+
+I emailed the author, Mark REYNOLDS, over two months ago; no reply.
+Granted, I haven't yet made a concerted effort to contact. Given, I
+should. I needed these bugs fixed immediately so, that's what I did. 
+
+I have written two modules, IO::Capture::Sayfix and
+IO::Capture::Tellfix. Each, on load, makes a quick test to see if the
+corresponding bug has been fixed in the currently loaded ::Tie_STDx; if
+so, it does nothing; else it fixes the bug on the spot. ::Sayfix
+redefines PRINT(); ::Tellfix defines TELL(). This approach is intended
+to play well with the existing version of ::Tie_STDx as well as any
+future version in which either, both, or neither of these bugs are
+fixed. 
+
+Before writing ::Sayfix, I patched a copy of the existing ::Tie_STDx. I
+was told by others, in no uncertain terms, that even to install such a
+thing locally was to ask for trouble. 
+
+Seeking some direction on how to proceed. One or more of: 
+
+(1) File formal bugs on RT. 
+
+(2) Ping REYNOLDS heavily via email and any other available route. 
+
+(3) Prepare a formal patch to ::Tie_STDx. 
+
+(4) Open a GitHub fork for ::Tie_STDx. 
+
+(5) Package ::Sayfix and ::Tellfix as (one module? two modules?),
+together with appropriate POD, Build.PL, etc. and upload to CPAN. 
+
+(6) Open a GitHub repo for the *fix modules. 
+
+(7) Package the *fix modules together with those projects that depend
+upon them and make them part of their installations. 
+
+(8) Other: ________
+
+--
+-Xiong
+
+
+
+
+
+
+

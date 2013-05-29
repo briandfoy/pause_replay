@@ -1,0 +1,103 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9618
+Return-Path: <barries@slaysys.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 91625 invoked by uid 76); 8 Jan 2002 21:08:06 -0000
+Received: from [205.201.12.3] (HELO sizzle.whoville.com) (205.201.12.3)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Tue Jan  8 21:08:06 2002 -0000
+Received: (from barries@localhost)
+	by sizzle.whoville.com (8.9.3/8.9.3) id QAA21328
+	for modules@perl.org; Tue, 8 Jan 2002 16:01:28 -0500
+X-Authentication-Warning: sizzle.whoville.com: barries set sender to barries@slaysys.com using -f
+Date: Tue, 8 Jan 2002 16:01:28 -0500
+To: modules@perl.org
+Subject: Devel::TraceCalls, Devel::TraceSAX
+Message-ID: <20020108160119.A20235@sizzle.whoville.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+Approved: news@nntp.perl.org
+From: barries@slaysys.com (Barrie Slaymaker)
+
+I'm thinking of dropping the below in to the Devel:: namespace; feedback
+(on that and on anything in the modules themselves).
+
+The POD:
+
+    http://slaysys.com:81/src/Devel-TraceCalls.txt
+    http://slaysys.com:81/src/Devel-TraceSAX.txt
+
+The code:
+
+    http://slaysys.com:81/src/Devel-TraceCalls-0.001.tar.gz
+    http://slaysys.com:81/src/Devel-TraceSAX-0.001.tar.gz
+
+P.S. The sneak preview of TraceCalls:
+
+NAME
+    Devel::TraceCalls - Track calls to subs, classes and object instances
+
+SYNOPSIS
+      ## From the command line
+        perl -d:TraceCalls=Subs,foo,bar script.pl
+
+      ## Quick & dirty via use
+        use Devel::TraceCalls { Package => "Foo" };
+
+      ## Procedural
+        use Devel::TraceCalls;
+
+        trace_calls qw( foo bar Foo::bar ); ## Explicitly named subs
+
+        trace_calls {
+             Subs => [qw( foo bar Foo::bar )],
+            ...options...
+        };
+
+        trace_calls {
+            Package => "Foo",        ## All subs in this package
+            ...options...
+        };
+
+        trace_calls {         ## Just these subs
+            Package => "Foo",        ## Optional
+            Subs    => qw( foo, bar ),
+            ...options...
+        };
+
+        trace_calls $object;  ## Just track this instance
+
+        trace_calls {
+            Objects => [ $obj1, $obj2 ];  ## Just track these instances
+            ...options...
+        };
+
+        ... time passes, sub calls happen ...
+
+        my @calls = $t1->calls;  ## retrieve what happned
+
+      ## Object orented
+        my $t = Devel::TraceCalls->new( ...parameters... );
+
+        undef $t;  ## disable tracing
+
+DESCRIPTION
+    ALPHA CODE ALERT. This module may change before "official" release".
+
+    Devel::TraceCalls allows subroutine calls to be tracked on a
+    per-subroutine, per-package, per-class, or per object instance basis.
+    This can be quite useful when trying to figure out how some poor thing
+    is being misused in a program you don't fully understand.
+
+    The default action is to log the calls to STDERR. Passing in any of the
+    Calls, PreCall, or PostCall options disables this default behavior (and
+    passing in an TraceOutput option reenables it).
+
+    Devel::TraceCalls works on subroutines and classes by installing wrapper
+    subroutines and on objects by temporarily reblessing the objects in to
+    specialized subclasses with "shim" methods. Such objects are reblessed
+    back when the tracker is DESTROYed.
+

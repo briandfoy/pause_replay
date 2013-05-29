@@ -1,0 +1,1062 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2653
+Return-Path: <B.Ingerson@epixtech.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 532 invoked from network); 12 Aug 2000 01:31:53 -0000
+Received: from hq4.epixtech.com (192.206.159.158)
+  by tmtowtdi.perl.org with SMTP; 12 Aug 2000 01:31:53 -0000
+Subject: It's not about Rollerblading ...
+To: modules@perl.org
+Bcc: 
+X-Mailer: Lotus Notes Release 5.0.2a (Intl) 23 November 1999
+Message-ID: <OF0C94607F.D26A4E4A-ON87256939.00088D36@epixtech.com>
+Date: Fri, 11 Aug 2000 18:36:41 -0700
+X-MIMETrack: Serialize by Router on HQ4/Amlibs(Release 5.0.4 |June 8, 2000) at 08/11/2000
+ 07:37:24 PM
+MIME-Version: 1.0
+Content-type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: B.Ingerson@epixtech.com
+
+... or Inline skating.
+
+Inline.pm is about making C extensions easy to write in Perl.
+
+Sorry to use a cheap tactic to get your attention. (But I guess I've gotten
+it :-) This is the third post I sent regarding what is, IMO, an extremely
+provocative module. And I have yet to receive one comment from *anyone*. I
+guess the Perl 6 list (which has generated ~6meg of traffic in 3 weeks) is
+taking up everyone's time.
+
+I *have* gotten a lot of ethusiasm on the Seattle Perl User's Group list
+(spug-list@pm.org). They have now tested it successfully on 5 Unix
+variants, using both Perl v5.005 and v5.6. And Damian Conway *has* got back
+to me now. He really likes it.
+
+The module is packaged and ready to upload as soon as I get the word from
+PAUSE. But I noticed today that modules list has not been updated since
+June 27th. Again, here is my request info and the text version of the
+module doc.
+
+Thanks in advance, Brian
+
+
+Name           DSLI  Description                                  Info
+-------------  ----  -------------------------------------------- -----
+Inline         adhh  Use other programming languages inside Perl  INGY
+
+
+NAME
+    Inline - Use other languages inside your Perl scripts and
+    modules.
+
+SYNOPSIS
+        print "9 + 16 = ", add(9, 16), "\n";
+        print "9 - 16 = ", subtract(9, 16), "\n";
+
+        use Inline C => <<'END_OF_C_CODE';
+
+        int add(int x, int y) {
+          return x + y;
+        }
+
+        int subtract(int x, int y) {
+          return x - y;
+        }
+
+        END_OF_C_CODE
+
+DESCRIPTION
+  Overview
+
+    The `Inline' module allows you to put source code from other
+    programming languages directly "Inline" in a Perl script or
+    module. The code is automatically compiled as needed, and then
+    loaded for immediate access from Perl.
+
+    `Inline' saves you from the hassle of having to write and
+    compile your own glue code using facilities like XS or SWIG.
+    Simply type the code where you want it and run your Perl as
+    normal. All the hairy details are handled for you. The
+    compilation and installation of your code chunks all happen
+    transparently; all you will notice is the delay of compilation.
+
+    The `Inline' code only gets compiled the first time you run it
+    (or whenever it is modified) so you only take the performance
+    hit once. Code that is Inlined into distributed modules (like on
+    the CPAN) will get compiled when the module is installed (during
+    "`make test'"), so the end user will never notice the
+    compilation time.
+
+  Why Inline?
+
+    Do you want to know "Why would I use other languages in Perl?"
+    or "Why should I use `Inline' to do it?"? I'll try to answer
+    both.
+
+    Why would I use other languages in Perl?
+        The most obvious reason is performance. For an interpreted
+        language, Perl is extremely fast. But like my co-workers say
+        "Anything Perl can do, C can do faster". (They never mention
+        the development time ;-) Anyway, you may be able to remove a
+        bottleneck in your Perl code by using another language,
+        without having to write the entire program in that language.
+        This keeps your overall development time down, because
+        you're using Perl for all of the non-critical code.
+
+        Another reason is to access functionality from existing API-
+        s that use the language. Some of this code may only be
+        available in binary form. But by creating small subroutines
+        in the native language, you can "glue" existing libraries to
+        your Perl. As a user of the CPAN, you know that code reuse
+        is a good thing. So why throw away those Fortran libraries
+        just yet?
+
+        Maybe the best reason is "Because you want to!". Diversity
+        keeps the world interesting. TMTOWTDI!
+
+    Why should I use `Inline' to do it?
+        There are already two major facilities for extending Perl
+        with C. They are XS and SWIG. Now if you're familiar with
+        either, then I may be preaching to the choir. Well, here
+        goes:
+
+         <SERMON>
+
+        Greetings congregation. This morning I want to open your
+        eyes to the virtues of Inline and the perils of XS. Let us
+        compare the two.
+
+        ---
+
+        Inline - You can use it from a regular script.
+
+        XS - Requires you to create a module and an XS file and a
+        makefile, in addition to your regular script. Actually, the
+        program `h2xs' does a nice job of getting you started, but
+        that's still a lot of junk to maintain.
+
+        ---
+
+        XS - You need rebuild every time you want to test a small
+        change.
+
+        Inline - Perl programmers cannot be bothered with silly
+        things like compiling. "Tweak, Run, Tweak, Run" is our way
+        of life. `Inline' does all the dirty work for you.
+
+        ---
+
+        XS - There is a difficult learning curve involved with
+        setting up and using the XS environment. (At least for a
+        simple Perl preacher like me.) Read the following perldocs
+        and man pages if you don't believe me:
+
+         * perlxs
+         * perlxstut
+         * perlapi
+         * perlguts
+         * perlmod
+         * h2xs
+         * xsubpp
+         * ExtUtils::MakeMaker
+
+        Inline - Fuh-GED-ah-bow-dit!
+
+        ---
+
+        XS - Only implements C and C++.
+
+        Inline - Plans to implement several languages. For now,
+        `Inline' only implements C and it uses XS to do it. (Dirty
+        little secret) But this is the right thing to do. See the
+        section on "SUPPORTED LANGUAGES" below. I too believe in
+        code reuse, and XS is good code. (as long as you don't
+        actually need to write it yourself :^)
+
+        ---
+
+        Amen.
+
+         </SERMON>
+
+    In actuality, XS is quite powerful for all of its madness.
+    `Inline' only generates a minimal subset of XS mappings. (See
+    the section on "C-Perl Bindings" below) But that should be
+    enough to do what you need to. If not, give XS a try. Also,
+    `h2xs' attempts to map header files to glue code which can be
+    very handy when it works. `Inline' has no such facility.
+
+    I also think that its important to understand what's going on
+    under the hood. It gives you the power to do more complicated
+    things. So read all of those perldocs when you get a chance. In
+    the meantime, just "`use Inline'"!
+
+  How it works
+
+    `Inline' performs the following steps:
+
+    1) Receive the Source Code
+        `Inline' gets the source code from your script or module
+        with a statement like the following:
+
+         use Inline C => Source-Code;
+
+        where `C' is the programming language of the source code,
+        and `Source-Code' is a string (most easily represented by
+        using the "Here Document" quoting style; see the section on
+        "SYNOPSIS" above), a file name, an open file handle, or a
+        reference to a subroutine (that will return source code).
+
+        Since `Inline' is coded in a "`use'" statement, everything
+        is done during Perl's compile time. If anything needs to be
+        done that will affect the `Source-Code' string, it needs to
+        be done in a `BEGIN' block that is *before* the "`use Inline
+        ...'" statement. This might include setting interpolated
+        variables, or setting options in the `Inline::Config'
+        module.
+
+    2) Check if the Source Code has been Compiled
+        `Inline' only needs to compile the source code if it has not
+        yet been compiled. It accomplishes this seemingly magical
+        task in an extremely simple and straightforward manner. It
+        runs the source text through the `Digest::MD5' module to
+        produce a 128-bit "fingerprint" which is virtually unique.
+        The fingerprint (in hex) is combined with the current
+        package name (and the script name, if the package is
+        "`main'") to form a unique name for the executable module
+        (shared object). If an executable with that name already
+        exists, then proceed to step 8. (No compilation is
+        necessary)
+
+    3) Find a Place to Build and Install
+        At this point we know we need to compile the source code.
+        The first thing to figure out is where to create the great
+        big mess associated with compilation, and the second thing
+        is where to put the module when its done.
+
+        By default `Inline' will try to build under the first one of
+        the following places that is a valid directory and is
+        writable:
+
+         - $ENV{PERL_INLINE} # the PERL_INLINE environment variable
+         - ~/.blib_I/
+         - ~/blib_I/
+         - $bin/blib_I/      # the directory that the script is in
+         - ./blib_I/
+         - /tmp/blib_I/
+         - $bin/blib_I/      # will mkdir if -w $bin/
+         - ./blib_I/         # will mkdir if -w ./
+
+        (where `$bin' is the script directory returned by
+        `FindBin.pm')
+
+        It will then try to install the executable under the same
+        directory or in the `Config{installsitearch}' directory if
+        `$Inline::Config::SITE_INSTALL=1'.
+
+        Optionally, you can configure `Inline' to build and install
+        exactly where you want. See the Inline::Config manpage.
+
+    4) Parse the Source for Semantic Cues
+        `Inline' uses the module `Parse::RecDescent' to parse
+        through your chunks of source code and look for things that
+        it can create run-time bindings to. For instance, in `C' it
+        looks for all of the function definitions and breaks them
+        down into names and data types. These elements are used to
+        correctly bind the `C' function to a `Perl' subroutine.
+
+    5) Create the Build Environment
+        Now `Inline' can take all of the gathered information and
+        create an environment to build your source code into an
+        executable. Without going into all the details, it just
+        creates the appropriate directories, creates the appropriate
+        source files including an XS file and a `Makefile.PL'.
+
+    6) Compile the Code and Install the Executable
+        The planets are in alignment. Now for the easy part.
+        `Inline' just does what you would do to install a module.
+        "`perl Makefile.PL && make && make test && make install'".
+        If something goes awry, `Inline' will croak with a message
+        indicating where to look for more info.
+
+    7) Tidy Up
+        By default, `Inline' will remove all of the mess created by
+        the build process, assuming that everything worked. If the
+        compile fails, `Inline' will leave everything intact, so
+        that you can debug your errors. Setting
+        `$Inline::Config::CLEAN_AFTER_BUILD=0' will also stop
+        `Inline' from cleaning up.
+
+    8) DynaLoad the Executable
+        `Inline' uses the `DynaLoader::bootstrap' method to pull
+        your external module into `Perl' space. Now you can call all
+        of your external functions like Perl subroutines. Wheeee!
+
+  C-Perl Bindings
+
+    This section describes how the `Perl' variables get mapped to
+    `C' variables and back again.
+
+    First, you need to know how `Perl' passes arguments back and
+    forth to subroutines. Basically it uses a stack (also known as
+    the Stack). When a sub is called, all of the parenthesized
+    arguments get expanded into a list of scalars and pushed onto
+    the Stack. The subroutine then pops all of its parameters off of
+    the Stack. When the sub is done, it pushes all of its return
+    values back onto the Stack.
+
+    The Stack is an array of scalars known internally as `SV''s. The
+    Stack is actually an array of pointers to SV or `SV*'; therefore
+    every element of the Stack is natively a `SV*'. For *FMTYEWTK*
+    about this, read the perlguts manpage.
+
+    So back to variable mapping. XS uses a thing known as "typemaps"
+    to turn each `SV*' into a `C' type and back again. This is done
+    through various XS macro calls, casts and the Perl API. See the
+    perlapi manpage. XS allows you to define your own typemaps as
+    well for fancier non-standard types such as `typedef'-ed
+    structs.
+
+    `Inline' uses a boiled down version of this approach. It parses
+    your code for simple types and generates the XS code to map
+    them. The currently supported types are:
+
+     - int
+     - long
+     - double
+     - char*
+     - void
+     - SV*
+
+    If you need to deal with anything fancier, just use the generic
+    `SV*' type in the function definition. Then inside your code, do
+    the mapping yourself.
+
+    A return type of `void' has a special meaning to `Inline'. It
+    means that you plan to push the values back onto the Stack
+    yourself. This is what you need to do to return a list of
+    values. If you really don't want to return anything (the
+    traditional meaning of `void') then simply don't push anything
+    back.
+
+    If ellipsis or `...' is used at the end of an argument list, it
+    means that any number of `SV*'s may follow. Again you will need
+    to pop the values off of the `Stack' yourself.
+
+    See the section on "Examples In C" below.
+
+  Writing C Subroutines
+
+    The definitions of your C functions will fall into one of the
+    following four categories. For each category there are special
+    considerations.
+
+    1   int Foo(int arg1, char* arg2, SV* arg3) {
+
+        This is the simplest case. You have a non `void' return type
+        and a fixed length argument list. You don't need to worry
+        about much. All the conversions will happen automatically.
+
+    2   void Foo(int arg1, char* arg2, SV* arg3) {
+
+        In this category you have a `void' return type. This means
+        that either you want to return nothing, or that you want to
+        return a list. In the latter case you'll need to push values
+        onto the Stack yourself. There are a couple of XS macros
+        that make this easy. Code something like this:
+
+            int i, max; SV* my_sv[10];
+            dXSARGS;
+            sp = mark;
+            for (i = 0; i < max; i++)
+              XPUSHs(my_sv[i]);
+            PUTBACK;
+
+        The `dXSARGS' macro defines `sp' (stack pointer) and `mark'
+        (stack base). You'll need to reset `sp' to `mark' yourself.
+        Next use a series of `XPUSHs' calls to add values to the
+        Stack. `sp' will get incremented with each call. Finally,
+        the `PUTBACK' macro stores off the final value of `sp' so
+        that your values will all get returned. See the perlapi
+        manpage for more info.
+
+        If you really want to return nothing, then don't use
+        `dXSARGS'. If you must use `dXSARGS', then set `sp = mark;'
+        and use `PUTBACK;' as well.
+
+    3   char* Foo(SV* arg1, ...) {
+
+        In this category you have an unfixed number of arguments.
+        This means that you'll have to pop values off the Stack
+        yourself. Do it like this:
+
+            int i;
+            dSXSARGS;
+            for (i = 0; i < items; i++)
+              handle_sv(ST(i));
+
+        `dXSARGS' also defines an integer `items', which contains
+        the number of arguments on the Stack. The macro `ST(i)'
+        returns the Stack argument `i' where `i = 0' is the first
+        argument. The return type of `ST(i)' is `SV*'.
+
+    4   void* Foo(SV* arg1, ...) {
+
+        In this category you have both a `void' return type and an
+        unfixed number of arguments. Just combine the techniques
+        from Categories 3 and 4.
+
+  Configuration
+
+    `Inline' trys to do the right thing as often as possible. But
+    sometimes you may need to override the default actions. This is
+    where `Inline::Config' comes to the rescue. `Inline::Config'
+    gives you a more fine-grained control over the entire process.
+    The other side of that coin is "you need to know what you are
+    doing".
+
+    An important point to remember is that the config settings must
+    be done *before* the "`use Inline'" statement. Since a "`use'"
+    happens at (`Perl''s) compile time, you need to something like
+    this:
+
+        BEGIN {
+            use Inline;
+            $Inline::Config::OPTION_NUMBER_9 = 'Yes';
+        # or
+            Inline::Config->new->option_number_9('Yes');
+        # depending on your orientation :-)
+        }
+
+        use Inline C => "C code goes here...";
+
+    See the Inline::Config manpage for more info.
+
+  Configuration from the Command Line
+
+    `Inline' lets you set many of the configuration options from the
+    command line. This can be very handy, especially when you only
+    want to set the options temporarily, for say, debugging.
+
+    For instance, to get some general information about your
+    `Inline' code in the script `Foo.pl', use the command:
+
+        perl -MInline=INFO Foo.pl
+
+    If you want to force your code to compile, even if its already
+    done, use:
+
+        perl -MInline=FORCE Foo.pl
+
+    If you want to do both, use:
+
+        perl -MInline=INFO -MInline=FORCE Foo.pl
+
+    or better yet:
+
+        perl -MInline=INFO,FORCE Foo.pl
+
+    See the Inline::Config manpage for more info.
+
+  Writing Modules with Inline
+
+    If you are writing a module to distribute on the CPAN, (say
+    `Foo.pm') and you want it to include Inlined code, then you
+    should add the following line to the top of your `test.pl' file
+    before the "`use Foo;'" line:
+
+     BEGIN {use Inline SITE_INSTALL;}
+
+    When the installer does a "`make test'", the `Inline' module
+    will compile `Foo''s Inlined code and attempt to install the
+    executable code into the `./blib' directory. Then when a "`make
+    install'" is done, the module will be copied into Perl's
+    `$Config{installsitearch}' directory (which is where an
+    installed module should go).
+
+  Fancy Tricks
+
+    The `Inline' module opens up all sorts of possibilities
+    regarding what you can do with `Perl' and `C'. Since everything
+    happens at run time (depending on how you think of it) you can
+    generate `C' code on the fly and effectively '`eval'' it. (How
+    this might be useful is left as an exercise to the reader :-)
+
+    Here is how you would code such a beast:
+
+        BEGIN {$c_code = &c_code_generator()}
+        use Inline C => $c_code;  # will die if code doesn't compile
+        myfunc1();
+
+    or
+
+        $c_code = &c_code_generator();
+        eval {use Inline C => $c_code};
+        if ($@) {
+            handle_error($@);     # trap error if code doesn't compile
+        }
+        else {
+            myfunc1();
+        }
+
+Examples In C
+    Here is a series of examples. Each one is a complete program
+    that you can try running yourself. In fact, each example is
+    stored in the `examples/' subdirectory of the `Inline.pm'
+    distribution. They will start out simple and build in
+    complexity.
+
+  Example #1 - Greetings
+
+    This example will take one string argument (a name) and print a
+    greeting. The function is called with a string and with a
+    number. In the second case the number is forced to a string.
+
+    Notice that you do not need to `#include <stdio.h'>. The
+    `perl.h' header file which gets included by default,
+    automatically loads the standard C header files for you.
+
+        greet('Ingy');
+        greet(42);
+
+        use Inline C => <<'END_OF_C_CODE';
+
+        void greet(char* name) {
+          printf("Hello %s!\n", name);
+        }
+
+        END_OF_C_CODE
+
+        __END__
+
+  Example #2 - and Salutations
+
+    This is similar to the last example except that the name is
+    passed in as a `SV*' (pointer to Scalar Value) rather than a
+    string (`char*'). That means we need to convert the `SV' to a
+    string ourselves. This is accomplished using the `SvPVX'
+    function which is part of the `Perl' internal API. See the
+    perlapi manpage for more info.
+
+    One problem is that `SvPVX' doesn't automatically convert
+    strings to numbers, so we get a little surprise when we try to
+    greet `42'.
+
+        greet('Ingy');
+        greet(42);
+
+        use Inline C => <<'END_OF_C_CODE';
+
+        void greet(SV* sv_name) {
+          printf("Hello %s!\n", SvPVX(sv_name));
+        }
+
+        END_OF_C_CODE
+
+        __END__
+
+  Example #3 - Fixing the problem
+
+    We can fix the problem in Example #2 by using the `SvPV'
+    function instead. This function will stringify the `SV' if it
+    does not contain a string. `SvPV' returns the length of the
+    string as it's second parameter. Since we don't care about the
+    length, we can just put `PL_na' there, which is a special
+    variable designed for that purpose.
+
+        greet('Ingy');
+        greet(42);
+
+        use Inline C => <<'END_OF_C_CODE';
+
+        void greet(SV* sv_name) {
+          printf("Hello %s!\n", SvPV(sv_name, PL_na));
+        }
+
+        END_OF_C_CODE
+
+        __END__
+
+  Example #4 - Return to Sender
+
+    In this example we will return the greeting to the caller,
+    rather than printing it. This would seem mighty easy, except for
+    the fact that we need to allocate a small buffer to create the
+    greeting.
+
+    I would urge you to stay away from `malloc'ing your own buffer.
+    Just use Perl's built in memory management. In other words, just
+    create a new Perl string scalar. The function `newSVpv' does
+    just that. And `newSVpvf' includes `sprintf' functionality.
+
+    The other problem is getting rid of this new scalar. How will
+    the ref count get decremented after we pass the scalar back?
+    Perl also provides a function called `sv_2mortal'. Mortal
+    variables die when the context goes out of scope. In other
+    words, Perl will wait until the new scalar gets passed back and
+    then decrement the ref count for you, thereby making it eligible
+    for garbage collection. See the perlguts manpage.
+
+    In this example the `sv_2mortal' call gets done under the hood
+    by XS, because we declared the return type to be `SV*'. Later,
+    in Example #6, when we manage the return stack by hand, we'll
+    need to call it ourselves.
+
+    To view the generated XS code, run the command "`perl -
+    MInline=INFO,FORCE,NOCLEAN example004.pl'". This will leave the
+    build directory intact and tell you where to find it.
+
+    If all that sounds difficult, its not. Take a look:
+
+        print greet('Ingy');
+        print greet(42);
+
+        use Inline C => <<'END_OF_C_CODE';
+
+        SV* greet(SV* sv_name) {
+          return (newSVpvf("Hello %s!\n", SvPV(sv_name, PL_na)));
+        }
+
+        END_OF_C_CODE
+
+        __END__
+
+  Example #5 - The Welcome Wagon
+
+    Let's modify the greet function to handle a group of people, or
+    more exactly, a list of names. We use the `C' ellipsis syntax:
+    "`...'", since the list can be of any size.
+
+    Since there are no types or names associated with each argument,
+    we can't expect XS to handle the conversions for us. We'll need
+    to pop them off the Stack ourselves. Luckily there are two
+    functions (macros) that make this a very easy task.
+
+    First, we need to begin our function with a "`dXSARGS;'"
+    statement. This defines a few variables that we need to access
+    the Stack. The variable we need in this example is "`items'",
+    which is an integer containing the number of arguments passed to
+    us.
+
+    NOTE: It is important to *only* use "`dXSARGS;'" when there is
+    an ellipsis (`...') in the argument list, *or* the function has
+    a return type of void (See Example #6).
+
+    Second, we use the `ST(x)' function to access each argument
+    where "0 <= x < items". Observe:
+
+        greet(qw(Brian Ingerson Ingy Me Myself I));
+
+        use Inline C => <<'END_OF_C_CODE';
+
+        void greet(SV* name1, ...) {
+          dXSARGS;
+          int i;
+
+          for (i = 0; i < items; i++)
+            printf("Hello %s!\n", SvPV(ST(i), PL_na));
+        }
+
+        END_OF_C_CODE
+
+        __END__
+
+    NOTE: When using a variable length argument list, you have to
+    specify at least one argument before the ellipsis. (On my
+    compiler, anyway.) When XS does it's argument checking, it will
+    complain if you pass in less than the number of *defined*
+    arguments. Therefore, there is currently no way to pass an empty
+    list when a variable length list is expected.
+
+  Example #6 - Stop Repeating Yourself
+
+    In this contrived example, we'll pass in the name to greet, and
+    the number of times to do it. The `greet();' function will
+    return that number of greetings. The purpose is to demonstrate
+    how to pass back a list of values.
+
+    The first thing to do is set the function return type to void.
+    This has a special meaning to `Inline' (and XS). It means that
+    you're going to handle the return stack yourself.
+
+    Now we first call "`dXSARGS'" again. This time, we are
+    interested in the variables `sp' and `mark', which `dXSARGS'
+    will create. `sp' is the stack pointer and `mark' is the
+    beginning of the stack. Upon entry, sp will not be pointing at
+    the beginning, so we use "`sp = mark'" to reset it.
+
+    The `XPUSHs' function does a lot for us. It pushes an `SV' onto
+    the Stack, and updates the value of `sp'. It also will extend
+    the size of the Stack, if it needs to, thus avoiding segfaults.
+
+    Finally, `PUTBACK' stashes the new value of `sp' back to where
+    it belongs. Don't forget it or your function won't work right.
+    You'll get a return list equal in size to your input list, which
+    in this case is 2.
+
+        print greet('Ingy', 42);
+
+        use Inline C => <<'END_OF_C_CODE';
+
+        void greet(char* name, int number) {
+          dXSARGS;
+          int i;
+
+          sp = mark;
+
+          for (i = 0; i < number; i++)
+            XPUSHs(sv_2mortal(newSVpvf("Hello %s!\n", name)));
+
+          PUTBACK;
+        }
+
+        END_OF_C_CODE
+
+        __END__
+
+    Also notice that we used the `sv_2mortal' call that was
+    discussed earlier. This will make sure that your newborn scalars
+    get DESTROYed at the appointed time.
+
+  Example #7 - The Ugly
+
+    The world is not made of scalars alone, although they are
+    definitely the easiest creatures to deal with, when doing this
+    kind of stuff. Sometimes we need to deal with arrays, hashes,
+    and code references, among other things.
+
+    Since Perl subroutine calls only pass scalars as arguments,
+    we'll need to use the argument type `SV*' and pass references to
+    more complex types.
+
+    Lets look a program that dumps the key/value pairs of a hash:
+
+        use Inline C => <<'END_OF_C_CODE';
+
+        void dump_hash(SV* hash_ref) {
+          HV* hash;
+          HE* hash_entry;
+          int num_keys, i;
+          SV* sv_key;
+          SV* sv_val;
+
+          if (! SvROK(hash_ref))
+            croak("hash_ref is not a reference");
+
+          hash = (HV*)SvRV(hash_ref);
+          num_keys = hv_iterinit(hash);
+          for (i = 0; i < num_keys; i++) {
+            hash_entry = hv_iternext(hash);
+            sv_key = hv_iterkeysv(hash_entry);
+            sv_val = hv_iterval(hash, hash_entry);
+            printf("%s => %s\n", SvPV(sv_key, PL_na), SvPV(sv_val, PL_na));
+          }
+          return;
+        }
+
+        END_OF_C_CODE
+
+        my %hash = (
+                    Author => "Brian Ingerson",
+                    Nickname => "INGY",
+                    Module => "Inline.pm",
+                    Version => "0.18",
+                    Example => 7,
+                   );
+
+        dump_hash(\%hash);
+
+        __END__
+
+    To figure out this one, just curl up with the perlapi manpage
+    for a couple hours. Actually, its fairly straight forward once
+    you are familiar with the calls.
+
+    Note the `croak' function call. This is the proper way to die
+    from your `C' extensions.
+
+SUPPORTED LANGUAGES
+    Currently, "`C'" is the only supported language. This is
+    obviously the most important language to support. That is
+    because `Perl' itself is written in `C'. By giving a your `Perl'
+    scripts access to `C', you in effect give them access to the
+    entire glorious internals of `Perl'. (Caveat scriptor :-)
+
+    `C' is also the easiest language to implement because the tools
+    needed to do so, (like XS and `ExtUtils::MakeMaker') have
+    already been written and are very flexible and reliable.
+    `Inline' makes use of these pre-existing tools.
+
+    But there is definitely no reason why `Inline' must or should
+    stop with `C'. As long as sensible bindings can be defined
+    between Perl and another language, that language could be a
+    candidate for the `Inline' module. Current languages I am
+    considering adding support for include:
+
+     - C++
+     - Fortran
+     - Pascal
+     - Python
+
+    Note: Since many `C' compilers allow the use of assembly code
+    within C, you may want to consider Assembly Language as
+    supported. Ready to start scripting out new device drivers?
+
+SUPPORTED PLATFORMS
+    This module should work anywhere that CPAN extension modules
+    (those that use XS) can be installed, using the typical install
+    format of:
+
+        perl Makefile.PL
+        make
+        make test
+        make install
+
+    Inline has been tested on the following platforms:
+
+     V#   OS      OS V#   Perl V# Human              Email
+     0.22 Linux   2.2.13  5.00503 Brian Ingerson     ingy@cpan.org
+     0.22 Linux   2.2.13  5.6     Brian Ingerson     ingy@cpan.org
+     0.20 FreeBSD 3.4     5.00503 Timothy A Gregory  tgregory@tarjema.com
+     0.20 FreeBSD 4.0     5.00503 Timothy A Gregory  tgregory@tarjema.com
+     0.20 FreeBSD 4.0     5.6     Timothy A Gregory  tgregory@tarjema.com
+     0.20 Linux   2.0.36  5.00503 Prakasa Bellam
+pbellam@cobaltgroup.com
+     0.20 HPUX    B.10.20 5.00503 Jamie Shaffer
+jshaffer@chronology.com
+     0.20 SunOS   5.6     5.6.0   Jamie Shaffer
+jshaffer@chronology.com
+     0.20 SunOS   5.5.1   5.6.0   Jamie Shaffer
+jshaffer@chronology.com
+     0.22 OpenBSD 2.7     5.6.0   Jeremy Devenport   jeremy@weezel.com
+     0.22 FreeBSD 3.1     5.00503 Doug Beaver        dougb@scalar.org
+
+    If `Inline' works on your Unix platform, please email me the
+    info above. If it doesn't work, see the section on "BUGS AND
+    DEFICIENCIES" below.
+
+    I would like to port this to Win32 as soon as possible, but
+    that's a big step for me. Any takers?
+
+BUGS AND DEFICIENCIES
+    This is an early release of a fairly ambitious module. It is
+    definitely ALPHA code. The bugs should be bountiful!
+
+    When reporting a bug, please do the following:
+
+     - Put "use Inline REPORTBUG;" at the top of your code, or
+       use the command line option "perl -MInline=REPORTBUG ...".
+     - Run your code.
+     - Follow the printed directions.
+
+    Here are some things to watch out for:
+
+    1   The `Parse::RecDescent' grammar for `C' is fledgling. For
+        example, it won't catch invalid type errors in your function
+        definitions. It will just ignore those definitions
+        altogether. It'll get better. For now be careful and examine
+        the generated code when things don't work. Also, using
+        "`perl -MInline=INFO ...'" will show you which function
+        definitions *did* work.
+
+    2   `Inline' doesn't currently handle output parameters (like XS
+        does). I'm not sure whether to add them or not. They're not
+        very Perl-like IMO.
+
+    3   While `Inline' does attempt to clean up after itself, there is
+        currently no functionality to remove a shared object when a
+        new version is compiled. This shouldn't be hard to do, but I
+        want to think about it a little more.
+
+AUTHOR
+    Brian Ingerson <INGY@cpan.org>
+
+COPYRIGHT
+    Copyright (c) 2000, Brian Ingerson. All Rights Reserved. This
+    module is free software. It may be used, redistributed and/or
+    modified under the terms of the Perl Artistic License (see
+    http://www.perl.com/perl/misc/Artistic.html)
+
+________________________________________________
+
+
+NAME
+    Inline::Config - Set configuration options for `Inline'
+
+SYNOPSIS
+     BEGIN {
+         use Inline;
+         $Inline::Config::BUILD_PREFIX = '/tmp/Inline';
+         $Inline::Config::INSTALL_PREFIX = '/home/ingy/Inline';
+         $Inline::Config::FORCE_BUILD = 1;
+         $Inline::Config::MAKEFILE{INC} = '-I/usr/include/other');
+     }
+
+    or
+
+     BEGIN {
+         use Inline;
+         Inline::Config::Build_Prefix('/tmp/Inline');
+         Inline::Config::Install_Prefix('/home/ingy/Inline');
+         Inline::Config::force_build(1);
+         Inline::Config::makefile(INC => '-I/usr/include/other');
+     }
+
+    or
+
+     BEGIN {
+         use Inline;
+         my $ic = Inline::Config->new;
+         $ic->build_prefix('/tmp/Inline');
+         $ic->install_prefix('/home/ingy/Inline');
+         $ic->force_build(1);
+         $ic->makefile(INC => '-I/usr/include/other');
+     }
+
+    or
+
+     BEGIN {
+         use Inline;
+         Inline::Config->new
+           ->build_prefix('/tmp/Inline')
+           ->install_prefix('/home/ingy/Inline')
+           ->force_build(1)
+           ->makefile(INC => '-I/usr/include/other');
+     }
+
+DESCRIPTION
+    `Inline::Config' is a helper module for `Inline.pm'. It sets and
+    saves all of `Inline''s configuration options and defaults.
+
+    Currently there are two categories of settings: *global* and
+    *makefile*. Global settings are a collection of various options.
+    See the section on "Global Settings" below. Makefile settings
+    are passed directly into the Makefile.PL file. See the
+    ExtUtils::MakeMaker manpage for an (long) list of available
+    options.
+
+  Methods
+
+    All of the settings are stored as global variables in the
+    `Inline::Config' namespace and are spelled with capital letters.
+    You can set them in several manners depending on your personal
+    style (as shown in the section on "SYNOPSIS" above).
+
+     Direct:     $Inline::Config::BUILD_PREFIX = '/tmp/Inline';
+     Function:   Inline::Config::Build_Prefix('/tmp/Inline');
+     OO:         $ic->build_prefix('/tmp/Inline');
+     Stacked OO: $ic->build_prefix('/tmp/Inline')->force_build(1);
+
+    When using the direct method, the name must be all capitals.
+    When using the procedural methods, any case can be used.
+
+  Roll Your Own
+
+    Another option is to create your own `Inline::Config.pm' module
+    and set the base options there. Install the module higher up in
+    the `@::INC' path. Then you don't have to set the same options
+    in all of your scripts. Use the `PERL5LIB' environment variable,
+    if you don't have install access to `@::INC' on your system.
+
+  Global Settings
+
+    This is an alphabetical list of all the global settings
+    currentlly available for `Inline'. Many of them include command
+    line shortcuts.
+
+        AUTO_INCLUDE_C - Text to automatically prepend to your Inlined
+        `C' code. Normally used for header files that you always
+        want. Default:
+
+         #include "EXTERN.h"
+         #include "perl.h"
+         #include "XSUB.h"
+
+        BUILD_PREFIX - Tells what directory `Inline' should install the
+        compiled code under. This is a base directory. "`make
+        install'" actually creates a bunch of other directories
+        under this. (Default is generated by examining your system
+        for the best possible location. Program dies if none is
+        found.)
+
+        CLEAN_AFTER_BUILD - Tells `Inline' to remove the build files
+        after compiling. You can also turn this option off from the
+        command line with the special syntax "`perl -MInline=NOCLEAN
+        ...'". (Default = 1)
+
+        CLEAN_BUILD_AREA - Tells `Inline' to remove any build
+        directories that may be lying around in your build area.
+        Normally these directories get removed immediately after a
+        successful build. Exceptions are when the build fails, or
+        when you use the NOCLEAN or REPORTBUG options. You can also
+        turn this option on from the command line with the special
+        syntax "`perl -MInline=CLEAN ...'". (Default = 0)
+
+        FORCE_BUILD - Forces the code to be recompiled, even if
+        everything is up to date. You can also turn this option on
+        from the command line with the special syntax "`perl -
+        MInline=FORCE ...'". (Default = 0)
+
+        PRINT_INFO - This is a very useful option when you want to know
+        what's going on under the hood. It tells `Inline' to print
+        helpful information to `STDERR'. Among the things that get
+        printed is a list of which `Inline' functions were
+        successfully bound to Perl. You can also set this option
+        from the command line with the special syntax "`perl -
+        MInline=INFO ...'". (Default = 0)
+
+        INSTALL_LIB - Tells what directory `Inline' should add to
+        `@::INC' to find your compiled code. This is based off of
+        "`INSTALL_PREFIX'", so you shouldn't need to set this
+        directly.
+
+        NOTE - The code to calculate the INSTALL_LIB directory path
+        is tricky, because it depends on what version of perl you
+        have. If you have problems with functions not being found,
+        you may need to set this yourself. Hopefully this will all
+        get figured out soon.
+
+        INSTALL_PREFIX - Tells what directory `Inline' should install
+        the compiled code under. This is a base directory. "`make
+        install'" actually creates a bunch of other directories
+        under this. (Default is generated by examining your system
+        for the best possible location. Program dies if none is
+        found.)
+
+        REPORTBUG - Puts Inline into 'REPORTBUG' mode, which does
+        special processing when you want to report a bug. REPORTBUG
+        also automatically forces a build, and doesn't clean up
+        afterwards. This is so that you can tar and mail the build
+        directory to me. REPORTBUG will print exact instructions on
+        what to do. You can also set this option from the command
+        line with the special syntax "`perl -MInline=REPORTBUG
+        ...'". (Default = 0)
+
+        SITE_INSTALL - Says that compiled code should be installed in
+        the Perl installation's "`site_perl'" directory. Use this to
+        permanently install an Inlined module. You can also set this
+        option from the command line with the special syntax "`perl
+        -MInline=SITE_INSTALL ...'". (Default = 0)
+
+        TEMP_DIR - The temporary directory that "`BUILD_PREFIX'" and
+        "`INSTALL_PREFIX'" are based off of. Setting this one, in
+        effect, sets the other two. This directory must exist and be
+        writable or `Inline' will croak.
+
+        If you do not set this, then `Inline' will attempt to set a
+        reasonable default for you. See the section on "Find a Place
+        to Build and Install" in the Inline manpage for more info.
+
+AUTHOR
+    Brian Ingerson <INGY@cpan.org>
+
+COPYRIGHT
+    Copyright (c) 2000, Brian Ingerson. All Rights Reserved. This
+    module is free software. It may be used, redistributed and/or
+    modified under the terms of the Perl Artistic License (see
+    http://www.perl.com/perl/misc/Artistic.html)
+
+

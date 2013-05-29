@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9908
+Return-Path: <bill@wards.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20508 invoked by uid 1012); 29 Jan 2002 00:40:35 -0000
+To: modules@perl.org
+Subject: Re: PAUSE access request
+References: <20020127181324.B12196@dpavlinusic.pliva.hr>
+Cc: dpavlin@rot13.org (Dobrica Pavlinusic)
+Date: 28 Jan 2002 16:40:34 -0800
+Message-ID: <m2sn8qrnul.fsf@komodo.home.wards.net>
+Lines: 47
+User-Agent: Gnus/5.0803 (Gnus v5.8.3) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Posted-By: 12.234.26.101
+Approved: news@nntp.perl.org
+From: bill@wards.net (William R Ward)
+
+dpavlin@rot13.org (Dobrica Pavlinusic) writes:
+> My name is Dobrica Pavlinusic and I would like to contribute module which
+> reads ispell affix file and returns all alternative spellings of a word.
+> 
+> Here is info for PAUSE:
+> name:	Dobrica Pavlinusic
+> e-mail:	dpavlin@rot13.org
+> URL:	http://www.rot13.org/~dpavlin/
+> preferred user-ID: DPAVLIN
+> 
+> Logical namespace is Text::Ispell::Affix. However, I don't like Text::Ispell
+> dependency on ispell binary, and I would like to be able to use just my
+> module (without rest of Ispell). That leads to Text::Affix namespace, but
+> I will take suggesions to move is to some other namespace if that is more
+> appropriate (Lingua::Affix also comes to mind).
+
+Some other ideas you might consider:
+
+First off, I don't think "Affix" is widely-enough known to be easily
+recognized.  I think you need something in there to indicate it's
+about spelling.  How about:
+
+Text::Spelling::Affix
+Lingua::Spelling::Affix
+Lingua::Spelling::Alternative::Affix
+
+Does your module also create or modify the affix file as well?  Is
+your module written so that it depends on that file's format, or might
+it be able to be extended easily to support other alternative-spelling
+file formats?
+
+Assuming the existence of a hypothetical "abc" and "xyz" file format
+for alternative spelling, you could have a whole hierarchy of modules:
+
+*::Spelling::Alternative        # the engine that does the work
+*::Spelling::Alternative::affix # subclass that knows affix file fmt
+*::Spelling::Alternative::abc   # subclass that knows abc file fmt
+*::Spelling::Alternative::xyz   # subclass that knows xyz file fmt
+
+(Substitute "Text", "Lingua", or whatever is finally chosen for "*")
+
+--Bill.
+
+-- 
+William R Ward            bill@wards.net          http://www.wards.net/~bill/
+-----------------------------------------------------------------------------
+     If you're not part of the solution, you're part of the precipitate.

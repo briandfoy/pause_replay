@@ -1,0 +1,1248 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:932
+Return-Path: <ben.pavon@hsc.hac.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22843 invoked from network); 17 Jan 2000 21:06:55 -0000
+Received: from fw-es06.hac.com (128.152.1.6)
+  by tmtowtdi.perl.org with SMTP; 17 Jan 2000 21:06:55 -0000
+Received: from hscs000.ES.HAC.COM ([147.17.49.153])
+	by fw-es06.hac.com (8.9.1/8.9.1) with ESMTP id NAA25631;
+	Mon, 17 Jan 2000 13:07:26 -0800 (PST)
+Received: from hsc.hac.com (hscw211 [147.20.164.152])
+	by hscs000.ES.HAC.COM (8.8.7/8.8.7) with ESMTP id NAA01945;
+	Mon, 17 Jan 2000 13:06:26 -0800 (PST)
+Sender: uq608161@hsc.hac.com
+Message-ID: <38838451.C8797262@hsc.hac.com>
+Date: Mon, 17 Jan 2000 13:06:25 -0800
+Organization: Hughes Space and Communications
+X-Mailer: Mozilla 4.7 [en] (X11; U; SunOS 5.5.1 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+CC: ptk <ptk@lists.Stanford.EDU>
+Subject: DBG - A mechanism for embedding permanent debugging code in Perl
+Content-Type: multipart/mixed;
+ boundary="------------ACF3DD693F2D147A8A332DB7"
+Approved: news@nntp.perl.org
+From: ben.pavon@hsc.hac.com (Ben Pavon)
+
+--------------ACF3DD693F2D147A8A332DB7
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+I would like to contribute a module to CPAN. This would be my first
+contribution (other than Tk::CmdLine which was a rewrite of an existing
+module). The module is called DBG. The description is as follows:
+
+  DBG implements a mechanism for embedding permanent debugging code which
+  can be selectively turned on at run-time. Debugging may be turned on
+  for all functions, or for specified functions and/or for all functions
+  that match specified prefixes/postfixes and/or for all functions of
+  objects of specified classes.
+
+Unfortunately, NEWS is currently turned off at work and will not be
+available for a few weeks. I would have liked to have posted it to
+comp.lang.perl.modules and try to get some feedback there. I don't know
+how to do that without having access to NEWS. DejaNews does not seem to
+allow one to add attachments.
+
+Any ideas?
+
+I am enclosing the relevant files.
+
+  DBG.pm      - the module which includes its documentation at the end.
+  TestDBG.pl  - the test program described in the documentation.
+  TestDBG.dbg - the sample .dbg file from the documentation.
+
+Any comments/suggestions would be appreciated.
+
+Thanks,
+
+--
+__END__
+
+------------------------------------------------------------------------
+  Ben Pavon 310.364.9827                         ben.pavon@hsc.hac.com
+------------------------------------------------------------------------
+
+Benny says "Do it right, do it once!"
+
+
+--------------ACF3DD693F2D147A8A332DB7
+Content-Type: text/plain; charset=us-ascii;
+ name="DBG.pm"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="DBG.pm"
+
+package DBG; # -*-Perl-*-
+
+#/----------------------------------------------------------------------------//
+#/ Module: DBG.pm
+#/
+#/ Purpose:
+#/
+#/   Implement a mechanism for embedding permanent debugging code which
+#/   can be selectively turned on at run-time.
+#/
+#/   (A rewrite of the UTLDebug module which has been around since late 1996.)
+#/
+#/ Author: Ben Pavon                 Date: June 3, 1999.
+#/
+#/ History: SEE POD
+#/----------------------------------------------------------------------------//
+
+BEGIN
+{
+	use vars qw($rcsid $VERSION $ThisModule);
+	$rcsid = '$Id$ ';
+	$VERSION = '2000.017'; # Julian date of the last update
+	$ThisModule = &{$ThisModule = sub { (caller())[0]; }}; # the name of this package
+}
+
+#/----------------------------------------------------------------------------//
+
+require 5.003;
+
+use strict;
+
+*DBG::MAX_FLAG = \8;
+@DBG::OFF_ON = (
+	[ split('', ('0' x $DBG::MAX_FLAG)) ],
+	[ split('', ('1' x $DBG::MAX_FLAG)) ]
+);
+$DBG::On = 0;
+$DBG::All = 0;
+@DBG::Flag = (@{$DBG::OFF_ON[0]}, '');
+$DBG::Stream = \*STDERR;
+
+my %FunctionTable = ();
+my %PrefixTable   = ();
+my @PrefixTable   = ();
+my %PostfixTable  = ();
+my @PostfixTable  = ();
+my %ClassTable    = ();
+my %Table = (
+	function => \%FunctionTable,
+	prefix   => \%PrefixTable,
+	postfix  => \%PostfixTable,
+	class    => \%ClassTable
+);
+
+my $AutoFlush = sub { my $stream = select shift(@_); $| = 1; select $stream; };
+
+#/----------------------------------------------------------------------------//
+#/ Define an import() function that automatically invokes the Set() function
+#/ whenever this package is used by the main package.
+#/   use DBG;
+#/   use DBG '<ApplicationName>';
+#/   use DBG '<ApplicationName>', '<DebugString>';
+#/ In order to invoke Set() explicitly, use the following statement:
+#/   use DBG ();
+#/ and then invoke DBG::Set() when desired.
+#/----------------------------------------------------------------------------//
+
+my $SetInvoked = 0;
+
+sub import # DBG::import() # class method
+{
+	return unless (scalar(caller()) eq 'main'); # only valid from main::
+	shift(@_); # skip the class
+	Set(@_) unless $SetInvoked++;
+}
+
+#/----------------------------------------------------------------------------//
+#/ Initialize the debug process for a specified application.
+#/   Returns the @flag array for class 'main', function 'main::main'.
+#/----------------------------------------------------------------------------//
+
+my $SetUtil = sub # private
+{
+	my $name  = shift(@_); # application name
+	my $debug = shift(@_); # debug string
+
+	#/--------------------------------------------------------------------//
+	#/ Check that the debug string contains only the allowable characters.
+	#/ Split the debug string into individual lines using ';' as the delimiter.
+	#/--------------------------------------------------------------------//
+
+	if ($debug =~ m|[^\w\-\+\s\:\;\./]|) # validate for security reasons
+	{
+		warn $ThisModule, ": ERROR: The debug string contains illegal characters.\n  ",
+			$debug, "\n";
+		$DBG::On = 0;
+		return (@{$DBG::OFF_ON[0]}, '');
+	}
+
+	my @line = split(/\s*\;\s*/, $debug);
+
+	#/--------------------------------------------------------------------//
+	#/ If there is a single line that is a full-path directory spec,
+	#/ Check whether there is a file in this directory whose name is the
+	#/ application name and whose type is '.dbg'. Read the file if it exists.
+	#/--------------------------------------------------------------------//
+
+	if ((@line == 1) && ($line[0] =~ m|^/|) && (-d $line[0]))
+	{
+		$line[0] =~ s|([^/])$|$1/|; # add a trailing slash if it does not have one
+		my $debugFile = $line[0] . $name . '.dbg';
+		unless (-f $debugFile)
+		{
+			$DBG::On = 0;
+			return (@{$DBG::OFF_ON[0]}, '');
+		}
+		unless (open(_DBGFile_, $debugFile))
+		{
+			warn $ThisModule, ': ERROR: Could not open ', $debugFile, ' : ', $!, "\n";
+			$DBG::On = 0;
+			return (@{$DBG::OFF_ON[0]}, '');
+		}
+		@line = <_DBGFile_>;
+		chomp(@line);
+		close(_DBGFile_);
+	}
+
+	#/--------------------------------------------------------------------//
+	#/ Process each debug line.
+	#/--------------------------------------------------------------------//
+
+	my $line;
+	my @argv;
+	my $keyword;
+	my $entry;
+
+	foreach $line (@line)
+	{
+		next if (($line =~ /^\s*$/) || ($line =~ /^\s*\#/)); # skip blank|comment lines
+		$line =~ s/\#.*$//; # eliminate trailing comments
+		if ($line =~ m|[^\w\-\+\s\:\./]|) # validate for security reasons
+		{
+			warn $ThisModule, ": ERROR: Debug line contains illegal characters.\n  ",
+				$line, "\n";
+			$DBG::On = 0;
+			return (@{$DBG::OFF_ON[0]}, '');
+		}
+		@argv = split(' ', $line);
+		$keyword = shift(@argv);
+		if ($keyword eq 'file') # [ file ['fileSpec'] [append] ]
+		{
+			unless ((@argv <= 1) || ((@argv == 2) && ($argv[-1] eq 'append')))
+			{
+				warn $ThisModule, ": ERROR: Illegal FileLine\n  ", $line, "\n";
+				$DBG::On = 0;
+				return (@{$DBG::OFF_ON[0]}, '');
+			}
+			my $open = (($argv[-1] eq 'append') ? (pop(@argv), '>>') : '>');
+			my $file = shift(@argv) || ($name . '.log');
+			unless (open(_DBGStream_, ($open . $file)))
+			{
+				warn $ThisModule, ': ERROR: Could not open ', $file, ' : ', $!, "\n";
+				$DBG::On = 0;
+				$DBG::Stream = \*STDERR;
+				return (@{$DBG::OFF_ON[0]}, '');
+			}
+			$DBG::Stream = \*_DBGStream_;
+			&{$AutoFlush}($DBG::Stream);
+		}
+		elsif ($keyword eq 'all') # [ all ['flag' ...] ]
+		{
+			$DBG::All = 1;
+			if (@argv)
+			{
+				@DBG::Flag = (@{$DBG::OFF_ON[0]}, '');
+				my $i; foreach $i (@argv)
+				{
+					unless (($i >= 0) && ($i < $DBG::MAX_FLAG))
+					{
+						warn $ThisModule, ": ERROR: Illegal AllLine\n  ", $line, "\n";
+						$DBG::On = 0;
+						return (@{$DBG::OFF_ON[0]}, '');
+					}
+					$DBG::Flag[$i] = 1;
+				}
+			}
+			else
+			{
+				@DBG::Flag = (@{$DBG::OFF_ON[1]}, '');
+			}
+		}
+		elsif (exists($Table{$keyword})) # [ function|prefix|postfix|class 'value' ['flag' ...] ]
+		{
+			unless (@argv)
+			{
+				warn $ThisModule, ": ERROR: Illegal ", ucfirst($keyword),
+					"Line\n  ", $line, "\n";
+				$DBG::On = 0;
+				return (@{$DBG::OFF_ON[0]}, '');
+			}
+			$entry = shift(@argv);
+			if (@argv)
+			{
+				$Table{$keyword}->{$entry} = [ @{$DBG::OFF_ON[0]} ];
+				my $i; foreach $i (@argv)
+				{
+					unless (($i >= 0) && ($i < $DBG::MAX_FLAG))
+					{
+						warn $ThisModule, ": ERROR: Illegal ", ucfirst($keyword),
+							"Line\n  ", $line, "\n";
+						$DBG::On = 0;
+						return (@{$DBG::OFF_ON[0]}, '');
+					}
+					$Table{$keyword}->{$entry}->[$i] = 1;
+				}
+			}
+			else
+			{
+				$Table{$keyword}->{$entry} = [ @{$DBG::OFF_ON[1]} ];
+			}
+
+		}
+		else
+		{
+			warn $ThisModule, ": ERROR: Unrecognized line\n  ", $line, "\n";
+			$DBG::On = 0;
+			return (@{$DBG::OFF_ON[0]}, '');
+		}
+	}
+
+	@PrefixTable  = sort(keys(%PrefixTable));
+	@PostfixTable = sort(keys(%PostfixTable));
+
+	#/--------------------------------------------------------------------//
+
+	return Entry('main', 'main::main');
+};
+
+sub Set # DBG::Set([$applicationName [, $debugString]])
+{
+	my $name =
+		((((shift(@_) || $0) =~ m/(?:^|[\/\\])\.?([\w-+]+)(?:\.[\w-+]+)?$/) && ($1 ne '-e'))
+		? $1 : 'perl');
+	my $debug = (@_ ? shift(@_) : (exists($ENV{PERLDEBUG}) ? $ENV{PERLDEBUG} : undef));
+
+	my @flag = ();
+
+	$DBG::On = 0;
+
+	my $i; for ($i = 0; $i < @ARGV; $i++)
+	{
+		if ($ARGV[$i] =~ /^-{1,2}debug$/)
+		{
+			$debug = undef;
+			splice(@ARGV, $i, 1);
+			$DBG::On = 1;
+			last;
+		}
+		elsif ($ARGV[$i] =~ /^--debug=(.*)$/)
+		{
+			$debug = $1;
+			splice(@ARGV, $i, 1);
+			last;
+		}
+	}
+
+	unless (defined($debug))
+	{
+		$DBG::All  = $DBG::On;
+		@DBG::Flag = (@{$DBG::OFF_ON[$DBG::All]}, '');
+		@flag      = @DBG::Flag;
+	}
+	elsif ($debug !~ /\S/)
+	{
+		$DBG::On   = 1;
+		$DBG::All  = $DBG::On;
+		@DBG::Flag = (@{$DBG::OFF_ON[$DBG::All]}, '');
+		@flag      = @DBG::Flag;
+	}
+	else
+	{
+		$DBG::On   = 1;
+		$DBG::All  = 0;
+		@DBG::Flag = (@{$DBG::OFF_ON[$DBG::All]}, '');
+		@flag      = &{$SetUtil}($name, $debug);
+	}
+
+	if ($DBG::On && $flag[0])
+	{
+		print $DBG::Stream 'Debugging ', $name, '(', $$, ')  ', scalar(localtime()), "\n";
+		print $DBG::Stream '  ', $main::rcsid, "\n" if defined($main::rcsid);
+		my $i = 0; foreach (@INC)
+		{
+			print $DBG::Stream '  $INC[', $i++, "] = '", $_, "'\n";
+		}
+		foreach (sort(keys(%INC)))
+		{
+			print $DBG::Stream '  $INC{', $_, "} = '", $INC{$_}, "'\n";
+		}
+		my $j = 0; foreach (@ARGV)
+		{
+			print $DBG::Stream '  $ARGV[', $j++, "] = '", $_, "'\n";
+		}
+		my $type; foreach $type (qw(function prefix postfix class))
+		{
+			my $key; foreach $key (sort(keys(%{$Table{$type}})))
+			{
+				print $DBG::Stream "  \$", ucfirst($type), 'Table{', $key, '} = ',
+					join('', @{$Table{$type}->{$key}}), "\n";
+			}
+		}
+	}
+
+	return @flag;
+}
+
+#/----------------------------------------------------------------------------//
+#/ Set the debug flags, as appropriate, upon entering a function.
+#/   Returns the applicable @flag array.
+#/----------------------------------------------------------------------------//
+
+sub Entry # DBG::Entry([$object|$class [, $caller]])
+{
+	my $caller = ((@_ > 1) ? $_[1] : ((caller(1))[3] || 'main'));
+
+	if ($DBG::All) # just in case someone invokes DBG::Entry() when $DBG::All is on
+	{
+		$DBG::Flag[-1] = $caller;
+		return @DBG::Flag;
+	}
+
+	return (@{$FunctionTable{$caller}}, $caller) if exists($FunctionTable{$caller});
+
+	my $prefix; foreach $prefix (@PrefixTable)
+	{
+		return (@{$PrefixTable{$prefix}}, $caller) if ($caller =~ /^$prefix/);
+	}
+
+	my $postfix; foreach $postfix (@PostfixTable)
+	{
+		return (@{$PostfixTable{$postfix}}, $caller) if ($caller =~ /$postfix$/);
+	}
+
+	if (@_) # an object was specified
+	{
+		my $class = ref($_[0]) || $_[0];
+		return (@{$ClassTable{$class}}, $caller) if exists($ClassTable{$class});
+	}
+
+	return (@{$DBG::OFF_ON[0]}, $caller);
+}
+
+#/----------------------------------------------------------------------------//
+#/ Get the name of the calling function.
+#/   Returns string <Package>::<Function> or main.
+#/----------------------------------------------------------------------------//
+
+sub Caller # DBG::Caller()
+{
+	return (caller(1))[3] || 'main';
+}
+
+#/----------------------------------------------------------------------------//
+#/ Print the calling stack of the calling function.
+#/----------------------------------------------------------------------------//
+
+sub PrintCallStack # DBG::PrintCallStack([$prefix])
+{
+	my $prefix = (@_ ? shift(@_) : '*** ');
+
+	my $i = 1;
+	my @caller;
+	my @function = ();
+
+	while (@caller = caller($i))
+	{
+		$caller[1] =~ s|^.*/||; # remove the directory part
+		push(@function, ($caller[3] . '  File: ' . $caller[1] . '  Line: ' . $caller[2]));
+		$i++;
+	}
+	my $function; foreach $function (reverse(@function))
+	{
+		print $DBG::Stream $prefix, $function, "\n";
+		$prefix .= '    ';
+	}
+}
+
+#/----------------------------------------------------------------------------//
+
+1;
+
+__END__
+
+=head1 NAME
+
+DBG - A mechanism for embedding permanent debugging code in Perl.
+
+=head1 SYNOPSIS
+
+ use DBG;
+
+ sub f
+ {
+     local(@DBG::Flag) = DBG::Entry() if ($DBG::On && !$DBG::All);
+     if ($DBG::On && $DBG::Flag[0])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), '()', "\n";
+         my $i = 0; foreach (@_) { print $DBG::Stream '  $_[', $i++, "] = '", $_, "'\n"; }
+     }
+
+     if ($DBG::On && $DBG::Flag[1])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " flag 1 message\n";
+     }
+
+     if ($DBG::On && $DBG::Flag[2])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " flag 2 message\n";
+     }
+ }
+
+ MAIN:
+ {
+     local(@DBG::Flag) = DBG::Entry() if ($DBG::On && !$DBG::All);
+
+     if ($DBG::On && $DBG::Flag[1])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " before f()\n";
+     }
+
+     f();
+
+     if ($DBG::On && $DBG::Flag[1])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), "  after f()\n";
+     }
+ }
+
+=head1 DESCRIPTION
+
+B<DBG> implements a mechanism for embedding permanent debugging code which
+can be selectively turned on at run-time. Debugging may be turned on
+for all functions, or for specified functions
+and/or for all functions that match specified prefixes/postfixes
+and/or for all functions of objects of specified classes.
+
+=head2 Variables
+
+B<DBG> defines a set of package variables
+( $B<DBG::>C<On> $B<DBG::>C<All> @B<DBG::>C<Flag> $B<DBG::>C<Stream> )
+that can be used to selectively turn on embedded debugging code.
+
+=over 4
+
+=item B<On> - $B<DBG::On>
+
+Flag that denotes whether debugging is on or off.
+
+=item B<All> - $B<DBG::All>
+
+Flag that denotes whether all functions are being debugged.
+
+=item B<Flag> - @B<DBG::Flag>
+
+Array that contains a set of 8 flags (0-7) to be used to selectively turn on
+the debugging code. By convention, @B<DBG::>C<Flag>[0] is only used to control
+debugging code at the top of the function which prints the input arguments.
+@B<DBG::>C<Flag> contains an additional element at the end.
+@B<DBG::>C<Flag>[-1] is equal to the function name (<I<Package>>::<I<Function>>)
+unless $B<DBG::>C<All> is true in which case it is empty.
+
+=item B<Stream> - $B<DBG::Stream>
+
+Output stream to be used for printing. By default, it is a reference to B<STDERR>.
+It can optionally be associated with a log file.
+
+=back
+
+=head2 Functions
+
+=over 4
+
+=item B<Entry> - B<DBG::Entry>([$I<object>|$I<class> [, $I<caller>]])
+
+Return the debug flags to be used for the calling function.
+
+If $B<DBG::>C<All> is true, returns the current value of @B<DBG::>C<Flag> after updating
+$B<DBG::>C<Flag>[-1] with the name of the calling function.
+
+Else it tries to match the calling function name with any specified
+B<function>/B<prefix>/B<postfix> entries (in that order).
+
+Else if an argument was passed in, it tries to match the derived
+class name against any specified B<class> entries.
+
+Else it returns all-off flags.
+
+=item B<Caller> - B<DBG::Caller>()
+
+Returns the name of the calling function or B<main> if not defined.
+
+=item B<PrintCallStack> - B<DBG::PrintCallStack>([$I<prefix>])
+
+Print an indented list of the calling functions to $B<DBG::>C<Stream>.
+
+=item B<import> - B<DBG::import>($class [, $applicationName [, $debugString]])
+
+Function that automatically invokes the B<DBG::>C<Set>() function
+whenever B<DBG> is used by the B<main> package.
+
+ use DBG;
+ use DBG '<ApplicationName>';
+ use DBG '<ApplicationName>', '<DebugString>';
+
+In order to invoke B<DBG::>C<Set>() explicitly, use the following statement:
+
+ use DBG ();
+
+and then invoke B<DBG::>C<Set>() when desired.
+
+=item B<Set> - B<DBG::Set>([$I<applicationName> [, $I<debugString>]])
+
+Initialize the debug process for a specified application.
+
+Returns the @B<DBG::>C<Flag> array to be used for B<main>.
+
+$I<applicationName> is the name of the application to be debugged.
+By default, $I<applicationName> is derived from B<$0>.
+(It is set to B<perl> for an in-line script.)
+
+$I<debugString> provides an optional mechanism for defining the debug string.
+By default, it is set to $C<PERLDEBUG> if it exists or to undef if it does not.
+
+B<DBG::>C<Set>() steps through @B<ARGV> looking for an element that matches
+
+ /^-{1,2}debug$/ or /^--debug=(.*)$/
+
+If such an element is found, it is removed from @B<ARGV>.
+
+In the first case, debugging is turned on for all functions, with all flags turned on.
+
+In the second case, debugging is turned on as per the instructions in the specified
+debug string. An optional way of specifying the debug string is through the use of
+the $C<PERLDEBUG> environment variable.
+
+When the debug string is empty or only contains whitespace,
+debugging is turned on for all functions, with all flags turned on.
+
+Otherwise, the debug string is split into separate lines/commands using /\s*\;\s*/
+as the delimiter. If there is a single line that specifies an existing directory
+(specified full-path), B<DBG::>C<Set>() looks for an <I<Application>>B<.dbg> file
+in this directory. If the file exists, its contents are read in and become the debug
+lines/commands to be processed (blank lines and comment lines are ignored).
+Debugging is left off if the file does not exist.
+
+Note that it is an error for the debug string to contain any character other than
+( B<\w> B<\s> B<-> B<+> B<:> B<.> B</> B<;> ). Debugging is turned off on error.
+
+=back
+
+=head2 Commands
+
+The following debug commands are recognized:
+
+=over 4
+
+=item file ['fileSpec'] [append]
+
+Specifies the name of a log file to be associated with $B<DBG::>C<Stream>.
+If no fileSpec is specified, the default is <I<Application>>B<.log>.
+The B<append> keyword specifies that the log file is to be appended to.
+
+ Example: 'file /tmp/TestDBG.log'
+
+=item all ['flag' ...]
+
+Specifies that debugging is to be turned on for all functions.
+The flags are specified using their numbers. By default, all flags are turned on.
+
+ Example: 'all 0 1 2'
+
+=item function 'name' ['flag' ...]
+
+Specifies that debugging is to be turned on for the specified function.
+The flags are specified using their numbers. By default, all flags are turned on.
+
+ Example: 'function TestA::new 0 1 2'
+
+=item prefix 'value' ['flag' ...]
+
+Specifies that debugging is to be turned on for all functions that match
+the specified prefix.
+The flags are specified using their numbers. By default, all flags are turned on.
+
+ Example: 'prefix TestA:: 0 1 2'
+
+=item postfix 'value' ['flag' ...]
+
+Specifies that debugging is to be turned on for all functions that match
+the specified postfix.
+The flags are specified using their numbers. By default, all flags are turned on.
+
+ Example: 'postfix ::new 0 1 2'
+
+=item class 'name' ['flag' ...]
+
+Specifies that debugging is to be turned on for all functions of the specified
+class (functions in the class or in any of its parent classes).
+The flags are specified using their numbers. By default, all flags are turned on.
+
+ Example: 'class TestB 0 1 2'
+
+=back
+
+=head2 Coding
+
+Typically when coding a function to be debugged, one includes the following
+statement as the first statement in the function:
+
+ local(@DBG::Flag) = DBG::Entry() if ($DBG::On && !$DBG::All);
+
+If debugging is turned on but not for all functions, the above statement replaces
+the existing definition of @B<DBG::>C<Flag> with the flags to be used for the
+current function. Otherwise, the flags in the existing definition of
+@B<DBG::>C<Flag> are used.
+
+Note that any temporary @B<DBG::>C<Flag> will revert to the previous definition
+once the function goes out of scope. (This is one of the rare cases where the
+author has found a use for B<local>.)
+
+The following variations in the above theme allow debugging to be turned on based
+on the class of an object:
+
+ local(@DBG::Flag) = DBG::Entry($_[0]) if ($DBG::On && !$DBG::All);
+
+which is used for functions in an OO package that are object/class methods.
+
+ local(@DBG::Flag) = DBG::Entry(__PACKAGE__) if ($DBG::On && !$DBG::All);
+
+which is used for functions in an OO package that are not object/class methods.
+
+The following block, which is typically inserted after the above statement,
+may be used to output the name of the current function together with a list of
+its input arguments:
+
+ if ($DBG::On && $DBG::Flag[0])
+ {
+     print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), '(<Arguments>)', "\n";
+     my $i = 0; foreach (@_) { print $DBG::Stream '  $_[', $i++, "] = '", $_, "'\n"; }
+ }
+
+A variation on the above theme is:
+
+ if ($DBG::On && $DBG::Flag[0])
+ {
+     DBG::PrintCallStack() if $DBG::Flag[7];
+     print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), '(<Arguments>)', "\n";
+     my $i = 0; foreach (@_) { print $DBG::Stream '  $_[', $i++, "] = '", $_, "'\n"; }
+ }
+
+which also prints a list of the calling functions (but only if flag 7 is on).
+
+Additional debugging code to be inserted in the function should be coded as follows:
+
+ if ($DBG::On && $DBG::Flag[<FlagNumber>])
+ {
+     <DebuggingCode>
+ }
+
+=head2 Usage
+
+Debugging is optionally turned on by entering command line option:
+
+ -debug OR --debug OR --debug='DebugString'
+
+or by setting environment variable $C<PERLDEBUG> to the desired <I<DebugString>>.
+
+Another possible way is by using
+
+ use DBG '<ApplicationName>', '<DebugString>';
+
+in the main package.
+
+For most purposes, the author just uses the command line.
+
+For one large project that consists of multiple custom applications that are launched,
+as needed, from a vendor-supplied application, the author uses the technique of setting
+$C<PERLDEBUG> to the name of a directory. (This is done in the wrapper that
+launches the vendor application.) Then when a custom application needs to be debugged
+(e.g. when an end-user runs into a problem), one need only relaunch the custom application
+after creating the desired I<application>.dbg file.
+
+=head1 EXAMPLES
+
+=head2 A test application
+
+The example that follows illustrates the typical usage of B<DBG>.
+
+ # TestDBG.pl
+
+ require 5.004;
+
+ package TestA;
+
+ use DBG;
+
+ sub new # TestA::new([@argv])
+ {
+     local(@DBG::Flag) = DBG::Entry($_[0]) if ($DBG::On && !$DBG::All);
+     if ($DBG::On && $DBG::Flag[0])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), '([@argv])', "\n";
+         my $i = 0; foreach (@_) { print $DBG::Stream '  $_[', $i++, "] = '", $_, "'\n"; }
+     }
+     my $this  = shift(@_);
+     my $class = ref($this) || $this;
+     my $self  = [];
+     bless($self, $class);
+
+     if ($DBG::On && $DBG::Flag[1])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " before Import()\n";
+     }
+
+     $self->Import(@_);
+
+     if ($DBG::On && $DBG::Flag[1])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), "  after Import()\n";
+     }
+
+     return $self;
+ }
+
+ sub Import # TestA::Import([@argv])
+ {
+     local(@DBG::Flag) = DBG::Entry($_[0]) if ($DBG::On && !$DBG::All);
+     if ($DBG::On && $DBG::Flag[0])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), '([@argv])', "\n";
+         my $i = 0; foreach (@_) { print $DBG::Stream '  $_[', $i++, "] = '", $_, "'\n"; }
+     }
+     my $self = shift(@_);
+
+     if ($DBG::On && $DBG::Flag[1])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " flag 1 message\n";
+     }
+
+     if ($DBG::On && $DBG::Flag[2])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " flag 2 message\n";
+     }
+
+     @{$self} = @_;
+
+     print STDOUT join(' ', @{$self}), "\n";
+
+     return $self;
+ }
+
+ package TestB;
+
+ use DBG;
+ use base qw(TestA);
+
+ sub DESTROY # TestB::DESTROY()
+ {
+     local(@DBG::Flag) = DBG::Entry($_[0]) if ($DBG::On && !$DBG::All);
+     if ($DBG::On && $DBG::Flag[0])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), '()', "\n";
+         my $i = 0; foreach (@_) { print $DBG::Stream '  $_[', $i++, "] = '", $_, "'\n"; }
+     }
+     my $self = shift(@_);
+
+     if ($DBG::On && $DBG::Flag[1])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " before Export()\n";
+     }
+
+     $self->Export();
+
+     if ($DBG::On && $DBG::Flag[1])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), "  after Export()\n";
+     }
+
+     return $self;
+ }
+
+ sub Export # TestB::Export()
+ {
+     local(@DBG::Flag) = DBG::Entry($_[0]) if ($DBG::On && !$DBG::All);
+     if ($DBG::On && $DBG::Flag[0])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), '()', "\n";
+         my $i = 0; foreach (@_) { print $DBG::Stream '  $_[', $i++, "] = '", $_, "'\n"; }
+     }
+     my $self = shift(@_);
+     if ($DBG::On && $DBG::Flag[1])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " flag 1 message\n";
+     }
+
+     if ($DBG::On && $DBG::Flag[2])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " flag 2 message\n";
+     }
+
+     print STDOUT join(' ', @{$self}), "\n";
+
+     return $self;
+ }
+
+ package main;
+
+ use DBG;
+
+ MAIN:
+ {
+     local(@DBG::Flag) = DBG::Entry() if ($DBG::On && !$DBG::All);
+
+     if ($DBG::On && $DBG::Flag[1])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " before TestB->new()\n";
+     }
+
+     TestB->new(qw(Hello World));
+
+     if ($DBG::On && $DBG::Flag[2])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), "  after TestB->new()\n";
+     }
+ }
+
+=over
+
+=item *
+
+Debug all functions.
+
+ perl TestDBG.pl --debug
+
+=item *
+
+Debug all functions using flag 0.
+
+ perl TestDBG.pl --debug='all 0'
+
+=item *
+
+Debug all functions in package TestA.
+
+ perl TestDBG.pl --debug='prefix TestA::'
+
+=item *
+
+Debug all functions for class TestB.
+
+ perl TestDBG.pl --debug='class TestB'
+
+=item *
+
+Debug using a B<.dbg> file while saving the output to the default log file (TestDBG.log).
+
+ perl TestDBG.pl --debug=$PWD
+
+where TestDBG.dbg resides in the current directory and contains the following:
+
+ # TestDBG.dbg
+
+ file
+ prefix   main::
+ function TestA::Import
+ function TestB::Export
+
+=back
+
+=head2 A special case - a function that inherits its debug flags.
+
+The example that follows is a method taken from B<AWWidget>, an OO module that the
+author wrote as a wrapper around B<Aw>, a vendor-supplied, non-OO module.
+B<AWWidget::Action> encapsulates all B<Aw> function invocations.
+
+ #/----------------------------------------------------------------------------//
+ #/ Perform an AccessWare action.
+ #/ (By design, this method uses the debug flags of its caller.)
+ #/   Returns the action output.
+ #/----------------------------------------------------------------------------//
+
+ sub Action # AWWidget::Action($action [, @argv])
+ {
+     my $self   = shift(@_);
+     my $action = shift(@_);
+     no strict qw(refs);
+     if ($DBG::On && $DBG::Flag[6])
+     {
+         print $DBG::Stream ($DBG::Flag[-1] ? ($DBG::Flag[-1] => ' ') : ()),
+             DBG::Caller(), '(',
+             join(', ', map({ defined($_) ? ("'" . $_ . "'") : 'undef' } $action, @_)), ') : ';
+         my @output = &{'Aw::' . $action}(@_);
+         print $DBG::Stream '(',
+             join(', ', map({ defined($_) ? ("'" . $_ . "'") : 'undef' } @output)), ")\n";
+         return (wantarray ? @output : $output[0]);
+     }
+     &{'Aw::' . $action}(@_);
+ }
+
+Because B<AWWidget::Action> inherits its debug flags from its callers
+
+ 'prefix AW 6'
+
+debugs all B<Aw> invocations in the AW* classes
+
+ 'class AWWindow 6'
+
+debugs B<Aw> invocations for objects of class B<AWWindow>
+(which inherits from B<AWWidget>).
+
+=head1 ENVIRONMENT
+
+=over 4
+
+=item B<PERLDEBUG> (optional)
+
+Specifies a debug string to be processed.
+
+=back
+
+=head1 LIMITATIONS
+
+B<DBG> has only been tested/used on B<UNIX> environments.
+
+=head1 AUTHOR
+
+Ben Pavon E<lt>ben.pavon@hsc.hac.comE<gt>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2000 Hughes Space & Communications. All rights reserved.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=head1 HISTORY
+
+=over 4
+
+=item *
+
+1996 Ben Pavon E<lt>ben.pavon@hsc.hac.comE<gt>
+
+Created as B<UTLDebug>.pm from a similar B<C> implementation.
+
+A B<FORTRAN> incarnation of the scheme implemented by B<UTLDebug> was first seen
+by the author back in the dark ages (late 1980s) when he worked on a couple of
+B<CAD/CAM> systems. The author created a similar B<C> implementation some time
+after that.
+
+The B<FORTRAN> and B<C> implementations required quite a bit more coding and
+were more cumbersome to use. Each function to be debugged required not only the
+addition of debug code at the start of the function, but also before every
+return (so that the array that kept track of the flags for every level could be
+maintained properly). (Include files were used to simplify the coding.)
+
+The B<Perl> implementation takes advantage of the fact that a variable declared
+as B<local> reverts to its previous definition when the declaration goes out of
+scope.
+
+=item *
+
+1999.06.03 Ben Pavon E<lt>ben.pavon@hsc.hac.comE<gt>
+
+Rewritten as B<DBG>.pm.
+
+=item *
+
+1999.06.10 Ben Pavon E<lt>ben.pavon@hsc.hac.comE<gt>
+
+Stop using FileHandle to define $DBG::Stream.
+It seems that at cleanup time it is not guaranteed that the $DBG::Stream object
+is around when a using function (e.g. DESTROY()) is executed.
+
+=item *
+
+1999.08.03 Ben Pavon E<lt>ben.pavon@hsc.hac.comE<gt>
+
+Add an optional append keyword to the file command.
+
+=item *
+
+2000.01.17 Ben Pavon E<lt>ben.pavon@hsc.hac.comE<gt>
+
+Add the POD documentation. Stop setting $PERLDEBUG.
+
+=back
+
+=head1 VERSION
+
+Version 2000.017
+
+=cut
+
+#/----------------------------------------------------------------------------//
+
+--------------ACF3DD693F2D147A8A332DB7
+Content-Type: application/x-perl;
+ name="TestDBG.pl"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="TestDBG.pl"
+
+# TestDBG.pl
+
+require 5.004;
+
+package TestA;
+
+use DBG;
+
+sub new # TestA::new([@argv])
+{
+	local(@DBG::Flag) = DBG::Entry($_[0]) if ($DBG::On && !$DBG::All);
+	if ($DBG::On && $DBG::Flag[0])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), '([@argv])', "\n";
+		my $i = 0; foreach (@_) { print $DBG::Stream '  $_[', $i++, "] = '", $_, "'\n"; }
+	}
+	my $this  = shift(@_);
+	my $class = ref($this) || $this;
+	my $self  = [];
+	bless($self, $class);
+
+	if ($DBG::On && $DBG::Flag[1])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " before Import()\n";
+	}
+
+	$self->Import(@_);
+
+	if ($DBG::On && $DBG::Flag[1])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), "  after Import()\n";
+	}
+
+	return $self;
+}
+
+sub Import # TestA::Import([@argv])
+{
+	local(@DBG::Flag) = DBG::Entry($_[0]) if ($DBG::On && !$DBG::All);
+	if ($DBG::On && $DBG::Flag[0])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), '([@argv])', "\n";
+		my $i = 0; foreach (@_) { print $DBG::Stream '  $_[', $i++, "] = '", $_, "'\n"; }
+	}
+	my $self = shift(@_);
+
+	if ($DBG::On && $DBG::Flag[1])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " flag 1 message\n";
+	}
+
+	if ($DBG::On && $DBG::Flag[2])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " flag 2 message\n";
+	}
+
+	@{$self} = @_;
+
+	print STDOUT join(' ', @{$self}), "\n";
+
+	return $self;
+}
+
+package TestB;
+
+use DBG;
+use base qw(TestA);
+
+sub DESTROY # TestB::DESTROY()
+{
+	local(@DBG::Flag) = DBG::Entry($_[0]) if ($DBG::On && !$DBG::All);
+	if ($DBG::On && $DBG::Flag[0])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), '()', "\n";
+		my $i = 0; foreach (@_) { print $DBG::Stream '  $_[', $i++, "] = '", $_, "'\n"; }
+	}
+	my $self = shift(@_);
+
+	if ($DBG::On && $DBG::Flag[1])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " before Export()\n";
+	}
+
+	$self->Export();
+
+	if ($DBG::On && $DBG::Flag[1])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), "  after Export()\n";
+	}
+
+	return $self;
+}
+
+sub Export # TestB::Export()
+{
+	local(@DBG::Flag) = DBG::Entry($_[0]) if ($DBG::On && !$DBG::All);
+	if ($DBG::On && $DBG::Flag[0])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), '()', "\n";
+		my $i = 0; foreach (@_) { print $DBG::Stream '  $_[', $i++, "] = '", $_, "'\n"; }
+	}
+	my $self = shift(@_);
+
+	if ($DBG::On && $DBG::Flag[1])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " flag 1 message\n";
+	}
+
+	if ($DBG::On && $DBG::Flag[2])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " flag 2 message\n";
+	}
+
+	print STDOUT join(' ', @{$self}), "\n";
+
+	return $self;
+}
+
+package main;
+
+use DBG;
+
+MAIN:
+{
+	local(@DBG::Flag) = DBG::Entry() if ($DBG::On && !$DBG::All);
+
+	if ($DBG::On && $DBG::Flag[1])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), " before TestB->new()\n";
+	}
+
+	TestB->new(qw(Hello World));
+
+	if ($DBG::On && $DBG::Flag[2])
+	{
+		print $DBG::Stream ($DBG::Flag[-1] || DBG::Caller()), "  after TestB->new()\n";
+	}
+}
+
+--------------ACF3DD693F2D147A8A332DB7
+Content-Type: text/plain; charset=us-ascii;
+ name="TestDBG.dbg"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="TestDBG.dbg"
+
+# TestDBG.dbg
+
+file
+prefix   main::
+function TestA::Import
+function TestB::Export
+
+--------------ACF3DD693F2D147A8A332DB7--
+

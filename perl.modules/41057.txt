@@ -1,0 +1,124 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:41057
+Return-Path: <cpan@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7790 invoked from network); 16 Jun 2005 06:07:40 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 16 Jun 2005 06:07:40 -0000
+Received: (qmail 14972 invoked by uid 225); 16 Jun 2005 06:07:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14967 invoked by alias); 16 Jun 2005 06:07:40 -0000
+X-Spam-Status: No, hits=-5.9 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Wed, 15 Jun 2005 23:07:38 -0700
+Received: (qmail 7780 invoked by uid 515); 16 Jun 2005 06:07:34 -0000
+Message-ID: <20050616060734.7779.qmail@lists.develooper.com>
+To: modules@perl.org
+Date: Thu, 16 Jun 2005 16:06:11 +1000
+User-Agent: Mozilla Thunderbird 1.0 (Windows/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+Subject: Re: Module submission User::Simple
+References: <200506151812.j5FICmcf016914@pause.perl.org>
+In-Reply-To: <200506151812.j5FICmcf016914@pause.perl.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 202.90.48.125
+Approved: news@nntp.perl.org
+From: cpan@ali.as (Adam Kennedy)
+
+If this module is meant for use a) specifically with the web, or b) 
+specifically with sessions, it probably should not be in User::
+
+Some comments...
+
+1) You have an incredibly high dependent version of Perl 5.008.007
+
+You probably didn't mean to do this, and it was created by a module 
+creator package. Check the version you need and set it (at a guess, it's 
+probably about 5.6.0)
+
+2) You do not have any dependency information at all in the Makefile.PL. 
+You should be listing the modules you depend on.
+
+3) Although I think you've been good and not made it dependent on 
+CGI/web or any specific database, I don't think it belongs in User::
+
+User::Simple makes no mention of the fact that this module is about 
+doing database-backed sessions using DBI.
+
+As it's sufficiently backend-agnostic and doesn't rely at all on a 
+web-implementation (again, kudos for this), probably something more like...
+
+DBIx::Session
+
+Since there's no other modules that are DBI-specific, but aren't tied to 
+a web/platform implementation, I don't think anyone would object at all 
+to taking DBIx::Session.
+
+Finally, although I know you _say_ that it should work on any 
+first-class database, you could _actually_ make it work on any database 
+by properly abstracting the backend, so others could write extensions.
+
+Move all the methods that specifically involve SQL or that could be 
+Postgres specific to DBIx::Session::Pg, and and 
+DBIx::Session::Admin::Pg, and keep DBIx::Session as your base/interface 
+class.
+
+Then, when you receive the database handle for the constructor, just 
+look to see what type of database it is, and if you have a matching 
+::$driver subclass, instantiate that.
+
+But in any case, User::Simple is a bad name
+
+Regards
+
+Adam K
+
+
+
+
+
+
+
+Perl Authors Upload Server wrote:
+> The following module was proposed for inclusion in the Module List:
+> 
+>   modid:       User::Simple
+>   DSLIP:       bdpOp
+>   description: Simple user sessions management
+>   userid:      GWOLF (Gunnar Wolf)
+>   chapterid:   15 (World_Wide_Web_HTML_HTTP_CGI)
+>   communities:
+>     Developed as part of IPmanage, CVS requires authentication
+> 
+>   similar:
+>     Apache::AuthCookie Apache::AuthCookieDBI Apache::Session WebTools
+>     CGI::Application::Plugin::Session
+> 
+>   rationale:
+> 
+>     All of the modules I have seen regarding user sessions are too
+>     complicated or married with a specific way of working. Besides, they
+>     all implement only half of the logic (querying wheather somebody has
+>     the right credentials), but miss the other half (maintaining the
+>     users' data in the backing store). User::Simple tackles the first
+>     part via only 10 very simple methods, and User::Simple::Admin (also
+>     in the same distribution) handles all administrative tasks (down
+>     from creating the database structure) in 16 methods.
+> 
+>   enteredby:   GWOLF (Gunnar Wolf)
+>   enteredon:   Wed Jun 15 18:12:43 2005 GMT
+> 
+> The resulting entry would be:
+> 
+> User::
+> ::Simple          bdpOp Simple user sessions management              GWOLF
+> 
+> 
+> Thanks for registering,

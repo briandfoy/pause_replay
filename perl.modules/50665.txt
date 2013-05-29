@@ -1,0 +1,100 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:50665
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 369 invoked from network); 1 Sep 2006 21:17:30 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 1 Sep 2006 21:17:30 -0000
+Received: (qmail 7733 invoked by uid 225); 1 Sep 2006 21:17:29 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7728 invoked by alias); 1 Sep 2006 21:17:29 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,UNPARSEABLE_RELAY
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 01 Sep 2006 14:17:27 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by franz.ak.mind.de (8.13.7/8.13.7/Debian-2) with ESMTP id k81LHLIb007295;
+	Fri, 1 Sep 2006 23:17:21 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.7/8.13.7/Submit) id k81LHL2M007294;
+	Fri, 1 Sep 2006 23:17:21 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: modules@perl.org
+Cc: guillomovitch@zarb.org (Guillaume Rousse)
+Subject: Re: [Fwd: Failed: PAUSE indexer report GROUSSE/Lingua-TagSet-0.3.2.tar.gz]
+References: <44F82673.2090204@zarb.org>
+	<010920060956180433%brian.d.foy@gmail.com>
+Reply-To: modules@perl.org
+Date: Fri, 01 Sep 2006 23:17:21 +0200
+In-Reply-To: <010920060956180433%brian.d.foy@gmail.com> (brian d. foy's
+	message of "Fri, 01 Sep 2006 09:56:18 -0500")
+Message-ID: <87y7t3jnha.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Fri, 01 Sep 2006 09:56:18 -0500, brian d foy <brian.d.foy@gmail.com> said:
+
+  > [[ This message was both posted and mailed: see
+  >    the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+  > In article <44F82673.2090204@zarb.org>, Guillaume Rousse
+  > <guillomovitch@zarb.org> wrote:
+
+ >> Also, I noticed several problems in the module index about my modules.
+ >> Some are listed several times:
+
+  > Can you send the entire index report please?
+
+Well, I can at least answer the from the quote that was included.
+Here it is once again:
+
+     module: Lingua::TagSet
+    version: 0.003002
+    in file: Lingua-TagSet-0.3.2/lib/Lingua/TagSet.pm
+     status: Not indexed because Lingua-TagSet-0.3/lib/Lingua/TagSet.pm
+             in G/GR/GROUSSE/Lingua-TagSet-0.3.tar.gz has a higher
+             version number (0.3)
+
+It's not made up by PAUSE or the indexer but by the language perl5,
+that 0.3.2 is being treated as 0.003002 when a numerical comparison is
+requested. Compare carefully:
+
+  % echo 'package N;$VERSION=0.3.2' > N.pm
+  % perl -le 'use N 0.3.2'
+  % perl -le 'use N 0.003002'
+  % perl -le 'use N 0.003003'
+  N version 0.003003 required--this is only version 0.003002 at -e line 1.
+  BEGIN failed--compilation aborted at -e line 1.
+  % echo 'package N;$VERSION=0.003002' > N.pm
+  % perl -le 'use N 0.3.2'
+  % perl -le 'use N 0.003002'
+  % perl -le 'use N 0.003003'
+  N version 0.003003 required--this is only version 0.003002 at -e line 1.
+  BEGIN failed--compilation aborted at -e line 1.
+
+You already have release 0.3. If you want to switch to multidot
+notation and want to be consistent with version numbering, you must go
+above 0.300.0. Imagine that one of your users has already written
+
+  use Lingua::TagSet 0.3;
+
+Any version above 0.300.0 will fulfill this, e.g.
+
+  % echo 'package N;$VERSION=0.300.0.0.0.1' > N.pm
+  % perl -le 'use N 0.3'
+  % perl -le 'use N 1'
+  N version 1 required--this is only version 0.300000000000001 at -e line 1.
+  BEGIN failed--compilation aborted at -e line 1.
+
+
+
+Hope this helps,
+--
+andreas

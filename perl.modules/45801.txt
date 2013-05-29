@@ -1,0 +1,161 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45801
+Return-Path: <dm.list@math2.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 25245 invoked from network); 9 Nov 2005 06:44:43 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 9 Nov 2005 06:44:43 -0000
+Received: (qmail 20185 invoked by uid 225); 9 Nov 2005 06:44:43 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20180 invoked by alias); 9 Nov 2005 06:44:42 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from www1.kc.aoindustries.com (HELO www1.kc.aoindustries.com) (65.77.211.70)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 08 Nov 2005 22:44:39 -0800
+Received: from [192.168.20.103] (host-24-149-183-81.patmedia.net [24.149.183.81])
+	(authenticated bits=0)
+	by www1.kc.aoindustries.com (8.13.1/8.13.1) with ESMTP id jA96i8K1014093;
+	Wed, 9 Nov 2005 00:44:12 -0600
+Message-ID: <43719A66.8000401@math2.org>
+Date: Wed, 09 Nov 2005 01:42:46 -0500
+User-Agent: Mozilla Thunderbird 1.0.6 (Windows/20050716)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Adam Kennedy <cpan@ali.as>
+CC: modules@perl.org, dmanura@cpan.org
+Subject: Re: Module submission SQL::Interpolate
+References: <200511080142.jA81gfVt029100@pause.perl.org> <43704A3D.1060800@ali.as>
+In-Reply-To: <43704A3D.1060800@ali.as>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: dm.list@math2.org (David Manura)
+
+Hello Adam,
+
+Thanks for your note.  The details on the distribution are here:
+
+  http://search.cpan.org/dist/SQL-Interpolate/
+
+It has actually been on CPAN for about a year, but I never categorized 
+it.  An updated version should be available shortly.
+
+By "interpolate" in "interpolating Perl variables into SQL," I mean much 
+the same thing as in "Perl string interpolation" rather than the 
+mathematical usage.  There's some other modules that use "Interpolate" 
+in this fashion, e.g. String::Interpolate, Interpolation, and 
+Perl6::Interpolators.
+
+I came across your module only recently.  It provides a lean method of 
+automating some aspects of SQL building techniques. SQL::Interpolate is 
+a more complex module, but in some ways SQL::Interpolate can be used in 
+an analogous manner, e.g.
+
+===
+use strict;
+use SQL::Interpolate qw(:all);
+
+my $x = 5; my @y = (2,3);
+my $s = sql('WHERE x=', \$x) . sql('AND y IN', \@y);
+my ($sql, @bind) = sql_interp $s;
+
+# RESULT:
+#   $s = 'WHERE x= ? AND y IN (?, ?)'
+#   @bind = (5, 2, 3)
+===
+
+This is not the most typical way to use it though.  A regular Perl array 
+would suffice:
+
+===
+my @items = ('WHERE x=', \$x);
+push @items, ('AND y IN', \@y);
+my ($sql, @bind) = sql_interp @items;
+# RESULT:
+#   $s = 'WHERE x= ? AND y IN (?, ?)'
+#   @bind = (5, 2, 3)
+===
+
+I've considered taking some ideas from your module, e.g. allowing 
+placeholders to optionally be included explicitly (non-interpolated) in 
+the SQL string as such:
+
+my @items = ('WHERE x=?', 'AND y IN (?,?)', \$x, \@y);
+my ($sql, @bind) = sql_interp @items;
+
+Another idea to to add some methods to the sql() objects that allow 
+sql_interp to be called in a more object-oriented manner:
+
+  my @bind = sql('WHERE x=', \$x)->get_bind();
+  my $sql     = sql('WHERE x=', \$x)->get_sql();
+
+However, I'm not sure that those methods would be used that much.  
+Typically, one would do this:
+
+  $dbh->selectall_arrayref(dbi_interp 'WHERE x=', \$x, 'AND y IN', \@y);
+
+Still, something like this may be easier to read though in some cases:
+
+  $dbh->selectall_arrayref(dbi_interp 'WHERE x=? AND y IN ?', $x, \@y);
+
+That issue is addressed further in SQL::Interpolate::Filter.
+
+best regards, davidm
+
+Adam Kennedy wrote:
+
+> You'll have to excuse me for asking questions when I normally 
+> wouldn't, but I wrote SQL::String :)
+>
+> DBIx::Interpolate aside, can you give examples of what you mean by 
+> "interpolate" in this context? Is it something that could be added to 
+> SQL::String, rather than done a a new module?
+>
+> Adam K
+>
+> Perl Authors Upload Server wrote:
+>
+>> The following module was proposed for inclusion in the Module List:
+>>
+>>   modid:       SQL::Interpolate
+>>   DSLIP:       Rmphp
+>>   description: Interpolate Perl variables into SQL
+>>   userid:      DMANURA (David Manura)
+>>   chapterid:   11 (String_Lang_Text_Proc)
+>>   communities:
+>>     http://www.cpanforum.com/dist/SQL-Interpolate
+>>
+>>   similar:
+>>     SQL::Abstract SQL::Preproc SQL::String
+>>
+>>   rationale:
+>>
+>>     This module builds SQL strings and corresponding bind variables, a
+>>     bit like a number of other modules in the SQL:: namespace (e.g.
+>>     SQL::Abstract). However, this module tends to deal more on the level
+>>     of the raw SQL (like SQL::String), particularly by the means of
+>>     interpolation (search: "interpolate" on search.cpan.org).
+>>
+>>     This module does not require a database handle and therefore does
+>>     not belong in DBIx:: namespace. See SQL::Abstract v.s.
+>>     DBIx::Abstract. However, the distribution SQL-Interpolate does also
+>>     include a separate DBIx::Interpolate module that does wrap DBI.
+>>
+>>   enteredby:   DMANURA (David Manura)
+>>   enteredon:   Tue Nov  8 01:42:37 2005 GMT
+>>
+>> The resulting entry would be:
+>>
+>> SQL::
+>> ::Interpolate     Rmphp Interpolate Perl variables into SQL          
+>> DMANURA
+>>
+>>
+>> Thanks for registering,
+>
+

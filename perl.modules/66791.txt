@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:66791
+Return-Path: <matthewt@agaton.scsys.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31208 invoked from network); 22 Jul 2009 08:39:40 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 22 Jul 2009 08:39:40 -0000
+Received: (qmail 11130 invoked by uid 225); 22 Jul 2009 08:39:39 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11125 invoked by alias); 22 Jul 2009 08:39:39 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from jules.scsys.co.uk (HELO jules.scsys.co.uk) (217.168.153.160)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 22 Jul 2009 01:39:32 -0700
+Received: from [217.168.150.167] (helo=agaton.scsys.co.uk)
+	by jules.scsys.co.uk with esmtps (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1MTXMG-0006sY-4b; Wed, 22 Jul 2009 08:39:28 +0000
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1MTXJM-0000fc-Oi; Wed, 22 Jul 2009 09:36:28 +0100
+Date: Wed, 22 Jul 2009 09:36:28 +0100
+To: Mons Anderson <mons@cpan.org>
+Cc: modules@perl.org
+Subject: Re: Module submission self::init
+Message-ID: <20090722083628.GR17782@agaton.scsys.co.uk>
+References: <200907130905.n6D95oZc022033@pause.perl.org> <20090716181112.GH17782@agaton.scsys.co.uk> <200907171655.15475.mons@cpan.org> <20090717181812.GQ17782@agaton.scsys.co.uk> <20f279210907171707o6f878261ref78feff870b4b1c@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20f279210907171707o6f878261ref78feff870b4b1c@mail.gmail.com>
+User-Agent: Mutt/1.5.11
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Sat, Jul 18, 2009 at 04:07:19AM +0400, Mons Anderson wrote:
+> Ok, I'll try to explain.
+> use constant DEBUG => 1 is better than BEGIN { *DEBUG = sub () { 1 } }
+
+Actually, sometimes it isn't; I've seen bugs caused by 'use constant' that
+
+sub DEBUG () { 1 }
+
+wouldn't have produced.
+
+> use lib '/opt/lib' is better than BEGIN { @INC='opt/lib'; }
+> use base 'Base::Package' is better than BEGIN { use Base::Package;
+> push @ISA,'Base::Package'; }
+
+Those both actually -do- something.
+
+Your module just re-implements a for loop, badly, with a weird style.
+
+And I suspect will break if (args) needs to contain something that starts
+with a '-'.
+
+> I'll gain
+> 
+> use self::init
+>   \-m1 => (args),
+>   \-m2 => (args),
+> ;
+> 
+> over
+> 
+> BEGIN {
+>   __PACKAGE__->m1(args);
+>   __PACKAGE__->m2(args);
+> }
+> 
+> or over
+> 
+> BEGIN {
+>   for (__PACKAGE__) {
+>     $_->m1(args);
+>     $_->m2(args);
+>   }
+> }
+> 
+> which one more linguistic as the perl itself?
+
+The for loop. and no BEGIN block - if you need the BEGIN block your design
+is wrong.
+
+Ach, never mind, it's your code.
+
+Just please don't use this in anything published in the Catalyst/DBIx::Class
+space - it'll go straight onto the "avoid, badly written" list if you do.
+
+-- 
+        Matt S Trout         Catalyst and DBIx::Class consultancy with a clue
+     Technical Director      and a commit bit: http://shadowcat.co.uk/catalyst/
+ Shadowcat Systems Limited
+  mst (@) shadowcat.co.uk        http://shadowcat.co.uk/blog/matt-s-trout/

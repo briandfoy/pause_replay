@@ -1,0 +1,209 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:34570
+Return-Path: <Smylers@stripey.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5789 invoked from network); 7 Sep 2004 07:48:24 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 7 Sep 2004 07:48:24 -0000
+Received: (qmail 7510 invoked by uid 225); 7 Sep 2004 07:48:24 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7505 invoked by alias); 7 Sep 2004 07:48:23 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with SMTP; Tue, 07 Sep 2004 00:48:20 -0700
+Received: (qmail 5780 invoked by uid 515); 7 Sep 2004 07:48:17 -0000
+To: modules@perl.org
+Subject: Re: Module submission Linux::DVB
+References: <200409060633.i866Xl5P032699@pause.perl.org> <060920041643564438%comdog@panix.com> <20040907041705.GD15861@schmorp.de> <070920040008157960%comdog@panix.com> <20040907053117.GA11039@schmorp.de>
+Message-ID: <slrncjqprl.15u.Smylers@stripey.com>
+User-Agent: slrn/0.9.7.4 (Linux)
+Date: Tue, 07 Sep 2004 07:47:01 GMT
+X-Posted-By: 213.162.122.173
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: Smylers@stripey.com (Smylers)
+
+Marc writes:
+
+> On Tue, Sep 07, 2004 at 12:08:16AM -0500, _brian_d_foy <comdog@panix.com> wrote:
+> 
+> > > > >   similar:
+> > > > >     Video::Linux::V4l
+> > > > 
+> > > > why not put this in Video:: too?
+> > > 
+> > > Just because you could also stream video with it doesn't make it a
+> > > vdeo-only module. Besides, it is highly linux-specific.
+> > 
+> > What other sort of module might it be?
+> 
+> No idea yet, ...
+
+Hello Marc, brian.  Hope you don't mind me chipping in here.
+
+It is better for module names to be informative than precise.  If the
+common use for a module is doing video-related stuff then it's good to
+have Video in the name, even if there could be some uses outside of that
+-- the name is a general pointer to its abilities, not a strict
+definition.
+
+Many (if not most) modules on Cpan _can_ be used for things beyond what
+their name implies.  That is generally better than the alternative,
+which is to have very dry, technically precise, obscure module names
+that are meaningless to most people.
+
+> > It might be linux specific now, but it might not always be.
+> 
+> Well, if you know better, then it must be true. It's just that I
+> cannot imagine that the Linux-DVB driver API will ever be non-linux
+> specific...
+
+No, but DVB is not Linux-specific, and it would be better for a family
+of DVB modules to share a namespace.  Somebody who's _looking_ for a DVB
+module doesn't necessarily know that they need a platform-dependent one,
+so putting it in a namespace for 'all DVB-related things' makes more
+sense than 'all Linux-related things'.
+
+> > > Some of the functionality, such as SI-decoding, are
+> > > linux-independent, so one could also imagine the following
+> > > structure:
+> > > 
+> > >    DVB::Linux
+> > >    DVB::Decode::SI
+> > > 
+> > > and so on, but my plans for the module do not include making it that large
+> > > in the future.
+> > 
+> > You may not make it that large, but other people may like to.
+> 
+> This is fine. I won't stop other people from either writing their own
+> non-os-specific dvb processing modules nor from adding such modules by
+> sending me patches.
+> 
+> This has, of course, nothing to do with the fatc that Linux::DVB is
+> and ever will be linux-specific.
+
+That _is_ relevant, as brian says:
+
+> > we consider a namespace, we try to anticipate future additions and how
+> > people will add their own modules.  Choosing a flexible name saves a lot
+> > of future hassle.
+
+Other people may also write DVB-related modules; your module should be
+named to anticipate this, and in a way that makes it easy to name future
+DVB modules.
+
+> You are confused, though,
+
+In recent years brian has clearly been the person in the world putting
+_most_ effort into thinking about module naming and offering advice to
+authors of new modules.  His being confused on the matter is unlikely.
+
+> the Linux namespace already exists
+
+The fact that some modules have been badly named in the past is not a
+reason to make the problem worse!  But anyway ...
+
+> and contains a lot of moduels that are linux-specific, sich as
+> Linux::LVM, Linux::TunTap etc.
+
+... there is a difference between a module that implements a task that
+it only makes sense to perform on Linux, and one that is the Linux
+implementation of a task that can be performed on multiple platforms.
+In particular, modules that help with system administration tasks (such
+as, say, Linux::usermod (though usermod probably shouldn't be all
+lower-case)) are performing operations _to_ the Linux system itself.
+
+> According to your logic, we would rename Win32::MIDI to Audio::MIDI or
+> similar, just because, in the future, it might be anticipated that
+> some win32 midi modules might become general use, ...
+
+Yes, it may have been better to call it Audio::MIDI::Win32 or something,
+leaving an obvious namespace for other platforms' modules and for a
+generic 'wrapper' module that does the right thing for the current
+platform.
+
+> > I'm still not convinced of the linux only nature of the broader
+> > topic.
+> 
+> This is true.
+
+Good!  Module names go from the least-specific part of their name at the
+left to the most-specific on the right; if the broader topic is not
+Linux-specific, then the module name should not start Linux::.
+
+> However, can you point me to the relevant DVB documents that describe
+> and standardize the Linux-DVB API? I think you cannot.
+
+What's that got to do with anything?
+
+> You confuse the people that designed the Linux-DVB API with the people
+> who create the DVB standards board.
+
+Modules are named in a hierarchy of subject areas, not after groups of
+people who create APIs and standards.  Even if brian has confused the
+above people, I don't think it matters here.
+
+> You also insist on "the broader topic", but nothing stops people from
+> creating DVB::* or Convetr::DVB::* or whatever modules that care for
+> DVB encoding.
+
+That's exactly the point -- that it would be better to have them all
+grouped together.  And if your module now is given a good name, then
+future module authors can be pointed to it and asked to fit in.
+
+> > > > things that people call "obvious" usually aren't.
+> > > 
+> > > Well, exceptions such this case exist.
+> > 
+> > it doesn't seem obvious to me.
+> 
+> I think you are an exception, though. I don't know many people who
+> equate Linux-DVB and DVB without at least doing some further
+> research...
+
+In your original application you used the word "obvious" to describe the
+reasons for the "DVB" part of the module name, implying that it's
+obvious what DVB means.  I don't think it's obvious.  I certainly
+wouldn't equate DVB and Linux-DVB, because I don't know what either of
+them are!
+
+Fields and specialisms tend to have their own abbreviations, which are
+used so much by people within that field that they seem very obvious
+indeed.  But to somebody outside the field, they are completely
+baffling.  I think that most Cpan users, even most Linux Cpan users, do
+not know what DVB is.
+
+Why does this matter?  Surely if somebody isn't interested in DVB then
+they wouldn't need your module?  Yes, but it's a global namespace; the
+name is there for all to see.  For instance, it shows up in the new
+module listings on use Perl, and when somebody searches for "Linux" on
+search.cpan.org.
+
+If I encounter Linux::DVB in the new module listings, I'm likely (as a
+Linux user) to click on it to see if it's something that'll help me in
+my Linux use -- perhaps DVB is a device for virtual backups, or double-
+velocity bytecoding, or ...
+
+If the module is named something like Video::DVB::Linux then I can
+immediately see that DVB is something to do with video, something I have
+no interest in and can safely ignore.
+
+In general abbreviations are bad.  For something like DVB they're
+unavoidable, but they should at least be prefixed with their field or
+something to provide a clue to the uninitiated.
+
+It appears that the "V" in Linux-DVB stands for video, so it's
+encumbered with a video-related name anyway for those who know the
+abbreviation.  Putting it in the Video:: namespace just clarifies this
+for the rest of us.
+
+Hoping that we can reach some amicable consensus on this.
+
+Best wishes.
+
+Smylers

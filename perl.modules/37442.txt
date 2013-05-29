@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:37442
+Return-Path: <curtis_ovid_poe@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18415 invoked from network); 5 Jan 2005 01:26:04 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 5 Jan 2005 01:26:04 -0000
+Received: (qmail 25122 invoked by uid 225); 5 Jan 2005 01:26:04 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25118 invoked by alias); 5 Jan 2005 01:26:03 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from web60803.mail.yahoo.com (HELO web60803.mail.yahoo.com) (216.155.196.66)
+  by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Tue, 04 Jan 2005 17:25:58 -0800
+Received: (qmail 8331 invoked by uid 60001); 5 Jan 2005 01:25:54 -0000
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  b=dCGoJQr0PANr+QnvIyjqGYpfP0fJSs7bJIS3McaLHo2PTxx8Agt3Twa2O8cAKxXzXh/PAyhLv0ALyCeXIeXgGMH9f7rNB+FizTqOtaip+GCaPwpLP9nXj0sU+hkzt3IM0NPyZYG0gWg0J3yEu9PWwh1VjQFnUKHs21vqDgZfA+k=  ;
+Message-ID: <20050105012554.8329.qmail@web60803.mail.yahoo.com>
+Received: from [65.100.56.22] by web60803.mail.yahoo.com via HTTP; Tue, 04 Jan 2005 17:25:54 PST
+Date: Tue, 4 Jan 2005 17:25:54 -0800 (PST)
+Subject: Re: New pragma suggestion:  aka.pm
+To: modules@perl.org
+In-Reply-To: <040120051715123167%comdog@panix.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: curtis_ovid_poe@yahoo.com (Ovid)
+References: <040120051715123167%comdog@panix.com>
+
+--- _brian_d_foy <comdog@panix.com> wrote: 
+> does "aka" work for those who don't prefer english?  I'd prefer
+> a whole world.
+
+Well, so far that seems to be what most people like.  I originally had
+"class.pm".  No one has come up with suggestions that people seem to
+really be happy with.
+
+alias.pm does not work as there is already an Alias.pm on the CPAN. 
+Perl on a case-insensitive file system will happily "use"  a file with
+the wrong case in the name (though it will choke when you reference the
+package name in the code after that.)
+
+> Or, I think this might (might...) make more sense with the 
+> actual alias closer to the word "alias".
+> 
+>    use alias 'Customer' => 'Namespace::Preferred::Customer';
+
+That doesn't easily allow for:
+
+  use alias 'Namespace::Preferred::Customer';
+
+In my experience using this module (well, a variation that  I used
+extensively at my former company (whose already given me permission to
+duplicate this)), this  syntax is the common case.
+
+There's another aspect to the syntax which  I didn't show which makes
+some of the problems more clear:
+
+  # import also accepts a scalar if you have only one item
+  use aka 'Long::Package::Name::For::Customer',
+      as => 'Cust', import => [qw/foo bar/];
+
+I allow for importing, but I need  to make it very clear what is the
+import list and what is the name we're aliasing to (if not the default
+alias of the last part of the package name).  Since this is  for OO
+classes, this is usually not a problem.
+
+Cheers,
+Ovid
+
+=====
+Silence is Evil            http://users.easystreet.com/ovid/philosophy/decency.html
+Ovid                       http://www.perlmonks.org/index.pl?node_id=17000
+Web Programming with Perl  http://users.easystreet.com/ovid/cgi_course/

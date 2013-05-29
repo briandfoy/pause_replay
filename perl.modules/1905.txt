@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1905
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12023 invoked from network); 20 May 2000 02:51:43 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (0@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 20 May 2000 02:51:43 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id EAA26055;
+	Sat, 20 May 2000 04:51:28 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: summer@perlpress.com
+Cc: "Andreas J. Koenig" <andreas.koenig@anima.de>,
+        Paul Schinder <schinder@pobox.com>, modules@perl.org
+Subject: Re: UNKNOWN Image-Xpm-1.00 ppc-linux 2.2.14
+References: <20000504014031.6326.qmail@c22234-c.scllg1.pa.home.com> <3911746A.448A6F12@queenwood.screaming.net> <p04310101b53876ec1187@[168.143.5.160]> <391302EA.61929D44@queenwood.screaming.net>
+Date: 20 May 2000 04:51:27 +0200
+In-Reply-To: Mark Summerfield's message of "Fri, 05 May 2000 18:20:42 +0100"
+Message-ID: <m37lcq6ij4.fsf@ak-71.mind.de>
+Lines: 58
+User-Agent: Gnus/5.0803 (Gnus v5.8.3) Emacs/20.6
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+(CC'd to modules@perl.org as a place where we can continue discussion
+about PAUSE indexer. p5p would be better for the "readonly"
+namespace.)
+
+>>>>> On Fri, 05 May 2000 18:20:42 +0100, Mark Summerfield <summer@queenwood.screaming.net> said:
+
+ > Andreas,
+ > I recently uploaded some modules to CPAN. One of them, Image::Xpm.pm,
+ > depends on readonly.pm, and although readonly.pm is in my CPAN
+ > directory, it looks like it isn't being indexed, as per Paul Schinder's
+ > bug report below. I don't know why this is but would speculate that it
+ > might be because the name is all lowercase -- I did this deliberately
+ > because readonly.pm is a pragma module and therefore ought to be all
+ > lowercase.
+
+Now I got it. Sorry, this took so long, I had to scan logfiles for an
+hour to get to the bottom of this. No, it's not because of being all
+lowercase.
+
+On April 23rd you submitted readonly-1.04.tar.gz and
+tilefall-1.11.tar.gz. Both contained readonly.pm. You had submitted
+readonly-1.00.tar.gz some time before, so PAUSE automatically reserved
+indexing of readonly namespace to files from you. Due to timing or
+alphabetical order, the PAUSE indexer indexed tilefall-1.11 after
+readonly-1.04 and rightly decided to index readonly in the tilefall
+dist. On April 29th you deleted tilefall-1.11 and thus the indexed
+reference to readonly. That's how readonly disappeared.
+
+Simple solution I: Upload readonly 1.05 and be careful to not include
+readonly.pm in other dists of yours. The last dist containing readonly
+wins. If it is deleted, the indexer does not fall back to a previous
+upload.
+
+Complicated solution: try to not rely on the automatic features of
+PAUSE (many of which are pure implementation glitches), try to get
+approvement from other people first that it is a good idea to occupy
+such a commonplace namespace. It is a big social difference if you
+call a module "readonly" or pragmaProposal::readonly or
+Tk::ColorChooser::readonly.
+
+Simple solution II: upload it again with a defensive name.
+
+The more common a namespace, the more you need the backing of a
+community. That's not because PAUSE has a built in community-approval
+scanner, it's although such a scanner is missing.
+
+I'd say for a pragma like readonly, you should seek to get approval
+from P5P. And I'd recommend scanning the archives because I recall,
+there were other proposals for how a readonly.pm should look like (Hi,
+Graham!). I believe, a readonly pragma is a good idea, and if the
+experts agree with your implementation, this would be a very good
+thing.
+
+I'm sorry that you had to make this experience with several
+complications in one go.
+
+-- 
+andreas

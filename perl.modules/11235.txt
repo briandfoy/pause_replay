@@ -1,0 +1,73 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11235
+Return-Path: <corion@informatik.uni-frankfurt.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2009 invoked by uid 76); 16 Apr 2002 19:56:33 -0000
+Received: from mailout02.sul.t-online.com (HELO mailout02.sul.t-online.com) (194.25.134.17)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Tue Apr 16 19:56:33 2002 -0000
+Received: from fwd00.sul.t-online.de 
+	by mailout02.sul.t-online.com with smtp 
+	id 16xYTh-00077l-0E; Tue, 16 Apr 2002 21:18:57 +0200
+Received: from fightclub (520028990751-0001@[217.80.74.147]) by fmrl00.sul.t-online.com
+	with smtp id 16xYTT-28pRj6C; Tue, 16 Apr 2002 21:18:43 +0200
+Message-ID: <00da01c1e57d$6b6cf520$0e01a8c0@fightclub>
+To: <modules@perl.org>
+Subject: PAUSE registration
+Date: Tue, 16 Apr 2002 21:32:17 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Sender: 520028990751-0001@t-dialin.net
+Approved: news@nntp.perl.org
+From: corion@informatik.uni-frankfurt.de ("Max Maischein")
+
+Name: Max Maischein
+Email: corion@informatik.uni-frankfurt.de
+Homepage: <none>
+Preferred user-ID: CORION
+
+I have some different modules on the backburner, but one that has neared
+completion (in the "I want to add it to CPAN after I discuss it on
+Perlmonks"-sense) - the current name of the module is File::Dependencies. It
+is a wrapper that allows to easily check whether a list of files changed
+(timestamp or MD5) since the last check.
+
+I'm not yet sure if the module name is OK, so if anybody wants to see what
+the module is about, appended is the SYNOPSIS part of the POD. Another name
+already suggested was "File::Modified".
+
+Thanks,
+-max
+
+  use strict;
+  use File::Dependencies;
+
+  my $d = File::Dependencies->new(Files=>['Import.cfg','Export.cfg']);
+
+  while (1) {
+    my (@changes) = $d->changed;
+
+    if (@changes) {
+      print "$_ was changed\n" for @changes;
+      $d->update();
+    };
+    sleep 60;
+  };
+
+Second example - a script that knows when any of its modules have changed :
+
+  use File::Dependencies;
+  my $files = File::Dependencies->new(Files=>[values %INC, $0]);
+
+  # We want to restart when any module was changed
+  exec $0, @ARGV if $files->changed();
+
+
+

@@ -1,0 +1,135 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:72046
+Return-Path: <xiong-cpan@xuefang.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 19965 invoked from network); 24 Jul 2010 08:09:26 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 24 Jul 2010 08:09:26 -0000
+Received: (qmail 19974 invoked by uid 225); 24 Jul 2010 08:09:26 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19969 invoked by alias); 24 Jul 2010 08:09:25 -0000
+X-Spam-Status: No, hits=1.6 required=8.0
+	tests=RCVD_IN_BRBL_LASTEXT
+X-Spam-Check-By: la.mx.develooper.com
+Received: from explorer.x10premium.com (HELO explorer.x10premium.com) (69.175.6.90)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 24 Jul 2010 01:09:24 -0700
+Received: from netblock-68-183-253-57.dslextreme.com ([68.183.253.57])
+	by explorer.x10premium.com with esmtpsa (SSLv3:AES256-SHA:256)
+	(Exim 4.69)
+	(envelope-from <xiong-cpan@xuefang.com>)
+	id 1OcZlb-000745-U5
+	for modules@perl.org; Sat, 24 Jul 2010 04:07:32 -0400
+Subject: RFC: Smart::Comments::Any
+Reply-To: xiong@cpan.org
+To: modules <modules@perl.org>
+Content-Type: text/plain; charset="UTF-8"
+Organization: JAPH
+Date: Sat, 24 Jul 2010 01:07:30 -0700
+Message-ID: <1279958850.25359.169.camel@oz>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
+X-x10premium-MailScanner-Information: Please contact the ISP for more information
+X-x10premium-MailScanner-ID: 1OcZlb-000745-U5
+X-x10premium-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
+X-x10premium-MailScanner-SpamCheck: 
+X-x10premium-MailScanner-From: xiong-cpan@xuefang.com
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - explorer.x10premium.com
+X-AntiAbuse: Original Domain - perl.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - xuefang.com
+X-Old-Spam-Status: No
+Approved: news@nntp.perl.org
+From: xiong-cpan@xuefang.com (Xiong Changnian)
+
+I'm an enthusiastic Smart::Comments user
+(http://www.perlmonks.org/?node_id=842301). I ran into difficulty,
+though; it prints all its output to STDERR. In another project I'm
+already redirecting STDERR, so I want to be able to instruct my smart
+output to go elsewhere: usually, to a disk file. 
+
+I've forked Smart::Comments and rewritten it, both to permit printing to
+any filehandle and to address some stylistic issues. This project is
+incomplete but making good progress. Please see http://xuefang.com/perl/
+for current GitHub repository. 
+
+Originally, I thought I would call the module Smart::Comments::Any, stop
+work when it printed to any arbitrary filehandle opened for writing, and
+write a sort of wrapper module, Smart::Comments::Log, that would manage
+the business (a little tricky for caller) of opening a log file, very
+likely using Log::StdLog. Now I think this was silly and I intend to
+roll all features into the current module, currently named ::Any. 
+
+Since nobody else is involved in my fork, this is a good time for me to
+fix the name issue. Unless provoked to do otherwise, I intend to rename
+the GitHub repo 'smart-comments-any' and eliminate all references,
+everywhere, to '::Log'. 
+
+An alternative, obviously, is to rewrite everything to adhere to
+'::Log', obliterating '::Any'. Since the descendant module is fully
+backwards compatible with vanilla S::C and will print by default to
+STDERR, I'm not sure this is exactly correct. This name change would
+also be more work. 
+
+Early on, I considered submitting this to the current maintainer as a
+new version of Smart::Comments. The more I rewrote, the less appropriate
+this seemed to me. There is no longer much similarity between the two
+and I intend to continue rewriting. Now, my module is a drop-in
+replacement for Vanilla but I anticipate a 2.0 release which will not be
+fully backwards-compatible. I've emailed current maintainer.
+
+Some future work I may do on this module, besides just coming up to the
+goals I've already stated in its POD, include: 
+
+* Moving all pseudo-global constants and variables into %state_of, so
+they can be set on a per-call basis
+
+* Rewriting FILTER to process source code line by line, instead of all
+at once using /g
+
+* Avoiding Filter::Simple, which has issues I'm incompetent to fix
+
+* Changing advertised behavior to allow trailing smart comments outside
+of progress bars
+
+* Implementing progress bars for nested loops
+
+* Offering a callback or plugin interface for those who already have
+in-scope methods for dumping complex objects
+
+I should also like to work on issues opened against vanilla S::C at RT. 
+
+The most strenuous objection to Smart::Comments is that it filters
+source code. I settled on S::C after trying alternative approaches, none
+of which fully satisfied. But rewriting it, *not* as a source filter, is
+still a long-term possibility. 
+
+Some devs have suggested alternative names for the project; none really
+speak to me. I see shortcomings in '::Any'; but I'm a little hostile
+toward long identifiers, especially those of mixed case. 
+
+Current ideas include: 
+
+Smart::Comments::Any
+Smart::Comments::Log
+Smart::Comments::File
+Smart::Comments::Anyout
+Smart::Comments::Output
+Devel::Comments
+Filter::Comments
+Smarter::Comments
+
+Thank you, 
+
+--Xiong
+
+
+
+
+
+
+

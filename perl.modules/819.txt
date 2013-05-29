@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:819
+Return-Path: <dsb@world.std.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30477 invoked from network); 7 Jan 2000 17:52:20 -0000
+Received: from ne.mediaone.net (HELO chmls05.mediaone.net) (24.128.1.70)
+  by tmtowtdi.perl.org with SMTP; 7 Jan 2000 17:52:20 -0000
+Received: from david (boyski.ne.mediaone.net [24.128.40.116])
+	by chmls05.mediaone.net (8.8.7/8.8.7) with ESMTP id MAA06603
+	for <modules@perl.org>; Fri, 7 Jan 2000 12:52:13 -0500 (EST)
+Message-ID: <4.2.2.20000107115005.00bfb500@world.std.com>
+X-Sender: dsb@world.std.com
+X-Mailer: QUALCOMM Windows Eudora Pro Version 4.2.2 
+Date: Fri, 07 Jan 2000 12:52:03 -0500
+To: modules@perl.org
+Subject: ANNOUNCE: Argv 0.42
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Approved: news@nntp.perl.org
+From: dsb@world.std.com (David Boyce)
+
+This is to announce a module which has actually been on CPAN for a while now:
+
+Argv         bdph       Provide an OO interface to an ARGV         DSB
+
+Argv is designed to model a command line as an object for the benefit of 
+wrapper programs which may need to do lots of manipulation on it. I had 
+written such a wrapper and it ended up doing a heinous amount of shifting, 
+splicing, looping, mapping and grepping on @ARGV. In some cases I had to 
+localize @ARGV in order that Getopt:Long could operate on a copy. And all 
+of this had to be done differently for UNIX and Windows. The final result 
+was hideous, so I wrote this module in response. After instantiating an 
+Argv object, you can tell it to parse its options into as many user-defined 
+"option sets" as you wish, then recombine them in any permutation and run 
+them via the system, exec, and qx methods. Here's a non-real-world example 
+from the POD:
+
+# A demonstration of how to use option sets in a wrapper program.
+# Instantiate an object using the current @ARGV and parse its
+# flags into 3 different sets, of which we'll use one for 'who'
+# and another for 'uname'.
+@ARGV = qw(Who -a -y foo -r);
+my $who = Argv->new(@ARGV);
+$who->dbglevel(1);
+$who->optset(qw(UNAME FOO WHO));
+$who->parseUNAME(qw(a m n p));
+$who->parseFOO(qw(y=s z));
+$who->parseWHO('r');
+warn "got -y flag in option set FOO\n" if $who->flagFOO('y');
+print Argv->new('uname', $who->optsUNAME)->qx;
+$who->prog(lc $who->prog);
+$who->exec(qw(WHO));
+
+A secondary value is for Unix/Windows interoperability. The system, exec, 
+and qx methods automatically quote their arguments against the ^&@$ DOS 
+shell and provide various other conveniences in aid of spawning new 
+processes on either platform without a lot of special-casing. Thus, even 
+users with no interest in advanced manipulation of argv's may find this 
+module useful as a portability enhancer.
+
+The README is at ftp://ftp.cleartool.com/pub/Argv/README, the full POD at 
+ftp://ftp.cleartool.com/pub/Argv/Argv.html, and the latest full package is 
+ftp://ftp.cleartool.com/pub/Argv/Argv-0.42.tar.gz.
+
+And since I'm afraid it may figure in any ensuing discussions, here's a 
+section from the README:
+
+A NOTE ON THE NAME
+
+I'm aware that single-level namespaces are generally deprecated, but there 
+are many modern exceptions; see Memoize, Coy, and Interpolation among 
+others. I tried hard to fit mine into an existing namespace as well as 
+soliciting ideas at modules@perl.org. But I couldn't find a natural place 
+by myself and no one on the modules list was able to suggest a fitting spot 
+either.
+
+Considering the alternatives of putting it in a 'wrong' category just for 
+the sake of having one, or creating a category ghetto for it to live in all 
+alone, I decided there was a reasonable case for making an exception. IMHO 
+"Argv" is just the natural name for this module. The CPAN/modules@perl.org 
+policies don't say that single-level names are forbidden, they simply have 
+wording to the effect that one should think long and hard before using such 
+a name. I'm here to say that I did think long (seven months) and hard.
+
+Thanks in advance,
+David Boyce 
+

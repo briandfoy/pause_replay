@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:15038
+Return-Path: <piers@gnu.pipetree.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29630 invoked by uid 76); 6 Nov 2002 12:35:11 -0000
+Received: from smtp.mailbox.co.uk (HELO smtp.mailbox.net.uk) (195.82.125.32) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-11-06 12:35:11Z
+Received: from [195.82.105.244] (helo=gnu.pipetree.com)	by smtp.mailbox.net.uk with esmtp (Exim 3.36 #1)	id 189POm-00041a-00; Wed, 06 Nov 2002 12:35:08 +0000
+Received: (from piers@localhost)	by gnu.pipetree.com (8.11.6/8.11.6) id gA6CaB824050;	Wed, 6 Nov 2002 12:36:11 GMT
+Date: Wed, 6 Nov 2002 12:36:11 +0000
+To: Arthur Bergman <arthur@contiller.se>
+Cc: Piers Harding <piers@ompa.net>, Scott Penrose <scottp@dd.com.au>,   comdog@panix.com, modules@perl.org
+Subject: Re: VFS on CPAN
+Message-ID: <20021106123611.A23954@gnu>
+References: <20021106121240.A23309@gnu> <E5D0CA6B-F182-11D6-9C4F-003065D64CBE@contiller.se>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5.1i
+In-Reply-To: <E5D0CA6B-F182-11D6-9C4F-003065D64CBE@contiller.se>; from arthur@contiller.se on Wed, Nov 06, 2002 at 01:25:55PM +0100
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: piers@ompa.net (Piers Harding)
+
+
+OK -if that's the vote then I will live with it.  As I said the GnomeVFS
+case is slightly different in that that is the name of the library
+( http://developer.gnome.org/doc/API/gnome-vfs/index.html ) - but in the
+interests of peace :-) ....  It is far more important to get the general
+scheme of VFS::x VFS::y etc. going.
+
+Cheers.
+
+
+On Wed, Nov 06, 2002 at 01:25:55PM +0100, Arthur Bergman wrote:
+> Hi,
+> 
+> Just because the library is named GnomeVFS doesn't mean it have to have 
+> that name on CPAN does it? Doesn't VFS::Gnome give enough credit to the 
+> underlying library? Why do we need to to say the obscure acronym ;) 
+> twice in 15 characters, taking up 6!
+> 
+> I don't really mind between VFS:: and FileSys::Virtual, if you are 
+> really planning on writing
+> an abstract VFS.pm that is designed to work with multiple 
+> implmentations I am think VFS should be a go. However I don't think 
+> VFS::GnomeVFS should be a go.
+> 
+> VFS::GnomeVFS
+> VFS::ApacheVFS
+> VFS::DarwinVFS
+> VFS::LinuxVFS
+> 
+> Doesn't read well at all.
+> 
+> Regards Arthur
+> 
+> On onsdag, nov 6, 2002, at 13:12 Europe/Stockholm, Piers Harding wrote:
+> 
+> >
+> > Granted - GnomeVFS is possibly a bit repetitious, but in this case
+> > GnomeVFS is the name of the Gnome library that is being used as a VFS
+> > driver.   However, Filsys::Virtual is excessively verbose, as there
+> > is allready a degree of acceptance in the Open Source community at
+> > large of the meaning of the VFS acronym being Virtual File System -
+> > hence GnomeVFS ( not to mention other projects such as Apache and the
+> > VFS component, Linux etc. ).
+> >
+> > consider this as a potential usage model:
+> >
+> > VFS using core Perl  functions for the driver might be called like this
+> > -
+> > use VFS;
+> >
+> > If a user wanted to use the functions capable of a certain driver they
+> > could address it like this -
+> >
+> > use VFS GnomeVFS;
+> > or
+> > use VFS qw(GnomeVFS);
+> > or
+> > use VFS q/:gnomevfs/;
+> >
+> > The point being that the VFS core can be used in limited situatiions,
+> > and additional drivers, pulled in as required, even at run time.
+> >
+> > This lends it's self to a node-leaf relationship with -
+> > VFS.pm
+> > VFS/LWP.pm <--- VFS functions based on LWP
+> > VFS/GnomeVFS.pm
+> > VFS/SomeOtherLib.pm
+> > ..
+> >
+> >
+> > Cheers.
+> >

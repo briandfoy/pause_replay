@@ -1,0 +1,92 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46
+Return-Path: <John.Redford@fmr.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25330 invoked from network); 14 Oct 1999 17:54:46 -0000
+Received: from gw16e.fmr.com (HELO gw16i.fmr.com) (192.223.252.80)
+  by tmtowtdi.perl.org with SMTP; 14 Oct 1999 17:54:46 -0000
+Received: (from smtp@localhost)
+	by gw16i.fmr.com (8.8.7/8.8.7) id NAA07544
+	for <modules@perl.org>; Thu, 14 Oct 1999 13:54:44 -0400 (EDT)
+Received: from msgmro101nts.fmr.com(172.26.2.64) by gw16i.fmr.com via smap (V2.0)
+	id xma007370; Thu, 14 Oct 99 13:54:34 -0400
+Received: by msgmro101nts.fmr.com with Internet Mail Service (5.5.2448.0)
+	id <46YY25WK>; Thu, 14 Oct 1999 13:54:33 -0400
+Message-ID: <C139F4D49384D2118EB60008C7A4337B578494@MSGBOS675NTS.fmr.com>
+To: "'John Porter'" <jdporter@min.net>
+Cc: modules@perl.org
+Subject: RE: Import module
+Date: Thu, 14 Oct 1999 13:54:28 -0400
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2448.0)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Approved: news@nntp.perl.org
+From: John.Redford@fmr.com ("Redford, John")
+
+The usage is, of course, in two parts. The interface for the importing
+package is pretty normal:
+
+		use Module;
+		use Module qw(foo bar %baz);
+		use Module qw(newname=oldname);
+
+The interface for the module exporting symbols is:
+
+	package Module;
+		use Export;
+		use vars qw(@EXPORT @EXPORT_OK @EXPORT_ALWAYS %EXPORTED);
+		@EXPORT = qw($a @b c &d %f);	# Exported by default
+		@EXPORT_OK = qw($g @h);		# Additionally exported if
+asked for
+		@EXPORT_ALWAYS = qw($i);		# Exported
+unconditionally
+
+		sub IMPORT_HOOK { ... }
+		sub EXPORT_HOOK { ... }
+
+The '%EXPORTED' hash, if defined, winds up containing a map of all the
+symbols that were exported and where they were exported to.
+The hook functions are used to implement 'exporting by tags' and 'exporting
+by regexp', dynamic symbol definition, and so forth.
+
+
+		-----Original Message-----
+		From:	'John Porter' [mailto:jdporter@min.net]
+		Sent:	Thursday, October 14, 1999 12:37 PM
+		To:	Redford, John
+		Cc:	modules@perl.org
+		Subject:	Re: Import module
+
+		Redford, John wrote:
+		> Like Exporter::Import?
+		> 
+		> I would have no problem with that name. I just imagine it
+might be a little
+		> confusing to people, as it had no relationship to
+Exporter.
+
+		Well, it's seems to be all about modifying another
+namespace.
+
+		Say, could you give a brief example of the module's usage?
+		That seems to help, in many cases...
+
+
+		> I also feel a little odd about using "someone else's
+namespace". I don't
+		> want to make trouble for maintainers of Exporter by having
+people send them
+		> mail about a module that isn't theirs.
+
+		Yes, and what makes it particularly weird is that Exporter
+is a core module.
+
+		I wish someone whose opinion carries some real weight
+(compared to mine)
+		would chime in on the subject...
+
+		-- 
+		John Porter

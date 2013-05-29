@@ -1,0 +1,96 @@
+Newsgroups: perl.ithreads,perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.ithreads:325 perl.modules:12778 perl.module-authors:455
+Return-Path: <arthur@contiller.se>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 97331 invoked by uid 76); 21 Jul 2002 22:38:37 -0000
+Received: from tistel.levonline.com (HELO raven.levonline.com) (193.15.191.243)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Sun Jul 21 22:38:37 2002 -0000
+Received: from localhost (as2-1-7.o.s.bonet.se [194.236.70.68])
+	(authenticated)
+	by raven.levonline.com (8.11.6/8.11.6) with ESMTP id g6LMc6g13055;
+	Mon, 22 Jul 2002 00:38:06 +0200
+Date: Mon, 22 Jul 2002 00:38:12 +0200
+Subject: Re: [CAUTION] Thread-saving modules
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Mime-Version: 1.0 (Apple Message framework v482)
+Cc: module-authors@perl.org, modules@perl.org, perl-ithreads@perl.org
+To: Elizabeth Mattijsen <liz@dijkmat.nl>
+In-Reply-To: <4.2.0.58.20020721195048.0270e2b0@mickey.dijkmat.nl>
+Message-ID: <8A3439EB-9CFA-11D6-913C-003065D64CBE@contiller.se>
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Apple Mail (2.482)
+Approved: news@nntp.perl.org
+From: arthur@contiller.se (Arthur Bergman)
+References: <4.2.0.58.20020721195048.0270e2b0@mickey.dijkmat.nl>
+
+Huh,
+
+Huh
+
+Huh
+
+I think I will find this is not really a threads bug, will look at it.
+
+Arthur
+
+On s=F6ndag, juli 21, 2002, at 08:22 , Elizabeth Mattijsen wrote:
+
+> This may be of interest to module authors who are looking at making=20
+> their modules thread-safe.  This is particularly important if your=20
+> module has a DESTROY subroutine that actually does something, such as=20=
+
+> DBI drivers.
+>
+> Because of a bug in 5.8.0, the DESTROY method will be called too many=20=
+
+> times when you have created threads in a threaded environment.  The=20
+> extra times (by the looks, once for each thread created + once for the=20=
+
+> main thread) it _is_ called, the first parameter to DESTROY is=20
+> defective (by the looks of it, pointing to some random item).
+>
+> Please note that this problem only exists when threads have actually=20=
+
+> been created.  It does not seem to occur when you are just executing=20=
+
+> your program in a Perl built with thread-support, but without actually=20=
+
+> starting any threads.  But since any module can start a thread without=20=
+
+> it being visible to the outside world, it _is_ something to be aware =
+of=20
+> nonetheless.
+>
+> You should therefore _always_ check the validity of the first value=20
+> passed to DESTROY and make sure it is what you expect it to be.  If =
+you=20
+> don't, you're looking at indeterminate (strange) execution errors or=20=
+
+> segfaults.
+>
+> The check could be as simple as:
+>
+>   return if ref($_[0]) ne 'your::class::name';
+>
+> Please note that you cannot use the isa() method, as you may not be=20
+> dealing with an object anymore at this stage.  So this makes it tough=20=
+
+> for sub-classes.  So maybe:
+>
+>   return unless ref($_[0]);
+>
+> could be enough, but as value passed to DESTROY seems to be random, it=20=
+
+> _could_ conceivably be pointing to another (valid) object.
+>
+>
+> Hope this will save some people some time as it cost me most of today=20=
+
+> to figure this one out...  ;-(
+>
+>
+> Liz
+>
+

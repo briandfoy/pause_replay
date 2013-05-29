@@ -1,0 +1,95 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10281
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 635 invoked by uid 76); 19 Feb 2002 19:11:28 -0000
+Received: from root@dubravka.kbx.de (HELO pause.perl.org) (212.40.160.59)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Tue Feb 19 19:11:28 2002 -0000
+Received: (from nobody@localhost)
+	by pause.perl.org (8.9.3/8.9.3) id UAA08264;
+	Tue, 19 Feb 2002 20:11:21 +0100
+Date: Tue, 19 Feb 2002 20:11:21 +0100
+Message-ID: <200202191911.UAA08264@pause.perl.org>
+Reply-To: modules@perl.org
+Subject: Module submission Proc::NiceSleep
+To: modules@perl.org
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Proc::NiceSleep
+  DSLIP:       bmpfp
+  description: Configurable sleep and priority access.
+  userid:      JOSHR (Josh Rabinowitz)
+  chapterid:    4 (Operating_System_Interfaces)
+  communities:
+    personal mailing lists, friends
+
+  similar:
+    Time::HiRes
+
+  rationale:
+
+    There are times when being 'nice' isn't enough -- in some
+    situations that might not yield the system as much as you want. This
+    perl module is a rewrite of some code used to keep a long-running
+    script from slamming a server.
+
+    Simple system priorities may not yield the system enough when the
+    real system hog is a behind-the-scenes database (perhaps from
+    inefficient database queries). In my experience this might occur
+    when the program is prone to bottleneck at the disk -- perhaps
+    because of extensive random seeks, or because the program trying to
+    write to the file system faster than the disk can handle, or for
+    many other reasons.
+
+    This perl module allows a flexible and easy-to-understand mechanism
+    to have a process 'sleep' in a configurable and judicious manner, so
+    as to allow other processes less-obstructed use of the system.
+
+    As written, this module attempts to load Time::HiRes, and uses that
+    module's time() and sleep() replacements whereever possible. This
+    module is _not_ dependent on Time::HiRes. I had originally intended
+    to call this module Time::SmartSleep but decided that the current
+    proposed name (Proc::NiceSleep) was more descriptive and
+    appropriate: at its core this module makes use of time() and
+    sleep()-like behavior heavily. It additionally provides an easy,
+    fault-tolerant setpriority() wrapper called nice(). I believe that
+    this module should be included in the module list because it offers
+    a simple, well understood and tolerant wrapper to setpriority()
+    (called nice()), because it will, if used appropriately, contribute
+    to the more gentle operation of perl scripts on computers all across
+    the land, and because it offers an easy way to retro-fit an existing
+    loop-based script to use sleep() in a quasi-intelligent and, (if
+    Time::HiRes is loaded and supports it), fine-grained manner.
+
+    In the spirit of release early, release often, the current beta
+    version can be found at http://cpan.perl.org/authors/id/J/JO/JOSHR/
+    .
+
+    I look forward to hearing comments about the API, namespace use, or
+    features the module should or shouldn't have. Thanks in advance,
+    Josh 'joshr' Rabinowitz a
+
+  enteredby:   JOSHR (Josh Rabinowitz)
+  enteredon:   Tue Feb 19 19:11:20 2002 GMT
+
+The resulting entry would be:
+
+Proc::
+::NiceSleep       bmpfp Configurable sleep and priority access.      JOSHR
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=7a000000_c0f451d66950d65f&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=7a000000_c0f451d66950d65f&SUBMIT_pause99_add_mod_insertit=1

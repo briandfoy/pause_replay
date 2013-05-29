@@ -1,0 +1,139 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5492
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 50172 invoked from network); 11 May 2001 08:50:27 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by onion.valueclick.com with SMTP; 11 May 2001 08:50:27 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id KAA23020;
+	Fri, 11 May 2001 10:46:43 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: kstar@cpan.org
+Cc: Kirrily Skud Robert <skud@newbabe.pobox.com>, jvromans@squirrel.nl,
+        modules@perl.org,
+        "Reefknot Developers' List" <reefknot-devel@sourceforge.net>,
+        Andreas Koenig <andreas.koenig@anima.de>
+Subject: Some technical notes about the perms table on PAUSE (Was: [Reefknot-devel] Re: request CPAN id REEFKNOT (fwd))
+References: <Pine.LNX.4.21.0104161537520.20226-100000@grendel.csc.smith.edu>
+	<20010420142952.A17058@infotrope.net>
+	<20010510222852.C6797@sirius.wolfetech.com>
+Reply-To: modules@perl.org
+Date: 11 May 2001 10:46:43 +0200
+In-Reply-To: <20010510222852.C6797@sirius.wolfetech.com>
+Message-ID: <m31ypwclxo.fsf_-_@ak-71.mind.de>
+Lines: 104
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Thu, 10 May 2001 22:28:52 -0700, "Kurt D. Starsinic" <kstar@wolfetech.com> said:
+
+  > On Fri, Apr 20, 2001 at 02:29:52PM -0400, Kirrily Skud Robert wrote:
+ >> Johan and/or modules@perl.org,
+ >> 
+ >> What is the "official" best way to manage a module which may have
+ >> different people acting as release managers over time?  It seems
+ >> like the only current way is to just have the release manager upload it
+ >> under their own CPAN id.  
+
+  >     I think that this just became an FAQ.  You have accurately described
+  > the "official" best way.  modules@, should we craft a response and put it
+  > on the web?
+
+I'll draft a technical response as a starter.
+
+The PAUSE database has a table for permissions that is currently
+invisible to all users. The table describes an access control list for
+module namespaces:
+
+CREATE TABLE perms (
+  c int(10) unsigned DEFAULT '0' NOT NULL auto_increment,
+  package char(245) binary DEFAULT '' NOT NULL,
+  userid char(10) DEFAULT '' NOT NULL,
+  UNIQUE pack_user (package,userid),
+  KEY package (package),
+  PRIMARY KEY (c)
+);
+
+When the PAUSE indexer scans a package it only indexes the found
+namespaces if the perms table lists the uploading developer in the
+perms table for each found package. This allows any number of
+maintainers to be responsible for a namespace and thus allows e.g. PDL
+to be indexed no matter if Karl Glazebrook or Tuomas J. Lukka upload
+the latest version.
+
+Uploading generaly is not controlled by the database. It's just the
+indexing that controls that everything works "as expected".
+
+The two normal ways to get into the perms table are by either
+registering a namespace or by doing a first upload. Uploading, of
+course, only works on a first come first serve basis. If a package has
+a single maintainer, this is sufficient and works automatically. If
+the owner of a table decides to pass maintainance to another author,
+this is also sufficient, because changing the userid in the
+registration table also triggers a change in the perms table so that
+the new maintainer achieves ownership automatically.
+
+Collaborative work can be mapped into the perms table by manual
+intervention, i.e. by simple adding more maintainers to the perms
+table for any involved namespace. There's no Web interface to change
+the access control list. So if people want to work together on a
+module, they need to tell modules@perl.org about the intent, wait for
+an answer and then they can upload anarchically or care for
+coordination on their own.
+
+Future: I'm aware that viewing and making changes to the ACL of a
+given namespace would improve the infrastructure. But I cannot
+envision a web interface to manage the ACL that is both easy to use
+and sufficiently fast. I'll take a stab at least at viewing the ACL so
+that the FAQ loses ground. Editing capabilities will follow later when
+I have my authors-selection-widget ready.
+
+ >> This seems bad to me... currently CPAN allows anyone to upload anything
+ >> with any name, so I (SKUD) could upload (for instance) an LWP module
+ >> with a higher version number than the current one, and it could cause
+ >> all kinds of problems.  However, it would be fairly obvious that I'd
+ >> done something bad, because someone would fairly rapidly realise that
+ >> I'm not actually the maintainer of that module and spank me.  Even that
+ >> -- relying on a social fix to potentially dangerous exploits -- is
+ >> pushing our luck, but at least it's *something*.
+
+  >     Could someone with more expertise (Andreas) field this question?
+
+We're safe in that respect.
+
+ >> If a module often changes hands, perhaps every couple of versions, then
+ >> how will anyone know whether they can trust any given version? 
+
+  >     One does not achieve trust of Open Source software based on finding
+  > the source code in a particular directory.
+
+Yes.
+
+ >> The situation becomes yet more complex when we have a family of modules,
+ >> any of which could be maintained by different people over time.
+ >> Wouldn't it be better to go to authors/id/R/RE/REEFKNOT/ and be able to
+ >> see all the reefknot-related modules in one place?  (We currently have
+ >> Net::ICal, and will shortly have Net::ITIP, Net::IMIP, and a number of
+ >> Reefknot::* modules).
+
+  >     CPAN.pm is the high-level interface to CPAN.  One should not browse
+  > the FTP directories directly and expect to be enlightened.
+
+That's correct, but it turned out insufficient whenever the indexing
+doesn't work as desired. That's why recent versions of CPAN.pm have
+the ls command that lists all distributions in an author's directory.
+
+But in general indexer problems can be fixed so that one doesn't need
+the ls command. The ls command is invaluable for CPAN admins though.
+
+
+-- 
+andreas

@@ -1,0 +1,54 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:470
+Return-Path: <Tim.Bunce@ig.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10259 invoked from network); 4 Nov 1999 21:07:58 -0000
+Received: from finch-post-11.mail.demon.net (194.217.242.39)
+  by tmtowtdi.perl.org with SMTP; 4 Nov 1999 21:07:58 -0000
+Received: from ignite.demon.co.uk ([158.152.8.99] helo=oink)
+	by finch-post-11.mail.demon.net with smtp (Exim 2.12 #1)
+	id 11jU6u-000JnU-0B; Thu, 4 Nov 1999 21:07:56 +0000
+Received: from toad by oink with SMTP (PP) id <21707-0@oink>;
+          Thu, 4 Nov 1999 21:07:37 +0000
+Received: by toad.ig.co.uk (SMI-8.6/SMI-SVR4) id VAA02439;
+          Thu, 4 Nov 1999 21:07:30 GMT
+Date: Thu, 4 Nov 1999 21:07:30 +0000
+To: John Porter <jdporter@min.net>
+Cc: modules@perl.org, Michael G Schwern <schwern@pobox.com>
+Subject: Re: Tie::Cache::LRU
+Message-ID: <19991104210730.D2171@ig.co.uk>
+References: <sfciu3nv4y1.fsf@hohenstaufen.in-berlin.de> <19991102144605.C23528@min.net> <19991103004139.K18518@ig.co.uk> <sfcso2nlwl7.fsf@hohenstaufen.in-berlin.de> <19991103163330.A5253@toldyouso.com> <19991104094159.A3043@min.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3i
+In-Reply-To: <19991104094159.A3043@min.net>; from John Porter on Thu, Nov 04, 1999 at 09:41:59AM -0500
+Organization: Paul Ingram Group, Software Systems, +44 1 483 862800
+Approved: news@nntp.perl.org
+From: Tim.Bunce@ig.co.uk (Tim Bunce)
+
+On Thu, Nov 04, 1999 at 09:41:59AM -0500, John Porter wrote:
+> 
+> It occurs to me that the essential problem is that :: has two
+> different meanings.  The first :: in Tie::Cache::LRU is semantically
+> different from the second, because you could s/Tie::Cache/TieCache/
+> (or even s/Tie::Cache/Fubar/) without changing the meaning the code. 
+> In this case :: is simply a namespace "path separator".  The second
+> and subsequent occurrences of :: indicate things that live in that
+> namespace, including is-a relationships between things.
+
+Larry has specifically said that :: should _not_ be taken to denote an
+is-a relationship, in general.
+
+The perlmod pod says:
+
+     Packages may be nested inside other packages:
+     $OUTER::INNER::var.  This implies nothing about the order of name
+     lookups, however.  All symbols are either local to the current
+     package, or must be fully qualified from the outer package name
+     down.  For instance, there is nowhere within package OUTER that
+     $INNER::var refers to $OUTER::INNER::var.  It would treat package
+     INNER as a totally separate global package.
+
+Tim.

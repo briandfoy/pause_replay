@@ -1,0 +1,431 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:84530
+Return-Path: <kevin@dawson10.plus.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 27051 invoked from network); 31 Jan 2013 19:55:03 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 31 Jan 2013 19:55:03 -0000
+Received: (qmail 8472 invoked by uid 225); 31 Jan 2013 19:55:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8464 invoked by alias); 31 Jan 2013 19:55:01 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from avasout04.plus.net (HELO avasout04.plus.net) (212.159.14.19)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 31 Jan 2013 11:54:55 -0800
+Received: from [172.18.2.13] ([46.208.150.30])
+	by avasout04 with smtp
+	id ujun1k0080fbvcE01juoRY; Thu, 31 Jan 2013 19:54:49 +0000
+X-CM-Score: 0.00
+X-CNFS-Analysis: v=2.0 cv=XeZXOvF5 c=1 sm=1 a=nJghzlM+jJoHeEPMRnHe6A==:17
+ a=pTzqZbqM9tkA:10 a=ZMmtbbABM8MA:10 a=ihvODaAuJD4A:10 a=8nJEP1OIZ-IA:10
+ a=EBOSESyhAAAA:8 a=UmkiGGfFTm4A:10 a=5cbkGCowAAAA:8 a=eNcD7ojaAAAA:8
+ a=_IEhM8lNAAAA:8 a=oncSVTZkNvQw8wHIp2QA:9 a=wPNLvfGTeEIA:10
+ a=nJghzlM+jJoHeEPMRnHe6A==:117
+X-AUTH: dawson10:2500
+Message-ID: <510ACC07.8030003@dawson10.plus.com>
+Date: Thu, 31 Jan 2013 19:54:47 +0000
+User-Agent: Mozilla/5.0 (X11; Linux i686; rv:17.0) Gecko/20130106 Thunderbird/17.0.2
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: I ve been getting a 404 for PPIx::Regexp
+References: <510978F7.9050403@dawson10.plus.com> <310120131336230601%brian.d.foy@gmail.com>
+In-Reply-To: <310120131336230601%brian.d.foy@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: kevin@dawson10.plus.com (kevin dawson)
+
+On 31/01/13 19:36, brian d foy wrote:
+> [[ This message was both posted and mailed: see
+>     the "To," "Cc," and "Newsgroups" headers for details. ]]
+>
+> In article <510978F7.9050403@dawson10.plus.com>, kevin dawson
+> <kevin@dawson10.plus.com> wrote:
+>
+>> I've been getting a 404 for PPIx::Regexp, it exists on other mirrors
+>> (e.g. cpan.hexten.net) and is in the PAUSE index, any idea who I should
+>> kick?"
+> I find this file just fine on www.cpan.org. Can you fetch it by hand
+> without CPAN.pm or LWP?
+>
+> I was able to download the right file with LWP. I checked inside the
+> package to ensure it was the right version:
+>
+> use LWP::Simple;
+> use v5.10;
+>
+> my $code = getstore(
+>     'http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz',
+>     '/Users/brian/Desktop/PPIx-Regexp-0.030.tar.gz'
+>     );
+> say "code is $code";
+>
+>
+>> Fetching with LWP:
+>> http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+>> LWP failed with code[404] message[Not Found]
+> This worked for me. I don't think this is a PAUSE or CPAN issue, but
+> there might be a problem with your CPAN.pm. If you still have problems,
+> you might want to report it to CPAN.pm.
+>
+Hi brian
+
+I hope the following helps,
+
+I don't want to install from another mirror, nor will an average user.
+
+I was testing Perl 5.17.8
+
+I can't install Padre as one of it's dependency modules requires 
+PPIx::Regexp
+
+hence there is an issue,
+
+see also RT - https://rt.cpan.org/Public/Bug/Display.html?id=82953
+
+I hope this helps, the error is not client side it's server side, hence 
+PAUSE, I think.
+
+regards
+kevin
+
+
+kevin@vinny:~$ plv LWP::Simple
+Module                                    Installed       CPAN
+Database was generated on Thu, 31 Jan 2013 15:43:26 GMT
+LWP::Simple                                    6.00       6.00
+
+kevin@vinny:~$ perl -v
+
+This is perl 5, version 17, subversion 8 (v5.17.8) built for 
+i686-linux-thread-multi
+
+Copyright 1987-2012, Larry Wall
+
+Perl may be copied only under the terms of either the Artistic License 
+or the
+GNU General Public License, which may be found in the Perl 5 source kit.
+
+Complete documentation for Perl, including FAQ lists, should be found on
+this system using "man perl" or "perldoc perl".  If you have access to the
+Internet, point your browser at http://www.perl.org/, the Perl Home Page.
+
+kevin@vinny:~$ cpan
+
+cpan shell -- CPAN exploration and modules installation (v1.9951)
+Enter 'h' for help.
+
+cpan[1]> install PPIx::Regexp
+Database was generated on Thu, 31 Jan 2013 15:43:26 GMT
+Running install for module 'PPIx::Regexp'
+Running make for W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Fetching with LWP:
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+LWP failed with code[404] message[Not Found]
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:53-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2a01:608:2:4::2, 2620:101:d000:8::140:1
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:53 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+     Warning: no success downloading 
+'/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394'. 
+Giving up on it.
+Fetching with LWP:
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+LWP failed with code[404] message[Not Found]
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:53-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2620:101:d000:8::140:1, 2a01:608:2:4::2
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:53 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+     Warning: no success downloading 
+'/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394'. 
+Giving up on it.
+Fetching with LWP:
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+LWP failed with code[404] message[Not Found]
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:53-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2620:101:d000:8::140:1, 2a01:608:2:4::2
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:54 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+     Warning: no success downloading 
+'/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394'. 
+Giving up on it.
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:54-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2a01:608:2:4::2, 2620:101:d000:8::140:1
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:54 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:54-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2a01:608:2:4::2, 2620:101:d000:8::140:1
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:54 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:54-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2a01:608:2:4::2, 2620:101:d000:8::140:1
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:54 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+     Warning: no success downloading 
+'/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394'. 
+Giving up on it.
+No external ftp command available
+
+Fetching with LWP:
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+LWP failed with code[404] message[Not Found]
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:54-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2a01:608:2:4::2, 2620:101:d000:8::140:1
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:54 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+     Warning: no success downloading 
+'/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394'. 
+Giving up on it.
+Fetching with LWP:
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+LWP failed with code[404] message[Not Found]
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:54-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2620:101:d000:8::140:1, 2a01:608:2:4::2
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:55 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+     Warning: no success downloading 
+'/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394'. 
+Giving up on it.
+Fetching with LWP:
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+LWP failed with code[404] message[Not Found]
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:55-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2a01:608:2:4::2, 2620:101:d000:8::140:1
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:55 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+     Warning: no success downloading 
+'/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394'. 
+Giving up on it.
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:55-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2620:101:d000:8::140:1, 2a01:608:2:4::2
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:55 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:55-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2a01:608:2:4::2, 2620:101:d000:8::140:1
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:55 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+
+Trying with
+     /usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394"
+to get
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+--2013-01-31 19:43:55-- 
+http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+Resolving www.cpan.org (www.cpan.org)... 212.117.177.118, 
+2620:101:d000:8::140:1, 2a01:608:2:4::2
+Connecting to www.cpan.org (www.cpan.org)|212.117.177.118|:80... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2013-01-31 19:43:55 ERROR 404: Not Found.
+
+
+     Function system("/usr/bin/wget -O 
+"/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394" 
+"http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz" ")
+     returned status 8 (wstat 2048), left
+/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394 
+with size 0
+     Warning: no success downloading 
+'/home/kevin/.cpan/sources/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz.tmp23394'. 
+Giving up on it.
+No external ftp command available
+
+Please check, if the URLs I found in your configuration file
+(http://www.cpan.org/, http://www.cpan.org/, http://www.cpan.org/) are
+valid. The urllist can be edited. E.g. with 'o conf urllist push
+ftp://myurl/'
+
+Could not fetch authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+

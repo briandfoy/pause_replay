@@ -1,0 +1,113 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:59424
+Return-Path: <pjf@perltraining.com.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22853 invoked from network); 8 Mar 2008 23:33:14 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 8 Mar 2008 23:33:14 -0000
+Received: (qmail 25358 invoked by uid 225); 8 Mar 2008 23:33:14 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25354 invoked by alias); 8 Mar 2008 23:33:13 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from teddybear.perltraining.com.au (HELO teddybear.perltraining.com.au) (210.23.138.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 08 Mar 2008 15:33:06 -0800
+Received: from [210.23.138.172] (moemi.perltraining.com.au [210.23.138.172])
+	by teddybear.perltraining.com.au (Postfix) with ESMTP id 5C751A8015;
+	Sun,  9 Mar 2008 10:33:01 +1100 (EST)
+Message-ID: <47D32226.5000103@perltraining.com.au>
+Date: Sun, 09 Mar 2008 10:32:54 +1100
+Organization: Perl Training Australia
+User-Agent: Thunderbird 2.0.0.12 (Windows/20080213)
+MIME-Version: 1.0
+To: modules@perl.org
+Cc: Lionel.Cons@cern.ch
+Subject: Re: Lexical Fatal - Module naming advice / prior art check
+References: <47D1B5D6.1070602@perltraining.com.au> <080320081428428382%brian.d.foy@gmail.com>
+In-Reply-To: <080320081428428382%brian.d.foy@gmail.com>
+X-Enigmail-Version: 0.95.6
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: pjf@perltraining.com.au (Paul Fenwick)
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+G'day brian, Lionel, and modules folk,
+
+brian d foy wrote:
+
+| Fatal is already well known, so maybe just build on it and build a
+| pragma version. Instead of making another module that copies one that
+| you already love, improve it. :)
+
+This is exactly what I'm hoping to do.  ;)  Apologies for not making that
+clear in my first mail.
+
+	{
+		use exceptions qw(open close);
+
+		# This open dies on failure, just like Fatal.
+		open(my $fh, '<', $some_file);
+
+	}
+
+	# This open returns true/false, just like the Perl built-in
+	# without Fatal.
+	open(my $other_fh, '<', $some_file);
+
+Indeed, the code that I've got right now uses Fatal to do all the heavy
+lifting.  I'm just using 5.10 and %^H to allow it to be turned on and off on
+a lexical basis, providing all the goodness of Fatal but without the global
+side-effects.
+
+If Lionel is willing, we could roll the improvements into the Fatal module
+with something like:
+
+	use Fatal qw(:lexical open close);
+
+Indeed, having a lexical flavour of Fatal in the Perl core would make me
+very happy[1].  However since our module will have lexical scope, I feel
+it's worth arguing that it should use lexical naming (ie, start with a
+lower-case character).  In keeping with the theme of "Fatal, but lexical" we
+could use 'lexfatal' as a portmanteau of the two:
+
+	use lexfatal qw(open close);
+
+However I feel that 'exceptions' is clearer and easier to understand,
+especially for new programmers.  Hence my desire for comments and advice.  ;)
+
+| You're not really making exceptions in the way that everyone else
+| thinks about them, so I wouldn't use that name.
+
+I'm talking about functions that die on error (just like Fatal), and which
+can be caught using eval {} (try) and inspected using $@ (catch).  Unless
+I've been hiding under a rock for the last few years, this is the most
+accepted exception mechanism we have in Perl 5, and the phrase is used as
+such in Perl 5 in published literature (eg, Perl Best Practices).
+
+I hope these misunderstandings were just because I spent more time coding
+yesterday than I did on communicating my ideas.  ;)
+
+All the best,
+
+	Paul
+
+[1] To the best of my knowledge, Fatal is only a core module, rather than
+being a dual-life module that exists on the CPAN as well.
+
+- --
+Paul Fenwick <pjf@perltraining.com.au> | http://perltraining.com.au/
+Director of Training                   | Ph:  +61 3 9354 6001
+Perl Training Australia                | Fax: +61 3 9354 2681
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.5 (MingW32)
+
+iD8DBQFH0yIix5N6j7FHnlURAtJgAJ0fPdFA4VVbD9MIBODOFIWODmCALACdEan/
+6sEDWJNBcS4W/NqK+hEN6xg=
+=LGIN
+-----END PGP SIGNATURE-----

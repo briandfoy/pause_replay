@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62064
+Return-Path: <harryfmudd@comcast.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 8317 invoked from network); 2 Sep 2008 16:58:42 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 2 Sep 2008 16:58:42 -0000
+Received: (qmail 30035 invoked by uid 225); 2 Sep 2008 16:58:42 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30028 invoked by alias); 2 Sep 2008 16:58:41 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from qmta05.emeryville.ca.mail.comcast.net (HELO QMTA05.emeryville.ca.mail.comcast.net) (76.96.30.48)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 02 Sep 2008 09:58:35 -0700
+Received: from OMTA06.emeryville.ca.mail.comcast.net ([76.96.30.51])
+	by QMTA05.emeryville.ca.mail.comcast.net with comcast
+	id 9mV21a00516AWCUA5syYRb; Tue, 02 Sep 2008 16:58:32 +0000
+Received: from rmailcenter88.comcast.net ([204.127.197.188])
+	by OMTA06.emeryville.ca.mail.comcast.net with comcast
+	id 9syX1a00W44NJrw8SsyXnx; Tue, 02 Sep 2008 16:58:32 +0000
+X-Authority-Analysis: v=1.0 c=1 a=VTu6INZLhAIA:10 a=fB8FlY3tmE8A:10
+ a=_IEhM8lNAAAA:8 a=MOJpHYwnJhV_1JaBTc4A:9 a=8qWH0AhF60sMqTa7RzZvuuMVxRwA:4
+ a=si9q_4b84H0A:10 a=BA2b3SvwUTAA:10 a=KUJAPYlYduUA:10
+Received: from [98.244.73.162] by rmailcenter88.comcast.net;
+	Tue, 02 Sep 2008 16:58:31 +0000
+To: modules@perl.org
+Subject: Re: Astro::SIMBAD::Client::WSQueryInterfaceService (co-) maintainership
+Date: Tue, 02 Sep 2008 16:58:31 +0000
+Message-ID: <090220081658.20265.48BD70B6000F0F9400004F2922092299270B0B9A0300979D9D0E08@comcast.net>
+X-Mailer: AT&T Message Center Version 1 (Oct 30 2007)
+X-Authenticated-Sender: aGFycnlmbXVkZEBjb21jYXN0Lm5ldA==
+Approved: news@nntp.perl.org
+From: harryfmudd@comcast.net
+
+
+ -------------- Original message ----------------------
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de (Andreas J. Koenig)
+> >>>>> On Mon, 01 Sep 2008 15:49:29 +0000, harryfmudd@comcast.net said:
+> 
+>  >> This looks like a bug in the indexer --> TODO. But I don't think it
+>  >> will cause you any grief, does it?
+> 
+>   > No, it causes me no grief at all. I was just responding to the
+>   > request on
+>   > https://pause.perl.org/pause/authenquery?ACTION=peek_perms to
+>   > report any errors to modules@perl.org. As I said, I do not _KNOW_
+>   > that this is an error, but it looked funny to me so I reported it.
+> 
+> And lots and lots of Thanks for that:!
+> 
+> So now I've looked closer and must admit that I see no reasonable way
+> to fix this on the side of the indexer. The problem is, in short, the
+> fact that the namespace is declared in your META.yml but is not
+> directly reachable by perl because you have the namespace (using
+> abbreviated names for better visibility) A:S:C:W in the file A/S/C.pm,
+> not in the file A:S:C:W.pm.
+> 
+
+For what it's worth, another of my modules (Win32::Process::Info) does the same kind of thing: puts namespace Win32::Process::Info::DummyRoutine in the same file with Win32::Process::Info::NT, and declares namespace Win32::Process::Info::DummyRoutine in META.yml. Yet Win32::Process::Info::DummyRoutine is listed as mine, "first-come".
+
+No, I'm not arguing, just providing an additional datum.
+
+> So if we allow A:S:C:W to be indexed, we cause every other tool to
+> fail because they won't be able to find the namespace on disk even
+> when A:S:C is installed.
+> 
+> I'd suggest you move A:S:C:W into its own file. Is this feasible?
+
+Certainly. I'd love for this to be a private namespace, but as far as I know there is no such thing in Perl 5. If there's a way to prevent namespaces from being emitted into META.yml I don't know it, and even if it could be done it may not be a good idea.
+
+Fixed in next release (and the check is in the mail ...). Is this of enough interest to you that I should make a release to fix it? Should I let you know when I release, or will things come out right once the indexer sees a file to go with the namespace?
+
+Should I also do something with Win32::Process::Info::DummyRoutine, or should I just ignore it since it is indexed correctly? It will take a bit to get this one straight, since I don't have an MSWin32 system at my disposal at the moment.
+
+<snip content="discussion of namespace ownership" />
+
+Thanks,
+Tom Wyamt
+

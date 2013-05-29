@@ -1,0 +1,64 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:68
+Return-Path: <jdporter@min.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4105 invoked from network); 15 Oct 1999 16:02:30 -0000
+Received: from min.net (jdporter@208.222.210.19)
+  by tmtowtdi.perl.org with SMTP; 15 Oct 1999 16:02:30 -0000
+Received: (from jdporter@localhost)
+	by min.net (8.9.3/8.9.3) id MAA02681
+	for modules@perl.org; Fri, 15 Oct 1999 12:02:29 -0400 (EDT)
+Date: Fri, 15 Oct 1999 12:02:28 -0400
+To: modules@perl.org
+Subject: [RFC] Tie::HashDefault?
+Message-ID: <19991015120228.A29656@min.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.1us
+Approved: news@nntp.perl.org
+From: jdporter@min.net (John Porter)
+
+
+Hi,
+I have a module which implementes a TIEHASH class,
+providing the following function:
+
+At the time you tie your hash, you specify another
+hash (by ref) which will be used as a source of
+default values for your hash.  For example:
+
+
+	%defaults = (
+		increment => 1,
+		limit  => 10,
+	);
+
+	tie %h, 'Tie::HashDefaults', \%defaults;
+
+
+	$h{'limit'} = 20; # override one field
+	$h{'age'}   = 35; # add one new field
+
+	for ( keys %h ) { print "$_=$h{$_}\n"; }
+
+
+Produces this output:
+
+	age=35
+	increment=1
+	limit=20
+
+
+So, what do you think?  Tie::HashDefaults?
+Tie::HashDefault?  Tie::DefaultHash?
+
+My personal opinion is that Tie:: ought to be
+deepened, to Tie::Hash::, Tie::Array::, etc.
+And then I'd name this module Tie::Hash::Default.
+
+
+Thanks,
+John Porter
+

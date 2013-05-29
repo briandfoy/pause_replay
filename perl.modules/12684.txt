@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12684
+Return-Path: <Thomas.R.Wyant-III@usa.dupont.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 49221 invoked by uid 76); 15 Jul 2002 14:48:35 -0000
+Received: from mhub16.lvs.dupont.com (HELO mhub16.lvs.dupont.com) (52.128.30.9)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Mon Jul 15 14:48:35 2002 -0000
+Received: from mhub14.lvs.dupont.com by mhub16.lvs.dupont.com with ESMTP for modules@perl.org; Mon, 15 Jul 2002 10:47:41 -0400
+Received: from cdcln08.lvs.dupont.com by mhub14.lvs.dupont.com with ESMTP for modules@perl.org; Mon, 15 Jul 2002 10:47:24 -0400
+Sensitivity: 
+Subject: Proposed new module Win32::ProcInfo
+To: modules@perl.org
+Date: Mon, 15 Jul 2002 10:47:19 -0400
+Message-ID: <OF707E0C96.DF02030F-ON85256BF7.005101A1@lvs.dupont.com>
+X-MIMETrack: Serialize by Router on CDCLNMH2/DuPont_MHUB(Release 5.0.9a |January 7, 2002) at
+ 07/15/2002 10:47:23 AM
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: Thomas.R.Wyant-III@usa.dupont.com ("Thomas R Wyant_III")
+
+There is some interest over on the ActiveState mailing lists for a module
+to return information on an arbitrary Windows 32 process. The proposed
+module does this, returning all available information on a given process in
+a hash.
+
+There is overlap with three known modules: Win32::IProc, Win32::PerfLib,
+and Win32::AdminMisc. Win32::IProc is aparantly abandoned. Win32::PerfLib
+is maintained, and is the only listed module which I can find on CPAN, but
+is oriented toward performance statictics. There was correspondence on the
+ActiveState mailing list about merging with Win32::AdminMisc, but I
+understood the consensus there to be a separate module, though there was a
+strong minority opinion that there should be no module at all, and people
+should just learn to use WMI directly through the OLE interface.
+
+The goal of this module is to provide all the information I could find
+about a process, under all Windows variants I had access to. To achieve
+this goal it has submodules which it invokes depending on the operating
+environment in which it finds itself. There are currently two such: WMI
+(which uses the Windows Management Interface) and NT (which uses
+"NT-native" calls, and does not require WMI to be installed - which means
+it works on non-retrofitted versions of NT 4.0). It will make use of WMI if
+present, but does not require it, which is why I did not propose a name
+like Win32::OLE::WMI::ProcInfo.
+
+The interface is pretty simple:
+
+use Data::Dumper;
+use Win32::ProcInfo;
+$pi = ProcInfo->new ([machine], [variant]);
+print "Known PIDs: @{[$pi->ListPids ()]}\n";
+print "Known info: ", Dumper ($pi->GetProcInfo ());
+
+The WMI variant will request information on another machine; the NT variant
+won't, and throws an exception if you try. The 'variant' argument allows
+you to specify which variant is instantiated (or which ones are to be
+tried, in which order) and is used mainly for testing.
+
+ListPids and GetProcInfo both take an optional list of process IDs as
+arguments, and return only such of those processes as actually exist.
+
+I do not yet have a personal namespace registered on CPAN - I thought I'd
+see how this trial balloon went first.
+
+Thanks,
+Tom Wyant
+

@@ -1,0 +1,196 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2522
+Return-Path: <snowhare@nihongo.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27104 invoked from network); 24 Jul 2000 16:01:40 -0000
+Received: from high-mountain.nihongo.org (209.76.104.64)
+  by tmtowtdi.perl.org with SMTP; 24 Jul 2000 16:01:40 -0000
+Received: from localhost (localhost [127.0.0.1] (may be forged))
+	by high-mountain.nihongo.org (8.9.3/8.9.3) with ESMTP id JAA03980
+	for <modules@perl.org>; Mon, 24 Jul 2000 09:01:40 -0700
+Date: Mon, 24 Jul 2000 09:01:40 -0700 (PDT)
+To: modules@perl.org
+Subject: New module discussion 'CGI::PathInfo'
+Message-ID: <Pine.LNX.4.20.0007240852200.3841-100000@high-mountain.nihongo.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: snowhare@nihongo.org (Benjamin Franz)
+
+I am ready to release a small module I've tentantively tagged
+'CGI::PathInfo' which allows the use of the CGI environment variable
+'PATH_INFO' in a fashion similar to the GET/HEAD method processing of
+'QUERY_STRING' by CGI.pm or CGI::Minimal. The intent is to aid
+CGI/Mod_Perl authors who need to generate dynamic content that must still
+be search engine friendly and possibly have 'pretty' URLs that don't
+betray their programatic origins too plainly ('stealth' CGI).
+
+Here is the man page for it. Does the name choice seem appropriate?
+If no one screams in the next day or so, I will upload it under this
+name to CPAN.
+
+-------------------------------------------------------------------------
+
+NAME
+    CGI::PathInfo - A lightweight CGI processing package for using
+    PATH_INFO like GET method form parameters
+
+SYNOPSIS
+     use CGI::PathInfo;
+
+     my $path_info = CGI::PathInfo->new;
+     my ($form_field_value) = $path_info->param('some_field_name');
+
+DESCRIPTION
+    Provides a micro-weight equivalent to the CPAN CGI.pm module
+    that permits the use of the Apache CGI environment variable
+    'PATH_INFO' as a functional equivalent to the GET method
+    'QUERY_STRING'.
+
+    Rather than attempt to address every possible need of a CGI
+    programmer, it provides the _minimum_ functions needed for CGI
+    such as parameter decoding, URL encoding and decoding.
+
+    The parameters decoding interface is somewhat compatible with
+    the CGI.pm module. No provision is made for generating HTTP or
+    HTML on your behalf - you are expected to be conversant with how
+    to put together any HTML or HTTP you need.
+
+CHANGES
+     1.00 21 July 2000  - Initial public release.
+
+METHODS
+    new;
+        Creates a new instance of the CGI::PathInfo object and
+        decodes any 'PATH_INFO' parameters.
+
+        Example:
+
+         use CGI::PathInfo;
+
+         my $path_info = CGI::PathInfo->new;
+
+        The defaults are for the parameters to be seperated by '/'
+        characters with name/value pairs linked by '-' and with
+        leading or trailing '/' characters ignored.
+
+          Ex:
+
+           $ENV{'PATH_INFO'} = '/yesterday-monday/tomorrow-wednesday';
+
+           decodes to
+
+            'yesterday' -> 'monday'
+
+             'tomorrow' -> 'wednesday'
+
+        Values are read using the 'param' method.
+
+        Any of the defaults may be overridden by specifying them in
+        the invokation of 'new'.
+
+        Example:
+
+          my $path_info = CGI::PathInfo->new({  Eq => '=',
+                                              SplitOn => '&',
+                        });
+
+        It is probably a Bad Idea (tm) to set the Eq or SplitOn
+        values to a letter or a number (A-Za-z0-9) unless you are a
+        wizard at encodings.
+
+        The defaults were chosen to maximize the likelyhood that CGI
+        backed URLs will be crawled by search engines and that MSIE
+        won't try something stupid because of a '.tla' on a URL.
+
+    param([$fieldname]);
+        Called as `$path_info->param();' it returns the list of all
+        defined parameter fields in the same order they appear in
+        the data in PATH_INFO.
+
+        Called as `$path_info->param($fieldname);' it returns the
+        value (or array of values for multiple occurances of the
+        same field name) assigned to that $fieldname. If there is
+        more than one value, the values are returned in the same
+        order they appeared in the data from user agent. If called
+        in a scalar context when several values are present for
+        specified parameter, the *first* value will be returned.
+
+        Examples:
+
+          my (@form_fields) = $path_info->param;
+
+          my (@multi_pick_field) = $path_info->param('pick_field_name');
+
+          my ($form_field_value) = $path_info->param('some_field_name');
+
+        You can also use the param method to set param values to new
+        values. These values will be returned by this CGI::PathInfo
+        object as if they had been found in the originally processed
+        PATH_INFO data. This will not affect a seperately created
+        instance of CGI::PathInfo.
+
+        Examples:
+
+            $path_info->param( 'name' => 'Joe Shmoe' );
+
+            $path_info->param({ 'name' => 'Joe Shmoe', 
+                          'birth_date' => '06/25/1966' });
+
+            $path_info->param({ 'pick_list' => ['01','05','07'] });
+
+    calling_parms_table;
+        Returns a formatted HTML table containing all the PATH_INFO
+        parameters for debugging purposes
+
+        Example:
+
+          print $path_info->calling_parms_table;
+
+    url_encode($string);
+        Returns a URL encoding of the input string. Anything except
+        0-9a-zA-Z is escaped to %xx form.
+
+        The idea is to reserve all other characters for potential
+        use as parameter or key/value seperators.
+
+        Example:
+
+         my $url_encoded_string = $path_info->url_encode($string);
+
+    url_decode($string);
+        Returns URL *decoding* of input string (%xx substitutions
+        are decoded to their actual values).
+
+        Example:
+
+         my $url_decoded_string = $path_info->url_decode($string);
+
+BUGS
+    None known.
+
+TODO
+    Who knows?
+
+AUTHORS
+    Benjamin Franz <snowhare@nihongo.org>
+
+VERSION
+    Version 1.00 22 July 2000
+
+COPYRIGHT
+    Copyright (c) Benjamin Franz and FreeRun Technologies July 2000.
+    All rights reserved.
+
+     This program is free software; you can redistribute it
+     and/or modify it under the same terms as Perl itself.
+
+-- 
+Benjamin Franz
+
+   Perl - A post-modern programming language or a 
+   scripting tool gone horribly, horribly wrong? 
+                              -- Rob Malda
+

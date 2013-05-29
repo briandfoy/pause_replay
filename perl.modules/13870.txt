@@ -1,0 +1,72 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13870
+Return-Path: <clay@panix.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 96599 invoked by uid 76); 20 Sep 2002 16:54:19 -0000
+Received: from mail2.panix.com (HELO mail2.panix.com) (166.84.1.73) by onion.perl.org (qpsmtpd/0.11-dev) with SMTP; 2002-09-20 16:54:19Z
+Received: from panix1.panix.com (panix1.panix.com [166.84.1.1])	by mail2.panix.com (Postfix) with ESMTP	id AB1B08FE2; Fri, 20 Sep 2002 12:54:17 -0400 (EDT)
+Received: (from clay@localhost)	by panix1.panix.com (8.11.6/8.8.8/PanixN1.0) id g8KGsHR09673;	Fri, 20 Sep 2002 12:54:17 -0400 (EDT)
+Date: Fri, 20 Sep 2002 12:54:17 -0400
+To: Philip Ledoux <scriptmaster@oatmeal-studios.com>
+Cc: modules@perl.org
+Subject: Re: module to check both domain name and username for email address as valid
+Message-ID: <20020920165417.GA28822@panix.com>
+References: <001b01c260ae$122b5180$0200a8c0@coxinternet.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <001b01c260ae$122b5180$0200a8c0@coxinternet.com>
+User-Agent: Mutt/1.4i
+X-SMTPD: qpsmtpd/0.11-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: clay@panix.com (Clay Irving)
+
+On Fri, Sep 20, 2002 at 09:00:25AM -0500, Philip Ledoux wrote:
+
+>    I would like to know if anyone has written a module to check both the
+>    domain name and usernames of an email address to see if email address
+>    is valid
+
+NAME
+       Mail::CheckUser - check email addresses for validity
+
+SYNOPSIS
+           use Mail::CheckUser qw(check_email);
+           my $ok = check_email($email_addr);
+
+           use Mail::CheckUser qw(:constants check_email last_check)
+           my $ok = check_email($email_addr);
+           print "DNS timeout\n"
+               if last_check()->{code} == CU_DNS_TIMEOUT;
+
+           use Mail::CheckUser;
+           my $res = Mail::CheckUser::check_email($email_addr);
+
+DESCRIPTION
+       This Perl module provides routines for checking validity
+       of email address.
+
+       It makes several checks:
+
+       1   It checks the syntax of an email address.
+
+       2   It checks if there any MX records or A records for the
+           domain part of the email address.
+
+       3   It tries to connect to an email server directly via
+           SMTP to check if mailbox is valid.  Old versions of
+           this module performed this check via the VRFY command.
+           Now the module uses another check; it uses a combina­
+           tion of MAIL and RCPT commands which simulates sending
+           an email.  It can detect bad mailboxes in many cases.
+           For example, hotmail.com mailboxes can be verified
+           with the MAIL/RCPT check.
+
+[...]
+
+-- 
+Clay Irving <clay@panix.com>
+16.5 feet in the Twilight Zone: 1 Rod Serling

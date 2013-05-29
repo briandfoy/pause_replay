@@ -1,0 +1,215 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4883
+Return-Path: <daveo@obernet.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27484 invoked from network); 2 Apr 2001 11:36:33 -0000
+Received: from stmpy-4.cais.net (@205.252.14.74)
+  by tmtowtdi.perl.org with SMTP; 2 Apr 2001 11:36:33 -0000
+Received: from home (209-9-137-10.sdsl.cais.net [209.9.137.10])
+	by stmpy-4.cais.net (8.11.1/8.11.1) with SMTP id f32BVVN62603;
+	Mon, 2 Apr 2001 07:31:31 -0400 (EDT)
+To: "Tim Bunce" <Tim.Bunce@ig.co.uk>
+Cc: "modules" <modules@perl.org>,
+   "Oberholtzer, Dave" <oberholtzerd@measurisk.com>
+Subject: RE: New Perl Module: FameHLI
+Date: Mon, 2 Apr 2001 07:33:32 -0400
+Message-ID: <003801c0bb68$bfcf4a40$0300a8c0@home.obernet.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook 8.5, Build 4.71.2173.0
+Importance: Normal
+In-Reply-To: <20010402111914.F9248@ig.co.uk>
+X-MimeOLE: Produced By Microsoft MimeOLE V4.72.2106.4
+Approved: news@nntp.perl.org
+From: daveo@obernet.com ("Dave Oberholtzer")
+References: <20010402111914.F9248@ig.co.uk>
+
+Tim said:
+> Seems best to share the Fame::* namespace, in which
+> case you can call it anything you like under there.
+
+Allow me to respectfully disagree.  I would agree with you on an
+intellectual level were it not for the extreme differences in implementation
+and high likelihood of user confusion.  The modules are completely
+incompatible and, potentially, mutually exclusive.
+
+I find far more tenable your earlier statement that "any 'XS' code is likely
+to be built upon" and so a planned namespace evolution should be adopted at
+the start.  Using FameHLI::API as you suggest for the root of my
+implementation does just that.
+
+==========
+I apologize for the length of this next part, but I expect that you are
+unfamiliar with Fame/C-HLI, the two ports under discussion (TRIAS's and
+mine).  Information is knowledge.  Knowledge is power or, possibly, a big
+stick.  I hope I don't crack you over the head with this. ;)
+
+
+Some level of "justification"
+-----------------------------
+With the TRIAS version, the user's program would only "use Fame;".  The
+"Fame.pm" module calls "use Fame::HLI; use Fame::DB; use Fame::LANG;".  All
+functions are EXPORTed.  All #define values are These sections are tightly
+interwoven as far as I can tell.  Additionally, everything in the Fame::*
+namespaces is @EXPORTed.  Everything gets mixed together from the start.
+
+There are times when it is best to simply start over if the old ground has
+not been planned out for a larger community.  In the "Fame::" namespace we
+have just that scenario with the following items:
+
+	Fame		- a common ground and point of user entry;
+	Fame::HLI	- many functions are defined and #defines are
+			  created as &Fame::HLI::NAME and EXPORTed
+			  (*.c, *.cli, HLI.pm)
+	Fame::DB	- extensions and workarounds in 'object' form (DB.pm)
+	Fame::LANG	- extensions and workarounds in 'object' form (LANG.pm)
+
+Several important functions are not implemented in the Fame::HLI section
+which are crucial in making the HLI a really useful standalone module.
+These functions are "worked around" in the DB and LANG modules which require
+the use of some very NON-Fame/HLI functions and methods considered dangerous
+in the newer versions.  (I know, I have used those methods before.)
+
+In essence, a programmer who uses the Fame C-HLI to write programs in 'C'
+would have to learn new method names and function signatures (even some of
+the base functions' signatures have been changed) to use the Perl "Fame"
+module.  This is why I wrote my module to be an exact mapping of C-HLI
+functions with one simple difference:
+
+C-HLI		void cfmabcd(&status, &this, that);
+FameHLI	$rc = FameHLI::Cfmabcd($this, $that);
+
+The Fame C-HLI was a direct port from Fortran code so they didn't bother
+moving the 'return code' outside of the parameter list.  The developers
+there now take no responsibility for this oversight and don't seem to have a
+problem with this mild alteration.
+
+For reference,
+This is NOT an indictment of TRIAS's implementation.  He provided a gateway
+between Perl and Fame which has served some of the users well for some time.
+It was written at a time when the structure was more 'open' and, I expect,
+nobody expected any more 'Fame' modules.
+
+I have, however, spoken to other users who have not been able to get it to
+work.  Additionally, it does not include new functionality available in the
+newer releases of Fame and _cannot_ incorporate that functionality easily
+with any sort of backward compatibility.
+
+--daveo
+
+-----Original Message-----
+From: Tim Bunce [mailto:Tim.Bunce@ig.co.uk]
+Sent: Monday, April 02, 2001 6:19 AM
+To: Dave Oberholtzer
+Cc: Tim Bunce; modules; Oberholtzer, Dave
+Subject: Re: New Perl Module: FameHLI
+
+
+On Fri, Mar 30, 2001 at 07:26:12AM -0500, Dave Oberholtzer wrote:
+> I am QUITE amenable to "FameHLI::API" since, as you point out, more
+modules
+> are likely to be added, albeit by the small incestuous community of FAME
+> programmers (including me).
+>
+> The "Fame::*" namespace is already in use with "Fame::HLI", "Fame::LANG"
+and
+> "Fame::<something else>" by TRIAS.
+
+Ah, didn't know/check that.
+
+> The actual Fame product which I am porting is called the "Fame C-HLI".  It
+> seems that the "Fame" language was written by a bunch of economatricians
+and
+> (10 to 20 years ago) "API" wasn't as 'in vogue' as it is now (at least
+with
+> their crowd).
+
+Seems best to share the Fame::* namespace, in which case you can call it
+anything you like under there.
+
+Tim.
+
+
+> --daveo
+>
+> -----Original Message-----
+> From: Tim Bunce [mailto:Tim.Bunce@ig.co.uk]
+> Sent: Friday, March 30, 2001 3:49 AM
+> To: Oberholtzer, Dave
+> Cc: 'modules@perl.org'; 'daveo@obernet.com'
+> Subject: Re: New Perl Module: FameHLI
+>
+>
+> Any XS API module tends to spawn purp-perl module built over it.
+> I think a Fame::* (or better still FameHLI::*) category should be added
+> to provide a natrual home for those. Your module could be FameHLI::API
+> or similar.
+>
+> Tim.
+>
+> On Wed, Mar 28, 2001 at 02:11:34PM -0500, Oberholtzer, Dave wrote:
+> > NAME
+> > 	David Oberholtzer
+> > E-Mail
+> > 	daveo@obernet.com
+> > Homepage
+> > 	www.obernet.com
+> > Preferred ID
+> > 	DAVEO
+> > Contribute:
+> > 	I expect to contribute at least one module aiding in access to the
+> > FAME language from Perl.
+> >
+> > 	Module: 	DSLI	Description
+> > Info
+> > 	FameHLI	adcf	Ports Fame's C-API to Perl (With no 4GL)	????
+> >
+> > What Exists:
+> >
+> >     There currently exists a module (last updated Nov 1999) from TRIAS
+> which
+> > provides access to most of the Fame v7.6 C-HLI (Host Language Interface)
+> > functions.  That module was written in using some methods which seemed
+> less
+> > than intuitive and it has not been updated to take into consideration
+> > improvements in Fame v8.0 and beyond.  One of my intentions is that
+anyone
+> > who understands XS will be able to submit modifications/improvements
+> easily
+> > for this module.
+> >
+> >     I am a former Fame employee and had been discussing (internally)
+> > developing a Perl/FameHLI written entirely in XS which implements the
+> C-HLI
+> > completely.  It wasn't until I left Fame and started working at a
+startup
+> > that I "got the time" to write the port.
+> >
+> >     At this point, I have been talking to Fame folks again and they are
+> > interested in "Blessing" my port of the C-HLI for Perl and they look
+> forward
+> > to it becoming available.  They have been evaluating several ports and
+> there
+> > seems to be consensus on "blessing" mine.
+> >    To serve this end, there are two options:
+> > 	1) distribute the module from the Fame site (www.fame.com)
+> > 	2) make the module available via CPAN
+> >
+> >     We (Fame folk and I) have discussed it and it looks like the better
+> > approach (from all points of view) is to provide the port on CPAN.  I
+will
+> > continue to do the development work as I can and Fame will provide the
+> > 'C-like interface support'.
+> >
+> > --daveo
+> >
+> >
+>
+>
+

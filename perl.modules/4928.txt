@@ -1,0 +1,214 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4928
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29939 invoked from network); 7 Apr 2001 00:46:48 -0000
+Received: from palladium.baremetal.com (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 7 Apr 2001 00:46:48 -0000
+Received: from [24.64.199.254] (h24-64-199-254.gv.shawcable.net [24.64.199.254])
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id RAA10819;
+	Fri, 6 Apr 2001 17:46:39 -0700
+Mime-Version: 1.0
+Message-ID: <f04320402b6f408608e6b@[24.64.199.254]>
+Date: Fri, 6 Apr 2001 17:46:43 -0700
+To: modules@perl.org
+Subject: please register File::VirtualPath namespace
+Cc: darren@DarrenDuncan.net
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+This is a follow-up to my April 4th message where I requested the 
+namespace for File::VirtualPath.  At that time my description may 
+have seemed vague since I didn't actually have a module to show you.
+
+Now I have uploaded my documented File::VirtualPath module to my web 
+server, where you can see it at 
+"http://www.darrenduncan.net/perl/HTML-Application-0.4/VirtualPath.pm". 
+You can look there to see exactly what I am talking about when I say 
+I want to register it.  It should be on CPAN in a few days.
+
+Here is the module's DLSI:
+
+Name              DSLI Description                                  Info
+------------      ---- -------------------------------------------- ----
+File::
+::VirtualPath     bdpO Portable abstraction of a file/dir/url path  DUNCAND
+
+At the end of this letter I have copied part of the module's POD, to 
+save you having to look elsewhere if you don't need to.
+
+I believe that this module is unique and there are not others like it 
+on CPAN.  Any CPAN modules that may look similar at first, such as 
+"File::Path", aren't because the others actually talk to the 
+filesystem to get things done and my module is just a 
+translation-type data structure.
+
+If you have any questions then please ask.  Or if you have 
+suggestions for a more appropriate name then I can hear it (but I did 
+do my research).
+
+Thank you,
+
+// Darren Duncan
+
+----------------------------------
+
+NAME
+
+File::VirtualPath - Portable abstraction of a file/dir/url path.
+
+DEPENDENCIES
+
+Perl Version
+
+    5.004
+
+Standard Modules
+
+    I<none>
+
+Nonstandard Modules
+
+    I<none>
+
+SYNOPSIS
+
+Content of thin shell "startup.pl":
+
+    #!/usr/bin/perl
+    use strict;
+
+    my $root = "/home/johndoe/projects/aardvark";
+    my $separator = "/";
+    if( $^O =~ /Win/i ) {
+       $root = "c:\\projects\\aardvark";
+       $separator = "\\";
+    }
+    if( $^O =~ /Mac/i ) {
+       $root = "Documents:projects:aardvark";
+       $separator = ":";
+    }
+
+    use Aardvark;
+    Aardvark->main( File::VirtualPath->new( $root, $separator ) );
+
+    1;
+
+Content of fat main program "Aardvark.pm"
+
+    package Aardvark;
+    use strict;
+    use File::VirtualPath;
+
+    sub main {
+       my (undef, $project_dir) = @_;
+       my $prefs = &get_prefs( $project_dir->child_path_obj( 'config.pl' ) );
+       &do_work( $prefs, $project_dir );
+    }
+
+    sub get_prefs {
+       my ($project_dir) = @_;
+       my $real_filename = $project_dir->physical_path_string();
+       my $prefs = do $real_filename;
+       defined( $prefs ) or do {
+          my $virtual_fn = $project_dir->path_string();
+          die "Can't get Aardvark prefs from file '$virtual_fn': $!";
+       };
+       return( $prefs );
+    }
+
+    sub do_work {
+       my ($prefs, $project_dir) = @_;
+       my ($lbl_a, $lbl_b, $lbl_c) = ($prefs->{a}, $prefs->{b}, $prefs->{c});
+       my $data_source = $prefs->{'sourcefile'};
+       open( SOURCE, $project_dir->child_path_string( $data_source ) );
+       while( my $line = <SOURCE> ) {
+          my ($a, $b, $c) = split( "\t", $line );
+          print "File contains: $lbl_a='$a', $lbl_b='$b', $lbl_c='$c'\n";
+       }
+       close( SOURCE );
+    }
+
+    1;
+
+Content of settings file "config.pl"
+
+    $rh_prefs = {
+       sourcefile => 'mydata.txt',
+       a => 'name',
+       b => 'phone',
+       c => 'date',
+    };
+
+DESCRIPTION
+
+This Perl 5 object class implements a portable abstraction of a 
+resource path, examples of which include file-system paths like 
+"/usr/bin/perl" and URLs like "http://www.cpan.org/modules/".  It is 
+designed to support applications that are easily portable across 
+systems because common platform-specific details are abstracted away. 
+Abstracted details include the location of your project within the 
+file-system and the path separator for your OS; you can write your 
+application as if it is in the root directory of a UNIX system, and 
+it will function correctly when moved to any subdirectory or to a Mac 
+or Windows system.
+
+OVERVIEW
+
+This class is implemented as a simple data structure which stores an 
+array of path segments such as ['', 'usr', 'bin', 'perl'] in a 
+virtual file-system. The majority part of your application works with 
+these objects and passes them around during its routines of locating 
+config or data or other files.
+
+As your application navigates the virtual file-system, it uses object 
+methods like chdir() to tell the object where the app thinks it is 
+now.  When your program actually needs to use files, it asks a method 
+like physical_path_string() to give it a string representing the 
+current path in the real world, which it then passes to your standard 
+I/O functions like open().
+
+For example, the program may think it is sitting in "/config/access", 
+but it actually makes an open call to 
+"/home/johndoe/projects/aardvark/config/access". If you move the 
+"aardvark" project to a Windows system, the real path may have 
+changed to "c:\projects\aardvark\config\access", but your program 
+would never need to know the difference (aside from any internal file 
+format issues).
+
+In order for this to work, a small part of your program needs to know 
+the truth of where the project it is working on is located.  But that 
+part can be a very lightweight shim which initializes a single 
+File::VirtualPath object and then passes it to the fat portable part 
+of the program.  There are two bits of data that your shim needs to 
+provide: 1. A string having the full real-world path of your project 
+root directory; 2. A string having the real-world path separator. See 
+the SYNOPSIS for an example.
+
+Then, your main program just needs to assume that the argument it was 
+passed is currently in the virtual root directory and go from there.
+
+    THIN CONFIG SHELL <----> File::VirtualPath <----> FAT PROGRAM CORE
+    (may be portable)        (portable)               (portable)
+
+Taking this idea further, it is easy for program code to be reused 
+for multiple projects, simultaneously, because each would only need a 
+different thin shim program which points to a different physical 
+directory as the virtual root.
+
+Taking this idea further, File::VirtualPath makes it easier for you 
+to separate your application into components that have their own 
+files to keep track of. When your main program calls a component, it 
+can pass a modified FVP object which that component uses as its own 
+virtual root.  And so you can have multiple instances of program 
+components each working in different directories, and no logic for 
+working this out needs to be in the components themselves.
+
+On a final note, the paths returned by this class are all absolute. 
+Therefore you never need to do a real "chdir" or "cd" operation in 
+your program, and your executable doesn't have to be located in the 
+same place as its data.  This is particularly useful if you are 
+calling your program using a link/alias/shortcut.

@@ -1,0 +1,101 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:47853 perl.module-authors:4460
+Return-Path: <jschneid@jrcsdevelopment.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 16092 invoked from network); 14 Mar 2006 00:02:58 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 14 Mar 2006 00:02:58 -0000
+Received: (qmail 10144 invoked by uid 225); 14 Mar 2006 00:02:57 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10118 invoked by alias); 14 Mar 2006 00:02:56 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from ms-smtp-03-lbl.southeast.rr.com (HELO ms-smtp-03-eri0.southeast.rr.com) (24.25.9.102)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 13 Mar 2006 16:02:53 -0800
+Received: from elsegundo (cpe-066-057-235-191.nc.res.rr.com [66.57.235.191])
+	by ms-smtp-03-eri0.southeast.rr.com (8.13.4/8.13.4) with SMTP id k2E02jaG010949;
+	Mon, 13 Mar 2006 19:02:45 -0500 (EST)
+Message-ID: <003101c646f9$ea7205e0$6600a8c0@elsegundo>
+To: <module-authors@perl.org>, <modules@perl.org>
+References: <000c01c6462e$df167a30$6600a8c0@elsegundo> <441572C5.6020807@hyperbolic.net> <4415A598.3090803@landgren.net>
+Subject: Re: Proposed module names - DBIx::Class::Simple
+Date: Mon, 13 Mar 2006 18:57:41 -0500
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=response
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2670
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2670
+X-Virus-Scanned: Symantec AntiVirus Scan Engine
+Approved: news@nntp.perl.org
+From: jschneid@jrcsdevelopment.com ("Jim Schneider")
+
+I appologize.  I wasn't terribly clear.  I was hoping for suggestions as to 
+what name would be appropriate - I'm quite well aware that the names I have 
+are bad.
+
+David Landgren wrote:
+> David Golden wrote:
+>> Jim Schneider wrote:
+-<snip>-
+>> I think you may be best if you come up with your own DBIx::* name that 
+>> captures what you feel is distinctive about your module -- beyond it just 
+>> being "simple".
+>
+> Seconded. Simple modules never are. I'm not trying to be flippant. If the 
+> documentation isn't equally simple (for instance, fits on a screenful with 
+> no additional provisos or exceptions) then the person using it spends as 
+> much time learning how to use it as a supposedly more "complex" module.
+
+Here are the biggest difference between Class::DBI and my module:
+1)  You don't subclass my module - the necessary subclasses are built on the 
+fly.
+2)  Collections of tables are described by data structures, and these 
+structures are passed to the module at "use" time, as contrasted to a 
+subclass calling a bunch of methods in the parent class to establish what a 
+table looks like.
+
+For example, if you have a PERSON table (with PERSON_ID, NAME, ADDRESS_ID, 
+and EMAIL columns),
+and an ADDRESS table (with ADDRESS_ID, LINE1, LINE2, CITY, STATE, ZIP 
+columns (sorry for the USA-centric example)), your "use" clause would look 
+something like this:
+
+use DBIx::Class::Simple ( {
+        schema => 'example',
+        tables => [
+            { table => 'person',
+                columns => [
+                    { name => 'person_id' }, { name => 'name', },
+                    { name => 'address_id' }, { name => 'email' }, ], },
+            { table => 'address',
+                columns => [
+                    { name => 'address_id', }, { name => 'line1', },
+                    { name => 'line2', }, { name => 'city', },
+                    { name => 'state', }, { name => 'zip', }, ], }, ], }, );
+
+(I've compressed the example a bit to save space).
+
+Once you've used the module, you can say:
+
+my $db = DBIx::Class::Simple->new(handle => $dbh); # $dbh is a DBI handle
+
+And later on:
+
+$schema = $db->example;
+$ptable = $schema->person;
+@people = $ptable->search(@criteria)
+
+Any suggestions on what to call this beast would be appreciated.
+-<snip>-
+Discussion of the other modules has been moved to separate threads. 
+

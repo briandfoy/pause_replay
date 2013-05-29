@@ -1,0 +1,238 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4665
+Return-Path: <Kevin.Ruscoe@ubsw.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18533 invoked from network); 12 Mar 2001 16:51:10 -0000
+Received: from gate.ldn.ubswarburg.com (HELO gate.ldn.swissbank.com) (193.82.179.18)
+  by tmtowtdi.perl.org with SMTP; 12 Mar 2001 16:51:10 -0000
+Received: (from smap@localhost)
+	by gate.ldn.swissbank.com (8.8.8/8.8.8) id QAA20971
+	for <modules@perl.org>; Mon, 12 Mar 2001 16:51:06 GMT
+Received: from <Kevin.Ruscoe@ubsw.com> (eight.ubswarburg.com [192.168.0.3]) by gate via smap (V2.0)
+	id xma020787; Mon, 12 Mar 2001 16:50:42 GMT
+Received: from ln4p1013pos.ldn.swissbank.com (virscan1 [192.168.0.3])
+	by virscan1.swissbank.com (8.8.8/8.8.8) with ESMTP id QAA18368
+	for <modules@perl.org>; Mon, 12 Mar 2001 16:49:30 GMT
+Received: from ln4p241.ldn.swissbank.com (ln4p241.ldn.swissbank.com [172.16.232.111])
+	by ln4p1013pos.ldn.swissbank.com (8.8.8/8.8.8) with ESMTP id QAA13479
+	for <modules@perl.org>; Mon, 12 Mar 2001 16:49:58 GMT
+Received: from localhost (root@localhost)
+	by ln4p241.ldn.swissbank.com (8.8.6 (PHNE_14041)/8.8.6/WDR gamma evision: 1.4 $) with ESMTP id QAA14663
+	for <modules@perl.org>; Mon, 12 Mar 2001 16:49:56 GMT
+X-OpenMail-Hops: 1
+Date: Mon, 12 Mar 2001 16:49:54 +0000
+Message-ID: <H000019b04de0761.0984415792.ln4p528.ldn.swissbank.com@MHS>
+Subject: Namespace request: Tie::DxHash
+MIME-Version: 1.0
+TO: modules@perl.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+	;Creation-Date="Mon, 12 Mar 2001 16:49:54 +0000"
+Content-Transfer-Encoding: 7bit
+X-WDR-Disclaimer: Version $Revision: 1.13 $
+Approved: news@nntp.perl.org
+From: Kevin.Ruscoe@ubsw.com
+
+Module list maintainers
+
+I previously mentioned this module in my request for a CPAN id, but 
+thought it would be better form to put it in a separate mail.  
+Details are as follows:
+
+My CPAN id: KRUSCOE
+Proposed module name: Tie::DxHash
+DSLI: Rdpr
+Description: "Keeps insertion order; allows duplicate keys"
+Discussion: I wrote this module in order to facilitate the use of 
+more complex mod_rewrite rules in Apache configuration files written 
+with PerlSections.  I originally proposed this to the mod_perl 
+mailing list (see 
+http://www.geocrawler.com/archives/3/182/2000/2/0/3371477/).  I have 
+also posted details of the proposed module on comp.lang.perl.modules 
+and have not received any negative feedback.  The module's POD is 
+included below.
+
+Regards
+Kevin
+$"="";print"@{[&{sub{($i,$j,@_)=(1,1,split//,'hrP kc eeatenltarohsr 
+u,J');
+while(@_){foreach(1..$i){@_=(pop,@_)}push@t,shift;($i,$j)=($i+$j,$i)}@
+t}}]}\n"; 
+=================================================================
+=head1 NAME
+
+Tie::DxHash -   implements a hash  which preserves  insertion order   
+and allows
+duplicate keys.
+
+=head1 SYNOPSIS
+
+ use Tie::DxHash;
+ my(%vhost);
+ tie %vhost, 'Tie::DxHash' [, LIST];
+ %vhost = (
+   ServerName  => 'foo',
+   RewriteCond => 'bar',
+   RewriteRule => 'bletch',
+   RewriteCond => 'phooey',
+   RewriteRule => 'squelch',
+ );
+
+=head1 DESCRIPTION
+
+This module    was written to   allow   the  use of   rewrite  rules  
+in  Apache
+configuration files written  with Perl Sections.  However,  a 
+potential user has
+stated that he  needs it to support the  use of  multiple ScriptAlias 
+directives
+within a  single Virtual Host (which is  required by FrontPage, 
+apparently).  If
+you find a completely different use for it, great.
+
+The original purpose of this  module is not quite  so obscure as it 
+might sound.
+Perl Sections   bring the power   of a general-purpose  programming  
+language to
+Apache configuration files and,  having  used them  once,  many 
+people use  them
+throughout.  (I take this approach since, even  in sections of the 
+configuration
+where  I do  not need  the  flexibility, I find  it  easier to use  a 
+consistent
+syntax.  This also makes the code easier for XEmacs to  colour in ;-) 
+Similarly,
+mod_rewrite is easily the most powerful way to  perform URL rewriting 
+and I tend
+to use it  exclusively, even when a  simpler directive  would  do the 
+ trick, in
+order to group my redirections together and keep them consistent.  
+So, I came up
+against the following problem quite early on.
+
+The synopsis    shows some  syntax  which  might  easily be    needed 
+when using
+mod_rewrite within a Perl Section.  Clearly, using an  ordinary hash 
+will not do
+what you  want.  The two  additional features we  need are to 
+preserve insertion
+order and to allow duplicate keys.  When retrieving an  element from 
+the hash by
+name, successive  requests for the same name  must iterate through 
+the duplicate
+entries  (and, presumably, wrap around  when the end   of the chain 
+is reached).
+This  is where Tie::DxHash  comes in.  Simply  by tying  the 
+offending hash, the
+corresponding configuration directives work as expected.
+
+Running an Apache syntax  check (with docroot check)  on your 
+configuration file
+(with C<httpd -t>) and checking virtual host settings (with C<httpd 
+-S>) succeed
+without complaint.   Incidentally,  I  strongly recommend building   
+your Apache
+configuration files with make (or equivalent) in  order to enforce 
+the above two
+checks, preceded by a Perl syntax check (with C<perl -cx>).
+
+=head1 INTERNALS
+
+For those interested, Tie::IxHash works by storing the  hash data in 
+an array of
+hash references  (containing  the key/value  pairs).  This  preserves 
+ insertion
+order.  A separate set  of iterators (one per  distinct key) keeps 
+track of  the
+last retrieved value for a given key, thus  allowing the successive 
+retrieval of
+multiple values for the same key to work as expected.
+
+=head1 SEE ALSO
+
+perltie(1), for information on ties generally.
+
+Tie::IxHash(3), by Gurusamy Sarathy, if you need to preserve 
+insertion order but
+not allow duplicate keys.
+
+For   information  on  Ralf S.  Engelschall's   powerful  URL  
+rewriting module,
+mod_rewrite,      check       out     the      reference      
+documentation   at
+"http://httpd.apache.org/docs/mod/mod_rewrite.html" and  the URL 
+Rewriting Guide
+at "http://httpd.apache.org/docs/misc/rewriteguide.html".
+
+For help in using Perl Sections to configure Apache,  take a look at 
+the section
+called           "Apache        Configuration      in            
+Perl"        at
+"http://perl.apache.org/guide/config.html#Apache_Configuration_in_Perl
+", part of
+the mod_perl    guide, by Stas Bekman.    Alternatively,  buy the  
+O'Reilly book
+Writing Apache Modules with Perl and C, by Lincoln  Stein & Doug 
+MacEachern, and
+study Chapter 8: Customizing the Apache Configuration Process.
+
+=head1 BUGS
+
+The algorithms used to retrieve and delete elements by  key run in 
+O(N) time, so
+do not expect  this  module to work well   on large data  sets.   
+This is not  a
+problem for the module's intended  use.  If you find  another use for 
+the module
+which involves larger quantities of data, let me know and I will put 
+some effort
+into optimising for speed.
+
+The  mod_rewrite  directives for  which   this module  was   written  
+(primarily
+RewriteCond and RewriteRule) can  occur in all  four configuration 
+file contexts
+(i.e. server config,  virtual host, directory, .htaccess).  However, 
+Tie::DxHash
+only helps when  you are using  a directive which  is mapped  onto a  
+Perl hash.
+This limits you to  directives which are block  sections with begin 
+and end tags
+(like  <VirtualHost>  and  <Directory>).   I  get  round  this  by   
+sticking my
+mod_rewrite directives in  a name-based virtual host container  (as 
+shown in the
+synopsis) even in the degenerate case where the  web server only has 
+one virtual
+host.
+
+=head1 AUTHOR
+
+Kevin Ruscoe
+
+=cut
+
+Any text which follows this line was added after I sent the mail.
+=================================================================
+
+
+Visit our website at http://www.ubswarburg.com
+
+This message contains confidential information and is intended only 
+for the individual named.  If you are not the named addressee you 
+should not disseminate, distribute or copy this e-mail.  Please 
+notify the sender immediately by e-mail if you have received this 
+e-mail by mistake and delete this e-mail from your system.
+
+E-mail transmission cannot be guaranteed to be secure or error-free 
+as information could be intercepted, corrupted, lost, destroyed, 
+arrive late or incomplete, or contain viruses.  The sender therefore 
+does not accept liability for any errors or omissions in the contents 
+of this message which arise as a result of e-mail transmission.  If 
+verification is required please request a hard-copy version.  This 
+message is provided for informational purposes and should not be 
+construed as a solicitation or offer to buy or sell any securities or 
+related financial instruments.
+

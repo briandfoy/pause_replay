@@ -1,0 +1,473 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:42287
+Return-Path: <matthew.r.henroid@intel.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31878 invoked from network); 4 Aug 2005 17:56:54 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 4 Aug 2005 17:56:54 -0000
+Received: (qmail 2675 invoked by uid 225); 4 Aug 2005 17:56:54 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 2669 invoked by alias); 4 Aug 2005 17:56:53 -0000
+X-Spam-Status: No, hits=-0.8 required=8.0
+	tests=BAYES_00,DNS_FROM_RFC_POST,HTML_80_90,HTML_MESSAGE
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from fmr18.intel.com (HELO orsfmr003.jf.intel.com) (134.134.136.17)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 04 Aug 2005 10:56:51 -0700
+Received: from orsfmr100.jf.intel.com (orsfmr100.jf.intel.com [10.7.209.16])
+	by orsfmr003.jf.intel.com (8.12.10/8.12.10/d: major-outer.mc,v 1.1 2004/09/17 17:50:56 root Exp $) with ESMTP id j74HulgL030528
+	for <modules@cpan.org>; Thu, 4 Aug 2005 17:56:47 GMT
+Received: from orsmsxvs041.jf.intel.com (orsmsxvs041.jf.intel.com [192.168.65.54])
+	by orsfmr100.jf.intel.com (8.12.10/8.12.10/d: major-inner.mc,v 1.2 2004/09/17 18:05:01 root Exp $) with SMTP id j74HulCX030350
+	for <modules@cpan.org>; Thu, 4 Aug 2005 17:56:47 GMT
+Received: from orsmsx332.amr.corp.intel.com ([192.168.65.60])
+ by orsmsxvs041.jf.intel.com (SAVSMTP 3.1.7.47) with SMTP id M2005080410564729187
+ for <modules@cpan.org>; Thu, 04 Aug 2005 10:56:47 -0700
+Received: from orsmsx407.amr.corp.intel.com ([192.168.65.50]) by orsmsx332.amr.corp.intel.com with Microsoft SMTPSVC(6.0.3790.211);
+	 Thu, 4 Aug 2005 10:56:46 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C5991D.E1259425"
+Subject: File::Find::Regex
+Date: Thu, 4 Aug 2005 10:56:45 -0700
+Message-ID: <012676D607FCF54E986746512C22CE7D0473E53C@orsmsx407>
+Thread-Topic: File::Find::Regex
+thread-index: AcWZHeDTyyBiOpucRFmF2eFTr5Wf0A==
+To: <modules@cpan.org>
+X-OriginalArrivalTime: 04 Aug 2005 17:56:46.0649 (UTC) FILETIME=[E1830A90:01C5991D]
+X-Scanned-By: MIMEDefang 2.44
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: matthew.r.henroid@intel.com ("Henroid, Matthew R")
+
+------_=_NextPart_001_01C5991D.E1259425
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+I'm looking at adding a module called File::Find::Regex but don't know
+if it is duplicated somewhere else.  I've searched high and low for
+something similar to my module but haven't found anything.  Here's the
+details:
+
+=20
+
+File::Find::Regex searches recursively down a directory tree like
+File::Find except that it ignores subdirectories that don't match a
+regular expression.  The regular expressions specified aren't true
+regular expressions.  They're actually a series of regular expressions
+separated by '/' or '\' depending on your OS.
+
+=20
+
+Directory tree:
+
+/some/path
+
+    adir1
+
+            file1.txt
+
+            file2.txt
+
+    adir2
+
+            file1.txt
+
+            file2.txt
+
+    bdir1
+
+            file1.txt
+
+            file2.txt
+
+    bdir2
+
+            file1.txt
+
+            file2.txt
+
+=20
+
+=20
+
+use File::Find::Regex;
+
+=20
+
+# regex in scalar mode
+
+# returns ('/some/path/adir1/file1.txt', '/some/path/adir2/file1.txt')
+
+@files =3D File::Find::Regex(path =3D> '/some/path',
+
+                                       regex =3D> 'adir\d+/file1.+');
+
+=20
+
+# regex in array mode
+
+# returns ('/some/path/adir1/file1.txt', '/some/path/adir1/file2.txt',
+'/some/path/adir2/file1.txt', '/some/path/adir2/file2.txt')
+
+@files =3D File::Find::Regex(path =3D> '/some/path',
+
+                                       regex =3D> ['adir1/file.+',
+'adir2/file.+'])
+
+=20
+
+=20
+
+# regex in hash mode
+
+# returns {file1 =3D> ['/some/path/adir1/file1.txt',
+'/some/path/adir2/file1.txt', '/some/path/bdir1/file1.txt',
+'/some/path/bdir2/file1.txt'],
+
+#             file2 =3D> ['/some/path/adir1/file2.txt',
+'/some/path/adir2/file2.txt', '/some/path/bdir1/file2.txt',
+'/some/path/bdir2/file2.txt']}
+
+$file_ref =3D File::Find::Regex(path =3D> '/some/path',
+
+                                         regex =3D> {
+
+                                                file1 =3D>
+'\wdir\d+/file1.+'
+
+                                                file2 =3D>
+'\wdir\d+/file2.+'
+
+     },
+
+);
+
+=20
+
+=20
+
+=20
+
+=20
+
+=20
+
+
+------_=_NextPart_001_01C5991D.E1259425
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext=3D"edit">
+  <o:idmap v:ext=3D"edit" data=3D"1" />
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>I&#8217;m looking at adding a module called
+File::Find::Regex but don&#8217;t know if it is duplicated somewhere
+else.&nbsp; I&#8217;ve searched high and low for something similar to my =
+module
+but haven&#8217;t found anything.&nbsp; Here&#8217;s the =
+details:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>File::Find::Regex searches recursively down a =
+directory tree
+like File::Find except that it ignores subdirectories that don&#8217;t =
+match a
+regular expression.&nbsp; The regular expressions specified aren&#8217;t =
+true
+regular expressions.&nbsp; They&#8217;re actually a series of regular
+expressions separated by &#8216;/&#8217; or &#8216;\&#8217; depending on =
+your
+OS.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Directory tree:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>/some/path<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp; adir1<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; file1.txt<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; file2.txt<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp; adir2<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; file1.txt<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; file2.txt<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp; bdir1<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; file1.txt<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; file2.txt<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp; bdir2<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; file1.txt<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; file2.txt<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>use File::Find::Regex;<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'># regex in scalar mode<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'># returns (&#8216;/some/path/adir1/file1.txt&#8217;, =
+&#8216;/some/path/adir2/file1.txt&#8217;)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>@files =3D File::Find::Regex(path =3D&gt; =
+&#8216;/some/path&#8217;,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; &nbsp;&nbsp;
+regex =3D&gt; =
+&#8216;adir\d+/file1.+&#8217;);<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'># regex in array mode<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'># returns (&#8216;/some/path/adir1/file1.txt&#8217;, =
+&#8216;/some/path/adir1/file2.txt&#8217;,
+&#8216;/some/path/adir2/file1.txt&#8217;, =
+&#8216;/some/path/adir2/file2.txt&#8217;)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>@files =3D File::Find::Regex(path =3D&gt; =
+&#8216;/some/path&#8217;,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+&nbsp;&nbsp;
+regex =3D&gt; [&#8216;adir1/file.+&#8217;, =
+&#8216;adir2/file.+&#8217;])<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'># regex in hash mode<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'># returns {file1 =3D&gt; =
+[&#8216;/some/path/adir1/file1.txt&#8217;,
+&#8216;/some/path/adir2/file1.txt&#8217;, =
+&#8216;/some/path/bdir1/file1.txt&#8217;,
+&#8216;/some/path/bdir2/file1.txt&#8217;],<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;
+file2 =3D&gt; [&#8216;/some/path/adir1/file2.txt&#8217;, =
+&#8216;/some/path/adir2/file2.txt&#8217;,
+&#8216;/some/path/bdir1/file2.txt&#8217;, =
+&#8216;/some/path/bdir2/file2.txt&#8217;]}<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>$file_ref =3D File::Find::Regex(path =3D&gt; =
+&#8216;/some/path&#8217;,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+regex =3D&gt; {<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; file1
+=3D&gt; &#8216;\wdir\d+/file1.+&#8217;<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; file2
+=3D&gt; &#8216;\wdir\d+/file2.+&#8217;<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal style=3D'margin-left:1.5in'><font size=3D2 =
+face=3DArial><span
+style=3D'font-size:10.0pt;font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp; =
+},<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal style=3D'margin-left:1.5in'><font size=3D2 =
+face=3DArial><span
+style=3D'font-size:10.0pt;font-family:Arial'>);<o:p></o:p></span></font><=
+/p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C5991D.E1259425--

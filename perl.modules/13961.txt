@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13961
+Return-Path: <jimbox@doubleprecision.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 59913 invoked by uid 76); 24 Sep 2002 23:22:30 -0000
+Received: from ool-18be20fc.dyn.optonline.net (HELO enchilada.9volt.com) (24.190.32.252) by onion.perl.org (qpsmtpd/0.11-dev) with SMTP; 2002-09-24 23:22:30Z
+Received: from localhost (jimbox@localhost)	by enchilada.9volt.com (8.11.2/8.11.2) with ESMTP id g8ONNOC20299	for <modules@perl.org>; Tue, 24 Sep 2002 19:23:24 -0400
+X-Authentication-Warning: enchilada.9volt.com: jimbox owned process doing -bs
+Date: Tue, 24 Sep 2002 19:23:24 -0400 (EDT)
+X-X-Sender:  <jimbox@enchilada.9volt.com>
+To: <modules@perl.org>
+Subject: puase id requset (2nd attempt)
+Message-ID: <Pine.LNX.4.33.0209241905100.20245-100000@enchilada.9volt.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-SMTPD: qpsmtpd/0.11-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: jimbox@doubleprecision.com (jimbox)
+
+
+your name:			jimi mikusi
+your email address: 		jimbox-cpan@doubleprecision.com
+your homepage if you have one:	/dev/null
+your preferred user-ID on CPAN: jimbox
+a short description of what you're planning to contribute:
+
+MLDBM::DynamicDB
+
+synopsis-
+
+use MLDBM::DynamicDB;
+
+@VALID_KEYS = qw(foo bar);
+
+$db = MLDBM::DynamicDB->new( 'DB_File', 'FreezeThaw', 'myfile.db');
+
+$db->add_valid_keys(@VALIDKEYS);
+
+$entry = $db->newEntry('hashkey');
+$entry->addFoo_scalar("this");
+$entry->addFoo_scalarref($somescalarref);
+$entry->addBar_array(one, two, 3);
+$entry->addBar_arrayref(\@somearray);
+
+$db->add($entry);
+$db->close;      # left with a berkely db file whose value fields
+                 # are "Frozen" hashes.
+
+---------------------------------------------
+
+the module facilitates database prototyping and/or works great for medium
+to small projects where the data colums may grow or change often.  the
+bulk of the modules work is done by AUTOLOAD which allows any key to be
+created or added to on the fly as long as the key is deemed valid by
+@VALIDKEYS (or not if you prefer).
+
+works nicely in the perl way of things.  for those projects that start
+from an open session of vi with just #!/usr/bin/perl, this modules lets
+you create your database as you type.  you dont need a lot of pre-planning
+about the database fields- just have it created for you by an "addKEY" or
+"setKEY" functions and a hash key will be created by autovivification...
+but with a little more modularity and structure.
+
+thanks.jimbox.
+
+

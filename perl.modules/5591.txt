@@ -1,0 +1,122 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5591
+Return-Path: <simonm@evolution.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12627 invoked from network); 15 May 2001 07:24:01 -0000
+Received: from darwin.evolution.com (209.208.128.5)
+  by onion.valueclick.com with SMTP; 15 May 2001 07:24:01 -0000
+Received: from stellar (stellar.evolution.com [209.208.128.71])
+	by darwin.evolution.com (8.9.1/8.9.1) with SMTP id DAA14654;
+	Tue, 15 May 2001 03:23:16 -0400 (EDT)
+Message-ID: <200105150723.DAA14654@darwin.evolution.com>
+To: modules@perl.org
+Subject: Re: RFC: Class::Methods
+Cc: Martyn Pearce <m.pearce@inpharmatica.co.uk>
+In-Reply-To: <200105060441.AAA07246@darwin.evolution.com>
+Date: Tue, 15 May 2001 03:24:06 -0400
+Reply-To: "M. Simon Cavalletto" <simonm@evolution.com>
+X-Mailer: by Apple MailViewer (2.106)
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: simonm@evolution.com ("M. Simon Cavalletto")
+References: <200105060441.AAA07246@darwin.evolution.com>
+
+Please help me rename this module! (A summary of its functionality is
+included below for reference.)
+
+I circulated a prior version under the name "Class::Methods", and
+Andreas Koenig indicated that was an acceptable namespace for CPAN
+distribution.
+
+But I was somewhat uncomfortable with the name, for reasons echoed
+in a message from Damian Conway:
+
+  Class::Methods seems a little too general (i.e. indistinct) as
+  a name.  Maybe Class::MethodTemplates would convey the nature of
+  the module more accurately?
+
+That position is backed up by L<perlmodlib>:
+
+  Always try to use two or more whole words.
+
+So, I charged off and renamed it to Class::MethodGenerator, which
+does seem to be much clearer and more specific.
+
+But then I noticed the following, also from L<perlmodlib>:
+
+  To be portable each component of a module name should be limited
+  to 11 characters.
+
+Eek. There seem to be a handful of modules on CPAN that don't adhere  
+this guideline (recent examples include SearchBuilder, EasyTemplate,  
+FastTemplate), but I'd hate to be deliberately non-portable...
+
+I'm not sure how to effectively satisfy both the "two words" and "11  
+character" objectives.
+
+A few minutes with a thesaurus produced a list of candidates, but none  
+of them really stood out: Class::CodeLibrary, Class::MakeMethods,  
+Class::MethodGen, Class::MethodMill, Class::MethodSmith,  
+Class::SubMaker...
+
+Any suggestions?
+
+I've also simplified the layout of the distribution build directory and  
+fixed a P5.6 compatibility issue; any general feedback would also be  
+appreciated.
+
+  http://work.evolution.com/dist/Class-MethodGenerator-1.0.12.tar.gz
+
+-Simon
+
+----------------------------------------------------------------------
+
+NAME
+    Class::MethodGenerator - Create common types of methods
+
+DESCRIPTION
+    Class::MethodGenerator allows module developers to quickly define object
+    constructor and accessor methods using libraries of common types of
+    functions. Several groups of subclasses are provided, and you can
+    quickly extend the functionality by creating your own subclasses.
+
+  Method Generator Framework
+
+    Class::MethodGenerator defines a basic framework for method-generation
+    modules. Methods are generated dynamically when a module uses a subclass
+    of Class::MethodGenerator, and installed in the calling package. A
+    variety of different method-generation techniques are supported, with a
+    flexible syntax for declarations.
+
+  Simple Subclasses
+
+    Class::MethodGenerator::Simple::Hash and Simple::Array provide basic
+    object constructor and accessors. Simple::Static provides basic shared-
+    data accessors.
+
+  Template Subclasses
+
+    Class::MethodGenerator::Template extends MethodGenerator with a text
+    templating system that can assemble Perl code fragments into a desired
+    subroutine. The code for generated methods is eval'd once for each type,
+    and then repeatedly bound as closures to method-specific data for better
+    performance.
+
+    Also included are templates for dozens of types of constructor,
+    accessor, and mutator methods, ranging from from the mundane
+    (constructors and value accessors for hash and array slots) to the
+    esoteric (inheritable class data and "flyweight" accessors with external
+    indexes). A listing is provided as Template::Catalog.
+
+  Emulation Adaptors
+
+    In several cases, Class::MethodGenerator provides functionality closely
+    equivalent to that of an existing module, and it has been simple to
+    build modules which act as an adaptor between the existing module's
+    interface and Class::MethodGenerator' functionality. I have included
+    emulators for Class::MethodMaker, Class::Data::Inheritable,
+    Class::Singleton, and Class::Struct, each of which functions as a drop-
+    in replacement for the original module, and fully passes its test suite.
+    (Er, except that I haven't found Struct's tests yet.)

@@ -1,0 +1,159 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:72485
+Return-Path: <reini.urban@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 31150 invoked from network); 23 Aug 2010 08:25:52 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 23 Aug 2010 08:25:52 -0000
+Received: (qmail 32721 invoked by uid 225); 23 Aug 2010 08:25:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 32705 invoked by alias); 23 Aug 2010 08:25:50 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-fx0-f41.google.com (HELO mail-fx0-f41.google.com) (209.85.161.41)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 23 Aug 2010 01:25:49 -0700
+Received: by fxm3 with SMTP id 3so3119366fxm.14
+        for <modules@perl.org>; Mon, 23 Aug 2010 01:25:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:sender:received
+         :in-reply-to:references:date:x-google-sender-auth:message-id:subject
+         :from:to:cc:content-type;
+        bh=GTVMZZn7ygDtIToDCpJ+aop5H2T05xcxcXtvRqClf18=;
+        b=EJEGsEq2266jISHjvFbE8QSa9VfLrvEFCJ1sB9a3y7C5OcGvMT87RVbtk6jkm5eSlb
+         GF3pCwQbnqQdoNTA73nvnxnAyccesPT+GTgamXKxgE2DA7qWotNk07OKQQq7g4F2sFTb
+         AuaXIBhCMemL2HoIaxVORZtRlAMNkkif1eSnk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type;
+        b=XcTdtwfeIrp6u3F4IDD9Kw4a4KrcFGn0MDTn0rr2/uijyzqlqnXYQ6ePG5u9nHnUvz
+         0C8jcxGDSG5radhI3w4gX86N01debN6vkjNXA5TONhZ8smd/pZYGkkXX+F8fUzk//sY9
+         7U3dEPJGmcYGUqPWjZHCvKAMxQYB2EK3NxtaM=
+MIME-Version: 1.0
+Received: by 10.239.142.6 with SMTP id e6mr239449hba.31.1282551944912; Mon, 23
+ Aug 2010 01:25:44 -0700 (PDT)
+Sender: reini.urban@gmail.com
+Received: by 10.239.131.12 with HTTP; Mon, 23 Aug 2010 01:25:44 -0700 (PDT)
+In-Reply-To: <AANLkTinUFbxNH-96_kAVcb4=60x1Ga4e=s0ZgPEaHNra@mail.gmail.com>
+References: <AANLkTinUFbxNH-96_kAVcb4=60x1Ga4e=s0ZgPEaHNra@mail.gmail.com>
+Date: Mon, 23 Aug 2010 10:25:44 +0200
+X-Google-Sender-Auth: EEqbz0sWhhf3ly8bXDCc60ifkCA
+Message-ID: <AANLkTi=styBctJ1pcVujhosSi2dYcOV3DKh7yhmokPT7@mail.gmail.com>
+Subject: Re: optimizer 06
+To: Jim Cromie <jim.cromie@gmail.com>
+Cc: abergman@cpan.org, modules@perl.org
+Content-Type: multipart/mixed; boundary=001485f44fd4151e77048e79651a
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: rurban@x-ray.at (Reini Urban)
+
+--001485f44fd4151e77048e79651a
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi Artur
+Can I take over optimizer?
+
+2010/8/23 Jim Cromie <jim.cromie@gmail.com>:
+> hi Reini
+> I just discovered youve updated optimizer to .06
+> I didnt know this, and did my own.
+> Are you interested/willing to take proper ownership of it,
+> so it shows up when I do =A0"cpan> r" =A0?
+> (along with a git repo next to B-Generate's)
+
+Sure, but the maintainer was not responsive, and I did not bug
+modules@perl.org yet.
+And my attempts to fix them where not too successful :)
+ BTW, I also fixed B::Flags, where I added 5.13 support.
+
+> my version differs in several ways:
+> - mine works for 5.12.1 and 5.13.3 (as 'proved' by t/*)
+
+Great!
+
+> =A0=A0yours broke for me on 5.12 - I havent yet figured out why
+> - Im using Build.PL, and Makefile.PL uses=A0Module::Build::Compat
+> - I moved optimizer.{pm,xs} to lib (which messes diff's utility)
+> - I used more macros, with ifdefs, to hide ifdefs you put inline.
+> like this one:
+> -/* stolen from ext/B/B.xs */
+> -#if PERL_VERSION >=3D 9
+> -# =A0define PMOP_pmreplstart(o) =A0 o->op_pmstashstartu.op_pmreplstart
+> -#else
+> -# =A0define PMOP_pmreplstart(o) =A0 o->op_pmreplstart
+> -# =A0define PMOP_pmpermflags(o) =A0 o->op_pmpermflags
+> -# =A0define PMOP_pmdynflags(o) =A0 =A0 =A0o->op_pmdynflags
+> -#endif
+> -
+> -/* shim to hide op_seq manipulations. see patch 22353 */
+> -#if PERL_VERSION < 9
+> -# =A0define op_seq_bump(o) o->op_seq =3D PL_op_seqmax++
+> -#else
+> -# =A0define op_seq_bump(o) o->op_opt =3D 1
+> -#endif
+> -
+> If you want to host a git repo for it, Id be happy to start using it.
+> Let me know if any of these bits are interesting to you,
+> and I'll prep a patch (Im thinking of the Build.PL piece particularly)
+> thanks
+
+I'll add a git repo and give you write access,
+but will bug the maintainer and modules first.
+It will be 0.07 then.
+
+BTW: I wanted to add the simple tail_call elimination
+and and_not brought up by Nicholas lately, but forgot about it. Too
+busy with the compiler.
+Attached is my half attempt.
+--=20
+Reini Urban
+
+--001485f44fd4151e77048e79651a
+Content-Type: application/octet-stream; name="and_not.pl"
+Content-Disposition: attachment; filename="and_not.pl"
+Content-Transfer-Encoding: base64
+X-Attachment-Id: f_gd728mm90
+
+IyEgcGVybAoKPWhlYWQxIERFU0NSSVBUSU9OCgpvcHRpbWl6ZSAoYW5kIC4uLiBOTykgdG8gbnVs
+bCBpZiBubyBndnN2L3BhZHN2LCBlbHNlIChkb3IgJHgpIG9yIGRvIHNvbWUgU3ZHRVRNQUdJQwoo
+YW5kIE5PKSBpcyBhbHdheXMgZmFsc2UsIGJ1dCBhbGwgU1ZzIG11c3QgY2FsbCB0aGVpciBtZ19n
+ZXQgZm9yIGFsbCBTVnMgYmVmb3JlIG5vdAoKPWhlYWQxIEVYQU1QTEUxIGd2c3YKCiAgICAkIHBl
+cmwgLU1PPUNvbmNpc2UsLWV4ZWMgLWUnaWYgKCRhIGFuZCAieCIgZXEgInkiKSB7IHByaW50ICRz
+O30nCiAgICAxICA8MD4gZW50ZXIKICAgIDIgIDw7PiBuZXh0c3RhdGUobWFpbiAzIC1lOjEpIHY6
+ewogICAgMyAgPCQ+IGd2c3YoKmEpIHMKICAgIDQgIDx8PiBhbmQob3RoZXItPjUpIHNLLzEKICAg
+IDUgICAgICA8JD4gY29uc3QoU1BFQ0lBTCBzdl9ubykgcwogICAgNiAgPHw+IGFuZChvdGhlci0+
+NykgdksvMQogICAgNyAgICAgIDwwPiBwdXNobWFyayBzCiAgICA4ICAgICAgPCQ+IGd2c3YoKnMp
+IHMKICAgIDkgICAgICA8QD4gcHJpbnQgdksKICAgIGEgIDxAPiBsZWF2ZVsxIHJlZl0gdktQL1JF
+RkMKCmNhbiBiZSBvcHRpbWl6ZWQgdG8KCiAgICAxICA8MD4gZW50ZXIKICAgIDIgIDw7PiBuZXh0
+c3RhdGUobWFpbiAzIC1lOjEpIHY6ewogICAgMyAgPCQ+IGd2c3YoKmEpIHMKICAgIDQgIDwxPiBk
+b3IgdksvMQogICAgYSAgPEA+IGxlYXZlWzEgcmVmXSB2S1AvUkVGQwoKPWhlYWQxIEVYQU1QTEUy
+IHBhZHN2CgogICAgJCBwZXJsIC1NTz1Db25jaXNlLC1leGVjIC1lJ215ICRhOyBpZiAoJGEgYW5k
+ICJ4IiBlcSAieSIpIHsgcHJpbnQgJHM7fScKCiAgICAxICA8MD4gZW50ZXIKICAgIDIgIDw7PiBu
+ZXh0c3RhdGUobWFpbiAxIC1lOjEpIHY6ewogICAgMyAgPDA+IHBhZHN2WyRhOjEsNF0gdk0vTFZJ
+TlRSTwouLi4KICAgIDQgIDw7PiBuZXh0c3RhdGUobWFpbiA0IC1lOjEpIHY6ewogICAgNSAgPDA+
+IHBhZHN2WyRhOjEsNF0gcwogICAgNiAgPHw+IGFuZChvdGhlci0+Nykgc0svMQogICAgNyAgICAg
+IDwkPiBjb25zdFtTUEVDSUFMIHN2X25vXSBzCiAgICA4ICA8fD4gYW5kKG90aGVyLT45KSB2Sy8x
+CiAgICA5ICAgICAgPDA+IHB1c2htYXJrIHMKICAgIGEgICAgICA8Iz4gZ3Zzdlsqc10gcwogICAg
+YiAgICAgIDxAPiBwcmludCB2SwogICAgYyAgPEA+IGxlYXZlWzEgcmVmXSB2S1AvUkVGQwoKY2Fu
+IGJlIG9wdGltaXplZCB0bwoKICAgIDEgIDwwPiBlbnRlcgogICAgMiAgPDs+IG5leHRzdGF0ZSht
+YWluIDEgLWU6MSkgdjp7CiAgICAzICA8MD4gcGFkc3ZbJGE6MSwzXSB2TS9MVklOVFJPCi4uLgog
+ICAgNCAgPDs+IG5leHRzdGF0ZShtYWluIDIgLWU6MSkgdjp7CiAgICA1ICA8JD4gcGFkc3YoWyRh
+OjEsMykgcwogICAgNiAgPDE+IGRvciB2Sy8xCiAgICA3ICA8QD4gbGVhdmVbMSByZWZdIHZLUC9S
+RUZDCgo9aGVhZDEgRVhBTVBMRTMgb2sKCiAgICAkIHBlcmwgLU1PPUNvbmNpc2UsLWV4ZWMgLWUn
+aWYgKCJ4IiBlcSAieSIgYW5kICRhKSB7IHByaW50ICRzO30nCgppcyBhbHJlYWR5IG9wdGltaXpl
+ZCB0bwoKICAgIDEgIDwwPiBlbnRlcgogICAgMiAgPDs+IG5leHRzdGF0ZShtYWluIDMgLWU6MSkg
+djp7CiAgICAzICA8QD4gbGVhdmVbMSByZWZdIHZLUC9SRUZDCgo9Y3V0Cgp1c2Ugb3B0aW1pemVy
+Owp1c2UgQjo6R2VuZXJhdGU7Cgp1c2Ugb3B0aW1pemVyIGNhbGxiYWNrID0+IHN1YiB7CiAgbXkg
+JG8JPSBzaGlmdDsKICBpZiAoKCRvLT5uYW1lIGVxICdndnN2JyBvciAkby0+bmFtZSBlcSAncGFk
+c3YnKQogICAgICBhbmQgJHskby0+bmV4dH0gYW5kIHskby0+bmV4dH0tPm5hbWUgZXEgJ2FuZCcK
+ICAgICAgYW5kICR7JG8tPm5leHQtPm5leHR9IGFuZCB7JG8tPm5leHQtPm5leHR9LT5uYW1lIGVx
+ICdjb25zdCcKICAgICAgYW5kIHskby0+bmV4dC0+bmV4dH0tPnN2ID09IEI6OnN2X25vCiAgICAg
+KQogIHsKICAgICMgY2hhbmdlIG8tPm5leHQgdG8gZG9yIGFuZCBudWxsaWZ5IHRoZSByZXN0CiAg
+fQp9OwoK
+--001485f44fd4151e77048e79651a--

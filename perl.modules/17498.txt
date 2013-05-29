@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17498
+Return-Path: <glenwood@alumni.caltech.edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 81851 invoked by uid 76); 30 Jan 2003 10:48:02 -0000
+Received: from snipe.mail.pas.earthlink.net (HELO snipe.mail.pas.earthlink.net) (207.217.120.62) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-30 10:48:02Z
+Received: from h-69-3-242-7.snvacaid.covad.net ([69.3.242.7] helo=orchid.alumni.caltech.edu)	by snipe.mail.pas.earthlink.net with esmtp (Exim 3.33 #1)	id 18eCEV-0004N4-00	for modules@perl.org; Thu, 30 Jan 2003 02:47:47 -0800
+Message-ID: <5.2.0.9.0.20030129224519.057ecec8@pop.earthlink.net>
+X-Sender: glenwood@apop-server.alumni.caltech.edu
+X-Mailer: QUALCOMM Windows Eudora Version 5.2.0.9
+Date: Thu, 30 Jan 2003 00:12:54 -0800
+To: modules@perl.org
+Subject: RFC - WWW::Scraper
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: glenwood@alumni.caltech.edu (Glenn Wood)
+
+TWIMC -
+
+WWW:: Scraper is a module for scraping data from various web-based search 
+engines.
+
+This module has lived in CPAN for a couple of years as 
+WWW::Search::Scraper. Like the WWW::Search version, WWW::Scraper does the 
+following;
+
+1. Sends query to the target search engine.
+2. Scans the resultant list pages, extracting data from the HTML and 
+delivering it as discrete fields in multiple response objects.
+3. "Backends" customized to each search engine (e.g., Google, 
+NorthernLight) are written in Perl, using whatever modules and methods the 
+backend's author chooses to use to parse the result list HTML.
+
+Beyond the WWW::Search version, WWW::Scraper extends the capability as follows:
+
+4. "Backends" (herein referred to as "search engine interfaces") may be 
+specified using a number of different methods -
+4a. Rules-based parsing (the so-called "Scraper frame"), combining HTML 
+tag-capture with text-capture and matching.
+4b. HTML may be converted to XML via "HTML Tidy" (invoked by Scraper) and 
+parsed via XPATH-ish formulae.
+4c. Rules may be extended by adding custom framing rules.
+4d. All the above methods (including Perl) may be applied simultaneously in 
+any single search engine interface.
+4e. Sherlock modules are automatically converted to Scraper frames.
+
+5. Parsing is extended into the "detail" page(s) associated with each item 
+listed on the search engine's result list.
+
+6. Canonical Request/Response Model: canonical queries are converted to 
+native queries, and native responses are converted to canonical responses. 
+For instance, "location" is specified by different search engines as 
+"zip=94043", "state=CA&city=Mountain View", or "areacode=650". All of these 
+are specified canonically as "location=US-CA-Mountain View", and translated 
+to the appropriate native field by the search engine interface. Native 
+response fields are similarly translated to the canonical form upon return. 
+(this obviously implies some-to-many and many-to-some translations, which 
+is accommodated easily by Scraper's array based field values).
+
+7. Search engine interfaces will be bundled into categories. These will be 
+based on the Request/Response canon that each uses (e.g., Auction, Finance, 
+Housing, Job, etc). This will make it easier to maintain search engine 
+interfaces separate from the maintenance of the core Scraper.
+

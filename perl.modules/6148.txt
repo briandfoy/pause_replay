@@ -1,0 +1,256 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:6148
+Return-Path: <ajm6q@virginia.edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 59767 invoked from network); 18 Jun 2001 18:11:38 -0000
+Received: from mail.virginia.edu (128.143.2.9)
+  by onion.valueclick.com with SMTP; 18 Jun 2001 18:11:38 -0000
+Received: from smtp.mail.virginia.edu by mail.virginia.edu id aa02464;
+          18 Jun 2001 14:11 EDT
+Received: from alpha10.bioch.virginia.edu (alpha10.bioch.Virginia.EDU [128.143.16.131])
+	by smtp.mail.Virginia.EDU (8.9.3/8.9.3) with ESMTP id OAA11166
+	for <modules@perl.org>; Mon, 18 Jun 2001 14:11:33 -0400
+Date: Mon, 18 Jun 2001 14:11:33 -0400 (EDT)
+X-X-Sender:  <ajm6q@alpha10.bioch.virginia.edu>
+Reply-To: "Aaron J. Mackey" <amackey@virginia.edu>
+To: modules@perl.org
+MMDF-Warning:  Parse error in original version of preceding line at mail.virginia.edu
+Subject: RFC: Data::Encrypted
+Message-ID: <Pine.OSF.4.33.0106181411030.28463-100000@alpha10.bioch.virginia.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: ajm6q@virginia.edu (Aaron J Mackey)
+
+
+[ here is the POD for a module I wrote this weekend - I'd appreciate
+feedback.  It's available to play with via :
+
+http://www.people.virginia.edu/~ajm6q/Data-Encrypted-0.01.tar.gz
+
+I'm sure there are still lots of bugs, but I wanted to "get it out there"
+for people to comment on before I spent a lot of maintenance time
+ -- Aaron ]
+
+NAME
+    Data::Encrypted - Transparently store encrypted data via RSA
+
+SYNOPSIS
+      use Data::Encrypted file => './secret', qw(encrypted);
+
+      # note: 'login' and 'password' are not *really* the login and
+      # password values!
+      my $login = encrypted('login');
+      my $password = encrypted('password');
+
+      [ then, at the command line: ]
+
+      % perl myscript.pl
+      Data::Encrypted value for 'login' not found, please enter: *****
+      Data::Encrypted value for 'password' not found, please enter: ********
+      [ script merrily continues ... ]
+
+      % perl myscript.pl
+      [ script merrily continues, no prompting ... ]
+
+DESCRIPTION
+    Often when dealing with other systems (database engines, ftp, telnet,
+    etc), your Perl script must supply a password to the other system. This
+    requires you to store the password in plaintext in your script. If you
+    share your script with anyone (as any good open-source developer would),
+    you'd rather not have your password or other sensitive information
+    floating around.
+
+    Data::Encrypted works by prompting you (via Term::ReadPassword) for the
+    real value(s) required by each call to 'encrypted', but only the first
+    time you run the script; thereafter, the data is stored encrypted in a
+    secondary file. Subsequent executions of your script use the encrypted
+    data directly, if possible, otherwise prompting again for the data.
+
+Encrypted Data Storage
+    You may provide Data::Encrypted with a filename or already opened
+    filehandle for encrypted data storage; alternatively you may use
+    "virtual files" at the end of your script for encrypted data storage via
+    Inline::Files:
+
+      use Inline::Files;
+      use Data::Encrypted;
+
+      open(ENCRYPT, '+<');
+
+      my $encyptor = new Data::Encrypted FH => \*ENCRYPT;
+      my $password = $encryptor->encrypt('password');
+
+    Then, Data::Encrypted will read/write its data from the special
+    __ENCRYPT__ virtual file (see the Inline::Files manpage for more
+    information and a better description of virtual files). This way
+    everything stays contained within your script; no accessory storage file
+    is necessary. If you send the script to someone else, and they try to
+    run it, the RSA authentication will fail, but they will simply be
+    prompted for the values as you were when you first ran the script. When
+    they enter the values the __ENCRYPT__ virtual file will be rewritten,
+    and they may continue to use the script. In this way Data::Encrypted is
+    really a "personalization" utility, ensuring that the encrypted data can
+    only be unlocked by one person.
+
+Resetting Encrypted Values
+    If, after the initial execution and value specification, you need to
+    reset or clear the stored values once so that you may specify new ones,
+    you can invoke your script like so:
+
+      perl -MData::Encrypted=reset myscript.pl
+
+    Alternatively, simply add the 'reset' imperative to your use statement:
+
+      use Data::Encrypted file => './secret', qw(encrypted reset);
+
+    This would force the user to enter the required data on every invocation
+    (which might be useful for yourself while you tried to rememeber just
+    what that lost database password was ...); even though the encrypted
+    data is available, it will be stored afresh on each invocation.
+
+RSA Authentication
+    Data::Encrypted uses RSA authentication to encrypt and decrypt its data.
+    It achieves this by reading the user's public and private RSA keys. By
+    default, Data::Encrypted assumes these files are stored in the .ssh
+    subdirectory of their home directory (found using File::HomeDir), but
+    you can provide alternative key files yourself, either by supplying
+    alternative key filenames, or by building Crypt::RSA::Key's yourself:
+
+      use Data::Encrypted FILE => './secret';
+      use Crypt::RSA::Key;
+
+      my $public  = new Crypt::RSA::Key::Public::SSH
+                       Filename => '~/.ssh/identity.pub';
+      # my private key includes a passphrase!
+      my $private = new Crypt::RSA::Key::Private::SSH
+                       Filename => '~/.ssh/identity',
+                       Password => q(These are the times that try men's souls);
+
+      my $d = new Data::Encrypted (PK => $public, SK => $private);
+      my $password = $d->encrypted('password');
+
+    Or, more directly:
+
+      use Data::Encrypted (FILE => './secret',
+                           PK => '~/.ssh/identity.pub',
+                           SK => '~/.ssh/identity',
+                           PW => q(These are the times that try men's souls)
+                          ), qw(encrypted);
+
+      my $password = encrypted('password');
+
+Real Life Examples
+    example #1 - a DBI session, utilizing virtual file storage:
+
+      use DBI;
+      use Inline::Files;
+      use Data::Encrypted;
+
+      open(ENCRYPT, '+<') or die $!;
+      my $encryptor = new Data::Encrypted FH => \*ENCRYPT';
+
+      my $dbh = DBI->connect('dbi:mysql:mydatabase',
+                             $encryptor->encrypt('user name'),
+                             $encryptor->encrypt('db password'),
+                             { RaiseError => 1, AutoCommit => 1}
+                            );
+      [.. continue using $dbh ...]
+
+    example #2 - an FTP session, with 'reset' (will *always* prompt for data
+    until 'reset' is removed from use statement):
+
+      use Net::FTP;
+      use Data::Encrypted FILE => './.ftplogin', qw(encrypted reset);
+
+      my $ftp = new Net::FTP 'ftp.somewhere.com';
+      $ftp->login(encrypted('ftp user'),
+                  encrypted('ftp password'));
+      $ftp->cwd('/pub');
+      [... continue using $ftp ...]
+
+    example #3 - a POP3 email client session with "non-standard" RSA keys:
+
+      use Mail::POP3Client;
+      use Crypt::RSA::Key;
+      use Data::Encrypted;
+
+      my $public = new Crypt::RSA::Key::Public::SSH
+                     Filename => '~/.ssh2/id_dsa_1024_a.pub';
+
+      my $public = new Crypt::RSA::Key::Private::SSH
+                     Filename => '~/.ssh2/id_dsa_1024_a'
+                     Password => 'The Only Good Computer Is A Dead Computer';
+
+      my $encryptor = new Data::Encrypted ( FILE => './.pop3email',
+                                            SK   => $private,
+                                            PK   => $public
+                                          );
+
+      my $pop3 = new Mail::POP3Client
+                   ( USER     => $encryptor->encrypt('user'),
+                     PASSWORD => $encryptor->encrypt('password'),
+                     HOST     => $encryptor->encrypt('host')
+                   );
+
+    example #4 - build a script to send to Bob that allows him to ftp files
+    from you, without passing along your connection information in clear
+    text; note that you yourself won't be able to actually use the script
+    without entering the data each time. Also note that Bob could easily
+    read the encrypted information, so it is not secure from him.
+
+      use Data::Encrypted;
+      use Net::FTP;
+      use Inline::Files;
+
+      open(ENCRYPT, "+<") or die $!;
+      my $encryptor = new Data::Encrypted FH => \*ENCRYPT,
+                                          PK => '~/pubkeys/bob.pub';
+      my $ftp = new Net::FTP "ftp.mysite.org";
+      $ftp->login($encryptor->encrypt('user'),
+                  $encryptor->encrypt('password'));
+      $ftp->cwd($encryptor->encrypt(q{Bob's directory}));
+      $ftp->get($encryptor->encrypt(q{What Bob get's to download}));
+      $ftp->quit();
+
+BUGS/TODO
+    Inline::Files won't (yet) allow one package (i.e. Data::Encrypted) to
+    work with virtual files in another package (i.e. main); as a result, you
+    have to feed your storage file to Data::Encrypted manually. Not so much
+    a bug as a drawback.
+
+    Files are not (currently) locked, so all bets are off in a multi-tasking
+    environment. Again, not a bug, but a limitation to be aware of.
+
+    This idea could be extended to the Tie::EncryptedHash or other
+    Crypt::CBC-employing methodology, but would lose the fundamental
+    advantage of not requiring any clear text password or passphrase to
+    remain associated with the script. Someone may convince me otherwise.
+
+    When Data::Encrypted prompts for unknown data, it should really ask the
+    user to repeat their data entry for validation, to cut down on the
+    possibility of typos.
+
+    Data::Encrypted should be able to automatically look up keys in .ssh2/
+    directories as well as the .ssh/ identity files ... for some other day!
+
+COPYRIGHT
+    Copyright (c) 2001 Aaron J Mackey. All rights reserved.
+
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
+AUTHOR
+    Aaron J Mackey, amackey@virginia.edu
+
+ORIGINAL IDEA
+    William R. Pearson, wrp@virginia.edu
+
+SEE ALSO
+    Crypt::RSA, Inline::Files, Term::ReadPassword, File::HomeDir, perl(1).
+
+
+

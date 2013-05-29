@@ -1,0 +1,77 @@
+Newsgroups: perl.datetime,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.datetime:301 perl.modules:8903
+Return-Path: <rbowen@rcbowen.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 64463 invoked by uid 76); 25 Nov 2001 21:42:14 -0000
+Received: from buglet.rcbowen.com (HELO rhiannon.rcbowen.com) (208.32.54.7)
+  by onion.perl.org (qpsmtpd/0.04) with SMTP; Sun Nov 25 21:42:14 2001 -0000
+Received: from localhost (rbowen@localhost [127.0.0.1])
+	by rhiannon.rcbowen.com (8.10.2/8.9.3) with ESMTP id fAPLfiL18984;
+	Sun, 25 Nov 2001 16:41:44 -0500
+Date: Sun, 25 Nov 2001 16:41:44 -0500 (EST)
+To: Ask Bjoern Hansen <ask@perl.org>
+cc: <datetime@perl.org>, <modules@perl.org>
+Subject: Re: [RFC] Date::MySQL
+In-Reply-To: <86667yyk1j.fsf@miette.develooper.com>
+Message-ID: <Pine.LNX.4.33.0111251634190.18955-100000@rhiannon.rcbowen.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: rbowen@rcbowen.com (Rich Bowen)
+References: <86667yyk1j.fsf@miette.develooper.com>
+
+On 25 Nov 2001, Ask Bjoern Hansen wrote:
+
+> rbowen@rcbowen.com (Rich Bowen) writes:
+>
+> > rbowen@rhiannon:~% perl -MDate::ISO -le 'my $d=Date::ISO->new( epoch =>
+> > time ); print $d->iso;'
+> > 2001-W44-6
+> >
+> > Unfortunately, the "default" ISO date format is this year-week-day
+> > format. At least that's what I gathered from all the web sites that I
+> > read about this format.
+>
+> ISO 8601 specifies multiple notations.  For everything I have ever
+> done, the notation you choose seems ... uh, not so useful. :-)
+
+It's not exactly what I *chose*. It's the notation specified by Nachum and
+Dershowitz in Calendrical Calculations.
+
+> http://www.cl.cam.ac.uk/~mgk25/iso-time.html gives a pretty good
+> overview of the standard.
+>
+> Something like
+>
+>   strftime("%Y-%m-%dT%H:%M:%SZ", gmtime(time));
+>
+> seems more useful.  It gives
+>
+> $ perl -MPOSIX=strftime -e 'print strftime("%Y-%m-%dT%H:%M:%SZ\n", gmtime(time))';
+> 2001-11-25T14:56:48Z
+
+Which is ICal (Well, almost). At which point, there's no reason to have Date::ISO
+and Date::ICal, as they have identical behavior. Right? Of course, most
+folks would agree that there's very little need for *most* of the Date::
+hierarchy, but that's a different discussion! :-)
+
+Sure, that's more "useful", but most of the Date:: modules that I have
+produced are not, strictly speaking, aiming at being useful, but are
+aiming at being implementations of a particular calendaring scheme, to
+the best of my understanding. And although I have been encouraged to
+have Date::ISO output different formats, I'm still rather torn on this,
+since a re-reading of Nachum and Dershowitz confirms that I'm doing it
+"correctly". I think that what I will probably end up doing is adding
+another method to output a more "useful" format. Alternately, one can
+just call the ->ical method to get the ical string, which is almost what
+you have above (minus some punctuation).
+
+% perl -MDate::ISO -le '$d=Date::ISO->new; print $d->ical;'
+20011125T214115Z
+
+-- 
+Rich Bowen - rbowen@rcbowen.com
+Author - Apache Server Unleashed - http://www.apacheunleashed.com/
+

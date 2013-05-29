@@ -1,0 +1,119 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17773
+Return-Path: <perl@james.tavares.name>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 87272 invoked by uid 76); 12 Feb 2003 04:57:55 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-02-12 04:57:55Z
+Received: (qmail 17465 invoked by uid 225); 12 Feb 2003 04:57:53 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17459 invoked by uid 507); 12 Feb 2003 04:57:53 -0000
+Received: from h00e02971a16d.ne.client2.attbi.com (HELO bimbo.krontor.net) (24.218.234.126) by one.develooper.com (qpsmtpd/0.21-dev) with SMTP; 2003-02-12 04:57:50Z
+Received: (qmail 4089 invoked from network); 12 Feb 2003 05:09:33 -0000
+Received: from unknown (HELO james.tavares.name) (192.168.0.198)  by h00e02971a16d.ne.client2.attbi.com with SMTP; 12 Feb 2003 05:09:33 -0000
+Message-ID: <3E49D547.2010802@james.tavares.name>
+Date: Wed, 12 Feb 2003 00:01:59 -0500
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.2.1) Gecko/20021130
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:  modules@perl.org
+Subject: Request for Advice on Namespace for New Module
+References: <3E49D14F.20302@thetavaresfamily.com>
+In-Reply-To: <3E49D14F.20302@thetavaresfamily.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SMTPD: qpsmtpd/0.21-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-1.5 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,REFERENCES,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_MOZILLA_UA,X_ACCEPT_LANG version=2.43
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: perl@james.tavares.name (James Tavares)
+
+
+Hello,
+
+I'd like some advice on what to name a module I am contributing. It's 
+job is to configure Linksys "Instant Broadband Series" routers (BEFSR41 
+and the like). Currently, there is no other way to configure these units 
+other than to manually navigate through HTML forms using a web browser 
+such as Netscape. The routers lacks SNMP support as well as any method 
+of exporting/importing configurations, which is useful when working with 
+large quantities of routers. What was needed was a Perl interface to 
+quickly perform firmware upgrades (via TFTP), import/export 
+configurations, change passwords, and modify various settings... I have 
+already coded the module and it is near point of release.
+
+I propose that it be called Linksys::Config, and will use that name for 
+my examples below. I welcome critism of this choice.
+
+SYNOPSYS
+  use Linksys::Config;
+  my $router = new Linksys::Config;
+
+  my $rv = $router->connect("$host[:$port]", $password, $prompt);
+  print $router->errmsg if(!$rv);
+
+  my $rv = $router->change_password($new_password);
+  print $router->errmsg if(!$rv);
+
+  $router->clear; # Clear all pages!
+  $router->clear($page); # Clear all the vars $page
+  $router->clear($page, @names); # Clear @names on $page
+
+  my $rv = $router->query;
+  my $rv = $router->query(@pages);
+  print $router->errmsg if(!$rv);
+
+  my $value = $router->get($page, $name);
+  my @values = $router->get($page, @names);
+  my %page_config = $router->get($page);
+  my %full_config = $router->get;
+
+  my %full_config = ( 'PageA' => { name => value, name2 => value2 },
+                      'PageB' => { name => value, name2 => value2 }, );
+  my %page_config = ( name => value, name2 => value2 );
+  $router->set( \%full_config );
+  $router->set( $page, \%page_config );
+  $router->set( $page, $name, $value );
+
+  $router->force; # Force all variables to update (next apply() will be 
+slow!)
+  $router->force($page); # Force all for $page
+  $router->force($page, @names); # Force $var on $page
+
+  my $rv = $router->apply; -or-
+  my $rv = $router->apply(@pages);
+
+  print $router->errmsg if(!$rv);
+
+  my $config = $router->export_cfg;
+  $other_router->import_cfg($config);
+
+  my $rv = $router->upgrade( $path_to_firmware_file );
+  print $router->errmsg if(!$rv);
+
+Tested with Linksys Router Version: BEFSR41
+
+Dependencies Include:
+    LWP::UserAgent, HTML::Parser, HTML::PullParser, HTML::Entities
+    (Used to communicate with the router via HTTP, and pull variable 
+information from the outputted HTML)
+
+Embeded in this the module is also Linksys::Config::TFTP which is a 
+slightly modified version of Net::TFTP that supports Linksys's 
+propreitary extention to TFTP to authenticate via password. 
+Linksys::Config::TFTP is used internally by Linksys::Config during 
+firmware upgrades, however it could be used independently of 
+Linksys::Config by someone wishing to have direct TFTP access to a 
+Linksys router. The usage for Linksys::Config::TFTP is exactly the same 
+as Net::TFTP with the addition of a "Password" paramter. I am assumeing 
+that this TFTP module would be a child of whatever name space is agreed 
+to here, but I am not opposed to moving the Linksys::Config::TFTP 
+sub-module entirely to some other name space, such as Net::TFTP::Linksys 
+some such designation...
+
+Thanks,
+James Tavares
+
+

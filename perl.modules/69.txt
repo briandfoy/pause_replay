@@ -1,0 +1,66 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:69
+Return-Path: <jdporter@min.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 9747 invoked from network); 15 Oct 1999 19:04:06 -0000
+Received: from min.net (jdporter@208.222.210.19)
+  by tmtowtdi.perl.org with SMTP; 15 Oct 1999 19:04:06 -0000
+Received: (from jdporter@localhost)
+	by min.net (8.9.3/8.9.3) id PAA14882
+	for modules@perl.org; Fri, 15 Oct 1999 15:04:05 -0400 (EDT)
+Date: Fri, 15 Oct 1999 15:04:05 -0400
+To: modules@perl.org
+Subject: [RFC] Tie::Array::Offset ?
+Message-ID: <19991015150405.A14149@min.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.1us
+Approved: news@nntp.perl.org
+From: jdporter@min.net (John Porter)
+
+Hi, I have created a module defining a TIEARRAY class,
+which implements the following function:
+
+Given an "offset" value, and an existing array variable
+(possibly anonymous), map accesses to the tied variable
+into the given existing variable, with indexes offset
+by the given "offset" amount.
+
+For example:
+
+	@a = qw( alpha beta gamma );
+
+	tie @b, 'Tie::Array::Offset', 1, \@a;
+
+	print $b[0];  # prints 'beta';
+	print $b[-1]; # prints 'gamma', as usual.
+
+Modifications to the "underlying" array are visible
+in the tied array, because the ref is remembered:
+
+	push @a, 'delta';
+	print $b[-1]; # now prints 'delta'.
+
+As well as:
+
+	push @b, 'epsilon';
+	print $a[-1]; # prints 'epsilon'.
+
+shift does the expected thing:
+
+	shift @b;
+	print $a[1]; # prints 'gamma', because 'beta' is gone.
+
+
+What do you think?  Tie::OffsetArray?
+As I opinied earlier, I would consider Tie::Array::Offset to
+be appropriate...
+
+Also, FWIW, this sort of mechanism (it's bloody simple) would
+have made pseudo-hashes a lot more natural to work with...
+
+Thanks,
+John Porter
+

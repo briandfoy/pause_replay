@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3281
+Return-Path: <Raphael.Manfredi@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3837 invoked from network); 3 Nov 2000 08:53:53 -0000
+Received: from beta.dmz-eu.st.com (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 3 Nov 2000 08:53:53 -0000
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+	by beta.dmz-eu.st.com (STMicroelectronics) with SMTP id 1A329491D
+	for <modules@perl.org>; Fri,  3 Nov 2000 08:53:25 +0000 (GMT)
+Received: by zeta.dmz-eu.st.com (STMicroelectronics, from userid 0)
+	id 7E4BE4B59; Fri,  3 Nov 2000 08:53:39 +0000 (GMT)
+Received: from eux220.sgp.st.com (localhost [127.0.0.1])
+	by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 5744A1845
+	for <modules@perl.org>; Fri,  3 Nov 2000 08:53:39 +0000 (GMT)
+Received: from gnx009.gnb.st.com (gnx009.gnb.st.com [164.129.103.229])
+	by eux220.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id JAA18536
+	for <modules@perl.org>; Fri, 3 Nov 2000 09:53:23 +0100 (MET)
+Received: from lod23.gnb.st.com (lod28.gnb.st.com [164.129.117.125])
+	by gnx009.gnb.st.com (8.8.6 (PHNE_14041)/8.8.6) with ESMTP id JAA13484
+	for <modules@perl.org>; Fri, 3 Nov 2000 09:53:33 +0100 (MET)
+To: modules@perl.org
+Subject: Need Log::Agent::Logger subname
+X-Mailer: NMH [version 1.0.1]
+Organization: ST Microelectronics, Grenoble, France
+Date: Fri, 03 Nov 2000 09:54:53 +0100
+Message-ID: <18190.973241693@lod23.gnb.st.com>
+Sender: manfredi@lod23.gnb.st.com
+Approved: news@nntp.perl.org
+From: Raphael.Manfredi@st.com (Raphael Manfredi)
+
+Hi!
+
+Would you be so kind as to create the following entry:
+
+    Name           DSLI  Description                                  Info
+    -----------    ----  -------------------------------------------- -----
+    Log::Agent     ----  A general logging framework                  RAM
+    ::Logger       cdpr  Application-level logging interface          RAM
+
+Read on if you're curious about what's going to be in there.
+
+                        -------------------------
+
+The Log::Agent::Logger will simply hold extensions to the Log::Agent
+module that are not distributed along with Log::Agent because they
+rely on external modules (same reasons that pushed me to releae
+Log::Agent::Rotate as a separate module).
+
+Whilst Log::Agent tackles the standard logwarn/logerr/logdie/logcarp
+interface, Log::Agent::Logger will offer an API like this:
+
+    # Channel is a Log::Agent::Channel object (as introduced by
+    # forthcoming Log::Agent 0.2).
+
+    my $log = Log::Agent::Loger->make(
+        -channel  => $channel,
+        -max_prio => 'info',
+        -min_prio => 'emerg',
+    );
+
+    $log->warn("This is a warning: %m");
+    $log->error("Can't open '%s': $!", $file);
+    $log->debug(sub { # construct log }, @some_sub_params);
+
+The latest form will have its CODE ref called only when within the
+min/max bounds.
+
+Log::Agent::Logger capitalizes on the re-engineering of Log::Agent 0.2
+which distinguishes between logwarn/logerr etc... mappings within a
+logging driver, and channels, which are objects with a ->write()
+routine that emits the formatted string.
+
+Log::Agent 0.2 will come with 3 standard channels: File, Handle and Syslog.
+
+Log::Agent::Logger will introduce more channels, and a subclass
+Log::Agent::Dispatcher which will be a Log::Agent::Logger, plus will
+hold a list of Log::Agent::Logger objects to which log messages will be
+forwarded.
+
+An application will therefore be able to use Log::Agent::Logger for its
+own customized logging, without committing on the final destination of
+the messages, and without needing to know at all.
+
+Just like re-usable modules can use Log::Agent's logwarn() and logdie()
+routines without knowing whether those will be remapped to warn() and die(),
+or redirected to syslogd (with a final die, if logdie is used).
+
+Raphael

@@ -1,0 +1,72 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:76692
+Return-Path: <brian.d.foy@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31877 invoked from network); 6 Jul 2011 18:28:49 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 6 Jul 2011 18:28:49 -0000
+Received: (qmail 3447 invoked by uid 225); 6 Jul 2011 18:28:48 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3443 invoked by alias); 6 Jul 2011 18:28:48 -0000
+X-Spam-Status: No, hits=-3.1 required=8.0
+	tests=DKIM_ADSP_CUSTOM_MED,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_HI,SPF_NEUTRAL,T_TO_NO_BRKTS_FREEMAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO x6.develooper.com) (207.171.7.86)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 06 Jul 2011 11:28:45 -0700
+Received: from lists-nntp.develooper.com (localhost.localdomain [127.0.0.1])
+	by x6.develooper.com (Postfix) with SMTP id F03EC17753
+	for <modules@perl.org>; Wed,  6 Jul 2011 11:28:41 -0700 (PDT)
+Received: (qmail 31867 invoked by uid 515); 6 Jul 2011 18:28:41 -0000
+To: modules@perl.org, norm@cackhanded.net (Mark Norman Francis)
+Subject: Re: Fwd: Failed: PAUSE indexer report MNF/URI-Dispatch-v1.4.tar.gz
+Date: Wed, 06 Jul 2011 13:30:11 -0500
+Reply-To: modules@perl.org
+Posted-And-Mailed: yes
+Message-ID: <060720111330110369%brian.d.foy@gmail.com>
+References: <201107060856.p668upS4025992@pause.fiz-chemie.de> <C1132B79-3510-4A3B-B527-608F92F57ADD@cackhanded.net>
+Organization: The Perl Review, LLC
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+User-Agent: Thoth/1.7.2 (Carbon/OS X)
+X-Posted-By: 69.211.59.113
+Approved: news@nntp.perl.org
+From: brian.d.foy@gmail.com (brian d foy)
+
+[[ This message was both posted and mailed: see
+   the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+In article <C1132B79-3510-4A3B-B527-608F92F57ADD@cackhanded.net>, Mark
+Norman Francis <norm@cackhanded.net> wrote:
+
+> I know it'll be something totally obvious, but I don't get why this happens.
+> Is there a checklist of 'things needed by CPAN' somewhere that I could refer
+> to?
+> 
+> Also, "No or no indexable" looks like there's some text missing from the
+> generated error. ;)
+
+My guess is that the indexer doesn't know what to do with
+MooseX::Declare syntax. It appears to the indexer that there are no
+"package" statements, just as the error message said.
+
+There is no 'provides' sections in your META.yml to say which
+namespaces you're providing.
+
+The indexer's job is really to discover which packages in your
+distributions it should put into 02packages.details so CPAN clients can
+find it. That includes not indexing those packages when they show up in
+other people's distributions.
+
+The question really gets down to how much PAUSE should chase syntax
+mutators to discover this stuff when you don't declare it yourself. You
+might ask on the Moose list what other people are doing since this is
+the first time I've seen anyone complain about this problem.
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+PAUSE instructions:  http://pause.perl.org/pause/query?ACTION=pause_04about
+Archives: http://www.xray.mpe.mpg.de/mailing-lists/modules
+Please send all messages back to modules@perl.org with no CC to me.

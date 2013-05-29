@@ -1,0 +1,103 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:10250
+Return-Path: <danil@chaz.ru>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 97130 invoked by uid 76); 16 Feb 2002 23:03:13 -0000
+Received: from chaz.ru (HELO dapi.chaz.ru) (195.42.137.33)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Sat Feb 16 23:03:13 2002 -0000
+Received: (qmail 812 invoked by uid 100); 16 Feb 2002 23:04:10 -0000
+To: modules@perl.org
+Subject: How to register as alternative module maintainer?
+Organization: e-labs
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.4 (Academic Rigor)
+Date: 17 Feb 2002 02:04:10 +0300
+Message-ID: <x7heohyqol.fsf@mail.ru>
+Lines: 81
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: dapi@mail.ru (Danil Pismenny)
+
+
+Hello,
+
+  I've uploaded the OpenGL::Script module that provides script
+  functionality for OpenGL and I need to upload the patched OpenGL
+  module also. How to include these modules into the offical modules
+  list? And, how to register as alternative the OpenGL module
+  maintainer?  Sorry, if it is described in the 04pause.html. I didn't
+  find any clearly description of these processes, just recomendation
+  to email to module@cpan.org
+
+Thank you,
+
+
+-----------------------------------------------------------------
+
+Ilya Zakharevich <ilya@math.ohio-state.edu> writes:
+
+> On Fri, Feb 15, 2002 at 02:54:29AM +0300, Danil Pismenny wrote:
+> >   As you have no time, I can separate patched part to the new module,
+> >   something like OpenGL::MesaOS and OpenGL::MesaOS::Image (because I
+> >   didn't fix anything, I just added the new functions), or I can patch
+> >   the common OpenGL module (I did it already) and upload it to the
+> >   CPAN (I just get the ID there).
+> 
+> Feel free to upload it to CPAN, but I think you *need* to register as
+> an (alternative?) maintainer of OpenGL.  BTW, if you do, I have an
+> extra patch from the users (included).
+> 
+> Hope this helps,
+> Ilya
+> From: Martien Verbruggen <mgjv@tradingpost.com.au>
+> Subject: Re: OpenGL, a minor patch
+> To: Ilya Zakharevich <ilya@math.ohio-state.edu>
+> Date: Tue, 27 Feb 2001 20:58:53 +1100
+> Reply-To: Martien Verbruggen <mgjv@tradingpost.com.au>
+> 
+> On Tue 27 Feb 02:58 AM, Ilya Zakharevich wrote:
+> 
+> > On Tue, Feb 27, 2001 at 12:10:47PM +1100, Martien Verbruggen wrote:
+> > > diff -c OpenGL-0.53-new/Makefile.PL OpenGL-0.53/Makefile.PL
+> > > *** OpenGL-0.53-new/Makefile.PL	Tue Feb 27 12:03:48 2001
+> > > --- OpenGL-0.53/Makefile.PL	Fri Nov 17 09:06:23 2000
+> > 
+> > Took me some time to understand what happened...   It is inverted, right?
+> 
+> Yep :} 
+> 
+> I'll create a new one, sorry.
+> 
+> diff -bc OpenGL-0.53/Makefile.PL OpenGL-0.53-new/Makefile.PL
+> *** OpenGL-0.53/Makefile.PL	Fri Nov 17 09:06:23 2000
+> --- OpenGL-0.53-new/Makefile.PL	Tue Feb 27 12:03:48 2001
+> ***************
+> *** 25,30 ****
+> --- 25,36 ----
+>   
+>   $DEFS  = "-DHAVE_GL";         # Primary OpenGL system
+>   
+> + # Mesa 3D version 3.4 needs this so that all extension constants (even
+> + # obsolete ones) will be defined. Without this, about 13 or so won't be
+> + # known. It can't hurt for other distributions, so we won't even check.
+> + 
+> + $DEFS .= " -DGL_GLEXT_LEGACY";
+> + 
+>   # GL Utility library (on OS/2 built into -lopengl)
+>   $DEFS .= " -DHAVE_GLU" if $l =~ /(^|\s)-l(\w*GLU|opengl)\b/;
+>   
+> 
+> Martien
+> -- 
+> Martien Verbruggen              | 
+> Interactive Media Division      | 
+> Commercial Dynamics Pty. Ltd.   | What's another word for Thesaurus?
+> NSW, Australia                  | 
+> ----------
+> 
+
+-- 
+Danil Pismenny
+http://dapi.chaz.ru/

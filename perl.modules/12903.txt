@@ -1,0 +1,62 @@
+Newsgroups: perl.ithreads,perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.ithreads:416 perl.modules:12903 perl.module-authors:458
+Return-Path: <pdcawley@bofh.org.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 42691 invoked by uid 76); 29 Jul 2002 06:49:00 -0000
+Received: from [217.89.91.12] (HELO mail.hybyte.com) (217.89.91.12)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Mon Jul 29 06:49:00 2002 -0000
+Received: (qmail 661 invoked from network); 29 Jul 2002 06:43:53 -0000
+Received: from pdcawley@bofh.org.uk by mail.hybyte.com by uid 504 with qmail-scanner-1.13 
+ (uvscan: v4.1.40/v4214.  Clear:. 
+ Processed in 0.209551 secs); 29 Jul 2002 06:43:53 -0000
+Received: from unknown (HELO despairon.bofh.org.uk) (213.86.117.113)
+  by 0 with SMTP; 29 Jul 2002 06:43:52 -0000
+Received: from localhost ([127.0.0.1] helo=despairon.bofh.org.uk)
+	by despairon.bofh.org.uk with esmtp (Exim 4.04)
+	id 17YTPl-0001ft-00; Sat, 27 Jul 2002 16:23:30 +0100
+Sender: pdcawley@despairon.bofh.org.uk
+To: Elizabeth Mattijsen <liz@dijkmat.nl>
+Cc: Ken Williams <ken@mathforum.org>,  module-authors@perl.org,
+	  modules@perl.org,  perl-ithreads@perl.org
+Subject: Re: [CAUTION] Thread-saving modules
+References: <4.2.0.58.20020721195048.0270e2b0@mickey.dijkmat.nl>
+	<4.2.0.58.20020722201008.01f1d4d0@mickey.dijkmat.nl>
+Date: 27 Jul 2002 16:23:29 +0100
+In-Reply-To: <4.2.0.58.20020722201008.01f1d4d0@mickey.dijkmat.nl>
+Message-ID: <843cu59oum.fsf@despairon.bofh.org.uk>
+Lines: 26
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) XEmacs/21.5 (broccoflower)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: pdcawley@bofh.org.uk
+
+Elizabeth Mattijsen <liz@dijkmat.nl> writes:
+
+> At 04:03 AM 7/23/02 +1000, Ken Williams wrote:
+> >>   return unless ref($_[0]);
+> >I usually just call UNIVERSAL::isa($_[0], 'your::class::name') in these cases.
+> 
+> That's a good tip.
+> 
+> I actually generalized this to:
+> 
+>    return unless UNIVERSAL::isa( $_[0],__PACKAGE__ );
+> 
+> This will be implemented in Thread::Pool 0.17...  ;-)
+
+Don't you still have a 'subclass problem? Consider some parent class
+with children A,B,C & D. If a 'D' gets DESTROYed correctly at first and
+then a subsequent spurious DESTROY passes an object that's morphed
+into a 'C' then you're protection is stuffed.
+
+
+-- 
+Piers
+
+   "It is a truth universally acknowledged that a language in
+    possession of a rich syntax must be in need of a rewrite."
+         -- Jane Austen?
+

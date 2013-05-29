@@ -1,0 +1,57 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4053
+Return-Path: <jason@verysimple.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25501 invoked from network); 1 Jan 2001 23:43:27 -0000
+Received: from mpdr0.chicago.il.ameritech.net (HELO mailhost.chi.ameritech.net) (206.141.239.142)
+  by tmtowtdi.perl.org with SMTP; 1 Jan 2001 23:43:27 -0000
+Received: from audio ([64.108.10.134]) by mailhost.chi.ameritech.net
+          (InterMail v4.01.01.07 201-229-111-110) with SMTP
+          id <20010101234213.NUZN1078.mailhost.chi.ameritech.net@audio>
+          for <modules@perl.org>; Mon, 1 Jan 2001 17:42:13 -0600
+To: <modules@perl.org>
+Subject: Namespace for PGP module
+Date: Mon, 1 Jan 2001 17:43:22 -0600
+Message-ID: <NEBBLAHJMBKNPOPMJHPBAEJGCEAA.jason@verysimple.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.3018.1300
+Approved: news@nntp.perl.org
+From: jason@verysimple.com ("Jason")
+
+I've made a mod that works with PGP (tested with 2.6.2 on BSD and Windows,
+and 6.5.8 on Windows).  It is similar to some of the existing modules (in
+particular Crypt::PGP5 and PGP::Pipe) but runs on windows.  For some reason
+I cannot get the existing PGP modules to work on windows - probably my own
+stupidity.
+
+I was thinking of naming it Crypt::PGPSimple.  I am hoping for some
+conversation with Ashish Gulhati (author of Crypt::PGP5) - I can see that he
+is working on a nice object-model with key objects, etc.  my interface is
+much more basic, but i think covers what most people would need (encrypting,
+decrypting and signing).
+
+The mod is almost ready to upload - this is my first CPAN mod, so i'm trying
+to make sure everything is in order.  The functionality is working, though.
+Here's a example of usage:
+
+  use Crypt::PGPSimple;
+  my ($objPGP) = new Crypt::PGPSimple;
+
+  $objPGP->PublicKey("myfriend\@herhost.com");
+  $objPGP->PlainText($plain_text_message);
+  $objPGP->Encrypt;
+  my ($encrypted_message) = $objPGP->EncryptedText;
+
+
+thanks for any help and advice,
+jason
+

@@ -1,0 +1,78 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:24946
+Return-Path: <Daniel.Peder@infoset.cz>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 58285 invoked by uid 76); 9 Dec 2003 11:52:52 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Tue, 09 Dec 2003 03:52:52 -0800
+Received: (qmail 20370 invoked by uid 225); 9 Dec 2003 11:52:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20364 invoked by alias); 9 Dec 2003 11:52:50 -0000
+Received: from r2p36.mistral.cz (HELO r2p36.mistral.cz) (62.245.79.36) by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Tue, 09 Dec 2003 03:52:38 -0800
+Received: (from root@localhost)	by r2p36.mistral.cz (8.11.6/8.11.6) id hB9Bw1a01428;	Tue, 9 Dec 2003 12:58:01 +0100
+X-Envelope-To: modules@perl.org
+Date: Tue, 9 Dec 2003 12:58:01 +0100
+To: Jarkko Hietaniemi <jhi@iki.fi>
+Cc: Autrijus Tang <autrijus@autrijus.org>, modules@perl.org
+Subject: Re: Module submission result
+Message-ID: <20031209115801.GA1388@r2p36.mistral.cz>
+Reply-To: Daniel.Peder@infoset.cz
+References: <200312081557.hB8FvVlA015578@pause.perl.org> <20031208162053.GA36307@aut.dyndns.org> <20031208171615.GD2319@r2p36.mistral.cz> <1070928828.814.7.camel@localhost> <7DD1202E-29F2-11D8-B99E-00039362CB92@iki.fi>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7DD1202E-29F2-11D8-B99E-00039362CB92@iki.fi>
+User-Agent: Mutt/1.4i
+X-Spam-Check-By: la.mx.develooper.com
+X-Spam-Status: No, hits=-2.7 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: Daniel.Peder@infoset.cz ("Daniel Peder [INFOSET.CZ]")
+
+MAIL [09.12.2003 04:50] 'Jarkko Hietaniemi <jhi@iki.fi>':
+
+> >>Other words: it is some kind of sofisticated replacement for 
+> >>returning undef
+> >>and checking it by if( defined( ... ))
+> >
+> >I see.  Still, I feel the pragma-like name to be strange.  Any other
+> >folks on modules@ who'd like to chip in?
+> 
+> Chip chip.  Yes, all lowercase should be pragmas, meaning that they 
+> should
+> change the behaviour of Perl, and generally such things cannot be 
+> written without
+> considerable level of support in the implementation itself.  Does it 
+> change the behaviour of the compiler, or something compile-time?  If 
+> not, it's not a pragma, pretty much.
+> 
+> Even Attribute::Handlers, which certainly by some standards "changes 
+> the language" by seemingly "changing the language" by introducing 
+> _seemingly_ new constructs to the language, is not a pragma.  It's not 
+> 'use attribute::handlers'.
+
+well, great, You sent me an idea:
+
+I've changed the code to defaultly export both class methods &err and &iserr
+so that now there is as short as possible construct:
+
+        sub mySub {
+          ...
+          return err 'some error message' if somethingWrong();
+	  ...
+        }
+
+        $myVar = mySub();
+        handleErrorProbablyDieWith($myVar) if iserr $myVar;
+        ... continue with non-error $myVar
+
+isn't it nice?
+
+do somebody have any suggestion how should be this module named to
+properly match its intended purpose, having in mind, that it
+could be used not only for error ahdnling/reporting. Is the name 'Result'
+with capitalized 'R' ok?
+
+--
+ Daniel.Peder@Infoset.CZ

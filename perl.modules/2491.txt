@@ -1,0 +1,175 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2491
+Return-Path: <aarakelian@crunchtime.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21973 invoked from network); 20 Jul 2000 16:52:36 -0000
+Received: from darius.concentric.net (207.155.198.79)
+  by tmtowtdi.perl.org with SMTP; 20 Jul 2000 16:52:36 -0000
+Received: from mcfeely.concentric.net (mcfeely.concentric.net [207.155.198.83])
+	by darius.concentric.net (8.9.1a/(98/12/15 5.12))
+	id MAA14376; Thu, 20 Jul 2000 12:52:09 -0400 (EDT)
+	[1-800-745-2747 The Concentric Network]
+Errors-To: <aarakelian@crunchtime.com>
+Received: from peru ([216.112.191.19])
+	by mcfeely.concentric.net (8.9.1a)
+	id MAA28054; Thu, 20 Jul 2000 12:52:08 -0400 (EDT)
+To: <modules@perl.org>
+Subject: Registration
+Date: Thu, 20 Jul 2000 12:50:53 -0400
+Message-ID: <NEBBJDJOMLKJEACCIECDAEMACBAA.aarakelian@crunchtime.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0007_01BFF249.23AC6BE0"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4029.2901
+Approved: news@nntp.perl.org
+From: aarakelian@crunchtime.com ("Adam Arakelian")
+
+------=_NextPart_000_0007_01BFF249.23AC6BE0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+
+Name:			Adam Arakelian
+Email Address:	aarakelian@crunchtime.com
+Home/Work Page:	www.net-chef.com
+User_ID:		Adam or arakelian
+Contribution:	Module that validates dates mm/dd/yyyy
+
+Name            DSLI    Description                              Info
+---------      -------  --------------------------          -----------
+DateValidate    Sdcf    Module that validates dates mm/dd/yyyy   Adam
+
+
+Thought this was sorta a neat little module, just a pm file....please email
+me back and tell me what you think...
+
+				Adam Arakelian
+
+------=_NextPart_000_0007_01BFF249.23AC6BE0
+Content-Type: application/octet-stream;
+	name="DateValidate.pm"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: attachment;
+	filename="DateValidate.pm"
+
+#!/usr/bin/perl
+
+#Written by Adam Arakelian and Boris Volf
+#Usage:
+#      Install in Perl/lib/
+#      In Script at head type: Use DateValidate qw(DateValidate);
+#      To Call:  DateValidate($date);
+#DateValidate.pm
+
+package DateValidate;
+require Exporter;
+@ISA =3D qw(Exporter);
+@EXPORT =3D qw();
+@EXPORT_OK =3D qw(DateValidate);
+
+sub DateValidate {
+($date_validate) =3D @_;
+
+
+$slash_count =3D ($date_validate =3D~ tr/\///);
+if ($slash_count !=3D 2) {
+$slash_date_err =3D "false";
+$url =3D "$ENV{'HTTP_REFERER'}";
+print "location: $url\n\n";
+exit;
+}
+
+@date_arry =3D "$date_validate";
+foreach $i (@date_arry){
+chomp($i);
+($date_month,$date_day,$date_year) =3D split(/\//, $i);
+}
+
+$length_month =3D length($date_month);
+
+$length_day =3D length($date_day);
+
+$length_year =3D length($date_year);
+
+
+if (($date_month >=3D 1) and ($date_month <=3D 12)) {
+    if ((($date_month =3D=3D 4) or ($date_month =3D=3D 6) or =
+($date_month =3D=3D 9) or ($date_month =3D=3D 11)) and (($date_day =
+=3D=3D 31))){
+        $month_too_many_days_date_err =3D "false";
+        $url =3D "$ENV{'HTTP_REFERER'}";
+        print "location: $url\n\n";
+        exit;
+
+}elsif (($date_month >=3D 1) and ($date_month <=3D 9)) {
+       $date_month =3D '0'.$date_month;
+   }
+
+}elsif (($date_month > 12) or ($date_month =3D=3D 0)) {
+
+        $month_greater_date_err =3D "false";
+        $url =3D "$ENV{'HTTP_REFERER'}";
+        print "location: $url\n\n";
+        exit;
+}
+
+
+if (($date_day >=3D 1) and ($date_day <=3D 31)) {
+   if ($length_day =3D=3D 1) {
+       $date_day =3D '0'.$date_day;
+
+   }
+
+}else{
+        $day_out_range_date_err =3D "false";
+        $url =3D "$ENV{'HTTP_REFERER'}";
+        print "location: $url\n\n";
+        exit;
+}
+
+if (($length_year !=3D 2) and ($length_year !=3D 4)) {
+
+        $year_date_err =3D "false";
+        $url =3D "$ENV{'HTTP_REFERER'}";
+        print "location: $url\n\n";
+        exit;
+
+  }elsif (($length_year =3D=3D  2) and ($date_year > 50)) {
+          $date_year =3D '19'.$date_year;
+
+}elsif ($date_year eq '00') {
+          $date_year =3D '20'.$date_year;
+
+}elsif ($date_year eq '0000') {
+        $invalid_year_date_err =3D "false";
+        $url =3D "$ENV{'HTTP_REFERER'}";
+        print "location: $url\n\n";
+        exit;
+}
+
+if (($date_month =3D=3D 2) and ($date_day > 29)) {
+         $leap_year_date_err =3D "false";
+         $url =3D "$ENV{'HTTP_REFERER'}";
+         print "location: $url\n\n";
+         exit;
+
+}elsif (($date_month =3D=3D 2) and ($date_year % 4) and ($date_year % =
+100 or $date_year % 400)){
+
+        $invalid_leap_date_err =3D "false";
+        $url =3D "$ENV{'HTTP_REFERER'}";
+        print "location: $url\n\n";
+        exit;
+   }
+
+}
+
+
+------=_NextPart_000_0007_01BFF249.23AC6BE0--
+

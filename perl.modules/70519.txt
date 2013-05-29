@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:70519
+Return-Path: <brian.d.foy@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32688 invoked from network); 29 Mar 2010 19:06:05 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 29 Mar 2010 19:06:05 -0000
+Received: (qmail 14426 invoked by uid 225); 29 Mar 2010 19:06:05 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14420 invoked by alias); 29 Mar 2010 19:06:05 -0000
+X-Spam-Status: No, hits=-3.1 required=8.0
+	tests=DKIM_ADSP_CUSTOM_MED,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_HI,SPF_NEUTRAL,T_TO_NO_BRKTS_FREEMAIL,WEIRD_PORT
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO lists-nntp.develooper.com) (207.171.7.86)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Mon, 29 Mar 2010 12:06:01 -0700
+Received: (qmail 32632 invoked by uid 515); 29 Mar 2010 19:05:57 -0000
+To: modules@perl.org, pete@clueball.com (Peter Sergeant)
+Subject: Re: Fwd: Failed: PAUSE indexer report SARGIE/Data-Google-Visualization-DataTable-0.04.tar.gz
+Date: Mon, 29 Mar 2010 14:05:55 -0500
+Reply-To: modules@perl.org
+Posted-And-Mailed: yes
+Message-ID: <290320101405558220%brian.d.foy@gmail.com>
+References: <201003280425.o2S4PW0H027394@pause.fiz-chemie.de> <3a0e2fa51003272129qc104dcdicb833f31a887cab6@mail.gmail.com>
+Organization: The Perl Review, LLC
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+User-Agent: Thoth/1.7.2 (Carbon/OS X)
+X-Posted-By: 69.215.89.22
+Approved: news@nntp.perl.org
+From: brian.d.foy@gmail.com (brian d foy)
+
+[[ This message was both posted and mailed: see
+   the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+In article
+<3a0e2fa51003272129qc104dcdicb833f31a887cab6@mail.gmail.com>, Peter
+Sergeant <pete@clueball.com> wrote:
+
+> Every time I upload this module, I'm getting the same complaints about a
+> package called 'private' not getting indexed. Somewhere in the code exists:
+> 
+> >>>
+> final float goto implements import int interface long native package private
+
+> Is that the problem?
+
+I'm pretty sure that's the problem. PAUSE doesn't execute your code, so
+it makes its best guess with a regex. In
+PAUSE::mldistwatch::packages_per_pmfile, there is:
+
+                $pline =~ m{
+                         (.*)
+                         \bpackage\s+
+                         ([\w\:\']+)
+                         \s*
+                         ( $ | [\}\;] )
+                        }x) {
+
+http://pause.perl.org:5459/svn/pause/trunk/lib/PAUSE/mldistwatch.pm
+
+It's not the best thing in the world, and you're the unlikely candidate
+who trips it. If you make your source not match that regex, you won't
+trip it. 
+
+I didn't follow the code path to see if a simple 'noindex' would filter
+that though.
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+PAUSE instructions:  http://pause.perl.org/pause/query?ACTION=pause_04about
+Archives: http://www.xray.mpe.mpg.de/mailing-lists/modules
+Please send all messages back to modules@perl.org with no CC to me.

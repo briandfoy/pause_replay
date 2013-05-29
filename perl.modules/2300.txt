@@ -1,0 +1,149 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2300
+Return-Path: <dystan@cva001.cvanet.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11540 invoked from network); 27 Jun 2000 19:32:14 -0000
+Received: from misterlee.oldcity.dca.net (HELO cva001.cvanet.com) (dystan@207.245.113.57)
+  by tmtowtdi.perl.org with SMTP; 27 Jun 2000 19:32:14 -0000
+Received: (from dystan@localhost)
+	by cva001.cvanet.com (8.8.8/8.8.8/Debian/GNU) id PAA10273;
+	Tue, 27 Jun 2000 15:37:12 -0400
+Message-ID: <20000627153659.A10157@cva000.cvanet.com>
+Date: Tue, 27 Jun 2000 15:36:59 -0400
+To: modules@perl.org
+Subject: Developer Regist. & namespace: Text::TreeFile proposal
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.91.2
+Approved: news@nntp.perl.org
+From: dystan@pac.net (John Kirk)
+
+  I'd like namespace comments on use of "Text::TreeFile" for a module
+I wish to submit to CPAN.  It's a simple one, which abstracts out,
+from several applications, support for reading a file format I've
+found useful for all of them.  Full details are available on:
+
+         http://perl.dystanhays.com/jnk/TreeFile
+
+  Also, I wish to register as a developer (see the end of this message).
+
+Module summary:
+
+NAME
+
+  Text::TreeFile - Reads a tree of text strings into a data structure
+
+SAMPLE DATA
+
+  If the first file, following, is read by the
+module, it will include the second, and the result
+will be as if the third had been read (eliminating
+comments and include-file references).
+
+----------- file "treetest.tre" ------------
+#   file:  treetest.tre
+line 01, level 0, yyyyy
+  line 02, level 1,
+      ... yyyyy
+    line 03, level 2,
+        ... yyyyy
+    line 04,
+        ... level 2,
+        ... yyyyy
+  line 05, level 1, yyyyy
+  line 06, level 1, yyyyy
+# -- the following line causes the file to be included
+    include inclfile.tre
+    line 13, level 2, yyyyy
+  line 14, level 1, yyyyy
+
+----------- file "inclfile.tre" ------------
+line 07, level 2, locallevel 0, xxxxx
+  line 08, level 3, locallevel 1, xxxxx
+  line 09, level 3, locallevel 1, xxxxx
+    line 10, level 4, locallevel 2, xxxxx
+    line 11, level 4, locallevel 2, xxxxx
+  line 12, level 3, locallevel 1, xxxxx
+
+----------- file "equivalent.tre" ----------
+line 01, level 0, yyyyy
+  line 02, level 1, yyyyy
+    line 03, level 2, yyyyy
+    line 04, level 2, yyyyy
+  line 05, level 1, yyyyy
+  line 06, level 1, yyyyy
+    line 07, level 2, locallevel 0, xxxxx
+      line 08, level 3, locallevel 1, xxxxx
+      line 09, level 3, locallevel 1, xxxxx
+        line 10, level 4, locallevel 2, xxxxx
+        line 11, level 4, locallevel 2, xxxxx
+      line 12, level 3, locallevel 1, xxxxx
+    line 13, level 2, yyyyy
+  line 14, level 1, yyyyy
+
+--------------------------------------------
+
+SYNOPSIS
+  use Text::TreeFile;
+  my $filename='treetest.tre';
+  my $treeref=Text::TreeFile->new($filename)
+    or die "TreeFile couldn't read file: $filename\n";
+  my $topref=$treeref->{top};
+  showlines($topref,0);       # see EXAMPLES, for def. of showlines()
+
+REQUIRES
+
+  TreeFile uses modules:  English and FileHandle
+
+DESCRIPTION
+
+  Text::TreeFile supports reading a simple ASCII text file format
+for representing tree structures.  It loads the contents of such
+a file into a tree (or array of trees) of two-element array nodes,
+where the first element of each node is a text string and the
+second is an array of child nodes.
+
+  It supports comments, continuation lines and include files, and
+uses a strict (two-spaces-per-level) indentation scheme in the
+file to indicate hierarchical nesting.
+
+-------------------------------
+Registration Request for new Developer ID:
+
+Name & email address:    John Kirk <johnkirk@dystanhays.com>
+
+Homepage for modules:    http://perl.dystanhays.com/jnk
+
+Desired ID:              JOHNKIRK  (or, somewhat preferably, JNK)
+
+Contribution plans:      modules for GUI development using perl-tk
+                          and for applications in 3D geometry, the
+                          game of Go and others
+
+First contribution:      I propose the following (as detailed above):
+
+Name           DSLI  Description                                  Info
+-------------  ----  -------------------------------------------- -----
+Text::TreeFile bdpO  Reads tree of strings into a data structure  JOHNKIRK
+
+  D - Development Stage (Note: *NO IMPLIED TIMESCALES*):
+        a/b - Alpha/Beta testing
+  S - Support Level:
+        d - Developer
+  L - Language Used:
+        p - Perl-only, no compiler needed, should be platform independent
+  I - Interface Style
+        O - Object oriented using blessed references and/or inheritance
+
+  I've found this module helpful for a dozen applications or so, which
+were simplified by having this functionality abstracted out.  The most
+generally useful such application is a tool that simplifies the use of
+perl-tk (modules in the Tk:: namespace) for building GUI-based application
+programs.  I plan to subsequently submit several modules for this as well.
+Some of this work has been discussed with Mark-Jason Dominus, who
+expressed tentative interest in an article for perl.com on its motivation
+and use.  A talk is scheduled at the August meeting of the Philadelphia
+Linux Users Group (http://plug.nothinbut.net), demonstrating GUI
+specification and implementation with this tool.

@@ -1,0 +1,112 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:6383
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 76896 invoked from network); 29 Jun 2001 00:33:56 -0000
+Received: from dubravka.kbx.de (HELO pause.perl.org) (root@212.40.160.59)
+  by onion.valueclick.com with SMTP; 29 Jun 2001 00:33:56 -0000
+Received: (from nobody@localhost)
+	by pause.perl.org (8.9.3/8.9.3) id CAA12869;
+	Fri, 29 Jun 2001 02:33:53 +0200
+Date: Fri, 29 Jun 2001 02:33:53 +0200
+Message-ID: <200106290033.CAA12869@pause.perl.org>
+Reply-To: modules@perl.org
+Subject: Module submission XML::RDB
+To: modules@perl.org, metzzo@cpan.org
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       XML::RDB
+  DSLIP:       bdpnb
+  description: create,populate, & unpop RDB tables from XML
+  userid:      METZZO (Mark Ethan Trostler)
+  chapterid:   11 (String_Lang_Text_Proc)
+  communities:
+    mailing lists
+
+  similar:
+    DBIx::XML_RDB
+
+  rationale:
+
+    These scripts actually parse XML & create RDB tables for that XML,
+    correctly handling & creating 1:1 and 1:N relationships. After
+    importing the tables into your favorite DB (MySQL is the only one
+    currently supported) you can then populate it from the raw XML. Once
+    in your DB you can play with it using all of your favorite RDB
+    tools, and a final script will read your tables and output valid XML
+    from them. Quite pleasant really. Handles attributes too. e.g.
+    <address-book> <name>My Address Book</name> <entry type="Person">
+    <name>Mark</name> <street>Perl Place</street> </entry> <entry>
+    <name>Bob</name> <street>Heck Ave.</street> <state>CA</state>
+    </entry> </address-book>
+
+    Will spit out these tables:
+
+    # address-book -> entry DROP TABLE IF EXISTS jun_address_book;
+    CREATE TABLE jun_address_book ( id int NOT NULL auto_increment,
+    jun_name_id integer, primary key(id) );
+
+    DROP TABLE IF EXISTS jun_state; CREATE TABLE jun_state ( id int NOT
+    NULL auto_increment, jun_state_value text, primary key(id) );
+
+    DROP TABLE IF EXISTS jun_entry; CREATE TABLE jun_entry ( id int NOT
+    NULL auto_increment, jun_name_id integer, jun_street_id integer,
+    jun_state_id integer, primary key(id) );
+
+    DROP TABLE IF EXISTS jun_name; CREATE TABLE jun_name ( id int NOT
+    NULL auto_increment, jun_name_type_attribute text, jun_name_value
+    text, primary key(id) );
+
+    DROP TABLE IF EXISTS jun_street; CREATE TABLE jun_street ( id int
+    NOT NULL auto_increment, jun_street_value text, primary key(id) );
+
+    DROP TABLE IF EXISTS jun_address_book_entry; CREATE TABLE
+    jun_address_book_entry ( id int NOT NULL auto_increment,
+    jun_address_book_id integer not null, jun_entry_id integer not null,
+    primary key(id), key(jun_address_book_id,jun_entry_id) );
+
+    DROP TABLE IF EXISTS jun_element_names; CREATE TABLE
+    jun_element_names ( jun_address_book text not null, jun_entry text
+    not null, jun_name text not null, jun_state text not null,
+    jun_street text not null );
+
+    INSERT INTO jun_element_names VALUES ('address-book', 'entry',
+    'name', 'state', 'street');
+
+    DROP TABLE IF EXISTS jun_link_tables; CREATE TABLE jun_link_tables
+    ( one_table text not null, many_table text not null );
+
+    INSERT INTO jun_link_tables VALUES ('jun_address_book','entry');
+
+    Note how it figured out the 1:N relationship between 'address-book'
+    and 'entry' & creating a linking table for them & also stored that
+    meta-info in the DB itself - later used by the populate unpopulate
+    script to correctly enter & spit out that data. Also it keeps track
+    of what the original tags were called for later unpopulating back
+    into XML.
+
+  enteredby:   METZZO (Mark Ethan Trostler)
+  enteredon:   Fri Jun 29 00:33:52 2001 GMT
+
+The resulting entry would be:
+
+XML::
+::RDB             bdpnb create,populate, & unpop RDB tables from XML METZZO
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=a0100000_40fb35b0c2d46384&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=a0100000_40fb35b0c2d46384&SUBMIT_pause99_add_mod_insertit=1

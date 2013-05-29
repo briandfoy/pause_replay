@@ -1,0 +1,177 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:67745
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6625 invoked from network); 21 Sep 2009 13:42:01 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 21 Sep 2009 13:42:01 -0000
+Received: (qmail 12073 invoked by uid 225); 21 Sep 2009 13:42:01 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12052 invoked by alias); 21 Sep 2009 13:42:00 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.perl.org) (195.149.117.110)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 21 Sep 2009 06:41:53 -0700
+Received: from pause.perl.org (localhost.localdomain [127.0.0.1])
+	by pause.perl.org (8.13.8/8.13.8/Debian-3) with ESMTP id n8LDflsZ020186
+	for <modules@perl.org>; Mon, 21 Sep 2009 15:41:47 +0200
+Received: (from nobody@localhost)
+	by pause.perl.org (8.13.8/8.13.8/Submit) id n8LDflGx020184;
+	Mon, 21 Sep 2009 15:41:47 +0200
+Date: Mon, 21 Sep 2009 15:41:47 +0200
+Message-ID: <200909211341.n8LDflGx020184@pause.perl.org>
+Subject: Module submission AN::Tools
+Reply-To: modules@perl.org
+To: modules@perl.org
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       AN::Tools
+  DSLIP:       adpOp
+  description: AN::Tools Rapid Development Framework
+  userid:      DIGIMER (Madison Kelly)
+  chapterid:   3 (Development_Support)
+  communities:
+    http://wiki.alteeve.com/index.php/AN::Tools
+
+  similar:
+
+  rationale:
+
+    I am not entirely sure if I am to rationalize the existence of my
+    module suite and/or name space. Forgive me for such a long-winded
+    rational. :)
+
+    == Similar Modules
+
+    There are several "rapid development frameworks" on CPAN, but they
+    all seem to have a very different focus or implementation than what
+    AN::Tools does.
+
+    == Rational for the modules namespace.
+
+    In brief; I am hoping to be approved for the AN::* namespace as I
+    am hoping it will be a root for modules built on the AN::Tools
+    suite.
+
+    For example;
+
+    I first wrote TLE-BU (http://tle-be.org) as a perl-based, GPLed
+    backup program for a company that has sense gone under. I continued
+    the project on my own free time. Once completed, I decided it needed
+    to be re-written. Specifically, I wanted to abstract out most of the
+    non-backup specific code.
+
+    So for the last three years I've been working on the AN::Tools
+    suite specifically with the goal of re-writing the backup program
+    under the name "AN!Backup". The backup-specific modules and methods
+    I will create will then be uploaded to CPAN under the 'AN::Backup'
+    namespace. Ideally, users who find this module suite useful would
+    also adopt this naming convention and namespace.
+
+    I understand that you probably hear "grand plans" all the time, and
+    I also understand that 99% of them never get off the ground. For
+    what it's worth, you can check the dates on the TLE-BU sourceforge
+    page (http://sourceforge.net/projects/tle-bu/) to see how many years
+    I've been at this. :)
+
+    == Rational for the modules themselves.
+
+    I wanted to create a module that was fully multilingual via XML
+    "words" files. This allows for non-programmer to help projects by
+    offering to translate or update the program's words file using
+    existing XML editors.
+
+    Secondly, I wanted to create a single module suite that was written
+    in pure Perl and depended on no non-core modules. Where added
+    functionality can be offered by non-core modules, I've built in
+    checks that gracefully degrade with a simple warning when the
+    non-core module isn't found (ie: Time::HiRes), or restrict loading
+    modules until absolutely needed (like Math::BigInt).
+
+    Third, I wanted a module suite that supported relatively simple
+    templating to make it easy for non-perl programmers to "skin"
+    projects built on AN::Tools. To this end, all template files (HTML,
+    CSS, JS, etc) exist in a common sub-directory. In them, all
+    replacement codes are in the format '#!foo!key!#' where 'foo' is a
+    subset of replacement types (word = word strings, data = data in the
+    common hash reference store, var = variables passed to the template
+    interpreter, etc) and 'key' is a unique key (like 'error_0012' would
+    be the language text for error code '12', 'redirect::error' would be
+    the configuration-file value for redirection when showing error
+    screens, etc). The HTML templates themselves are multiple files with
+    one or more template "chunks". By convention, these are the same
+    name as the file name providing the given function and the template
+    "chunks" are for the various bits of data that could be displayed at
+    a given time. The end goal is to encourage community support of a
+    user's program by non-perl programmers.
+
+    Fourth; I didn't want to rely on third-party logging tools. Also, I
+    wanted to be able to tie in logging support with the underlying
+    multilingual supports. To this end, logging is handled internally,
+    including configurable cycling and compression. By convention only,
+    the log file and it's archives are stored in the same directory as
+    the program's webserver virtual host container or as a dedicated
+    directory in the operating system's log directory.
+
+    Fifth; I wanted to create a module suite that has sane defaults but
+    allows the programmer to highly configure how their programmer
+    works. This is achieved using a module suite common data store in
+    the form of a hash reference. This hash reference is populated first
+    by internal defaults. Then one or more configuration files are read
+    in with values in the format 'foo::bar::baz = abc' which is split on
+    the double-colons to create the hash keys. This is the first
+    opportunity for the program to define his or her defaults. These
+    configuration files can be customized in any way the programmer
+    wishes as no enforcement of name space is maintained. Next, the
+    program itself can populate and update the same hash directly via a
+    method provided by the core AN::Tools module to tune how their
+    program runs on the fly.
+
+    Sixth; working on the principle of "accept dirty input, give clean
+    output", all methods can take their arguments as a defined-order
+    array values or as a hash reference. So both:
+    $an->String->get_string("t_0002", ["A", "B"]); and
+    $an->String->get_string({ key => "t_0002", variable => ["A", "B"]
+    }); are equivalent calls. The former being shorter for developers
+    who like short code, the later being more self-documenting and
+    flexible.
+
+    == Module Status
+
+    All core functionality has already been written. The various
+    functions are now being moved into the new AN::Tools namespace and
+    modified to be more testable and properly object-oriented style.
+    Also, as I migrate each method in, I am properly documenting it and
+    adding tests for it. I expect to be able to release the first beta
+    version by the end of the year along with a sample program showing
+    how to use the modules.
+
+  enteredby:   DIGIMER (Madison Kelly)
+  enteredon:   Mon Sep 21 13:41:46 2009 GMT
+
+The resulting entry would be:
+
+AN::
+::Tools           adpOp AN::Tools Rapid Development Framework        DIGIMER
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=fa300000_496738f22f81e9a8&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=fa300000_496738f22f81e9a8&SUBMIT_pause99_add_mod_insertit=1
+Peek at the current permissions:
+  https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=me&pause99_peek_perms_query=AN%3A%3ATools

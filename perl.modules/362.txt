@@ -1,0 +1,49 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:362
+Return-Path: <k@hohenstaufen.in-berlin.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22840 invoked from network); 29 Oct 1999 09:14:48 -0000
+Received: from dubravka.in-berlin.de (HELO hohenstaufen.in-berlin.de) (0@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 29 Oct 1999 09:14:48 -0000
+Received: (from k@localhost)
+	by hohenstaufen.in-berlin.de (8.9.1a/8.9.1) id LAA03578;
+	Fri, 29 Oct 1999 11:14:35 +0200
+Sender: k@hohenstaufen.in-berlin.de
+To: "Robert Rothenberg" <wlkngowl@unix.asb.com>
+Cc: modules@perl.org
+Subject: Re: RTF::Generator
+References: <199910290634.CAA24196@mail.asb.com>
+Date: 29 Oct 1999 11:14:35 +0200
+In-Reply-To: "Robert Rothenberg"'s message of "Fri, 29 Oct 1999 02:45:29 -0400"
+Message-ID: <sfcbt9iy1dw.fsf@hohenstaufen.in-berlin.de>
+Lines: 22
+User-Agent: Gnus/5.070097 (Pterodactyl Gnus v0.97) Emacs/20.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Fri, 29 Oct 1999 02:45:29 -0400, "Robert Rothenberg" <wlkngowl@unix.asb.com> said:
+
+ > Since I'm *completely* redoing RTF::Document, it makes sense to rename 
+ > it RTF::Generator so that existing scripts which use it don't break. Hence, 
+ > I'm claiming the namespace.
+
+ > RTF::Generator will make heavy use of RTF::Group.
+
+OK, it's registered in my copy of the module list.
+
+Robert, in case you don't know, RTF::Document does not have a
+PREREQ_PM attribute in the Makefile.PL but there is a dependency on
+Convert::Units::Type. Would you perhaps apply this pseudo-patch?
+
+      'NAME'      => 'RTF::Document',
++     'PREREQ_PM' => { 'Convert::Units::Type' => '0.33' },
+      'VERSION_FROM' => 'Document.pm', # finds $VERSION
+
+That helps CPAN.pm to install the dependecy automatically. -- Thanks!
+
+-- 
+andreas

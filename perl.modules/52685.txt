@@ -1,0 +1,338 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:52685
+Return-Path: <matthewishii@vesllc.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 18805 invoked from network); 19 Jan 2007 23:46:13 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 19 Jan 2007 23:46:13 -0000
+Received: (qmail 23962 invoked by uid 225); 19 Jan 2007 23:46:12 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 23956 invoked by alias); 19 Jan 2007 23:46:11 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=BAYES_50,HTML_MESSAGE
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from elasmtp-scoter.atl.sa.earthlink.net (HELO elasmtp-scoter.atl.sa.earthlink.net) (209.86.89.67)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 19 Jan 2007 15:46:08 -0800
+Received: from [69.225.208.10] (helo=VESLAPTOP03)
+	by elasmtp-scoter.atl.sa.earthlink.net with asmtp (Exim 4.34)
+	id 1H83Qo-0006Nr-HK
+	for modules@cpan.org; Fri, 19 Jan 2007 18:46:03 -0500
+To: <modules@cpan.org>
+Subject: A potential bug in String::CRC
+Date: Fri, 19 Jan 2007 15:46:02 -0800
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0003_01C73BE0.ECF46060"
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+Thread-Index: Acc8I/qP8BLvw/UGRHW8NdLV/mZOew==
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.3028
+Message-ID: <E1H83Qo-0006Nr-HK@elasmtp-scoter.atl.sa.earthlink.net>
+X-ELNK-Trace: 19440e021d2e8db9819ed13a7e3bf8f140683398e744b8a4572e9c5e333472919a5a1b8ed89978a8548b785378294e88350badd9bab72f9c350badd9bab72f9c
+X-Originating-IP: 69.225.208.10
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: matthewishii@vesllc.com ("Matthew Ishii")
+
+------=_NextPart_000_0003_01C73BE0.ECF46060
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Im not sure if this is the right place but here it goes:
+
+ 
+
+I read in a string and use String::CRC to compute the CRC32 value.  Then I
+use the Archive::Zip::computeCRC32 function against the same string.
+
+ 
+
+The returned values are different.  So I used a windows based utility
+against the same file.  The windows utility agrees with the Archive::Zip
+method.
+
+ 
+
+Has anyone else reported any discrepancies?  Am I using String::CRC
+incorrectly? 
+
+ 
+
+ 
+
+This is my exact implementation of each:
+
+ 
+
+#!/usr/bin/perl
+
+ 
+
+use String::CRC;
+
+use Archive::Zip;
+
+ 
+
+$input = "hello world";
+
+ 
+
+$zip = Archive::Zip->new();
+
+ 
+
+$checksum1 = crc($input, 32);
+
+$checksum2 = $zip->computeCRC32($input);
+
+ 
+
+print "Checksum from String::CRC -> $checksum1\n";
+
+print "Checksum from Archive::Zip -> $checksum2\n";
+
+ 
+
+And here is the output:
+
+ 
+
+Checksum from String::CRC -> 1701040017
+
+Checksum from Archive::Zip -> 222957957
+
+ 
+
+ 
+
+Any ideas would be very appreciated, this is something I need to rely on ;0)
+
+
+------=_NextPart_000_0003_01C73BE0.ECF46060
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Im not sure if this is the right place but here it =
+goes:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>I read in a string and use String::CRC to compute the =
+CRC32
+value.&nbsp; Then I use the Archive::Zip::computeCRC32 function against =
+the
+same string.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>The returned values are different.&nbsp; So I used a =
+windows
+based utility against the same file.&nbsp; The windows utility agrees =
+with the Archive::Zip
+method.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Has anyone else reported any discrepancies?&nbsp; Am =
+I using
+String::CRC incorrectly? <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>This is my exact implementation of =
+each:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier =
+New";color:blue'>#!/usr/bin/perl<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier =
+New";color:blue'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier New";color:blue'>use =
+String::CRC;<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier New";color:blue'>use =
+Archive::Zip;<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier =
+New";color:blue'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier New";color:blue'>$input =
+=3D
+&quot;hello world&quot;;<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier =
+New";color:blue'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier New";color:blue'>$zip =3D
+Archive::Zip-&gt;new();<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier =
+New";color:blue'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier =
+New";color:blue'>$checksum1 =3D
+crc($input, 32);<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier =
+New";color:blue'>$checksum2 =3D
+$zip-&gt;computeCRC32($input);<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier =
+New";color:blue'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier New";color:blue'>print
+&quot;Checksum from String::CRC -&gt; =
+$checksum1\n&quot;;<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dblue face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier New";color:blue'>print
+&quot;Checksum from Archive::Zip -&gt; =
+$checksum2\n&quot;;<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>And here is the output:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dred face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier New";color:red'>Checksum =
+from
+String::CRC -&gt; 1701040017<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D1 color=3Dred face=3D"Courier =
+New"><span
+style=3D'font-size:9.0pt;font-family:"Courier New";color:red'>Checksum =
+from
+Archive::Zip -&gt; 222957957<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Any ideas would be very appreciated, this is =
+something I need
+to rely on ;0)<o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_000_0003_01C73BE0.ECF46060--
+

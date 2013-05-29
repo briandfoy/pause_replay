@@ -1,0 +1,206 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8667
+Return-Path: <adler@ncf.ca>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 45590 invoked by uid 75); 8 Nov 2001 01:35:03 -0000
+Received: from freenet1.carleton.ca (HELO freenet.carleton.ca) (134.117.136.20)
+  by onion.perl.org (qpsmtpd/0.04) with SMTP; Thu Nov  8 01:35:03 2001 -0000
+Received: from p43t1.std.dialup.ncf.carleton.ca (p43t1.std.dialup.ncf.carleton.ca [134.117.137.74])
+	by freenet.carleton.ca (8.9.3+Sun/8.9.3/NCF_f1_v3.00) with ESMTP id UAA20106
+	for <modules@perl.org>; Wed, 7 Nov 2001 20:34:46 -0500 (EST)
+Date: Wed, 7 Nov 2001 20:38:23 -0500 (EST)
+X-Sender:  <andy@localhost.localdomain>
+To: <modules@perl.org>
+Subject: request for PAUSE ID
+Message-ID: <Pine.LNX.4.30.0111072029500.1660-100000@localhost.localdomain>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: adler@freenet.carleton.ca
+
+Name: Andy Adler
+email: adler@ncf.ca
+requested PAUSE ID: AADLER
+
+Description:
+
+I've written an Inline extention module to
+hook perl to Octave. (ie. Inline::Octave )
+
+It has been suggested that PDL provides this
+functionality already. That's true, however:
+
+ 1. there's a lot of existing code in octave/matlab
+ 2. there's functionality in octave that's not in PDL
+ 3. there's more than one way to do it.
+
+andy
+_______________________________________
+Andy Adler,                adler@ncf.ca
+
+
+
+Module Docs:
+
+
+NAME
+    Inline::Octave - Inline octave code into your perl
+
+SYNOPSIS
+       use Inline Octave => DATA;
+
+       $f = jnk1(3);
+       print "jnk1=",$f->disp(),"\n";
+
+       $c= new Inline::Octave::Matrix([ [1.5,2,3],[4.5,1,-1] ]);
+
+       ($b, $t)= jnk2( $c, [4,4],[5,6] );
+       print "t=",$t->as_list(),"\n";
+       use Data::Dumper; print Dumper( $b->as_matrix() );
+
+       print oct_sum( [1,2,3] )->disp();
+
+       oct_plot( [0..4], [3,2,1,2,3] );
+       sleep(2);
+
+       __DATA__
+
+       __Octave__
+       function x=jnk1(u); x=u+1; endfunction
+
+       function [b,t]=jnk2(x,a,b);
+          b=x+1+a'*b;
+          t=6;
+       endfunction
+
+       ## Inline::Octave::oct_sum (nargout=1)  => sum
+       ## Inline::Octave::oct_plot (nargout=0)  => plot
+
+DESCRIPTION
+    Inline::Octave gives you the power of the octave programming language
+    from within your Perl programs.
+
+    You need to install the Inline module from CPAN. This provides the
+    infrastructure to support all the Inline::* modules.
+
+    Then install Octave.pm in an Inline directory in any path in your @INC.
+
+    The easiest is to create a ./Inline directory in your working directory,
+    and put Octave.pm in that. after that the example code should run.
+
+    Note, there is currently no proper Makefile.PL install facility for
+    Inline::Octave - this reflects it's maturity.
+
+    It should work with stock octave - but I'd like to get feedback on this.
+    Basically, I create an octave process with controlled stdin and stdout.
+    Commands send by stdin. Data is send by stdin and read with fread(stdin,
+    [dimx dimy], "double"), and read similarly.
+
+    Inline::Octave::Matrix variables in perl are tied to the octave
+    variable. When a destructor is called, it sends a "clear varname"
+    command to octave.
+
+    I initially tried to bind the C++ and liboctave to perl, but it started
+    to get really hard - so I took this route.
+
+Why would I use Inline::Octave
+    If you can't figure out a reason, don't!
+
+    I use it to grind through long logfiles (using perl), and then calculate
+    mathematical results (using octave).
+
+Using Inline::Octave
+    The most basic form for using Inline is:
+
+       use Inline Octave => "octave source code";
+
+    The source code can be specified using any of the following syntaxes:
+
+       use Inline Octave => 'DATA';
+       ...perl...
+       __DATA__
+       __Octave__
+       ...octave...
+
+    or,
+
+       use Inline Octave => <<'ENDOCTAVE';
+       ...octave...
+       ENDOCTAVE
+       ...perl...
+
+    or,
+
+       use Inline Octave => q{
+       ...octave...
+       };
+       ...perl...
+
+  Defining Functions
+
+    Inline::Octave lets you:
+
+    1) Talk to octave functions using the syntax
+
+       ## Inline::Octave::oct_plot (nargout=0)  => plot
+
+    Here oct_plot in perl is bound to plot in octave. It is necessary to
+    specify the nargouts required because we can't get this information from
+    perl. (although it's promised in perl6)
+
+    If you need to use various nargouts for a function, then bind different
+    functions to it:
+
+       ## Inline::Octave::eig1 (nargout=1)  => eig
+       ## Inline::Octave::eig2 (nargout=2)  => eig
+
+    2) Write new octave functions,
+
+          function s=add(a,b);
+             s=a+b;
+          endfunction
+
+    will create a new function add in perl bound to this new function in
+    octave.
+
+  Calling Functions
+
+    A function is called using
+
+       (list of Inline::Octave::Matrix) =
+          function_name (list of Inline::Octave::Matrix)
+
+    Parameters which are not Inline::Octave::Matrix variables will be cast
+    (if possible).
+
+    Values returned will need to be converted into perl values if they need
+    to be used within the perl code. This can be accomplished using:
+
+    1. $oct_var->disp()
+
+    Returns a string of the disp output from octave
+
+    2. $oct_var->as_list()
+
+    Returns a perl list, corresponding to the ColumnVector for octave
+    "oct_var(:)"
+
+    3. $oct_var->as_matrix()
+
+    Returns a perl list of list, of the form
+
+       $var= [ [1,2,3],[4,5,6],[7,8,9] ];
+
+Using Inline::Octave::Matrix
+    Inline::Octave::Matrix is the matrix class that "ties" (but not using
+    the Perl "tie" mechanism)
+
+    Values can be created explicitly, using the syntax:
+
+       $var= new Inline::Octave::Matrix([ [1.5,2,3],[4.5,1,-1] ]);
+
+    or values will be automatically created by calling octave functions.
+
+

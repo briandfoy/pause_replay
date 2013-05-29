@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12242
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29939 invoked by uid 76); 18 Jun 2002 09:03:14 -0000
+Received: from root@dubravka.kbx.de (HELO pause.perl.org) (212.40.160.59)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Tue Jun 18 09:03:14 2002 -0000
+Received: (from nobody@localhost)
+	by pause.perl.org (8.11.6/8.11.6) id g5I90nd05491;
+	Tue, 18 Jun 2002 11:00:49 +0200
+Date: Tue, 18 Jun 2002 11:00:49 +0200
+Message-ID: <200206180900.g5I90nd05491@pause.perl.org>
+Reply-To: modules@perl.org
+Subject: Module submission File::Random
+To: modules@perl.org, bigj@cpan.org
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       File::Random
+  DSLIP:       iupfp
+  description: Randomly selection of a file
+  userid:      BIGJ (Janek Schleicher)
+  chapterid:   10 (File_Names_Systems_Locking)
+  communities:
+
+  similar:
+    Tie::Pick Tie::Select Data::Random
+
+  rationale:
+
+    In CGI scripts I often want to show the content of randomly choosen
+    file. I'm too lazy to write always something like
+
+    my @files = (<*.*>); my $rand_file = $files[rand @files];
+
+    or
+
+    opendir DIR, "/foo/bar/" or " ... "; my @files = grep /\.txt$/,
+    (readdir DIR); closedir DIR my $rand_file = $files[rand @files];
+
+    Especially, I'm too lazy to do it with recursive directory
+    structures. More important, the main idea is hidden, because all I
+    wanted is something like:
+
+    use File::Random;
+
+    my $rand_file = random_file(); # or my $rand_file =
+    random_file(-dir => '/foo/bar', -recursive => 1, # or -r => 1 -check
+    => qr/.../ # or -check => sub {-M < 7});
+
+    I'm also often more interested in the content of the randomly
+    selected file, than in the file itselfs. So I'd like to have a
+    function like
+
+    my @lines = content_of_random_file();
+
+    For laziness, I also want to add a simple method
+
+    my $rand_line = random_line("fname");
+
+    (like in the Perl Cookbook).
+
+    I think, this module will be usefull and I couldn't find such one
+    in CPAN.
+
+    From a linguistic view Random::File would be a better name, but I
+    don't want to create a new Top Level Domain quite only for such a
+    little module. Also File::Random express very good, what the module
+    stand for.
+
+  enteredby:   BIGJ (Janek Schleicher)
+  enteredon:   Tue Jun 18 09:00:44 2002 GMT
+
+The resulting entry would be:
+
+File::
+::Random          iupfp Randomly selection of a file                 BIGJ
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=71200000_c3cd46f2c9b85b4b&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=71200000_c3cd46f2c9b85b4b&SUBMIT_pause99_add_mod_insertit=1

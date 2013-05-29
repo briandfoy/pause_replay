@@ -1,0 +1,105 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:78238
+Return-Path: <ejstrom@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 27521 invoked from network); 31 Oct 2011 20:48:30 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 31 Oct 2011 20:48:30 -0000
+Received: (qmail 15395 invoked by uid 225); 31 Oct 2011 20:48:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15386 invoked by alias); 31 Oct 2011 20:48:29 -0000
+X-Spam-Status: No, hits=-0.8 required=8.0
+	tests=DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-ey0-f169.google.com (HELO mail-ey0-f169.google.com) (209.85.215.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 31 Oct 2011 13:48:27 -0700
+Received: by eye4 with SMTP id 4so7313945eye.14
+        for <modules@perl.org>; Mon, 31 Oct 2011 13:48:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc:content-type:content-transfer-encoding;
+        bh=/XQKPIHBxyHx6GWyNiiMDLebvHUvJe6rUDoEEWV95J8=;
+        b=f0jchkVmDaCyk/tCBeyLAM86jijvBqZgaTesYycIZEgShta72k1M8C2WfpV1pBFzmx
+         rb4MgAAcSZQ6n3hkAhAmLxHT0lUoeYUDEWv+3Xmpf8bisR6lqbleUOt9P4g6rn4wzIH4
+         KOshtQVfHKTfkUfuEPKE3T/z6+ueefdzIizKA=
+Received: by 10.213.8.76 with SMTP id g12mr1437581ebg.81.1320094101445; Mon,
+ 31 Oct 2011 13:48:21 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.213.14.17 with HTTP; Mon, 31 Oct 2011 13:47:50 -0700 (PDT)
+In-Reply-To: <4EAE4B4D.6030703@cpan.org>
+References: <CAL-uHDn+GbzCzwMYLCmd+PW2Sgpt954TXAD6+CPOgCLJ+tzUsQ@mail.gmail.com>
+ <4EAE4B4D.6030703@cpan.org>
+Date: Mon, 31 Oct 2011 16:47:50 -0400
+Message-ID: <CAL-uHDnnozbD8DP_xanXVBJ6ceHNQdn-JfdWiaM5obpshGUYYQ@mail.gmail.com>
+Subject: Re: Naming a module that injects new code into a file's source at
+ compile time
+To: Steffen Mueller <smueller@cpan.org>
+Cc: modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: ejstrom@gmail.com (Eric Strom)
+
+Thanks for the feedback.  So do you think I should simultaneously post
+to module-authors and p5p?  Or hit module-authors first?
+
+On Mon, Oct 31, 2011 at 3:16 AM, Steffen Mueller <smueller@cpan.org> wrote:
+> Generally speaking, you're much more likely to get useful feedback if you
+> post to the module-authors list or blog about it. modules@perl.org is mos=
+tly
+> an administrative list of PAUSE admins and we're spread a bit thin.
+>
+> On 10/30/2011 02:32 AM, Eric Strom wrote:
+>>
+>> I am working on a module and set of tools for injecting source into
+>> another file at compile time. =A0It currently does this by using
+>> Filter::Util::Call to hook into the compilation process, inject the
+>> new code before the next line that perl will compile, and then remove
+>> itself handing control back to the compiler.
+>
+> How nasty...
+>
+>> I have tentatively named this module `eval.pm`
+>>
+>> =A0 =A0 use eval 'my $x =3D 1';
+>>
+>> =A0 =A0 use eval some_sub(...);
+>>
+>> since `use` implies compile time and it is injecting the source into
+>> the currently compiling `eval`.
+>>
+>> but I am considering any of the following names:
+>
+> Technically, any lower-case name needs approval from perl5-porters since
+> they're reserved for use by the core. Ignoring this issue (you could alwa=
+ys
+> ucfirst):
+>
+>> =A0 =A0 eval
+>
+> Makes some sense, but I'd say it's not specific enough.
+>
+>> =A0 =A0 insert
+>
+> Way too overloaded.
+>
+>> =A0 =A0 inject
+>> =A0 =A0 inline
+>
+> I'd say both of these make a sense.
+>
+>> =A0 =A0 compile
+>
+> Hmm, you're not really compiling as such, so...
+>
+>> =A0 =A0 here
+>
+> I think that's bound to confuse people greatly.
+>
+> Best regards,
+> Steffen
+>

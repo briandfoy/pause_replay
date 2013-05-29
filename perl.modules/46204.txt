@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46204
+Return-Path: <ivan@420.am>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 22660 invoked from network); 30 Nov 2005 21:57:48 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 30 Nov 2005 21:57:48 -0000
+Received: (qmail 30304 invoked by uid 225); 30 Nov 2005 21:57:48 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30272 invoked by alias); 30 Nov 2005 21:57:46 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from wavetail.420.am (HELO wavetail.420.am) (66.53.197.194)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 30 Nov 2005 13:57:39 -0800
+Received: from localhost (wavetail.420.am [127.0.0.1])
+	by wavetail.420.am (Postfix) with ESMTP id 2D9E1FC83FC;
+	Wed, 30 Nov 2005 13:57:36 -0800 (PST)
+Received: from wavetail.420.am ([127.0.0.1])
+	by localhost (wavetail.420.am [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id 18700-01-2; Wed, 30 Nov 2005 13:57:34 -0800 (PST)
+Received: from rootwood.haze.st (unknown [24.32.24.25])
+	by wavetail.420.am (Postfix) with SMTP id 6D2CFFC85CD;
+	Wed, 30 Nov 2005 13:57:33 -0800 (PST)
+Received: by rootwood.haze.st (sSMTP sendmail emulation); Wed, 30 Nov 2005 13:57:33 -0800
+Date: Wed, 30 Nov 2005 13:57:33 -0800
+To: modules@perl.org, andreas.koenig@pause.perl.org
+Subject: minor version parsing bug in CPAN indexer, was: Re: PAUSE indexer report IVAN/DBIx-DBSchema-0.28.tar.gz
+Message-ID: <20051130215732.GR27565@420.am>
+References: <200511301848.jAUImkii023830@pause.perl.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200511301848.jAUImkii023830@pause.perl.org>
+User-Agent: Mutt/1.5.10i
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at 420.am
+Approved: news@nntp.perl.org
+From: ivan@420.am ("ivan")
+
+Hi, 
+
+I'm just reporting what seems to be a minor bug parsing module versions 
+in the CPAN indexer.
+
+The module that was parsed incorrectly was DBIx::DBSchema::DBD::Pg.  The 
+version was parsed as "1".  The actual version is "0.10".
+
+>      module: DBIx::DBSchema::DBD::Pg
+>     version: 1
+>     in file: DBIx-DBSchema-0.28/DBSchema/DBD/Pg.pm
+>      status: indexed
+
+Perhaps the parser was tripped up by this funky code at the beginning 
+of the file:
+
+  die "DBD::Pg version 1.32 or 1.41 (or later) required--".
+      "this is only version $DBD::Pg::VERSION\n"
+    if $DBD::Pg::VERSION != 1.32 && $DBD::Pg::VERSION < 1.41;
+
+Please let me know if there's a better place to report this (an 
+rt.cpan.org queue for the indexer or something?) or if there's any other 
+information I can provide.  Obviously its not a huge deal, just thought 
+it might be useful to have this on record.
+
+-- 
+_ivan

@@ -1,0 +1,158 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:24025
+Return-Path: <gregmiller@aol.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 75404 invoked by uid 76); 16 Oct 2003 20:29:14 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Thu, 16 Oct 2003 13:29:14 -0700
+Received: (qmail 31236 invoked by uid 225); 16 Oct 2003 20:29:12 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 31230 invoked by alias); 16 Oct 2003 20:29:11 -0000
+Received: from mail-s03.websys.aol.com (HELO mail-s03.websys.aol.com) (64.12.180.167) by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Thu, 16 Oct 2003 13:28:59 -0700
+Received: from inf-s24.websys.aol.com (inf-s24.websys.aol.com [172.20.116.86])	by mail-s03.websys.aol.com (8.12.10/8.12.9) with ESMTP id h9GKStPT013258;	Thu, 16 Oct 2003 16:28:55 -0400 (EDT)
+Received: from aol.net (doboy.office.compuserve.com [10.160.10.89])	by inf-s24.websys.aol.com (8.12.10/8.12.9) with ESMTP id h9GKSn9c024318;	Thu, 16 Oct 2003 16:28:49 -0400 (EDT)
+Date: Thu, 16 Oct 2003 16:30:58 -0400
+Subject: Net::FTP Passive FTP problem
+Content-Type: multipart/alternative; boundary=Apple-Mail-4--17771236
+Mime-Version: 1.0 (Apple Message framework v552)
+Cc: modules@cpan.org
+To: gbarr@pobox.com
+Message-ID: <A65EC894-0017-11D8-937F-000393BD6E20@aol.net>
+X-Mailer: Apple Mail (2.552)
+X-Spam-Check-By: la.mx.develooper.com
+X-Spam-Status: No, hits=-1.0 required=7.0 tests=SPAM_PHRASE_00_01,USER_AGENT_APPLEMAIL version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: gregmiller@aol.net (Greg Miller)
+
+--Apple-Mail-4--17771236
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+	charset=US-ASCII;
+	format=flowed
+
+Graham,
+
+I'm using Net::FTP version 2.61, and I think I found a small bug in the 
+passive FTP implementation in sub _dataconn.  Let me start off with a 
+diff to illustrate:
+
+--- FTP.pm      Thu Oct 16 16:08:22 2003
++++ FTP.pm.new  Thu Oct 16 16:13:42 2003
+@@ -914,7 +914,9 @@
+    {
+     my @port = split(/,/,${*$ftp}{'net_ftp_pasv'});
+
+-   $data = $pkg->new(PeerAddr => join(".",@port[0..3]),
++   my $ip = join(".", @port[0..3]);
++   $ip =~ s/^0//;
++   $data = $pkg->new(PeerAddr => $ip,
+                      PeerPort => $port[4] * 256 + $port[5],
+                      Proto    => 'tcp'
+                     );
+
+The original line ($data = $pkg->new(PeerAddr => 
+join(".",@port[0..3]),) just used join() to build the dotted quad IP of 
+the peer when initiating the data connection.  A problem arises when 
+the first octet of the FTP server's IP is less than 3 digits.  In this 
+case, the servers response to the clients PASV request may be something 
+like: Entering Passive Mode (066,218,71,198,70,41).  The problem in the 
+first octet (066) is the leading '0'.  The numbers 066 and 66 pack() to 
+different values, thus causing the data connection to most likely fail.
+
+As you can see, my change just removes the leading 0 if it exists.  
+This seems to work in all cases that I've tested.
+
+Has this been reported already?  Do you agree that this needs fixed?
+
+Thanks.
+Greg Miller
+
+________
+Greg Miller
+Sr. System Administrator
+America Online, Inc.
+gregmiller@aol.net
+(P) 614.538.3218
+
+--Apple-Mail-4--17771236
+Content-Transfer-Encoding: 7bit
+Content-Type: text/enriched;
+	charset=US-ASCII
+
+Graham,
+
+
+I'm using Net::FTP version 2.61, and I think I found a small bug in
+the passive FTP implementation in sub _dataconn.  Let me start off
+with a diff to illustrate:
+
+
+--- FTP.pm      Thu Oct 16 16:08:22 2003
+
++++ FTP.pm.new  Thu Oct 16 16:13:42 2003
+
+@@ -914,7 +914,9 @@
+
+   {
+
+    my @port = split(/,/,${*$ftp}{'net_ftp_pasv'});
+
+ 
+
+-   $data = $pkg->new(PeerAddr => join(".",@port[0..3]),
+
++   my $ip = join(".", @port[0..3]);
+
++   $ip =~ s/^0//;
+
++   $data = $pkg->new(PeerAddr => $ip,
+
+                     PeerPort => $port[4] * 256 + $port[5],
+
+                     Proto    => 'tcp'
+
+                    );
+
+
+The original line ($data = $pkg->new(PeerAddr =>
+join(".",@port[0..3]),) just used join() to build the dotted quad IP
+of the peer when initiating the data connection.  A problem arises
+when the first octet of the FTP server's IP is less than 3 digits.  In
+this case, the servers response to the clients PASV request may be
+something like: Entering Passive Mode (066,218,71,198,70,41).  The
+problem in the first octet (066) is the leading '0'.  The numbers 066
+and 66 pack() to different values, thus causing the data connection to
+most likely fail.
+
+
+As you can see, my change just removes the leading 0 if it exists. 
+This seems to work in all cases that I've tested.
+
+
+Has this been reported already?  Do you agree that this needs fixed?
+
+
+Thanks.
+
+Greg Miller  
+
+<fontfamily><param>Verdana</param>
+
+________
+
+Greg Miller
+
+Sr. System Administrator
+
+America Online, Inc.
+
+<underline><color><param>0000,0000,FFFF</param>gregmiller@aol.net</color></underline>
+
+(P) 614.538.3218
+
+</fontfamily>
+--Apple-Mail-4--17771236--
+

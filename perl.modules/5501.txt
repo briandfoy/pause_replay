@@ -1,0 +1,172 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5501
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 92692 invoked from network); 11 May 2001 13:09:34 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by onion.valueclick.com with SMTP; 11 May 2001 13:09:34 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id PAA23829;
+	Fri, 11 May 2001 15:05:59 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: Johan Vromans <jvromans@squirrel.nl>
+Cc: modules@perl.org
+Subject: Reorg of modules@ ? (Was: Help!)
+References: <15052.21203.329554.810731@phoenix.squirrel.nl>
+Reply-To: modules@perl.org
+Date: 11 May 2001 15:05:59 +0200
+In-Reply-To: <15052.21203.329554.810731@phoenix.squirrel.nl>
+Message-ID: <m3bsp0avd4.fsf@ak-71.mind.de>
+Lines: 142
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Thu, 5 Apr 2001 13:11:15 +0200, Johan Vromans <jvromans@squirrel.nl> said:
+
+ jv> I hate to say that being a PAUSE/modules maintainer is becoming a task
+ jv> of more frustration than satisfaction. But that's the way I feel.
+
+I hope it's not too late to lower the frustration level.... but the
+module submission form is now working as intended and it should make a
+big difference.
+
+ jv> We all know that the current process of user and module registration
+ jv> is not as perfect as it could be, but for the time being I think it
+ jv> can work very well if we all try a little bit harder.
+
+ jv> The modules mailing list carries the following messages:
+
+ jv>  a. requests for registration
+ jv>  b. administrative messages
+ jv>  c. garbage
+
+ jv> Let's first skip the administrative messages (New user, New module,
+ jv> Module update, and so on) and the garbage (free cable descramblers).
+
+ jv> Requests (message category a) can be divided in the following
+ jv> categories:
+
+ jv>  1. a request for a PAUSE id.
+ jv>  2. a request to register one or more modules
+
+With the registration form we have a new handle for these.
+
+ jv>  3. a request for a PAUSE id + modules
+
+We can think about rewriting the registration rules now.
+
+ jv> Category 1 is the easiest. Create the user id and mark the request
+ jv> completed.
+
+I'm wondering if we need a user-registration form. It seems pretty
+easy to me as it is now.
+
+ jv> Category 2 is harder. Often the requested modules are part of an
+ jv> existing structure and the entries can be created immedeately.
+ jv> However, sometimes requests are dubious, or involve new top levels.
+ jv> These cannot be dealt with immedeately.
+
+Correct. But these request will be easier to deal with in the future
+as the form already has a couple of pre-checks that help both authors
+and admins to decide. The links at the bottom of the mail messages
+actually work, so registrering can be done with one click.
+
+ jv> Category 3 is the hardest. It has all the problems of category 2, plus
+ jv> the complication that users often indicate ideas of what they are
+ jv> going to do (DSLI stage idea or pre-alpha). I'm often in doubt whether
+ jv> these should be added in this stage. 
+
+We can skip all those by rewriting the registration rules. My take on
+that would be the following change.
+
+We leave the current text in 04pause.html:
+
+    send the following to the maintainers at modules@perl.org (Note:
+    your email will be made publicly available)
+
+   o your name
+   o your email address
+   o your homepage if you have one
+   o your preferred user-ID on CPAN. It must be between 4 and 9 characters long, all
+     uppercase, letters only. One dash allowed.
+   o a description of what you're planning to contribute
+
+Up to this point I wouldn't change anything. But the next lines could
+be moved down to the chapter about registering modules. The lines I
+would move are the following:
+
+   o for modules a description in module list format (DSLI entry, which is:
+     Development stage, Support level, Language used, Interface style (see the
+     modulelist), and a 44 character description).
+   o for scripts, ports, documentation, etc. please send a concise description that
+     helps us to categorize the issue so we can forward your mail to the maintainers
+     of the corresponding archive branch.
+   o It would be very nice, if you could also send a note about where you have
+     discussed some or all parts of your contribution publicly, and if there was at
+     least a little bit of interest. We are quite open for submissions, but we owe our
+     users at least some rudimentary quality control. If your work has never been
+     discussed publicly, then it's extremely difficult for us to make our judgement
+     whether to accept the submission or not.
+
+          Also: think carefully and honestly whether your module would be better
+     off if it were integrated as an option into an already existing module.
+     Sometimes it is for the best to put aside personal glory and join a
+     collaborative effort: Perl itself is a good example of this. Contact the
+     author of an existing module and ask whether your new features would fit
+     into his framework. Even if you in the end decide to release the module as
+     your very own, you really should know your 'competition', that is, know all
+     the similar modules and the features they offer. Maybe you can learn from
+     them.
+
+Some parts of these paragraphs are made obsolete by the modules
+registration form, some are still important hints. No big deal to do
+that correctly.
+
+With that change we achieve that Category 3 emails disappear and only
+Category 1 and 2 remain.
+
+
+ jv> For the requests that cannot be dealt with immedeately it is necessary
+ jv> to have some discussion. These discussions should be quick and short.
+ jv> In general I think a discussion about a new top level, or non-trivial
+ jv> choice of naming should be concluded within a day. For example, as
+ jv> soon as there are two more ACKs than NACKs. I wonder if it would help
+ jv> to have a separate mailing list for this, one that is not clobbered
+ jv> with all kinds of other messages. In essence, this would mean a split
+ jv> of the current modules mailing list.
+
+ jv>   modules:         a group of people that actively maintain PAUSE.
+ jv>   modules-discuss: a group of people that volunteer to think about
+ jv>                    naming issues and such, and advise the modules
+ jv>                    team. 
+
+I don't believe it would work well. Imagine: we would send the email
+with the registration request to modules-discuss but the confirmation
+of a registration would go to modules. Then people on modules-discuss
+would not see the result and would need to subscribe to both lists. No
+net win.
+
+The one-click registration technique now works reliably, I wonder what
+we could improve on it. I think, the Subject line should be changed to
+"Re: Module submission..." and the From line should be changed to
+"Approval". This might make nice subject threads. What do you think?
+
+ jv> All modules people are part of modules-discuss, but the other way
+ jv> around is not neccessarily true. I estimate the traffic on
+ jv> modules-discuss at 3 or 4 discussions per day. 
+
+ jv> So consider this the first submission to modules-discuss. I'm awaiting
+ jv> your responses.
+
+Sorry for the long delay. The form was a prerequisite to get the
+brains together.
+
+-- 
+andreas

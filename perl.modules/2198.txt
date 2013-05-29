@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2198
+Return-Path: <ken@bitsko.slc.ut.us>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29960 invoked from network); 22 Jun 2000 17:47:21 -0000
+Received: from c941885-a.west1.ia.home.com (HELO bitsko.slc.ut.us) (@24.2.246.129)
+  by tmtowtdi.perl.org with SMTP; 22 Jun 2000 17:47:21 -0000
+Received: (from ken@localhost)
+	by bitsko.slc.ut.us (8.9.1/8.9.1) id MAA04845;
+	Thu, 22 Jun 2000 12:47:09 -0500 (CDT)
+X-Authentication-Warning: jess.bitsko.slc.ut.us: ken set sender to ken@bitsko.slc.ut.us using -f
+To: <perl-xml@listserv.activestate.com>, modules@perl.org
+Subject: Re: SAX or XML::SAX ?
+References: <x5k8gmfogj.fsf@bitsko.slc.ut.us> <20000522204137.A15233@kropotkin.copyleft.de> <x5aehhvzkj.fsf@bitsko.slc.ut.us> <87ln0olvpz.fsf@rabbit.fire-swamp.net>
+Date: 22 Jun 2000 12:47:09 -0500
+In-Reply-To: Stephen Zander's message of "01 Jun 2000 18:26:00 -0700"
+Message-ID: <x5bt0tpq02.fsf@bitsko.slc.ut.us>
+Lines: 44
+User-Agent: Gnus/5.0803 (Gnus v5.8.3) Emacs/20.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: ken@bitsko.slc.ut.us (Ken MacLeod)
+
+Stephen Zander <gibreel@pobox.com> writes:
+
+> >>>>> "Ken" == Ken MacLeod <ken@bitsko.slc.ut.us> writes:
+>     Ken> A little background first.  SAX modules come in three basic
+>     Ken> flavors, "drivers" which generate SAX events (parsers are
+>     Ken> drivers), "handlers" which consume SAX events (writers and
+>     Ken> tree builders are handlers), and "filters" which are both
+>     Ken> handlers and drivers.
+> 
+> Do any of these have a standard API, e.g., is there a SAX driver API
+> that all modules should provide?
+
+Yes, these are standard APIs that are shared by many modules that
+perform many completely different things using those standard APIs.
+
+> If so I'd say reserve SAX::Driver, SAX::Handler & SAX::Filter & let
+> any implementations live directly undex SAX::.  The three reserved
+> modules could just provide a standard import routine to an
+> implementation in, like so
+> 
+>     use SAX::Handler 'SAX::My3LeethA|\|ld3r';
+> 
+> in the same way the DBI modules abstractes the DBD::* modules.
+
+Unlike DBI, the various modules are not intended to be generically
+interchangeable, one module may filter out whitespace from XML events
+while another module may build a tree of objects for other modules to
+use.  The module namespaces are a convenience for users to let them
+know which of two, or both, APIs are being used: the driver API or the
+handler API, together they make a filter API.
+
+There are no modules (nor any reason I can think of to make such
+modules) called SAX::Driver, SAX::Handler, or SAX::Filter.
+
+For reference, note that the use of "driver" in this context means "a
+module that generates SAX events", synonyms include parser, reader,
+event generator, producer (as in producer/consumer), and source (as in
+source, filter, and sink).  This use of "driver" does not mean
+"implement a standard API on different backends", as used in DBI.
+
+> If not, then perhaps SAX::Driver*, SAX::Handler* etc in the same way
+> that Apache modules are Apache::Auth* etc.
+
+  -- Ken

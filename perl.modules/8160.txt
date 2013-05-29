@@ -1,0 +1,52 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:8160
+Return-Path: <matthewg@zevils.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 99803 invoked from network); 11 Oct 2001 02:43:28 -0000
+Received: from ool-18b85c87.dyn.optonline.net (HELO zevils.com) (24.184.92.135)
+  by onion.valueclick.com with SMTP; 11 Oct 2001 02:43:28 -0000
+Received: from allevil.dhcp.zevils.com ([192.168.7.3] ident=mail)
+	by zevils.com with esmtp (Exim 3.32 #1 (Debian))
+	id 15rVoj-0005O3-00; Wed, 10 Oct 2001 22:43:25 -0400
+Received: from matthewg by allevil.dhcp.zevils.com with local (Exim 3.32 #1 (Debian))
+	id 15rVoj-0001OX-00; Wed, 10 Oct 2001 22:43:25 -0400
+Date: Wed, 10 Oct 2001 22:43:25 -0400
+To: modules@perl.org
+Cc: chromatic <chromatic@rmci.net>
+Subject: Re: Module submission Devel::Constants
+Message-ID: <20011010224325.A5321@allevil.dhcp.zevils.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200110100229.EAA25516@mpehp1.mpe-garching.mpg.de>
+User-Agent: Mutt/1.3.22i
+Sender: Matthew Sachs <matthewg@allevil.dhcp.zevils.com>
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: matthewg@zevils.com (Matthew Sachs)
+References: <200110100229.EAA25516@mpehp1.mpe-garching.mpg.de>
+
+chromatic writes that he wants to have something similar to 'use
+constant', but which also lets you get the name of the constant - not
+just its value.  He goes on to discuss the implementation:
+> 
+> My solution is to overload constant::import, stashing away the names
+> and values, so they can be fetched at runtime.
+
+I usually use dualvar from Scalar::Util for this.  dualvar gives you
+magic scalars that behave similarly to $!.
+
+       dualvar NUM, STRING
+           Returns a scalar that has the value NUM in a numeric
+           context and the value STRING in a string context.
+
+               $foo = dualvar 10, "Hello";
+               $num = $foo + 2;                    # 12
+               $str = $foo . " world";             # Hello world
+
+-- 
+Matthew Sachs   <matthewg@zevils.com>  <matthewg@wombatbanana.com>
+http://www.zevils.com/ * GPG key: 0x600A0342 * PGP key: 0x93EA1151
+#The original nonstandard deviant# (((T^E)%(PQ))^D)%(PQ) = RSA-NOP

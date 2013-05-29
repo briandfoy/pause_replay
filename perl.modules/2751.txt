@@ -1,0 +1,273 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2751
+Return-Path: <paulg@apnic.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17401 invoked from network); 29 Aug 2000 05:34:10 -0000
+Received: from guardian.apnic.net (203.37.255.100)
+  by tmtowtdi.perl.org with SMTP; 29 Aug 2000 05:34:10 -0000
+Received: (from mail@localhost)
+	by guardian.apnic.net (8.9.3/8.9.3) id PAA07835;
+	Tue, 29 Aug 2000 15:33:59 +1000 (EST)
+Received: from hadrian.staff.apnic.net(192.168.1.1) by int-gw.staff.apnic.net via smap (V2.1)
+	id xma007831; Tue, 29 Aug 00 15:33:53 +1000
+Received: from apnic.net (compiler.staff.apnic.net [192.168.1.39])
+	by hadrian.staff.apnic.net (8.9.3/8.9.3) with ESMTP id PAA04608;
+	Tue, 29 Aug 2000 15:33:53 +1000 (EST)
+Sender: paulg@apnic.net
+Message-ID: <39AB4B41.3883FDB4@apnic.net>
+Date: Tue, 29 Aug 2000 15:33:53 +1000
+Organization: APNIC Pty. Ltd. http://www.apnic.net
+X-Mailer: Mozilla 4.61 [en] (X11; I; UnixWare 5 i386)
+MIME-Version: 1.0
+To: perl modules <modules@perl.org>
+CC: dhudes@hudes.org, peter@interq.or.jp, mail@vipul.net, kevin@apnic.net,
+        bje@apnic.net, bc@apnic.net
+Subject: Net::Whois::RIPE namespace proposal?
+Content-Type: multipart/mixed;
+ boundary="------------934B82215B6168BDA991EEB6"
+Approved: news@nntp.perl.org
+From: paulg@apnic.net (Paul Gampe)
+
+--------------934B82215B6168BDA991EEB6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+I would like to propose the following module for inclusion into the
+Net::Whois namespace.
+
+Name              DSLI  Description                                  
+-------------     ----  --------------------------------------------
+Net::Whois::RIPE  adpO  Perl module API to a RIPE-157 database
+
+Standard   Description                               Module Name
+--------   -----------                               -----------
+RIPE157    RIPE Network Management Database Client   Net::Whois::RIPE
+
+
+Also I just did a quick search of the 'official' module list
+http://www.cpan.org/modules/00modlist.long.html and noted that none of
+the current Whois client modules (Net::Whois, Net::Whois::RAW, etc) are
+included.  Is there a reason for this?  
+
+References:
+
+http://ftp.apnic.net/ietf/rfc/rfc0000/rfc0954.txt
+http://www.ripe.net/ripe/docs/ripe-157.html
+
+-- 
+For PGP Key ID B49E3514,                 mailto:paulg@apnic.net     
+send mail with Subject: pgp-key-request phoneto:+61-7-3367-0490     
+Paul Gampe - Technical Manager - APNIC    faxto:+61-7-3367-0482
+*** APNIC Meeting Oct 2000 - http://www.apnic.net/meetings ***
+--------------934B82215B6168BDA991EEB6
+Content-Type: text/plain; charset=us-ascii;
+ name="net-whois-ripe.readme"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="net-whois-ripe.readme"
+
+
+
+
+::opt::apnic::liUbs:e:rNeCto:n:tWrhiobiu:st::eo:dpRtIP:Pe:Era(lp3n)Diocc:u:mleinbt:a:tNieotn::Whois::RIPE(3)
+
+
+NNNNAAAAMMMMEEEE
+       Whois::RIPE - Perl OO implementation of Whois.
+
+SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+           use Net::Whois::RIPE;
+
+           my $whois = Net::Whois::RIPE->new($host,Timeout=>10);
+
+           $whois->find_less;          # find all less specific matches
+           my @results=$whois->query('203.203.203.203');
+
+           my $resp = $results[0];     # only look at the first result
+
+           print $resp->person(), "\n";
+           print $resp->address(), "\n";
+           print $resp->fax_no(), "\n";
+
+
+DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+       Net::Whois::RIPE is a class implementing a RIPE whois
+       client.
+
+CCCCOOOONNNNSSSSTTTTRRRRUUUUCCCCTTTTOOOORRRR
+       nnnneeeewwww ((((HHHHOOOOSSSSTTTT [[[[,,,,OOOOPPPPTTTTIIIIOOOONNNNSSSS]]]]))))
+           This is the constructor for a new Net::Whois::RIPE
+           object. `HOST' is the name of the remote host to which
+           a whois connection is required.
+
+           `OPTIONS' are passed in a hash like fashion, using key
+           and value pairs.  Possible options are:
+
+           PPPPoooorrrrtttt - The port number to connect to on the remote
+           machine for the whois connection
+
+           TTTTiiiimmmmeeeeoooouuuutttt - Set a timeout value (defaults to 30)
+
+           DDDDeeeebbbbuuuugggg - debug level
+
+           The constructor croaks on failure.
+
+MMMMEEEETTTTHHHHOOOODDDDSSSS
+       +o tttteeeemmmmppppllllaaaatttteeee((((WWWWHHHHOOOOIIIISSSS____OOOOBBBBJJJJEEEECCCCTTTT____NNNNAAAAMMMMEEEE))))
+              Sends a template request to whois host for a
+              template for WHOIS_OBJECT_NAME.  Results are
+              returned in a _N_e_t_:_:_W_h_o_i_s_:_:_R_I_P_E_:_:_Q_u_e_r_y object. The
+              template is retrieved via the _c_o_n_t_e_n_t method on the
+              _N_e_t_:_:_W_h_o_i_s_:_:_R_I_P_E_:_:_Q_u_e_r_y object.
+
+              $t = $whois->template('person');
+              $text = $t->content;
+
+       If WHOIS_OBJECT_NAME is undefined then the method will
+       carp and return undef.
+
+
+
+
+2000-07-05                 perl v5.6.0                          1
+
+
+
+
+
+::opt::apnic::liUbs:e:rNeCto:n:tWrhiobiu:st::eo:dpRtIP:Pe:Era(lp3n)Diocc:u:mleinbt:a:tNieotn::Whois::RIPE(3)
+
+
+       +o vvvveeeerrrrbbbboooosssseeee____tttteeeemmmmppppllllaaaatttteeee((((WWWWHHHHOOOOIIIISSSS____OOOOBBBBJJJJEEEECCCCTTTT____NNNNAAAAMMMMEEEE))))
+              Like tttteeeemmmmppppllllaaaatttteeee, but sends a verbose template request
+              to the whois host for WHOIS_OBJECT_NAME. Results
+              are returned in a _N_e_t_:_:_W_h_o_i_s_:_:_R_I_P_E_:_:_Q_u_e_r_y object.
+              The verbose template is retrieved via the _c_o_n_t_e_n_t
+              method on the _N_e_t_:_:_W_h_o_i_s_:_:_R_I_P_E_:_:_Q_u_e_r_y object.
+
+              $vt = $whois->verbose_template('person');
+              $text = $vt->content;
+
+       If WHOIS_OBJECT_NAME is undefined then the method will
+       carp and return undef.
+
+       +o qqqquuuueeeerrrryyyy((((QQQQUUUUEEEERRRRYYYY____TTTTEEEEXXXXTTTT))))
+              Formats query flag options (see below) and sends
+              them and QUERY_TEXT to the server. If called in a
+              scalar context then the first object returned from
+              the server is passed back as a single
+              _N_e_t_:_:_W_h_o_i_s_:_:_R_I_P_E_:_:_Q_u_e_r_y object.  In an array
+              context, all returned objects returned from the
+              server are parsed into in a list and returned
+              (potentially quite large).
+
+              $q = $whois->query('key')  # a single Query
+              @q = $whois->query('key')  # an array of Queries
+
+       If QUERY_KEY is undefined, undef is returned. Any failure
+       will carp and return undef.
+
+       If mmmmaaaaxxxx____rrrreeeeaaaadddd____ssssiiiizzzzeeee is greater than zero then the server
+       response will be abandoned when greater than max_read_size
+       bytes have been read. The last _Q_u_e_r_y object read will have
+       warning messages set to indicate that the response was
+       cut.
+
+       +o uuuuppppddddaaaatttteeee((((UUUUPPPPDDDDAAAATTTTEEEE____TTTTEEEEXXXXTTTT))))
+              Sends UPDATE_TEXT directly to server. Query flag
+              options (below) are not used by update. Server
+              response is returned via _N_e_t_:_:_W_h_o_i_s_:_:_R_I_P_E_:_:_Q_u_e_r_y.
+              Use the ccccoooonnnntttteeeennnntttt method on the Query object to via
+              server response.
+
+        my $q = $whois->update($message)
+        print $q->content
+
+       If UPDATE_TEXT is undefined, undef is returned.  Any
+       failure will carp and return undef.
+
+       If no _c_h_a_n_g_e_d field can be found to determine a login and
+       domain the method will carp and return undef.
+
+       If mmmmaaaaxxxx____rrrreeeeaaaadddd____ssssiiiizzzzeeee is greater than zero then the server
+       response will be abandoned when greater than max_read_size
+       bytes have been read.
+
+
+
+2000-07-05                 perl v5.6.0                          2
+
+
+
+
+
+::opt::apnic::liUbs:e:rNeCto:n:tWrhiobiu:st::eo:dpRtIP:Pe:Era(lp3n)Diocc:u:mleinbt:a:tNieotn::Whois::RIPE(3)
+
+
+       +o mmmmaaaaxxxx____rrrreeeeaaaadddd____ssssiiiizzzzeeee(((([[[[IIIINNNNTTTTEEEEGGGGEEEERRRR]]]]))))
+              Sets/reads the maximum number of bytes that
+              _N_e_t_:_:_W_h_o_i_s_:_:_R_I_P_E will read before returning. This
+              is to limit huge responses from the server
+              overloading scripts.
+
+       a _m_a_x___r_e_a_d___s_i_z_e of zero indicates nnnnoooo limit.
+
+       +o ffffllllaaaagggg ooooppppttttiiiioooonnnnssss
+              The following flags may be set by calling the
+              method. Their meaning is identical to the ripe
+              whois client. These flags require no arguments,
+              they simply set the flag on.
+
+              Method                       Equivalent whois flag
+
+              search_all                   -a
+              fast_raw                     -F
+              find_less                    -L
+              find_more                    -m
+              find_all_more                -M
+              no_recursive                 -r
+              no_referral                  -R
+              no_sugar                     -S
+
+
+       +o ffffllllaaaagggg ooooppppttttiiiioooonnnnssss ttttaaaakkkkiiiinnnngggg vvvvaaaalllluuuueeeessss
+              The following flags may be set by calling the
+              method with a value.  There meaning is identical to
+              the ripe whois client.
+
+              Method                       Equivalent whois flag
+
+              inverse_lookup(ATTRIBUTE)    -i ATTRIBUTE
+              port(PORT)                   -p PORT
+              source(SOURCE)               -s SOURCE
+              type(TYPE)                   -T TYPE
+
+
+AAAAUUUUTTTTHHHHOOOORRRR
+       Paul Gampe, paulg@apnic.net
+
+       Bruce Campbell, bruce.campbell@apnic.net
+
+       Kevin Baker, kevin@apnic.net
+
+SSSSEEEEEEEE AAAALLLLSSSSOOOO
+       _p_e_r_l(1).  Net::Whois::RIPE::Query
+
+
+
+
+
+
+
+
+
+2000-07-05                 perl v5.6.0                          3
+
+
+
+--------------934B82215B6168BDA991EEB6--
+

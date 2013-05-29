@@ -1,0 +1,226 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2450
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1567 invoked from network); 15 Jul 2000 07:01:41 -0000
+Received: from 208.184.111.7.baremetal.com (HELO palladium.baremetal.com) (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 15 Jul 2000 07:01:41 -0000
+Received: from [24.67.200.33] (24.67.200.33.bc.wave.home.com [24.67.200.33])
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id AAA19726;
+	Sat, 15 Jul 2000 00:00:56 -0700
+Mime-Version: 1.0
+Message-ID: <f04320408b595b9bd6bb5@[24.67.200.33]>
+Date: Sat, 15 Jul 2000 00:02:14 -0700
+To: PAUSE <modules@perl.org>
+Subject: request namespace for Method::ParamParser
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Context Note: I am releasing a succession of around 15 Perl 5 object 
+modules.  Six of these are complete and documented, and will be 
+submitted quickly.  The others are working but not fully documented, 
+so I am holding them back for the moment.  All of these modules, with 
+info on how they can be used together (and working examples), are 
+available at http://www.DarrenDuncan.net.  They have temporary names 
+in the DDuncan::* name space.  They all require 5.004 for 
+consistency, although some can do with less.
+-----------------------------------------------
+
+Here is #3:
+
+Name                 DSLI  Description 
+Info
+-------------------  ---- 
+----------------------------------------------  -------
+Method::ParamParser  bdpO  complex parameter parsing for subclass 
+methods  DUNCAND
+
+If you have suggestions of alternate names for this module, I would 
+be happy to hear them.  Likewise, I appreciate suggestions for a 
+better brief description for use in the module list.
+
+For a good description of my module, I have provided part of its POD 
+at the end of this letter.  The rest of the POD is on my site.
+
+Currently, at least 2 of my other modules use this one.
+
+// Darren Duncan
+
+----------------------------------------------
+
+=head1 NAME
+
+DDuncan::MethodParamParser - Perl inheritable module for tidying up 
+the parameter
+lists passed to methods.
+
+I<Please note that the path name of this module is temporary, something that
+works until a more appropriate and integrated name can be found.  A possibility
+could be "Method::Params">
+
+=head1 DEPENDENCIES
+
+=head2 Perl Version
+
+5.004
+
+=head2 Standard Modules
+
+=item I<none>
+
+=head2 Nonstandard Modules
+
+=item I<none>
+
+=head1 SYNOPSIS
+
+	use DDuncan::MethodParamParser 1.01;
+	@ISA = qw( DDuncan::MethodParamParser );
+
+	sub textfield {
+		my $self = shift( @_ );
+		my $rh_params = $self->params_to_hash( \@_, 0,
+			[ 'name', 'value', 'size', 'maxlength' ],
+			{ 'default' => 'value' } );
+		$rh_params->{'type'} = 'text';
+		return( $self->make_html_tag( 'input', $rh_params ) );
+	}
+
+	sub AUTOLOAD {
+		my $self = shift( @_ );
+		my $rh_params = $self->params_to_hash( \@_, 0, 
+'text', {}, 'text' );
+		my $ra_text = delete( $rh_params->{'text'} );
+		$AUTOLOAD =~ m/([^:]*)$/;
+		my $tag_name = $1;
+		return( $self->make_html_tag( $tag_name, $rh_params, 
+$ra_text ) );
+	}
+
+=head1 DESCRIPTION
+
+This Perl 5 object class implements two methods which inherited classes can use
+to tidy up parameter lists for their own methods and functions.  The 
+two methods
+differ in that one returns a HASH ref containing named parameters and the other
+returns an ARRAY ref containing positional parameters.
+
+Both methods can process the same kind of input parameter formats:
+
+=item I<empty list>
+
+=item value
+
+=item value1, value2, ...
+
+=item name1 => value1, name2 => value2, ...
+
+=item -name1 => value1, -name2 => value2, ...
+
+=item { -name1 => value1, name2 => value2, ... }
+
+=item { name1 => value1, -name2 => value2, ... }, valueR
+
+Those examples included single or multiple positional parameters, single or
+multiple named parameters, and a HASH ref containing named parameters (with
+optional "remaining" value afterwards).  That list of input variations is not
+exhaustive.  Named parameters can either be prefixed with "-" or left natural.
+
+We assume that the parameters are named when either they come as a HASH ref or
+the first parameter begins with a "-".  We assume that they are positional if
+there is exactly one of them.  Otherwise we are in doubt and rely on 
+an optional
+argument to the tidying method that tells us which to guess by default.
+
+We assume that any "value" may be an array ref (aka "multiple" values under the
+same name) and hence we don't do anything special with them, passing 
+them as is.
+
+If the source and destination are both positional, then they are identical.
+
+=head1 SYNTAX
+
+This class does not export any functions or methods, so you need to call them
+using indirect notation.  This means using B<Class->function()> for 
+functions and
+B<$object->method()> for methods.  If you are inheriting this class 
+for your own
+modules, then that often means something like B<$self->method()>.
+
+However, if you feel like breaking the "indirect notation" rules, you can still
+call the method using a dummy value instead of the implicit 
+object/class that is
+usually passed.  This won't break anything as the object isn't used.  However,
+this practice is depreciated as of Perl 5.004 and probably won't work later.
+
+=head1 FUNCTIONS AND METHODS
+
+=head2 params_to_hash( SOURCE, DEF, NAMES[, RENAME[, REM]] )
+=head2 params_to_array( SOURCE, DEF, NAMES[, RENAME[, REM]] )
+
+=head1 PARAMETERS
+
+The arguments for the above methods are the same, so they are 
+discussed together
+here:
+
+=item
+
+The first argument, SOURCE, is an ARRAY ref containing the original parameters
+that were passed to the method which calls this one.  It is safe to pass "\@_"
+because we don't modify the argument at all.  If SOURCE isn't a valid ARRAY ref
+then its default value is [].
+
+=item
+
+The second argument, DEF, is a boolean/scalar that tells us whether, when in
+doubt over whether SOURCE is in positional or named format, what to guess by
+default.  A value of 0, the default, means we guess named, and a 
+value of 1 means
+we assume positional.
+
+=item
+
+The third argument, NAMES, is an ARRAY ref (or SCALAR) that provides 
+the names to
+use when SOURCE and our return value are not in the same format (named or
+positional).  This is because positional parameters don't know what their names
+are and named parameters (hashes) don't know what order they belong 
+in; the NAMES
+array provides the missing information to both.  The first name in 
+NAMES matches
+the first value in a positional SOURCE, and so-on.  Likewise, the order of
+argument names in NAMES determines the sequence for positional output when the
+SOURCE is named.
+
+=item
+
+The optional fourth argument, RENAME, is a HASH ref that allows us to 
+interpret a
+variety of names from a SOURCE in named format as being aliases for 
+one enother.
+The keys in the hash are names to look for and the values are what to 
+rename them
+to.  Keys are matched irregardless of whether the SOURCE names have 
+"-" in front
+of them or not.  If several SOURCE names are renamed to the same hash 
+value, then
+all but one are lost; the SOURCE should never contain more than one 
+alias for the
+same parameter anyway.  One way to explicitely delete a parameter is 
+to rename it
+with "", as parameters with that name are discarded.
+
+=item
+
+The optional fifth argument, REM, is only used in circumstances where the first
+element of SOURCE is a HASH ref containing the actual named parameters that
+SOURCE would otherwise be.  If SOURCE has a second, "remaining" 
+element following
+the HASH ref, then REM says what its name is.  Remaining parameters 
+with the same
+name as normal parameters (post renaming and "-" substitution) take precedence.
+The default value for REM is "", and it is discarded unless renamed.

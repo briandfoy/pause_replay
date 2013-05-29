@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13712
+Return-Path: <jarobson@mail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11713 invoked by uid 76); 11 Sep 2002 18:05:04 -0000
+Received: from 205-158-62-78.outblaze.com (HELO smtp1.us4.outblaze.com) (205.158.62.78) by onion.perl.org (qpsmtpd/0.11-dev) with SMTP; 2002-09-11 18:05:04Z
+Received: (qmail 5113 invoked from network); 11 Sep 2002 18:04:37 -0000
+Received: from unknown (HELO wsdojr) (jarobson:mail.com?mail.com@206.206.32.110)  by 205-158-62-78.outblaze.com with SMTP; 11 Sep 2002 18:04:37 -0000
+Message-ID: <000c01c259bc$fd917fd0$020a010a@nsd131.org>
+To: <modules@perl.org>
+Subject: I have written a Perl module, and would like to garner some suggestions...
+Date: Wed, 11 Sep 2002 11:59:35 -0600
+MIME-Version: 1.0
+Content-Type: text/plain;	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-SMTPD: qpsmtpd/0.11-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: jarobson@mail.com
+
+The module provides methods (it's OO) that allow a programmer to easily
+create a simple blogging system, along the lines of 'blogger.com' (Except
+its a bit more rudimentary). This is a pure Perl module. It requires the
+XML::XSL module.
+
+I have chosen the name for the module to be Blog::SimpleBlog. I felt this
+was the most descriptive, and it would allow myself and/or other ambitious
+programmers to create modules that are 'Blog' related, although not
+necessarily 'SimpleBlog' related. I have looked through the Perl modules and
+have found none that appear to do this particular task (except the 'Slash'
+modules), or that have this namespace. Please let me know if you feel this
+name is appropriate.
+
+If you have time, I wonder if you might give me input on the methods and
+functionality of the module. (Quite all right if you don't; if you answer
+the name question, I'll be most satisfied.)
+
+Below is the synopsis from my documentation, with brief descriptions:
+
+    #obviously...
+use Blog::SimpleBlog;
+
+    #instantiates the object, setting up object data in a hash, reference
+    #stored in $sbO.
+my $sbO = Blog::SimpleBlog->new();
+
+    #creates the text data files/directories necessary to store blog data
+    #generally only needs to be called once
+$sbO->create_Blog_Index();
+
+    #variables to pass to the 'add_Blog()' method. This becomes XML
+    #and is stored on the filesystem.
+my $content="<p>blah blah blah in XHTML</p>
+<p><b>Better</b> when done in XHTML</p>";
+my $title = 'some title';
+my $author = 'a.n. author';
+my $email = 'anaouthor@somedomain.net';
+my $smmry = 'blah blah';
+
+    #this creates a new blog, puts it in a timestamped folder,
+    #and updates the blogbase index (putting the newest entries
+    #at the top).
+$sbO->add_Blog($title,$author,$email,$smmry,$content);
+
+    #this method retrieves the most recent three entries
+    #from the blogbase, and generates on-the-fly XML to
+    #pass to the referenced XSLT file. This is where the
+    #XML::XSL module comes in. You can also specify an
+    #output file.
+$sbO->gen_Blog_Current('blog_test.xsl',3);
+
+    #this does essentially the same as above, except it
+    #gets all the entries in the blogbase. Think 'archive.'
+$sbO->gen_Blog_All('blog_test.xsl');
+
+    #this removes a blog from the system, and returns
+    #the path to the deleted entries. You pass it a
+    #regular expression, and any matches are removed.
+my @deleted = $sbO->remove_Blog('08');
+
+
+That's it. Thanks for your time (presuming you got this far).
+
+J.A. Robson
+
+

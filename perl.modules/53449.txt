@@ -1,0 +1,120 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53449
+Return-Path: <renan@br-net.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 17467 invoked from network); 9 Mar 2007 01:21:05 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 9 Mar 2007 01:21:05 -0000
+Received: (qmail 2987 invoked by uid 225); 9 Mar 2007 01:21:05 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2983 invoked by alias); 9 Mar 2007 01:21:05 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_POLICY_SIGNSOME
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from an-out-0708.google.com (HELO an-out-0708.google.com) (209.85.132.248)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 08 Mar 2007 17:21:00 -0800
+Received: by an-out-0708.google.com with SMTP id b8so888263ana
+        for <modules@perl.org>; Thu, 08 Mar 2007 17:20:55 -0800 (PST)
+Received: by 10.100.132.16 with SMTP id f16mr869383and.1173403255210;
+        Thu, 08 Mar 2007 17:20:55 -0800 (PST)
+Received: from ?192.168.2.10? ( [201.22.222.223])
+        by mx.google.com with ESMTP id c39sm4057452anc.2007.03.08.17.20.51;
+        Thu, 08 Mar 2007 17:20:53 -0800 (PST)
+Message-ID: <45F0B699.1050608@cpan.org>
+Date: Thu, 08 Mar 2007 22:21:29 -0300
+User-Agent: Thunderbird 1.5.0.8 (X11/20061115)
+MIME-Version: 1.0
+To: Adam Kennedy <cpan@ali.as>
+CC: modules@perl.org
+Subject: Re: Module submission Mail::Simple
+References: <200703082011.l28KBItV025353@pause.perl.org> <45F0AC69.5040808@ali.as>
+In-Reply-To: <45F0AC69.5040808@ali.as>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: renan@br-net.org (Renan)
+
+The module I wrote, provide some methods like
+
+@valid_addresses = Module->check(@email_addresses);
+
+It also provides other quick methods:
+
+$mail = Module->new;
+$mail->address($email_address);
+$mail->validate; # test if it is a valid RFC822 address
+$mail->mx_records; # return the mx records or already resolved ips
+$mail->connection; # test if its able to connect to the mail server
+$mail->callback; # callback test
+$mail->check # make all tests
+$mail->error; # why a test failed
+
+These can also be used as class methods, passing the e-mail as a
+argument. I am planning to add other methods, to change de behavior of
+the checks.
+
+I took a quick look at the Email::Valid doc, but seems that it doesn't
+do a callback verification. This could eliminate some e-mails that are
+valid, but don't really exist.
+
+I need a help choosing the Module name. Ricardo Signes also suggested
+Mail::AddrVerify, but I don't know if I should use it.
+
+Renan
+
+Adam Kennedy escreveu:
+> A collective name for a whole family of modules is not typically how we
+> would allocate a ::Simple namespace.
+> 
+> It will probably come down to the unique factors of your modules.
+> 
+> For example, there are already a number of email validation modules on
+> the CPAN, so there's need to be something that makes yours stand apart.
+> 
+> For example, the standard email validation API Email::Valid appears to
+> be pretty simple already.
+> 
+> Email::Valid->address($email_address)
+> 
+> Adam K
+> 
+> Perl Authors Upload Server wrote:
+>> The following module was proposed for inclusion in the Module List:
+>>
+>>   modid:       Mail::Simple
+>>   DSLIP:       bdpOp
+>>   description: Collection of simple mail modules
+>>   userid:      RVR (Renan Valente Rangel)
+>>   chapterid:   19 (Mail_and_Usenet_News)
+>>   communities:
+>>     http://www.nntp.perl.org/group/perl.modules/2007/03/msg53363.html
+>>
+>>   similar:
+>>
+>>   rationale:
+>>
+>>     I would like to register this namespace to use with simple modules
+>>     (related to mail) that provide a easy to use interface. This include
+>>     a module to verify if a address is valid, that I already have and
+>>     maybe others.
+>>
+>>     I have talked to Ricardo Signes and he suggested to use a Mail::
+>>     namespace. So, I would like to use this one, as I will probably
+>>     write other mail-related modules, and I can share them through this
+>>     namespace.
+>>
+>>   enteredby:   RVR (Renan Valente Rangel)
+>>   enteredon:   Thu Mar  8 20:11:17 2007 GMT
+>>
+>> The resulting entry would be:
+>>
+>> Mail::
+>> ::Simple          bdpOp Collection of simple mail modules            RVR
+>>
+>>
+>> Thanks for registering,
+

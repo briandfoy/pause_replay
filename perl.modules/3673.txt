@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3673
+Return-Path: <nate@west.sun.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1222 invoked from network); 28 Nov 2000 00:42:25 -0000
+Received: from mercury.sun.com (192.9.25.1)
+  by tmtowtdi.perl.org with SMTP; 28 Nov 2000 00:42:25 -0000
+Received: from westmail2.West.Sun.COM ([129.153.100.30])
+	by mercury.Sun.COM (8.9.3+Sun/8.9.3) with ESMTP id QAA17779;
+	Mon, 27 Nov 2000 16:41:50 -0800 (PST)
+Received: from matrix.West.Sun.COM (matrix.West.Sun.COM [129.153.51.97])
+	by westmail2.West.Sun.COM (8.9.3+Sun/8.9.3/ENSMAIL,v1.7) with ESMTP id QAA25192;
+	Mon, 27 Nov 2000 16:41:25 -0800 (PST)
+Received: from west.sun.com (localhost [127.0.0.1])
+	by matrix.West.Sun.COM (8.9.3+Sun/8.9.3) with ESMTP id QAA23835;
+	Mon, 27 Nov 2000 16:41:24 -0800 (PST)
+Sender: nwiger@matrix.West.Sun.COM
+Message-ID: <3A22FF34.5CD2E371@west.sun.com>
+Date: Mon, 27 Nov 2000 16:41:24 -0800
+X-Mailer: Mozilla 4.61 [en] (X11; U; SunOS 5.8 sun4u)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+CC: nate@wiger.org
+Subject: New modules - Text::Header, Class::Handler, HTML::ActiveLink
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: nate@west.sun.com (Nathan Wiger)
+
+Hey all-
+
+I've got three new modules that I'd like to have registered on the
+module list if there are no objections:
+
+Name             DSLI Description                                 
+---------------- ---- --------------------------------------------
+Class::Handler   bdph Make Apache-like pseudoclass event handlers
+Text::Header     Rdpf RFC 822/2068 header manipulation functions 
+HTML::ActiveLink adp0 Dynamically activate HTML links based on URL
+
+The first one is unique to CPAN; it just plays tricks with AUTOLOAD and
+@ISA so that it can create classes which inherit from others but don't
+provide methods of their own. This has actually turned out to be pretty
+handy since it lets you create "event handlers".
+
+The Text::Header module provides header() and unheader() functions that
+tweak SMTP/HTTP/etc headers. They are generalized and extensible
+versions of similar functions found in CGI.pm and HTTP::Headers. They're
+designed to work with any text processing, hence the reason they live in
+Text::, and are content independent.
+
+Finally, the HTML::ActiveLink module provides a lightweight yet useful
+method for auto-parsing and activation of HTML links. What this means is
+that you can create an HTML template that looks like this:
+
+   <a href="/">Home</a> | <a href="/faq/">FAQ</a>
+
+And then run this code across the CGI or elsewhere:
+
+   $al = new HTML::ActiveLink;
+   print $al->activelink($html_doc);
+
+And if you were running in the /faq/ directory the above HTML would
+become something like this:
+
+   <a href="/">Home</a> | <font color="red">FAQ</font>
+
+Since it's separate, this can be used with HTML::Template or MASON or
+other modules without tying the author to any one particular formatting
+module. It's also much more flexible than this simplistic example shows.
+
+In any event, if you could please give me some feedback as to whether
+these are valid namespaces, etc, I'd really appreciate it. If all is
+well, then I'd like to get these registered under my name on CPAN.
+
+Thanks as always,
+Nate

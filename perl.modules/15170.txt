@@ -1,0 +1,60 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:15170
+Return-Path: <ziefle@ifd.mavt.ethz.ch>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30536 invoked by uid 76); 11 Nov 2002 11:17:54 -0000
+Received: from elbe.ethz.ch (HELO dufour.ethz.ch) (129.132.136.150) by onion.perl.org (qpsmtpd/0.12) with SMTP; 2002-11-11 11:17:53Z
+Received: from ifd.mavt.ethz.ch (neckar [129.132.136.140])	by dufour.ethz.ch (8.12.6/8.12.6) with ESMTP id gABBHlLF026095;	Mon, 11 Nov 2002 12:17:47 +0100
+Received: (from ziefle@localhost)	by ifd.mavt.ethz.ch (8.12.6/8.12.3/Submit) id gABBHkxa024669;	Mon, 11 Nov 2002 12:17:46 +0100
+Date: Mon, 11 Nov 2002 12:17:46 +0100
+To: Tim Bunce <Tim.Bunce@pobox.com>
+Cc: modules@perl.org
+Subject: Re: Module submission WWW::LEO
+Message-ID: <20021111111746.GB23535@ifd.mavt.ethz.ch>
+References: <200211081849.gA8Insi10534@pause.perl.org> <20021108194715.GA40961@dansat.data-plan.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20021108194715.GA40961@dansat.data-plan.com>
+User-Agent: Mutt/1.4i
+X-SMTPD: qpsmtpd/0.12, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: ziefle@ifd.mavt.ethz.ch (=?iso-8859-1?Q?J=F6rg?= Ziefle)
+
+On Fri, Nov 08, 2002 at 07:47:15PM +0000, Tim Bunce wrote:
+> Seems like a good fit for the new WebService:: category.
+> 
+> But how does it relate to 
+> http://search.cpan.org/author/SAMV/Lingua-Translate-0.06/lib/Lingua/Translate.pm
+
+I wasn't aware of that module.  Its purpose seems pretty similar to my
+module (it uses the Babelfish service instead of the LEO one, which has
+different pros and cons).  Then again, this raises the question why that
+module is not in WebService? :)
+
+I had a thought about modifying my code to be a backend to
+Lingua::Translate, but the Lingua::Translate frontend seems to be
+designed specifically for the two available backends, so my interface
+(resp. the interface that is needed to provide the functionality I want)
+doesn't fit in there very well right now.  In other words, the change
+would require considerable changes in Lingua::Translate first.  As the
+POD of Lingua::Translate states:
+
+---
+=head1 BUGS/TODO
+
+[...]
+
+Need to formalise and define the "Interface" that the back-end modules
+adhere to.
+---
+
+Therefore, it seems to be reasonable to go with one of
+
+* WebService::LEO <-- simplicity
+* WebService::DictLEO <-- purpose visible in name
+(* WebService::Dict::LEO) <-- w/ same implications as stated above
+
+Joerg

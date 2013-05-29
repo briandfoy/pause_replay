@@ -1,0 +1,77 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:24499
+Return-Path: <gbarr@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10602 invoked by uid 76); 12 Nov 2003 10:14:00 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Wed, 12 Nov 2003 02:14:00 -0800
+Received: (qmail 26979 invoked by uid 225); 12 Nov 2003 10:13:59 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26975 invoked by alias); 12 Nov 2003 10:13:58 -0000
+Received: from ns.mutatus.co.uk (HELO mail.mutatus.co.uk) (217.154.222.34) by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Wed, 12 Nov 2003 02:13:58 -0800
+Received: from [192.168.252.5] (ibook.i.mutatus.co.uk [192.168.252.5])	by mail.mutatus.co.uk (Postfix) with ESMTP	id B11434A; Wed, 12 Nov 2003 10:13:55 +0000 (GMT)
+In-Reply-To: <20031112074819.47904.qmail@web40209.mail.yahoo.com>
+References: <20031112074819.47904.qmail@web40209.mail.yahoo.com>
+Mime-Version: 1.0 (Apple Message framework v606)
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Message-ID: <EBEF42D4-14F8-11D8-B982-0003938857CC@pobox.com>
+Content-Transfer-Encoding: 7bit
+Cc: modules@perl.org
+Subject: Re: all my modules  don't show up on http://search.cpan.org
+Date: Wed, 12 Nov 2003 10:13:55 +0000
+To: DH <crazyinsomniac@yahoo.com>
+X-Mailer: Apple Mail (2.606)
+X-Spam-Check-By: la.mx.develooper.com
+X-Spam-Status: No, hits=-2.5 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_03_05,USER_AGENT_APPLEMAIL version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: gbarr@pobox.com (Graham Barr)
+
+On Nov 12, 2003, at 7:48, DH wrote:
+>> Well you have obviously found out how useful it is to publish these
+>> problems in blogs instead of reporting them. If you read your blog you
+>> would have seen a response which stated
+>
+> I reported it as soon as I noticed to upload@pause.perl.org
+
+Its nothing todo with pause, why did you not use the feedback form on 
+the site ?
+
+>>
+>>    Well the reason is simple, there was a problem unpacking the tar 
+>> file
+>>
+>>    tar zxv --no-same-owner -f PPM-Repositories-0.07.tar.gz
+>>    PPM-Repositories-0.07/
+>>    tar: Archive value 4294967295 is out of gid_t range
+>> -2147483648..2147483647
+>>
+>>    This is on solaris, on linix it is fine as gid_t is unsigned on 
+>> linux
+>> but signed on solaris
+>
+> I see, so what's gonna happen now (do I need to re-upload or what)?
+
+If you can create one without such a large gid then that would work. 
+But we need to solve this better.
+
+>>    What are you using to create the tar file and on what platform?
+>>
+>
+> cygwin's tar on win32 via `nmake dist'
+
+So its possible that others will suffer the same problem. Although only 
+your uploads seem to be having this problem at the moment. Thats not to 
+say others will not in future.
+
+I will probably need to patch GNU tar to ignore extracted uid and gid 
+when not running as root. There is no reason to check them as they will 
+not be used anyway.
+
+> So upload@pause.perl.org is not the right place to report this?
+
+No, the feedback form on the search site is
+
+Graham.
+

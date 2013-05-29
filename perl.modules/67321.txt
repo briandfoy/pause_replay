@@ -1,0 +1,114 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:67321
+Return-Path: <moritz@faui2k3.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 7277 invoked from network); 24 Aug 2009 07:31:52 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 24 Aug 2009 07:31:52 -0000
+Received: (qmail 11946 invoked by uid 225); 24 Aug 2009 07:31:52 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11941 invoked by alias); 24 Aug 2009 07:31:51 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from faui2k3.org (HELO casella.faui2k3.org) (213.95.10.24)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 24 Aug 2009 00:31:46 -0700
+Received: from p57b07c4b.dip.t-dialin.net ([87.176.124.75] helo=[192.168.178.42])
+	by casella.faui2k3.org with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.69)
+	(envelope-from <moritz@faui2k3.org>)
+	id 1MfU1i-0007VO-Ug; Mon, 24 Aug 2009 09:31:39 +0200
+Message-ID: <4A9241DA.6000808@faui2k3.org>
+Date: Mon, 24 Aug 2009 09:31:38 +0200
+User-Agent: Mozilla-Thunderbird 2.0.0.22 (X11/20090707)
+MIME-Version: 1.0
+To: Steffen Mueller <nj88udd02@sneakemail.com>
+CC: modules@perl.org
+References: <4A900595.50304@faui2k3.org> <4A923D96.6000503@sneakemail.com>
+In-Reply-To: <4A923D96.6000503@sneakemail.com>
+X-Enigmail-Version: 0.95.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 87.176.124.75
+X-SA-Exim-Mail-From: moritz@faui2k3.org
+X-Spam-Checker-Version: SpamAssassin 3.2.5 (2008-06-10) on casella.faui2k3.org
+X-Spam-Level: 
+Subject: Re: Perl 6 modules on CPAN
+X-SA-Exim-Version: 4.2.1 (built Wed, 25 Jun 2008 17:20:07 +0000)
+X-SA-Exim-Scanned: Yes (on casella.faui2k3.org)
+X-Old-Spam-Status: No, score=-5.1 required=5.0 tests=ALL_TRUSTED,AWL,BAYES_00
+	autolearn=ham version=3.2.5
+Approved: news@nntp.perl.org
+From: moritz@faui2k3.org (Moritz Lenz)
+
+Steffen Mueller wrote:
+> Hi Moritz,
+> 
+> disclaimer: I'm not the one to decide and not the right person to 
+> discuss this since I don't currently have the time to think this 
+> through. I'll just try to add some facts and speculation.
+
+Thank you for that.
+
+> Moritz Lenz wrote:
+>> We'd like to use parts of the CPAN infrastructure for module
+>> distribution. This is my current vision, optimized for being simple and
+>> being the least work for the fine CPAN folk:
+>> 
+>> 1) Module authors upload Perl 6 modules via PAUSE.
+>> 
+>> 2) The uploaded modules have a flag in their META.yml marking them as
+>> Perl 6. The indexer ignores such modules, so that they don't appear in
+>> modules/02packages.details.txt.gz or modules/03modlist.data.gz  (in
+>> order not to disrupt the work flow of anything that deals with Perl 5
+>> modules
+> 
+> This is opt-in which could produce some noise from distributions whose 
+> authors neglect to set the META bit.
+> General META.yml issues should be brought up elsewhere. I'd suggest 
+> #toolchain.
+
+Will do.
+
+>> 3) A new list is being created that contains all Perl 6 modules
+>> 
+>> 4) I (or somebody I can motivate) will write  a searching interface for
+>> Perl 6 modules similar to search.cpan.org
+>> 
+>> 5) We'll teach our provisional installer how to download modules from CPAN.
+>> 
+>> 
+>> So my questions are:
+>> 
+>> 1) is this the right place to discuss? if not, where should I go?
+> 
+> Well, obviously Andreas is key to much of the practicalities. I can't 
+> say how much he wants to be involved in the design.
+> 
+>> 2) does it sound sane? Do you see things that need to be different, or
+>> that could be even simpler?
+> 
+> Could there be some sort of safety net/heuristic in the indexer that 
+> temporarily rejects a distribution that:
+> 1) does not specify the "is perl6" flag at all (neither true nor false)
+> 2) look like perl6.
+> 
+> In that case, the author could just explicitly set the flag and 
+> everything would be fine.
+
+There are heuristics, yes. For example a 'use v6;' is a pretty sure
+indication that something is Perl 6 code. I know the Padre developers
+have some heuristics already implemented; if there is general consensus
+that we need such a thing I'll look there for prior art.
+
+>> 4) whom do I need to contact about what? For example PAUSE will surely
+>> need some small changes - is the source code somewhere available so that
+>> I can try to contribute patches?
+> 
+> https://pause.perl.org/pause/authenquery?ACTION=pause_04about#credits
+
+Thanks,
+Moritz

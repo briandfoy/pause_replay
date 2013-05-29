@@ -1,0 +1,120 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:51688
+Return-Path: <bix@sendu.me.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 26294 invoked from network); 10 Nov 2006 08:58:09 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 10 Nov 2006 08:58:09 -0000
+Received: (qmail 3006 invoked by uid 225); 10 Nov 2006 08:58:08 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2996 invoked by alias); 10 Nov 2006 08:58:07 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from ppsw-4.csi.cam.ac.uk (HELO ppsw-4.csi.cam.ac.uk) (131.111.8.134)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 10 Nov 2006 00:57:54 -0800
+X-Cam-SpamDetails: Not scanned
+X-Cam-AntiVirus: No virus found
+X-Cam-ScannerInfo: http://www.cam.ac.uk/cs/email/scanner/
+Received: from stirling.mrc-dunn.cam.ac.uk ([193.60.90.25]:35261)
+	by ppsw-4.csi.cam.ac.uk (ppsw.cam.ac.uk [131.111.8.134]:25)
+	with esmtp id 1GiSCQ-00028J-Fl (Exim 4.63) for modules@perl.org
+	(return-path <bix@sendu.me.uk>); Fri, 10 Nov 2006 08:57:22 +0000
+Received: from reading.mrc-dunn.cam.ac.uk ([193.60.85.115])
+	by stirling.mrc-dunn.cam.ac.uk with esmtp (TLSv1:DES-CBC3-SHA:168)
+	(Exim 4.41)
+	id 1GiSBg-0002k2-Ai
+	for modules@perl.org; Fri, 10 Nov 2006 08:56:36 +0000
+Received: from dhn02982.mrc-dunn.cam.ac.uk ([193.60.81.20])
+	by reading.mrc-dunn.cam.ac.uk with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.43)
+	id 1GiSCQ-0004Vv-GH
+	for modules@perl.org; Fri, 10 Nov 2006 08:57:22 +0000
+Message-ID: <45543EF2.5040703@sendu.me.uk>
+Date: Fri, 10 Nov 2006 08:57:22 +0000
+User-Agent: Thunderbird 1.5.0.4 (Macintosh/20060516)
+MIME-Version: 1.0
+To:  modules@perl.org
+Subject: Re: Bioperl APML-style account upload failed
+References: <4541CED4.6090506@sendu.me.uk>	<D5704025-2C5E-4F6D-A398-8ED7DEDC2489@ebi.ac.uk>	<8764e5un8s.fsf@k75.linux.bogus> <454F5FCF.1050303@sendu.me.uk>	<87velr3odl.fsf@k75.linux.bogus> <455311D0.5020301@sendu.me.uk> <87lkmks27v.fsf@k75.linux.bogus>
+In-Reply-To: <87lkmks27v.fsf@k75.linux.bogus>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: bix@sendu.me.uk (Sendu Bala)
+
+Andreas J. Koenig wrote:
+>   > They also all get their VERSION from Bio::Root::Version. Is there a
+>   > way to get the indexer to do this also instead of giving most of them
+>   > a VERSION of undef?
+> 
+> Yes, if you write a META.yml file with the "provides" attribute, then
+> the indexer will use that instead. I think, current state of affairs
+> is that you can do that with both Module::Build and MakeMaker. I'm not
+> absolutely sure for the latter.
+
+Is there a way to now add in a META.yml file? I think I'm not allowed to 
+delete the file I uploaded and upload a new one with the same name? Does 
+it in fact make any difference what the file name is? But if small 
+problems keep arising and I have to keep changing the package and 
+re-uploading it with a slightly different file name each time, that 
+might not be ideal. What is the recommended process of going from an 
+upload that gives a 'Failed: PAUSE indexer' report to an upload that 
+fully passes?
+
+Also, given a META.yml with "provides" attribute, will the indexer still 
+try to parse VERSION anyway? Because it doesn't like one of the modules:
+
+Status: Version parsing problem
+===============================
+
+      module: Bio::Ontology::SimpleGOEngine::GraphAdaptor
+     version: undef
+     in file: bioperl-1.5.2-RC3/Bio/Ontology/SimpleGOEngine/GraphAdaptor.pm
+      status: The PAUSE indexer was not able to parse the following line
+              in that file: C< ( defined $Graph::VERSION &&
+              $Graph::VERSION >= 0.5 ) ? > Note: the indexer is running
+              in a Safe compartement and cannot provide the full
+              functionality of perl in the VERSION line. It is trying
+              hard, but sometime it fails. As a workaround, please
+              consider writing a proper META.yml that contains a
+              'provides' attribute (currently only supported by
+              Module::Build) or contact the CPAN admins to investigate
+              (yet another) workaround against "Safe" limitations.)
+
+Finally, what is the actual disadvantage of the indexer not fully 
+passing? I note that I can find the modules that /did/ pass in a CPAN 
+website search, but i /bioperl/ in cpan command line program doesn't 
+show my upload. I presume the indexing must be perfect before it will 
+appear there?
+
+
+>   > Yet some worked:
+> 
+>   >      module: Bio::Align::ProteinStatistics
+>   >     version: undef
+>   >     in file: bioperl-1.5.2-RC3/Bio/Align/ProteinStatistics.pm
+>   >      status: indexed
+> 
+>   > And the working ones now have a permission of:
+>   > Bio::Align::ProteinStatistics  	SENDU  	first-come
+> 
+>   > Is the latter expected, and how do I solve the former problem?
+> 
+> The latter is expected and you should now make BIOPERLML owner
+
+For one of the ones that worked, on the permission page it now says
+
+Bio::Align::AlignI  	BIOPERLML  	first-come
+Bio::Align::AlignI 	BIRNEY 	co-maint
+Bio::Align::AlignI 	SENDU 	co-maint
+
+Do I in fact have to take any action now? I think BIOPERLML remains the 
+owner even after I upload?
+
+When the next uploader is decided, I just need to add them as co-maint, 
+right?

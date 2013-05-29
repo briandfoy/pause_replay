@@ -1,0 +1,50 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:14722
+Return-Path: <nick@unfortu.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 58845 invoked by uid 76); 26 Oct 2002 15:41:43 -0000
+Received: from exim@plum.flirble.org (HELO plum.flirble.org) (195.40.6.20) by onion.perl.org (qpsmtpd/0.12-dev) with SMTP; 2002-10-26 15:41:43Z
+Received: from gr.189.15.91.dial.global.net.uk ([80.189.15.91] helo=Bagpuss.unfortu.net)	by plum.flirble.org with asmtp (Exim 3.20 #3)	id 185T4D-0006nU-00	for modules@perl.org; Sat, 26 Oct 2002 16:41:38 +0100
+Received: from nick by Bagpuss.unfortu.net with local (Exim 3.22 #1 (Debian))	id 185SEL-0000PJ-00	for <modules@perl.org>; Sat, 26 Oct 2002 15:48:01 +0100
+Date: Sat, 26 Oct 2002 15:48:00 +0100
+To: modules@perl.org
+Subject: random testing module
+Message-ID: <20021026144800.GA1285@Bagpuss.unfortu.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.25i
+X-SMTPD: qpsmtpd/0.12-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: nick@unfortu.net (Nicholas Clark)
+
+Schwern did a testing tutorial at YAPC::Europe, and the subject of random
+testing came up. The advantage of using random values for testing is that
+your input tickles bugs that you weren't aware of, rather than just the
+potential bugs you could think of, or people did find. The difficulty is
+that tests aren't repeatable.
+
+Except that I believe I have a way to solve that - take advantage of the fact
+that rand is a pseudo random number generator. By default generate a random
+seed, store it, call srand, test away.
+If tests fail print out the seed before the test script exits, and you can
+re-run the test with the failing random number sequence (locally) by
+explicitly re-using that seed. I'm using this approach at $work, and it
+performs very well. (For future experimentation, I think if it used an
+external pure perl RNG then it could portably test sequences non-locally,
+which is what David Hand wanted for testing a module of his)
+
+I discussed the idea of doing this as a Test module which interface with
+Test::Builder with Schwern in Munich, and he thought that it was sensible.
+
+So I'm proposing to use the name Test::MonteCarlo, as it's somewhat like a
+Monte Carlo simulation.
+
+Is this a sensible name?
+
+Nicholas Clark
+-- 
+INTERCAL better than perl?	http://www.perl.org/advocacy/spoofathon/
+

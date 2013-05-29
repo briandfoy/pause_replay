@@ -1,0 +1,172 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:58564
+Return-Path: <cpan@zoffix.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 22253 invoked from network); 14 Jan 2008 00:09:22 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 14 Jan 2008 00:09:22 -0000
+Received: (qmail 15172 invoked by uid 225); 14 Jan 2008 00:09:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15163 invoked by alias); 14 Jan 2008 00:09:21 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from olga.gendns7.com (HELO olga.gendns7.com) (64.22.82.198)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 13 Jan 2008 16:09:18 -0800
+Received: from cpe000e9b1f272b-cm0011e6beabdb.cpe.net.cable.rogers.com ([99.227.133.207]:61340 helo=[192.168.0.102])
+	by olga.gendns7.com with esmtpsa (SSLv3:AES256-SHA:256)
+	(Exim 4.68)
+	(envelope-from <cpan@zoffix.com>)
+	id 1JECtG-00050P-Ig
+	for modules@perl.org; Sun, 13 Jan 2008 19:09:22 -0500
+Subject: Re: Module submission Win32::GUIRobot::Easy
+To: modules@perl.org
+In-Reply-To: <130120081721425866%brian.d.foy@gmail.com>
+References: <200801121431.m0CEVvAb022135@pause.perl.org>
+	 <120120081538322043%brian.d.foy@gmail.com> <1200177136.6646.6.camel@zoffix>
+	 <130120081721425866%brian.d.foy@gmail.com>
+Content-Type: text/plain
+Date: Sun, 13 Jan 2008 19:09:12 -0500
+Message-ID: <1200269352.6646.29.camel@zoffix>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.12.1 
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - olga.gendns7.com
+X-AntiAbuse: Original Domain - perl.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - zoffix.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Approved: news@nntp.perl.org
+From: cpan@zoffix.com (Zoffix Znet)
+
+Hmr, how about Win32::GUIRobot::OOInstructions (looks bad to me)
+Simple Win32::GUIRobot::OO doesn't address the point of the
+module really. It's not just an OO mod for Win32::GUIRobot
+in one word I'd describe it as "easy" :). It also provides basic
+textual copy/paste features which Win32::GUIRobot does not.
+
+Consider the following two snippets of code. First uses
+Win32::GUIRobot and Win32::Clipboard and the second
+example uses Win32::GUIRobot::Easy. Both snippets
+accomplish the same task.
+
+use Win32::GUIRobot qw(:all);
+use Win32::Clipboard;
+
+my $Clip = Win32::Clipboard;
+
+my %pics = (
+    ok_button => 'pic1.png',
+    run       => 'pic2.png',
+    go        => 'pic3.png',
+);
+
+my %loaded_pics;
+
+keys %pics;
+while ( my ( $name, $filename ) = each %pics ) {
+    my $image = LoadImage( $filename );
+    die "Cannot load '$filename': $@" unless $image;
+    die "Image '$filename' is of different depth than the screen" 
+            if ImageDepth( $image ) != ScreenDepth();
+    die "Image '$filename' is wider than the screen" 
+            if ImageWidth( $image ) > ScreenWidth();
+    die "Image '$filename' is higher than the screen" 
+            if ImageHeight( $image ) > ScreenHeight();
+
+    %loaded_pics{ $name } = $image;
+}
+
+my $wait_ref = WaitForImage( $pics{run} );
+
+die "Could not find image `run`"
+    unless ref $wait_ref and exists $wait_ref->{ok};
+
+MouseMoveAbsPix( @{ $wait_ref }{ qw(x y) } );
+SendMouse('{LEFTDOWN}');
+MouseMoveAbsPix( $wait_ref->{x} + 10, $wait_ref->{y} + 10 );
+SendMouse('{LEFTUP}');
+
+$wait_ref = WaitForImage( $pics{ok_button} );
+
+die "Could not find image `ok_button`"
+    unless ref $wait_ref and exists $wait_ref->{ok};
+
+SendMouseClick( @{ $wait_ref }{ qw(x y) }, 'Left' );
+$Clip->Set("Foos!");
+SendKeys("^v~");
+Sleep(10);
+
+$wait_ref = WaitForImage( $pics{go} );
+die "Coult not find image `go`"
+    unless ref $wait_ref and exists $wait_ref->{ok};
+    
+SendMouseClick( $wait_ref->{x} + 10, $wait_ref->{y} + 10, 'Left' );
+SendKeys("^v~");
+Sleep(10);
+SendKeys("~~");
+
+
+
+
+
+Now the exact same task accomplished with Win32::GUIRobot::Easy
+
+use Win32::GUIRobot::Easy;
+
+my $robot = Win32::GUIRobot::Easy->new(
+    load => {
+        ok_button => 'pic1.png',
+        run       => 'pic2.png',
+        go        => 'pic3.png',
+    }
+);
+
+$robot->find_do( run => [ { drag => 1, d_x => 10, d_y => 10 } ] );
+$robot->find_do( ok_button => [
+        { lmb => 1 },
+        \ "Foos!",
+        "^v~",
+        [10],
+    ]
+);
+$robot->find_do( go => [
+        { lmb => 1, x => 10, y => 10 },
+        "^v~",
+        [10]
+        "~~",
+    ]
+);
+
+
+As you can see, despite the OO interface the module
+"Easy'fies" the process.
+
+I am failing to come up with a better name, but 
+in my opinion the proposed Win32::GUIRobot::OO name
+suggests a simple mapping of Win32::GUIRobot functions
+into an object methods which is definitely not what
+Win32::GUIRobot::Easy is about.
+
+
+On Sun, 2008-01-13 at 17:21 -0600, brian d foy wrote:
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+> 
+> In article <1200177136.6646.6.camel@zoffix>, Zoffix Znet
+> <cpan@zoffix.com> wrote:
+> 
+> > Well, the main point of the module, (in my opinion at least)
+> > is that it simplifies the use of Win32::GUIRobot, and having
+> > an OO interface is a part of what I consider being "simplier"
+> 
+> Yes, but another person looking at the name *::Easy has no idea about
+> which dimension you simplied on. :)
+> 
+

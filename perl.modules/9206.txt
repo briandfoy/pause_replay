@@ -1,0 +1,44 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9206
+Return-Path: <bill@wards.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26785 invoked by uid 1012); 11 Dec 2001 23:42:31 -0000
+To: modules@perl.org
+Subject: Re: Help test Number::Format
+References: <m21yi11u3z.fsf@komodo.home.wards.net>
+Date: 11 Dec 2001 15:42:31 -0800
+Message-ID: <m27krtwcgo.fsf@komodo.home.wards.net>
+Lines: 24
+User-Agent: Gnus/5.0803 (Gnus v5.8.3) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Posted-By: 12.234.26.101
+Approved: news@nntp.perl.org
+From: bill@wards.net (William R Ward)
+
+bill@wards.net (William R Ward) writes:
+> I just created a new version (1.43) of Number::Format, and it passes
+> all the tests on my system, but the cpan-testers rejected it.  The
+> problem is probably related to the locale system, and for some reason
+> the locale test failed on the tester's machine.  [...]
+> Thanks for your help!  You can get the module from this URL:
+> http://www.bayview.com/download/Number-Format-1.43.tar.gz
+
+I figured it out - it was due to a change in Perl 5.6 that caused
+numbers when converted to strings by Perl to have the current locale's
+decimal separator inserted.  In other words, the number 123.45 in the
+German locale is "123,45" in string form.  Prior versions of Perl
+would convert it to "123.45" no matter what locale.  I was using
+split(/\./) to separate the integer from the decimal parts, and
+converted that to use int() to get the integer, and substr() to get
+the decimal.  It works, and version 1.44 is now on my website and soon
+to be on CPAN.
+
+--Bill.
+
+-- 
+William R Ward            bill@wards.net          http://www.wards.net/~bill/
+-----------------------------------------------------------------------------
+     If you're not part of the solution, you're part of the precipitate.

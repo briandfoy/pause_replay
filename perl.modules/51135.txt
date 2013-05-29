@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:51135
+Return-Path: <flavio@polettix.it>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 24413 invoked from network); 30 Sep 2006 02:19:41 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 30 Sep 2006 02:19:41 -0000
+Received: (qmail 14476 invoked by uid 225); 30 Sep 2006 02:19:41 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14471 invoked by alias); 30 Sep 2006 02:19:40 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from Unknown (HELO desantix.it) (195.130.249.251)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Fri, 29 Sep 2006 19:19:37 -0700
+Received: (qmail 28237 invoked by uid 511); 30 Sep 2006 02:21:41 -0000
+Received: from localhost.localdomain (HELO upmail.polettix.it) (127.0.0.1)
+  by localhost.localdomain with SMTP; 30 Sep 2006 02:21:41 -0000
+Received: from 213.203.159.164
+        (SquirrelMail authenticated user flavio@polettix.it)
+        by upmail.polettix.it with HTTP;
+        Sat, 30 Sep 2006 04:21:41 +0200 (CEST)
+Message-ID: <37282.213.203.159.164.1159582901.squirrel@upmail.polettix.it>
+Date: Sat, 30 Sep 2006 04:21:41 +0200 (CEST)
+Subject: Comment about module name
+To: modules@perl.org
+User-Agent: SquirrelMail/1.4.6
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+Approved: news@nntp.perl.org
+From: flavio@polettix.it ("Flavio Poletti")
+
+Hi all,
+
+   I've written a small proof-of-concept module about global variables. It
+usage would be much in the spirit of 'use vars', but the generated
+symbols would be global variables aliasing some fixed variables instead
+of items different for each package. A little SYNOPSIS is probably
+better than my words so far:
+
+    # In the place/package where we want to create globals
+    use vars::global create => qw( $foo @bar %baz );
+
+    # Add some more global symbols
+    vars::global->create(qw( $hello @world %now ));
+
+    # Somewhere else, where we need to access those globals
+    use vars::global qw( $foo @bar %baz );
+
+    # Don't try to use globals that do not exist
+    use vars::global qw( $Foo ); # typo, croaks
+    use vars::global qw( @inexistent ); # we don't create by default
+                                        # use 'create' as above
+
+    # You can also import and create new globals
+    use vars::global qw( $foo %baz ), create => qw( $hey @joe );
+
+    # If you're lazy, you can import all the globals defined so far
+    use vars::global ':all';
+
+As you can see, I'm inclined to call this module 'vars::global'. A couple
+of questions:
+
+* I'm not sure I'm going to apply for a registration of this namespace. Is
+it a problem if I upload the module anyway? (I've understood that there
+should be no problem)
+
+* what do you think about the name?
+
+Thank you in advance and best regards,
+
+   Flavio.
+

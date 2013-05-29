@@ -1,0 +1,95 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:82122
+Return-Path: <daoswald@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 30814 invoked from network); 7 Sep 2012 18:38:00 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 7 Sep 2012 18:38:00 -0000
+Received: (qmail 871 invoked by uid 225); 7 Sep 2012 18:37:59 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 867 invoked by alias); 7 Sep 2012 18:37:59 -0000
+X-Spam-Status: No, hits=-2.7 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-gh0-f169.google.com (HELO mail-gh0-f169.google.com) (209.85.160.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 07 Sep 2012 11:37:53 -0700
+Received: by ghrr18 with SMTP id r18so825474ghr.14
+        for <modules@perl.org>; Fri, 07 Sep 2012 11:37:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :content-type;
+        bh=J+AXv1GLCkmbbdIO6sKj21VOpExzeGhNtBRSTtc5umg=;
+        b=yPecS1MJjOquNcVTj0H4s8BSbgHn+19lwrP+tmsldbxuFgQ58LVccGa0XXkX4ZH9Uk
+         DLBdo+MITnBM9ePS+NYK6AeK2V7RyyNJnR0XGxue5xYmY1LBkPxNSjihd+NBdNORdtvQ
+         F/Le6lfQsp/M58op5/iAMDFY/d3POY8sOumyKD+bRuYIMPifsShletcoi8G93mCXgiP/
+         X/bYVPtPZjfSD6WTzTiJ5ClZ64eo4HLEDuHJJh98VG+PSWst7JvWDIHp4oz3f2gZpydZ
+         B6/LZGpgnF4J0qrC8J8T7vUZbwY7so+nEwrkvskw/RmeuL/htaDPqpv2JAtumt5lTXcI
+         0YTw==
+Received: by 10.58.124.37 with SMTP id mf5mr8897707veb.59.1347043069531; Fri,
+ 07 Sep 2012 11:37:49 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.220.9.198 with HTTP; Fri, 7 Sep 2012 11:37:34 -0700 (PDT)
+In-Reply-To: <070920121158250945%brian.d.foy@gmail.com>
+References: <CAKTcQ95huos1As5mtAZLXJ13xJuOtwy4majPuA8q-VyY0B4D2A@mail.gmail.com>
+ <070920121158250945%brian.d.foy@gmail.com>
+Date: Fri, 7 Sep 2012 11:37:34 -0700
+Message-ID: <CAKTcQ94Yn4Kz+kKVLd_oTJcotWF5jRWG4NOaDuRn8jZCL_ZNyQ@mail.gmail.com>
+Subject: Re: Requesting namespace Bytes::Random::Secure
+To: modules@perl.org
+Content-Type: text/plain; charset=ISO-8859-1
+Approved: news@nntp.perl.org
+From: daoswald@gmail.com (David Oswald)
+
+On Fri, Sep 7, 2012 at 9:58 AM, brian d foy <brian.d.foy@gmail.com> wrote:
+>
+> David Oswald <daoswald@gmail.com> wrote:
+>
+>> So if there are no objections, I'd like to request the namespace
+>> Bytes::Random::Secure.
+>
+> No objection, other than it would be nice to have a single module that
+> provided all of it. Could you add your stuff to the existing module?
+
+My concern is this:  The dependency chain for Bytes::Random::Secure is
+anything *but* minimal.  It relies on Math::Random::Secure, which in
+turn relies on Any::Moose, Crypt::Random::Source, and
+Math::Random::ISAAC.  And two of those three have additional
+dependencies, and so on.
+
+On the other hand Bytes::Random has no dependencies besides Perl itself.
+
+My thought was that Bytes::Random::Secure could be a drop-in
+replacement for Bytes::Random.  It also provides a few extra
+functions, but its primary function should behave exactly like
+Bytes::Random, but using a higher quality rand generator.  That extra
+security comes at a greater cost, so a developer could make it an
+optional dependency without changing any code.
+
+The name makes it clear that this is the cryptographically sound
+implementation, removing any ambiguity as to which module might be
+appropriate for a given purpose.
+
+However, if you feel strongly that it should be wrapped into
+Bytes::Random, I could get in touch with the author and try to work
+something out.  I do have the additional concern that by making
+Bytes::Random prefer the "secure" mode if dependencies are present,
+and fall back on the unsecure mode otherwise, we introduce some
+uncertainty that could be a little more difficult for the module's
+users to manage.
+
+For my own uses, I prefer to know for certain that when I request
+Bytes::Random::Secure I get the secure version, and don't have to
+explicitly ensure that its dependencies are present in a build so that
+it will function as I expect.  As its own module, I know that when it
+installs via cpanm, it's the secure version.
+
+
+Dave
+-- 
+
+David Oswald
+daoswald@gmail.com

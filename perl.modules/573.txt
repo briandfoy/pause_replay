@@ -1,0 +1,116 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:573
+Return-Path: <tchrist@jhereg.perl.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29954 invoked from network); 20 Nov 1999 23:14:26 -0000
+Received: from perl.com (HELO jhereg.perl.com) (root@199.45.135.9)
+  by tmtowtdi.perl.org with SMTP; 20 Nov 1999 23:14:26 -0000
+Received: from jhereg (IDENT:tchrist@localhost [127.0.0.1])
+	by jhereg.perl.com (8.9.0/8.9.0) with ESMTP id QAA29151;
+	Sat, 20 Nov 1999 16:13:29 -0700
+Message-ID: <199911202313.QAA29151@jhereg.perl.com>
+To: cpan-adm@ftp.funet.fi
+cc: modules@perl.org
+Subject: Some module questions
+Reply-to: tchrist@perl.com
+Date: Sat, 20 Nov 1999 16:13:28 -0700
+Approved: news@nntp.perl.org
+From: tchrist@jhereg.perl.com (Tom Christiansen)
+
+1) Is there any risk of a massive re-organization of the top-level
+   directory names and their meaning in CPAN's by-category directories,
+   especially within the next couple of years?
+
+2) Is there some reason what only 53 out of the 196 modules in the
+   _62 release are mentioned (and thus categorized) in the
+   00modlist.long.html file?  It would be nice to have this.
+
+3) Is there some reason why the pragmata all fall under a blanket 
+   "pragma" heading, rather than according to their own domain's
+   categorization.
+
+The reason I ask these question is because I'm thinking of something
+by-category indexing in perlmodlib(1) and Camel(III):7.
+
+What I've been trying to do is to give each standard module a category.
+At first, I tried to do it in an ad-hoc fashion.  I first went through
+and made things like (internal names only)
+
+    Build                  Extended charsets      Patterns
+    Coding                 File Manipulation      Run-time environment
+    Compiler               Introspection          System Interaction
+    Data Types             Library support        Text Manipulation
+    Database               Math                   Threads
+    Devtool                Misc                   Tie support
+    Directory Handling     Modules                Time and Date
+    Directory Man          OOP                    User Interface
+    Errors                 POD                    Web
+
+But, charitably put, these aren't the best ideas.  So then I thought
+about using the CPAN module categories, since this would nicely link the
+standard module set with the CPAN module set.
+
+    % ls -F /CPAN/modules/by-category
+    02_Perl_Core_Modules/            14_Security_and_Encryption/
+    03_Development_Support/          15_World_Wide_Web_HTML_HTTP_CGI/
+    04_Operating_System_Interfaces/  16_Server_and_Daemon_Utilities/
+    05_Networking_Devices_IPC/       17_Archiving_and_Compression/
+    06_Data_Type_Utilities/          18_Images_Pixmaps_Bitmaps/
+    07_Database_Interfaces/          19_Mail_and_Usenet_News/
+    08_User_Interfaces/              20_Control_Flow_Utilities/
+    09_Language_Interfaces/          21_File_Handle_Input_Output/
+    10_File_Names_Systems_Locking/   22_Microsoft_Windows_Modules/
+    11_String_Lang_Text_Proc/        23_Miscellaneous_Modules/
+    12_Opt_Arg_Param_Proc/           24_Commercial_Software_Interfaces/
+    13_Internationalization_Locale/  99_Not_In_Modulelist/
+
+These all have longer explanations, and some have sub-categories:
+
+    2) Perl Core Modules, Perl Language Extensions and Documentation Tools
+	Perl Pragmatic Modules
+	Perl Language Extensions
+	The Perl Compiler
+	Source Code Filters
+	Module Support
+    3) Development Support
+    4) Operating System Interfaces, Hardware Drivers
+	Platform Specific Modules
+	Portable Digital Assistants
+	Hardware related modules
+    5) Networking, Device Control (modems) and InterProcess Communication
+    6) Data Types and Data Type Utilities (see also Database Interfaces)
+    7) Database Interfaces (see also Data Types)
+    8) User Interfaces (Character and Graphical)
+    9) Interfaces to or Emulations of Other Programming Languages
+    10) File Names, File Systems and File Locking (see also File Handles)
+    11) String Processing, Language Text Processing, Parsing and Searching
+	Stemming algorithms
+	Natural Languages
+	Specific Natural Languages
+    12) Option, Argument, Parameter and Configuration File Processing
+    13) Internationalization and Locale
+    14) Authentication, Security and Encryption (see also Networking)
+    15) World Wide Web, HTML, HTTP, CGI, MIME etc (see Text Processing)
+    16) Server and Daemon Utilities
+    17) Archiving, Compression and Conversion
+    18) Images, Pixmap and Bitmap Manipulation, Drawing and Graphing
+    19) Mail and Usenet News
+    20) Control Flow Utilities (callbacks and exceptions etc)
+    21) File Handle, Directory Handle and Input/Output Stream Utilities
+    22) Microsoft Windows Modules
+    23) Miscellaneous Modules
+    24) Interface Modules to Commercial Software
+	
+[I still always wonder what happened to category 01]
+
+I had hoped to just use whatever was already in Andreas's modules
+database, since I thought he was making sure that all the the standard
+modules were also registered there.  I was wrong.  That database only
+has 53 of the 196 modules in the standard distribution registered.
+
+Still, I'm still considering following the form.  A few I don't like,
+such as "pragmas".   They seem to merit a better categorization.
+
+--tom

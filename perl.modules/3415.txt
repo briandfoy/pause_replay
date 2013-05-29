@@ -1,0 +1,72 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3415
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5191 invoked from network); 8 Nov 2000 15:20:53 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 8 Nov 2000 15:20:53 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id QAA09287;
+	Wed, 8 Nov 2000 16:20:32 +0100
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: Sam Horrocks <sam@daemoninc.com>
+Cc: modules@perl.org
+Subject: Re: Proposed new module Sys::MemoryUsage
+References: <7818.973070490@daemonweb.daemoninc.com>
+Date: 08 Nov 2000 16:20:31 +0100
+In-Reply-To: Sam Horrocks's message of "Wed, 01 Nov 2000 01:21:30 -0800"
+Message-ID: <m3r94mze0w.fsf@ak-71.mind.de>
+Lines: 44
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Wed, 01 Nov 2000 01:21:30 -0800, Sam Horrocks <sam@daemoninc.com> said:
+
+ > This module would attempt to tell you how much memory your process
+ > is using, so your process could shutdown, restart or take other
+ > actions if it is getting too large.
+
+Is there really no module that does this already? Have you looked at
+GTop?
+
+ > The interface would be:
+
+ >     Sys::MemoryUsage->total_vm;		# Total virtual memory in use.
+ >     Sys::MemoryUsage->data_segment;	# Data segment size
+ >     Sys::MemoryUsage->stack_segment;	# Stack segment size
+ >     Sys::MemoryUsage->text_segment;	# Text segment size
+
+It has been violent agreement in the modules librarians circles that
+Sys:: is a bad prefix because it tends to become a bit basket. Maybe
+you could live with Unix::? Or Linux::? or BSD::? Or does your module
+really cover all platforms?
+
+ > If any of the values are unknown that method would return undef.  On some
+ > OSes, all the methods might return undef.  Total_vm might either sum up
+ > all the known values, or might get the total value directly from the OS.
+ > It's possible total_vm may be more than the sum of the parts, depending
+ > on how the value is obtained.
+
+ > Currently the only way I know to get a memory usage figure is to install
+ > mod_perl and then call &$Apache::SizeLimit::HOW_BIG_IS_IT().  The problems
+ > with this are:
+
+ >     - This only retrieves one value
+
+ >     - Finding out the amount of memory in use shouldn't require installing
+ >       mod_perl.
+
+ >     - The HOW_BIG_IS_IT routine is not a documented interface for the
+ >       Apache::SizeLimit module.
+
+Please keep us informed what you find out and what you decide.
+
+Regards,
+-- 
+andreas

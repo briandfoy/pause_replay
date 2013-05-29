@@ -1,0 +1,101 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:20427
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 70954 invoked by uid 76); 16 Apr 2003 08:34:54 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.25) with SMTP; Wed, 16 Apr 2003 01:34:54 -0700
+Received: (qmail 16405 invoked by uid 225); 16 Apr 2003 08:34:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 16400 invoked by uid 507); 16 Apr 2003 08:34:50 -0000
+Received: from palladium2.baremetal.com (HELO pd2.baremetal.com) (208.184.111.59) by one.develooper.com (qpsmtpd/0.25) with SMTP; Wed, 16 Apr 2003 01:34:19 -0700
+Received: from [24.70.201.221] (h24-70-201-221.gv.shawcable.net [24.70.201.221])	by pd2.baremetal.com (8.12.9/8.12.4) with ESMTP id h3G8ZhtQ024210;	Wed, 16 Apr 2003 01:35:43 -0700
+Mime-Version: 1.0
+Message-ID: <p05111b00bac2c4b909ce@[24.70.201.221]>
+In-Reply-To: <200301100601.h0A616N16341@pause.perl.org>
+References: <200301100601.h0A616N16341@pause.perl.org>
+Date: Wed, 16 Apr 2003 01:34:15 -0700
+To: modules@perl.org
+Subject: Re: Module submission Rosetta
+Cc: darren@DarrenDuncan.net
+Content-Type: text/plain; charset="us-ascii"
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.1 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,REFERENCES,SPAM_PHRASE_03_05,SUPERLONG_LINE version=2.44
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+As a late addendum to my module registration of "Rosetta", below is a rewritten and much more accurate "Abstract" for my framework, which should explain clearly what it does and does not do.
+
+Keep in mind, of course, that this registration was already approved back on January 21st.  The follow-up email I am writing now is just for documentation purposes, since the description of my framework changed a lot since it was registered.
+
+There is no need to reply unless there is a thought that the name I registered no longer describes the framework (I think it still does, and even better now than before).
+
+Have a good day. -- Darren Duncan
+
+P.S.  It is the 9th release of my framework (0.07) which has this new Abstract.
+
+---------------------------------------------
+
+Rosetta is a comprehensive framework for database-using applications of any
+size or function that allows them to be easily portable across multiple
+database implementations because any proprietary details of each are abstracted
+away.  At the same time, it is designed to be fast and efficient.  Applications
+use Rosetta as a virtual embedded database, whose API is called the "Rosetta
+Native Interface" or "RNI", and whose feature set is an opaque normalized
+superset of all common database feature sets.  The feature superset includes
+both data manipulation (with multi-table selects and updates plus subqueries or
+stored procedure calls) and schema manipulation (tables, views, procedures).
+Rosetta is designed to work equally well with both embedded and client-server
+databases; in the latter case, it is the client.
+
+The RNI is implemented using mainly a "Command" design pattern, meaning that it
+has few real functions or methods, but those use objects as input and output,
+which are flexible enough to define any task or result.  The RNI is verbose and
+intended to provide non-ambiguous structured definitions of all tasks, so that
+the results of executing them are easy to predict; the definitions are
+multi-dimensional data structures (or objects) having atomic values (which also
+have native data type formats).  Rosetta has this as an advantage over other
+database abstractions that use serialized strings like SQL (such as ODBC/JDBC),
+because each database has its own SQL dialect, and applications using them must
+be coded differently for each one.  Rosetta is especially suited for
+data-driven applications, since the composite scalar values in their data
+dictionaries can often be copied directly to RNI structures, saving
+applications the tedious work of generating SQL themselves.  Rosetta also
+provides native internationalization support, for example allowing system
+messages to be in multiple user languages simultaneously.
+
+Rosetta makes it easy to layer alternative APIs on top of RNI, so that you can
+simplify or customize it to your specific needs.  As practical examples of
+this, there are several emulators provided for common existing database APIs
+(such as ODBC/JDBC), so that most applications can simply use Rosetta as a
+hot-swappable replacement for them; you do not have to "learn yet another
+language" or re-code your application in order for it to just work with more
+databases.  While the Rosetta core must always be embedded in an application to
+be used, an extension is available that will allow it to be used in a
+client-server arrangement instead (as ODBC does), where the server is a proxy
+for the client; the client is embedded in the main application, and it talks to
+the server in network-serialized RNI, which then translates the request into
+native database actions.  Some utilities built on Rosetta are also available,
+for such tasks as cloning or backing up a database (schema and/or data; this
+includes scanning the database to make a data dictionary), or editing one
+through a web interface (like PHPPgAdmin or PHPMyAdmin but for any RDBMS).
+
+Rosetta is not a complete database by itself and you need to separately have an
+actual database to use it with.  (But there is a new embedded database
+available, suited for small data sets, that was created just for Rosetta.)
+Rosetta does not usually implement features that are missing in a database
+being abstracted (such as foreign key constraints, transactional integrity, or
+geographical data types), in order to give it an identical feature set to a
+more capable database; Rosetta just allows for the features that do exist to be
+called in an identical way.  A consequence of this is that your choice of
+database implementation will indeed affect what features you have available;
+your application will port without changes only to databases which support the
+features that you use.  The RNI may not interface to every single feature of a
+particular database (neglecting esoteric ones), so you can't use those features
+with Rosetta (but support can be added).  Rosetta does not automate
+installation of any separate database software or configure it (like a package
+manager); you will have to do that yourself.
+

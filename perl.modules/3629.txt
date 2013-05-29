@@ -1,0 +1,103 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3629
+Return-Path: <alian@alianwebserver.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13957 invoked from network); 20 Nov 2000 21:22:01 -0000
+Received: from server15.promotion-web.net (root@212.43.199.60)
+  by tmtowtdi.perl.org with SMTP; 20 Nov 2000 21:22:01 -0000
+Received: from bigbang (Mix-Montpellier-105-2-85.abo.wanadoo.fr [193.250.123.85])
+	by server15.promotion-web.net (8.9.3/8.9.3) with SMTP id WAA02853
+	for <modules@perl.org>; Mon, 20 Nov 2000 22:26:30 +0100
+Message-ID: <00a401c05337$4e268d70$5a64a8c0@bigbang>
+To: <modules@perl.org>
+Subject: Filesys::SmbClientParser
+Date: Mon, 20 Nov 2000 22:17:32 +0100
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.00.2919.6600
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2919.6600
+Approved: news@nntp.perl.org
+From: alian@alianwebserver.com ("Alain & Estelle BARBET")
+
+Hi,
+
+User id on CPAN: ALIAN
+DSLI: bmpo
+
+NAME
+
+Filesys::SmbClientParser - Perl client to reach Samba ressources
+
+SYNOPSIS
+
+  use Filesys::SmbClientParser;
+  my $smb = new Filesys::SmbClientParser;
+
+  # Set parameters for connect
+  $smb->User('Administrateur');
+  $smb->Password('password');
+  $smb->Host('jupiter');
+
+  # List host available on this network machine
+  my @l = $smb->GetHosts;
+  foreach (@l) {print $_->{name},"\t",$_->{comment},"\n";}
+
+  # List share disk available
+  my @l = $smb->GetShr;
+  foreach (@l) {print $_->{name},"\n";}
+  
+  # Choose a shared disk
+  $smb->Share('games2');
+  
+  # List content
+  my @l = $smb->dir;
+  foreach (@l) {print $_->{name},"\n";}
+
+  # Send a Winpopup message
+  $smb->sendWinpopupMessage('jupiter',"Hello world !");
+
+  # File manipulation
+  $smb->cd('jdk1.1.8');
+  $smb->get("COPYRIGHT");
+  $smb->mkdir('tata');
+  $smb->cd('tata');
+  $smb->put("COPYRIGHT");
+  $smb->del("COPYRIGHT");
+  $smb->cd('..');
+  $smb->rmdir('tata');
+
+  # Archive method
+  $smb->tar('c','/tmp/jdk.tar');
+  $smb->cd('..');
+  $smb->mkdir('tatz');
+  $smb->cd('tatz');
+  $smb->tar('x','/tmp/jdk.tar');
+
+DESCRIPTION
+
+SmbClientParser work with output of bin smbclient, so it doesn't work
+on win platform. (but query of win platform work of course)
+
+A best method is work with a samba shared librarie and xs language, 
+but on Nov.2000 (Samba version prior to 2.0.8) there is no public 
+interface and shared library defined in Samba projet.
+
+Request has been submit and accepted on Samba-technical mailing list, 
+so a new module with name SmbClient will be done as soon as the public 
+interface has been known. (2nd week of december)
+
+For Samba client prior to 2.0.8, use this module !
+
+SmbClientParser is adapted from SMB.pm make by Remco van Mook 
+mook@cs.utwente.nl on smb2www project.
+
+--
+Alain BARBET
+http://www.alianwebserver.Com 
+

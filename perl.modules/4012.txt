@@ -1,0 +1,131 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4012
+Return-Path: <gunther@extropia.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12471 invoked from network); 29 Dec 2000 03:31:28 -0000
+Received: from smtp11.singnet.com.sg (165.21.6.31)
+  by tmtowtdi.perl.org with SMTP; 29 Dec 2000 03:31:28 -0000
+Received: from gunther2000.extropia.com (ad202.166.66.79.magix.com.sg [202.166.66.79])
+	by smtp11.singnet.com.sg (8.11.0/8.11.0) with ESMTP id eBT3VJd29852;
+	Fri, 29 Dec 2000 11:31:19 +0800 (SGT)
+Message-ID: <5.0.0.25.2.20001229111153.00ad8008@mail.clark.net>
+X-Sender: gunther@mail.clark.net
+X-Mailer: QUALCOMM Windows Eudora Version 5.0
+Date: Fri, 29 Dec 2000 11:34:22 +0800
+To: Darren Duncan <darren@DarrenDuncan.net>, <modules@perl.org>
+Subject: Re: RFC: WebsiteGenerator, etc.
+In-Reply-To: <Pine.LNX.4.30.0012281202060.7965-100000@palladium.baremeta
+ l.com>
+References: <5.0.0.25.2.20001228163423.02612d20@mail.clark.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Approved: news@nntp.perl.org
+From: gunther@extropia.com (Gunther Birznieks)
+
+I apologize in advance for snipping some stuff out.
+
+At 12:40 PM 12/28/2000 -0800, Darren Duncan wrote:
+>This RFC is concerned mainly with what to name my modules so that they fit
+>into the appropriate name-spaces.  Any help is appreciated.  Also, when
+>one has a set of related modules, should I have a separate RFC letter for
+>each, or one for all?
+
+It depends. Some people may not care very much about your proprietary 
+toolkit that you happen to be contributing to CPAN as a CGI toolkit. But 
+when you affect a namespace that is public then more people may be willing 
+to speak up.
+
+>On Thu, 28 Dec 2000, Gunther Birznieks wrote:
+> > You should be careful as to what modules you've created solve a problem in
+> > a particular way that you enjoy using and which ones are truly
+> > generic.  Some of the following was unclear in your email explanation of
+> > the modules.
+>
+>I was trying to be brief with my email without bogging down in details;
+>those were in the ReadMe and POD.
+>
+>[snipped]
+> > using CGI::SequentialFile for? It's a bit unclear as to the 
+> relationship there.
+>
+>These are very valid concerns.  And in fact I would like to have different
+>names for the CGI::* modules, but my previous questions to the modules
+>list were unanswered.
+
+:(
+
+Perhaps the modules list is not as appropriate as mod_perl and a CGI 
+programming list for deciding names. I personally do not subscribe to the 
+modules list as I don't want to be inundated with tons of mail about 
+modules I don't care about -- I generally only care about web-related ones.
+
+>I put them in CGI:: for now because the
+>higher-level modules that made use of them are web/cgi related.  In fact,
+>HashOfArrays is a semi-generic data structure, SequentialFile and
+>EventCountFile are semi-generic file interfaces.  WebUserIO is
+>specifically for the web, however, although I question calling it "CGI"
+>because it also works under mod_perl (but CGI first).
+
+Well, if they depend on them, and it's a useful module in its own right, 
+then it seems to make sense to separate it as a separate entry. For 
+example, storing key=value pairs--- Lincoln Stein's boulder is built to do 
+that already and just because he uses a similar format in CGI.pm 
+persistence doesn't mean he'll make a module called CGI::Boulder.
+
+Instead he references a separate Boulder module from within his CGI.pm 
+documentation.
+
+In the small bit that I see in the email, it looks as if you are 
+reinventing the wheel by creating your own name=value file storage when 
+CGI.pm has already got one adding further to confusion. Again, I wouldn't 
+really care if this all went into a proprietary library, but since you are 
+uploading these in the CGI:: main namespace, I would tend to think you 
+should have a good reason for doing so.
+
+Related the comment about Apache::* versus CGI::*. I believe that if the 
+module is CGI related it should belong to CGI:: namespace and that by 
+virtue of the fact that it is in the CGI:: namespace it should strive to be 
+compatible under Apache::*.
+
+I have been disappointed in the past by modules which have taken the 
+opposite route where they name themselves Apache:: but have no binding 
+specific to mod_perl!
+
+Everyone on mod_perl knows most CGI::* modules work under mod_perl but 
+hardly anyone in the CGI world knows the opposite may be true.
+
+Apache::Session for example can easily work for CGI scripts, PerlEx, and a 
+variety of other environments. It really should be renamed to CGI::Session 
+namespace.
+
+Apache::DBI is another large misnomer. It's totally not Apache mod_perl 
+specific.  You can use it in any persistent perl environment from SpeedyCGI 
+to mod_perl to PerlEx to Velocigen.  It really could be called 
+DBI::CacheConnection to be more accurate.
+
+Well, that's enough ranting. These are all great modules. And I don't want 
+to take away from that.
+
+But it is an issue that sometimes bugs me. I do my small part by responding 
+to RFCs and providing help on the mod_perl list. I am afraid I have little 
+time other than that to devote to the general Perl open source community at 
+the moment which is why I don't listen in on modules@perl.org (I assume 
+that is the list for this type of talk?).
+
+So I feel quite guilty and bad about not being able to be more constructive 
+to help with the naming issues here. But it's not because I don't 
+contribute -- just that I contribute in other ways.
+
+"I realize that the naming of modules is a difficult matter... it isn't 
+just one of your holiday games...You may think at first I'm as mad as a 
+hatter when I tell you that a module could easily have many different 
+names. " - TS Eliot grossly misquoted
+
+Anyway, this is my last message on the subject. As I said, I am just 
+responding to the RFC to give my 2 cents. I really wish I had more time to 
+help out and be more constructive... sorry.
+
+
+

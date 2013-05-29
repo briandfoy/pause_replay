@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:17292
+Return-Path: <corliss@digitalmages.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 41233 invoked by uid 76); 22 Jan 2003 01:26:07 -0000
+Received: from [12.17.180.99] (HELO sigurd.digitalmages.com) (12.17.180.99) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2003-01-22 01:26:06Z
+Received: from localhost (localhost [127.0.0.1])	by sigurd.digitalmages.com (8.11.6/8.11.6) with ESMTP id h0M0sBe05284	for <modules@perl.org>; Tue, 21 Jan 2003 15:54:11 -0900
+Date: Tue, 21 Jan 2003 15:54:11 -0900 (AKST)
+To: modules@perl.org
+Subject: Re: Module submission Object::BaseClass
+In-Reply-To: <200301220002.h0M02De04548@sigurd.digitalmages.com>
+Message-ID: <Pine.LNX.4.44.0301211511090.4215-100000@sigurd.digitalmages.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: corliss@digitalmages.com (Arthur Corliss)
+References: <200301220002.h0M02De04548@sigurd.digitalmages.com>
+
+On Tue, 21 Jan 2003, _brian_d_foy wrote:
+
+> should this be in Class::* ?
+
+You should have an updated e-mail in your box by now, I caught that snafu.
+
+> how does this relate to the various modules in Class::, like
+>
+>    Class::Classless
+>    Class::Object
+>    Class::Generate
+>    Class::Base
+>    Class::Fields
+>    Class::Accessor
+>    Class::Structured
+
+Class::Classless:  As I read the pod, doesn't provide more than a
+psuedo-constructor (clone) that can have arbitrary data and methods attached.
+Mine turns all described properties and flags into virtual methods, and allows
+you to specify write-only, read-only, read-write accessors as part of the
+property description.  Furthermore, it has a rudimentary event system by which
+flag modifications/accesses can trigger code execution.
+
+Class::Object:  This module doesn't appear to provide any functionality
+different from Class::Classless, so see my remarks above.
+
+Class::Generate:  This is the closest to what I'm trying to accomplish.
+I'm not doing dynamic (sub)class generation, and so, we're syntactically very
+different.  You can simulate an event-driven system with the 'pre' and 'post'
+member specifications.  I tried to make it cleaner by having events tied
+directly to a user-defined state flag register, to encourage less code
+entanglement (i.e., making operations more atomic, without having to call
+specific methods, etc.).  In addition, I've added facilities for tracking
+parent<->child relationships (parent, as in container) for orderly destruction
+of objects.
+
+Class::Base:  Again, not that different from Class::Classless or
+Class::Object.
+
+Class::Fields:  A class extension, not a framework in itself.  Still doesn't
+provide much in the way of auto-accessors beyond what the above classes do.
+
+Class::Accessor:  Again, not that different from Class::Generate, but much
+more limited in scope.
+
+Class::Structured:  Focused on class data structure, doesn't address extended
+functionality described above.
+
+> that sounds like Class::Accessor
+
+See above.
+
+> doesn't Perl already do this?
+
+No, it doesn't.  One problem I've had is with Curses programming, where I want
+to make sure I've called delwin on all applicable derived/subwindows before
+the parent window goes out of scope and auto-destroys itself in the object's
+DESTROY handler.  It gets more complicated when you want a referential trail
+to follow that can be tracked both ways, from parent to child and child to
+parent (think grand* both ways as well).
+
+	--Arthur Corliss
+	  Bolverk's Lair -- http://arthur.corlissfamily.org/
+	  Digital Mages -- http://www.digitalmages.com/
+	  "Live Free or Die, the Only Way to Live" -- NH State Motto
+

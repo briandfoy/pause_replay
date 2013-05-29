@@ -1,0 +1,100 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1069
+Return-Path: <nik@tiuk.ti.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20719 invoked from network); 7 Feb 2000 18:29:20 -0000
+Received: from gatekeep.ti.com (192.94.94.61)
+  by tmtowtdi.perl.org with SMTP; 7 Feb 2000 18:29:20 -0000
+Received: from dlep8.itg.ti.com ([157.170.134.88])
+	by gatekeep.ti.com (8.9.3/8.9.3) with ESMTP id MAA11777;
+	Mon, 7 Feb 2000 12:24:56 -0600 (CST)
+Received: from dlep8.itg.ti.com (localhost [127.0.0.1])
+	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA05566;
+	Mon, 7 Feb 2000 12:24:33 -0600 (CST)
+Received: from tiuk.ti.com (fantastic.tiuk.ti.com [137.167.91.143])
+	by dlep8.itg.ti.com (8.9.3/8.9.3) with ESMTP id MAA05538;
+	Mon, 7 Feb 2000 12:24:31 -0600 (CST)
+Received: from bactrian.ni-s.u-net.com by tiuk.ti.com (8.8.8+Sun/SMI-SVR4)
+	id SAA16607; Mon, 7 Feb 2000 18:24:44 GMT
+Date: Mon, 7 Feb 2000 18:24:44 GMT
+Message-ID: <200002071824.SAA16607@tiuk.ti.com>
+Content-Type: text/plain
+Content-Disposition: inline
+Mime-Version: 1.0
+X-Mailer: tkmail-0.011/Perl5 Mail::Internet v1.32
+In-Reply-To: <Pine.LNX.4.10.10002071147180.4490-100000@urth.org> from    Autarch on Mon, 7 Feb 2000 11:58:50 -0600 (CST)
+Subject: Re: RFC: ideas about Tk and logging facility
+References: <Pine.LNX.4.10.10002071147180.4490-100000@urth.org>
+To: autarch@urth.org
+Cc: ptk@lists.Stanford.EDU, modules@perl.org, domi@ispserv.grenoble.hp.com,
+        Nick Ing-Simmons <nik@tiuk.ti.com>
+Sender: Nick Ing-Simmons <nik@tiuk.ti.com>
+Reply-To: Nick Ing-Simmons <nik@tiuk.ti.com>
+Approved: news@nntp.perl.org
+From: nik@tiuk.ti.com (Nick Ing-Simmons)
+
+Autarch <autarch@urth.org> writes:
+>On Mon, 7 Feb 2000, Nick Ing-Simmons wrote:
+>
+>> Can you give an outline of what Log::Dispatch does?
+>
+>I'll summarize since I'm the author.
+>
+>Log::Dispatch has two parts.  The first is the dispatch object, which
+>takes messages and levels (i.e. error, criticial, warning) and passes them
+>to all of its internally held logging objects (which are all subclasses of
+>Log::Dispatch::Output.  These include Log::Dispatch::File,
+>Log::Dispatch::Screen (really STDOUT or STDERR), etc.).  The idea here is
+>that you create a dispatcher and any number of logging objects and then
+>you pass the messages to the dispatcher, meaning there is a single point
+>of entry for logging to multiple places (each of the logging objects
+>chooses whether or not to act upon the information based on the log
+>level).
+>
+>What Dominique is proposing is a new subclass of Log::Dispatch::Output
+>that displays messages in a text box.  Since she would like it to be part
+>of the Tk::* hierarchy, that creates some interesting namespace issues.
+>
+>Really, it is part of the Log::Dispatch suite, so perhaps the name should
+>be Log::Dispatch::TkWindow or something like that. 
+
+That sounds right to me (say) Log::Dispatch::TkText to allow 
+other types of Tk widget to be added later (now I know what it is
+I can imagine a Log::Displatch::TkPopup which posts a dialog box for 
+critical status messages only) perhaps a Log::Dispatch::Tk _could_ be 
+invented and used as a base class for various Tk display mechanisms? 
+
+
+>As I think about it, I
+>can't see it possibly being included in the Tk core suite unless you were
+>also willing to include the full Log::Dispatch suite as well (which
+>doesn't make sense).  
+
+There is near zero chance of it being "bundled with" Tk.
+
+But Tk can tolerate separately bundled extensions because of the way 
+widget classes register themselves with Tk::Widget when their .pm file 
+is loaded. If Log::Dispatch does not have a similar non-monolithic 
+extension mechanism it probably should ;-)
+
+>I, however, would be happy to add this to the
+>Log::Dispatch suite, depedent on the name chosen.  
+
+You probably don't want to do that till it settles down.
+The dependancies get messy very quickly if bundles get too complex.
+
+>
+>Dominique, if you agree to this we can privately discuss adding this to
+>the next release of Log::Dispatch.  If we do this, Nick, you may want some
+>input as to what TkSomethingOrOther ends up being (or should that
+>discussion occur with the whole ptk list?).  I don't have too much
+>experience with Tk so whatever you all decide will work for me.
+
+I think the discussion can be held away from the list - one of us
+should post the conclusion when we have one.
+
+-- 
+Nick Ing-Simmons
+

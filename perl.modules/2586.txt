@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2586
+Return-Path: <rkitover@marketingmoney.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20064 invoked from network); 2 Aug 2000 01:13:42 -0000
+Received: from dfw7-1.relay.mail.uu.net (199.171.54.106)
+  by tmtowtdi.perl.org with SMTP; 2 Aug 2000 01:13:42 -0000
+Received: from horus.marketingmoney.com by dfw7sosrv11.alter.net with ESMTP 
+	(peer crosschecked as: [63.93.218.138])
+	id QQjaky08673
+	for <modules@perl.org>; Wed, 2 Aug 2000 01:13:39 GMT
+Received: from isis.marketingmoney.com
+	([192.168.1.49] helo=isis ident=mail)
+	by horus.marketingmoney.com with esmtp (Exim 3.12 #1 (Debian))
+	id 13Jn6G-0000qp-00
+	for <modules@perl.org>; Tue, 01 Aug 2000 18:13:36 -0700
+Received: from rkitover by isis with local (Exim 3.12 #1 (Debian))
+	id 13Jn6F-0000sG-00
+	for <modules@perl.org>; Tue, 01 Aug 2000 18:13:35 -0700
+Date: Tue, 1 Aug 2000 18:13:35 -0700
+To: modules@perl.org
+Subject: Module Proposal: Apache::GD::Graph
+Message-ID: <20000801181335.B3225@isis>
+Reply-To: Rafael Kitover <caelum@debian.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="zx4FCpZtqtKETZ7O"
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+Sender: Rafael Kitover <rkitover@marketingmoney.com>
+Approved: news@nntp.perl.org
+From: caelum@debian.org (Rafael Kitover)
+
+--zx4FCpZtqtKETZ7O
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Used like so in httpd.conf:
+
+PerlModule Apache::GD::Graph
+
+<Location /chart>
+SetHandler perl-script
+PerlHandler Apache::GD::Graph
+</Location>
+
+Then requests such as:
+
+http://www.your-server.com/chart?type=3Dlines&x_labels=3D1st,2nd,3rd,4th,5t=
+h&x_values=3D1,2,3,4,5&y_values=3D6,7,8,9,10
+
+Will invoke GD::Graph to generate the appropriate graph, send it out
+with an Expires header (which should be configurable), and also cache it
+on the server as a file for the lifetime of the process.
+
+Name			DLSI	Description
+____________________________________________________________________
+Apache::GD::Graph	adpn	Generate Graphs via an Apache handle
+
+I have it uploaded as:
+
+Apache-GDGraph-0.2.tar.gz if you're interested. (I know the test fails
+:P)
+
+Also, my module Template::Plugin::Java didn't seem to generate any
+heated debate, does that mean it can go into the index? (heeh heeh).
+
+--=20
+Do what thou wilt shall be the whole of the Law.
+Love is the law, love under will.
+
+--zx4FCpZtqtKETZ7O
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.0.2 (GNU/Linux)
+Comment: For info see http://www.gnupg.org
+
+iQCVAwUBOYd1v+z9kGY+SikhAQFbuQQAinZsE+PHz2QIlAMnrCIZDAImQNYRsBpL
+PAstCHPNqbTeHKEBA3Z267xWZRwFrzW1sECn+YDF2k1E9HpDIB31xLoIzEqRtM0W
+7n2RbaSCz1TzFqXrfIA1/wMoiM+3Z193QF0mkHJfipoxF49IJJoT9Tkfs7FTBJwn
+R+oZIePer/Q=
+=8XUs
+-----END PGP SIGNATURE-----
+
+--zx4FCpZtqtKETZ7O--

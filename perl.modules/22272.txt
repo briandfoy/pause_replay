@@ -1,0 +1,213 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:22272
+Return-Path: <nobody@pause.x.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 94105 invoked by uid 76); 8 Jul 2003 04:37:13 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Mon, 07 Jul 2003 21:37:13 -0700
+Received: (qmail 2422 invoked by uid 225); 8 Jul 2003 04:37:08 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2417 invoked by uid 507); 8 Jul 2003 04:37:07 -0000
+Received-SPF: unknown
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.27-dev) with SMTP; Mon, 07 Jul 2003 21:37:06 -0700
+Received: from pause.perl.org (IDENT:nobody@localhost [127.0.0.1])	by pause.perl.org (8.12.9/8.12.9) with ESMTP id h684auUA016453;	Tue, 8 Jul 2003 06:36:56 +0200
+Received: (from nobody@localhost)	by pause.perl.org (8.12.9/8.12.9/Submit) id h684auQp016452;	Tue, 8 Jul 2003 06:36:56 +0200
+Date: Tue, 8 Jul 2003 06:36:56 +0200
+Message-ID: <200307080436.h684auQp016452@pause.perl.org>
+Subject: Module submission SQL::ObjectModel
+Reply-To: modules@perl.org
+To: modules@perl.org, duncand@cpan.org
+X-SMTPD: qpsmtpd/0.27-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.8 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_01_02 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.x.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       SQL::ObjectModel
+  DSLIP:       adhOg
+  description: Unserialized SQL objects, use like XML DOM
+  userid:      DUNCAND (Darren Duncan)
+  chapterid:   11 (String_Lang_Text_Proc)
+  communities:
+    modules@perl.org, poop-group@lists.sourceforge.net,
+    dbi-users@perl.org, victoria-pm@pm.org
+
+  similar:
+    SQL::Statement, SQL::Translator, SQL::YASP, DBIx::Abstract, others
+
+  rationale:
+
+    Note: This standalone module was uploaded to CPAN today as part of
+    my Rosetta-0.15 distribution. Unlike the other files in Rosetta,
+    SQL::ObjectModel is code-complete and POD-complete and can be used
+    right now (hence the alpha and not pre-alpha dev status). I would
+    very much like SQL::ObjectModel to spin off into its own
+    distribution, so it is easier for people to download that without
+    having to download the other Rosetta framework files (and a
+    separation of the docs is just plain logical). But until this module
+    is registered I don't want to put it in its own distribution, in
+    case I have to rename it for some reason.
+
+    If search.cpan.org hasn't updated to show the new version by the
+    time you read this, you can see it on my own server at
+    "http://darrenduncan.net/d/perl/Rosetta-0.15.tar.gz" or
+    "http://darrenduncan.net/d/perl/Rosetta-0.15/lib/SQL/ObjectModel.pm"
+    (temp urls).
+
+    Following is the "final"/mature DESCRIPTION from my module's POD,
+    which should explain what it does and how it compares to other
+    similar modules. If you go to the module itself, you can see the
+    SYNOPSIS having code examples of use, and other useful documentation
+    like the API.
+
+    Thank you in advance for your prompt consideration.
+
+    ---------------- DESCRIPTION
+
+    This Perl 5 object class is intended to be a powerful but easy to
+    use replacement for SQL strings (including support for
+    placeholders), which you can use to make queries against a database.
+    Each SQL::ObjectModel object can represent a non-ambiguous
+    structured command for a database to execute, or one can be a
+    non-ambiguous structured description of a database schema object.
+    This class supports all types of database operations, including both
+    data manipulation and schema manipulation, as well as managing
+    database instances and users. You typically construct a database
+    query by setting appropriate attributes of these objects, and you
+    execute a database query by evaluating the same attributes.
+    SQL::ObjectModel objects are designed to be equivalent to SQL in
+    both the type of information they carry and in their conceptual
+    structure. This is analagous to how XML DOMs are objects that are
+    equivalent to XML strings, and they can be converted back and forth
+    at will. If you know SQL, or even just relational database theory in
+    general, then this module should be easy to learn.
+
+    SQL::ObjectModels are intended to represent all kinds of SQL, both
+    DML and DDL, both ANSI standard and RDBMS vendor extensions. Unlike
+    basically all of the other SQL generating/parsing modules I know
+    about, which are limited to basic DML and only support table
+    definition DDL, this class supports arbitrarily complex select
+    statements, with composite keys and unions, and calls to stored
+    functions; this class can also define views and stored procedures
+    and triggers. Some of the existing modules, even though they
+    construct complete SQL, will take/require fragments of SQL as input
+    (such as "where" clauses) By contrast, SQL::ObjectModel takes no SQL
+    fragments. All of its inputs are atomic, which means it is also
+    easier to analyse the objects for implementing a wider range of
+    functionality than previously expected; for example, it is much
+    easier to analyse any select statement and generate
+    update/insert/delete statements for the virtual rows fetched with it
+    (a process known as updateable views).
+
+    Considering that each database product has its own dialect of SQL
+    which it implements, you would have to code SQL differently
+    depending on which database you are using. One common difference is
+    the syntax for specifying an outer join in a select query. Another
+    common difference is how to specify that a table column is an
+    integer or a boolean or a character string. Moreover, each database
+    has a distinct feature set, so you may be able to do tasks with one
+    database that you can't do with another. In fact, some databases
+    don't support SQL at all, but have similar features that are
+    accessible thorough alternate interfaces. SQL::ObjectModel is
+    designed to represent a normalized superset of all database features
+    that one may reasonably want to use. "Superset" means that if even
+    one database supports a feature, you will be able to invoke it with
+    this class. You can also reference some features which no database
+    currently implements, but it would be reasonable for one to do so
+    later. "Normalized" means that if multiple databases support the
+    same feature but have different syntax for referencing it, there
+    will be exactly one way of referring to it with SQL::ObjectModel. So
+    by using this class, you will never have to change your
+    database-using code when moving between databases, as long as both
+    of them support the features you are using (or they are emulated).
+    That said, it is generally expected that if a database is missing a
+    specific feature that is easy to emulate, then code which evaluates
+    SQL::ObjectModels will emulate it (for example, emulating "left()"
+    with "substr()"); in such cases, it is expected that when you use
+    such features they will work with any database. For example, if you
+    want a model-specified boolean data type, you will always get it,
+    whether it is implemented on a per-database-basis as a "boolean" or
+    an "int(1)" or a "number(1,0)". Or a model-specified "str" data type
+    you will always get it, whether it is called "text" or "varchar2" or
+    "sql_varchar".
+
+    SQL::ObjectModel is intended to be just a stateless container for
+    database query or schema information. It does not talk to any
+    databases by itself and it does not generate or parse any SQL;
+    rather, it is intended that other third party modules or code of
+    your choice will handle this task. In fact, SQL::ObjectModel is
+    designed so that many existing database related modules could be
+    updated to use it internally for storing state information,
+    including SQL generating or translating modules, and schema
+    management modules, and modules which implement object persistence
+    in a database. Conceptually speaking, the DBI module itself could be
+    updated to take SQL::ObjectModel objects as arguments to its
+    "prepare" method, as an alternative (optional) to the SQL strings it
+    currently takes. Code which implements the things that
+    SQL::ObjectModel describes can do this in any way that they want,
+    which can mean either generating and executing SQL, or generating
+    Perl code that does the same task and evaling it, should they want
+    to (the latter can be a means of emulation). This class should make
+    all of that easy.
+
+    SQL::ObjectModel is especially suited for use with applications or
+    modules that make use of data dictionaries to control what they do.
+    It is common in applications that they interpret their data
+    dictionaries and generate SQL to accomplish some of their work,
+    which means making sure generated SQL is in the right dialect or
+    syntax, and making sure literal values are escaped correctly. By
+    using this module, applications can simply copy appropriate
+    individual elements in their data dictionaries to SQL::ObjectModel
+    properties, including column names, table names, function names,
+    literal values, bind variable names, and they don't have to do any
+    string parsing or assembling.
+
+    Now, I can only imagine why all of the other SQL generating/parsing
+    modules that I know about have excluded privileged support for more
+    advanced database features like stored procedures. Either the
+    authors didn't have a need for it, or they figured that any other
+    prospective users wouldn't need it, or they found it too difficult
+    to implement so far and maybe planned to do it later. As for me, I
+    can see tremendous value in various advanced features, and so I have
+    included privileged support for them in SQL::ObjectModel. You simply
+    have to work on projects of a significant size to get an idea that
+    these features would provide a large speed, reliability, and
+    security savings for you. Look at many large corporate or government
+    systems, such as those which have hundreds of tables or millions of
+    records, and that may have complicated business logic which governs
+    whether data is consistent/valid or not. Within reasonable limits,
+    the more work you can get the database to do internally, the better.
+    I believe that if these features can also be represented in a
+    database-neutral format, such as what SQL::ObjectModel attempts to
+    do, then users can get the full power of a database without being
+    locked into a single vendor due to all their investment in
+    vendor-specific SQL stored procedure code. If customers can move a
+    lot more easily, it will help encourage database vendors to keep
+    improving their products or lower prices to keep their customers,
+    and users in general would benefit. So I do have reasons for trying
+    to tackle the advanced database features in SQL::ObjectModel.
+
+  enteredby:   DUNCAND (Darren Duncan)
+  enteredon:   Tue Jul  8 04:36:56 2003 GMT
+
+The resulting entry would be:
+
+SQL::
+::ObjectModel     adhOg Unserialized SQL objects, use like XML DOM   DUNCAND
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=0d200000_0a2a41af75e40557&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=0d200000_0a2a41af75e40557&SUBMIT_pause99_add_mod_insertit=1

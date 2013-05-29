@@ -1,0 +1,149 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:81197
+Return-Path: <cosimo@streppone.it>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27539 invoked from network); 27 Jun 2012 10:05:50 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 27 Jun 2012 10:05:50 -0000
+Received: (qmail 1443 invoked by uid 225); 27 Jun 2012 10:05:50 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1434 invoked by alias); 27 Jun 2012 10:05:49 -0000
+X-Spam-Status: No, hits=-2.7 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from out3-smtp.messagingengine.com (HELO out3-smtp.messagingengine.com) (66.111.4.27)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 27 Jun 2012 03:05:42 -0700
+Received: from compute1.internal (compute1.nyi.mail.srv.osa [10.202.2.41])
+	by gateway1.nyi.mail.srv.osa (Postfix) with ESMTP id 1676E2128B;
+	Wed, 27 Jun 2012 06:05:38 -0400 (EDT)
+Received: from frontend1.nyi.mail.srv.osa ([10.202.2.160])
+  by compute1.internal (MEProxy); Wed, 27 Jun 2012 06:05:38 -0400
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=streppone.it; h=
+	content-type:cc:subject:references:to:date:mime-version
+	:content-transfer-encoding:from:message-id:in-reply-to; s=
+	mesmtp; bh=J4H/j+H56CS5l5+P8YmqcQEf7zA=; b=HoJddP03L1CwNX78EAyMj
+	SHDjiEVv4bw2lmc4LT7oxsxP21nFVoRO0wSt8dj10ZZT9cM0Q1rAQFzQgCckdzms
+	eG8D9lPnzOngF950y/w+Ho4gznFAhZRX4NdWUq5lLUVZMIopNg9NelcgGV9wKAMd
+	8+4iVH27+HOECC1wrsU8WA=
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=
+	messagingengine.com; h=content-type:cc:subject:references:to
+	:date:mime-version:content-transfer-encoding:from:message-id
+	:in-reply-to; s=smtpout; bh=J4H/j+H56CS5l5+P8YmqcQEf7zA=; b=I9pC
+	ZJ3GE8cSPwyV9HH80ZsxouhBFypz6XNiUtOyT8HMY+bZ7tzTyKnGquAZ4EpDEuRr
+	T9y8r2dg8UVU+Ydcfatv8wSVFI7TQZWbpMbxQY//utQ72henk0VGPCnpzKsRGBMG
+	ahWeON5lD/E+rIuth22x1jNdwDMgmw/mb3SiYuU=
+X-Sasl-enc: 7Jl0Uu75KS6vg8gN9ODssDO8UPB+MWaWJilZ8bz4hTO9 1340791537
+Received: from cn01 (unknown [2.192.24.135])
+	by mail.messagingengine.com (Postfix) with ESMTPA id 0788C8E0223;
+	Wed, 27 Jun 2012 06:05:36 -0400 (EDT)
+Content-Type: text/plain; charset=utf-8; format=flowed; delsp=yes
+Cc: "Adam Kennedy" <adamk@cpan.org>
+Subject: Fwd: ORLite::Mirror fix to avoid online check startup penalty
+References: <op.wawxn7jms5ttvb@c0805> <op.wa2g0uogs5ttvb@c0805>
+To: "Perl Modules List" <modules@perl.org>
+Date: Wed, 27 Jun 2012 12:05:32 +0200
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Message-ID: <op.wgj3nisks5ttvb@cn01>
+In-Reply-To: <op.wa2g0uogs5ttvb@c0805>
+User-Agent: Opera Mail/11.64 (Linux)
+Approved: news@nntp.perl.org
+From: cosimo@streppone.it ("Cosimo Streppone")
+
+I'm a bit excited and scared to ask this,
+but can I get co-maint for ORLite::Mirror?
+
+------- Forwarded message -------
+From: "Cosimo Streppone" <cosimo@streppone.it>
+To: "Adam Kennedy" <adamk@cpan.org>
+Subject: ORLite::Mirror fix to avoid online check startup penalty
+Date: Mon, 12 Mar 2012 17:49:32 +0100
+
+Hi Adam,
+
+Did you have time to look at the patch I sent you?
+Can I find you somewhere on IRC?
+
+
+------- Forwarded message -------
+From: "Cosimo Streppone" <cosimo@streppone.it>
+To: "Adam Kennedy" <adamk@cpan.org>
+Subject: ORLite::Mirror fix to avoid online check startup penalty
+Date: Fri, 09 Mar 2012 18:03:33 +0100
+
+Hi Adam,
+
+I worked on a fix for ORLite::Mirror.
+
+I tried committing to svn.ali.as (I'm CPAN ID COSIMO) but
+no joy, so here's the inline patch. It avoids the startup
+online check penalty if you have an up-to-date local mirror
+of the db.
+
+I tried to not break anything :)
+Works wonderfully for me.
+
+Cheers,
+
+------------8<-------------------------------------------------
+
+Index: lib/ORLite/Mirror.pm
+===================================================================
+--- lib/ORLite/Mirror.pm        (revision 15285)
++++ lib/ORLite/Mirror.pm        (working copy)
+@@ -127,13 +127,6 @@
+                     $class->prune($path) if $params{prune};
+             }
+
+-       # Are we online (fake to true if the URL is local)
+-       my $online = !! ( $url =~ /^file:/ or LWP::Online::online() );
+-       unless ( $online or -f $path or $stub ) {
+-               # Don't have the file and can't get it
+-               Carp::croak("Cannot fetch database without an internet
+connection");
+-       }
+-
+             # If the file doesn't exist, sync at compile time.
+             my $STUBBED = 0;
+             unless ( -f $db ) {
+@@ -154,7 +147,15 @@
+             # Don't update if the file is newer than the maxage
+             my $mtime = (stat($path))[9] || 0;
+             my $old   = (time - $mtime) > $maxage;
+-       if ( not $STUBBED and -f $path ? ($old and $online) : 1 ) {
++       if ( not $STUBBED and -f $path ? $old : 1 ) {
++
++               # Are we online (fake to true if the URL is local)
++               my $online = !! ( $url =~ /^file:/ or
+LWP::Online::online() );
++               unless ( $online or -f $path or $stub ) {
++                       # Don't have the file and can't get it
++                       Carp::croak("Cannot fetch database without an
+internet connection");
++               }
++
+                     # Create the default useragent
+                     my $useragent = delete $params{useragent};
+                     unless ( $useragent ) {
+Index: Changes
+===================================================================
+--- Changes     (revision 15285)
++++ Changes     (working copy)
+@@ -2,6 +2,8 @@
+
+      1.24 to be released
+             - Move decompression modules to require to save 2-3 meg of
+memory
++       - Avoid online check startup penalty if we have an up-to-date
++         cached copy of the remote database.
+
+      1.23 Fri 3 Feb 2012
+             - Updating Module::Install::DSL to 1.04
+
+------------8<-------------------------------------------------
+
+
+-- 
+Cosimo

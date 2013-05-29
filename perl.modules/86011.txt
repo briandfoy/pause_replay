@@ -1,0 +1,100 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:86011
+Return-Path: <l.mai@web.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 14488 invoked from network); 14 May 2013 00:23:47 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 14 May 2013 00:23:47 -0000
+Received: (qmail 24422 invoked by uid 225); 14 May 2013 00:23:47 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24418 invoked by alias); 14 May 2013 00:23:47 -0000
+X-Spam-Status: No, hits=-3.2 required=8.0
+	tests=BAYES_00,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mout.web.de (HELO mout.web.de) (212.227.15.4)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 13 May 2013 17:23:35 -0700
+Received: from [192.168.178.21] ([93.135.46.209]) by smtp.web.de (mrweb102)
+ with ESMTPSA (Nemesis) id 0MFcE5-1UhJxs3b77-00EZP3; Tue, 14 May 2013 02:23:30
+ +0200
+Message-ID: <519183FB.60203@web.de>
+Date: Tue, 14 May 2013 02:23:23 +0200
+User-Agent: Mozilla/5.0 (Windows NT 5.1; rv:17.0) Gecko/20130328 Thunderbird/17.0.5
+MIME-Version: 1.0
+To: Anthony Kilna <anthony@kilna.com>
+CC: modules@perl.org
+Subject: Re: Hostile takeover of Quote::Reference
+References: <51914898.7020208@web.de> <CAJe=iKcG8h-_Wo2UzvN3jui4d94drymFxh5yZVLJtAh4LpmFXQ@mail.gmail.com>
+In-Reply-To: <CAJe=iKcG8h-_Wo2UzvN3jui4d94drymFxh5yZVLJtAh4LpmFXQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V02:K0:oAxvCUJMi7Expum7Wkq+9l+/10tf2e37WPxt5CkncKQ
+ iPRSzc/fZ3SMDAcs/z1IwZ/5SupTbrMyJa17OEiBiFDsP1fVnn
+ 2lWbkIEEQzbLwR19BMrPYQufm3/k/uXYHntdlKSuwZc4TGZp1x
+ 9mUZb5977bJF6bu0phJqrekiwxXNH6hmAs0gnzLQzTiFdavitj
+ BquRC5zxQTiE0zGvgdGlg==
+Approved: news@nntp.perl.org
+From: l.mai@web.de (Lukas Mai)
+
+On 14.05.2013 00:18, Anthony Kilna wrote:
+> Apologies for not responding to your original inquiry Lukas, it slipped
+> through the cracks.  I assure you I wasn't being hostile in missing the
+> one email you'd sent on the matter.  :)
+
+Ah, no problem. (And the "hostile" in the subject refers to my devious 
+attempts. :-)
+
+> Are you talking about using my namespace for a different purpose, or for
+> the same functionality?
+>
+> If this is for different functionality, I don't think re-purposing
+> existing namespaces in CPAN is a good idea in principle, since any code
+> using the module would break in a spectacular and explodey ways when
+> upgraded.  I wouldn't want that, even for this module; others might not
+> view my code as silly as I do.
+>
+> If you are talking about implementing the same functionality using the
+> same conventions and provably better underpinnings, I like the idea.
+>   However, I wouldn't want the module to suddenly be incompatible with
+> older perls only for the sake of using a new perl feature.  Source
+> filtering gets a bad rap, but this module is so simple in its usage of
+> it that I can call the code relatively bulletproof.  I'd like to see
+> what you have to replace it.
+
+Well, it's sort of the same but not really. :-)
+You can see the current state of development at 
+https://github.com/mauke/Quote-Reference .
+
+According to metacpan there are no reverse dependencies, i.e. no other 
+module depends on Quote::Reference. But if you want to keep your 
+version, I'll find another name.
+
+
+I had a look at your code and it's far from bulletproof IMHO:
+- qwr/qwh aren't symmetric names. I would've expected qwa for arrays.
+- Your code munging isn't anchored so it will destroy identifiers that 
+contain "qwr" or "qwh" anywhere.
+- It doesn't allow spaces/comments between the keyword and the delimiter.
+- The closing delimiter can't be escaped with a backslash. In fact, \ 
+isn't treated specially. This can generate invalid code.
+- For the paired delimiters ()[]{}<>, nesting isn't handled. This can 
+generate invalid code.
+- If a paired opening delimiter lacks a closing delimiter, it is used 
+unpairedly, i.e. 'qwr<foo bar<' will turn into '[ qw<foo bar< ]' if no 
+'>' follows.
+- It might be possible to trick it into recursively chain-expanding code 
+like 'qwr! qwr~foo~ !' - I haven't thought this through.
+- This one would also need testing: As Filter::Simple replaces string 
+literals by placeholders during filtering, qwr'...' should turn into 
+qwr\034.... before being handed to your regex, which would interpret 
+\034 as the delimiter and break pretty much everything.
+
+... and all of this on top of the general brokenness of source filters.
+
+(Disclaimer: This is just from reading the code; I haven't actually 
+tried it.)
+
+-- 
+Lukas Mai <l.mai@web.de>

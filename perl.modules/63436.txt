@@ -1,0 +1,112 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:63436
+Return-Path: <jkramer@nex.scrapping.cc>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 14775 invoked from network); 30 Nov 2008 23:10:20 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 30 Nov 2008 23:10:20 -0000
+Received: (qmail 18367 invoked by uid 225); 30 Nov 2008 23:10:19 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18363 invoked by alias); 30 Nov 2008 23:10:19 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from nex.scrapping.cc (HELO nex.scrapping.cc) (89.149.209.203)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 30 Nov 2008 15:10:17 -0800
+Received: from localhost (manz-590eed84.pool.einsundeins.de [89.14.237.132])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by nex.scrapping.cc (Postfix) with ESMTPSA id DD96928C840
+	for <modules@perl.org>; Mon,  1 Dec 2008 00:10:10 +0100 (CET)
+Date: Mon, 1 Dec 2008 00:08:50 +0100
+To: modules@perl.org
+Subject: Re: Module submission Template::Plugin::Language
+Message-ID: <20081130230850.GA13080@unknown>
+References: <200811291220.mATCKvGU021498@pause.perl.org> <301120081444144073%brian.d.foy@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="6c2NcOVqGQ03X4Wi"
+Content-Disposition: inline
+In-Reply-To: <301120081444144073%brian.d.foy@gmail.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Approved: news@nntp.perl.org
+From: jkramer@nex.scrapping.cc (Jonas Kramer)
+
+--6c2NcOVqGQ03X4Wi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+It's different in that it's a plugin that can be plugged into the TT
+easily while Template::Multilingual requires you to switch the template
+engine. Template::Multilingual also has some limits. For example, pieces
+of localized text must be between <t> tags, but a <t> tag may only
+contain one tag of each language. For example,
+
+<t>
+	<de>Hallo</de>
+	<en>Hello</en>
+	<de>Herr</de>
+	<en>Mr</de>
+	[% name %]
+</t>
+
+would not work. You'de have to write:
+
+<t><de>Hallo</de><en>Hello</en></t>
+<t><de>Herr</de><en>Mr</en></t>
+[% name %]
+
+This is just way too much too type for a big website.
+
+While it would be possible merge my changes into Template::Multilingual,
+in my oppinion writing it as a filter plugin is just much cleaner from
+the users point of view. You can use it by simply USEing it in your
+templates and you don't have to change your controllers.
+
+
+On Sun, Nov 30, 2008 at 02:44:16PM -0800, brian d foy wrote:
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+>=20
+> In article <200811291220.mATCKvGU021498@pause.perl.org>, Perl Authors
+> Upload Server <upload@pause.perl.org> wrote:
+>=20
+> > The following module was proposed for inclusion in the Module List:
+> >=20
+> >   modid:       Template::Plugin::Language
+> >   DSLIP:       bdpn2
+> >   description: Filter plugin for multilingual TT templates.
+> >   userid:      JKRAMER (Jonas Kramer)
+> >   chapterid:   11 (String_Lang_Text_Proc)
+> >   communities:
+> >=20
+> >   similar:
+> >     Template::Multilingual
+>=20
+> How is it different that Template::Multilingual, and is there any
+> opportunity to combine efforts in Template::Multilingual?
+>=20
+> --=20
+> brian d foy (one of many PAUSE admins), http://pause.perl.org
+> archives at http://www.xray.mpe.mpg.de/mailing-lists/modules
+> please send all messages back to modules@perl.org
+
+--=20
+
+--6c2NcOVqGQ03X4Wi
+Content-Type: application/pgp-signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.9 (GNU/Linux)
+
+iEYEARECAAYFAkkzHQIACgkQGtAEtVIPC06ypACdFWjUWQ5NQWn2vWFD6Pcy4te0
+zwYAn0j2HCQYi04sv4wyy3yFvFGReY2p
+=911X
+-----END PGP SIGNATURE-----
+
+--6c2NcOVqGQ03X4Wi--

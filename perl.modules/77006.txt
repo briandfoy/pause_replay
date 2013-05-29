@@ -1,0 +1,96 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:77006
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 7787 invoked from network); 26 Jul 2011 14:05:04 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 26 Jul 2011 14:05:04 -0000
+Received: (qmail 7850 invoked by uid 225); 26 Jul 2011 14:05:04 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7836 invoked by alias); 26 Jul 2011 14:05:04 -0000
+X-Spam-Status: No, hits=0.5 required=8.0
+	tests=DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-pz0-f49.google.com (HELO mail-pz0-f49.google.com) (209.85.210.49)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 26 Jul 2011 07:05:02 -0700
+Received: by pzk33 with SMTP id 33so908504pzk.36
+        for <modules@perl.org>; Tue, 26 Jul 2011 07:04:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=autopragmatic.com; s=google;
+        h=mime-version:sender:in-reply-to:references:from:date
+         :x-google-sender-auth:message-id:subject:to:cc:content-type
+         :content-transfer-encoding;
+        bh=bwayn+CuhX57BzM2FoghoWpDOUbj2vfgMMGFGW5IszQ=;
+        b=F4OgGMwZR1a7llOymdc2DcFWrhN2fFYJr0gEz2bb0/pxRT+4Ka9mpPxmhvtBuhf+72
+         OXA4mFQZVUlAkBSK8+Xl2f50pkYpmsHTjsfWVaKscdFYGLsju/1oe501qxT0nT8RfY3u
+         zBfkHrDrMbLlrp0HRCcdxBQ5+eh3Z7bM7n8es=
+Received: by 10.68.23.166 with SMTP id n6mr6438787pbf.469.1311689098070; Tue,
+ 26 Jul 2011 07:04:58 -0700 (PDT)
+MIME-Version: 1.0
+Sender: david@autopragmatic.com
+Received: by 10.68.43.225 with HTTP; Tue, 26 Jul 2011 07:04:38 -0700 (PDT)
+In-Reply-To: <20110725181948.GA53568@tetsuo.karasik.eu.org>
+References: <20110725181948.GA53568@tetsuo.karasik.eu.org>
+Date: Tue, 26 Jul 2011 10:04:38 -0400
+X-Google-Sender-Auth: xtm9HzhCIu3R9vexBvuh-rGkFYs
+Message-ID: <CAOeq1c9-rqHPR_pwnd1m9NdKgTN5c-nWxEGFV49KJP0cyFpmjQ@mail.gmail.com>
+Subject: Re: [upload@pause.perl.org: Failed: PAUSE indexer report KARASIK/Prima-1.31.tar.gz]
+To: Dmitry Karasik <dmitry@karasik.eu.org>
+Cc: modules@perl.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: xdaveg@gmail.com (David Golden)
+
+Hi, Dmitry.
+
+The PAUSE indexer scans the code without executing the Perl (which
+would be a security risk), so it's just looking for a pattern like
+"package Foo::Bar" and then failing to find "$VERSION =3D ..."
+afterwards.  You can obscure a package by putting a carriage return
+after 'package' and before the namespace:
+
+    package
+        Prima::Drawable;  # hide from PAUSE
+
+It's a quirky hack, but works.
+
+-- David
+
+On Mon, Jul 25, 2011 at 2:19 PM, Dmitry Karasik <dmitry@karasik.eu.org> wro=
+te:
+> Hello kind CPAN people,
+>
+> I've got a minor problem with pause indexer, may I interest you
+> to look at it, it seems that if a file contains "package" like twice,
+> the indexer is confused:
+>
+> Status: Decreasing version number
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> =C2=A0 =C2=A0 module: Prima::Drawable
+> =C2=A0 =C2=A0version: undef
+> =C2=A0 =C2=A0in file: Prima-1.31/Prima/Classes.pm
+> =C2=A0 =C2=A0 status: Not indexed because Prima-OpenGL-0.01/lib/Prima/Ope=
+nGL.pm
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 in K/KA/KARASIK/Prima-OpenGL-0.=
+01.tar.gz has a higher
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 version number (0.01)
+>
+> ----- End forwarded message -----
+>
+> OpenGL.pm does some magick inside Prima::Drawable, but its $VERSION is de=
+fined
+> before "package Prima::Drawable". Not that its really bad, but annoying. =
+If you
+> could take a look at that, could be great! Thanks!
+>
+> --
+> Sincerely,
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0Dmitry Karasik
+>
+>

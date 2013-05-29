@@ -1,0 +1,84 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1066
+Return-Path: <autarch@urth.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19632 invoked from network); 7 Feb 2000 17:58:08 -0000
+Received: from urth.org (autarch@216.161.20.244)
+  by tmtowtdi.perl.org with SMTP; 7 Feb 2000 17:58:08 -0000
+Received: from localhost (autarch@localhost)
+	by urth.org (8.9.3/8.9.3) with ESMTP id LAA04852;
+	Mon, 7 Feb 2000 11:58:50 -0600
+Date: Mon, 7 Feb 2000 11:58:50 -0600 (CST)
+To: Nick Ing-Simmons <nik@tiuk.ti.com>
+cc: domi@ispserv.grenoble.hp.com, ptk@lists.Stanford.EDU, modules@perl.org
+Subject: Re: RFC: ideas about Tk and logging facility
+In-Reply-To: <200002071740.RAA15456@tiuk.ti.com>
+Message-ID: <Pine.LNX.4.10.10002071147180.4490-100000@urth.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: autarch@urth.org (Autarch)
+References: <200002071740.RAA15456@tiuk.ti.com>
+
+On Mon, 7 Feb 2000, Nick Ing-Simmons wrote:
+
+> Can you give an outline of what Log::Dispatch does?
+
+I'll summarize since I'm the author.
+
+Log::Dispatch has two parts.  The first is the dispatch object, which
+takes messages and levels (i.e. error, criticial, warning) and passes them
+to all of its internally held logging objects (which are all subclasses of
+Log::Dispatch::Output.  These include Log::Dispatch::File,
+Log::Dispatch::Screen (really STDOUT or STDERR), etc.).  The idea here is
+that you create a dispatcher and any number of logging objects and then
+you pass the messages to the dispatcher, meaning there is a single point
+of entry for logging to multiple places (each of the logging objects
+chooses whether or not to act upon the information based on the log
+level).
+
+What Dominique is proposing is a new subclass of Log::Dispatch::Output
+that displays messages in a text box.  Since she would like it to be part
+of the Tk::* hierarchy, that creates some interesting namespace issues.
+
+Really, it is part of the Log::Dispatch suite, so perhaps the name should
+be Log::Dispatch::TkWindow or something like that.  As I think about it, I
+can't see it possibly being included in the Tk core suite unless you were
+also willing to include the full Log::Dispatch suite as well (which
+doesn't make sense).  I, however, would be happy to add this to the
+Log::Dispatch suite, depedent on the name chosen.  To me, this is really
+an addition to Log::Dispatch that happens to use Tk, as opposed to the
+other way around ("if you have a (Log::Dispatch shaped?) hammer,
+everything looks like a nail").
+
+> I could imagine that it might be worth calling it Tk::Log::Dispatch
+> or perhaps Tk::LogDispatch::Output it depends if the Log:: level is 
+> useful for anything.
+
+Hmm, Tk::Log::Dispatch is definitely not right as it implies some sort of
+Tk based dispatcher (the dispatch object is Log::Dispatch).
+Tk::LogDispatch::Output is also not really appropriate.  As you can see
+from my naming convention, Log::Dispatch::Output is an 'invisible' parent
+class, in that you don't see ::Output in its children.  I don't want to
+start changing that now.  Really, it seems best to me that this be named
+Log::Dispatch::TkSomethingOrOther.  This fits in with other ::Output
+subclasses like Log::Dispatch::File, etc.
+
+Dominique, if you agree to this we can privately discuss adding this to
+the next release of Log::Dispatch.  If we do this, Nick, you may want some
+input as to what TkSomethingOrOther ends up being (or should that
+discussion occur with the whole ptk list?).  I don't have too much
+experience with Tk so whatever you all decide will work for me.
+
+
+-Dave
+
+/*==================
+www.urth.org
+We await the New Sun
+==================*/
+
+
+

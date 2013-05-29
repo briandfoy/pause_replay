@@ -1,0 +1,152 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2454
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13140 invoked from network); 15 Jul 2000 12:12:41 -0000
+Received: from mail2.rdc2.bc.home.com (24.2.10.85)
+  by tmtowtdi.perl.org with SMTP; 15 Jul 2000 12:12:41 -0000
+Received: from [24.67.200.33] by mail2.rdc2.bc.home.com
+          (InterMail vM.4.01.03.00 201-229-121) with ESMTP
+          id <20000714064227.BFRM9731.mail2.rdc2.bc.home.com@[24.67.200.33]>;
+          Thu, 13 Jul 2000 23:42:27 -0700
+Mime-Version: 1.0
+Message-ID: <f04320401b5945dc8a423@[24.67.200.33]>
+Date: Thu, 13 Jul 2000 23:42:56 -0700
+To: CPAN Maintainers <modules@perl.org>
+Subject: request namespace for Data::HashOfArrays
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Context Note: I am releasing a succession of around 15 Perl 5 object 
+modules.  Six of these are complete and documented, and will be 
+submitted quickly.  The others are working but not fully documented, 
+so I am holding them back for the moment.  All of these modules, with 
+info on how they can be used together (and working examples), are 
+available at http://www.DarrenDuncan.net.  They have temporary names 
+in the DDuncan::* name space.  They all require 5.004 for 
+consistency, although some can do with less.
+-----------------------------------------------
+
+Here is #1:
+
+Name                DSLI  Description                                     Info
+------------------  ---- 
+----------------------------------------------  -------
+Data::HashOfArrays  bdpO  data (text,bin) store/parse/url-encode, 
+subset  DUNCAND
+
+I strongly request suggestions of alternate names for this module, as 
+there are doubtless some of you who have better ideas on what it 
+should be called.  Likewise, suggestions for a better brief 
+description for use in the module list.
+
+For a description, I have provided part of this module's POD at the 
+end of this letter.  The rest of the POD is on my site.
+
+Let it be known that at least 5 of my other modules use this one.
+
+Good days,
+
+// Darren Duncan
+
+----------------------------------------------
+
+=head1 NAME
+
+DDuncan::HashOfArrays - Perl module that implements a hash whose keys can have
+either one or several associated values.
+
+I<Please note that the path name of this module is temporary, something that
+works until a more appropriate and integrated name can be found.  A possibility
+could be "Hash::MultiValued">
+
+=head1 DEPENDENCIES
+
+=head2 Perl Version
+
+5.004
+
+=head2 Standard Modules
+
+=item I<none>
+
+=head2 Nonstandard Modules
+
+=item I<none>
+
+=head1 SYNOPSIS
+
+	use DDuncan::HashOfArrays 1.05;
+
+	my $case_insensitive = 1;
+	my $complementry_set = 1;
+
+	my $params = DDuncan::HashOfArrays->new( $case_insensitive,
+		$ENV{'HTTP_COOKIE'} || $ENV{'COOKIE'}, '; ', '&' );
+
+	my $query_string = '';
+	if( $ENV{'REQUEST_METHOD'} =~ /^(GET|HEAD)$/ ) {
+		$query_string = $ENV{'QUERY_STRING'};
+	} else {
+		read( STDIN, $query_string, $ENV{'CONTENT_LENGTH'} );
+	}
+	$params->from_url_encoded_string( $query_string );
+
+	foreach my $key ($params->keys()) {
+		my @values = $params->fetch( $key );
+		print "Field '$key' contains: '".join( "','", @values )."'\n";
+	}
+
+	open( KEVOEL, "+<guestbook.txt" ) or die "can't open file: $!\n";
+	flock( KEVOEL, 2 );
+	local $/ = undef;
+	seek( KEVOEL, 0, 2 );
+	print KEVOEL "\n=\n".$params->to_url_encoded_string( "\n" );
+	local $\ = undef;
+	seek( KEVOEL, 0, 0 );
+	my $all_records_str = <KEVOEL>;
+	flock( KEVOEL, 8 );
+	close( KEVOEL );
+
+	@record_str_list = split( /\n*=?\n/, $records );
+	@record_list = map {
+		DDuncan::HashOfArrays->new( $case_insensitive, $_, "\n" )
+		} @record_str_list;
+
+	foreach my $record (@record_list) {
+		print "\nSubmitted by:".$params->fetch_value( 'name' )."\n";
+		print "\nTracking cookie:".$params->fetch_value( 
+'track' )."\n";
+		my %Qs_and_As = $params->fetch_all( ['name', 
+'track'], $complementary_set );
+		foreach my $key (keys %Qs_and_As) {
+			my @values = @{$Qs_and_As{$key}};
+			print "Question: '$key'\n";
+			print "Answers: '".join( "','", @values )."'\n";
+		}
+	}
+
+=head1 DESCRIPTION
+
+This Perl 5 object class implements a simple data structure that is 
+similar to a
+hash except that each key can have several values instead of just 
+one.  There are
+many places that such a structure is useful, such as database records whose
+fields may be multi-valued, or when parsing results of an html form 
+that contains
+several fields with the same name.  This class can export a wide variety of
+key/value subsets of its data when only some keys are needed.  In 
+addition, this
+class can parse and create url-encoded strings, such as with http 
+query or cookie
+strings, or for encoding binary information in a text file.
+
+While you could do tasks similar to this class by making your own 
+hash with array
+refs for values, you will need to repeat some messy-looking code everywhere you
+need to use that data, creating a lot of redundant access or parsing code and
+increasing the risk of introducing errors.

@@ -1,0 +1,195 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9537
+Return-Path: <timbo@dansat.data-plan.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 69279 invoked by uid 76); 4 Jan 2002 14:10:42 -0000
+Received: from [159.134.237.58] (HELO manjula.eircom.net) (159.134.237.58)
+  by onion.perl.org (qpsmtpd/0.05) with SMTP; Fri Jan  4 14:10:42 2002 -0000
+Received: from p659.as1.limerick1.eircom.net ([159.134.166.147] helo=dansat.data-plan.com)
+	by manjula.eircom.net with esmtp (Exim 2.05 #2)
+	id 16MV2x-0004tJ-00; Fri, 4 Jan 2002 14:10:11 +0000
+Received: (from timbo@localhost)
+	by dansat.data-plan.com (8.11.6/8.11.6) id g04EAEA02157;
+	Fri, 4 Jan 2002 14:10:14 GMT
+	(envelope-from timbo)
+Date: Fri, 4 Jan 2002 14:10:14 +0000
+To: David Muir Sharnoff <muir@idiom.com>
+Cc: modules@perl.org
+Subject: Re: Need two module names allocated...  Net::SMTP::Receive Text::ParseRdist
+Message-ID: <20020104141014.M75939@dansat.data-plan.com>
+References: <200201041156.DAA25511@idiom.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <200201041156.DAA25511@idiom.com>; from muir@idiom.com on Fri, Jan 04, 2002 at 03:56:51AM -0800
+Approved: news@nntp.perl.org
+From: Tim.Bunce@pobox.com (Tim Bunce)
+
+On Fri, Jan 04, 2002 at 03:56:51AM -0800, David Muir Sharnoff wrote:
+> 
+> Hi.  I've got two additional modules to that are ready or
+> nearly ready... 
+> 
+> The first recevies mail via SMTP.  It doesn't implement all
+> the various SMTP extensions, but it works well enough to 
+> receive mail from sendmail.  It queues the mail it receives.
+> Delivery of the mail received is left as an exercise for
+> the reader and is accomplished by subclassing 
+> Net::SMTP::Receive.  This module is working in production
+> but has not yet been packaged for distribution.
+> 
+> The second module parses rdist distfile and can emulate
+> rdist using rsync.  This module is all ready to go.  I
+> enclose the README.
+> 
+> I would like both modules listed in The Module List so I'm
+> looking for apporval of the names:
+> 
+> 	Net::SMTP::Receive
+> 	Text::ParseRdist
+
+Text::* isn't where I'd expect to find a module for parsing rdist distfiles.
+
+Perhaps a ParseConfig:: category would be a useful addition
+
+	ParseConfig::Rdist
+
+Tim.
+
+> Thanks,
+> 
+> -Dave
+> 
+> 
+> NAME
+>     Text::ParseRdist - read rdist distfiles, emulate using rsync
+> 
+> SYNOPSIS
+>             use Text::ParseRdist
+> 
+>             @dist_blocks = parse_rdist($distfile, %options)
+> 
+>             ($args, $extras, @dist_blocks) = rdist(@ARGV);
+> 
+>             rsync(@ARGV)
+> 
+>             perl -MText::ParseRdist -e 'rsync(qw/rdist command flags/)'
+> 
+> DESCRIPTION
+>     Text::ParseRdist parses and understands rdist distfiles and command lines.
+> 
+>     It can share it's understanding by returning what it got (`parse_rdist()' and `rdist()') or
+>     it can attempt to emulate rdist using rsync.
+> 
+>     Why?
+> 
+>     Well, because rdist is so slow it's unusable and rsync has such a limited interface that
+>     it's unusable. I'm sure a better specification language than rdist's could be developed,
+>     but rdist's language already exists so I used it to drive rsync.
+> 
+> WARNING
+>     As of this writing, this code is still green. Use the `-D' `-n' and `-v' options and look
+>     at the output. Look carefully. If it looks good, then try running it for real. If it
+>     deletes all your files, then you didn't look carefully enough. Don't blame me. See the
+>     LICENSE.
+> 
+> DATA STRUCTURE
+>     The main return value from rdist is an array of distribution blocks.
+> 
+>     They look like:
+> 
+>             {
+>                     HOSTS           => [ host1 user@host2 host3 etc...],
+>                     FILES           => [ /etc/rc.* /etc/hosts /usr etc...],
+>                     EXCEPT          => [
+>                             # tuples of type & file
+>                             EXCEPT_PAT      /etc/p.*d       # regular expression
+>                             EXCEPT          /etc/rc.local   # glob
+>                             RSYNC_EXCLUDE   /etc/rc.loc*    # glob-style pattern exclusions
+>                             RSYNC_INCLUDE   /etc/rc.*       # glob-style pattern inclusions
+>                     ]
+>                     SPECIAL         => [
+>                                 {
+>                                     FILES   => /etc/login.conf      # glob okay
+>                                     COMMAND => "cap_mkdb $FILE"     # a command to run
+>                                 },
+>                                 {
+>                                     FILES   => /etc/named.conf      # glob okay
+>                                     COMMAND => "ndc reload"         # a command to run
+>                                 },
+>                             ]
+>                     RSYNC_OPTION    => [ --dry-run --verbose ]
+>                     INSTALL         => [
+>                                 {
+>                                     DESTINATION => /usr             # where to install
+>                                     FLAGS       => {
+>                                             R => 1,                 # remove extra
+>                                             w => 1,                 # append whole path
+>                                     }
+>                                 }
+>                     TSFILE          => /some/file                   # touch file name
+>             }
+> 
+> DETAILS
+>             @dist_blocks = parse_rdist($distfile, %options)
+> 
+>     There is one "dist_block" for each `"::"' or `"-'"> entry in the distfile.
+> 
+>     The options supported by parse_rdist are DEFINES => {} which override variable definitions
+>     made in the distfile and TARGETS => [] which filters the results so that entries that don't
+>     match label targets (if any match) and files that don't match file targets are removed.
+> 
+>             ($args, $extras, @dist_blocks) = rdist(@ARGV);
+> 
+>     $args comes from Getopt::Declare. See the grammer inside Text::ParseRdist for full details,
+>     but basically `$args-'{'-y'}> is true if `@ARGV' contained `'-y''.
+> 
+>     $extras is a hash of a few items that are sometimes useful. $extras->{HOSTS} is the list of
+>     hosts specified with the `'-m'' option. $extras->{DEFINES} is a hash of `'-d'' variable
+>     definitions. $extras->{RSYNCOPT} is a list of rsync options specified in @ARGV. $extra-
+>     >{TARGETS} is a list of distfile entries (by label) or filenames given in @ARGV to limit
+>     the scope of the invocation. $extra->{CFLAG} is a dist_block created if there is a command-
+>     line style distfile.
+> 
+>             rsync(@ARGV)
+> 
+>     The rsync() function does the whole job.
+> 
+> COMPATABILITY
+>     All rdist switches except `-i' are honored. The output is quite different from rdist.
+>     Multiple invocations of rsync can be required to do a single rdist.
+> 
+>     Two features of rdist are currently ignored: email notification and timestamp checking with
+>     `"::"' productions.
+> 
+>     There are some additional features that are useful when using rsync().
+> 
+>     First, the long-form of rsync command line arguments are noticed by rdist() and used by
+>     rsync().
+> 
+>     Second, in the "->" productions, three new commands are available:
+> 
+>             'rsync_options' <options> ';'
+>             'rsync_include' <name list> ';'
+>             'rsync_exclude' <name list> ';'
+> 
+>     Rsync_options will be passed to any rsync commands called by rsync() that operate on the
+>     block in question.
+> 
+>     Rsync_include and rsync_exclude will be passed to rsync with "- " prepended for the
+>     excludes and "+ " prepended for the includes. When building rsync exclusion lists, the
+>     order of the 'rsync_include', 'rsync_exclude', 'except', and 'except_pat' are taken into
+>     account and preserved.
+> 
+> LICENSE
+>     Copyright (C) 2002 David Muir Sharnoff. License hereby granted for anyone to use, modify or
+>     redistribute this module at their own risk. Use of this module consitutes an agreement to
+>     indemnify and hold harmless the author(s) for whatever might happen when using this code.
+>     Please feed useful changes back to muir@idiom.com.
+> 
+> 
+> 
+> 

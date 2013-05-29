@@ -1,0 +1,48 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2327
+Return-Path: <Raphael.Manfredi@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14848 invoked from network); 3 Jul 2000 08:00:33 -0000
+Received: from beta.dmz-eu.st.com (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 3 Jul 2000 08:00:33 -0000
+Received: from eux100.sgp.st.com (eux100.sgp.st.com [164.129.225.7])
+	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 205894948
+	for <modules@perl.org>; Mon,  3 Jul 2000 08:00:06 +0000 (GMT)
+Received: from lod23.gnb.st.com (lod28.gnb.st.com [164.129.117.125])
+	by eux100.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id KAA29065
+	for <modules@perl.org>; Mon, 3 Jul 2000 10:00:05 +0200 (METDST)
+To: modules@perl.org
+Subject: Requesting namespace "Net::MsgLink"
+X-Mailer: NMH [version 1.0.1]
+Organization: ST Microelectronics, Grenoble, France
+Date: Mon, 03 Jul 2000 09:47:34 +0200
+Message-ID: <20936.962610454@lod23.gnb.st.com>
+Sender: manfredi@lod23.gnb.st.com
+Resent-To: modules@perl.org
+Resent-Date: Mon, 03 Jul 2000 10:00:04 +0200
+Resent-Message-ID: <21152.962611204@lod23.gnb.st.com>
+Resent-From: Raphael Manfredi <manfredi@lod23.gnb.st.com>
+Resent-Sender: Raphael.Manfredi@st.com
+Approved: news@nntp.perl.org
+From: Raphael.Manfredi@st.com (Raphael Manfredi)
+
+I'm working on an abstraction on top of a network link, which is
+established by other means, the abstraction is only the "user" part
+of the link, not the provider.
+
+The provider can be a TCP socket, a UNIX socket, a pipe, or whatever
+can safely send a reliable stream of data.
+
+The user layer which I'm working on provides a "message" service, i.e.
+it sends and receives message packets, a message being (length, payload).
+It can compress and encrypt the payload.
+
+Basically, a Net::MsgLink object is created with a file descriptor, on
+which sysread() and syswrite() can be called, or an IO::Handle object
+(on which the same sysread/syswrite can be used).
+
+That's it.  A simple abstraction, but very reusable.
+
+Raphael

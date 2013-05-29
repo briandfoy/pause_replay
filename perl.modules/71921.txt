@@ -1,0 +1,162 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:71921
+Return-Path: <rehsack@web.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 4233 invoked from network); 18 Jul 2010 09:02:12 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 18 Jul 2010 09:02:12 -0000
+Received: (qmail 3211 invoked by uid 225); 18 Jul 2010 09:02:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3207 invoked by alias); 18 Jul 2010 09:02:12 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,T_RP_MATCHES_RCVD,T_TO_NO_BRKTS_FREEMAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from fmmailgate03.web.de (HELO fmmailgate03.web.de) (217.72.192.234)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 18 Jul 2010 02:02:07 -0700
+Received:  from smtp06.web.de  ( [172.20.5.172])
+	by fmmailgate03.web.de (Postfix) with ESMTP id 7B24E15BD4304
+	for <modules@perl.org>; Sun, 18 Jul 2010 11:02:02 +0200 (CEST)
+Received: from [79.248.86.98] (helo=waldorf.muppets.liwing.de)
+	by smtp06.web.de with esmtp (SSLv3:AES256-SHA:256)
+	(WEB.DE 4.110 #4)
+	id 1OaPl4-00077u-00
+	for modules@perl.org; Sun, 18 Jul 2010 11:02:02 +0200
+Message-ID: <4C42C2F6.2090500@web.de>
+Date: Sun, 18 Jul 2010 09:01:42 +0000
+User-Agent: Mozilla/5.0 (X11; U; FreeBSD amd64; en-US; rv:1.9.1.9) Gecko/20100409 Thunderbird/3.0.4
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Taking ownership of Tie::File::AsHash
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Sender: rehsack@web.de
+X-Sender: rehsack@web.de
+X-Provags-ID: V01U2FsdGVkX18IhDgls+UbZ3+eYSERv+z2p5ZK5OwIbtlgMIev
+	UegR5HGxqdVzTgMKGCwKwFb6Aa2IaH1gOIU+F0SB0g7IFRg9fi
+	fVX1eBOCw=
+Approved: news@nntp.perl.org
+From: rehsack@web.de (Jens Rehsack)
+
+Hi,
+
+as I got the permission from Chris Angel,
+I'd like to handled over the ownership of
+Tie::File::AsHash to do the further maintaining ...
+
+See his permission in the forwarded mail below.
+
+Thanks,
+Jens
+
+-------- Original Message --------
+Subject: WG: Re: Suggestion for Tie::File::AsHash
+Date: Mon, 29 Dec 2008 20:17:25 +0100
+From: jens.rehsack@bayerbbs.com
+To: rehsack@web.de
+
+Freundliche Grüße / Best Regards
+
+Jens Rehsack
+_________________________________________
+
+Fa. Manß & Partner
+Phone: +49 - 214 - 30 - 41 562
+Fax: +49 - 214 - 30 - 31 625
+E-mail: jens.rehsack@bayerbbs.com
+Web: http://www.BayerBBS.com
+
+Geschäftsführung: Vorsitzender Andreas Resch   |   Arbeitsdirektor Norbert
+Fieseler
+Vorsitzender des Aufsichtsrats: Klaus Kühn
+Sitz der Gesellschaft: Leverkusen   |   Amtsgericht Köln, HRB 49895
+
+----- Weitergeleitet von Jens Rehsack/EZKRG/DE/BBS/BAYER am 29.12.2008
+20:17 -----
+
+Chris Angell <chrisangell@chrisangell.com>
+22.04.2008 19:06
+
+An
+jens.rehsack@bayerbbs.com
+Kopie
+
+Thema
+Re: Suggestion for Tie::File::AsHash
+
+
+
+
+
+
+Hi Jens,
+
+Feel free to enhance Array::AsHash or make any other changes you wish to
+make.  I do not do much Perl nowadays so it would be easier for you to
+make any changes needed.
+
+Thanks!
+
+Chris Angell
+
+
+##########################################
+Christopher Angell - chris@chrisangell.com
+
+On Tue, 22 Apr 2008, jens.rehsack@bayerbbs.com wrote:
+
+> Hi Chris,
+>
+> your package Tie::File::AsHash is a great implementation for matching a
+> file content into a hash.
+> But we need one enhancement: locking during access (LOCK_SH while
+reading,
+> LOCK_EX while
+> writing).
+>
+> I've reviewed your code and conclude, that using
+>        my $tieAsHash = tie( %hashToTie, 'Tie::Array::AsHash', array =>
+> \@someWhatArray, %options );
+> would solve that problem and makes
+> your solution more powerful because more flexible. But it requires a
+> rename to Tie::Array::AsHash ;-)
+>
+> To be more detailed: having a package which handles an array in the way
+> you handles the array
+> of lines coming from given file would allow to tie the array before
+(e.g.
+> using Tie::File or anything
+> else we might want to) and use the lock/unlock functions from the
+> file-tie.
+>
+> Sure, I could enhance existing Array::AsHash using your code, add a
+> Tie::Array::AsHash wrapping
+> tie hash support around Array::AsHash and reducing Tie::File::AsHash to
+a
+> simple derivation with
+> 2-3 additional lines in constructor to support suggested interface above
+-
+> but I want at first get feedback
+> from you, because it's your baby.
+>
+> Freundliche Grüße / Best Regards
+>
+> Jens Rehsack
+> _________________________________________
+>
+> Fa. Manß & Partner
+> Phone: +49 - 214 - 30 - 41 562
+> Fax: +49 - 214 - 30 - 31 625
+> E-mail: jens.rehsack@bayerbbs.com
+> Web: http://www.BayerBBS.com
+>
+> Geschäftsführung: Vorsitzender Andreas Resch   |   Arbeitsdirektor
+Norbert
+> Fieseler
+> Vorsitzender des Aufsichtsrats: Klaus Kühn
+> Sitz der Gesellschaft: Leverkusen   |   Amtsgericht Köln, HRB 49895
+>
+>
+

@@ -1,0 +1,153 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:37589
+Return-Path: <sjs@sonic.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30388 invoked from network); 10 Jan 2005 21:38:51 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 10 Jan 2005 21:38:51 -0000
+Received: (qmail 25393 invoked by uid 225); 10 Jan 2005 21:38:50 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25382 invoked by alias); 10 Jan 2005 21:38:49 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from b.mail.sonic.net (HELO b.mail.sonic.net) (64.142.19.5)
+  by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 10 Jan 2005 13:38:44 -0800
+Received: from bolt.sonic.net (bolt.sonic.net [208.201.242.18])
+	by b.mail.sonic.net (8.12.11/8.12.11) with ESMTP id j0ALcfui008380
+	for <modules@perl.org>; Mon, 10 Jan 2005 13:38:41 -0800
+Received: from bolt.sonic.net (IDENT:sjs@localhost [127.0.0.1])
+	by bolt.sonic.net (8.12.10/8.12.1) with ESMTP id j0ALcfv5021545
+	for <modules@perl.org>; Mon, 10 Jan 2005 13:38:41 -0800
+Received: from localhost (sjs@localhost)
+	by bolt.sonic.net (8.12.10/8.12.1/Submit) with ESMTP id j0ALcfA5021542
+	for <modules@perl.org>; Mon, 10 Jan 2005 13:38:41 -0800
+Date: Mon, 10 Jan 2005 13:38:41 -0800 (PST)
+To: modules@perl.org
+Subject: Re: Module submission Getopt:::OO
+In-Reply-To: <100120051349001786%comdog@panix.com>
+Message-ID: <Pine.LNX.4.50L0.0501101303560.18040-100000@bolt.sonic.net>
+References: <200501092317.j09NHrKt026616@pause.perl.org>
+ <16866.23136.708553.152255@phoenix.squirrel.nl>
+ <Pine.LNX.4.50L0.0501100639440.17047-100000@bolt.sonic.net>
+ <100120051349001786%comdog@panix.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: sjs@sonic.net (Steve Smith)
+
+
+On Mon, 10 Jan 2005, _brian_d_foy wrote:
+
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+>
+> In article <Pine.LNX.4.50L0.0501100639440.17047-100000@bolt.sonic.net>,
+> Steve Smith <sjs@sonic.net> wrote:
+>
+>
+>
+> > To summarize, this has been an evolutionary process.  I've
+> > used a number of different techniques for parsing command
+> > line arguments.
+>
+> Perhaps you can explain how it does something that if different. :)
+>
+> --
+> brian d foy (one of many PAUSE admins), http://pause.perl.org
+> archives at http://www.xray.mpe.mpg.de/mailing-lists/modules
+> please send all messages back to modules@perl.org
+>
+>
+Hi Brian
+
+I think that the main difference is -- to me at least -- that the
+interface is more intuitive.
+
+The function for creating your object handle looks like
+use Getopt::OO;
+my $h = Getopt::OO->new(\@ARGV,
+    'usage' => [ 'simple usage statement' ],
+    '-a' => {
+        help => 'help for -a option',
+    },
+    '-b' => {
+        help => 'help for -b option',
+        n_values => 1,
+    },
+);
+In this case the -a option is a boolean -- either there or
+not, and the -b option expects one additional value.
+
+The command line for this could be '-ab value_for_b' or
+'-a -b value_for_b'
+
+and accessing the values would be:
+
+if ($h->Values('-a')) {...
+
+and
+if (my $x = $h->Values('-b')) {...
+
+And I ran the function with some bogus arguments to
+generate what the usage statement for this would look
+like.  It comes out:
+> t.pl -xyz
+USAGE: t.pl [ -ab b_arg  ]
+    simple usage statement
+    -a        help for -a option
+    -b arg    help for -b option
+Found following errors:
+unrecognized argument: -x
+unrecognized argument: -y
+unrecognized argument: -z
+
+Note that you don't have to put help here though.  If
+it makes sense to use pod -- and usually it does, there
+is nothing that prevents you from doing that.  The
+way the tool is written, it actually returns a handle
+and a list of errors if you ask for it, and you can
+either use eval to keep from dieing when parsing
+the command line or use the 'die' => 0 in the template
+and do
+my ($h, @errors) = Getopt::OO->new(
+	\@ARGV,
+	'die' => 0,
+     ...
+if (@errors) {
+    system("perldoc $0");
+    exit 1;
+}
+you can also access it directly as @{$h->{errors}} although
+I think this needs an accessor method.
+
+The thing that started this quest though was that a friend
+wanted to do something like
+-r value1 -r value2 -r value3
+and we wanted an easy to do this.
+
+Handeling this would be
+my $h = Getopt::OO->new(\@ARGV,
+    '-r' => {
+            n_values => 1,
+            multiple => 1,
+         },
+         ...
+and getting the values -- if any -- would be
+if (my @values = $h->Values('-n')) {...
+
+Which is simpler for me to understand than anything else
+I've seen.
+
+Thanks for asking Brian.  This is the first module I've
+written for CPAN and I've been doing PERL for a number
+of years.  I feel I have lots to learn still, but I
+also feel that this module will be a useful contribution.
+
+Steve S.
+
+
+

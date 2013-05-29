@@ -1,0 +1,76 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:84523
+Return-Path: <brian.d.foy@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21584 invoked from network); 31 Jan 2013 19:36:31 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 31 Jan 2013 19:36:31 -0000
+Received: (qmail 7204 invoked by uid 225); 31 Jan 2013 19:36:31 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7200 invoked by alias); 31 Jan 2013 19:36:31 -0000
+X-Spam-Status: No, hits=-2.0 required=8.0
+	tests=ALL_TRUSTED,BAYES_00,DKIM_ADSP_CUSTOM_MED,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO x6.develooper.com) (207.171.7.86)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 31 Jan 2013 11:36:27 -0800
+Received: from lists-nntp.develooper.com (localhost.localdomain [127.0.0.1])
+	by x6.develooper.com (Postfix) with SMTP id 1B8671773E
+	for <modules@perl.org>; Thu, 31 Jan 2013 11:36:24 -0800 (PST)
+Received: (qmail 21533 invoked by uid 515); 31 Jan 2013 19:36:23 -0000
+To: modules@perl.org, kevin@dawson10.plus.com (kevin dawson)
+Subject: Re: I've been getting a 404 for PPIx::Regexp
+Date: Thu, 31 Jan 2013 13:36:23 -0600
+Reply-To: modules@perl.org
+Posted-And-Mailed: yes
+Message-ID: <310120131336230601%brian.d.foy@gmail.com>
+References: <510978F7.9050403@dawson10.plus.com>
+Organization: The Perl Review, LLC
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+User-Agent: Thoth/1.9.0 (Mac OS X)
+X-Posted-By: 108.217.22.142
+Approved: news@nntp.perl.org
+From: brian.d.foy@gmail.com (brian d foy)
+
+[[ This message was both posted and mailed: see
+   the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+In article <510978F7.9050403@dawson10.plus.com>, kevin dawson
+<kevin@dawson10.plus.com> wrote:
+
+> I've been getting a 404 for PPIx::Regexp, it exists on other mirrors 
+> (e.g. cpan.hexten.net) and is in the PAUSE index, any idea who I should 
+> kick?"
+
+I find this file just fine on www.cpan.org. Can you fetch it by hand
+without CPAN.pm or LWP?
+
+I was able to download the right file with LWP. I checked inside the
+package to ensure it was the right version:
+
+use LWP::Simple;
+use v5.10;
+
+my $code = getstore( 
+   'http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz',
+   '/Users/brian/Desktop/PPIx-Regexp-0.030.tar.gz'
+   );
+say "code is $code";
+
+
+> Fetching with LWP:
+> http://www.cpan.org/authors/id/W/WY/WYANT/PPIx-Regexp-0.030.tar.gz
+> LWP failed with code[404] message[Not Found]
+
+This worked for me. I don't think this is a PAUSE or CPAN issue, but
+there might be a problem with your CPAN.pm. If you still have problems,
+you might want to report it to CPAN.pm.
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+PAUSE instructions:  http://pause.perl.org/pause/query?ACTION=pause_04about
+Archives: http://www.xray.mpe.mpg.de/mailing-lists/modules
+Please send all messages back to modules@perl.org with no CC to me.

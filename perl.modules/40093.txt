@@ -1,0 +1,190 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:40093
+Return-Path: <fireartist@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10599 invoked from network); 3 May 2005 13:33:30 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 3 May 2005 13:33:30 -0000
+Received: (qmail 30117 invoked by uid 225); 3 May 2005 13:33:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30113 invoked by alias); 3 May 2005 13:33:30 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,RCVD_BY_IP
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of fireartist@gmail.com designates 64.233.170.193 as permitted sender)
+Received: from rproxy.gmail.com (HELO rproxy.gmail.com) (64.233.170.193)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 03 May 2005 06:33:28 -0700
+Received: by rproxy.gmail.com with SMTP id r35so1393734rna
+        for <modules@perl.org>; Tue, 03 May 2005 06:33:24 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=G8TCdOHYsTnkS7NHQV1Rm/OUM4Wf3eR50wl96JR+y7yD7nYz+wXVbc75REQrjwCzwOCkQr/z/5WU7JqWIMSeaXYlwsToR0lZa9EH4msnSVUYT3pR1JOXsskFA/INW7N2IYCir73WwWI6e+QB1jKaIlNGeI7PB/Zobvv7GPoIv7Y=
+Received: by 10.39.1.34 with SMTP id d34mr3659295rni;
+        Tue, 03 May 2005 06:33:24 -0700 (PDT)
+Received: by 10.38.90.41 with HTTP; Tue, 3 May 2005 06:33:24 -0700 (PDT)
+Message-ID: <4f352aae050503063335db6cc4@mail.gmail.com>
+Date: Tue, 3 May 2005 14:33:24 +0100
+Reply-To: carl@fireartist.com
+To: modules@perl.org
+Subject: RFC: Junction module
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Approved: news@nntp.perl.org
+From: fireartist@gmail.com (Carl Franks)
+
+Copied below is the documentation for a module I am working on.
+It is inspired by the perl6 Junction operators described in exegisis 6.
+
+The same functionality is currently available in
+Quantum::Superpositions, though this module is much lighter-weight and
+faster.
+
+I'm also considering extending this to support any/all regexes.
+
+I consider this module a "Language Extension", but can't find a
+suitable existing namespace to fit into. Does anyone have an objection
+to it being named Junction.pm
+or a suggestion for another name?
+
+Regards,
+Carl Franks
+
+
+NAME
+
+Junction - Perl6 style Junction operators in Perl5.
+
+SYNOPSIS
+
+  use Junction qw/ all any none one /;
+
+  if (any(@grant) eq 'su') {
+    ...
+  }
+
+  if (all($foo, $bar) >=3D 10) {
+    ...
+  }
+
+  if (none(@pass) eq 'password') {
+    ...
+  }
+
+  if (one(@answer) =3D=3D 42) {
+    ...
+  }
+
+  if (all(@input) <=3D @limits) {
+    ...
+  }
+
+DESCRIPTION
+
+This is a lightweight module which provides 'Junction' operators, the
+most commonly used probably being 'any' and 'all'.
+
+Inspired by the Perl6 design docs,
+http://dev.perl.org/perl6/doc/design/exe/E06.html.
+
+Provides a limited subset of the functionality of the
+Quantum::Superpositions manpage, see SEE ALSO for comment.
+
+SUBROUTINES
+
+all()
+
+Returns an object which overloads the following operators:
+
+  "<",  "<=3D", ">",  ">=3D", "=3D=3D", "!=3D",
+  "lt", "le", "gt", "ge", "eq", "ne",
+
+Returns true only if all arguments test true according to the operator
+used.
+
+any()
+
+Returns an object which overloads the following operators:
+
+  "<",  "<=3D", ">",  ">=3D", "=3D=3D", "!=3D",
+  "lt", "le", "gt", "ge", "eq", "ne",
+
+Returns true if any argument tests true according to the operator used.
+
+none()
+
+Returns an object which overloads the following operators:
+
+  "<",  "<=3D", ">",  ">=3D", "=3D=3D", "!=3D",
+  "lt", "le", "gt", "ge", "eq", "ne",
+
+Returns true only if no argument tests true according to the operator
+used.
+
+one()
+
+Returns an object which overloads the following operators:
+
+  "<",  "<=3D", ">",  ">=3D", "=3D=3D", "!=3D",
+  "lt", "le", "gt", "ge", "eq", "ne",
+
+Returns true only if one and only one argument tests true according to
+the operator used.
+
+EXPORT
+
+'all', 'any', 'none', 'one', as requested.
+
+All subroutines can be called by it's fully qualified name, if you don't
+want to export them.
+
+  use Junction;
+
+  if (Junction::any( @questions )) {
+    ...
+  }
+
+TO DO
+
+Add overloading for arithmetic operators, such that this works:
+
+  $result =3D any(2,3,4) * 2;
+
+  if ($result =3D=3D 8) {...}
+
+Also, maybe allow the first argument to be a regex object, such that:
+
+  all( qr/\d+/, @input )
+
+... matches all following arguments against the regex. Would need to
+figure out what to return and how/whether to handle captured values.
+(Suggestions welcome).
+
+SUPPORT / BUGS
+
+Submit to the CPAN bugtracker http://rt.cpan.org
+
+SEE ALSO
+
+the Quantum::Superpositions manpage provides the same functionality as
+this, and more. However, this module provides this limited functionality
+at a much greater runtime speed, with my benchmarks showing between 500%
+and 6000% improvment.
+
+http://dev.perl.org/perl6/doc/design/exe/E06.html - ``The Wonderful
+World of Junctions''.
+
+AUTHOR
+
+Carl Franks
+
+COPYRIGHT AND LICENSE
+
+Copyright 2005, Carl Franks. All rights reserved.
+
+This library is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself (perlgpl, perlartistic).

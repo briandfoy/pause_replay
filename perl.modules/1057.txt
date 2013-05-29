@@ -1,0 +1,88 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1057
+Return-Path: <sapapo@cc.jyu.fi>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10463 invoked from network); 6 Feb 2000 00:07:35 -0000
+Received: from kanto.cc.jyu.fi (sapapo@130.234.1.2)
+  by tmtowtdi.perl.org with SMTP; 6 Feb 2000 00:07:35 -0000
+Received: from localhost (sapapo@localhost)
+	by kanto.cc.jyu.fi (8.9.3/8.9.3/antispam3) with ESMTP id CAA26286;
+	Sun, 6 Feb 2000 02:07:31 +0200 (EET)
+Date: Sun, 6 Feb 2000 02:07:31 +0200 (EET)
+Reply-To: Sami Poikonen <sapapo@iki.fi>
+To: modules@perl.org
+cc: sapapo@cpan.org
+Subject: Proposal: CGI::WAP and Convert::WML
+Message-ID: <Pine.GSO.4.10.10002060051450.24150-100000@kanto.cc.jyu.fi>
+X-No-Archive: yes
+X-Homepage: http://www.iki.fi/sp/
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: sapapo@cc.jyu.fi (Sami Poikonen)
+
+
+I've just started using WAP (Wireless Application Protocol,
+url:http://www.wapforum.com/) and I've subclassed a new module from
+CGI.pm. 
+
+So far I've called it CGI::WAP, but I'm asking for your opinion on this
+one. Namespace XML::WML was requested for something similar on message:
+http://www.xray.mpe.mpg.de/cgi-bin/w3glimpse2html/modules/1999-11/msg00000.html
+
+But since this is just extesion to cgi programming, I'd like to place this
+module under CGI::* namespace. I don't know the status of the module
+'XML::WML'.
+
+The usage of my module is something like this:
+
+use CGI::WAP;
+
+my ($wap) = CGI::WAP->new();
+my ($name) = $wap->param(name);
+
+print $wap->header, 
+      $wap->start_wml("1.1",
+      $wap->card({-id=>"myCard", -title=>"Hello World",-newcontent=>"true"},
+        $wap->p("Hello $name")),
+      $wap->end_wml;
+
+and it produces valid XML-document in WML.
+
+I'm also developing module to compile/convert WML info a binary format
+(WML-WBXML), which is required my some mobile terminals.
+
+Now, I'm not sure which namespace to use for this one.
+Convert::WML, XML::WML::Convert, CGI::WAP::Binary.
+
+I like CGI::WAP::Binary, but compiling WML into WBXML doesn't necessarily
+have anything to do with CGI. So I'd go and use Convert::WML.
+
+The usage of this module could look like this (if I choose to bless a
+tybeglob):
+
+use Convert::WML;
+use CGI::WAP;
+
+my ($WBXML) = Convert::WML->new("1.1"); # Convert into format v1.1
+my ($wap) = CGI::WAP->new(); "
+my ($name) = $wap->param(name);
+
+print $WBXML $wap->header({-type=>"binary"}),
+      $wap->start_wml("1.1",   
+      $wap->card({-id=>"myCard", -title=>"Hello World",-newcontent=>"true"},
+        $wap->p("Hello $name")),
+      $wap->end_wml;
+
+So, now I'd like to hear namespace suggestions or register namespaces
+CGI::WAP and Convert::WML.
+
+I'd like to add that this is the first time these modules are discussed in
+public. All comments welcome.
+
+-- 
+Sami Poikonen
+sapapo@cpan.org
+

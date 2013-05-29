@@ -1,0 +1,69 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:23603
+Return-Path: <domi@komarr.grenoble.hp.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2095 invoked by uid 1012); 18 Sep 2003 14:31:02 -0000
+To: modules@perl.org
+Cc: zinc-dev@cena.fr
+Subject: Re: question about Tk::Zinc modules sent on CPAN
+References: <1063721996.28174.302.camel@sonat.tls.cena.fr>
+Date: Thu, 18 Sep 2003 15:47:37 +0200
+Message-ID: <kgifziu8ayu.fsf@komarr.grenoble.hp.com>
+User-Agent: Gnus/5.1002 (Gnus v5.10.2) XEmacs/21.4 (Rational FORTRAN, linux)
+Cancel-Lock: sha1:jeyTgYXijlNwyQ3lmXZSs6QOn1o=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Posted-By: 155.208.254.132
+Approved: news@nntp.perl.org
+From: domi@komarr.grenoble.hp.com (Dominique Dumont)
+
+
+Hello Christophe
+
+
+mertz@cena.fr (Christophe Mertz) writes:
+> I uploaded Tk::Zinc some hours ago and I detected the following pb:
+
+Looks great 8-)
+
+> - Tk::Zinc comes with many demos, two of them using dedicted .pm
+> (typically whell.pm and SimpleRadarControls.pm) These .pm are only
+> usefull for the demo and as source sample
+> But now they appear in the modules list of Tk::zinc
+> (http://search.cpan.org/author/ZINCDEV/tk-zinc-3.294/)
+>
+> Is there a way to avoid this (appart from suppressing these .pm from the
+> next upload)
+>
+> Does these modules pollute the perl name space? I guess not but I am not
+> so sure!
+
+Unfortunately, since the demo scripts do a 'use SimpleRadarControls;',
+the perl namespace is indeed polluted.
+
+> Any help or advice on Tk::Zinc CPANisation welcome !
+
+You should:
+
+- pack Wheel and SimpleRadarControls in a directory in the demo dir
+  and do a 'use libs "./demo_lib" ' in the demo script (or something
+  like that).
+
+As general ideas, you should:
+- avoid to pack tcl and python code into CPAN (it's not a religious
+  matter, but to avoid confusing people who might want to peek at the
+  module)
+- use ExtUtils::MakeMaker to generate the Makefile. You will have
+  better chance to produce a module that works with all (well most
+  recents) versions of perl. That said, it's might easier said that
+  done :-/. You should look at the way perl/Tk is built to get a
+  better idea.
+
+Bon courage
+
+Cheers
+
+-- 
+dominique.dumont@hp.com

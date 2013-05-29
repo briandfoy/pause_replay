@@ -1,0 +1,119 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13015
+Return-Path: <stas@stason.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 66886 invoked by uid 76); 3 Aug 2002 01:16:26 -0000
+Received: from smtp15.singnet.com.sg (HELO smtp15.singnet.com.sg) (165.21.6.35)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Sat Aug  3 01:16:26 2002 -0000
+Received: from stason.org (bb-203-125-4-108.singnet.com.sg [203.125.4.108])
+	by smtp15.singnet.com.sg (8.12.3/8.12.2) with ESMTP id g731Fsqg022127;
+	Sat, 3 Aug 2002 09:15:57 +0800
+Received: from stason.org (localhost.localdomain [127.0.0.1])
+	by stason.org (Postfix) with ESMTP
+	id EF01A31567; Sat,  3 Aug 2002 09:15:21 +0800 (SGT)
+Message-ID: <3D4B2EA9.8010107@stason.org>
+Date: Sat, 03 Aug 2002 09:15:21 +0800
+Organization: Hope, Humanized
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.0.0) Gecko/20020510
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: Tim Bunce <Tim.Bunce@pobox.com>
+Cc: modules@perl.org
+Subject: Re: Module submission Debug::SIGSEGVTrace
+References: <200208020313.g723D0v29182@pause.perl.org> <20020802121108.D23836@dansat.data-plan.com> <3D4A6DA9.30602@stason.org> <20020802213309.M23836@dansat.data-plan.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: stas@stason.org (Stas Bekman)
+
+Tim Bunce wrote:
+> On Fri, Aug 02, 2002 at 07:31:53PM +0800, Stas Bekman wrote:
+> 
+>>>I think the name shouldn't contain SEGV since that's just one of the
+>>>causes of a core. Another fairly common one is a Bus Error.
+>>
+>>What signals result in the core dump? BUS SEGV PIPE ABRT? any others?
+> 
+> 
+> On FreeBSD:
+> $ man 2 sigaction | grep core
+>      SIG_DFL.  The defaults are process termination, possibly with core dump;
+>      SIGQUIT         create core image       quit program
+>      SIGILL          create core image       illegal instruction
+>      SIGTRAP         create core image       trace trap
+>      SIGABRT         create core image       abort(3) call (formerly SIGIOT)
+>      SIGEMT          create core image       emulate instruction executed
+>      SIGFPE          create core image       floating-point exception
+>      SIGBUS          create core image       bus error
+>      SIGSEGV         create core image       segmentation violation
+>      SIGSYS          create core image       non-existent system call invoked
+
+Looks like we enter the crossplatform issues here. Linux doesn't have 
+EMT signal. I guess I'll go with the rest of the signals and polish the 
+module on the go as people use it and send patches in.
+
+I've tested all these manually, since the same manpage on linux doesn't 
+include that info.
+
+>>>How about Debug::CoreStackTrace?
+>>
+>>The point of this module is that there is no core involved here ;)
+> 
+> 
+> Debug::NoCoreStackTrace  :)
+> 
+> 
+>>But I guess it's fine, assuming that the module gets extended to other
+>>signals as well.
+> 
+> 
+> How about Debug::OnFaultTrace, or Debug::AutoFaultTrace?
+
+I think this name describes the best its functionality:
+Debug::FaultAutoBackTrace
+
+But long names are painful, any preferrable shortcuts?
+
+Debug::FaultAutoBT
+Debug::FaultABT
+Debug::FABT
+
+>>The module also includes Debug::SIGSEGVFault which dereferences a NULL 
+>>pointer and causes SIGSEGV. how should it be renamed then? 
+>>Debug::CoreDump? I guess I could release it separately. I bundled it up 
+>>because it's needed to test Debug::SIGSEGVTrace. What do you think?
+> 
+> 
+> You can probably drop it.  The dump() builtin also triggers a core dump:
+> $ perldoc -f dump | grep core
+> This causes an immediate core dump. [...]
+
+Yes, yes, I didn't want to use dump() because it doesn't give you a 
+useful backtrace. My module calls a few functions before it segfaults:
+
+   #0  0x4039f781 in crash_now_for_real (
+       suicide_message=0x403a0120 "Cannot stand this life anymore")
+       at SIGSEGVFault.xs:9
+   #1  0x4039f7a3 in crash_now (
+       suicide_message=0x403a0120 "Cannot stand this life anymore",
+       attempt_num=42) at SIGSEGVFault.xs:16
+   #2  0x4039f824 in XS_Debug__SIGSEGVFault_segv (cv=0x84ecda0)
+       at SIGSEGVFault.xs:25
+
+I use it in the documentation to explain what is a backtrace, how you 
+can figure out where the problem is. dump()'s bt on C-level is too short 
+to be useful in teaching.
+
+I guess I'll call it then Debug::DoSegFault.
+
+Thanks Tim!
+
+
+__________________________________________________________________
+Stas Bekman            JAm_pH ------> Just Another mod_perl Hacker
+http://stason.org/     mod_perl Guide ---> http://perl.apache.org
+mailto:stas@stason.org http://use.perl.org http://apacheweek.com
+http://modperlbook.org http://apache.org   http://ticketmaster.com
+

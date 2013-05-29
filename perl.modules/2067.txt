@@ -1,0 +1,55 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2067
+Return-Path: <gibreel@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16934 invoked from network); 2 Jun 2000 01:27:01 -0000
+Received: from c976901-a.potlnd1.or.home.com (HELO rabbit.fire-swamp.net) (24.12.188.116)
+  by tmtowtdi.perl.org with SMTP; 2 Jun 2000 01:27:01 -0000
+Received: from srz by rabbit.fire-swamp.net with local (Exim 3.12 #1 (Debian))
+	id 12xgDp-00089p-00; Thu, 01 Jun 2000 18:26:01 -0700
+To: Ken MacLeod <ken@bitsko.slc.ut.us>
+Cc: "Perl-XML Mailing List" <perl-xml@lyris.ActiveState.com>,
+	  modules@perl.org
+Subject: Re: SAX or XML::SAX ?
+References: <x5k8gmfogj.fsf@bitsko.slc.ut.us>
+	<20000522204137.A15233@kropotkin.copyleft.de>
+	<x5aehhvzkj.fsf@bitsko.slc.ut.us>
+Organization: speaking through, but not for, McKessonHBOC Corp.
+Date: 01 Jun 2000 18:26:00 -0700
+In-Reply-To: Ken MacLeod's message of "23 May 2000 14:25:32 -0500"
+Message-ID: <87ln0olvpz.fsf@rabbit.fire-swamp.net>
+Lines: 26
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) XEmacs/21.1 (Capitol Reef)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: gibreel@pobox.com (Stephen Zander)
+
+>>>>> "Ken" == Ken MacLeod <ken@bitsko.slc.ut.us> writes:
+    Ken> A little background first.  SAX modules come in three basic
+    Ken> flavors, "drivers" which generate SAX events (parsers are
+    Ken> drivers), "handlers" which consume SAX events (writers and
+    Ken> tree builders are handlers), and "filters" which are both
+    Ken> handlers and drivers.
+
+Do any of these have a standard API, e.g., is there a SAX driver API
+that all modules should provide?
+
+If so I'd say reserve SAX::Driver, SAX::Handler & SAX::Filter & let
+any implementations live directly undex SAX::.  The three reserved
+modules could just provide a standard import routine to an
+implementation in, like so
+
+    use SAX::Handler 'SAX::My3LeethA|\|ld3r';
+
+in the same way the DBI modules abstractes the DBD::* modules.
+
+If not, then perhaps SAX::Driver*, SAX::Handler* etc in the same way
+that Apache modules are Apache::Auth* etc.
+
+-- 
+Stephen
+
+"There are those who call me... Tim"

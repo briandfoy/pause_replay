@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:6152
+Return-Path: <ajm6q@virginia.edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 53046 invoked from network); 19 Jun 2001 01:07:12 -0000
+Received: from mail.virginia.edu (128.143.2.9)
+  by onion.valueclick.com with SMTP; 19 Jun 2001 01:07:12 -0000
+Received: from smtp.mail.virginia.edu by mail.virginia.edu id ab10886;
+          18 Jun 2001 21:07 EDT
+Received: from alpha10.bioch.virginia.edu (alpha10.bioch.Virginia.EDU [128.143.16.131])
+	by smtp.mail.Virginia.EDU (8.9.3/8.9.3) with ESMTP id VAA24348;
+	Mon, 18 Jun 2001 21:07:07 -0400
+Date: Mon, 18 Jun 2001 21:07:07 -0400 (EDT)
+X-X-Sender:  <ajm6q@alpha10.bioch.virginia.edu>
+Reply-To: "Aaron J. Mackey" <amackey@virginia.edu>
+To: Benjamin Trott <ben@rhumba.pair.com>
+cc: modules@perl.org
+MMDF-Warning:  Parse error in original version of preceding line at mail.virginia.edu
+Subject: Re: RFC: Data::Encrypted
+In-Reply-To: <B753EB12.F0E%ben@rhumba.pair.com>
+Message-ID: <Pine.OSF.4.33.0106182057460.4304-100000@alpha10.bioch.virginia.edu>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: ajm6q@virginia.edu (Aaron J Mackey)
+References: <B753EB12.F0E%ben@rhumba.pair.com>
+
+
+On Mon, 18 Jun 2001, Benjamin Trott wrote:
+
+> First let me start by saying that I think this is a really good idea; a
+> transparent method of storing sensitive data (eg. passwords) in an encrypted
+> form is a great thing.
+
+Thanks!
+
+> However, that makes me wonder: how much safer is the data if it's encrypted
+> using a passphrase-less private key, than if you just put it in a file
+> readable only by yourself? I'm not trying to challenge the idea behind your
+> module, but I think it's an interesting question. If someone can get access
+> to a file readably only by you, he/she can get access to your private key,
+> and thus can decrypt the encrypted data.
+
+You are exactly right.  My module is not meant to provide any more (or
+less) security than that already obtainable by file permissions.  What it
+is meant for is sharing of functional code/scripts without sharing
+sensitive data.  Secondarily, it assures me that only I may use the
+script, independent of whether I managed to set the permissions for the
+file correctly (but dependent that my .ssh key files do have correct, i.e.
+"secure" permissions, which they must for my ssh to work).
+
+> And if you use private keys w/ passphrases, then you're really no better
+> off, as you may as well require users to type in the real password each
+> time. :)
+
+Exactly.  Which is why I shied away from all the other cryptographic
+solutions which required passphrases.  Of course I could add an option to
+the script to accept passphrases when necessary (once per execution), thus
+unlocking all of the encrypted data - i.e. a "keychain" effect (your
+passphrase unlocks all the other sensitive data without you having to
+remember any of it).
+
+> 2) My other observation was that you have this in an example:
+>
+>       my $public = new Crypt::RSA::Key::Public::SSH
+>               Filename => '~/.ssh2/id_dsa_1024_a.pub';
+>
+>       my $public = new Crypt::RSA::Key::Private::SSH
+>               Filename => '~/.ssh2/id_dsa_1024_a'
+>               Password => 'The Only Good Computer Is A Dead Computer';
+>
+> You should rethink those filenames. :) Those are SSH-2 DSA keys, and I think
+> Crypt::RSA might have trouble reading them, for two reasons:
+
+You are exactly right - I wrote the documentation before coding the
+module, later discovering the support for SSH but not SSH-2 key files.
+Quite honestly I haven't delved into SSH-2 much yet (apart from generating
+my new keys to use with SSH-2 supporting hosts).
+
+> More importantly, it's important to note that Crypt::RSA does not support
+> reading SSH2 RSA files (like id_rsa_1024_a), or OpenSSH SSH-2 RSA files
+> (like id_rsa). I think Vipul is working on that, using Convert::PEM to read
+> the files; I know that I have support for reading these keyfiles in
+> Net::SSH::Perl::Key::RSA, but it's not in a released version of Crypt::RSA,
+> yet.
+
+When the technology catches up, I'll be sure to provide examples and
+extend the modules support, if necessary.  Until then, as you've noted,
+we're limited to reading SSH keys, or self built keys.
+
+Thanks for your input,
+
+-Aaron Mackey
+
+

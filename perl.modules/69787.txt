@@ -1,0 +1,72 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:69787
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5124 invoked from network); 11 Feb 2010 07:17:55 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 11 Feb 2010 07:17:55 -0000
+Received: (qmail 16784 invoked by uid 225); 11 Feb 2010 07:17:54 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 16780 invoked by alias); 11 Feb 2010 07:17:54 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 10 Feb 2010 23:17:20 -0800
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-6) with ESMTP id o1B7H7ce019054;
+	Thu, 11 Feb 2010 08:17:07 +0100
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id o1B7H6Zt019053;
+	Thu, 11 Feb 2010 08:17:06 +0100
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Fred Moyer <fred@redhotpenguin.com>
+Cc: modules@perl.org
+Subject: Re: Fwd: Failed: PAUSE indexer report PHRED/Apache2-Dispatch-0.14.tar.gz
+References: <201002090714.o197EGqr012607@pause.fiz-chemie.de>
+	<ad28918e1002082320ja8bf7d6xcc56a30eb9b8a322@mail.gmail.com>
+Reply-To: modules@perl.org
+Date: Thu, 11 Feb 2010 08:17:06 +0100
+In-Reply-To: <ad28918e1002082320ja8bf7d6xcc56a30eb9b8a322@mail.gmail.com>
+	(Fred Moyer's message of "Mon, 8 Feb 2010 23:20:13 -0800")
+Message-ID: <87wrykkzrh.fsf@franz.ak.mind.de>
+User-Agent: Gnus/5.110011 (No Gnus v0.11) Emacs/23.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 8 Feb 2010 23:20:13 -0800, Fred Moyer <fred@redhotpenguin.com=
+> said:
+
+  > Greetings,
+  > I've removed the 0.10 files from CPAN after my previous upload, but on
+  > my most recent upload, I'm still getting this error message.
+
+  > Am I totally screwed here?  Or is there a way to fix this indexing
+  > issue?
+
+Maybe this is all you need:
+
+https://pause.perl.org/pause/authenquery?ACTION=3Dreset_version
+
+  > Please cc me on replies as I am not on the modules@perl list.
+
+  > Status: Decreasing version number
+  > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+  > =C2=A0 =C2=A0 module: Apache2::Dispatch
+  > =C2=A0 =C2=A0version: undef
+
+our $VERSION =3D $Apache::Dispatch::Util::VERSION;
+
+Such a line isn't understood by MakeMaker parse_version: it will only
+return undef. But you can declare what you wish to be indexed in the
+META.yml if you do not want to change the line.
+
+--=20
+andreas

@@ -1,0 +1,64 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3877
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14695 invoked from network); 12 Dec 2000 08:55:02 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by tmtowtdi.perl.org with SMTP; 12 Dec 2000 08:55:02 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id JAA25282;
+	Tue, 12 Dec 2000 09:48:59 +0100
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: "Richard Anderson" <starfire@zipcon.net>
+Cc: <andreas.koenig@anima.de>, <modules@perl.org>
+Subject: Re: MakeMaker question
+References: <033101c062c5$f06d2ce0$700ff93f@adcom133>
+	<m31yvgkp2t.fsf@ak-71.mind.de>
+	<037e01c062f3$4140bab0$700ff93f@adcom133>
+Reply-To: modules@perl.org
+Date: 12 Dec 2000 09:48:59 +0100
+In-Reply-To: "Richard Anderson"'s message of "Sun, 10 Dec 2000 13:50:41 -0800"
+Message-ID: <m3zoi26n44.fsf@ak-71.mind.de>
+Lines: 33
+User-Agent: Gnus/5.0807 (Gnus v5.8.7) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Sun, 10 Dec 2000 13:50:41 -0800, "Richard Anderson" <starfire@zipcon.net> said:
+
+ > And how do I hook this subroutine into Makefile.PL so that typing "perl
+ > Makefile.PL will insert the needed lines into the Makefile?  Or do I need to
+ > add another step to the normal installation procedure?
+
+It may sound weird, but it has historical reasons: MakeMaker looks
+into the MY namespace and handles subroutines there as if they had
+been written in its own namespace so that your subroutine
+MY::postamble will be executed. Its return value will end up in the
+Makefile. So all you do is write something like
+
+sub MY::postamble {
+        return "# See me in the Makefile\n";
+}
+
+in your Makefile.PL
+
+ > I don't like using /usr/local/etc/http-webtest either, but I don't think it
+ > is appropriate to install a subdirectory structure in
+ > /usr/lib/perl5/site_perl/5.005/HTTP - this seems reserved for .pm files.  At
+ > least /usr/local/etc/http-webtest will persist even after an upgrade to perl
+ > v 6.0.  The only problem with that directory would be if another app uses
+ > /usr/local/etc/http-webtest, which seems unlikely.  Or is your point that
+ > even the mere presence of a subdirectory in /usr/local/etc give MYSQL
+ > problems?
+
+The latter. But mind you, I have no solution for that, just the
+recommendation that you let the users decide where they prefer the
+files installed. A safer default place might be ~/.http-webtest.
+
+-- 
+andreas

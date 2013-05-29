@@ -1,0 +1,50 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9197
+Return-Path: <bill@wards.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 63005 invoked by uid 1012); 11 Dec 2001 18:37:05 -0000
+To: modules@perl.org
+Subject: Help test Number::Format
+Date: 11 Dec 2001 10:37:04 -0800
+Message-ID: <m21yi11u3z.fsf@komodo.home.wards.net>
+Lines: 31
+User-Agent: Gnus/5.0803 (Gnus v5.8.3) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Posted-By: 12.234.26.101
+Approved: news@nntp.perl.org
+From: bill@wards.net (William R Ward)
+
+
+Hi folks,
+
+I just created a new version (1.43) of Number::Format, and it passes
+all the tests on my system, but the cpan-testers rejected it.  The
+problem is probably related to the locale system, and for some reason
+the locale test failed on the tester's machine.  The tester is in
+Germany which is probably why.  I don't have access to any sites
+outside the US, so I'm asking for your help.  If you'd like to help,
+please download Number::Format from my website and run the following
+script, and send me the output:
+
+if (setlocale(POSIX::LC_ALL, "de_DE"))
+{
+    my $german = new Number::Format();
+    print "German: ", ($german->format_price(123456.789), "\n";
+}
+
+setlocale(POSIX::LC_ALL, "en_US");
+my $english = new Number::Format();
+print "English: ", ($english->format_price(123456.789), "\n";
+
+Thanks for your help!  You can get the module from this URL:
+http://www.bayview.com/download/Number-Format-1.43.tar.gz
+
+--Bill.
+
+-- 
+William R Ward            bill@wards.net          http://www.wards.net/~bill/
+-----------------------------------------------------------------------------
+     If you're not part of the solution, you're part of the precipitate.

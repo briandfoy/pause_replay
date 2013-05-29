@@ -1,0 +1,106 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4015
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 427 invoked from network); 29 Dec 2000 08:15:28 -0000
+Received: from palladium.baremetal.com (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 29 Dec 2000 08:15:28 -0000
+Received: from localhost (darren@localhost)
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id AAA08226;
+	Fri, 29 Dec 2000 00:07:27 -0800
+Date: Fri, 29 Dec 2000 00:07:26 -0800 (PST)
+X-Sender:  <darren@palladium.baremetal.com>
+To: Gunther Birznieks <gunther@extropia.com>
+cc: <modules@perl.org>, Darren Duncan <darren@DarrenDuncan.net>
+Subject: Re: RFC: WebsiteGenerator, etc.
+In-Reply-To: <5.0.0.25.2.20001229111153.00ad8008@mail.clark.net>
+Message-ID: <Pine.LNX.4.30.0012282331170.6239-100000@palladium.baremetal.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+References: <5.0.0.25.2.20001229111153.00ad8008@mail.clark.net>
+
+Gunther, in advance I thank you for the time you took to respond.  I am
+seeing what changes I can make so that my contributions are less
+proprietary and/or out of the more public namespaces.  It is good that you
+spoke up, as I have a better impression of what other people think.
+
+On Fri, 29 Dec 2000, Gunther Birznieks wrote:
+> It depends. Some people may not care very much about your proprietary
+> toolkit that you happen to be contributing to CPAN as a CGI toolkit. But
+> when you affect a namespace that is public then more people may be willing
+> to speak up.
+
+I am already looking into reorganizing my modules and separating out the
+ones that are truly unique.  I just saw today that one of them,
+Class::ParamParser, was deemed useful and non-proprietary enough to be
+included in the CPAN directory (under Data).  So it seems that simpler and
+more focused is better.  To that end I am doing individual RFCs on
+comp.lang.perl.sys on the more focused modules to judge reaction to them,
+and split said modules off on their own.
+
+I am looking at these 5 as possible new distributions:
+
+Class-ParamParser (already unique and approved)
+        Class::ParamParser (it's already this way, no change)
+
+Data-HashOfArrays (very focused, seems unique)
+	Data::HashOfArrays (currently under clpm RFC)
+	Data::HashOfArrays::SeqFile (will see if Boulder works instead)
+
+HTML-FormGenerator (Predefined HTML Forms; unique methodology I believe)
+	HTML::TagMaker (supports HTML::FormMaker; will look into new names)
+	HTML::FormMaker (will get RFC on this next; should be non-prop)
+
+Log-EventCountFile (date-bounded event counts)
+        Log::EventCountFile (will investigate further...)
+
+WebsiteGenerator (these are proprietary, will look into own namespace)
+	CGI::WG::WebUserIO
+	CGI::WG::PageContent
+	CGI::WG::Globals (subclasses WebUserIO and PageContent)
+	CGI::WG::PageMaker (was Base)
+	CGI::WG::PM::* (example subclasses of PageMaker)
+
+> Perhaps the modules list is not as appropriate as mod_perl and a CGI
+> programming list for deciding names. I personally do not subscribe to the
+> modules list as I don't want to be inundated with tons of mail about
+> modules I don't care about -- I generally only care about web-related ones.
+
+I only care about web related modules too, but the "How to Contribute
+Modules" instructions said that the modules list was the place to ask for
+namespaces.  I will look into a CGI mailing list...
+
+> Well, if they depend on them, and it's a useful module in its own right,
+> then it seems to make sense to separate it as a separate entry. For
+> example, storing key=value pairs--- Lincoln Stein's boulder is built to do
+> that already and just because he uses a similar format in CGI.pm
+> persistence doesn't mean he'll make a module called CGI::Boulder.
+
+I knew that the functionality was in CGI.pm, and thought it would be good
+on its own right, so split it off.  My first impressions of the Boulder
+module is that it was a more complicated format, even if similar, but I
+will look at it again...
+
+> Instead he references a separate Boulder module from within his CGI.pm
+> documentation.
+
+But CGI.pm does still implement the serialization by itself, rather than
+using Boulder, so there must be a reason... (save using an extra module).
+
+> Related the comment about Apache::* versus CGI::*. I believe that if the
+> module is CGI related it should belong to CGI:: namespace and that by
+> virtue of the fact that it is in the CGI:: namespace it should strive to be
+> compatible under Apache::*.
+
+Thanks for the tip; I will keep this in mind.  Although that is partly why
+I chose the CGI space before...
+
+Good days,
+
+// Darren Duncan
+
+

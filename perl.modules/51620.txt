@@ -1,0 +1,104 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:51620
+Return-Path: <cpan@ali.as>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28198 invoked from network); 7 Nov 2006 00:44:29 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 7 Nov 2006 00:44:29 -0000
+Received: (qmail 8963 invoked by uid 225); 7 Nov 2006 00:44:28 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8940 invoked by alias); 7 Nov 2006 00:44:27 -0000
+X-Spam-Status: No, hits=-4.4 required=8.0
+	tests=ALL_TRUSTED,BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: neutral (x1.develooper.com: local policy)
+Received: from x6.develooper.com (HELO lists.develooper.com) (63.251.223.186)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Mon, 06 Nov 2006 16:44:21 -0800
+Received: (qmail 27765 invoked by uid 515); 7 Nov 2006 00:43:55 -0000
+Message-ID: <20061107004355.27755.qmail@lists.develooper.com>
+To: modules@perl.org
+Date: Tue, 07 Nov 2006 11:41:43 +1100
+User-Agent: Thunderbird 1.5.0.7 (Windows/20060909)
+MIME-Version: 1.0
+Subject: Re: Complex version numbers?
+References: <454F5DD0.50205@sendu.me.uk>
+In-Reply-To: <454F5DD0.50205@sendu.me.uk>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Posted-By: 124.188.126.10
+Approved: news@nntp.perl.org
+From: cpan@ali.as (Adam Kennedy)
+
+For PPI I use 1.100, then 1.101, 1.102, 1.103, and then for RCs, 
+1.199_01, 1.199_02, then 1.200.
+
+This is on the assumption you don't want to use fully fledged 
+multiparts, but want a highly back-compatible equivalent.
+
+Now, for you guys, if the release IS going onto the CPAN then it MUST 
+have a _01, etc if it is not a production release.
+
+However, if it will NOT be going onto the CPAN and will only be 
+installed by hand, there's no reason for you not to use production 
+version numbers.
+
+That way you can still have dependencies on it properly, and nobody 
+using the normal CPAN dependency logic will be affected.
+
+RCs I've found using the last possible version of the previous sequence 
+to be the most effective way to handle the situation.
+
+So in your case, the next dev release is 1.502 and then production is 
+1.600 (which is what 1.6 means anyway).
+
+So to match your example
+
+ > $VERSION = 1.501_91; # RC1 of developer 1.5.2
+ > $VERSION = 1.502;    # final release of developer 1.5.2 (NOT ON CPAN)
+ > $VERSION = 1.599_01; # RC1 of 1.6.0
+ > $VERSION = 1.600;    # final release of 1.6.0
+
+Anyways, that's one option, and it's worked pretty well for PPI.
+
+Adam K
+
+Sendu Bala wrote:
+> Hi,
+> 
+> We have some modules in CPAN for bioperl, eg. BIRNEY/bioperl-1.4.tar.gz.
+> For the future we would like to have better $VERSION strings than our 
+> current '1.4'. We're not quite sure the best way to do this. We need 3 
+> part version numbers, and a way to denote a developer-only release (that 
+> won't automatically be downloaded as the latest version).
+> 
+> For example, the next release will be called 1.5.2 and is a developer 
+> release. After that there will be 1.6.0 which we want to be downloaded 
+> automatically by people instead of 1.4. To further complicate matters, 
+> we also want release candidates to be available on CPAN (to test that 
+> CPAN will be happy with the final release, as well as make it easier for 
+> people to try the candidate). So there might be 1.6.0 RC1 before the 
+> final release of 1.6.0
+> 
+> We are currently considering:
+> 
+> $VERSION = 1.52_01; # RC1 of developer 1.5.2
+> $VERSION = 1.52_10; # final release of developer 1.5.2
+> $VERSION = 1.60_01; # RC1 of 1.6.0
+> $VERSION = 1.6010;  # final release of 1.6.0
+> 
+> OR
+> 
+> $VERSION = 1.005002_001; # RC1 of developer 1.5.2
+> $VERSION = 1.005002_100; # final release of developer 1.5.2
+> $VERSION = 1.006000_001; # RC1 of 1.6.0
+> $VERSION = 1.006000100;  # final release of 1.6.0
+> OR
+> $VERSION = 1.006000;     # final release of 1.6.0
+> 
+> Any thoughts as to what would be most appropriate?
+> 
+> 
+> Thank you,
+> Sendu.

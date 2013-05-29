@@ -1,0 +1,193 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2449
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 662 invoked from network); 15 Jul 2000 06:38:53 -0000
+Received: from 208.184.111.7.baremetal.com (HELO palladium.baremetal.com) (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 15 Jul 2000 06:38:53 -0000
+Received: from [24.67.200.33] (24.67.200.33.bc.wave.home.com [24.67.200.33])
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id XAA17629;
+	Fri, 14 Jul 2000 23:38:10 -0700
+Mime-Version: 1.0
+Message-ID: <f04320407b595b1e7943a@[24.67.200.33]>
+Date: Fri, 14 Jul 2000 23:39:28 -0700
+To: PAUSE <modules@perl.org>
+Subject: request namespace for IO::SequentialFile
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Context Note: I am releasing a succession of around 15 Perl 5 object 
+modules.  Six of these are complete and documented, and will be 
+submitted quickly.  The others are working but not fully documented, 
+so I am holding them back for the moment.  All of these modules, with 
+info on how they can be used together (and working examples), are 
+available at http://www.DarrenDuncan.net.  They have temporary names 
+in the DDuncan::* name space.  They all require 5.004 for 
+consistency, although some can do with less.
+-----------------------------------------------
+
+Here is #2:
+
+Name                DSLI  Description 
+Info
+------------------  ---- 
+------------------------------------------------  -------
+IO::SequentialFile  bdpO  store prefs,logs from HoAs/hash as k=v text 
+file  DUNCAND
+
+If you have suggestions of alternate names for this module, I would 
+be happy to hear them.  Likewise, I appreciate suggestions for a 
+better brief description for use in the module list.
+
+For a good description of my module, I have provided part of its POD 
+at the end of this letter.  The rest of the POD is on my site.
+
+Currently, at least 1 of my other modules uses this one.
+
+// Darren Duncan
+
+----------------------------------------------
+
+=head1 NAME
+
+DDuncan::SequentialFile - Perl module that provides an interface to the common
+file format that stores records as named name=value pairs, where each 
+pair is on
+a separate line.
+
+I<Please note that the path name of this module is temporary, something that
+works until a more appropriate and integrated name can be found.  A possibility
+could be IO::SequentialFile>
+
+=head1 DEPENDENCIES
+
+=head2 Perl Version
+
+5.004
+
+=head2 Standard Modules
+
+=item Fcntl
+
+=head2 Nonstandard Modules
+
+=item DDuncan::HashOfArrays 1.04
+
+=head1 SYNOPSIS
+
+	use DDuncan::SequentialFile 1.01;
+
+	my $create_nonexistent = 1;
+	my $case_insensitive = 1;
+
+	my $field_defin_file = DDuncan::SequentialFile->new( 
+"GB_Questions.txt" );
+	my $message_file = DDuncan::SequentialFile->new(
+		"GB_Messages.txt", $create_nonexistent );
+
+	my $query_string = '';
+	if( $ENV{'REQUEST_METHOD'} =~ /^(GET|HEAD)$/ ) {
+		$query_string = $ENV{'QUERY_STRING'};
+	} else {
+		read( STDIN, $query_string, $ENV{'CONTENT_LENGTH'} );
+	}
+	my $user_input = DDuncan::HashOfArrays->new( 
+$case_insensitive, $query_string );
+	$message_file->append_new_records( $user_input ) or
+		die "Error saving new GuestBook message: 
+".$message_file->is_error()."\n";
+
+	my @field_list = $field_defin_file->fetch_all_records( 
+$case_insensitive );
+	if( my $err_msg = $field_defin_file->is_error() ) {
+		die "Error determining GuestBook questions: $err_msg\n";
+	}
+	my @message_list = $message_file->fetch_all_records( 
+$case_insensitive );
+	if( my $err_msg = $message_file->is_error() ) {
+		die "Error reading existing GuestBook messages: $err_msg\n";
+	}
+
+	print "All GuestBook Messages:\n";
+	foreach my $message (@message_list) {
+		print "\n";
+		foreach my $field (@field_list) {
+			my $field_name = $field->fetch_value( 'name' );
+			my $title = $field->fetch_value( 'title' );
+			my @inputs = $message->fetch( $field_name );
+			print "Question: '$title'\n";
+			print "Answers: '".join( "','", @inputs )."'\n";
+		}
+	}
+
+=head1 DESCRIPTION
+
+This Perl 5 object class provides an easy-to-use interface for a 
+plain text file
+format that is capable of storing an ordered list of variable-length records
+where the fields of each record are stored in name=value pairs, one field value
+per line.
+
+Each record can have different fields from the others, and each field can have
+either one or several values.  In the latter case, the field name is 
+repeated for
+each value.  Records are delimited by lines that contain only a "=" and are
+otherwise empty.  The order of individual fields in the file doesn't 
+matter, but
+the order of parts of multivalued fields does; this order is preserved.
+
+All field names and values are url-escaped, so we are capable of storing binary
+data without corrupting it.
+
+=head1 FILE FORMAT EXAMPLE
+
+=
+name=name
+type=textfield
+visible_title=What%27s+your+name%3f
+=
+default=eenie
+default=minie
+name=words
+type=checkbox_group
+values=eenie
+values=meenie
+values=minie
+values=moe
+visible_title=What%27s+the+combination%3f
+=
+name=color
+type=popup_menu
+values=red
+values=green
+values=blue
+values=chartreuse
+visible_title=What%27s+your+favorite+colour%3f
+=
+type=submit
+
+=head1 SYNTAX
+
+This class does not export any functions or methods, so you need to call them
+using indirect notation.  This means using B<Class->function()> for 
+functions and
+B<$object->method()> for methods.
+
+Record data taken from a file is returned as a list of DDuncan::HashOfArrays
+(HoA) objects, one object for each record.  The keys in the HoA are the field
+names, and the list of values associated with each HoA key are the 
+values of the
+field.  Record data to be stored in a file must likewise be provided 
+as a list of
+HoA objects, or a list of HASH refs.  HoAs are used because they simplify the
+manipulation of hashes whose keys may have one or several values (see the HoA
+documentation for details of their use).
+
+Objects of this class always store the filehandle they are working with as an
+internal property.  However, you have a choice as to whether it creates the
+filehandle or whether you pass it an existing one.  Likewise, you can retrieve
+the filehandle in question for your own manipulation, irregardless of how this
+class object got it in the first place.

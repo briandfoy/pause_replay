@@ -1,0 +1,68 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2973
+Return-Path: <Christian_Gilmore@tivoli.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26619 invoked from network); 26 Sep 2000 21:15:51 -0000
+Received: from corp.tivoli.com (216.140.178.60)
+  by tmtowtdi.perl.org with SMTP; 26 Sep 2000 21:15:51 -0000
+Received: from cgilmor1 (cgilmor1.dev.tivoli.com [146.84.40.105])
+	by corp.tivoli.com (8.9.3/8.9.0) with SMTP id QAA29285;
+	Tue, 26 Sep 2000 16:15:49 -0500 (CDT)
+To: "Modperl Mailing List (E-mail)" <modperl@apache.org>,
+        "Perl Modules (E-mail)" <modules@perl.org>
+Subject: [ANNOUNCE] Apache::AuthzCache 0.02
+Date: Tue, 26 Sep 2000 16:13:02 -0500
+Message-ID: <000b01c027fe$8ee51c50$69285492@tivoli.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook CWS, Build 9.0.2416 (9.0.2910.0)
+Importance: Normal
+X-MimeOLE: Produced By Microsoft MimeOLE V5.00.2314.1300
+Approved: news@nntp.perl.org
+From: Christian_Gilmore@tivoli.com ("Christian Gilmore")
+
+The URL
+
+    http://www.fremen.org/apache/Apache-AuthzCache-0.02.tar.gz
+
+has entered CPAN as
+
+  file: $CPAN/authors/id/C/CG/CGILMORE/Apache-AuthzCache-0.02.tar.gz
+  size: 8402 bytes
+   md5: a02573ca7dd3c78c9a5597d3534fa143
+
+Apache::AuthzCache is designed to work with a mod_perl authorization
+module to provide caching of group membership for site users. For a list
+of mod_perl authorization modules see:
+
+http://www.cpan.org/modules/by-module/Apache/apache-modlist.html
+
+When a request that requires authorization is received, Apache::AuthzCache
+looks up the REMOTE_USER in a shared-memory cache (using IPC::Cache) and
+compares the list of groups in the cache against the groups enumerated
+within the "require" configuration directive. If a match is found, the
+handler returns OK and clears the downstream Authz handlers from the
+stack. Otherwise, it returns DECLINED and allows the next PerlAuthzHandler
+in the chain to be called.
+
+After the primary authorization handler completes with an OK,
+Apache::AuthzCache::manage_cache adds the new group (listed in
+REMOTE_GROUP) to the cache.
+
+See AuthzCache.pm pod for detailed documentation.
+
+Enjoy,
+Christian
+
+-----------------
+Christian Gilmore
+Infrastructure & Tools Team Lead
+Web & Multimedia Development
+Tivoli Systems, Inc.
+

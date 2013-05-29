@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2824
+Return-Path: <tchrist@chthon.perl.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24034 invoked from network); 6 Sep 2000 13:50:45 -0000
+Received: from chthon.perl.com (207.174.18.70)
+  by tmtowtdi.perl.org with SMTP; 6 Sep 2000 13:50:45 -0000
+Received: from chthon (IDENT:tchrist@localhost [127.0.0.1])
+	by chthon.perl.com (8.10.0/8.10.0) with ESMTP id e86DoOg08589;
+	Wed, 6 Sep 2000 07:50:24 -0600 (MDT)
+To: makemaker@franz.ww.tu-berlin.de, modules@perl.org
+cc: JVromans@squirrel.nl (Johan Vromans), Jarkko Hietaniemi <jhi@iki.fi>,
+   gnat@chthon.perl.com
+Subject: On progmods: request for makemaker help/support plus namespace advice
+Reply-to: tchrist@perl.com
+Date: Wed, 06 Sep 2000 07:50:23 -0600
+Message-ID: <1723.968248223@chthon>
+Approved: news@nntp.perl.org
+From: tchrist@chthon.perl.com (Tom Christiansen)
+
+I intend to reveal the perldoc rewrite to the World today.  I've
+got all the componentry abstracted out into progmods now.  Mostly,
+really, I just need to add documentation and cobble together at
+least the vestiges of a makefile so that people have a chance of
+getting it working on their system.
+
+I can't really make out how to make makemaker make me a makefile
+that will handle these progmods that I've made.  I bet I can't do
+it trivially.  A "progmod" is
+
+    1) an executable perl script
+    2) a C<use>-able perl F<.pm> module
+    3) its own podpage
+
+Moreover, in the case of #1, some of these would like multiple links
+(eg $0 = "docpath" vs $0 = "podpath").
+
+I also have some namespace issues that I need to resolve.  I don't
+know where to find a module name for these.   For example, I've got
+pmpath, which is a "perl module tool" and can be used as pmpath(1)
+the program or as a module via:
+
+    use PM::Tools::pmpath;
+
+but maybe that should be 
+
+    use PMTools::pmpath;
+
+or even 
+
+    use PMT::pmpath;
+
+
+Sometimes I wonder whether it shouldn't be 
+
+    use PM::Tools qw/pmpath/;
+
+But then I've got things like "podgrep" and "podpath", which are
+really more pod tools htan they are perl module tools.  What
+about their names?  Right now they're lumped in as 
+
+    use PM::Tools::podgrep;
+    use PM::Tools::podpath;
+
+But I'm not sure that that's right.  Even making it
+
+    use Pod::Tools::podgrep;
+    use Pod::Tools::podpath;
+
+seems weird to me in some way.  Should there be a difference between
+pod tools and pm tools?  Should this concept even exist?
+
+Then we have the issue of the tcgrep(1) progmod, which isn't really
+a pod tool or a pm (perl module) tool, but rather a PPT (perl power
+tools) replacement for the standard grep(1) program.  So I'm currently
+saying:
+
+    use PPT::tcgrep;
+
+And then you call the tcgrep() function.
+
+Because it's a PPT standard tool replacement--yet I can't even call
+the function grep(), as that's a standard perl keyword I daren't import.
+
+I have a bunch of these progmods now.  I'll mail you some if you
+want to see how they work.
+
+--tom

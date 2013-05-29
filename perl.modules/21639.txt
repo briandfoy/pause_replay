@@ -1,0 +1,130 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21639
+Return-Path: <vze4rnqz@verizon.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 79478 invoked by uid 76); 7 Jun 2003 19:26:33 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Sat, 07 Jun 2003 12:26:33 -0700
+Received: (qmail 18523 invoked by uid 225); 7 Jun 2003 19:26:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18512 invoked by uid 507); 7 Jun 2003 19:26:29 -0000
+Received: from out003pub.verizon.net (HELO out003.verizon.net) (206.46.170.103) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Sat, 07 Jun 2003 12:26:28 -0700
+Received: from squirtle.localdomain ([68.160.212.82]) by out003.verizon.net          (InterMail vM.5.01.05.33 201-253-122-126-133-20030313) with ESMTP          id <20030607192621.KRSU4805.out003.verizon.net@squirtle.localdomain>;          Sat, 7 Jun 2003 14:26:21 -0500
+Received: from squirtle.localdomain (squirtle [127.0.0.1])	by squirtle.localdomain (8.12.9/8.12.9/Debian-3) with ESMTP id h57JQ2NB017810;	Sat, 7 Jun 2003 15:26:02 -0400
+Received: (from kstar@localhost)	by squirtle.localdomain (8.12.9/8.12.9/Debian-3) id h57JQ2dL017808;	Sat, 7 Jun 2003 15:26:02 -0400
+X-Authentication-Warning: squirtle.localdomain: kstar set sender to vze4rnqz@verizon.net using -f
+Date: Sat, 7 Jun 2003 15:26:02 -0400
+To: Adam Foxson <afoxson@pobox.com>
+Cc: modules@perl.org, fox@cpan.org
+Subject: Re: Module submission Net::IANA::PortNumbers
+Message-ID: <20030607192602.GB17639@verizon.net>
+References: <200306070711.h577Bgo6031794@pause.perl.org> <20030607163242.GA16864@verizon.net> <20030607182118.GA28164@magnonel.guild.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20030607182118.GA28164@magnonel.guild.net>
+User-Agent: Mutt/1.5.4i
+X-Authentication-Info: Submitted using SMTP AUTH at out003.verizon.net from [68.160.212.82] at Sat, 7 Jun 2003 14:26:20 -0500
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-1.6 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,RCVD_IN_OSIRUSOFT_COM,REFERENCES,SPAM_PHRASE_03_05,USER_AGENT,USER_AGENT_MUTT,X_AUTH_WARNING,X_OSIRU_DUL version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: kstar@cpan.org (Kurt Starsinic)
+
+On Jun 07, Adam Foxson wrote:
+> On Sat, Jun 07, 2003 at 12:32:42PM -0400, Kurt Starsinic wrote:
+> >         1. It's not *actually* using the official registry, as
+> >         advertised; the port numbers are hard-coded.
+> 
+> Thanks for the taking the time to draw up your concerns. Actually, it
+> *is* using the official registry, as advertised. There is an undocumented
+> internal method named _create_db which takes the official registry at
+> http://www.iana.org/assignments/port-numbers and converts it into the
+> internal representation to which you're referring.
+
+    Ah.  I only saw that new() calls _init_db(), which reads from <DATA>.
+And I now see that there's no way to easily use the output from
+_create_db(), without editing the module's source.
+
+> I do this for several reasons, and the top reason is that it results in a
+> distribution that *tremdously* smaller than if it would not have been
+> translated to an internal representation . . . . If you still feel there
+> should be an implementation change for this point, please feel free to
+> suggest one that you feel would be better. :-)
+
+    I'd suggest a few things.  Use any, all, or none:
+
+        Document _create_db().
+
+        Have _create_db() remove the ports you don't like (it appears
+        to me that you hand-edited its output before incorporating
+        it in the module), unless you agree with me (see below) that
+        the ports shouldn't be removed.
+
+        Don't put the data into __DATA__.  Have the module run
+        _create_db(), and put its output in a separate data file,
+        on installation.
+
+> >         Thus, if the registry is updated, I have no way of knowing that
+> >         the entries I'm using are outdated, and no way of
+> >         forcing an update.
+> 
+> There is a method last_updated() that will return the date that the IANA
+> port registry, that was translated, stated that it was last updated.
+> Ostensibly, there is no current means by which one could force an update,
+> but I had planned to keep a good eye on it and release new versions as
+> necessary.
+
+    I think it's better if updating the data doesn't require updating
+the module.  Organizations and software distros with tight software
+control management will be more likely to use it then.
+
+> If I do include a means by which to allow users of N::I::P to force an
+> update how would you envision that working?
+
+    As I alluded to above, _init_db() should read from a file, and
+_create_db() should write to same; then the user, given sufficient
+privileges, could call _create_db() to force an update.
+
+> >         2. You leave out some ports "with no associated protocols."
+> >         I'm not sure what the value of this is; as a naive user, I
+> >         would expect that the module maps as in IANA's registry,
+> >         not as in what protocols are actually known to be deployed
+> >         in the wild.
+> 
+> Well, the problem with the sixteen services that you mention is simply that
+> in the port registry they have no protocols associated with them, thus I
+> have no idea as to how they should be "correctly represented". I figured it
+> would be better to disclude them than to guess, being that all of the
+> methods require either a port and protocol, or service and protocol. I
+> regard these particular entries, in the port registry, as clerical
+> mistakes, since the thousands of other services do indeed have associated
+> protocols.  If you have any ideas as to how this can best be dealt with, I
+> am all ears.
+
+    I would suggest that the protocol should be '', and while I'm
+armchair protocol-tweaking, I'll suggest that '' as a protocol in
+port2svc() and port2desc() should match any protocol, in which case
+they would return a list of matches.  E.g.:
+
+        $iana->port2svc(113);   # Returns qw(ident auth)
+        $iana->port2desc(7300); # Returns 'The Swiss Exchange'
+
+    I would say that leaving them out is a bad idea.  I, for example,
+would use this module to:
+
+        Implement tools like nmap or netstat, where *I* might choose
+        to assume that those ports were assigned to TCP and UDP (this
+        is my best guess about what the entries actually mean).
+
+        Check if a port is assigned to anything.  Again, I might
+        choose to assume that they're assigned to TCP and UDP (and
+        SCTP and TDP).
+
+    The long and the short of it is that I'd like to see all the
+information that's in the database, whether or not it's complete.
+
+    - Kurt
+

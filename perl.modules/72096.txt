@@ -1,0 +1,173 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:72096
+Return-Path: <xiong-cpan@xuefang.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 31575 invoked from network); 27 Jul 2010 12:10:24 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 27 Jul 2010 12:10:24 -0000
+Received: (qmail 16143 invoked by uid 225); 27 Jul 2010 12:10:24 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 16139 invoked by alias); 27 Jul 2010 12:10:23 -0000
+X-Spam-Status: No, hits=1.6 required=8.0
+	tests=RCVD_IN_BRBL_LASTEXT
+X-Spam-Check-By: la.mx.develooper.com
+Received: from explorer.x10premium.com (HELO explorer.x10premium.com) (69.175.6.90)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 27 Jul 2010 05:10:21 -0700
+Received: from netblock-68-183-253-152.dslextreme.com ([68.183.253.152])
+	by explorer.x10premium.com with esmtpsa (SSLv3:AES256-SHA:256)
+	(Exim 4.69)
+	(envelope-from <xiong-cpan@xuefang.com>)
+	id 1Odiz8-0006cR-4T
+	for modules@perl.org; Tue, 27 Jul 2010 08:10:14 -0400
+Subject: Re: RFC: Smart::Comments::Any
+Reply-To: xiong@cpan.org
+To: modules <modules@perl.org>
+In-Reply-To: <20100727072915.GE32619@agaton.scsys.co.uk>
+References: <1279958850.25359.169.camel@oz>
+	 <20100727072915.GE32619@agaton.scsys.co.uk>
+Content-Type: text/plain; charset="UTF-8"
+Organization: JAPH
+Date: Tue, 27 Jul 2010 05:10:12 -0700
+Message-ID: <1280232612.25359.309.camel@oz>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
+X-x10premium-MailScanner-Information: Please contact the ISP for more information
+X-x10premium-MailScanner-ID: 1Odiz8-0006cR-4T
+X-x10premium-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
+X-x10premium-MailScanner-SpamCheck: 
+X-x10premium-MailScanner-From: xiong-cpan@xuefang.com
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - explorer.x10premium.com
+X-AntiAbuse: Original Domain - perl.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - xuefang.com
+X-Old-Spam-Status: No
+Approved: news@nntp.perl.org
+From: xiong-cpan@xuefang.com (Xiong Changnian)
+
+On Tue, 2010-07-27 at 08:29 +0100, Matt S Trout wrote:
+
+> ...I'm unsure what this module gains over changing
+> all the code from 'print STDERR' to 'print $fh{$package}' ...
+
+That's about it, so far. There's more on the table and it's not quite
+that simple. I *had* thought it would be that simple but I was wrong. 
+
+The biggest issue I uncovered as I went along is the need to preserve
+properly scoped state information. You made the same mistake I did,
+early on, thinking the scope of (an indirect use of) Filter::Simple is
+(or should be) the package in which it's called. Actually, its scope is
+from the use() line to the no() line or EOF, ignoring package
+boundaries. So if: 
+
+# Sam.pm
+package Sam; 
+use Smart::Comments '###'; 
+### $A
+package Joe;
+### $B
+package Sam;
+### $C
+no Smart::Comments;
+### $D
+use Smart::Comments '####';
+### $E
+#### $F
+1;
+
+# Edgar.pm
+package Sam;
+#### $G
+1;
+
+... then $Sam::A, $Joe::B, $Sam::C, and $Sam::F will be dumped, while
+$Sam::D, $Sam::E, and $Sam::G will not. To maintain compatibility (and
+ensure orthogonality), I key %state_of not against caller(), which *was*
+my first idea; but against a per-use-line $caller_id. Filtered code can
+rarely be guaranteed unreachable, therefore I maintain per-use() state
+info indefinitely.
+
+There are a number of little details like this, such as the operation
+I've broken out into _spacer_required(). Turns out more state info is
+needed than just $outfh. Module initialization and internal state is
+murky (see $ID, $prev_length); and I think it's important to expose a
+number of arbitrary "constants" to customization. There's more to do. 
+
+Naturally, features already planned and suggested will cause further
+divergence -- as seen by the developer-user. From the viewpoint of the
+developer of the module itself, well, I've already done a lot of
+work/damage. 
+
+
+> ...plus adding your additional import() code.
+
+I believe you mean _prefilter(). I inserted a stub import() but since
+that's called by Filter::Simple *after* filtering, it's probably
+useless. If a filename is supplied, it should be opened into a
+filehandle before filtering begins. (Though I can /imagine/ doing it
+later.)
+
+Yes, _prefilter() needs much more work; it didn't exist in Vanilla. I'll
+need to refactor argument parsing to accommodate all the various options
+I intend to offer and still maintain compatibility. 
+
+
+> I simply can't see a major feature change... 
+> that would justify a new module rather than a simple patch...
+
+Check my POD for more detail. As I wrote, "Diffs to Vanilla are starting
+not to make sense."
+
+There's certainly no technical reason not to release the
+work-in-progress as Smart::Comments 1.1.0. My definition of a major
+feature change is one that breaks backwards compatibility and I haven't
+done that. Even if compatibility *is* broken someday, well, that could
+be 2.0.0. (Please see VERSIONS in the repo.)
+
+
+> ...what am I (MSTROUT) missing?
+
+Perhaps the better question is: What am I (XIONG) missing? I'm not
+completely sure that releasing this thing as a new version of S::C is
+wise but I'm certainly soliciting comments on the question from Older
+Heads. I'm glad to see some interest. 
+
+This is my first CPAN upload; for me, an important reason to get it done
+is to learn how to navigate the process. There is a
+social/political/cultural component to this. I /assume/ that if the
+module is to be released as a new version of Smart::Comments, then the
+current maintainer must consent. However, CHORNY has shown no interest. 
+
+Besides release as new version, I have seen support for, and criticism
+of, some alternatives: 
+
+Smart::Comments::Any
+    * Current working title. Vague.
+
+Smart::Comments::AnyOut
+    * I abhor MixedCaseIdentifiers. 
+
+Smart::Comments::Log
+    * Short == good. But module does not only print to STDLOG. 
+
+Smart::Comments::File
+    * Ditto. Perhaps better if it suggested "filehandle" as well. 
+
+Devel::Comments
+    * May be the "correct" location. Won't be found easily in searches. 
+
+Smarter::Comments
+    * I threw out this idea as a joke. Some devs like it. (!?)
+
+
+I'm still leaning toward 'Smart::Comments::File' as it will be found in
+searches, correctly indicates its parentage, and doesn't knock heads
+with anybody else. If you feel it's a bad choice, I'm all ears. 
+
+--
+-Xiong
+

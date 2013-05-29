@@ -1,0 +1,76 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:65082
+Return-Path: <chrisd@apache.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 1764 invoked from network); 26 Mar 2009 21:35:30 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 26 Mar 2009 21:35:30 -0000
+Received: (qmail 7633 invoked by uid 225); 26 Mar 2009 21:35:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7627 invoked by alias); 26 Mar 2009 21:35:29 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from idcmail-mo2no.shaw.ca (HELO idcmail-mo2no.shaw.ca) (64.59.134.9)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 26 Mar 2009 14:35:27 -0700
+Received: from pd6ml1no-ssvc.prod.shaw.ca ([10.0.153.160])
+  by pd7mo1no-svcs.prod.shaw.ca with ESMTP; 26 Mar 2009 15:35:23 -0600
+X-Cloudmark-SP-Filtered: true
+X-Cloudmark-SP-Result: v=1.0 c=0 a=gvYOit_bzGZHSL5cQr4A:9 a=njSim7a7jqxPhAsMSJkA:7 a=W3cdkz_9oX4ZHKb6yifcwuElsK4A:4 a=QCBgUabCC3oA:10 a=MSl-tDqOz04A:10
+Received: from s010600119555dbca.gv.shawcable.net (HELO [192.168.0.103]) ([24.69.75.192])
+  by pd6ml1no-dmz.prod.shaw.ca with ESMTP; 26 Mar 2009 15:35:22 -0600
+Message-ID: <49CBF52D.3040109@apache.org>
+Date: Thu, 26 Mar 2009 14:35:41 -0700
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.21) Gecko/20090323 SeaMonkey/1.1.15
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Re: Module submission Net::ZooKeeper
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: chrisd@apache.org (Chris Darroch)
+
+Hi --
+
+brian d foy <brian.d.foy@gmail.com> wrote:
+
+>> The following module was proposed for inclusion in the Module List:
+>> 
+>>   modid:       Net::ZooKeeper
+>>   DSLIP:       RdcOo
+>>   description: Interface to Apache ZooKeeper
+>>   userid:      CDARROCH (Chris Darroch)
+>>   chapterid:   5 (Networking_Devices_IPC)
+> 
+> Is this implementing a new network protocol, or connecting to ZooKeeper
+> through existing protocols? Normally we like to keep Net:: for
+> low-level protocol implementations.
+
+   The ZooKeeper C client code talks to ZooKeeper using its
+own custom binary request/response protocol delivered over TCP.
+This is handled by a separate thread.  (It would be inadvisable,
+I think, to try to talk to the server directly in Perl, in part
+because the client must maintain a regular heartbeat with the server.)
+
+   This module is a pure XS wrapper for that C client code and its
+communications with ZooKeeper.
+
+   So it's not a really really low-level implementation (on the level
+of TCP or UDP), but it's not something where you communicate via, say,
+human-readable HTTP requests either.  The protocol is specific
+to ZooKeeper, I believe.  I haven't looked closely but I suspect
+it's lower-level than, say, Net::Amazon::MechanicalTurk, which
+seems to be a WS-based interface.
+
+   Please just let me know if you think it should fall under
+another category, though.  Thanks!
+
+Chris.
+
+-- 
+GPG Key ID: 366A375B
+GPG Key Fingerprint: 485E 5041 17E1 E2BB C263  E4DE C8E3 FA36 366A 375B
+

@@ -1,0 +1,119 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:7866
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 8465 invoked from network); 2 Oct 2001 01:09:53 -0000
+Received: from dubravka.kbx.de (HELO pause.perl.org) (root@212.40.160.59)
+  by onion.valueclick.com with SMTP; 2 Oct 2001 01:09:53 -0000
+Received: (from nobody@localhost)
+	by pause.perl.org (8.9.3/8.9.3) id DAA08645;
+	Tue, 2 Oct 2001 03:09:51 +0200
+Date: Tue, 2 Oct 2001 03:09:51 +0200
+Message-ID: <200110020109.DAA08645@pause.perl.org>
+Reply-To: modules@perl.org
+Subject: Module submission Data::results2html
+To: modules@perl.org, earl@cpan.org
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: upload@p11.speed-link.de ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Data::results2html
+  DSLIP:       MdpOp
+  description: displays results with sorting/pagination
+  userid:      EARL (Earl Cahill)
+  chapterid:    6 (Data_Type_Utilities)
+  communities:
+    quite a bit at my work :)
+
+  similar:
+    Seems like there is another module that is similar, but I think mine
+    is better as I detail below
+
+  rationale:
+
+    results2html was written to help display anything that can be
+    mapped to an array of arrays. It is currently being used to display
+    results from:
+
+    an sql query (in about ten different applications) a directory
+    listing a program that mimics top on a box a mail inbox folders for
+    a mail inbox a utility to safely delete files from a live directory
+    a spider running on several boxes a program that tries to find
+    memory leaks a program that helps our programmers change their
+    cookies a shopping cart an address book a time tracking system an
+    error log analyzer a set of webring programs
+
+    Guess you know an array of arrays is a pretty general result set.
+
+    The coolest features are being able to (with the defaults) sort on
+    columns, and go through pages of data. Each column can have it's own
+    sort method (default usually works well), and the methods can be a
+    code ref or follow a simple convention 'aa' is ascii ascending, 'nd'
+    is numerica descending. A nice commenting convention allows for any
+    date format to easily be sorted (so long as epoch is known).
+
+    I set a cookie and use my File::CacheDir to retain state and
+    automatically clean up after myself.
+
+    The pagination stuff allows for moving forwards and backwards
+    through pages of data.
+
+    Also using the defaults, filter html can be generated based the
+    columns in your array of arrays, where rows can be included or
+    excluded depending on a regex, <, >, and =. Not using the defaults,
+    any sort of filtering can easily be accomplished through code refs.
+
+    Until recent layoffs, we had fifteen programmers here and nearly to
+    a man, they each used results2html in one way or another. It has
+    been live on our system for over a year. It is used for scripts used
+    by upwards of five million sites and has scaled very well.
+
+    Outputted rows are template driven with easy color switching
+    possibilities.
+
+    Would like to use Data::results2html with Data::html2results which
+    tries to go the other way - turning an arbitrary page of html into
+    an array of arrays. Also goes well with my soon to be released
+    Parallel::Spider.
+
+    I know there is another module or two out there with similar
+    functionality, but I really do think this is better. Millions of
+    testers and lots of different programmers using it, with me coding
+    to their needs and input.
+
+    After gathering my results, this is all I had to do to display
+    output with all the above features in some code I recently wrote
+    (this is the tail end of the program)
+
+    my $results2html = Data::results2html->new({ no_toc => 1, prefs =>
+    \%FORM, results => $self->{results}, sort_code => ['aa', 'na', 'ad',
+    'nd', 'nd', 'aa'], color_array => ['eeaaff', 'ffffff'], set_cookie
+    => 0, }); $results2html->{prefs}{sort_by_this_column} = 2
+    unless(defined $results2html->{prefs}{sort_by_this_column}); $html
+    .= $results2html->filter if($FORM{project}); print $html;
+
+    Thanks, Earl Cahil
+
+  enteredby:   EARL (Earl Cahill)
+  enteredon:   Tue Oct  2 01:09:51 2001 GMT
+
+The resulting entry would be:
+
+Data::
+::results2html    MdpOp displays results with sorting/pagination     EARL
+
+
+Thanks for registering,
+The Pause Team
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=20000000_36489b87a6a8564f&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=20000000_36489b87a6a8564f&SUBMIT_pause99_add_mod_insertit=1

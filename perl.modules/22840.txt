@@ -1,0 +1,78 @@
+Newsgroups: perl.dbi.users,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.dbi.users:19812 perl.modules:22840
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 35493 invoked by uid 76); 12 Aug 2003 18:06:43 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Tue, 12 Aug 2003 11:06:43 -0700
+Received: (qmail 1434 invoked by uid 225); 12 Aug 2003 18:06:41 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 1423 invoked by uid 507); 12 Aug 2003 18:06:41 -0000
+Received-SPF: unknown (domain of sender darren@darrenduncan.net does not designate mailers: NXDOMAIN)
+Received: from palladium2.baremetal.com (HELO pd2.baremetal.com) (208.184.111.59) by one.develooper.com (qpsmtpd/0.27-dev) with SMTP; Tue, 12 Aug 2003 11:06:38 -0700
+Received: from [24.108.166.215] (h24-108-166-215.gv.shawcable.net [24.108.166.215])	by pd2.baremetal.com (8.12.9/8.12.4) with ESMTP id h7CI6XGB021075;	Tue, 12 Aug 2003 11:06:40 -0700
+Mime-Version: 1.0
+Message-ID: <p05200f00bb5ed42ab54f@[24.108.166.215]>
+In-Reply-To: <20030812143004.GC13812@dansat.data-plan.com>
+References: <p05200f00bb5db9e2a236@[24.108.166.215]> <20030812143004.GC13812@dansat.data-plan.com>
+Date: Tue, 12 Aug 2003 11:06:12 -0700
+To: modules@perl.org, poop-group@lists.sourceforge.net, dbi-users@perl.org,   victoria-pm@pm.org
+Subject: Re: [RFC] SQL::AST (SQL Abstract Syntax Tree) - DBI related
+Content-Type: text/plain; charset="us-ascii"
+X-SMTPD: qpsmtpd/0.27-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-1.0 required=7.0 tests=CARRIAGE_RETURNS,IN_REP_TO,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01,SUPERLONG_LINE version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Thank you very much to all of you who replied (6 people at least), even though only some of them are quoted below.
+
+At 10:41 AM +0100 8/12/03, Ed Avis wrote:
+> How about just SQL::Tree?
+>
+> Since it is a Perl module nobody should think this is a package of SQL
+> routines for tree handling.
+>
+> Before you use 'abstract syntax tree' make doubly sure you know what
+> an AST is and how it differs from a concrete syntax tree.  I don't!
+>
+> Ed Avis
+
+I know that 'abstract' is more correct because my module is an abstracted representation of SQL which can be converted to or from any concrete SQL version, either ANSI or an RDBMS vendor variant.  I can not use 'concrete' because that would mean the class is identical to a SQL variant.
+
+Regarding 'SQL::Tree', that name is nice and short, but it almost sounds too generic.
+
+At 3:30 PM +0100 8/12/03, Tim Bunce wrote:
+>Short names are generally not good names. SQL::AbstractSyntaxTree
+>sounds okay, as does SQL::ObjectModel. I think SQL::ObjectModel is
+>a more "friendly" name.
+
+Not that I'm surprised, since you suggested it last time. :)  But two words does seem much easier to say than three ...
+
+>As a counter example I offer Data::Dumper and DBI. Both come with
+>C and pure-perl implementations that are selected automatically.
+>Much simpler for the user.
+>
+>Tim.
+
+Part of my reasoning for asking about a separate C module name is that I intend for the C module to be useable with any programming language, through a binding layer (XS in Perl 5's case, ? in Parrot's case), much as GD or libXML are.  So, are there any pure C modules that have ':' in their names?  Or that could be a non-issue.  For that matter, are C library names usually the same as their compiled file names?  If I used SQL::ObjectModel for the Perl name, then SQLObjModel perhaps might work for a C name?
+
+At 12:56 PM -0400 8/12/03, Matthew Simon Cavalletto wrote:
+>My two cents: SQL::AST is too short and cryptic, forcing me to guess which AST you're referring to, while SQL::AbstractSyntaxTree strikes me as workable but maybe a bit long (the module compatibility guideline is a maximum of 11 characters per name component).
+>
+>Of the three words Abstract Syntax Tree, the one that seems to me least valuable is Abstract, so you might also consider SQL::SyntaxTree as a candidate -- it's short enough, and pretty much self-explanatory.
+>
+>-Simon
+
+Well, 'AST' is definately not going to be used; everyone agrees with that.  Maybe 'Abstract' is less important, though I consider it meaningful, though maybe that isn't actually a problem.  Thanks for pointing out the 11 character dealy though.
+
+So, I have an idea.  What if I were to keep the previous name (not yet registered) of 'SQL::ObjectModel' for the module itself, and use 'Abstract Syntax Tree' in the description?  For example:
+
+SQL::
+::ObjectModel adhOg An abstract syntax tree for SQL              DUNCAND
+
+So who likes that for a registration?  Or should I keep SyntaxTree in the module name instead (and object model in the desc)?  Or are there other suggestions?
+
+-- Darren Duncan

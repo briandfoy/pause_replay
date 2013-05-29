@@ -1,0 +1,261 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:53041
+Return-Path: <astewart1@cox.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 29213 invoked from network); 12 Feb 2007 21:35:06 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 12 Feb 2007 21:35:06 -0000
+Received: (qmail 29926 invoked by uid 225); 12 Feb 2007 21:35:06 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29897 invoked by alias); 12 Feb 2007 21:35:05 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from fed1rmmtao103.cox.net (HELO fed1rmmtao103.cox.net) (68.230.241.43)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 12 Feb 2007 13:34:52 -0800
+Received: from fed1rmimpo01.cox.net ([70.169.32.71])
+          by fed1rmmtao103.cox.net
+          (InterMail vM.7.05.02.00 201-2174-114-20060621) with ESMTP
+          id <20070212213448.VZUG1349.fed1rmmtao103.cox.net@fed1rmimpo01.cox.net>
+          for <modules@perl.org>; Mon, 12 Feb 2007 16:34:48 -0500
+Received: from [72.197.178.112] ([72.197.178.112])
+	by fed1rmimpo01.cox.net with bizsmtp
+	id Nlao1W00S2RtYF40000000; Mon, 12 Feb 2007 16:34:48 -0500
+Message-ID: <45D0DD7E.4080208@cox.net>
+Date: Mon, 12 Feb 2007 13:34:54 -0800
+User-Agent: Thunderbird 1.5.0.9 (Windows/20061207)
+MIME-Version: 1.0
+To:  modules@perl.org
+Subject: appropriate namespace for this module ? Gimp::ScriptFu::Client
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: astewart1@cox.net (Alan Stewart)
+
+I haven't authored for CPAN before, so this is my first potential 
+upload. Is this a good namespace - Gimp::ScriptFu::Client, or should it 
+be over in the Image:: space ?
+
+Here is the POD:
+
+NAME
+     Gimp::ScriptFu::Client - Client for the GNU Image Manipulation Program
+
+SYNOPSIS
+     Makes a mixed Scheme and Perl script into a client application for
+     the Gimp Script-Fu server.
+
+VERSION
+     Version 1.01, Feb 6, 2007
+
+DESCRIPTION
+     Gimp::ScriptFu::Client acts as a source filter in a Scheme script
+     that uses Text::Template to preprocess any embedded Perl fragments
+     contained between { } brackets before sending the resulting Scheme
+     to a Gimp Script-Fu server. Each Perl fragment may or may not
+     produce a Scheme fragment.
+
+     The Scheme script becomes a standalone client application.
+
+     This permits using Perl for getting parameters from the real world
+     or for generating complex Scheme expressions, that would be more
+     difficult or impossible with plain Scheme.
+
+     It also makes it possible to do Perlish things with Gimp if you
+     can't do the compiler stuff for Gimp/Gimp::Fu for your OS. All
+     recent Gimp versions include the Script-Fu server.
+
+   Starting the Gimp server
+     Run Gimp with something like:
+
+         gimp-x.x -b "(plug-in-script-fu-server 1 10008 \"\")"
+
+     or start Gimp and start the server from the menu
+     Xtns/Script-Fu/Start Server.
+
+   Usage
+     Include this module at the beginning of the script:
+
+         use Gimp::ScriptFu::Client;
+
+     Everything after that is Scheme or embedded Perl fragments.
+
+     Command line options for the Client are:
+
+         --server   -s   # alternate server address
+         --port     -p   # alternate server port
+         --verbose  -v   # display Scheme before sending request
+         --check    -c   # generate Scheme for syntax check and exit
+
+     Options "-v" and "-c" may be bundled as "-vc" or "-cv".
+
+     The rest of the file after the "use Gimp::ScriptFu::Client" line is
+     preprocessed by "Text::Template" for embedded Perl - anything
+     between curly brackets. Perl variables persist from fragment to
+     fragment in a file. The resulting Scheme is displayed and/or sent to
+     the Gimp Script-Fu server and the result displayed.
+
+     The result may be 'Success', an ERROR message, or if the last
+     expression in the Scheme script has a string value, that string is
+     displayed.
+
+   Helper functions
+     The Client module provides several helper functions that can be used
+     in Perl fragments:
+
+     sexp_from_list()
+         This function takes a Perl list as an argument and returns a
+         string which is a Scheme expression for that list.
+
+     set_argv()
+         This function takes no arguments and returns a string which is a
+         Scheme expression setting the Scheme variable *argv* to the Perl
+         array @ARGV.
+
+     expand_files()
+         This function takes a Perl list of filenames or file patterns
+         and expands it to a Perl list of filenames with full real
+         pathnames. On a Win32 system , it will convert backslashes to
+         forward slashes for Gimp use. Gimp needs full paths because the
+         server is running in another directory. This function will "die"
+         is a filename is not found.
+
+     include_script()
+         This function takes the name of another Scheme/Perl Client
+         script plus any arguments for that script. The arguments are
+         passed to that script in @ARGV. The Scheme output of the
+         included script is returned by its Client code and included in
+         the parent script. The original @ARGV in the parent is
+         preserved. Includes may be nested.
+
+         The Client command line option "--include" is used internally as
+         the first argument to the included script.
+
+   Example command lines
+     Using the example Scheme/Perl script demo.pl, shown below:
+
+     demo *.jpg *.raw           # quietly send Scheme to Gimp
+     demo --verbose test.jpg    # display Scheme and send to Gimp
+     demo --check *.jpg *.bmp   # generate Scheme for errors and quit
+     demo -vc *.jpg             # display Scheme and/or errors and quit
+     demo -s 192.168.1.1 -p 10020 some.jpg   # use a different server
+     demo                       # demo uses file dialog to get file names
+
+     Client options are processed by Getopt::Long. To pass options to the
+     script use --
+
+     # pass --ext and --scale thru to demo, --verbose eaten by Client
+     demo --verbose -- --ext=jpg --scale=.5 *jpg
+
+     Included scripts have "--" prepended to the argument list
+     automatically, since the Client options are only needed for the
+     parent script.
+
+     Syntax errors will report line numbers for the template, not the
+     file. The line after "use Gimp::ScriptFu::Client;" is line 1 of the
+     template.
+
+   Example script 'demo.pl'
+         #!perl -w
+         use Gimp::ScriptFu::Client;
+         {use Getopt::Long;
+          $ext = 'png';
+          $scale = .1;
+          GetOptions( "ext=s"   => \$ext,   # thumbnail extension
+                      "scale=f" => \$scale, # thumbnail scale
+                      );
+
+          # This helper function expands all patterns
+          #  adds needed paths and converts Win32 backslashes
+          @ARGV = expand_files( @ARGV );
+          die "No files selected\n" if !@ARGV;
+          # no Scheme output from this Perl fragment
+          '' };
+
+         (begin
+
+         ; This helper function puts the
+         ; contents of @ARGV into the
+         ; Scheme variable, argv.
+         {set_argv}
+         (set! argc {scalar @ARGV})
+
+         ; include another file here
+         { include_script('included_script.pl',qw(--mode special a b c))}
+         ; original @ARGV is still = ({ "@ARGV" })
+
+         ; This uses Perl's regexes to create
+         ; filenames for the thumbnails.
+         (set!
+             outfiles '{
+                 sexp_from_list(
+                     map { s/\..*$/-thumbnail.$ext/; $_ } @ARGV)})
+
+         ; configure your scaling factor
+         (set! scale { $scale })
+
+         ; This is a function for resizing an image
+         (define (resize filename)
+             (let*
+             (
+                 (image     (car (gimp-file-load 1 filename filename)))
+                 (drawable  nil)
+                 (wd        (car (gimp-image-width image)))
+                 (hi        (car (gimp-image-height image)))
+                 (_wd       (* wd scale))
+                 (_hi       (* hi scale))
+                 (new-filename nil)
+             )
+             (gimp-image-scale image _wd _hi)
+             (set! drawable      (car (gimp-image-flatten image)))
+             (set! new-filename  (car outfiles))
+             (set! outfiles      (cdr outfiles))
+             (gimp-file-save 1 image drawable new-filename new-filename)
+             (gimp-image-delete image)
+             )
+         )
+
+         ; Finally, make a thumbnail out of every file in argv
+         (while (car argv)
+             (resize (car argv))
+             (set! argv (cdr argv))
+             )
+
+             ; If the last Scheme expression is a string,
+             ; it is the output of the script
+             ; otherwise, the output is "Success"
+             (string-append "Thumbnails created: " (number->string argc))
+         )
+
+   File 'included_script.pl' included in 'demo.pl'
+         #!perl -w
+         use Gimp::ScriptFu::Client;
+         { use Getopt::Long; }
+         ; stuff from 'included_script.pl' to test nested 'use' and @ARGV
+         ; included @ARGV = ({ "@ARGV" })
+         ; mode is {my $mode='normal';GetOptions("mode=s"=>\$mode);$mode}
+         ; after GetOptions, @ARGV = ({ "@ARGV" })
+
+AUTHOR
+     Alan Stewart <astewart1@cox.net>
+
+BUGS
+     Tested with Gimp 2.3.12 compiled with MinGW on Win XP, Feb 6, 2007.
+
+COPYRIGHT
+     Copyright (c) 2007 Alan Stewart. All rights reserved. This library
+     is free software; you can redistribute it and/or modify it under the
+     same terms as Perl itself.
+
+ACKNOWLDGEMENTS
+     Derived from an article and script by John Beppu <beppu@cpan.org> in
+     Linux Magazine Feb 15, 2002.
+
+SEE ALSO
+         Filter::Simple
+         Text::Template

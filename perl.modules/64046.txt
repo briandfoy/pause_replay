@@ -1,0 +1,158 @@
+Newsgroups: perl.dbi.dev,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.dbi.dev:5541 perl.modules:64046
+Return-Path: <darren@darrenduncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 669 invoked from network); 14 Jan 2009 03:56:08 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 14 Jan 2009 03:56:08 -0000
+Received: (qmail 7364 invoked by uid 225); 14 Jan 2009 03:56:07 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7355 invoked by alias); 14 Jan 2009 03:56:07 -0000
+X-Spam-Status: No, hits=0.2 required=8.0
+	tests=RCVD_IN_DNSWL_LOW,SARE_LWSHORTT,SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pd4.baremetal.com (HELO pd4.baremetal.com) (209.17.165.1)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 13 Jan 2009 19:56:01 -0800
+Received: from darren-duncans-power-mac-g4.local (S0106000f66d65e51.gv.shawcable.net [24.69.53.198])
+	by pd4.baremetal.com (8.13.4/8.12.10) with ESMTP id n0E3u0FL000752;
+	Tue, 13 Jan 2009 19:56:01 -0800
+Message-ID: <496D6232.4050701@darrenduncan.net>
+Date: Tue, 13 Jan 2009 19:55:30 -0800
+User-Agent: Thunderbird 2.0.0.19 (Macintosh/20081209)
+MIME-Version: 1.0
+To: matt@sergeant.org, msergeant@cpan.org
+CC: modules@perl.org, DBI Dev <dbi-dev@perl.org>, cpan@audreyt.org,
+        rose-db-object@googlegroups.com,
+        "DBIx::Class user and developer list" <dbix-class@lists.scsys.co.uk>,
+        General Discussion of SQLite Database <sqlite-users@sqlite.org>
+Subject: request to become co-maintainer of DBD::SQLite
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: darren@darrenduncan.net (Darren Duncan)
+
+Hello Matt Sergeant,
+
+I would like to request your permission or blessing to become an official 
+co-maintainer of the DBD::SQLite module, which is the defacto standard binding 
+for SQLite to Perl.
+
+(Also CC'd are some other concerned parties as FYI; my apologies if I've written 
+too many people.  But this message is initially just for response by Matt, 
+though others can write if they feel inclined, but try to keep the recipient 
+list smaller than I just did here.  Focus any discussion to dbi-dev@perl.org and 
+modules@perl.org as appropriate please, the former for what work needs doing and 
+the latter for matters of module maintainership.)
+
+P.S.  Or if anyone else has the tuits and wants to make a better offer to be a 
+co-maintainer now, please do so.
+
+I am interested in the long-term success of SQLite in combination with Perl, and 
+in the short term I am particularly interested in using the latest SQLite 3.6.8 
+(which adds the extremely important feature of nested transactions) with modern 
+versions of Perl, and I am interested that it would be easy for the large number 
+of other DBD::SQLite users to use this combination as well.
+
+I am also concerned with there apparently being a number of significant bugs in 
+DBD::SQLite that have been reported on the RT system, some with patches, and 
+DBD::SQLite hasn't seen new releases in awhile to either address bugs or update 
+the bundled SQLite.  A number of people I trust are seeing that this is a 
+serious matter to address, some in the mean-time recommending use of older 
+DBD::SQLite versions, which is itself a problem since automatic CPAN install 
+tools would select the newest versions, and access to newer SQLite library 
+features is missing.
+
+Now I would of course be happiest if you had the time and motivation to bring 
+your project up to date and address its bugs.  But otherwise I would like to 
+offer you an out, and take on this responsibility myself, either alone or with 
+partners such as yourself or other concerned parties that want to help.
+
+If you agree, then please say the word to modules@perl.org.
+
+My CPAN account ID is DUNCAND.
+
+To summarize, this is my intention in the short term:
+
+1.  Release a new version every time there is a SQLite core library release.
+
+2.  Make only the most minimal changes to DBD::SQLite itself, to ensure that 
+reported bugs are fixed and that it compiles on modern systems and passes its 
+own test suite on the same.  There won't be any feature additions or 
+architectural changes initially, except where such may be highly demanded and 
+simple.  The priorities here are stability and correctness plus easy access to 
+all the SQLite library's native features, and minimal additional features.
+
+3.  All initial releases will have version numbers ending in _NN that mark them 
+as developer releases, so the community can test them before they become what 
+the CPAN tools install by default.
+
+4.  Perhaps follow what Audrey Tang started and use the official amalgamated 
+pre-compiled source files rather than the original-original source code, so 
+users with less capable build environments can handle it.  Though in the short 
+term this will depend on which version I can get to work with fewer problems on 
+my own machine (Mac OS X Leopard).
+
+5.  I may use an older DBD::SQLite than the current one, such as 1.12, as an 
+initial point of departure, if doing so makes for a more trouble-free solution.
+
+6.  I will have this in a public GIT source repository and I will regularly seek 
+feedback, help, patches, testing, etc from the user community that have a stake 
+in this working.
+
+7.  I am assuming until corrected that the primary discussion forum for people 
+to discuss actual work to do and patches etc for DBD::SQLite is dbi-dev@perl.org.
+
+Some caveats:
+
+1.  I have very little C-fu right now and won't be able to do much in the short 
+term besides update the SQLite source files, and apply third-party patches to 
+the C, and make more involved fixes to the portions written in Perl.
+
+2.  It will probably be several weeks before my first release, partly because I 
+am busy with other tasks and I also need time for feedback and discussion.
+
+3.  All my releases should be considered experimental until further notice, 
+after a significant body of users has put them through the ringer and considered 
+them GA quality.
+
+4.  I *will* require third parties to submit patches to bugs in the C code in 
+order for many relevant problems to be fixed.  I may be able to fix some 
+problems myself, but otherwise I call it a division of labour, and my part is 
+mainly about applying patches and doing the releases; others can do a lot of the 
+actual fix patch making.  Generally speaking, the bugs that get fixed are the 
+ones people send me patches for.
+
+5.  In general I will not ever be working with blead of the core SQLite library, 
+only its public releases, which have a thorough test suite of their own.
+
+6.  One of my first code changes will be to require DBI 1.607+ and Perl 5.8.1+ 
+(and the former requires the latter too), though I may only ever run it under 
+5.10.x on my machine.  But if anyone knows that it will work with older 
+versions, they can submit a patch to that effect.
+
+7.  I would also like to adopt the versioning scheme that Audrey Tang used, so 
+that for example a first stable release with the current SQLite would be 
+DBD::SQLite 3.6.8.0, with the last digit only being updated while updates to 
+DBD::SQLite itself occur but updates to SQLite itself don't.  One question I 
+still have to figure out though is whether that can be done in combination with 
+the _NN suffix to mark developer releases, eg as 3.6.8_0 or 3.6.8.0_0 etc, so 
+that CPAN install tools work, and nothing on CPAN/PAUSE/etc would break. 
+Presumably I'd add a dependency on version.pm (bundled with Perl 5.10.x) in any 
+event.  The main benefit of this versioning scheme is that it is easy for users 
+to know at a glance what they're getting, and also if for some reason users need 
+me to later bundle some older SQLite version, the space already exists for 
+appropriate lower version numbers.
+
+Basically I'm doing this because someone has to do it, and I'm as good a default 
+person as any until someone better suited (eg, with more C-fu) comes along and 
+takes my place.
+
+Matt, thank you in advance for a quick reply.
+
+To everyone, please don't actually submit patches to me until I announce that 
+I'm ready to receive them, or just send them to RT as you already were.
+
+-- Darren Duncan

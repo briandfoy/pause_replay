@@ -1,0 +1,86 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5621
+Return-Path: <dhd@eradicator.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 80003 invoked from network); 16 May 2001 16:30:46 -0000
+Received: from dsl027-150-098.nyc1.dsl.speakeasy.net (HELO localhost) (@216.27.150.98)
+  by onion.valueclick.com with SMTP; 16 May 2001 16:30:46 -0000
+Received: from dhd by localhost with local (Exim 3.12 #1 (Debian))
+	id 1504C8-0001Jb-00; Wed, 16 May 2001 12:30:40 -0400
+To: modules@perl.org
+Cc: Gossamer <gossamer@tertius.net.au>,  Richard Caley <R.Caley@ed.ac.uk>,
+        "Kevin A. Lenzo" <lenzo@cs.cmu.edu>
+Subject: Re: Festival namespace
+References: <m3lmnxe2ma.fsf@ak-71.mind.de>
+Organization: Cepstral LLC
+Date: 16 May 2001 12:30:40 -0400
+In-Reply-To: andreas.koenig@anima.de's message of "16 May 2001 17:26:53 +0200"
+Message-ID: <87r8xp1cjz.fsf@monolith.eradicator.org>
+Lines: 57
+User-Agent: Gnus/5.0803 (Gnus v5.8.3) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Sender: David Huggins-Daines <dhd@eradicator.org>
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: dhd@cepstral.com (David Huggins-Daines)
+
+andreas.koenig@anima.de (Andreas J. Koenig) writes:
+
+> I just registered for the module list the namespaces
+> 
+> Festival::Client
+> Festival::Client::Async
+> Speech::Festival
+> Speech::Festival::Synthesiser
+> 
+> I'm not quite happy that we now have Festival in two different places
+> and would welcome a great unification. Basically we can go either way.
+> Speech is a good toplevel name but Festival is a famous library in its
+> own right.
+
+Yes, I was wondering about this myself when trying to decide what to
+name my module.  One thing to note is that all of the modules listed
+do very similar things.  I wrote Festival::Client::Async because the
+other modules did not appear to be well-suited to my needs (meaning,
+for the most part, non-blocking operation), and in this sense I'm to
+blame for not consulting with the other module authors about adding
+features to their existing modules.
+
+Looking more closely at Speech::Festival, it seems that it would not
+be too hard to merge Festival::Client::Async with it, as they have the
+same goals, though the interfaces and internals are different (I
+happen to think that mine is a better implementation of the protocol,
+but that could just be Hubris)
+
+I'm not sure to what degree Speech::Festival and Festival::Client are
+maintained, perhaps they can answer here :)
+
+> I'm not intending to push anything here, I just discovered that all of
+> you were unregistered all the years and I'd like to apologize for that.
+
+Thanks for getting the discussion started, it is definitely something
+that needs to be sorted out.
+
+There are a few namespaces in which Festival related modules can be
+put.  I do think the Festival:: namespace should not be used, as it is
+not really very descriptive.  On the other hand, Kevin has got the
+FestVox:: namespace for things related to building voices for
+Festival, so in that sense it perhaps makes sense.
+
+I would prefer for the module name Speech::Festival to be used as a
+namespace for interfaces to the *internals* of Festival, and have the
+(new, unified, all-singing, all-dancing) module which talks to a
+Festival server be called something else.
+
+I also very much like the idea (which Richard has implemented) of
+having a common Speech::Synthesizer interface for people who just want
+to do text-to-speech and don't care about being able to evaluate
+arbitrary Scheme expressions and fiddle with utterance structures.
+
+-- 
+David Huggins-Daines	|  dhd@cepstral.com
+Toolsmith		|  http://www.cepstral.com/
+Cepstral LLC		|  We Build Voices

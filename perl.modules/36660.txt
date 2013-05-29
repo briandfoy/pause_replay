@@ -1,0 +1,111 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:36660
+Return-Path: <bauhaus@metaperl.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26559 invoked from network); 27 Nov 2004 02:39:50 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 27 Nov 2004 02:39:50 -0000
+Received: (qmail 5451 invoked by uid 225); 27 Nov 2004 02:39:50 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 5446 invoked by alias); 27 Nov 2004 02:39:49 -0000
+X-Spam-Status: No, hits=-3.1 required=8.0
+	tests=BAYES_00,RCVD_IN_NJABL_DUL,RCVD_IN_SORBS_DUL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mtiwmhc11.worldnet.att.net (HELO mtiwmhc11.worldnet.att.net) (204.127.131.115)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Fri, 26 Nov 2004 18:39:48 -0800
+Received: from [12.72.28.122] (122.los-angeles-66-68rs.ca.dial-access.att.net[12.72.28.122])
+          by worldnet.att.net (mtiwmhc11) with ESMTP
+          id <2004112702393711100j87cke>
+          (Authid: sherleybrannon);
+          Sat, 27 Nov 2004 02:39:43 +0000
+Message-ID: <41A7E8E7.7070503@metaperl.com>
+Date: Fri, 26 Nov 2004 18:39:35 -0800
+User-Agent: Mozilla Thunderbird 0.8 (Windows/20040913)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To:  modules@perl.org, 
+ Perl Software::Design mailing list <sw-design@metaperl.com>
+Subject: Re: [sw-design] Perl Software::Design CPAN-based Magazine - Input
+ and	Volunteers Requested
+References: <41A763BA.5010901@metaperl.com> <261120041642125180%comdog@panix.com>
+In-Reply-To: <261120041642125180%comdog@panix.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: bauhaus@metaperl.com (Terrence Brannon)
+
+_brian_d_foy wrote:
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for details. ]]
+>>they want. Please let me know if you have any ideas about how the magazine is 
+>>packaged and presented so that its contents are easily searched on CPAN.
+> 
+> 
+> 
+> It looks like an interesting idea, although I would execute the 
+> module bits differently.
+> 
+> You don't need to create modules and packages and all that other
+> good stuff.  You can just create the POD stuff and install that.
+
+I don't know the intricacies of how CPAN indexes things other than Perl modules. 
+I am not sure which other directories would be indexed and I am not sure what 
+file extensions need to be used. That's why I stuck with what I know works of a 
+CPAN author of modules.
+
+Speaking of which, I wonder if I should take out a separate CPAN id just for 
+this project? Probably not, but I am thinking out loud now...
+
+> 
+> Also, don't use a namespance that begins with a digit. 
+
+That worked out locally for installing. I'm not sure about CPAN though. I should 
+hope anything that matches \w would be OK.
+
+> I'm not
+> convinced that the date is important anyway:  Just install
+> Software::Design::Harmful_GUI. 
+
+I wanted to work from general to specific, i.e., Software::Design::GUI::harmful
+And for some reason I like taking the final adjective and titling it pragma 
+style :) There must be a subconscious linguistic urge unsurfacing there.
+
+And you are right, the date should not be a part of the path it gets installed 
+to... perhaps $VERSION for the module would be a number indicating the date of 
+the issue.
+
+> You can use the distribution 
+> version as the edition.
+
+We had thought about that. What we are trying to avoid is a huge monolithic 
+upload like the original CPAN publication:
+
+	http://search.cpan.org/~swalters/Object-PerlDesignPatterns-0.03/
+
+Breaking it into editions works fine on a full-fledged CPAN like search.cpan.org 
+but kobesearch.cpan.org only keeps the latest version of all distributions.
+
+Here are the options I can think of:
+
+1/ Create a distro per year. E.g. for this year we would have
+Software::Design::2004. Then, once a month, keep adding articles to this distro
+until a year is up.
+
+2/ Create a distro per year again. However, this time each new version only has
+new issues. The major con of trying to use one distro for an entire year is that
+some places use Randy Kobes' CPAN lite which only keeps the latest version of
+each distribution.
+
+3/ Create a distro per month: Software::Design::12_04 would be a completely new
+CPAN release.
+
+So with method one the version number would keep going up and new versions would
+supercede the old ones.
+
+With method two, the version number would go up and each new version is
+completely different from the old version.
+
+With method three, each issue would probably just have one version unless we had
+to make a small fix or something.

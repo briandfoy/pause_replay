@@ -1,0 +1,99 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:74773
+Return-Path: <nobody@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22404 invoked from network); 13 Feb 2011 10:28:49 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 13 Feb 2011 10:28:49 -0000
+Received: (qmail 25782 invoked by uid 225); 13 Feb 2011 10:28:49 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25778 invoked by alias); 13 Feb 2011 10:28:49 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from pause.fiz-chemie.de (HELO pause.fiz-chemie.de) (195.37.231.65)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 13 Feb 2011 02:28:47 -0800
+Received: from pause.fiz-chemie.de (localhost.localdomain [127.0.0.1])
+	by pause.fiz-chemie.de (8.13.8/8.13.8/Debian-3) with ESMTP id p1DASZbN032117;
+	Sun, 13 Feb 2011 11:28:35 +0100
+Received: (from nobody@localhost)
+	by pause.fiz-chemie.de (8.13.8/8.13.8/Submit) id p1DASZZ3032115;
+	Sun, 13 Feb 2011 11:28:35 +0100
+Date: Sun, 13 Feb 2011 11:28:35 +0100
+Message-ID: <201102131028.p1DASZZ3032115@pause.fiz-chemie.de>
+Subject: Module submission Global::Notifications
+Reply-To: modules@perl.org
+To: modules@perl.org, sriehm@cpan.org
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       Global::Notifications
+  DSLIP:       adpfp
+  description: Generic proxy for messages, such as logging
+  userid:      SRIEHM (Stephen Riehm)
+  chapterid:   3 (Development_Support)
+  communities:
+    irc.perl.org
+
+  similar:
+    Notification::Center, Log::Dispatch, Log::Log4Perl
+
+  rationale:
+
+    Notifications is a generic message dispatcher which requires
+    (almost) no configuration and has no dependencies (other than
+    Global::Notifications) - making it light enough for any module to
+    use, something like:
+
+    package myModule; use Notficications qw( error info progress ); #
+    each name here generates a simple message dispatcher
+
+    # now you can dispatch messages rather than printf's progress(
+    'doing that thang...', steps => 5 ); info( 'fuddling the whodicky'
+    ); error( 'something went wrong' );
+
+    Essentially, individual modules should NOT know or care how or
+    where their logging information etc. is configured. They should not
+    have to create logging objects etc, but they should report what
+    they're doing!
+
+    The application would then do something like:
+
+    # Set up any / favourite logging object(s!) my $real_log =
+    Log::Dispatch->new(...); # Make sure they can get Notifications my
+    $logger = Notifications::Observer::LogDispatch->new( log =>
+    $real_log ); # or a simple handmade object # and now start logging
+    $logger->start();
+
+    and then any modules sending notifications would have their
+    messages logged.
+
+    The benefit being that modules need know nothing, leaving full
+    control to the application.
+
+  enteredby:   SRIEHM (Stephen Riehm)
+  enteredon:   Sun Feb 13 10:28:35 2011 GMT
+
+The resulting entry would be:
+
+Global::
+::Notifications   adpfp Generic proxy for messages, such as logging  SRIEHM
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=b6400000_5772c1f51ae14fa3&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=b6400000_5772c1f51ae14fa3&SUBMIT_pause99_add_mod_insertit=1
+Peek at the current permissions:
+  https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=me&pause99_peek_perms_query=Global%3A%3ANotifications

@@ -1,0 +1,128 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5922
+Return-Path: <andreas.koenig@anima.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 51610 invoked from network); 1 Jun 2001 03:41:34 -0000
+Received: from dubravka.in-berlin.de (HELO ak-71.mind.de) (root@193.175.21.65)
+  by onion.valueclick.com with SMTP; 1 Jun 2001 03:41:34 -0000
+Received: (from k@localhost)
+	by ak-71.mind.de (8.9.3/8.9.3) id FAA00356;
+	Fri, 1 Jun 2001 05:41:04 +0200
+X-Authentication-Warning: ak-71.mind.de: k set sender to andreas.koenig@anima.de using -f
+Sender: k@ak-71.mind.de
+To: Paolo Molaro <lupus@debian.org>
+Cc: "Andreas J. Koenig" <andreas.koenig@anima.de>,
+        Matt Cashner <eek@eekeek.org>, Kenneth Albanowski <kjahds@kjahds.com>,
+        modules@perl.org
+Subject: Re: cpan / gtkperl madness
+References: <Pine.LNX.4.33.0105271521370.3331-100000@katerina.eekeek.org>
+	<m33d9q2jik.fsf@ak-71.mind.de> <20010528152650.A2943@lettere.unipd.it>
+Reply-To: modules@perl.org
+Date: 01 Jun 2001 05:41:04 +0200
+In-Reply-To: <20010528152650.A2943@lettere.unipd.it>
+Message-ID: <m3u220uasv.fsf@ak-71.mind.de>
+Lines: 95
+User-Agent: Gnus/5.0808 (Gnus v5.8.8) Emacs/20.7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Spam-Rating: onion.valueclick.com 1.6.2 0/1000/N
+Approved: news@nntp.perl.org
+From: andreas.koenig@anima.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 28 May 2001 15:26:50 +0200, Paolo Molaro <lupus@debian.org> said:
+
+  > Well, the story goes like this: from about January 2000 I started
+  > making the releases for Gtk-Perl and Kenneth kindly uploaded the files
+  > to CPAN. After a while I didn't get any feedback from Kenneth and 
+  > registerd with PAUSE and started making the uploads myself.
+  > I think that at some point CPAN.pm started using the tarballs in
+  > my homedir, but it looks like now it's back to Kenneth's: I don't
+  > know what changed meanwhile.
+
+You probably only tried CPAN.pm with a package name that was
+introduced later, such as Gtk::lazy. In the archives I cannot find
+anything that indicates a manual change.
+
+  > Anyway, if Kenneth doesn't speak up for himself, I think he is not
+  > against me handling the Gtk-Perl namespace for the time being:
+  > for what I know I hasn't worked on the Gtk module since 1999.
+  > And yes, 0.7006 is so much better than 0.7000 that you want it anyway.
+
+OK, for the record, I've committed these changes to the database:
+
+  my $ins = $dbm->prepare(qq{INSERT INTO perms (package,userid) values (?,?)});
+  my $userid = "LUPUS";
+  for my $p (qw(Gtk Gtk::Gdk Gtk::Types Gtk::Atoms Gtk::Object
+      Gtk::ColorSelectButton Gtk::LogHandler Gtk::_LazyLoader 
+      Gtk::XmHTML Gtk::GLArea::Constants Gtk::GLArea::Glut 
+      Gtk::GladeXML Gtk::Gdk::ImlibImage Gtk::Widget Gtk::GLArea 
+      Gtk::HTML)){
+    $ins->execute($p,$userid);
+  }            
+
+And then scheduled LUPUS/Gtk-Perl-0.7006.tar.gz for re-indexing. So in
+an hour or so the index will reflect the change. Here's an excerpt
+from the perms table:
+
+mysql> select package, userid from perms where perms.package like '%Gtk%';
++----------------------------+---------+
+| package                    | userid  |
++----------------------------+---------+
+| Gtk                        | KJALB   |
+| Gtk::Gdk                   | KJALB   |
+| Gtk::Types                 | KJALB   |
+| Gtk::Atoms                 | KJALB   |
+| CORBA::MICO::GtkDispatcher | OTAYLOR |
+| Gtk::Object                | KJALB   |
+| Gtk::ColorSelectButton     | KJALB   |
+| Gtk::LogHandler            | KJALB   |
+| Gtk::_LazyLoader           | KJALB   |
+| Gtk::XmHTML                | KJALB   |
+| Gtk::GLArea::Constants     | KJALB   |
+| Gtk::GLArea::Glut          | KJALB   |
+| Gtk::GladeXML              | KJALB   |
+| Glade::PerlUIGtk           | DMUSGR  |
+| Gtk::Gdk::ImlibImage       | KJALB   |
+| Gtk::Widget                | KJALB   |
+| Gtk::GLArea                | KJALB   |
+| Gtk::HTML                  | KJALB   |
+| Gtk::Gdk::Pixbuf           | LUPUS   |
+| Gtk::CTree                 | LUPUS   |
+| Gtk::HandyCList            | SIMON   |
+| Gtk::LWP                   | LUPUS   |
+| Gtk::LWP::http             | LUPUS   |
+| Gtk::io::UNIX              | LUPUS   |
+| Gtk::io                    | LUPUS   |
+| Gtk::io::Pipe              | LUPUS   |
+| Gtk::io::INET              | LUPUS   |
+| Gtk::HTML::Simple          | LUPUS   |
+| Gtk::MozEmbed              | LUPUS   |
+| Gtk::CListModel            | LUPUS   |
+| Gtk::lazy                  | LUPUS   |
+| POE::Kernel::Gtk           | RCAPUTO |
+| Gtk                        | LUPUS   |
+| Gtk::Gdk                   | LUPUS   |
+| Gtk::Types                 | LUPUS   |
+| Gtk::Atoms                 | LUPUS   |
+| Gtk::Object                | LUPUS   |
+| Gtk::ColorSelectButton     | LUPUS   |
+| Gtk::LogHandler            | LUPUS   |
+| Gtk::_LazyLoader           | LUPUS   |
+| Gtk::XmHTML                | LUPUS   |
+| Gtk::GLArea::Constants     | LUPUS   |
+| Gtk::GLArea::Glut          | LUPUS   |
+| Gtk::GladeXML              | LUPUS   |
+| Gtk::Gdk::ImlibImage       | LUPUS   |
+| Gtk::Widget                | LUPUS   |
+| Gtk::GLArea                | LUPUS   |
+| Gtk::HTML                  | LUPUS   |
++----------------------------+---------+
+48 rows in set (0.05 sec)
+
+I expect that with this change the indexer will Do The Right Thing.
+
+Thanks,
+-- 
+andreas

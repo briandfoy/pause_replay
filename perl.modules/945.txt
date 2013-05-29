@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:945
+Return-Path: <sisk@mojotoad.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5485 invoked from network); 20 Jan 2000 09:09:20 -0000
+Received: from vpop.hypercon.com (198.64.248.249)
+  by tmtowtdi.perl.org with SMTP; 20 Jan 2000 09:09:20 -0000
+Received: from mojotoad.com (168.245.nas1.ippool.hypercon.com [198.64.245.168])
+	by vpop.hypercon.com (8.9.3/8.8.7) with ESMTP id DAA14192
+	for <modules@perl.org>; Thu, 20 Jan 2000 03:07:19 -0600
+Sender: sisk@vpop.hypercon.com
+Message-ID: <38867CDF.AFFABB6A@mojotoad.com>
+Date: Thu, 20 Jan 2000 03:11:27 +0000
+Organization: The Toadstool
+X-Mailer: Mozilla 4.5 [en] (X11; U; Linux 2.1.132 i586)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Historical Stock quote modules...discussion, names
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: sisk@mojotoad.com (Matt Sisk)
+
+Okay, this is for modules@perl.org -- you guys were my primary
+audience, but a didn't realize there was a cross-posting rule,
+but it makes sense in retrospect.  Anyway:
+
+Lately I've been putting the finishing touches on a set of modules that
+retrieve historical stock quotes from various locations on the web.  I
+have a number of questions and concerns.
+
+It seems obvious that this is desirable functionality, but there are
+some issues that are not completely within my control.
+
+All of the freely available historical quote data I've seen so far is
+only available in HTML. My modules allow for the specification of
+several characteristics of each source in order to effectively and
+reliably gather the requested data. (note that the modules do not
+REQUIRE html sources, but so far that's all they source).
+
+These modules necessarily rely on specific URLs and page layouts.  I
+have done several things to minimize dependencies on page layout, so for
+the most part when web sites alter their pages the quotes will still be
+fetched (briefly, a couple of the tricks are context independent table
+extraction and daisy chain failover from site to site).  But it is
+always possible that something might change with the sources that will
+break the information flow.  
+
+Is this sort of reliability level acceptable for CPAN? I will of course
+update the site-specific modules to the best of my ability, plus they
+are always user-tunable.  And they will of course have a big fat
+DISCLAIMER that indicates you'd better know some perl if you want to use
+them for any mission critical activities.
+
+The next issue is the names.  The ones I picked are big and fat, but
+quite descriptive.  I'd like to know what you think (so far I've only
+got two specific site instances):
+
+   Finance::HistoricalQuotes
+   Finance::HistoricalQuotes::MotleyFool
+   Finance::HistoricalQuotes::FinancialWeb
+
+The first is of course the base class, which is an LWP::UserAgent
+derived creature.  The others are specific instances which tailor the
+behavior based on the quirks of that data source.  In typical usage, you
+would use the top level module, and if desired specify a failover order
+for the subclasses.
+
+(Failover can occur for a variety of reasons -- the site could be down,
+or you could be requesting a symbol that no longer exists.  I've found
+that the Motley Fool is very reliable, but does not provide quotes for
+defunct ticker symbols.  FinancialWeb is slower, and a bit less
+reliable, but does have defunct tickers...I am, of course, wide open to
+suggestions on other reliable sources)
+
+Any thoughts?
+
+Thanks,
+Matt Sisk
+sisk@mojotoad.com

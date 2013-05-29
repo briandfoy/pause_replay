@@ -1,0 +1,113 @@
+Newsgroups: perl.datetime,perl.dbi.users,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.datetime:280 perl.dbi.users:7319 perl.modules:8644
+Return-Path: <jleffler@informix.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29806 invoked by uid 75); 7 Nov 2001 01:04:40 -0000
+Received: from [209.245.144.131] (HELO snowcrab.mp.informix.com) (209.245.144.131)
+  by onion.perl.org (qpsmtpd/0.04) with SMTP; Wed Nov  7 01:04:40 2001 -0000
+Received: from canary.mp.informix.com (canary.mp.informix.com [158.58.14.12]) by snowcrab.mp.informix.com (8.8.5/8.7.3) with ESMTP id RAA23619; Tue, 6 Nov 2001 17:02:42 -0800 (PST)
+Received: from anubis.mp.informix.com (anubis.mp.informix.com [158.58.8.187])
+	by canary.mp.informix.com (8.8.8+Sun/8.8.8) with ESMTP id RAA25124;
+	Tue, 6 Nov 2001 17:02:47 -0800 (PST)
+Received: from localhost (jleffler@localhost)
+	by anubis.mp.informix.com (8.10.2+Sun/8.10.2) with ESMTP id fA712Pg00188;
+	Tue, 6 Nov 2001 17:02:27 -0800 (PST)
+X-Authentication-Warning: anubis.mp.informix.com: jleffler owned process doing -bs
+Date: Tue, 6 Nov 2001 17:02:24 -0800 (PST)
+X-X-Sender: jleffler@anubis
+Reply-To: Jonathan Leffler <Jonathan.Leffler@informix.com>
+To: Rich Bowen <rbowen@rcbowen.com>
+cc: Nick Tonkin <nick@rlnt.net>, Ilmari Karonen <iltzu@sci.fi>,
+        <modules@perl.org>, DBI Users Mailing List <dbi-users@perl.org>,
+        <datetime@perl.org>
+Subject: Re: [RFC] Date::MySQL
+In-Reply-To: <Pine.LNX.4.33.0111041703120.23048-100000@rhiannon.rcbowen.com>
+Message-ID: <Pine.GSO.4.40.0111061652590.29838-100000@anubis>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: jleffler@informix.com (Jonathan Leffler)
+References: <Pine.LNX.4.33.0111041703120.23048-100000@rhiannon.rcbowen.com>
+
+On Sun, 4 Nov 2001, Rich Bowen wrote:
+
+>On Sat, 3 Nov 2001, Nick Tonkin wrote:
+>> So does this mean that you would not support extending Date::ISO to
+>> provide a method to output a date in YYY-MM-DD format by default? It
+>> sounds like it does. In that case I would have to think that
+>> creating Date::MySQL would be appropriate.
+>
+>No, it does not mean that at all. Did you see my next note?
+>
+>Allow me to repeat.
+>
+>If it seems clear that nobody uses the YYYY-WW-D format, which does
+>indeed seem to be the case, it makes a lot of sense to modify Date::ISO
+>to output the YYYY-MM-DD format instead.
+>
+>My only concern is that changing the API breaks actual production code.
+>
+>However, since there was a *ghastly* bug in Date::ISO for about 3 months
+>before anyone mentioned it to me, it seems likely to assume that the
+>module is not exactly getting thousands of users.
+>
+>I am almost done writing my book (God be praised) and will put this on
+>my list of things to work on when that is out of the way. It's on my
+>todo list in my Palm.
+>
+>> On Fri, 2 Nov 2001, Rich Bowen wrote:
+>> > On Sat, 3 Nov 2001, Ilmari Karonen wrote:
+>> > > On Fri, 2 Nov 2001, Nick Tonkin wrote:
+>> > > > Nevertheless, in order to smooth the ruffled feathers of (my fellow) Brits
+>> > > > and other Euros, I shall change my module so that it is required to
+>> > > > provide a format specification. I only have 'us' and 'eu' at this
+>> > > > point: I suppose 'iso' would be redundant since that's how MySQL handles
+>> > > > dates.
+>> > >
+>> > > May I suggest 'epoch' and 'ical' as additional formats?
+>> > >
+>> > > Mind you, I think it might be better if you could work with the author
+>> > > of Date::ISO to combine the features of the two modules.  It seems that,
+>> > > for some reason, Date::ISO has no method to directly produce an ISO date
+>> > > string, even though it can parse them.  With the addition of such a
+>> > > method, Date::ISO should be able to do most of what your module does.  I
+>> > > have no idea to about the internal error checks in the two modules, but
+>> > > I see no reason why those could not be combined.
+>> >
+>> > I was sure that there was an iso method, which output the iso formatted
+>> > date.
+>> >
+>> > rbowen@rhiannon:~% perl -MDate::ISO -le 'my $d=Date::ISO->new( epoch =>
+>> > time ); print $d->iso;'
+>> > 2001-W44-6
+>> >
+>> > Unfortunately, the "default" ISO date format is this year-week-day
+>> > format. At least that's what I gathered from all the web sites that I
+>> > read about this format.
+
+I disagree.
+
+In ISO 8601:1986, the basic format for the complete representation of a
+date is 19991231 and the extended format for a date is 1999-12-31 (see
+section 5.2.1 Calendar Date and in particular 5.2.1.1 Complete
+Representation).
+
+There is discussion about week numbers, but it occurs much later in the
+standard (section 5.2.3 Date Identified by calendar week and day numbers).
+
+[I know there is also ISO 8601:2000, but I don't have a copy of it to
+quote from, and I understand that the changes are minor.]
+
+As to web sites that document this, the best I know is:
+	http://www.cl.cam.ac.uk/~mgk25/iso-time.html
+The opening section launches straight into YYYY-MM-DD format.
+
+-- 
+Jonathan Leffler                         #include <disclaimer.h>
+STSM, IBM Data Management Solutions.      Phone: +1 650-926-6921
+Email: Jonathan.Leffler@Informix.com, jleffler@us.ibm.com
+Guardian of DBD::Informix v1.00.PC1 -- http://dbi.perl.org
+     "I don't suffer from insanity; I enjoy every minute of it!"
+

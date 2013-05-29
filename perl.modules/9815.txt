@@ -1,0 +1,69 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:9815 perl.module-authors:269
+Return-Path: <ade@bottledsoftware.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 91531 invoked by uid 76); 22 Jan 2002 14:22:05 -0000
+Received: from smtp4.electric.net (HELO smtp4.electric.net) (216.129.90.17)
+  by onion.perl.org (qpsmtpd/0.06) with SMTP; Tue Jan 22 14:22:05 2002 -0000
+Received: (qmail 26933 invoked from network); 22 Jan 2002 14:21:59 -0000
+Received: from zhora.electric.net (216.129.90.89)
+  by virusqueue.electric.net with SMTP; 22 Jan 2002 14:22:02 -0000
+Received: from osmtp3.electric.net ([216.129.90.30])
+ by zhora.electric.net (NAVGW 2.5.1.18) with SMTP id M2002012206102202305
+ ; Tue, 22 Jan 2002 06:10:22 -0800
+Received: from [216.37.9.37] (helo=koolade)
+	by osmtp3.electric.net with esmtp (Exim 3.22 #1)
+	id 16T1oF-000MVP-04; Tue, 22 Jan 2002 06:21:59 -0800
+Subject: Re: Seeking advice on possible module Map::Hash, etc.
+To: Mark Dilger <markdilger@yahoo.com>
+Cc: modules@perl.org, module-authors@perl.org
+In-Reply-To: <20020122035027.94653.qmail@web21008.mail.yahoo.com>
+References: <20020122035027.94653.qmail@web21008.mail.yahoo.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Mailer: Evolution/1.0 (Preview Release)
+Date: 22 Jan 2002 09:19:18 -0500
+Message-ID: <1011709159.31202.0.camel@koolade>
+Mime-Version: 1.0
+Approved: news@nntp.perl.org
+From: ade@bottledsoftware.com (Adekunle Olonoh)
+
+> To give an idea why this might be useful:  I often
+> loop, calling a function which returns a list or hash,
+> and want to easily check if the list or hash I'm
+> getting back is one I have seen already. The following
+> doesn't work:
+> 
+>    my %seen;
+>    while(1)
+>       {
+>       my @list = some_func();
+>       die if($seen{\@list});
+>       $seen{\@list} = 1;
+>       }
+
+You may have implemented your module this way, but serializing the data
+structure with a module like Data::Dumper will get you what you need:
+
+    use Data::Dumper;
+    my %seen;
+    while(1) {
+        my @list = some_func();
+        my $serialized = Dumper(\@list);
+        die if $seen{$serialized};
+        $seen{$serialized} = 1;
+    }
+
+You might want to also look at Storable and FreezeThaw.
+
+-- 
+
+_______________________________________________________
+
+     Ade Olonoh, BOTTLED SOFTWARE
+
+     317.576.1120 x12 (phone) 317.576.1135 (fax)
+_______________________________________________________
+

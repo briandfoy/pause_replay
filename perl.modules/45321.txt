@@ -1,0 +1,206 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:45321
+Return-Path: <andreas.koenig.gmwojprw@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20855 invoked from network); 12 Oct 2005 19:09:37 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 12 Oct 2005 19:09:37 -0000
+Received: (qmail 4842 invoked by uid 225); 12 Oct 2005 19:09:36 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4819 invoked by alias); 12 Oct 2005 19:09:36 -0000
+X-Spam-Status: No, hits=-2.5 required=8.0
+	tests=BAYES_00,FORGED_RCVD_HELO
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from franz.ak.mind.de (HELO k75.linux.bogus) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 12 Oct 2005 12:09:18 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.13.5/8.13.5/Debian-1) with ESMTP id j9CJ7jDb014834;
+	Wed, 12 Oct 2005 21:07:45 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.13.5/8.13.5/Submit) id j9CJ7ih8014826;
+	Wed, 12 Oct 2005 21:07:44 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.gmwojprw@franz.ak.mind.de using -f
+To: =?utf-8?Q?S=C3=A9bastien?= Aperghis-Tramoni <saper@cpan.org>
+Cc: "Andreas J. Koenig" <andreas.koenig.gmwojprw@franz.ak.mind.de>,
+        modules@perl.org
+Subject: Re: XSLoader is not indexed
+References: <1128330668.4340f5ac8c7f8@imp3-g19.free.fr>
+	<874q7n676b.fsf@k75.linux.bogus>
+	<1129105797.434cc98514e21@imp6-g19.free.fr>
+Date: Wed, 12 Oct 2005 21:07:43 +0200
+In-Reply-To: <1129105797.434cc98514e21@imp6-g19.free.fr> (=?utf-8?Q?S?=
+ =?utf-8?Q?=C3=A9bastien?=
+	Aperghis-Tramoni's message of "Wed, 12 Oct 2005 10:29:57 +0200")
+Message-ID: <87oe5u4kqo.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110004 (No Gnus v0.4) Emacs/21.4 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: andreas.koenig.gmwojprw@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Wed, 12 Oct 2005 10:29:57 +0200, S=C3=A9bastien Aperghis-Tramoni <=
+saper@cpan.org> said:
+
+ >> To satisfy the CPAN indexer, it's necessary to distribute one or more
+ >> *.pm files.
+
+  > Aha! This explains why several modules are "hidden" from PAUSE but
+  > present on Search CPAN. A FAQ or a document just stating that would
+  > be useful. If I may help..
+
+Very welcome!
+
+ >> 4. The least intrusive to you as an author would probably be to let
+ >> Makefile.PL care for the distribution of a bare minimum of Foo.pm
+ >> and overwrite it during installation. This approach is the
+ >> trickiest and thus probably least maintainable one. But it is
+ >> conceptually possible and is therefore mentioned as an alternative.
+ >> An actual implementation is left as an exercixe to the reader:-)
+
+  > I'll probably use that solution, as it's the one that need less
+  > modifications: I'll just ship a generated XSLoader.pm with the
+  > distribution and unlink it from Makefile.PL. Advantage being that
+  > it doesn't touch any files being in core.
+
+You may be interested in the appended patch. I recently sent it as a
+suggestion to Lincoln Stein against GD. He didn't apply it and
+preferred one of the other solutions. I like to send it to you because
+it took me several iterations until I had it right.
+
+Unfortunately GD-2.25 differed from XSLoader in that it wrote the
+GD.pm from the Makefile.PL not from a separate *.PL file, but you get
+the idea...
+
+--=20
+andreas
+
+
+----excerpt from a recent email from me to LDS----
+
+   You do not have to check a GD.pm into your repository, the tiny
+   GD.pm is only existing in the tarball and before the execution of
+   'Makefile.PL'
+
+   This solution has the disadvantage of being a bit hard to debug if
+   something goes wrong.
+
+# This is a patch for GD-2.25 to update it to GD-2.25-new
+#=20
+# To apply this patch:
+# STEP 1: Chdir to the source directory.
+# STEP 2: Run the 'applypatch' program with this patch file as input.
+#
+# If you do not have 'applypatch', it is part of the 'makepatch' package
+# that you can fetch from the Comprehensive Perl Archive Network:
+# http://www.perl.com/CPAN/authors/Johan_Vromans/makepatch-x.y.tar.gz
+# In the above URL, 'x' should be 2 or higher.
+#
+# To apply this patch without the use of 'applypatch':
+# STEP 1: Chdir to the source directory.
+# If you have a decent Bourne-type shell:
+# STEP 2: Run the shell with this file as input.
+# If you don't have such a shell, you may need to manually create
+# the files as shown below.
+# STEP 3: Run the 'patch' program with this file as input.
+#
+# These are the commands needed to create/delete files/directories:
+#
+touch 'GD.pm'
+chmod 0644 'GD.pm'
+#
+# This command terminates the shell and need not be executed manually.
+exit
+#
+#### End of Preamble ####
+
+#### Patch data follows ####
+diff -u /dev/null 'GD-2.25-new/GD.pm'
+Index: ./GD.pm
+*** ./GD.pm	Thu Jan  1 01:00:00 1970
+--- ./GD.pm	Sat Jul 30 11:54:02 2005
+***************
+*** 0 ****
+--- 1,2 ----
++ package GD;
++ $VERSION =3D "2.25";
+diff -u 'GD-2.25/MANIFEST' 'GD-2.25-new/MANIFEST'
+Index: ./MANIFEST
+--- ./MANIFEST	Wed Feb  9 19:25:25 2005
++++ ./MANIFEST	Sat Jul 30 10:24:28 2005
+@@ -1,4 +1,5 @@
+ ChangeLog
++GD.pm
+ GD.pm.PLS
+ GD.xs
+ GD/Polyline.pm
+diff -u 'GD-2.25/Makefile.PL' 'GD-2.25-new/Makefile.PL'
+Index: ./Makefile.PL
+--- ./Makefile.PL	Fri Jul 15 20:41:58 2005
++++ ./Makefile.PL	Sat Jul 30 11:44:14 2005
+@@ -223,7 +223,7 @@
+ print F $VERSION,"\n";
+ close F;
+=20
+-unlink './GD.pm';
++utime 0,0,'./GD.pm'; # make it old so that is will be rebuilt
+=20
+ WriteMakefile(
+     'NAME'	=3D> 'GD',
+@@ -236,7 +236,9 @@
+                      'GD/Simple.pm' =3D> '$(INST_LIBDIR)/GD/Simple.pm',
+                      'qd.pl' =3D> '$(INST_LIBDIR)/qd.pl'},
+     'dist'      =3D> {'COMPRESS'=3D>'gzip -9f', 'SUFFIX' =3D> 'gz',
+-	            'ZIP'=3D>'/usr/bin/zip','ZIPFLAGS'=3D>'-rl'},
++	            'ZIP'=3D>'/usr/bin/zip','ZIPFLAGS'=3D>'-rl',
++		    PREOP =3D> '$(PERL) -i -nle \'print if /^(package|.VERSION)/\' $(DIS=
+TVNAME)/GD.pm',
++                   },
+     'LIBS'      =3D> [join(' ',$ENV{'GD_LIBS'},@LIBPATH,@LIBS)],
+     'INC'       =3D> join(' ',$ENV{'GD_INC'},@INC),
+     'PL_FILES'  =3D> {'bdf_scripts/bdf2gdfont.PLS' =3D> 'bdf_scripts/bdf2g=
+dfont.pl',
+#### End of Patch data ####
+
+#### ApplyPatch data follows ####
+# Data version        : 1.0
+# Date generated      : Fri Aug  5 05:10:24 2005
+# Generated by        : makepatch 2.00_12*
+# Recurse directories : Yes
+# Excluded files      : (\A|/).*\~\Z
+#                       (\A|/).*\.a\Z
+#                       (\A|/).*\.bak\Z
+#                       (\A|/).*\.BAK\Z
+#                       (\A|/).*\.elc\Z
+#                       (\A|/).*\.exe\Z
+#                       (\A|/).*\.gz\Z
+#                       (\A|/).*\.ln\Z
+#                       (\A|/).*\.o\Z
+#                       (\A|/).*\.obj\Z
+#                       (\A|/).*\.olb\Z
+#                       (\A|/).*\.old\Z
+#                       (\A|/).*\.orig\Z
+#                       (\A|/).*\.rej\Z
+#                       (\A|/).*\.so\Z
+#                       (\A|/).*\.Z\Z
+#                       (\A|/)\.del\-.*\Z
+#                       (\A|/)\.make\.state\Z
+#                       (\A|/)\.nse_depinfo\Z
+#                       (\A|/)core\Z
+#                       (\A|/)tags\Z
+#                       (\A|/)TAGS\Z
+# c 'GD.pm' 0 1122717242 0100644
+# p 'MANIFEST' 1447 1122711868 0100644
+# p 'Makefile.PL' 10133 1122716654 0100644
+#### End of ApplyPatch data ####
+
+#### End of Patch kit [created: Fri Aug  5 05:10:24 2005] ####
+#### Patch checksum: 79 2716 30205 ####
+#### Checksum: 109 3763 52186 ####
+
+
+----end of excerpt----

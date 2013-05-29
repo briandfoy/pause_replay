@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4837
+Return-Path: <Tim.Bunce@ig.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3176 invoked from network); 28 Mar 2001 01:05:23 -0000
+Received: from anchor-post-32.mail.demon.net (194.217.242.90)
+  by tmtowtdi.perl.org with SMTP; 28 Mar 2001 01:05:23 -0000
+Received: from ignite.demon.co.uk ([158.152.8.99] helo=oink)
+	by anchor-post-32.mail.demon.net with smtp (Exim 2.12 #1)
+	id 14i4Of-000Cp8-0W; Wed, 28 Mar 2001 02:05:14 +0100
+Received: from toad by oink with SMTP (PP) id <17213-0@oink>;
+          Sat, 28 Mar 1970 02:04:55 +0100
+Received: by toad.ig.co.uk (8.8.8+Sun/SMI-SVR4) id CAA27496;
+          Wed, 28 Mar 2001 02:04:48 +0100 (BST)
+Date: Wed, 28 Mar 2001 02:04:48 +0100
+To: Raphael Manfredi <Raphael_Manfredi@pobox.com>
+Cc: modules@perl.org, christophe@dehaudt.org
+Subject: Re: ANNOUNCE: Released Devel::Datum & Getargs::Long
+Message-ID: <20010328020447.H25449@ig.co.uk>
+References: <25234.985538916@nice.ram.loc>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.3i
+In-Reply-To: <25234.985538916@nice.ram.loc>; from Raphael Manfredi on Sun, Mar 25, 2001 at 06:48:36PM +0200
+Organization: Paul Ingram Group, Software Systems, +44 1 483 862800
+Approved: news@nntp.perl.org
+From: Tim.Bunce@ig.co.uk (Tim Bunce)
+
+The Devel::* namespace is intended for modules that are not used
+as part of the normal operation of a script.
+
+Tim.
+
+On Sun, Mar 25, 2001 at 06:48:36PM +0200, Raphael Manfredi wrote:
+> I have finally taken the time to release two important modules, which
+> are building blocks for other modules of mine that are still pending
+> release in the wait queue... I just lack time ticks to process them ;-)
+> 
+> They don't work with 5.6.0, so don't even try it.  They work with 5.005_03
+> of course, and where tested OK by myself with 5.6.1-TRIAL1 on Linux.
+> 
+> The first module is Getargs::Long, which gives easy named parameter usage
+> in routines, with optional type checking of the arguments:
+> 
+>     use Getargs::Long;
+> 
+>     sub f {
+>         my ($x, $y ,$z) = getargs(@_, qw(x=ARRAY y=i z=s));
+>         ....
+>     }
+> 
+>     # And now for the call...  Argument order does not matter, of course
+>     f(-x => ['a', 'b'], -y => 1, -z => "foo");
+> 
+> The second module is Devel::Datum (it uses Getargs::Long) which provides
+> some support for Programming by Contract, and flexible tracing abilities,
+> which can be configured via a mini-language.  Devel::Datum cooperates with
+> Log::Agent for its tracing routines.
+> 
+> It is very different from Class::Contract, in that it does not alienate
+> the Perl syntax too much, although it adds some clutter of its own:
+> 
+>     use Devel::Datum qw(:all on);
+> 
+>     sub routine {
+>         DFEATURE my $f_, "optional message";
+>         my ($a, $b) = @_;
+>         DREQUIRE $a > $b, "a > b";
+>         $a += 1; $b += 1;
+>         DASSERT $a > $b, "ordering a > b preserved";
+>         my $result = $b - $a;
+>         DENSURE $result < 0;
+>         return DVAL $result;
+>     }
+> 
+> The Devel::Datum module is a co-development between Christophe Dehaudt and I.
+> It is derived from a C/C++ runtime called... DATUM, authored by the same
+> people...
+> 
+> Raphael Manfredi & Christophe Dehaudt

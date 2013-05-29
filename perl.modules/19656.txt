@@ -1,0 +1,140 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:19656
+Return-Path: <markov@speeltuin.ATComputing.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 62237 invoked by uid 76); 21 Mar 2003 09:10:52 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.25) with SMTP; Fri, 21 Mar 2003 01:10:52 -0800
+Received: (qmail 7394 invoked by uid 225); 21 Mar 2003 09:10:50 -0000
+Delivered-To: modules@perl.org
+Delivered-To: modules@cpan.org
+Received: (qmail 7389 invoked by uid 507); 21 Mar 2003 09:10:50 -0000
+Received: from speeltuin.atcomputing.nl (HELO speeltuin.ATComputing.nl) (195.108.229.26) by one.develooper.com (qpsmtpd/0.25) with SMTP; Fri, 21 Mar 2003 01:10:49 -0800
+Received: by speeltuin.ATComputing.nl (Postfix, from userid 1063)	id 7DFB439AE; Fri, 21 Mar 2003 10:10:19 +0100 (CET)
+Date: Fri, 21 Mar 2003 10:10:19 +0100
+To: modules@cpan.org
+Subject: Module name-space request
+Message-ID: <20030321101019.A18628@speeltuin.ATComputing.nl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+Organization: MARKOV Solutions
+Sender: markov@speeltuin.ATComputing.nl
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-0.8 required=7.0 tests=CARRIAGE_RETURNS,NOSPAM_INC,SPAM_PHRASE_02_03,USER_AGENT,USER_AGENT_MUTT version=2.44
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: Mark@Overmeer.net (Mark Overmeer)
+
+
+Hi all.
+
+I would like to have a name-space for my new module.
+Some of you have seen my talk at YAPC::Europe, demonstrating my
+script which produces POD and HTML manual pages from pseudo POD.
+I am working on a rewrite of my hack script into a decent module.
+
+* Why?
+
+I have a few modules which are quite large.  Typically all Perl modules
+which use OO grow larg very fast, where each class is a separate package.
+POD is sufficient to document all these packages separately, however OO
+packages have relations which are very hard to maintain in POD.
+
+Example: one of my modules has classes which extend four levels of
+inheritance.  When someone wants to use my class, he/she either needs
+to collect the information about the class in 5 manual pages or the
+package mantainer has to copy all changes made on the lower level of
+inheritance into all extensions.  I have done the last for some time,
+but that is very error-prone and time consuming.
+
+* How?
+
+POD is a visual markup language, and therefore information is lost
+about what is being documented.  My syntax adds keywords like "=method",
+"=function", and "=overload" to what POD has.  It helps a lot with
+doumenting named parameters.
+
+  =chapter METHODS
+
+  =method add OPTIONS
+  Add an element to the list.
+
+  =option  fast BOOLEAN
+  =default fast <false>
+  Synchronize immediately, or is it permitted to add it later.
+
+  =requires item OBJECT
+  The item to be added to the list
+
+  =examples
+   $list->add(item => $item, fast => 1);
+   $list->add(item => $item);
+
+  =error You cannot add an $type to the list
+  The item of $type can not be added to the list, which contains other types.
+
+  =error No item specified
+  A call to add() without arguments.
+
+  =cut
+
+  sub add() {....
+
+When the module is distributed, all docs are taken from the manual-pages.
+They are expanded over the levels of inheritance, grouped, sorted,
+reformated.  It produces real POD pages and an HTML website.  HTML is
+in this case not derived from POD, but generated separately so it can
+be of more help looking for the right functionality.
+
+I don't want to go too much deeper in the description of how it works:
+see the man-pages when they become available.  See an example of the
+output of my current hack on http://perl.overmeer.net/mailbox/html/
+and the POD pages in the distributions of Mail::Box and User::Identity.
+
+* Name-space
+
+I tried to attract some response from the podpeople mailing list about
+my ideas and for a choice of name-space, but it did not really work.
+So I have to give it a try myself.
+
+Considering that:
+ * the new module is quite large (already 15 classes, 4000 lines, which
+   will certainly grow another 100%)
+ * the module is simply extendible with your own documentation syntax
+   (finally people can document their program in XML - Johan?)
+ * the module is simply extendible with your own doc producer (starts
+   off with my own POD and HTML needs)
+ * the syntax is certainly not "Plain Old" anymore, but "Powerful OO"
+ * the tags start with '=' so perl scripts do run unstripped.
+ * one of the parsers could be `POD', so the current POD does not cover
+   the basic functionality of my module.
+
+I came to the name
+ * OODoc:  Object Oriented Documentation
+   which results in package names like
+      OODoc::Manual
+      OODoc::Text::Example
+
+I have considered a few other names, for instance
+ * POD::OO, but it is not really POD although it has some simularities.
+            So: it is not an Object Oriented POD at all.
+ * OOPOD, PODOO, POD::Logical... same reason
+ * NPND     not-so-plain new document format?
+ * PerlDoc  which is too close to perldoc(1), but sounds like JavaDoc
+ * OODF     object oriented document format
+ * POD6     this name suggests a great future!  If we supply an automatic
+            conversion, all syntax changes are permitted!  ;-b
+
+Please grant me "OODoc".  I hope to release the first (but already
+very powerful) implementation within a month.
+-- 
+               MarkOv       %-]
+
+------------------------------------------------------------------------
+drs Mark A.C.J. Overmeer                                MARKOV Solutions
+       Mark@Overmeer.net                          solutions@overmeer.net
+http://Mark.Overmeer.net                   http://solutions.overmeer.net

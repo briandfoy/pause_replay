@@ -1,0 +1,166 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1420
+Return-Path: <gyoung@laserlink.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11279 invoked from network); 30 Mar 2000 14:20:43 -0000
+Received: from corpex.laserlink.net (208.216.91.202)
+  by tmtowtdi.perl.org with SMTP; 30 Mar 2000 14:20:43 -0000
+Received: by corpex.laserlink.net with Internet Mail Service (5.5.2650.21)
+	id <H7K0LNLP>; Thu, 30 Mar 2000 09:22:51 -0500
+Message-ID: <A14A9ADE3BEAD311AF95009027B6FBE003B9FA@corpex.laserlink.net>
+To: "'modperl@apache.org'" <modperl@apache.org>
+Cc: 'Stas Bekman' <sbekman@stason.org>, 'Ask Bjoern Hansen'
+	 <ask@valueclick.com>, 'darren chamberlain' <darren@boston.com>, 
+	"'modules@perl.org'" <modules@perl.org>
+Subject: Re: [new module] proposal Apache::DebugHeaders
+Date: Thu, 30 Mar 2000 09:22:49 -0500
+MIME-Version: 1.0
+X-Mailer: Internet Mail Service (5.5.2650.21)
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Approved: news@nntp.perl.org
+From: gyoung@laserlink.net (Geoffrey Young)
+
+Hi all...
+
+I finished an alpha of DebugHeaders (now potentially called DebugInfo) -
+here's the description.  
+
+As I've said in the past, I'm terrible with names - barring any adverse
+feedback, I'll upload it to CPAN under 
+Apache-DebugInfo_0.01 sometime today or tomorrow...
+
+--Geoff
+
+
+
+=head1 NAME
+
+Apache::DebugInfo - log various bits of request data 
+
+=head1 SYNOPSIS
+
+  There are two ways to use this module...
+
+  1) using Apache::DebugInfo to control debugging automatically
+
+    httpd.conf:
+
+      PerlInitHandler Apache::DebugInfo
+      PerlSetVar      DebugInfo On
+
+      PerlSetVar      DebugHeadersIn On
+      PerlSetVar      DebugHeadersOut On
+      PerlSetVar      DebugNotes On
+      PerlSetVar      DebugPNotes On
+      PerlSetVar      DebugPID On
+    
+  2) using Apache::DebugInfo on the fly
+    
+    in handler or script:
+
+      use Apache::DebugInfo;
+
+      my $r = shift;
+
+      my $debug_object = Apache::DebugInfo->new($r);
+ 
+      # dump $r->headers_in right now
+      $debug_object->headers_in;
+
+      # log $r->headers_out after the response goes to the client
+      $debug_object->headers_in('PerlCleanupHandler');
+
+      # log all the $r->pnotes at Fixup and at Cleanup
+      $debug_object->pnotes('PerlCleanupHandler','PerlFixupHandler');
+
+=head1 DESCRIPTION
+
+  Apache::DebugInfo offers the ablilty to monitor various bits of
+  request data.  
+
+  You can enable Apache::DebugInfo as a PerlInitHandler, in which
+  case it chooses what request phase to display the appropriate
+  data.  The bits of data can be controlled by setting various
+  variables to On:
+
+    DebugInfo        - enable Apache::DebugLog
+               
+    DebugPID        - calls pid() during request init
+    DebugHeadersIn  - calls headers_in() during request init
+
+    DebugHeadersOut - calls headers_out() during request cleanup
+    DebugNotes      - calls notes() during request cleanup
+    DebugPNotes     - calls pnotes() during request cleanup
+
+  Alternatively, you can control debugging activity on the fly by
+  calling the methods directly.
+
+  All data is displayed in your error_log (well, whatever you have
+  STDERR pointed to, actually).
+
+=head1 METHODS
+
+  Apache::DebugInfo provides an object oriented interface to allow you
+  to call the various methods from either a module, handler, or an
+  Apache::Registry script.
+
+  Constructor:
+    new($r) - create a new Apache::DebugInfo object
+              requires a valid Apache request object
+
+  Methods:
+    All methods can be called without any arguments, in which case
+    the associated data is logged immediately.  Optionally, each
+    can be called with a list (either explicitly or as an array) 
+    of Perl*Handlers, which will log the data during the appropriate
+    phase.  
+
+    headers_in()  - display all of the incoming HTTP headers
+ 
+    headers_out() - display all of the outgoing HTTP headers
+
+    notes()       - display all the strings set by $r->notes
+
+    pnotes()      - display all the variables set by $r->pnotes
+
+    pid()         - display the process PID
+
+=head1 NOTES
+
+  Verbose debugging is enabled by setting the variable
+  $Apache::DebugInfo::DEBUG=1 to or greater.
+
+  This is alpha software, and as such has not been tested on multiple
+  platforms or environments.  It requires PERL_INIT=1, PERL_CLEANUP=1,
+  PERL_LOG_API=1, PERL_STACKED_HANDLERS=1, and maybe other hooks to 
+  function properly.
+
+=head1 FEATURES/BUGS
+
+  Calling Apache::DebugInfo methods with 'PerlHandler' as an argument
+  has been disabled - for some reason you get your headers and script
+  printed to the browser.  I'd love to know how this happens, but at 
+  any rate, I thought I'd save the unaware from potential pitfalls.
+
+  Phase misspellings, like 'PelrInitHandler' pass through without
+  warning, in case you were wondering where your output went...
+
+=head1 SEE ALSO
+
+  perl(1), mod_perl(1), Apache(3), Apache::Table(3)
+
+=head1 AUTHOR
+
+  Geoffrey Young <geoff@cpan.org>
+
+=head1 COPYRIGHT
+
+  Copyright 2000 Geoffrey Young - all rights reserved.
+
+  This library is free software; you can redistribute it and/or
+  modify it under the same terms as Perl itself.
+
+=cut

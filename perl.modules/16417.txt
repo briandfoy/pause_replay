@@ -1,0 +1,160 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:16417
+Return-Path: <cganesan@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 65642 invoked by uid 1008); 24 Dec 2002 20:48:13 -0000
+Delivered-To: cpanmail-modules@cpan.org
+Received: (qmail 65633 invoked by uid 76); 24 Dec 2002 20:48:13 -0000
+Received: from smtp02.mrf.mail.rcn.net (HELO smtp02.mrf.mail.rcn.net) (207.172.4.61) by onion.perl.org (qpsmtpd/0.20) with SMTP; 2002-12-24 20:48:13Z
+Received: from 208-59-176-161.c3-0.arl-ubr1.sbo-arl.ma.cable.rcn.com ([208.59.176.161] helo=[192.168.2.3])	by smtp02.mrf.mail.rcn.net with esmtp (Exim 3.35 #4)	id 18QvyF-00077Q-00	for modules@cpan.org; Tue, 24 Dec 2002 15:48:11 -0500
+Date: Tue, 24 Dec 2002 15:48:10 -0500 (EST)
+X-X-Sender: g_chander@chernobyl.local
+To: modules@cpan.org
+Subject: Net::SNMP and SNMP::MIB::Compiler
+Message-ID: <Pine.OSX.4.44.0212241546300.665-200000@chernobyl.local>
+MIME-Version: 1.0
+Content-Type: MULTIPART/Mixed; BOUNDARY="-1062731261-1495025778-1040762749=:665"
+Content-ID: <Pine.OSX.4.44.0212241546301.665@chernobyl.local>
+X-SMTPD: qpsmtpd/0.20, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: cganesan@cpan.org (Chander Ganesan)
+
+---1062731261-1495025778-1040762749=:665
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII
+Content-ID: <Pine.OSX.4.44.0212241546302.665@chernobyl.local>
+
+Hello.
+
+I've recently been using (quite extensively) both the Net::SNMP and the
+SNMP::MIB::Compiler modules to manage several network devices.  However,
+to interface the two modules is slightly unwieldly, since they don't tie
+together.  As a result, I have developed a new module, called
+'SNMP::Utils' which provides the "glue" between SNMP::MIB::Compuler and
+Net::SNMP.
+
+I'd like to contribute this to CPAN, however I notice that the SNMP
+namespace is a bit strange.  It looks like there are sort of two
+"threads", one which goes along the lines of SNMP::MIB::Compiler (which
+goes along the lines of Net::SNMP), which provides native Perl interfaces
+to SNMP, and another which links in to UCD SNMP.
+
+I'm really trying to figure out where to stick this...and get some
+feedback that where I put it isn't nasty :-).  I was considering
+Net::SNMP::Utils (which moves along the thread that SNMP::MIB::Compiler
+would move to Net::SNMP::Mib or some such thing).
+
+I've also attached the perldoc for this module, so you get an idea of what
+it does...
+
+thoughts?
+
+thanks.
+
+chander
+
+---1062731261-1495025778-1040762749=:665
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII; NAME=perldoc
+Content-Transfer-Encoding: BASE64
+Content-ID: <Pine.OSX.4.44.0212241545490.665@chernobyl.local>
+Content-Description: 
+Content-Disposition: ATTACHMENT; FILENAME=perldoc
+
+VXRpbHMoMykgICAgICAgVXNlciBDb250cmlidXRlZCBQZXJsIERvY3VtZW50
+YXRpb24gICAgICAgVXRpbHMoMykNCg0KDQoNCk4ITkEIQU0ITUUIRQ0KICAg
+ICAgIFNOTVA6OlV0aWxzIC0gUGVybCB1dGlsaXR5IG1vZHVsZSB0byB0aWUg
+dG9nZXRoZXINCiAgICAgICBTTk1QOjpNSUIgYW5kIE5ldDo6U05NUCBtb2R1
+bGVzLg0KDQpTCFNZCFlOCE5PCE9QCFBTCFNJCElTCFMNCiAgICAgICAgIHVz
+ZSBTTk1QOjpVdGlsczsNCiAgICAgICAgIG15ICRzbm1wVXRpbCA9IG5ldyBT
+Tk1QOjpVdGlsczsNCiAgICAgICAgIG15ICRyZXN1bHQgPSAkc25tcFV0aWwt
+PmdldFNOTVBUYWJsZSgtc25tcCA9PiAkc25tcCwNCiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAtbmFtZSA9PiBcQG5hbWUp
+Ow0KICAgICAgICAgbXkgJG5hbWUgPSAkc25tcFV0aWwtPmNvbnZlcnRfb2lk
+KCcxLjMuNi4xLjIuMScpOw0KICAgICAgICAgbXkgJG9pZCA9ICRzbm1wVXRp
+bC0+cmVzb2x2ZV9vaWQoJ2RvdDFTdFBQb3J0VGFibGUnKTsNCiAgICAgICAg
+IG15ICRlbnVtdHh0ID0gJHNubXBVdGlsLT5jb252ZXJ0X2VudW0oJ2RvdDFk
+U3RwUHJpb3JpdHknLCA1KTsNCiAgICAgICAgIG15ICRlbnVtID0gJHNubXBV
+dGlsLT5jb252ZXJ0X2VudW0gKCdkb3QxZFN0cFByaW9yaXR5JywgJGVudW10
+eHQpOw0KICAgICAgICAgbXkgJHZhbHVlID0gJHNubXBVdGlsLT5nZXRfdmFs
+dWUgKC1zbm1wID0+ICRzbm1wT2JqLA0KICAgICAgICAgICAgICAgLW5hbWUg
+PT4gImRvdDFkU3RwUG9ydFByaW9yaXR5IiwNCiAgICAgICAgICAgICAgIC1p
+bnN0YW5jZSA9PiAzKTsNCiAgICAgICAgIG15ICRyZXN1bHQgPSAkc25tcFV0
+aWwtPnNldF92YWx1ZSgtc25tcCA9PiAkc25tcE9iaiwNCiAgICAgICAgICAg
+ICAgIC1uYW1lID0+ICJkb3QxZFN0cFBvcnRQcmlvcml0eSIsDQogICAgICAg
+ICAgICAgICAtaW5zdGFuY2UgPT4gMywNCiAgICAgICAgICAgICAgIC12YWx1
+ZSA9PiAyKTsNCg0KDQpECERFCEVTCFNDCENSCFJJCElQCFBUCFRJCElPCE9O
+CE4NCiAgICAgICBTTk1QOjpVdGlscyBpcyBhIHNldCBvZiBtYW5hZ2VtZW50
+IHV0aWxpdHkgZnVuY3Rpb25zIHRoYXQNCiAgICAgICB0aWUgTmV0OjpTTk1Q
+IHRvZ2V0aGVyIHdpdGggU05NUDo6TUlCLiAgSXQgcHJvdmlkZXMgYSBsaW5r
+DQogICAgICAgYmV0d2VlbiB0aGUgTmV0OjpTTk1QIG1vZHVsZSBhbmQgdGhl
+IE1JQiwgcGVyZm9ybWluZyBjb24tDQogICAgICAgdmVyc2lvbnMgZnJvbSBu
+dW1lcmljIE9JRCdzIHRvIHRleHR1YWwgaWRlbnRpZmllcnMuDQoNCiAgICAg
+ICBBCEFjCGNjCGNlCGVzCHNzCHMNCg0KDQogICAgICAgJHNubXBVdGlsPW5l
+dyBTTk1QOjpVdGlsczsNCiAgICAgICAgICAgQ3JlYXRlIGEgbmV3IFNOTVA6
+OlV0aWxzIG9iamVjdC4NCg0KICAgICAgIHNldF92YWx1ZSgtc25tcCA9PiBO
+ZXQ6OlNOTVAgb2JqZWN0LCAtbmFtZSA9PiAnb2JqbmFtZScsDQogICAgICAg
+LXZhbHVlID0+ICJ2YWx1ZSIsIC1pbnN0YW5jZSA9PiAiMS00LDYiKQ0KICAg
+ICAgICAgICBTZXQgYSB2YWx1ZSBhbmQgcmV0dXJuIHRoZSByZXN1bHQgKHNl
+dCB2YWx1ZSkuDQoNCiAgICAgICAgICAgSW5zdGFuY2UgY2FuIGJlIHNwZWNp
+ZmllZCBhcyBhIHJlZmVyZW5jZSB0byBhbiBhcnJheQ0KICAgICAgICAgICBv
+ZiBwb3J0cywgYSByYW5nZSBvZiBpbnN0YW5jZXMgJzEtNCcgd291bGQgYmUN
+CiAgICAgICAgICAgaW5zdGFuY2VzIDEsMiwzLDQgb3IgYSBzaW5nbGUgaW5z
+dGFuY2UgKHNjYWxhciB2YWx1ZSkuDQogICAgICAgICAgIEluc3RhbmNlcyBv
+ZiAxLTQsMywzLDkgd291bGQgcmVzdWx0IGluIDEsMiwzLDQsMywzLA0KICAg
+ICAgICAgICBhbmQgOSAoMyB3b3VsZCBiZSBzZXQgdGhyaWNlLCBidXQgb25s
+eSB0aGUgbGFzdCByZXR1cm4NCiAgICAgICAgICAgY29kZSB3b3VsZCBiZSBy
+ZXR1cm5lZCEhKS4NCg0KICAgICAgICAgICBJbiB0aGUgY2FzZSBvZiBhIHNp
+bmdsZSBpbnN0YW5jZSwgdGhlIHJlc3BvbnNlIHdpbGwgYmUNCiAgICAgICAg
+ICAgYSBzY2FsYXIgd2l0aCB0aGUgcmVzdWx0IChvciB1bmRlZiBvbiBmYWls
+dXJlKS4NCg0KICAgICAgICAgICBJbiB0aGUgY2FzZSBvZiBtdWx0aXBsZSBp
+bnN0YW5jZXMsIHRoZSByZXNwb25zZSB3aWxsDQogICAgICAgICAgIGJlIHR3
+byBoYXNoZXMgb2YgdGhlIGZvcm0gJ0luc3RhbmNlJyA9PiAndmFsdWUnIC4N
+CiAgICAgICAgICAgRmFpbGVkIGluc3RhbmNlcyB3aWxsIGJlIHVuZGVmaW5l
+ZC4NCiAgICAgICAgICAgIFRoZSBzZWNvbmQgaGFzaCB3aWxsIGJlIG9mIHRo
+ZSBzYW1lIGZvcm0sIGJ1dCB3aWxsDQogICAgICAgICAgIGNvbnRhaW4gb25s
+eSBlcnJvcnMgcmV0dXJuZWQgKG9uIGZhaWx1cmUpLg0KDQogICAgICAgICAg
+IEluIHRoZSBjYXNlIG9mIGEgc2luZ2xlIHNldCwgdGhlIGV4ZXJjaXNlIG9m
+IGNoZWNraW5nDQogICAgICAgICAgIHRoZSByZXR1cm4gY29kZSBpcyBsZWZ0
+IHRvIHRoZSB1c2VyLg0KDQogICAgICAgZ2V0X3ZhbHVlICgtc25tcCA9PiBO
+ZXQ6OlNOTVAgb2JqZWN0LCAtbmFtZSA9PiAib2JqbmFtZSIsDQogICAgICAg
+LWluc3RhbmNlID0+IDEpDQogICAgICAgICAgIFJldHJpZXZlIHRoZSB2YWx1
+ZSBhbmQgcmV0dXJuIHRoZSByZXN1bHQuICBVbmxpa2UNCiAgICAgICAgICAg
+c2V0X3ZhbHVlLCBpbnN0YW5jZXMgYXJlIGN1cnJlbnRseSBub3Qgc3VwcG9y
+dGVkIGhlcmUuDQoNCiAgICAgICBjb252ZXJ0X2VudW0gKCdvYmpOYW1lJywg
+dmFsdWUpDQogICAgICAgICAgIFBlcmZvcm1zIGNvbnZlcnNpb25zIG9mIGVu
+dW0gdmFsdWVzIGZyb20gbnVtZXJpYyB0bw0KICAgICAgICAgICB0ZXh0dWFs
+IGFuZCB2aWNlIHZlcnNhLiAgSWYgYjx2YWx1ZT4gaXMgYSBudW1iZXIsIGl0
+DQogICAgICAgICAgIHdpbGwgYmUgY29udmVydGVkIHRvIGl0cyB0ZXh0dWFs
+IGVxdWl2YWxlbnQgaWYgaXQNCiAgICAgICAgICAgZXhpc3RzLiAgSWYgYjx2
+YWx1ZT4gaXMgYSB0ZXh0IHN0cmluZywgaXQgd2lsbCBiZSBjb24tDQogICAg
+ICAgICAgIHZlcnRlZCB0byBpdHMgbnVtZXJpYyBlcXVpdmFsZW50IGlmIGl0
+IGV4aXN0cy4NCg0KICAgICAgICAgICBJZiBubyBlbnVtcyBleGlzdCBmb3Ig
+dGhlIGI8b2JqTmFtZT4gc3BlY2lmaWVkLCB0aGVuDQogICAgICAgICAgIHRo
+ZSB2YWx1ZSByZXR1cm5lZCB3aWxsIGJlIHVuZGVmaW5lZC4gIFRoZSBzYW1l
+IGlzDQogICAgICAgICAgIHRydWUgaWYgdGhlIGF2bHVlIGlzIGludmFsaWQg
+KG5vdCBkZWZpbmVkIGluIHRoZSBlbnVtDQogICAgICAgICAgIHRhYmxlKS4N
+Cg0KICAgICAgIGFkZF9wYXRoDQogICAgICAgYWRkX2V4dGVuc2lvbg0KICAg
+ICAgIHJlcG9zaXRvcnkNCiAgICAgICBjb21waWxlDQogICAgICAgdHJlZQ0K
+ICAgICAgICAgICBUaGVzZSBmdW5jdGlvbnMgYXJlIGFsbCBpbmhlcml0ZWQg
+ZnJvbSB0aGUNCiAgICAgICAgICAgU05NUDo6TUlCOjpDb21waWxlciBtb2R1
+bGUuICBQbGVhc2UgcmVmZXIgdG8gdGhlDQogICAgICAgICAgIFNOTVA6Ok1J
+Qjo6Q29tcGlsZXIgZG9jdW1lbnRhdGlvbiBmb3IgdGhlaXIgdXNhZ2Ugc3lu
+LQ0KICAgICAgICAgICB0YXguDQoNCiAgICAgICBnZXRTTk1QVGFibGUoLXNu
+bXAgPT4gTmV0OjpTTk1QIG9iamVjdCwgLW5hbWUgPT4gJ29iai0NCiAgICAg
+ICBuYW1lJykNCiAgICAgICAgICAgVGFrZXMgYSB0YWJsZSBuYW1lIGFzIGFu
+IGFyZ3VtZW50LCByZXRyaWV2ZXMgaXQsIGFuZA0KICAgICAgICAgICByZXR1
+cm5zIHRoZSByZXN1bHRzIGluIGEgaGFzaC4gIEVhY2ggZWxlbWVudCBvZiB0
+aGUNCiAgICAgICAgICAgcmVzcG9uc2UgaGFzaCBpbiB0dXJuIGNvbnRhaW5z
+IGEgaGFzaCB3aXRoIHRoZSByZXN1bHRzDQogICAgICAgICAgIG9mIHRoZSBy
+ZXRyaWV2ZS4NCg0KICAgICAgICAgICBBIE5ldDo6U05NUCBvYmplY3QgbXVz
+dCBiZSBwcm92aWRlZCBmb3IgdGhpcyBjYWxsLg0KDQpFCEVYCFhQCFBPCE9S
+CFJUCFQNCiAgICAgICBOb25lIGJ5IGRlZmF1bHQuICBUaGlzIG1vZHVsZSBz
+aG91bGQgYmUgY2FsbGVkIG9ubHkgdXNpbmcNCiAgICAgICBvYmplY3Qgb3Jp
+ZW50ZWQgbWV0aG9kcy4NCg0KQQhBVQhVVAhUSAhITwhPUghSDQogICAgICAg
+Q2hhbmRlciBHYW5lc2FuIDxjZ2FuZXNhbkBjcGFuLm9yZz4NCg0KUwhTRQhF
+RQhFIEEIQUwITFMIU08ITw0KICAgICAgIHBlcmwuDQoNCiAgICAgICBOZXQ6
+OlNOTVAuDQoNCiAgICAgICBTTk1QOjpNSUI6OkNvbXBpbGVyDQoNCg0KDQpw
+ZXJsIHY1LjYuMSAgICAgICAgICAgICAgICAgMjAwMi0xMi0yNCAgICAgICAg
+ICAgICAgICAgICBVdGlscygzKQ0K
+---1062731261-1495025778-1040762749=:665--

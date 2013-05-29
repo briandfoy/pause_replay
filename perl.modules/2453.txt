@@ -1,0 +1,184 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2453
+Return-Path: <darren@DarrenDuncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3602 invoked from network); 15 Jul 2000 07:49:58 -0000
+Received: from 208.184.111.7.baremetal.com (HELO palladium.baremetal.com) (208.184.111.7)
+  by tmtowtdi.perl.org with SMTP; 15 Jul 2000 07:49:58 -0000
+Received: from [24.67.200.33] (24.67.200.33.bc.wave.home.com [24.67.200.33])
+	by palladium.baremetal.com (8.9.3/8.9.3) with ESMTP id AAA26352;
+	Sat, 15 Jul 2000 00:49:14 -0700
+Mime-Version: 1.0
+Message-ID: <f0432040cb595c6044e57@[24.67.200.33]>
+Date: Sat, 15 Jul 2000 00:50:34 -0700
+To: PAUSE <modules@perl.org>
+Subject: request namespace for CGI::WebPageContent
+Content-Type: text/plain; charset="us-ascii" ; format="flowed"
+Approved: news@nntp.perl.org
+From: darren@DarrenDuncan.net (Darren Duncan)
+
+Context Note: I am releasing a succession of around 15 Perl 5 object 
+modules.  Six of these are complete and documented, and will be 
+submitted quickly.  The others are working but not fully documented, 
+so I am holding them back for the moment.  All of these modules, with 
+info on how they can be used together (and working examples), are 
+available at http://www.DarrenDuncan.net.  They have temporary names 
+in the DDuncan::* name space.  They all require 5.004 for 
+consistency, although some can do with less.
+-----------------------------------------------
+
+Here is #6:
+
+Name                 DSLI  Description 
+Info
+-------------------  ---- 
+-------------------------------------------------  -------
+CGI::WebPageContent  bdpO  store/assemble web page parts, search and 
+replace  DUNCAND
+
+If you have suggestions of alternate names for this module, I would 
+be happy to hear them.  Likewise, I appreciate suggestions for a 
+better brief description for use in the module list.
+
+For a good description of my module, I have provided part of its POD 
+at the end of this letter.  The rest of the POD is on my site.
+
+Currently, at least 2 of my other modules use this one.
+
+// Darren Duncan
+
+----------------------------------------------
+
+=head1 NAME
+
+DDuncan::WebPageContent - Perl module for holding the pieces of an 
+HTML web page
+while it is being constructed.
+
+I<Please note that the path name of this module is temporary, something that
+works until a more appropriate and integrated name can be found.  A possibility
+could be "Web::PageContent">
+
+=head1 DEPENDENCIES
+
+=head2 Perl Version
+
+5.004
+
+=head2 Standard Modules
+
+=item I<none>
+
+=head2 Nonstandard Modules
+
+=item HTTP::Headers 1.37
+=item DDuncan::HTMLTagMaker 1.02
+
+=head1 SYNOPSIS
+
+	use DDuncan::WebPageContent 1.02;
+
+	my $webpage = DDuncan::WebPageContent->new();
+
+	$webpage->title( "What Is To Tell" );
+	$webpage->author( "Mine Own Self" );
+	$webpage->meta( { keywords => "hot spicy salty" } );
+	$webpage->style_sources( "mypage.css" );
+	$webpage->style_code( "H1 { align: center; }" );
+
+	$webpage->replacements( {
+		__url_one__ => (localtime())[6] == 0 ? "one.html" : "two.html",
+		__url_two__ => (localtime())[6] == 0 ? "three.html" : 
+"four.html",
+	} );
+
+	$webpage->body_content( <<__endquote );
+	<H1>Good Reading</H1>
+	<P>Greetings visitors, you must wonder why I called you here.
+	Well you shall find out soon enough, but not from me.</P>
+	__endquote
+
+	if( (localtime())[6] == 0 ) {
+		$webpage->body_append( <<__endquote );
+	<P>Sorry, I have just been informed that we can't help you today,
+	as the knowledge-bringers are not in attendance.  You will
+	have to come back another time.</P>
+	__endquote
+	} else {
+		$webpage->body_append( <<__endquote );
+	<P>That's right, not from me, not in a million years.</P>
+	__endquote
+	}
+
+	$webpage->body_append( <<__endquote );
+	<P>[ click <A HREF="__url_one__">here</A> |
+	or <A HREF="__url_two__">here</A> ]</P>
+	__endquote
+
+	print STDOUT $webpage->to_string();
+
+=head1 DESCRIPTION
+
+This Perl 5 object class implements a simple data structure that 
+makes it easy to
+build up an HTML web page one piece at a time.  In its simplest concept, this
+structure is an ordered list of content that would go between the 
+"body" tags in
+the document, and it is easy to either append or prepend content to a page.
+
+Building on that concept, this class can also generate a complete 
+HTML page with
+one method call, attaching the appropriate headers and footers to the 
+content of
+the page.  For more customization, this class also stores a list of 
+content that
+goes in the HTML document's "head" section.  As well, it remembers 
+attributes for
+a page such as "title", "author", various "meta" information, and style sheets
+(linked or embedded).
+
+This class also manages and generates all the HTTP headers that need to be sent
+to the web browser prior to the actual HTML code.  Similarly, this class can
+generate redirection headers when we don't want to display any 
+content ourselves.
+  A single to_string() call will return everything the browser needs to see at
+once, whether page or redirect.
+
+Additional features include global search-and-replace in the body of multiple
+tokens, which can be defined ahead of time and performed later.  Tokens can be
+priortized such that the replacements are done in a specified order, 
+rather than
+the order they are defined; this is useful when one replacement yields a token
+that another replacement must handle.
+
+Future versions of this class will expand to handle an entire 
+frameset document,
+but that was omitted now for simplicity.
+
+=head1 OUTPUT FROM SYNOPSIS PROGRAM
+
+	Content-Type: text/html
+
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+	<HTML>
+	<HEAD>
+	<TITLE>What Is To Tell</TITLE>
+	<LINK REV="made" HREF="mailto:Mine Own Self">
+	<META NAME="keywords" VALUE="hot spicy salty">
+	<LINK TYPE="text/css" REL="stylesheet" HREF="mypage.css">
+	<STYLE>
+	<!-- H1 { align: center; } --></STYLE>
+	</HEAD>
+	<BODY><H1>Good Reading</H1>
+	<P>Greetings visitors, you must wonder why I called you here.
+	Well you shall find out soon enough, but not from me.</P>
+	<P>That's right, not from me, not in a million years.</P>
+	<P>[ click <A HREF="two.html">here</A> |
+	or <A HREF="four.html">here</A> ]</P>
+
+	</BODY>
+	</HTML>
+
+

@@ -1,0 +1,73 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:23455
+Return-Path: <tovod-everett@alascom.att.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 82261 invoked by uid 76); 9 Sep 2003 20:05:36 -0000
+Received: from x1.develooper.com (HELO x1.develooper.com) (63.251.223.170) by onion.perl.org (qpsmtpd/0.26) with SMTP; Tue, 09 Sep 2003 13:05:36 -0700
+Received: (qmail 27186 invoked by uid 225); 9 Sep 2003 20:05:31 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27181 invoked by alias); 9 Sep 2003 20:05:30 -0000
+Received: from almso1.att.com (HELO almso1.proxy.att.com) (192.128.167.69) by la.mx.develooper.com (qpsmtpd/0.27-dev) with ESMTP; Tue, 09 Sep 2003 13:04:59 -0700
+Received: from attrh0i.attrh.att.com ([135.37.94.54])	by almso1.proxy.att.com (AT&T IPNS/MSO-5.0) with ESMTP id h89JqAUR029528	for <modules@perl.org>; Tue, 9 Sep 2003 16:04:50 -0400
+Received: from ALASCOMPUBA.alascom.att.com (135.78.0.38) by attrh0i.attrh.att.com (6.5.032)        id 3F5B5761000790F9; Tue, 9 Sep 2003 16:03:29 -0400
+Received: from alascomexa1.alascom.att.com ([135.78.0.40]) by ALASCOMPUBA.alascom.att.com with Microsoft SMTPSVC(5.0.2195.5329);	 Tue, 9 Sep 2003 12:04:49 -0800
+content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-MimeOLE: Produced By Microsoft Exchange V6.0.6249.0
+Subject: RE: Module submission Win32::Security
+Date: Tue, 9 Sep 2003 12:04:49 -0800
+Message-ID: <DB64562F87DC754ABCB54578FD995AD6AEE3@alascomexa1.alascom.att.com>
+Thread-Topic: Module submission Win32::Security
+Thread-Index: AcN3CXix0Z/yp5/zT3+xYBLuonRsUQAAbomQ
+To: "Autrijus Tang" <autrijus@autrijus.org>, <modules@perl.org>
+X-OriginalArrivalTime: 09 Sep 2003 20:04:49.0531 (UTC) FILETIME=[9FC58CB0:01C3770D]
+X-Spam-Check-By: la.mx.develooper.com
+X-Spam-Status: No, hits=0.3 required=7.0 tests=CARRIAGE_RETURNS,QUOTED_EMAIL_TEXT,SPAM_PHRASE_00_01,SUPERLONG_LINE version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: tovod-everett@alascom.att.com ("Ovod-Everett, Toby")
+
+-----Original Message-----
+From:	Autrijus Tang [mailto:autrijus@autrijus.org]
+Sent:	Tuesday, September 09, 2003 11:34 AM
+To:	modules@perl.org
+Cc:	teverett@cpan.org
+Subject:	Re: Module submission Win32::Security
+
+> >     I look forward to releasing the code when it is in good shape:).
+> Any estimated time for that, or is there already preliminary
+> POD/tests/code available for preview?
+I'm shooting for sometime in the next two weeks.  I've had "working" =
+code for close to a month now, but I've been reluctant to release it =
+until the public interfaces settle down.  The public interfaces have =
+been through a few massive refactorings as design decisions have proved =
+sub-optimal.  For instance, ACLs are built of ACEs, which come in a =
+variety of types: ACCESS_ALLOWED_ACE_TYPE, ACCESS_DENIED_ACE_TYPE, =
+SYSTEM_AUDIT_ACE_TYPE, etc.  In addition, how an ACE behaves depends =
+upon the sort of object it is applied to.  For instance, an ACE with the =
+mask GENERIC_ALL that gets inherited onto a file or directory gets =
+GENERIC_ALL mapped to =
+STANDARD_RIGHTS_ALL|FILE_GENERIC_READ|FILE_GENERIC_WRITE|FILE_GENERIC_EXE=
+CUTE|FILE_DELETE_CHILD.  That mapping is different for registry keys, =
+printers, Active Directory objects, etc.  So I have a situation with =
+multiple inheritance - all 8 ACE types could apply to 10 different kinds =
+of objects.  I only currently support 2 ACE types and 1 kind of object, =
+but the interface has to be architected to support all 80 combinations =
+so that I can provide for future expansion.  Initially I made the =
+breakdown by subclassing on object type and glossing over the ACE type =
+variation.  However, as I came to understand that the different ACE =
+types have different internal binary structures and different =
+parameters, I realized that it makes more sense to subclass on the ACE =
+type and have an attribute that selects the object type and governs the =
+behavior.  That changed all the public interfaces.  The consequences of =
+my design decisions only truly become apparent as I attempt to fill in =
+the details, so I'm a little reluctant to increase the weight of =
+backward compatibility by releasing before I'm comfortable with the =
+architecture.
+
+--Toby Ovod-Everett
+

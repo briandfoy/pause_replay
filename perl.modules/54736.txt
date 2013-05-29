@@ -1,0 +1,242 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:54736
+Return-Path: <Jamaleddineb@aol.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 28817 invoked from network); 5 Jun 2007 20:56:55 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 5 Jun 2007 20:56:55 -0000
+Received: (qmail 14119 invoked by uid 225); 5 Jun 2007 20:56:54 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14109 invoked by alias); 5 Jun 2007 20:56:54 -0000
+X-Spam-Status: No, hits=4.5 required=8.0
+	tests=BAYES_50,DKIM_POLICY_SIGNSOME,DK_POLICY_SIGNSOME,FORGED_AOL_TAGS,HTML_MESSAGE,KARMA_CONNECT_NEGATIVE,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of Jamaleddineb@aol.com designates 205.188.139.137 as permitted sender)
+Received: from imo-d23.mx.aol.com (HELO imo-d23.mx.aol.com) (205.188.139.137)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 05 Jun 2007 13:56:51 -0700
+Received: from Jamaleddineb@aol.com
+	by imo-d23.mx.aol.com (mail_out_v38_r9.2.) id d.c2a.11e0777d (52643)
+	 for <modules@perl.org>; Tue, 5 Jun 2007 16:56:36 -0400 (EDT)
+Received: from FWM-M21 (fwm-m21.webmail.aol.com [64.12.168.85]) by cia-d15.mx.aol.com (v115.11) with ESMTP id MAILCIAD153-cda34665ce039d; Tue, 05 Jun 2007 16:56:35 -0400
+To: modules@perl.org
+Subject: would like to write and submit a module: DBI::ConnectionManager
+Date: Tue, 05 Jun 2007 16:56:35 -0400
+X-MB-Message-Source: WebUI
+X-MB-Message-Type: User
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+ boundary="--------MB_8C975CB237E3968_171C_A45A_FWM-M21.sysops.aol.com"
+X-Mailer: AOL WebMail 27618
+Received: from 69.201.189.229 by FWM-M21.sysops.aol.com (64.12.168.85) with HTTP (WebMailUI); Tue, 05 Jun 2007 16:56:35 -0400
+Message-ID: <8C975CB237E3968-171C-55FD@FWM-M21.sysops.aol.com>
+X-AOL-IP: 64.12.168.85
+X-Virus-Checked: Checked
+X-Old-Spam-Flag: NO
+Approved: news@nntp.perl.org
+From: jamaleddineb@aol.com
+
+----------MB_8C975CB237E3968_171C_A45A_FWM-M21.sysops.aol.com
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+
+Hi there,
+Would it be possible to send me a guide line on how to submit a module?
+I have the module DBI::ConnectionManager that is very useful and ready to go but I need
+to know how to submit it and does CPAN provides code management or bug report in case
+I need to maintain it ?
+
+Regards,
+Bassem W. Jamaleddine
+
+The DBI::ConnectionManager will manage connection to either MySQL or Oracle, to call it
+it looks something like this:
+
+Example1:
+---------
+use DBI::ConnectionManager;
+
+my $dbprofile = $ENV{DB_PM_PROFILE};
+
+my $dbhandle =? DBI::ConnectionManager->new($dbprofile);
+$dbhandle-> AttachLogger(">>/tmp/db.log",1);
+$dbhandle-> disconnect();
+
+
+Example2:
+---------
+my $dbprofile = $ENV{DB_PM_PROFILE};
+
+my $dbhandle = DBI::ConnectionManager->new($dbprofile);
+$dbhandle-> AttachLogger(">>/tmp/db.log",1);
+
+$dbhandle->raiseerror(0);
+$dbhandle->printerror(1);
+$dbhandle->autocommit(0);
+$dbhandle->autorollback(1);
+
+
+my $sql = "INSERT INTO T_TASK_QUEUE (TASK_QUEUE_KEY,STATUS_CD,QUEUED_DT,DEQUEUED_DT) VALUES (106,'INPROCESS',SYSDATE,SYSDATE)";
+$dbhandle-> do($sql);
+
+# more transactions, but will autoroll back in case one will fail
+
+# no reason to commit, because the disconnect will automatically do that
+#$dbhandle-> commit();Example3: (Inserting binary to BLOB in MySQL or Oracle)
+-------------------------------------------------------
+
+
+my $dbhandle = DBI::ConnectionManager->new($dbconfig);
+$dbhandle-> HookTracing(">>/tmp/db.log", $dbi_trace_level);
+$dbhandle-> HookError(">>/tmp/error.log");
+
+my $dbb =
+??? $dbhandle-> dbdriver =~ /Oracle/i ? 'ora' :
+??? $dbhandle-> dbdriver =~ /Mysql/i ? 'mysql' :
+??? die "UNKNOWN DATA BASE WITH DRIVER $dbhandle->dbdriver IS NOT SUPPORTED!\n";
+my $SYSDATE = $dbb eq 'ora' ? 'SYSDATE' : 'SYSDATE()';
+
+
+$dbhandle->raiseerror(0);
+$dbhandle->printerror(1);
+$dbhandle->autocommit(0);
+$dbhandle->autorollback(1);
+
+my $lookup =? &get_unique_lookup();
+my $pcode = &get_binary_code();
+my $bin = &get_binary_data();
+my $note = "some note";
+
+# get a binding order using the pseudo hash
+my $o_bnd = [ {LOOKUP=>1,PCODE_SREF=>2,BIN_SREF=>3, NOTE_SREF=>4}, \$lookup, \$pcode,\$bin,\$note];
+my $o_typ = ($dbb eq 'ora') ? {LOOKUP=>1, PCODE_SREF=>113, BIN_SREF=>113, NOTE_SREF=>113} : undef;
+if ($dbhandle-> sqlbnd(
+??????? "INSERT INTO TEST_TABLE
+??????????? (LOOKUP, PCODE_SREF, BIN_SREF, NOTE_SREF, CHANGEDATE_T,RECORDDATE_T)
+??????????? VALUES (?,?,?,?,$SYSDATE,$SYSDATE)
+??????? ",
+??????? $o_bnd, $o_typ)
+??? )
+{
+??? # insert successfully, do more stuff
+}
+else {
+??? my $prss_err = "INTERNAL ERROR WHEN REGISTERING THE PROCESSOR AT insertnum->PROCESSORS_CODE_NX! ", $dbhandle-> dbierror(), "\n";
+??? print STDERR $prss_err;
+??? $dbhandle-> rollback;
+??? $dbhandle-> disconnect;
+??? exit -1;
+}
+
+$dbhandle-> disconnect();
+
+
+
+
+________________________________________________________________________
+AOL now offers free email to everyone.  Find out more about what's free from AOL at AOL.com.
+
+----------MB_8C975CB237E3968_171C_A45A_FWM-M21.sysops.aol.com
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html; charset="us-ascii"
+
+Hi there,<br>
+Would it be possible to send me a guide line on how to submit a module?<br>
+I have the module DBI::ConnectionManager that is very useful and ready to go but I need<br>
+to know how to submit it and does CPAN provides code management or bug report in case<br>
+I need to maintain it ?<br>
+<br>
+Regards,<br>
+Bassem W. Jamaleddine<br>
+<br>
+The DBI::ConnectionManager will manage connection to either MySQL or Oracle, to call it<br>
+it looks something like this:<br>
+<br>
+Example1:<br>
+---------<br>
+use DBI::ConnectionManager;<br>
+<br>
+my $dbprofile = $ENV{DB_PM_PROFILE};<br>
+<br>
+my $dbhandle =&nbsp; DBI::ConnectionManager-&gt;new($dbprofile);<br>
+$dbhandle-&gt; AttachLogger("&gt;&gt;/tmp/db.log",1);<br>
+$dbhandle-&gt; disconnect();<br>
+<br>
+<br>
+Example2:<br>
+---------<br>
+my $dbprofile = $ENV{DB_PM_PROFILE};<br>
+<br>
+my $dbhandle = DBI::ConnectionManager-&gt;new($dbprofile);<br>
+$dbhandle-&gt; AttachLogger("&gt;&gt;/tmp/db.log",1);<br>
+<br>
+$dbhandle-&gt;raiseerror(0);<br>
+$dbhandle-&gt;printerror(1);<br>
+$dbhandle-&gt;autocommit(0);<br>
+$dbhandle-&gt;autorollback(1);<br>
+<br>
+<br>
+my $sql = "INSERT INTO T_TASK_QUEUE (TASK_QUEUE_KEY,STATUS_CD,QUEUED_DT,DEQUEUED_DT) VALUES (106,'INPROCESS',SYSDATE,SYSDATE)";<br>
+$dbhandle-&gt; do($sql);<br>
+<br>
+# more transactions, but will autoroll back in case one will fail<br>
+<br>
+# no reason to commit, because the disconnect will automatically do that<br>
+#$dbhandle-&gt; commit();Example3: (Inserting binary to BLOB in MySQL or Oracle)<br>
+-------------------------------------------------------<br>
+<br>
+<br>
+my $dbhandle = DBI::ConnectionManager-&gt;new($dbconfig);<br>
+$dbhandle-&gt; HookTracing("&gt;&gt;/tmp/db.log", $dbi_trace_level);<br>
+$dbhandle-&gt; HookError("&gt;&gt;/tmp/error.log");<br>
+<br>
+my $dbb =<br>
+&nbsp;&nbsp;&nbsp; $dbhandle-&gt; dbdriver =~ /Oracle/i ? 'ora' :<br>
+&nbsp;&nbsp;&nbsp; $dbhandle-&gt; dbdriver =~ /Mysql/i ? 'mysql' :<br>
+&nbsp;&nbsp;&nbsp; die "UNKNOWN DATA BASE WITH DRIVER $dbhandle-&gt;dbdriver IS NOT SUPPORTED!\n";<br>
+my $SYSDATE = $dbb eq 'ora' ? 'SYSDATE' : 'SYSDATE()';<br>
+<br>
+<br>
+$dbhandle-&gt;raiseerror(0);<br>
+$dbhandle-&gt;printerror(1);<br>
+$dbhandle-&gt;autocommit(0);<br>
+$dbhandle-&gt;autorollback(1);<br>
+<br>
+my $lookup =&nbsp; &amp;get_unique_lookup();<br>
+my $pcode = &amp;get_binary_code();<br>
+my $bin = &amp;get_binary_data();<br>
+my $note = "some note";<br>
+<br>
+# get a binding order using the pseudo hash<br>
+my $o_bnd = [ {LOOKUP=&gt;1,PCODE_SREF=&gt;2,BIN_SREF=&gt;3, NOTE_SREF=&gt;4}, \$lookup, \$pcode,\$bin,\$note];<br>
+my $o_typ = ($dbb eq 'ora') ? {LOOKUP=&gt;1, PCODE_SREF=&gt;113, BIN_SREF=&gt;113, NOTE_SREF=&gt;113} : undef;<br>
+if ($dbhandle-&gt; sqlbnd(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "INSERT INTO TEST_TABLE<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (LOOKUP, PCODE_SREF, BIN_SREF, NOTE_SREF, CHANGEDATE_T,RECORDDATE_T)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VALUES (?,?,?,?,$SYSDATE,$SYSDATE)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $o_bnd, $o_typ)<br>
+&nbsp;&nbsp;&nbsp; )<br>
+{<br>
+&nbsp;&nbsp;&nbsp; # insert successfully, do more stuff<br>
+}<br>
+else {<br>
+&nbsp;&nbsp;&nbsp; my $prss_err = "INTERNAL ERROR WHEN REGISTERING THE PROCESSOR AT insertnum-&gt;PROCESSORS_CODE_NX! ", $dbhandle-&gt; dbierror(), "\n";<br>
+&nbsp;&nbsp;&nbsp; print STDERR $prss_err;<br>
+&nbsp;&nbsp;&nbsp; $dbhandle-&gt; rollback;<br>
+&nbsp;&nbsp;&nbsp; $dbhandle-&gt; disconnect;<br>
+&nbsp;&nbsp;&nbsp; exit -1;<br>
+}<br>
+<br>
+$dbhandle-&gt; disconnect();<br>
+<br>
+<br>
+<br>
+<div class="AOLPromoFooter">
+<hr style="margin-top:10px;" />
+AOL now offers free email to everyone.  Find out more about what's free from AOL at <a href="http://www.aol.com?ncid=AOLAOF00020000000437" target="_blank"><b>AOL.com</b></a>.<br />
+</div>
+
+----------MB_8C975CB237E3968_171C_A45A_FWM-M21.sysops.aol.com--

@@ -1,0 +1,71 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:1872
+Return-Path: <charlie@public.antipope.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32741 invoked from network); 16 May 2000 12:41:08 -0000
+Received: from public.antipope.org (charlie@194.117.128.200)
+  by tmtowtdi.perl.org with SMTP; 16 May 2000 12:41:08 -0000
+Received: (from charlie@localhost)
+	by public.antipope.org (8.8.7/8.8.7) id MAA11836
+	for modules@perl.org; Tue, 16 May 2000 12:41:06 GMT
+Date: Tue, 16 May 2000 13:41:06 +0100
+To: modules@perl.org
+Subject: module namespace query ...
+Message-ID: <20000516134106.A11803@antipope.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3i
+Approved: news@nntp.perl.org
+From: charlie@antipope.org (Charlie Stross)
+
+
+Hi there ...
+
+I've just uploaded a mature release of NetServer::Generic. (It's been
+running a bet-the-company mission-critical financial system for two years,
+so I think it's just about beta-tested ;-)
+
+I'm currently considering a new project and just want to clear the proposed
+module name with you.
+
+NetServer::Compiler 	idph	state machine compiler for TCP/IP servers
+
+NetServer::Compiler will implement a yacc-like tool for building TCP/IP
+server daemons. It will accept input files containing state transition
+rules (defined in an Augmented Backus-Naur form similar to that used by
+RFC 822), and perl code to associate with each state.
+
+The output from NetServer::Compiler will be a perl module that implements
+the specified protocol using NetServer::Generic or NetServer::FastSelect
+as a shell. (For example: by feeding an ABNF grammar describing NNTP,
+and associated perl subroutines for messing with the contents of a news
+spool directory, NetServer::Compiler will emit a perl module embodying
+an NNTP server.) Alternatively, NetServer::Compiler will load and
+execute the input file as a server process.
+
+The main use of NetServer::Compiler is to rapidly prototype new TCP/IP-
+based network services. (A secondary -- speculative -- use is to provide
+a complete drop-in 100% pure perl replacement for inetd :-).
+
+This may need to be accompanied by NetServer::FastSelect. 
+NetServer::Generic's non-forking, single-threaded (select-based) server 
+mode is currently defective insofar as it can block under heavy i/o loads.
+To address this, I've written a non-blocking select-based server module,
+but it breaks with the NetServer::Generic API. I haven't released this
+yet, and am considering using it as the server back-end for 
+NetServer::Compiler.
+
+(I should add that I've been thinking about N:C a fair bit lately but
+haven't actually begun bending code. Still got a few chapters of the Dragon
+book to read ...)
+
+Any comments?
+
+
+
+-- Charlie Stross
+
+
+

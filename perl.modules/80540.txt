@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:80540
+Return-Path: <matthewt@agaton.scsys.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11753 invoked from network); 11 May 2012 17:40:37 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 11 May 2012 17:40:37 -0000
+Received: (qmail 30165 invoked by uid 225); 11 May 2012 17:40:36 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30161 invoked by alias); 11 May 2012 17:40:36 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from jules.scsys.co.uk (HELO jules.scsys.co.uk) (217.168.153.160)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 11 May 2012 10:40:32 -0700
+Received: from [217.168.150.167] (helo=agaton.scsys.co.uk)
+	by jules.scsys.co.uk with esmtps (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1SStpL-00070F-16; Fri, 11 May 2012 17:40:27 +0000
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1SStpK-0006Z6-T1; Fri, 11 May 2012 18:40:26 +0100
+Date: Fri, 11 May 2012 18:40:26 +0100
+To: Alessandro Ranellucci <aar@cpan.org>
+Cc: modules@perl.org, bluefeet@gmail.com
+Subject: Re: Module submission DBIx::Lite
+Message-ID: <20120511174026.GR19118@agaton.scsys.co.uk>
+References: <20120511150704.GM19118@agaton.scsys.co.uk> <r422Ps-1068i-CB7D204DFD94470BA516466FB95C275A@thelonious.lan>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <r422Ps-1068i-CB7D204DFD94470BA516466FB95C275A@thelonious.lan>
+User-Agent: Mutt/1.5.11
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Fri, May 11, 2012 at 07:22:42PM +0200, Alessandro Ranellucci wrote:
+> On 11-05-2012 at 17:07, Matt S Trout wrote:
+> 
+>  >What does this achieve that the already existing lightr-DBIx::Class
+>  >module DBIx::ResultSet doesn't
+> 
+> Accessor methods, custom packages, relationships, joins, 
+> group_by, ->next, ->single and more...
+> 
+> Also, DBIx::ResultSet is clearly not an ORM.
+
+Neither is DBIx::Lite - it just blesses hashrefs into a package with
+an AUTOLOAD, which isn't really the same thing.
+
+Plus ->single was a design error and should never be used.
+
+So was ->next - there should an an ->iter method that returns an
+iterator instead.
+
+Copying my stupid mistakes from DBIx::Class that Aran didn't because he
+spoke to me first and I was able to warn him they were stupid does not
+a better module make :)
+
+>  >and why can't the additional
+>  >functionality
+>  >be added there?
+> 
+> I contacted the DBIx::ResultSet maintainer last year and sent 
+> him a long e-mail with ideas and patches for new features. I got 
+> no answer.
+> After a couple months, I tried again. Still no answer.
+> Then I tried again. And no answer.
+
+I've cc'ed Aran in so you can sort out re-sending the requests rather
+than producing another module - if you're having trouble contacting an
+author please contact modules@perl.org - we can usually track them down.
+
+Aran, aar's got some really nice ideas here and since you're already looking
+at adding joins to SQL::Abstract we three need to collaborate so I don't
+completely break your codebases when I release 2.0 using Data::Query.
+
+-- 
+Matt S Trout - Shadowcat Systems - Perl consulting with a commit bit and a clue
+
+http://shadowcat.co.uk/blog/matt-s-trout/   http://twitter.com/shadowcat_mst/
+
+Email me now on mst (at) shadowcat.co.uk and let's chat about how our Catalyst
+commercial support, training and consultancy packages could help your team.

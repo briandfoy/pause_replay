@@ -1,0 +1,245 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:36763
+Return-Path: <group1104@yahoo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11488 invoked from network); 30 Nov 2004 07:50:20 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 30 Nov 2004 07:50:20 -0000
+Received: (qmail 13665 invoked by uid 225); 30 Nov 2004 07:50:19 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13649 invoked by alias); 30 Nov 2004 07:50:18 -0000
+X-Spam-Status: No, hits=1.5 required=8.0
+	tests=BAYES_01,FROM_ENDS_IN_NUMS,RCVD_IN_BLACKHOLES_CNKR
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from web53801.mail.yahoo.com (HELO web53801.mail.yahoo.com) (206.190.36.196)
+  by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Mon, 29 Nov 2004 23:50:01 -0800
+Received: (qmail 50622 invoked by uid 60001); 30 Nov 2004 07:49:57 -0000
+Comment: DomainKeys? See http://antispam.yahoo.com/domainkeys
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  b=Je2leSzEqhe2QWHkUJMUkAID/LhOUep/kH+ntJTq1ilvzPJMS3EJU+KdbcQbfK6vnoCziw6GrdtQ45Y+xRhPvgLbSV6nNm9B15xqq+2o/B+uwvtVatMgQj2R1c0QboNe0OO6B0atDTMYjU9QasO68LTolUQEx2/+Zxw79gFahLA=  ;
+Message-ID: <20041130074957.50620.qmail@web53801.mail.yahoo.com>
+Received: from [220.248.24.10] by web53801.mail.yahoo.com via HTTP; Tue, 30 Nov 2004 15:49:57 CST
+Date: Tue, 30 Nov 2004 15:49:57 +0800 (CST)
+Subject: Re: Module submission EasyDateTime
+To: modules@perl.org
+Cc: comdog@panix.com
+In-Reply-To: <291120041720066768%comdog@panix.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=gb2312
+Content-Transfer-Encoding: 8bit
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: group1104@yahoo.com (=?gb2312?q?=B1=BF=D3=E3=20Buffett?=)
+References: <291120041720066768%comdog@panix.com>
+
+Dear _brian_d_foy
+thank u for your reply.
+
+the most common date and time module is DateTime and
+Date::Calc
+
+DateTime is huge (countless modules)
+and not easy to install(need a complier and times need
+to down some module by hand)
+and also it's not easy to use ,
+you need to know nearly everything about it,
+to know it,u need look up countless document,and his
+miscellaneous code,
+
+>>$dt->set_time_zone( 'America/Chicago' );
+i once use DateTime to develop my project,to make
+DateTime to support timezone,
+i download countless extra modules and to find out
+what the timezone string of 
+China('America/Chicago' is the timezone string of
+America,and what is the timezone string of China?)
+, i find it all over code. when i find it, i wanna
+know what's the extact behave of the timezone of
+China,
+so i also got answer from it's source code.
+
+it's nightmare. i spend to much time in it. so i write
+a new one.
+DateTime is strong but not easy,and contains too much
+specious feature but i won't use it for life.
+and need a complier stop it's application being used
+in share webspace
+
+Date::Calc is not object-oriented, it's strong, but
+not convenient in data operating,specially operating
+in month,
+the logic of it's function in month is in chaos.
+And Date::Calc is also not easy to install(need a
+complier and i dont know why,this module fail to
+install some windows machine(
+about 1/4 of 200 machines in my company))
+
+Date::Handler is simalar a little similar with my
+module,
+i tryed Date::Handler,
+ a lillte strange,
+ the feature module provide is not just exactly i
+need(???), 
+ and it's not tolerable it's week in month
+operator(add or sub month)
+
+
+
+==========================================
+and the EasyDateTime is easy to install: just one
+file, anything you need is to copy it to ur
+application directory.
+and dont need a complier and system independent(i
+tested in freebsd linux windows)
+
+and most important of ,easy but enough to use.
+once u have a glance of near a page sample code ,u can
+use it to develop(i assure u can),
+only little function,and the source of it is also very
+simple to read source if u cannot get what u want to
+know from document.
+
+this is the sample to use it:
+
+# Constructors
+
+$dt =
+EasyDateTime->new({year=>2000,month=>1,day=>1,hour=>0,min=>0,sec=>0,timezone=>8});
+$dt = EasyDateTime->new('2004-08-28 08:06:00');
+
+#sample string can be accepted
+#    '2004-08-28 08:06:00' ' 2004-08-28 08:06:00 '
+#    '2004-08-28T08:06:00' '2004/08/28 08:06:00'
+#    '2004.08.28 08:06:00' '2004-08-28 08.06.00'
+#    '04-8-28 8:6:0' '2004-08-28' '08:06:00'
+
+# getter and setter
+$dt->year();
+$dt->year(2004);
+$dt->month();
+$dt->month(3);
+$dt->day();
+$dt->day(24);
+$dt->hour();
+$dt->hour(8);
+dt->min();
+$dt->min(20);
+$dt->sec();
+$dt->sec(30);
+$dt->timezone();
+$dt->timezone(8);
+$st->set({hour=>0,min=>0,sec=>0});
+
+# clone & lock
+$dt2=$dt->clone(); #create new instance copy from this
+instance
+$dt->lock(); #set $dt read only
+    
+#static function: now localtimezone validate
+$dt=EasyDateTime->now(); #use the time of now to
+create a instance
+$dt=EasyDateTime->now(8); #use timezone 8 and time of
+now to create a instance
+
+print $dt->localtimezone(); #print the localtimezone
+of server that run this script;
+
+EasyDateTime->validate('2004-08-28T08:06:00'); #check
+whether this string is a valid datetime_str
+EasyDateTime->validate({year=>2000,month=>1,day=>1});
+    
+# other func
+$dt->to_end_of_month();
+
+# format output
+$dt->str(); #'2004-08-28 08:06:00'
+$dt->str('%yyyy%MM'); #'200408' get more format by
+read the following document 
+
+# operator overload
+$dt2=$dt+3600; #$dt2=$dt + 3600 seconds
+$dt2=$dt+{day=>1};
+$dt2=$dt+{month=>1};
+#attention sometime this func will fail when for
+example $dt = '2004-10-31'
+#if you want to goto [next] end of month use
+to_end_of_month instead
+
+$dt2=$dt-3000;
+$sec_count=$dt2-$dt; #return interval of $dt2 and $dt
+by seconeds
+$dt2=$dt-{day=>1};
+	
+$dt+={day=>1};
+$dt+={month=>1}; # will throw a exception if result
+time is not exist
+$dt+=3600; #sub 3600 seconeds
+$dt-={day=>1};
+$dt-=3600;
+
+#compare > < = >= <= <=> cmp and so on
+print $dt2>$dt1;
+print $dt2<$dt1;
+print $dt2=$dt1;
+....
+
+
+i have upload my module, and the url is 
+http://search.cpan.org/~foolfish/EasyDateTime-1.0/
+
+if u down and try to use it and i think u will also
+feel it's really easy to use,and worth be listed in
+module list
+
+best regards
+
+                          Qian Yu
+
+
+ --- _brian_d_foy <comdog@panix.com> µƒ’˝Œƒ£∫
+> [[ This message was both posted and mailed: see
+>    the "To," "Cc," and "Newsgroups" headers for
+> details. ]]
+> 
+> In article
+> <200411290835.iAT8ZSvn001190@pause.perl.org>, Perl
+> Authors
+> Upload Server <upload@pause.perl.org> wrote:
+> 
+> > The following module was proposed for inclusion in
+> the Module List:
+> > 
+> >   modid:       EasyDateTime
+> 
+> >   description: A date and time object
+> 
+> >     We often need a date and time object, but the
+> existing DateTime
+> >     object is too difficult to install, too hard
+> to use, too much file,
+> >     and need a complier....and u need to know too
+> much ahout DateTime
+> >     how to implement the func.
+> 
+> there are a lot of Date and Time modules out there. 
+> None of them
+> fit your needs?
+> 
+> How is yours different?
+> 
+> -- 
+> brian d foy (one of many PAUSE admins),
+> http://pause.perl.org
+> archives at
+> http://www.xray.mpe.mpg.de/mailing-lists/modules
+> please send all messages back to modules@perl.org
+>  
+
+_________________________________________________________
+Do You Yahoo!? 
+œ”” œ‰Ã´–°£ø—≈ª¢µÁ” ◊‘÷˙¿©»›£°
+http://cn.rd.yahoo.com/mail_cn/tag/10m/*http://cn.mail.yahoo.com/event/10m.html

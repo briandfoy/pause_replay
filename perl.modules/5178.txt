@@ -1,0 +1,71 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:5178
+Return-Path: <armin@xos.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23217 invoked from network); 18 Apr 2001 17:15:39 -0000
+Received: from tk152095.tuwien.teleweb.at (HELO elch.elche) (195.34.152.95)
+  by tmtowtdi.perl.org with SMTP; 18 Apr 2001 17:15:39 -0000
+Received: (from armin@localhost)
+	by elch.elche (8.11.2/8.11.2/SuSE Linux 8.11.1-0.5) id f3IHG5q10090;
+	Wed, 18 Apr 2001 19:16:05 +0200
+Date: Wed, 18 Apr 2001 19:16:05 +0200
+To: modules@perl.org
+Cc: Armin Obersteiner <armin@xos.net>
+Subject: Re: CDDB_get.pm
+Message-ID: <20010418191605.A10000@elch.elche>
+References: <20010328185351.A25608@elch.elche> <15056.52962.589179.873791@phoenix.squirrel.nl>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.3.12i
+In-Reply-To: <15056.52962.589179.873791@phoenix.squirrel.nl>; from jvromans@squirrel.nl on Sun, Apr 08, 2001 at 10:49:38PM +0200
+Approved: news@nntp.perl.org
+From: armin@xos.net (Armin Obersteiner)
+
+hi!
+
+> [Quoting Armin Obersteiner, on March 28 2001, 18:53, in "CDDB_get.pm"]
+> > hi!
+> > 
+> > i have written a module: CDDB.pm or CDDB_get.pm
+> > 
+> > it reads the TOC from an audio cd, then it reads the CDDB entry
+> > from freedb.freedb.org. it can use a dircet socket mode, a http mode
+> > with proxy if needed. 
+> > 
+> > i'd like to get it into the official namespace now that a few 1000
+> > users exist, and other programs start to use it.
+> > 
+> > it's hard to find a category, maybe:
+> > 
+> > CD::CDDB.pm
+> > Audio::CDDB.pm
+> > 
+> > or maybe something else???
+> 
+> I'd propose to split the functionality on two modules.
+> 
+> Audio::CD::CDDB.pm would provide the function to read the CD and
+> return its CDDB Id.
+> 
+> CDDB.pm (Net::CDDB.pm?) would use this Id to retrieve the info.
+
+if a split is necesasary it would be better to have something like:
+
+Audio::CD::TOC.pm (read the toc - array of MSFs)
+
+and
+
+NET::CDDB.pm (calculate the id, request the info)
+
+the id is nothing else, but the MSFs and a sum over the length of them.
+the feature is to get the toc not to calculate the id :-)
+
+but then again, is it usefull to split ...?
+
+Regards,
+	Armin Obersteiner
+--
+armin@xos.net                        pgp public key on request        CU

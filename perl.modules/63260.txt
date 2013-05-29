@@ -1,0 +1,79 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:63260
+Return-Path: <powerman@powerman.name>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 1887 invoked from network); 18 Nov 2008 12:18:57 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 18 Nov 2008 12:18:57 -0000
+Received: (qmail 4350 invoked by uid 225); 18 Nov 2008 12:18:57 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4345 invoked by alias); 18 Nov 2008 12:18:57 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from powerman.name (HELO powerman.name) (85.90.198.1)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 18 Nov 2008 04:18:54 -0800
+Received: (qmail 26467 invoked by uid 1000); 18 Nov 2008 12:18:47 -0000
+Date: Tue, 18 Nov 2008 14:18:47 +0200
+To: modules@perl.org
+Subject: Re: Module submission EV::Stream
+Message-ID: <20081118121847.GG25068@home.power>
+References: <200811161848.mAGImqGC013531@pause.perl.org> <161120081800019451%brian.d.foy@gmail.com> <20081117013825.GA15368@home.power> <49213371.9050700@sneakemail.com> <20081117124032.GB25068@home.power>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20081117124032.GB25068@home.power>
+Organization: http://powerman.name/
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Approved: news@nntp.perl.org
+From: powerman@powerman.name (Alex Efros)
+
+Hi!
+
+On Mon, Nov 17, 2008 at 02:40:32PM +0200, Alex Efros wrote:
+> > I would really suggest you settle for a different namespace. Less
+> > potential for conflicts in the long run. It's up to you, there's worse
+> > choices than EV::Stream. Off the top of my head, I could think of
+> > IO::Stream::EV or similar.
+> 
+> Maybe it's too impudently, but how about IO::Stream?
+> 
+>     EV::Stream		-> IO::Stream
+>     EV::Stream::stream	-> IO::Stream::EV
+>     EV::Stream::Crypt::RC4	-> IO::Stream::Crypt::RC4
+>     EV::Stream::Proxy::HTTPS	-> IO::Stream::Proxy::HTTPS
+>     EV::Stream::MatrixSSL	-> IO::Stream::MatrixSSL
+
+Is silence here mean I should go rename module and try to register
+IO::Stream name space, or it mean I should try to propose another name?
+
+- This module doing I/O on any stream fh, so Net:: category isn't looks
+  suitable (but it surely will be used mostly for networking, so...).
+- This module is event-based, but looks like most (all?) event loops has
+  own top-level category on CPAN (Event::, EV::, AnyEvent::, etc.) and
+  there no general top level category for event-based modules (like
+  IO:: or Net::). From these only sensible choice is EV::.
+- This module work with non-blocking fh. There IO::NonBlocking module,
+  doing similar things but looks like it support only networking, only
+  servers, and contain own select-based event loop. (Probably
+  Net::Server::NonBlocking was better choice for it.)
+
+If you doesn't like IO::Stream, how about IO::EV? There IO::Event module,
+which looks like it doing same thing as my module, but based on Event
+instead of EV, so IO::EV for my module looks consistent...
+This way it become:
+
+    EV::Stream			-> IO::EV
+    EV::Stream::stream		-> IO::EV::stream (internal, part or IO::EV)
+    EV::Stream::Crypt::RC4	-> IO::EV::Crypt::RC4
+    EV::Stream::Proxy::HTTPS	-> IO::EV::Proxy::HTTPS
+    EV::Stream::MatrixSSL	-> IO::EV::MatrixSSL
+
+The whole goal of this module is make IO ease when using EV, so that name
+looks really sensible.
+
+-- 
+			WBR, Alex.

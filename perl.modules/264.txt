@@ -1,0 +1,142 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:264
+Return-Path: <Raphael.Manfredi@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1844 invoked from network); 26 Oct 1999 09:05:06 -0000
+Received: from beta.st.com (HELO beta.dmz-eu.st.com) (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 26 Oct 1999 09:05:06 -0000
+Received: from eux100.sgp.st.com (eux100.sgp.st.com [164.129.225.7])
+	by beta.dmz-eu.st.com (Postfix) with ESMTP id 60A7225B7
+	for <modules@perl.org>; Tue, 26 Oct 1999 09:04:27 +0000 (GMT)
+Received: from lod23.gnb.st.com (lod28.gnb.st.com [164.129.116.152])
+	by eux100.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id LAA13631
+	for <modules@perl.org>; Tue, 26 Oct 1999 11:04:33 +0200 (METDST)
+To: modules@perl.org
+Subject: Module namespace request
+X-Mailer: NMH [version 1.0.1]
+Organization: ST Microelectronics, Grenoble, France
+Date: Tue, 26 Oct 1999 11:03:03 +0200
+Message-ID: <12899.940928583@lod23.gnb.st.com>
+Sender: manfredi@lod23.gnb.st.com
+Approved: news@nntp.perl.org
+From: Raphael.Manfredi@st.com (Raphael Manfredi)
+
+Module Namespace Guardians,
+
+I am working on several modules that will ultimately end-up on CPAN in about
+6 months. However, I need to settle on the namespaces to use, because before
+publishing my modules, they will be internally used first.
+
+I have a set of modules that are built on top of BerkeleyDB and Storable
+and which provide access to either a local or a remote database, transparently.
+This is handled by the following hierarchy (identation means heir):
+
+	DBD_Client
+		DBD_Client::Local
+		DBD_Client::Remote
+
+(DBD originally stood for DataBase Daemon)
+
+It's meant to be used as:
+
+	use MLDBM qw(DBD_Client::Local Storable);
+	tie %db, MLDBM, 'directory', "r";
+
+and
+
+	use MLDBM qw(DBD_Client::Remote Storable);
+	tie %db, MLDBM, 'server:port', 'file', "r";
+
+Those classes are for high-level connections.
+
+Then I have another set of classes that provide a way to access the database
+physically, wether the access is a simple routing to BerkeleyDB access, or
+an RPC call to a database server:
+
+	DBD_Access
+		DBD_Access::File
+		DBD_Access::Network
+		DBD_Access::Server
+
+wich provide routines like db_put/db_get, but also txn_begin/txn_commit
+and which provide a uniform access interface, whether the database is
+local or remote. They are provider classes for DBD_Client::Local and
+DBD_Client::Remote. The DBD_Access::Server is for the database server
+to access the database locally through a C API, not through BekeleyDB.
+
+Another intersting set relies on the fact that when Perl data structures
+are stored serialized in a database, they can be also handled transparently
+by Perl via a tie. The current classes I have for that are:
+
+	DBD::Scalar
+	DBD::Array
+	DBD::Hash
+	DBD::Object
+
+which are used like this:
+
+	tie %h, DBD::Hash, '/hash/table', $db_obj, 'crw';
+
+where "/hash/table" is some key, and $db_obj stands for a DBD_Client
+object. "crw" is the mode (create / read / write).
+
+Accesses made through the tied %h are efficient. If I access $h{key},
+the database access engine will request that, and it will be the database
+server's job to internally deserialize the key, extract the value, and
+return only that. Of course, if the access is though DBD_Access::File,
+there is no server, but the idea is the same (i.e. the code for DBD::Hash
+and friends don't know that).
+
+For that to work, I have designed a layer I call PQL (Perl Query Layer).
+and which provides features like:
+
+	pql_get
+	pql_put
+	pql_delete
+	pql_count
+
+PQL requests take for following form:
+
+	PQL_GET("$/table/key{subkey}")
+
+which will extract "/table/key", deserialize it as $x, and then perform
+the $x->{subkey} access. The PQL parsing engine interprets the query
+string and conducts some sanity type checking to ensure the final object
+is indeed a serialized hash!
+
+Those features are proposed by the DBD_Client class, and are redirected
+to DBD_Access. For Network access, a proper RPC message is prepared,
+sent to the server and handled there through PQL. For the File access,
+the PQL layer is directly embedded, and so DBD::Hash will prepare a PQL
+query that will be then interpreted at a lower level. It's a bit of a waste
+to not be able to short-circuit at this level, but that would specialize
+DBD::Hash needlessly.
+
+To be able to handle the requests, I have a module
+
+	DBD::PQL
+
+which is built with a DBD_Access object to handle physical access. This is
+done in the server, so only DBD_Access::File and DBD_Access::Server make
+sense at this level. A DBD_Access::Network is conceivable to "bounce" the
+request to an external database server, but it's an accidental feature. ;-)
+
+Clearly, I'm not satisfied with the naming I have here. DBD:: is reserved
+for DBI drivers. I used the name without knowing first, but this started
+as home work (i.e. work at home, not "homework").
+
+Do you have suggestions about the various namespaces I could use?
+
+I don't want a "deep" namespace like
+
+	BekerleyDB::Whatever::
+
+because there's little BerkeleyDB dependencies anyway in my code.
+
+All the classes I have presented here are not final. Things may change.
+They are somehow related, but I don't think they belong in the same namespace,
+which is why is used three of them.
+
+Raphael

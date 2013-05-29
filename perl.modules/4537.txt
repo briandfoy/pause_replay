@@ -1,0 +1,63 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:4537
+Return-Path: <nick@plum.flirble.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27574 invoked from network); 22 Feb 2001 17:27:06 -0000
+Received: from plum.flirble.org (exim@195.40.6.20)
+  by tmtowtdi.perl.org with SMTP; 22 Feb 2001 17:27:06 -0000
+Received: from nick by plum.flirble.org with local (Exim 3.20 #3)
+	id 14VzWB-000Bcl-00; Thu, 22 Feb 2001 17:27:03 +0000
+Date: Thu, 22 Feb 2001 17:27:02 +0000
+To: Chris Nandor <pudge@pobox.com>
+Cc: Nicholas Clark <nick@ccl4.org>, modules@perl.org
+Subject: Re: request for namespace for modules that provide layers for the new perlio system
+Message-ID: <20010222172702.N82930@plum.flirble.org>
+References: <20010222165245.M82930@plum.flirble.org> <p05010408b6baf5f354b0@[209.192.217.51]>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2.5i
+In-Reply-To: <p05010408b6baf5f354b0@[209.192.217.51]>; from pudge@pobox.com on Thu, Feb 22, 2001 at 12:01:02PM -0500
+X-Organisation: Tetrachloromethane
+Sender: Nicholas Clark <nick@plum.flirble.org>
+Approved: news@nntp.perl.org
+From: nick@ccl4.org (Nicholas Clark)
+
+On Thu, Feb 22, 2001 at 12:01:02PM -0500, Chris Nandor wrote:
+> At 16:52 +0000 2001.02.22, Nicholas Clark wrote:
+> >Is Nick's suggestion of PerlIO::* [capitalisation is the same as all the
+> >PerlIO
+> >structures in the perlio.c source] the best name for perlio related
+> >modules?
+> 
+> I think the capitalization is fine; however, I am concerned with
+> identifying modules as PerlIO::.  That is, I don't really know much about
+> what modules in PerlIO:: would be.  Would all of them be regarding data
+> transformations using the PerlIO functionality?  If so, then that seems
+> fine to me.
+
+Yes
+
+in as much as
+
+The two XS modules I've written so far provide perlio layers to gzip/gunzip
+and to limit a file handle to a particular subsection of a file.
+The XS code only provides a layer to perlio - it exports no symbol table
+entries, and the .pm just contains a call XSLoader and the POD.
+My two modules are useless without perlio (they won't even compile, and
+Makefile.PL will probe Config.pm to bail out before this happens)
+
+The Encode module in the development tree provides an "encode" layer
+(when perl is configured for perlio), but also provides perl language
+accessible functions.  As I see it it, it wouldn't qualify to live in the
+PerlIO namespace because it's doing a lot more than just layers.  The
+PerlIO namespace would be just for modules that solely provide layer
+functionality.
+
+Except that I have this niggle that as perlio is in development it
+may throw up something related to it that would also not really
+have a home in any other namespace.
+
+Nicholas Clark

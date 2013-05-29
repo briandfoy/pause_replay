@@ -1,0 +1,159 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:71475
+Return-Path: <peter@vereshagin.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 6396 invoked from network); 4 Jun 2010 17:32:54 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 4 Jun 2010 17:32:54 -0000
+Received: (qmail 8569 invoked by uid 225); 4 Jun 2010 17:32:54 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8564 invoked by alias); 4 Jun 2010 17:32:53 -0000
+X-Spam-Status: No, hits=3.0 required=8.0
+	tests=RCVD_IN_NERD_KR
+X-Spam-Check-By: la.mx.develooper.com
+Received: from ns1.skyriver.ru (HELO mx1.skyriver.ru) (89.108.118.221)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 04 Jun 2010 10:32:50 -0700
+Received: from localhost (unknown [222.107.34.53])
+	by mx1.skyriver.ru (Postfix) with ESMTPSA id 1D5475A8B;
+	Fri,  4 Jun 2010 21:21:19 +0400 (MSD)
+Date: Fri, 4 Jun 2010 21:32:04 +0400
+To: modules@perl.org, Jorg Walter <info@syntax-k.de>
+Subject: takeover Apache::Fake [peter@vereshagin.org: Apache::Fake]
+Message-ID: <20100604172709.GA3366@screwed.box>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; x-action=pgp-signed
+Content-Disposition: inline
+Organization: '
+X-Face: 8T>{1owI$Byj]]a;^G]kRf*dkq>E-3':F>4ODP[#X4s"dr?^b&2G@'3lukno]A1wvJ_L (~u 6>I2ra/<,j1%@C[LN=>p#_}RIV+#:KTszp-X$bQOj,K
+Approved: news@nntp.perl.org
+From: peter@vereshagin.org (Peter Vereshagin)
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+- -----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+You can leave your hat on, modules!
+
+I am VERESC @ CPAN.
+While implementing a new feature for the FCGI::Spawn, the mod_perl emulation, I
+found the Apache::Fake very useful for this.
+There are some drawbacks that avoid me to use it for that without any
+warnings. As a result I have several subs for Apache::Fake's packages redefined
+at:
+http://gitweb.vereshagin.org/FCGI-Spawn/blob/HEAD:/FCGI-Spawn/Spawn/ModPerl.pm
+as well as spome features like mod_perl2 emulation support.
+But even with those things added with warnings from Perl, I still need to patch
+the new() sub which is too long to be rewritten in a separate module file. THis
+adds independency from the Apache::ConfigFile, too. Although I believe it
+should be made optional inside the Apache::Fake. The patch is:
+http://gitweb.vereshagin.org/FCGI-Spawn/blob/HEAD:/contrib/cpan/Apache.Fake.pm.fcgi.spawn.patch
+
+I tried to reach the author by e-mail. Here is the result of the SMTP session about the message below:
+===
+/var/log/maillog.4.bz2:May 30 14:23:24 ns1 postfix/smtp[90830]: 22A5C5A82: to=<jwalt-spam@garni.ch>, relay=mail.garni.ch[91.211.43.170]:25, delay=5.1, delays=3.2/0.01/0.77/1.1, dsn=2.0.0, status=sent (250 OK id=1OIfqu-0005aX-4T)
+/var/log/maillog.4.bz2:May 30 14:23:24 ns1 postfix/smtp[90830]: 22A5C5A82: to=<jwalt@garni.ch>, relay=mail.garni.ch[91.211.43.170]:25, delay=5.1, delays=3.2/0.01/0.77/1.1, dsn=2.0.0, status=sent (250 OK id=1OIfqu-0005aX-4T)
+===
+
+And I made the new ticket being aware that 2 previous tickets with pretty
+obvious patches were likely to be ignored for 3+ years: 
+https://rt.cpan.org/Public/Dist/Display.html?Name=Apache-Fake
+my one is:
+https://rt.cpan.org/Public/Bug/Display.html?id=58091
+
+I'd like to reach the author and know his opinion about my wishes on
+Apache::Fake. But anyway I want to take it over, as there is no much hope to
+find Jorg.
+
+Thank you.
+
+- - ----- Forwarded message from Peter Vereshagin <peter@vereshagin.org> -----
+
+Date: Sun, 30 May 2010 14:34:26 +0400
+From: Peter Vereshagin <peter@vereshagin.org>
+To: J??rg Walter <jwalt-spam@garni.ch>, J??rg Walter <jwalt@garni.ch>
+Subject: Apache::Fake
+Organization: '
+
+I've seen the future J??rg <= it is motto.
+
+I have some questions by your permission.
+I can save them on https://rt.cpan.org as a reminder.
+
+But commonly I use to talk by person to keep public places more clean.
+
+1. I can not see ConfigFile-1.23.tar.gz at CPAN home directory. It is claimed
+as not supported, isn't it any good to switch to something else?
+2. I need some general-purpose dummy httpd.conf to work with. I can not read this config:
+===
+  <Location />
+    <Directory />
+      SetHandler perl-script
+      PerlHandler Apache
+    </Directory
+  </Location>
+===
+
+without this patch:
+===
+- - --- Fake.pm.orig
++++ Fake.pm
+@@ -1184,8 +1184,8 @@
+        &$addContext;
+ 
+        my $ctx2 = $ctx;
+- - -       $ctx = $ctx->cmd_context(ServerName => $conf{'ENV'}{'SERVER_NAME'});
+- - -       $conf{'VIRTUAL'} = 1 if ($ctx && $ctx2 ne $ctx);
++       #$ctx = $ctx->cmd_context(ServerName => $conf{'ENV'}{'SERVER_NAME'});
++       $conf{'VIRTUAL'} = 1 ; #if ($ctx && $ctx2 ne $ctx);
+        &$addContext;
+ 
+        $loc = '/';
+===
+
+the first line in question is because there is no server name yet in question
+at the init moment, e. g., when the mod_perl's startup.pl happens.
+the second is about even when $ctx can be created it can not be compared as a
+scalar as there is no 'nomethod' method for it. Here is why I worry:
+
+I'm implementing mod_perl imitation feature for FCGI::Spawn . I'm abused with
+Apache::Fake's 'config reading' mandatory feature. I'd like to avoid it at all
+as most CGI-like mod_perl applications just use Apache::Request only.
+I mean with Apache::Fake at least Buzilla.org and WebGUI.org should work
+without any patching.
+
+Is it possible to take Apache::Fake on FCGI::Spawn's board this way? As a best
+thing I'd prefer splitting the httpd.conf reading into separate methods so I
+could replace them with derived class.
+
+Thank you!
+
+oh and... which line outputs the 'Content-type: text/plain' header from the new
+method? just see no one on a 'grep plain'.
+
+73! Peter pgp: A0E26627 (4A42 6841 2871 5EA7 52AB  12F8 0CE1 4AAC A0E2 6627)
+- - -- 
+http://vereshagin.org
+
+- - ----- End forwarded message -----
+73! Peter pgp: A0E26627 (4A42 6841 2871 5EA7 52AB  12F8 0CE1 4AAC A0E2 6627)
+- - -- 
+http://vereshagin.org
+- -----BEGIN PGP SIGNATURE-----
+Version: Vereshagin v2.0.10 (CP/M)
+
+iEYEARECAAYFAkwJN20ACgkQDOFKrKDiZid6MQCfXy6GNEVF5jrMDjTZFuuZE8qT
+uZ0AnihVAJjqPWlor4g2DNBJfeIHu7jt
+=Ld/g
+- -----END PGP SIGNATURE-----
+-----BEGIN PGP SIGNATURE-----
+Version: Vereshagin v2.0.10 (CP/M)
+
+iEYEARECAAYFAkwJOJMACgkQDOFKrKDiZiecPQCfcekC9o7g2uGaHfj165Nzlewl
+OrUAnRNVKX7EC0p+7x7fYA6E5dp+uOst
+=zaxn
+-----END PGP SIGNATURE-----

@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:36242
+Return-Path: <joelh@piquan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10847 invoked from network); 9 Nov 2004 10:44:51 -0000
+Received: from x1.develooper.com (63.251.223.170)
+  by lists.develooper.com with SMTP; 9 Nov 2004 10:44:51 -0000
+Received: (qmail 12880 invoked by uid 225); 9 Nov 2004 10:44:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12876 invoked by alias); 9 Nov 2004 10:44:51 -0000
+X-Spam-Status: No, hits=-4.9 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from adsl-66-125-235-59.dsl.sntc01.pacbell.net (HELO thor.piquan.org) (66.125.235.59)
+  by la.mx.develooper.com (qpsmtpd/0.27.1) with ESMTP; Tue, 09 Nov 2004 02:44:48 -0800
+Received: from thor.piquan.org (joelh@localhost [127.0.0.1])
+	by thor.piquan.org (8.12.10/8.12.10) with ESMTP id iA9AiR9W090689;
+	Tue, 9 Nov 2004 02:44:27 -0800 (PST)
+	(envelope-from joelh@piquan.org)
+Received: (from joelh@localhost)
+	by thor.piquan.org (8.12.10/8.12.10/Submit) id iA9AiR25090688;
+	Tue, 9 Nov 2004 02:44:27 -0800 (PST)
+	(envelope-from joelh@piquan.org)
+X-Authentication-Warning: thor.piquan.org: joelh set sender to joelh@piquan.org using -f
+To: modules@perl.org
+Subject: Re: Request name ideas for OOP database lib
+References: <87mzxres3e.fsf@thor.piquan.org>
+	<091120040116135586%comdog@panix.com>
+X-Payment: hashcash 1.2
+ 1:23:041109:modules@perl.org::6POR3+jX//kLJ2ZQ:000000000000000000000000000000000000000000000PxU4
+X-Hashcash: 1:23:041109:modules@perl.org::6POR3+jX//kLJ2ZQ:000000000000000000000000000000000000000000000PxU4
+Date: Tue, 09 Nov 2004 02:44:26 -0800
+In-Reply-To: <091120040116135586%comdog@panix.com> (brian d. foy's message
+ of "Tue, 09 Nov 2004 01:16:13 -0500")
+Message-ID: <87is8fe1yt.fsf@thor.piquan.org>
+User-Agent: Gnus/5.1002 (Gnus v5.10.2) Emacs/21.3 (berkeley-unix)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Virus-Scanned: ClamAV 0.80/533/Sat Oct 16 18:09:44 2004
+	clamav-milter version 0.80j
+	on thor.piquan.org
+X-Virus-Status: Clean
+Approved: news@nntp.perl.org
+From: joelh@piquan.org (Joel Ray Holveck)
+
+>> This is a database library.  Its purpose is to allow you to write a
+>> site-specific library that describes your database.  In the minimal
+>> case, you can simply list the columns of your tables/views.  Each
+>> table/view becomes its own class.
+>> My current provisional name is DBIx::SeeCool.  
+> If it isn't based on DBI, then it doesn't go in DBIx.
+
+Perhaps I misunderstand you.  This is based on DBI, in the sense that
+it performs all database access through DBI.  If you mean that the
+DBIx namespace should be used for classes that ISA DBI, then no, this
+library does not meet that criterion.
+
+While it uses DBI to perform all of its database calls, and the DBI
+handle is available to users, this library does have @ISA DBI, nor
+otherwise re-export the DBI methods.
+
+> We recently approved a new DBA namespace, though. :)
+
+What's it for?  Database access, or database administration?  The
+perldoc on CPAN for the DBA namespace doesn't say what it's for, or
+what DBA stands for in this context.
+
+A search of the modules mailing list archives shows a proposal in 1999
+for a DBA namespace in 1999 for database access, but since you said
+"recently", I assume that's not what you meant.
+
+The only module currently in CPAN (that I see) is DBA::Backup::mysql,
+which would probably support the name "database administration".
+
+But my library has nothing to do with database administration.  When I
+said that "you list the columns of your tables/views", I meant that
+you do that to tell my library how to operate.  The library itself
+does not perform any CREATE TABLE statements or the like; it allows
+you to simplify access to the data, not alter the schema.
+
+So would an data access library like this belong under DBA?
+
+joelh
+
+-- 
+Joel Ray Holveck - joelh@piquan.org
+   Fourth law of programming:
+   Anything that can go wrong wi
+sendmail: segmentation violation - core dumped

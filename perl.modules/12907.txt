@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:12907
+Return-Path: <arthur@contiller.se>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21744 invoked by uid 76); 29 Jul 2002 08:44:18 -0000
+Received: from tistel.levonline.com (HELO sork.levonline.com) (193.15.191.243)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Mon Jul 29 08:44:18 2002 -0000
+Received: from localhost (gateway.intellibis.se [194.237.235.226] (may be forged))
+	(authenticated)
+	by sork.levonline.com (8.11.6/8.11.6) with ESMTP id g6T8hm506854;
+	Mon, 29 Jul 2002 10:43:48 +0200
+Date: Mon, 29 Jul 2002 10:43:52 +0200
+Subject: Re: Request for Comments - module naming
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Mime-Version: 1.0 (Apple Message framework v482)
+Cc: modules@perl.org
+To: JGSmith@TAMU.Edu
+In-Reply-To: <200207251801.g6PI1xj21687@moya.tamu.edu>
+Message-ID: <4EF8331D-A2CF-11D6-972A-003065D64CBE@contiller.se>
+Content-Transfer-Encoding: 7bit
+X-Mailer: Apple Mail (2.482)
+Approved: news@nntp.perl.org
+From: arthur@contiller.se (Arthur Bergman)
+References: <200207251801.g6PI1xj21687@moya.tamu.edu>
+
+
+On torsdag, juli 25, 2002, at 08:01 , James G Smith wrote:
+
+> From: James G Smith <JGSmith@TAMU.Edu>
+> Date: tor jul 25, 2002  08:01:59  Europe/Stockholm
+> To: modules@perl.org
+> Cc: JGSmith@TAMU.Edu
+> Subject: Request for Comments - module naming
+> Reply-To: JGSmith@TAMU.Edu
+>
+> I'm working on a fairly complex web application framework that
+> combines AxKit, Template Toolkit, and possibly HTML::Mason, under
+> mod_perl.
+>
+> Some of the goals include rapid prototyping of form-driven
+> applications (looking at leveraging SVG), fail-over (robustness in
+> the face of machine/network failures), and the ability to scale by
+> running on a web farm.
+>
+> I plan two main components for distribution: the framework (running
+> under Uttu - Uttu.pm) and the model.  For now, I am calling the
+> application framework Gestinanna.  So the framework would be
+> Uttu::Framework::Gestinanna and the model would be Gestinanna::*
+> (thinking of the MVC model of web programming).  The core model would
+> be distributed as Gestinanna-x.xx.tar.gz.
+>
+> To allow for the rapid prototyping of form-driven applications, I am
+> putting together a state machine model - for now called
+> Gestinanna::StateMachine.  It allows inheritance of edges and actions
+> taken upon transitions.  However, the module does not require a web
+> environment.  It is quite independent of that -- it takes data and a
+> context, uses Form::DataValidator to look at which edge seems most
+> appropriate, and triggers the transition.  The application can
+> associate a view (TT2 file, for example) with a particular state and
+> use that to send the appropriate page to the client.
+>
+> My questions for now are two:
+>  (1) should I place the state machine outside the general application
+>      namespace and, if so, what are some suggestions for where to put
+>      it?  I am trying to place general modules in general locations.
+>
+
+That depends on if you feel it is general enough, I would encourage you 
+to hook the state machine into POE.
+
+>  (2) May I have the top-level Uttu and Gestinanna namespaces?  The
+>      first is used for the Uttu framework (http://uttu.tamu.edu/) and
+>      framework/application distributions while the second is used for
+>      the model modules for the Gestinanna application framework.  If
+>      this seems reasonable, I will go ahead and fill out the PAUSE
+>      namespace request.  (btw) I have submitted a request for Uttu
+>      twice before with no comments being made on the list.
+>
+
+
+Personally I feel they belong in a second level namespace, but I am very 
+unclear on how big projects have namespaces in CPAN.
+
+Arthur
+

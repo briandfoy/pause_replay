@@ -1,0 +1,574 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:11948
+Return-Path: <ronaldws@software-path.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 88526 invoked by uid 76); 3 Jun 2002 05:32:22 -0000
+Received: from qmailr@lux.valueclick.com (HELO lux.valueclick.com) (216.246.96.102)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Mon Jun  3 05:32:22 2002 -0000
+Received: (qmail 64208 invoked from network); 2 Jun 2002 22:52:44 -0000
+Received: from rly-ip06.mx.aol.com (205.188.156.51)
+  by lux.valueclick.com with SMTP; 2 Jun 2002 22:52:44 -0000
+Received: from  logs-tf.proxy.aol.com (logs-tf.proxy.aol.com [152.163.197.135]) by rly-ip06.mx.aol.com (v83.35) with ESMTP id RELAYIN10-0602185003; Sun, 02 Jun 2002 18:50:03 -0400
+Received: from PRECISION1 (AC93B4C9.ipt.aol.com [172.147.180.201])
+	by logs-tf.proxy.aol.com (8.10.0/8.10.0) with SMTP id g52Mn6j387061
+	for <modules@perl.org>; Sun, 2 Jun 2002 18:49:06 -0400 (EDT)
+Message-ID: <005501c20a88$0f4d7640$c9b493ac@PRECISION1>
+To: <modules@perl.org>
+Subject: RFC LockFile::NetLock
+Date: Sun, 2 Jun 2002 18:51:35 -0400
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0052_01C20A66.851CBBF0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4807.1700
+X-MimeOLE: Produced By Microsoft MimeOLE V5.50.4807.1700
+X-Apparently-From: RonaldWS@aol.com
+X-Spam-Rating: lux.valueclick.com 1.6.2 0/0/N
+Approved: news@nntp.perl.org
+From: ronaldws@software-path.com ("Ronald Schmidt")
+
+------=_NextPart_000_0052_01C20A66.851CBBF0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+The purpose of this module is to provide a robust and full featured =
+implementation of the
+FTP/network locking technology outlined by Sean Burke in his June 1, Sys =
+Admin magazine/
+Perl Journal Article on Resource Locking over Networks.  For those who =
+do not yet have
+access to the article, it does locking based on the concept that if two =
+processes each
+connect to the same host via ftp and try to create the same directory =
+that does not yet
+exist then one will create the directory and the other will be notified =
+that it cannot
+create the directory because it already exists.
+
+I am looking for comments on namespace and any other aspect of the =
+project on which a
+reader would care to provide feedback.  This work is going on with Mr. =
+Burke's knowledge
+and approval although he has not reviewed the actual module yet.  This =
+is at an alpha/beta
+stage and the interface is subject to change.  Information on the =
+interface is included
+below from the POD/perldoc.
+
+SYNOPSIS
+        use LockFile::NetLock;
+
+        my $locker =3D new LockFile::NetLock(
+            'ftp.myhost.com', 'lockdir.lck', 'ftpuser', 'ftppassword'
+        );
+        if ($locker->lock()) {
+            # do work requiring lock
+            $locker->unlock() ||
+                print STDERR $locker->errstr;
+        }
+        else {
+            print STDERR $locker->errstr;
+        }
+
+        -- OR --
+
+        use LockFile::NetLock qw(lock unlock);
+
+        if (lock qw(ftp.myhost.com lockdir.lck ftpuser ftppassword)) {
+            # do work requiring lock
+            unlock(qw(ftp.myhost.com lockdir.lck)) ||
+                print STDERR $LockFile::NetLock::errstr;
+        }
+        else {
+            print STDERR $LockFile::NetLock::errstr;
+        }
+
+        -- OR even with a .netrc file --
+
+        use LockFile::NetLock qw(lock unlock);
+
+        if (lock qw(ftp.myhost.com lockdir.lck )) {
+            # do work requiring lock
+            unlock(qw(ftp.myhost.com lockdir.lck)) ||
+                print STDERR $LockFile::NetLock::errstr;
+        }
+        else {
+            print STDERR $LockFile::NetLock::errstr;
+        }
+
+Methods
+    new (constructor method)
+        Create a new LockFile::NetLock object. See 'Named Parameters to =
+new'
+        and 'Ordered Parameters to new' for initialization options.
+        Currently just constructs a blessed hash and has no cause for
+        failure.
+
+    lock
+        Attempt to acquire the lock by opening an FTP session to an FTP =
+host
+        and creating a directory. Needs no parameters if called using a
+        properly constructed LockFile::NetLock object reference but may =
+be
+        called with all parameters that would otherwise be passed to new =
+for
+        a more traditional subroutine interface. In the case of the
+        subroutine interface lock will return a reference to the newly
+        created lock object but unlock may be called with either the =
+object
+        reference or the host and directory name that will be used
+        internally to uniquely identify the lock object. Returns object
+        reference on success and undef on failure in which case both
+        $LockFile::NetLock::errstr and the object's error field are set.
+
+    unlock
+        Release lock by removing directory at FTP host that was created =
+to
+        do locking. Needs no parameters if called using a properly
+        constructed LockFile::NetLock object but can also be called with =
+the
+        FTP host and directory if the lock was created using the "sub"
+        interface to lock described above. Returns 1 on success and =
+undef if
+        there was an error releasing the lock (and this is possible).
+
+    errstr
+        Return string describing last error on LockFile::NetLock object =
+or
+        class.
+
+Named Parameters (to new, lock and in some cases unlock).
+    -dir
+        Path of directory that will be created at FTP host. Once the
+        directory is created other processes attempting to create the =
+same
+        directory at the same host will be informed that they cannot do =
+so
+        because the directory already exists. This provides a mutual
+        exclusion effect. Defaults to 'lockdir'. The FTP host and lock
+        directory uniquely identify a lock not otherwise identifiable
+        through an object reference.
+
+    -disconnect
+        The module calls a program to create the lock directory and by
+        default the program maintains an FTP connection to the host as =
+long
+        as the lock is held. This option instructs the program to =
+disconnect
+        from the FTP host after creating the lock directory and =
+re-connect
+        later when the lock is released and the directory needs to be
+        removed. This option is included for cases where locks need to =
+be
+        held for a long time and the number of available FTP sessions is
+        limited.
+
+    -ftp_heartbeat
+        Frequency with which action on FTP connection will be taken to
+        prevent FTP idle timeout. Should rarely need to be changed from
+        default of 15 seconds.
+
+    -heartbeat
+        The module calls a program to create the lock directory. If the
+        program that called this module dies or calls unlock then the =
+lock
+        directory must be removed. The heartbeat option sets the =
+frequency
+        in seconds with which the lock program checks the calling =
+program to
+        see if it needs to release the lock. Set to small number for =
+briefly
+        held frequent locks. For long held locks a conservative setting
+        would be 1 second for every 7 minutes the lock is held. Defaults =
+to
+        2 seconds.
+
+    -host
+        The FTP host on which the lock directory will be created. The =
+FTP
+        host and lock directory uniquely identify a lock not otherwise
+        identifiable through an object reference.
+    -password
+        The password allowing the FTP user to connect to the FTP host. =
+May
+        be inferred from .netrc if not passed as parameter.
+
+    -sleep
+        The amount of time in seconds that the locking process will =
+sleep
+        after a failed attempt to create the lock directory and before
+        trying to create the directory again. Defaults to 4 seconds.
+
+    -timeout
+        The total amount of time in seconds the locking process can =
+spend
+        trying to create the lock directory. If the directory cannot be
+        created before the timeout elapses an error is returned =
+indicating a
+        timeout. Defaults to 40 seconds. Use infinite or forever if you
+        never want to time out.
+
+    -user
+        FTP login user for the FTP host at which the module will try to
+        create the lock directory. May be inferred from .netrc if not =
+passed
+        as parameter.
+
+Ordered parameters
+        Until a named parameter is detected by new, lock or unlock, the
+        first four parameters to these functions will be interpreted as
+        -host, -dir, -login and -password respectively.
+
+------=_NextPart_000_0052_01C20A66.851CBBF0
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 5.50.4807.2300" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2>The purpose of this module is to =
+provide a robust=20
+and full featured implementation of the<BR>FTP/network locking =
+technology=20
+outlined by Sean Burke in his June 1, Sys Admin magazine/<BR>Perl =
+Journal=20
+Article on Resource Locking over Networks.&nbsp; For those who do not =
+yet=20
+have<BR>access to the article, it does locking based on the concept that =
+if two=20
+processes each<BR>connect to the same host via ftp and try to create the =
+same=20
+directory that does not yet<BR>exist then one will create the directory =
+and the=20
+other will be notified that it cannot<BR>create the directory because it =
+already=20
+exists.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>I am looking for comments on namespace =
+and any=20
+other aspect of the project on which a<BR>reader would care to provide=20
+feedback.&nbsp; This work is going on with Mr. Burke's knowledge<BR>and =
+approval=20
+although he has not reviewed the actual module yet.&nbsp; This is at an=20
+alpha/beta<BR>stage and the interface is subject to change.&nbsp; =
+Information on=20
+the interface is included<BR>below from the POD/perldoc.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial=20
+size=3D2>SYNOPSIS<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use=20
+LockFile::NetLock;</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial =
+size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; my=20
+$locker =3D new=20
+LockFile::NetLock(<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;=20
+'ftp.myhost.com', 'lockdir.lck', 'ftpuser',=20
+'ftppassword'<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+);<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ($locker-&gt;lock()) =
+
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+# do=20
+work requiring=20
+lock<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;=20
+$locker-&gt;unlock()=20
+||<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;=20
+print STDERR =
+$locker-&gt;errstr;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else=20
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+print=20
+STDERR $locker-&gt;errstr;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+
+}</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial =
+size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- OR=20
+--</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial =
+size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use=20
+LockFile::NetLock qw(lock unlock);</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial =
+size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (lock=20
+qw(<A href=3D"ftp://ftp.myhost.com">ftp.myhost.com</A> lockdir.lck =
+ftpuser=20
+ftppassword))=20
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+# do=20
+work requiring=20
+lock<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;=20
+unlock(qw(<A href=3D"ftp://ftp.myhost.com">ftp.myhost.com</A> =
+lockdir.lck))=20
+||<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;=20
+print STDERR=20
+$LockFile::NetLock::errstr;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+=20
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else=20
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+print=20
+STDERR =
+$LockFile::NetLock::errstr;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+=20
+}</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial =
+size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- OR=20
+even with a .netrc file --</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial =
+size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; use=20
+LockFile::NetLock qw(lock unlock);</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial =
+size=3D2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (lock=20
+qw(<A href=3D"ftp://ftp.myhost.com">ftp.myhost.com</A> lockdir.lck ))=20
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+# do=20
+work requiring=20
+lock<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;=20
+unlock(qw(<A href=3D"ftp://ftp.myhost.com">ftp.myhost.com</A> =
+lockdir.lck))=20
+||<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;=20
+print STDERR=20
+$LockFile::NetLock::errstr;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+=20
+}<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else=20
+{<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+print=20
+STDERR =
+$LockFile::NetLock::errstr;<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+=20
+}</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>Methods<BR>&nbsp;&nbsp;&nbsp; new =
+(constructor=20
+method)<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Create a new=20
+LockFile::NetLock object. See 'Named Parameters to=20
+new'<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and 'Ordered =
+Parameters to=20
+new' for initialization =
+options.<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+Currently just constructs a blessed hash and has no cause=20
+for<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; failure.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;=20
+lock<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Attempt to acquire =
+the lock=20
+by opening an FTP session to an FTP=20
+host<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; and creating a =
+directory.=20
+Needs no parameters if called using=20
+a<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; properly constructed=20
+LockFile::NetLock object reference but may=20
+be<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; called with all =
+parameters that=20
+would otherwise be passed to new=20
+for<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a more traditional =
+subroutine=20
+interface. In the case of =
+the<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+subroutine interface lock will return a reference to the=20
+newly<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; created lock object =
+but=20
+unlock may be called with either the=20
+object<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reference or the =
+host and=20
+directory name that will be =
+used<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+internally to uniquely identify the lock object. Returns=20
+object<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reference on =
+success and=20
+undef on failure in which case=20
+both<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+$LockFile::NetLock::errstr=20
+and the object's error field are set.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;=20
+unlock<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Release lock by =
+removing=20
+directory at FTP host that was created=20
+to<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; do locking. Needs no =
+parameters=20
+if called using a properly<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+
+constructed LockFile::NetLock object but can also be called with=20
+the<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FTP host and directory =
+if the=20
+lock was created using the =
+"sub"<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+interface to lock described above. Returns 1 on success and undef=20
+if<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; there was an error =
+releasing=20
+the lock (and this is possible).</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;=20
+errstr<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Return string =
+describing=20
+last error on LockFile::NetLock object=20
+or<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; class.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>Named Parameters (to new, lock and in =
+some cases=20
+unlock).<BR>&nbsp;&nbsp;&nbsp;=20
+-dir<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Path of directory =
+that will=20
+be created at FTP host. Once =
+the<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+directory is created other processes attempting to create the=20
+same<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; directory at the same =
+host=20
+will be informed that they cannot do=20
+so<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; because the directory =
+already=20
+exists. This provides a =
+mutual<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+exclusion effect. Defaults to 'lockdir'. The FTP host and=20
+lock<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; directory uniquely =
+identify a=20
+lock not otherwise =
+identifiable<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+through an object reference.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;=20
+-disconnect<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The module =
+calls a=20
+program to create the lock directory and=20
+by<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; default the program =
+maintains=20
+an FTP connection to the host as=20
+long<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; as the lock is held. =
+This=20
+option instructs the program to=20
+disconnect<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; from the FTP =
+host after=20
+creating the lock directory and=20
+re-connect<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; later when the =
+lock is=20
+released and the directory needs to=20
+be<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; removed. This option is =
+
+included for cases where locks need to=20
+be<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; held for a long time =
+and the=20
+number of available FTP sessions=20
+is<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; limited.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;=20
+-ftp_heartbeat<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Frequency =
+with=20
+which action on FTP connection will be taken=20
+to<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prevent FTP idle =
+timeout.=20
+Should rarely need to be changed=20
+from<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; default of 15=20
+seconds.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;=20
+-heartbeat<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The module =
+calls a=20
+program to create the lock directory. If=20
+the<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; program that called =
+this=20
+module dies or calls unlock then the=20
+lock<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; directory must be =
+removed.=20
+The heartbeat option sets the=20
+frequency<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in seconds with =
+which=20
+the lock program checks the calling program=20
+to<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; see if it needs to =
+release the=20
+lock. Set to small number for=20
+briefly<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; held frequent =
+locks. For=20
+long held locks a conservative=20
+setting<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; would be 1 second =
+for=20
+every 7 minutes the lock is held. Defaults=20
+to<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2 seconds.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;=20
+-host<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The FTP host on =
+which the=20
+lock directory will be created. The=20
+FTP<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; host and lock =
+directory=20
+uniquely identify a lock not=20
+otherwise<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; identifiable =
+through an=20
+object reference.<BR>&nbsp;&nbsp;&nbsp;=20
+-password<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The password =
+allowing=20
+the FTP user to connect to the FTP host.=20
+May<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; be inferred from =
+..netrc if not=20
+passed as parameter.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;=20
+-sleep<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The amount of time =
+in=20
+seconds that the locking process will=20
+sleep<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; after a failed =
+attempt to=20
+create the lock directory and=20
+before<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; trying to create =
+the=20
+directory again. Defaults to 4 seconds.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;=20
+-timeout<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The total amount =
+of time=20
+in seconds the locking process can=20
+spend<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; trying to create the =
+lock=20
+directory. If the directory cannot=20
+be<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; created before the =
+timeout=20
+elapses an error is returned indicating=20
+a<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; timeout. Defaults to 40 =
+seconds.=20
+Use infinite or forever if =
+you<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+never want to time out.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>&nbsp;&nbsp;&nbsp;=20
+-user<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FTP login user for =
+the FTP=20
+host at which the module will try=20
+to<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; create the lock =
+directory. May=20
+be inferred from .netrc if not=20
+passed<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; as =
+parameter.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>Ordered=20
+parameters<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Until a named =
+parameter=20
+is detected by new, lock or unlock,=20
+the<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; first four parameters =
+to these=20
+functions will be interpreted =
+as<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+-host, -dir, -login and -password =
+respectively.</FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_0052_01C20A66.851CBBF0--
+

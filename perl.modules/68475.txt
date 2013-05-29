@@ -1,0 +1,140 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:68475
+Return-Path: <gomor@gomor.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11100 invoked from network); 13 Nov 2009 06:54:42 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 13 Nov 2009 06:54:42 -0000
+Received: (qmail 26555 invoked by uid 225); 13 Nov 2009 06:54:41 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26551 invoked by alias); 13 Nov 2009 06:54:41 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=FB_WORD1_END_DOLLAR
+X-Spam-Check-By: la.mx.develooper.com
+Received: from ns22829.ovh.net (HELO ns22829.ovh.net) (91.121.8.79)
+    by la.mx.develooper.com (qpsmtpd/0.28) with SMTP; Thu, 12 Nov 2009 22:54:38 -0800
+Received: (qmail 51433 invoked from network); 13 Nov 2009 06:56:31 -0000
+Received: from unknown (HELO legion.enslaved.lan) (127.0.0.1)
+  by ns22829.ovh.net with SMTP; 13 Nov 2009 06:56:31 -0000
+Date: Fri, 13 Nov 2009 07:54:32 +0100
+To: Paolo Vanni =?iso-8859-1?Q?M=2E_Ve=F1egas?= <pvenegas@infoweapons.com>
+Cc: Steffen Mueller <nj88udd02@sneakemail.com>, modules@perl.org
+Subject: Re: ICMPv6 patch
+Message-ID: <20091113065432.GA8010@legion.enslaved.lan>
+References: <86skhzqqbg.fsf@roonwit.cebu.infoweapons.com> <87ws3jb8sg.fsf@ramandu.cebu.infoweapons.com> <4AC12035.7020405@sneakemail.com> <20090929033957.GA44677@legion.enslaved.lan> <87ske6bb0b.fsf@ramandu.cebu.infoweapons.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87ske6bb0b.fsf@ramandu.cebu.infoweapons.com>
+User-Agent: Mutt/1.4.2.3i
+User-Agent: Pine
+Organization: None
+X-SMIME-CA: http://www.gomor.org/files/gomorca.pem
+X-SMIME-Cert: http://www.gomor.org/files/gomor@gomor.org.pem
+Approved: news@nntp.perl.org
+From: gomor@gomor.org (GomoR)
+
+All,
+
+well, I tried to finally upload Net-Frame-Layer-ICMPv6-1.03 (and 1.04 now),
+but it appears Paolo already uploaded a version on CPAN.
+
+My upload fails, though I am the owner of Net::Frame::Layer::ICMPv6.
+
+What's next ?
+
+On Tue, Sep 29, 2009 at 01:00:52PM +0800, Paolo Vanni M. Veñegas wrote:
+> 
+> Good day all.
+> 
+> GomoR <gomor@gomor.org> writes:
+> 
+> > Hi,
+> >
+> > I don't remember having received any patches for 
+> > Net::Frame::Layer::ICMPv6 module ;)
+> >
+> > Anyhow, give me your patch, and I'll integrate it ASAP, if it 
+> > fits correctly with my module philosophy.
+> 
+> Good to hear from you, Patrice. Pardon me, I suppose I must have missed your correct email address. :)
+> 
+> Attached is a patch against Net-Frame-Layer-ICMPv6-1.02 (with $VERSION unaltered). I am also including the details of my modifications from my previous emails. Feel free to comment.
+> 
+> 
+> -- 
+> Paolo Vanni M. Veñegas
+> Software Engineer
+> InfoWeapons Corporation
+> 
+> 
+> 
+> 
+>  
+>  --------
+> This email and any attachments are CONFIDENTIAL and may also be
+> legally privileged. If you are not the intended recipient, please
+> immediately delete this message and any attachments, then notify
+> security@infoweapons.com of such recipient error. Any forwarding,
+> dissemination, distribution, re-posting or copying of this email
+> and attachments is strictly prohibited. Thank you.
+>  
+
+
+> 
+> 
+> From: pvenegas@infoweapons.com (Paolo Vanni M. Veñegas)
+> Subject: ICMPv6 patches
+> To: gomor-cpan@gomor.org
+> Date: Wed, 17 Jun 2009 15:20:35 +0800
+> 
+> 
+> Good day.
+> 
+> I've been looking at your wrappers for ICMPv6, but realized that you didn't implement router messages (Router Advertisments and Router Solicits), so I decided to write those, based on your code. Figured might as well contrib back to CPAN. My PAUSE application is taking a while it seems, so I thought I'd email you first. Attached is the patch to ICMPv6-1.02, tested against live ICMPv6 dumps.
+> 
+> Included in the patch are wrappers for RA and RSol, additional flag and option constants in ICMPv6.pm, and a fix to the existing NeighborAdvertisement flag values -- I made the flag values ascending, as they are in the actual messages, and considering the way you pack() them. Was there a reason you wrote it otherwise? I hope you find my code acceptable.
+> 
+> In RA, the following flags are reflected as specified by the indicated RFCs.
+> 
+> | RA Option Bit | Description                           | Reference |
+> +---------------+---------------------------------------+-----------+
+> | 0             | M - Managed Address Configuration     | [RFC4861] |
+> |               | Flag                                  |           |
+> | 1             | O - Other Configuration Flag          | [RFC4861] |
+> | 2             | H - Mobile IPv6 Home Agent Flag       | [RFC3775] |
+> | 3             | Prf - Router Selection Preferences    | [RFC4191] |
+> | 4             | Prf - Router Selection Preferences    | [RFC4191] |
+> | 5             | P - Neighbor Discovery Proxy Flag     | [RFC4389] |
+> 
+> 
+> Note that I implemented Router Selection Preferences as one flag for each of the four possible values (RFC 4191) -- they are not really flags but values. If you have a better idea for this let me know.
+> 
+> Lastly in Option.pm, I subtract two bytes (for the type and length fields) from the length value from the message before further reading that number of bytes for the option value. You'll find that this is the correct behavior.
+> 
+> It might also be useful to write wrappers for the various ICMP options, such as RA Prefix Information, in the future. Right now they have to be manually constructed. If you want, I can work on that.
+> 
+> I'm not sure how you prefer to have author tags in code, so I'll leave that for you to decide. Assuming it's accepted, just put my name and email I guess.
+> 
+> Cheers.
+> 
+> 
+>  
+>  --------
+> This email and any attachments are CONFIDENTIAL and may also be
+> legally privileged. If you are not the intended recipient, please
+> immediately delete this message and any attachments, then notify
+> security@infoweapons.com of such recipient error. Any forwarding,
+> dissemination, distribution, re-posting or copying of this email
+> and attachments is strictly prohibited. Thank you.
+>  
+
+
+-- 
+  ^  ___  ___             http://www.GomoR.org/          <-+
+  | / __ |__/               Research Engineer              |
+  | \__/ |  \     ---[ zsh$ alias psed='perl -pe ' ]---    |
+  +-->  Net::Frame <=> http://search.cpan.org/~gomor/  <---+

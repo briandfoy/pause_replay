@@ -1,0 +1,207 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:13520
+Return-Path: <twyant4@comcast.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18930 invoked by uid 76); 31 Aug 2002 12:41:46 -0000
+Received: from smtp.comcast.net (HELO smtp.comcast.net) (24.153.64.2)
+  by onion.perl.org (qpsmtpd/0.07b) with SMTP; Sat Aug 31 12:41:46 2002 -0000
+Received: from nmxtech4865
+ (pcp903186pcs.cnorth01.va.comcast.net [68.57.155.46]) by mtaout01.icomcast.net
+ (iPlanet Messaging Server 5.1 HotFix 0.8 (built May 13 2002))
+ with SMTP id <0H1P000LPKIS7G@mtaout01.icomcast.net> for modules@perl.org; Sat,
+ 31 Aug 2002 08:40:05 -0400 (EDT)
+Date: Sat, 31 Aug 2002 08:40:12 -0400
+Subject: namespace request - Win32::Process::Info
+To: modules@perl.org
+Message-ID: <NDEIILLMMMHIKKNMOAHNAEAFCAAA.twyant4@comcast.net>
+MIME-version: 1.0
+X-MIMEOLE: Produced By Microsoft MimeOLE V5.50.4910.0300
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2911.0)
+Content-type: text/plain; charset=iso-8859-1
+Content-transfer-encoding: 7BIT
+Importance: Normal
+X-Priority: 3 (Normal)
+X-MSMail-priority: Normal
+Approved: news@nntp.perl.org
+From: twyant4@comcast.net (Tom Wyant)
+
+All -
+
+My apologies for not using
+https://pause.perl.org/pause/authenquery?ACTION=apply_mod, but I really
+haven't has any luck with it. I push the submit button and nothing visible
+happens. All three tries were MS IE 5. The first two were from inside a
+corporate firewall, and my submission did not show up in
+http://www.xray.mpe.mpg.de/mailing-lists/modules/ after 24 hours. The last
+was from home through a NAT firewall. The immediate symptoms were the same,
+so I didn't wait the 24 hours.
+
+The following looks as much like the form as I could make it.
+
+Thanks,
+Tom Wyant
+
+
+Name of the module
+------------------
+
+Win32::Process::Info
+
+
+Module List Chapter
+-------------------
+
+22) Microsoft Windows Modules
+
+
+Development Stage
+-----------------
+
+b - Beta
+
+
+Support Level
+-------------
+
+d - developer
+
+
+Language Used
+-------------
+
+p - Perl
+
+
+Interface Style
+---------------
+
+O - Object-Oriented
+
+
+Public license
+--------------
+
+p - Standard-Perl
+
+
+Description in Module List
+--------------------------
+
+Get information on processes in Win32 system
+
+
+Places where this module has been or will be discussed publicly
+---------------------------------------------------------------
+
+Perl-Win32-Users@listserv.activestate.com, modules@perl.org
+
+
+Modules with similar functionality
+----------------------------------
+
+Win32::Process Win32::PerfLib Win32::AdminMisc Win32API::ProcessStatus
+
+
+Rationale
+---------
+
+Namespace choice:
+
+This module is an informational module, designed to return all information
+available about a list of processes, or all processes in the system, under a
+variety of circumstances. It was originally named Win32::ProcInfo, but
+Win32::Process::Info was counterproposed on modules@perl.org last month as
+being the clearer name. I took that back to
+Perl-Win32-Users@listserv.activestate.com, and so far responses on that list
+concur. If discussion in response to this namespace request produces a
+better name (meaning, among others, one more likely to be included in the
+module list, if namespace choice impacts that) I will be predisposed to
+obliged.
+
+Uniqueness:
+
+The module was written in response to my own need to know not only all
+processes in the system (which Win32::PerfLib provides), but information
+such as the full executable path name for each (which Win32::PerfLib does
+not). When I joined the ActiveState mailing lists, I noted that questions on
+how to do what this module does came up every couple months. The usual
+response there was Win32::PerfLib. This meets the need of those who want
+simply process IDs, but not those who want information on the executable.
+
+I queried that list for interest in my module (then called Win32::ProcInfo).
+There was interest, and some discussion of whether this module should be
+merged with Win32::AdminMisc. After exhibiting my code to the author of
+Win32::AdminMisc, that author agreed that this module should be separate.
+There were no proposals for merger with Win32::PerfLib; there is
+considerable overlap in data returned, but the current module differs from
+that not only in intent but in underlying implementation, and it certainly
+appears to me that you can't get there from here.
+
+Win32::Process is part of the core distribution, but the orientation of that
+module is toward managing a single process whose ID is already known, not
+discovering processes and information about them.
+
+Win32::IProc (also not a CPAN module) is a better fit for merger, but the
+author has dropped out of sight, and the source code (it's a .xs module) is
+no longer available.
+
+Win32API::ProcessStatus is apparantly a new CPAN module; I didn't find it
+when I did my "literature search" back in April/May. It looks to be similar
+to the functionality of my "helper" NT subclass, but more oriented toward
+locating the DLLs the process uses.
+
+In distinction to the above modules, the proposed module is intended to
+return as much information as possible about any and all processes in the
+system, under as many different circumstances as possible. To that end it is
+structured as a class with two "helper" subclases, NT and WMI. The latter
+should work on any system with WMI support; the former works under Windows
+NT 4.0 (at least) without the WMI retrofit. A Windows 95 helper should be
+possible as well, I just don't have access to such a system. The "new"
+method feels around the system and instantiates whatever subclass works (it
+tries them in the order WMI, NT), or an exception.
+
+Inclusion in the module list:
+
+The module list has the stated aim of serving both users and developers.
+Quotes below are from http://www.cpan.org/modules/00modlist.long.html
+
+"FOR USERS: To quickly locate existing software which can be reused."
+
+Perl is to a certain extent a victim of its own success - the complete list
+of Perl modules is daunting, and I concur with and would like to co-operate
+with CPAN's attempt to bring some order out of the chaos.
+
+At the same time, there's no use sharing a module if it can't be found by
+potential users of the module. There are no modules currently on the module
+list with the ability to traverse all processes in a Windows system - at
+least, none that I can identify. Addition of this module to the list will
+supply functionality that is not presently represented. Non-listed modules
+can still be found by a search, but searching and browsing are complementary
+strategies. Browsing is (it seems to me) more likely to be used by a novice
+learning his or her way around, or an implementor choosing among
+implementation strategies. The non-listing of a module makes it pretty much
+invisible to these two significant classes of user.
+
+"FOR DEVELOPERS: To change duplication of effort into cooperation."
+
+My job of bringing this module 'to market' was complicated significantly by
+the fact that only one of the three potential collaborators
+(Win32::AdminMisc, Win32::IProc, and Win32::PerfLib) was on the module list,
+and that one is apparantly not actually a CPAN module (or at any rate
+neither the canned search in the module list nor I working independently can
+find it). I developed this Perl module in my spare time, and I suspect that
+most other module authors do likewise. The difficulty of researching
+potential collaborators (or modules that made this one unnecessary)
+translated into a significant delay in getting this module to its current
+stage of development.
+
+More effective developers = more or better modules (both, hopefully!) = more
+effective users, which is the whole point.
+
+My apologies if this is a duplicate - I submitted on the 28th, but never saw
+the submission in the modules@perl.org archive. I assume I misoperated the
+form. This is _not_ a duplicate of the previous, however, since
+Win32API::ProcessStatus turned up since then.
+

@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:67328
+Return-Path: <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1077 invoked from network); 24 Aug 2009 19:58:20 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 24 Aug 2009 19:58:20 -0000
+Received: (qmail 15660 invoked by uid 225); 24 Aug 2009 19:58:20 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15655 invoked by alias); 24 Aug 2009 19:58:20 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from franz.ak.mind.de (HELO franz.ak.mind.de) (212.42.235.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 24 Aug 2009 12:58:13 -0700
+Received: from k75.linux.bogus (localhost.localdomain [127.0.0.1])
+	by k75.linux.bogus (8.14.3/8.14.3/Debian-6) with ESMTP id n7OJw5Oe000811;
+	Mon, 24 Aug 2009 21:58:05 +0200
+Received: (from k@localhost)
+	by k75.linux.bogus (8.14.3/8.14.3/Submit) id n7OJw5Ye000810;
+	Mon, 24 Aug 2009 21:58:05 +0200
+X-Authentication-Warning: k75.linux.bogus: k set sender to andreas.koenig.7os6VVqR@franz.ak.mind.de using -f
+To: Moritz Lenz <moritz@faui2k3.org>
+Cc: Steffen Mueller <nj88udd02@sneakemail.com>, modules@perl.org
+Subject: Re: Perl 6 modules on CPAN
+References: <4A900595.50304@faui2k3.org> <4A923D96.6000503@sneakemail.com>
+	<4A9241DA.6000808@faui2k3.org>
+Reply-To: modules@perl.org
+Date: Mon, 24 Aug 2009 21:58:05 +0200
+In-Reply-To: <4A9241DA.6000808@faui2k3.org> (Moritz Lenz's message of "Mon\, 24
+	Aug 2009 09\:31\:38 +0200")
+Message-ID: <87ws4tvvaq.fsf@k75.linux.bogus>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/22.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Approved: news@nntp.perl.org
+From: andreas.koenig.7os6VVqR@franz.ak.mind.de ((Andreas J. Koenig))
+
+>>>>> On Mon, 24 Aug 2009 09:31:38 +0200, Moritz Lenz <moritz@faui2k3.org> said:
+
+ >>> 2) The uploaded modules have a flag in their META.yml marking them as
+ >>> Perl 6. The indexer ignores such modules, so that they don't appear in
+ >>> modules/02packages.details.txt.gz or modules/03modlist.data.gz  (in
+ >>> order not to disrupt the work flow of anything that deals with Perl 5
+ >>> modules
+
+Years ago I tried to suggest a language tag for META.yml but it was
+not appreciated then, so let's see what we have instead now.
+
+When a module has a "provides" key in the META.yml which references an
+empty hash then the indexing is disabled. The user gets a mail that
+contains text like this:
+
+                   User: DAVINCHI (Pavel Boldin)
+      Distribution file: SQL-Filter-0.014.tar.gz
+        Number of files: 10
+             *.pm files: 1
+                 README: SQL-Filter-0.014/README
+               META.yml: SQL-Filter-0.014/META.yml
+            YAML-Parser: YAML::XS 0.32
+      META-driven index: yes
+      Timestamp of file: Mon Aug 24 15:32:26 2009 UTC
+       Time of this run: Mon Aug 24 15:33:59 2009 UTC
+
+    Nothing in this distro has been
+                         indexed, because according to META.yml this
+                         package does not provide any modules.
+
+This might be appropriate for immediate use. I see nothing else that
+is ready to use without a code change.
+
+ >> Well, obviously Andreas is key to much of the practicalities. I can't 
+ >> say how much he wants to be involved in the design.
+
+I'm quite a bit behind on all my projects, so you better don't count
+on me doing some actual work. But PAUSE is of course open for you.
+
+  > There are heuristics, yes. For example a 'use v6;' is a pretty sure
+  > indication that something is Perl 6 code. I know the Padre developers
+  > have some heuristics already implemented; if there is general consensus
+  > that we need such a thing I'll look there for prior art.
+
+Maybe you can persuade the perl6 authors to do some tiny bit of
+homework in their distros so that we do not have to start with
+heuristics again? I'd recommend working with heuristics only if some
+better solutions have been tried and have failed.
+
+-- 
+andreas

@@ -1,0 +1,109 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46097
+Return-Path: <jkeen@verizon.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 8211 invoked from network); 24 Nov 2005 00:37:17 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 24 Nov 2005 00:37:17 -0000
+Received: (qmail 2722 invoked by uid 225); 24 Nov 2005 00:37:17 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2716 invoked by alias); 24 Nov 2005 00:37:16 -0000
+X-Spam-Status: No, hits=-0.7 required=8.0
+	tests=BAYES_00,DNS_FROM_RFC_ABUSE,DNS_FROM_RFC_POST,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of jkeen@verizon.net designates 206.46.252.40 as permitted sender)
+Received: from vms040pub.verizon.net (HELO vms040pub.verizon.net) (206.46.252.40)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 23 Nov 2005 16:37:10 -0800
+Received: from [192.168.0.100] ([71.247.192.202])
+ by vms040.mailsrvcs.net (Sun Java System Messaging Server 6.2-4.02 (built Sep
+ 9 2005)) with ESMTPA id <0IQF0000SODO9DH4@vms040.mailsrvcs.net> for
+ modules@perl.org; Wed, 23 Nov 2005 18:37:02 -0600 (CST)
+Date: Wed, 23 Nov 2005 18:26:04 -0500
+Subject: Re: Module submission String::MkVarName
+In-reply-to: <211120051144141467%comdog@panix.com>
+To: modules@perl.org
+Message-ID: <a27be2419f2aa0fd0b483e9bb50f27cc@verizon.net>
+MIME-version: 1.0 (Apple Message framework v623)
+X-Mailer: Apple Mail (2.623)
+Content-type: text/plain; charset=US-ASCII; format=flowed
+Content-transfer-encoding: 7bit
+References: <200511191818.jAJIIGTm017692@pause.perl.org>
+ <201120051855571827%comdog@panix.com>
+ <4290a3e06388c3858a61840a37516720@verizon.net>
+ <211120051144141467%comdog@panix.com>
+Approved: news@nntp.perl.org
+From: jkeen@verizon.net (James Keenan)
+
+
+On Nov 21, 2005, at 12:44 PM, _brian_d_foy wrote:
+
+>
+>>>>   description: Generate a random name for a Perl variable
+>
+>
+>>>>     Module exports a single function, make_varname(),
+>
+>>> Why is the module name MkVarName?
+>
+>> As mentioned in the docs, it began life as a hack on CPAN module
+>> String::MkPasswd.
+>
+>
+> Ah.  Now's the perfect time to fix that. :)
+
+Brian, here's my dilemma:
+
+What do you do when the name that most accurately describes what a 
+module *does* is not the name that most accurately describes what the 
+module is *used for*?
+
+Or, at least, what the module author intends to use the module for?
+
+String::MkVarName is another in my series of modest modules.  I wrote 
+it for a modest task:  to generate a well-behaving name for a directory 
+or path segment on major OSes.  I needed such a name to test certain 
+features of my other recent upload, File::Save::Home.
+
+Why didn't I just write something which would generate a valid file 
+name for Unix or Windows -- or look for something that already does 
+that on CPAN?  Well, partly for aesthetic reasons:  I didn't want any 
+punctuation characters other than q{_} in the resulting string.  And 
+partly for practical reasons:  I found problems when a hyphen (q{-}) 
+appeared in the first position of such a string, as the hyphen 
+anticipated command-line options that weren't there.
+
+So, I thought, why not restrict the strings returned by make_varname() 
+to a reasonable and aesthetically pleasing subset of the set of all 
+possible Unix/Windows file names, viz., the set of all Perl 
+identifiers?  A simple matter of programming:  just prevent numerals 
+from being in the first position.
+
+So why didn't I name the module something like String::PerlIdentifier?  
+Well, AFAICT, you can't do anything very *useful* with such a string.  
+Or, at any rate, you can't use it for what at first you might think 
+would be a neat use for it:
+
+     # mvar.pl
+     use strict;
+     use warnings;
+     use String::MkVarName;
+     my ${make_varname()};
+
+     Can't declare scalar dereference in my at mvar.pl line 9, near "};"
+     mvar.pl had compilation errors.
+
+So I settled on a name that rather *weakly* describes what the module 
+does.  I use it for something else.  And if someone came along with 
+something that does something better with Perl identifiers, I wouldn't 
+want to hog the namespace.
+
+While I continue to want to use the *code* and I think the exported 
+function name is okay, I'm not as wedded to the name of the module.  
+Got any better ideas?
+
+Thanks.
+
+jimk
+

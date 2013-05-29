@@ -1,0 +1,64 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:62504
+Return-Path: <matthewt@agaton.scsys.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 32064 invoked from network); 3 Oct 2008 09:50:12 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by x6.develooper.com with SMTP; 3 Oct 2008 09:50:12 -0000
+Received: (qmail 15463 invoked by uid 225); 3 Oct 2008 09:50:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15418 invoked by alias); 3 Oct 2008 09:50:09 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from de007061.idaq.com (HELO jules.scsys.co.uk) (217.168.153.160)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 03 Oct 2008 02:50:02 -0700
+Received: from [217.168.150.167] (helo=agaton.scsys.co.uk)
+	by jules.scsys.co.uk with esmtp (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1KlhID-0003HA-Ip; Fri, 03 Oct 2008 10:49:49 +0100
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.60)
+	(envelope-from <matthewt@agaton.scsys.co.uk>)
+	id 1KlhID-0006BM-GG; Fri, 03 Oct 2008 10:49:49 +0100
+Date: Fri, 3 Oct 2008 10:49:49 +0100
+To: Craig Grady <cgrady357@gmail.com>
+Cc: modules@perl.org
+Subject: Re: need help with naming a new module
+Message-ID: <20081003094949.GG16741@agaton.scsys.co.uk>
+References: <b144215e0810020911s6da2222fnf743130ac0c7dad9@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b144215e0810020911s6da2222fnf743130ac0c7dad9@mail.gmail.com>
+User-Agent: Mutt/1.5.11
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Thu, Oct 02, 2008 at 11:11:05AM -0500, Craig Grady wrote:
+> I would like some help in choosing an appropriate name for the module.  I
+> have been using the name MicroStrategy::Cmdmgr during development.   Since
+> it's not good practice to create a new top level name like MicroStrategy, I
+> need to rename my module before I release it.  A natural fit would be
+> Business::Intelligence::MicroStrategy::Cmdmgr.  But the name is a bit
+> unwieldy because of the length.  Can someone suggest a better name for my
+> module?
+
+That actually sounds like an excellent name, though I think I'd use CmdMgr
+or CommandManager for the last part.
+
+The trick to unwieldy naming is you can do
+
+use aliased 'Business::Intelligence::MicroStrategy::CmdMgr' => 'CommandManager';
+
+my $cmd_mgr = CommandManager->new(...);
+
+so the full name only has to appear once per module anyway.
+
+-- 
+      Matt S Trout       Need help with your Catalyst or DBIx::Class project?
+   Technical Director                    http://www.shadowcat.co.uk/catalyst/
+ Shadowcat Systems Ltd.  Want a managed development or deployment platform?
+http://chainsawblues.vox.com/            http://www.shadowcat.co.uk/servers/

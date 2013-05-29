@@ -1,0 +1,63 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:21389
+Return-Path: <mark.pfeiffer@mlp-consulting.com.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10055 invoked by uid 76); 29 May 2003 23:31:46 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26-dev) with SMTP; Thu, 29 May 2003 16:31:46 -0700
+Received: (qmail 22386 invoked by uid 225); 29 May 2003 23:31:44 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22381 invoked by uid 507); 29 May 2003 23:31:43 -0000
+Received: from nhj.nlc.net.au (HELO nhj.nlc.net.au) (203.24.133.1) by one.develooper.com (qpsmtpd/0.26-dev) with SMTP; Thu, 29 May 2003 16:31:40 -0700
+Received: (qmail 1737 invoked by uid 4376); 30 May 2003 09:31:32 +1000
+Date: Fri, 30 May 2003 09:31:32 +1000 (EST)
+X-Sender: markpf@nhj.nlc.net.au
+To: modules@perl.org
+cc: Mark Pfeiffer <markpf@mlp-consulting.com.au>
+Subject: RFC on using Cisco::ShowIPRoute name space
+Message-ID: <Pine.LNX.4.10.10305300919270.29448-100000@nhj.nlc.net.au>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=0.5 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01,USER_AGENT_PINE version=2.44
+X-SMTPD: qpsmtpd/0.26-dev, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: markpf@mlp-consulting.com.au (Mark Pfeiffer)
+
+Hi, I have a few modules that parse the output from the 'show ip route'
+command typed at a Cisco router console.
+
+Id like to use Cisco::ShowIPRoute::Parser as the module name. It
+basically has a single entry point thus:
+
+	use Cisco::ShowIPRoute::Parser;
+
+	 # Router.log holds the output from 'show ip route'
+	 my $log = 'Router.log';
+	 my $r = new Cisco::ShowIPRoute::Parser($log);
+
+	 my $dest   = '10.159.25.44';
+	 my @routes = $r->getroutes($dest);
+
+
+Cisco::ShowIPRoute::Parser uses a simple C function we have written to
+make testing wether an IP is within a subnet. We would like to call it
+Cisco::ShowIPRoute::NetCheck. It is used like this:
+
+	use Cisco::ShowIPRoute::NetCheck;
+
+	my $dest = '10.25.159.2';
+	my $mask = '255.255.255.0';
+	my $net  = '10.25.159.0';
+
+	my  $innet = Cisco::ShowIPRoute::NetCheck::NetCheck($net,$mask,$dest);
+	print "Yep $dest in $net\n" if $innet;
+
+
+I'd like some comment on the naming thanks.
+
+cheers
+Mark
+

@@ -1,0 +1,162 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:394
+Return-Path: <erngui@acm.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12660 invoked from network); 1 Nov 1999 12:51:04 -0000
+Received: from unknown (HELO ssmtp02.arrakis.isp) (212.59.199.83)
+  by tmtowtdi.perl.org with SMTP; 1 Nov 1999 12:51:04 -0000
+Received: from jupiter ([62.82.34.171]) by ssmtp02.arrakis.isp
+          (Netscape Messaging Server 4.1) with SMTP id FKIRO103.XD9 for
+          <modules@perl.org>; Mon, 1 Nov 1999 13:50:25 +0100 
+Message-ID: <3.0.5.32.19991101135337.009ae1f0@pop.arrakis.es>
+X-Sender: erngui@pop.arrakis.es
+X-Mailer: QUALCOMM Windows Eudora Light Version 3.0.5 (32)
+Date: Mon, 01 Nov 1999 13:53:37 +0100
+To: modules@perl.org
+Subject: Win32::GuiTest proposal
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Approved: news@nntp.perl.org
+From: erngui@acm.org (Ernesto Guisado)
+
+Hi,
+
+I'd like to register a new Perl module. The pause info would be:
+
+name:  Ernesto Guisado
+email: erngui@acm.org
+user-ID on CPAN: ERNGUI
+
+Win32::GuiTest module. 
+
+Contains functions to help with automating GUI related testing tasks.
+Examples: Sending keystrokes to a window or finding a window by name (using
+Perl regexps).  
+
+DSLI: adcf
+
+So that you may be in a better position to verify the correctness of the name,
+I've included the POD for the module.
+
+Regards,
+Ernesto.
+
+NAME
+    Win32::GuiTest - Perl GUI Test Utilities
+
+SYNOPSIS
+      use Win32::GuiTest qw(FindWindowLike GetWindowText 
+        SetForegroundWindow SendKeys);
+
+      $Win32::GuiTest::debug = 0; # Set to "1" to enable verbose mode
+
+      my @windows = FindWindowLike(0, "^Microsoft Excel", "^XLMAIN\$");
+      for (@windows) {
+          print "$_>\t'", GetWindowText($_), "'\n";
+          SetForegroundWindow($_);
+          SendKeys("%fn~a{TAB}b{TAB}{BS}{DOWN}");
+      }
+
+DESCRIPTION
+    Most GUI test scripts I have seen/written for Win32 use some
+    variant of Visual Basic (e.g. MS-VB or MS-Visual Test). The main
+    reason is the availability of the SendKeys function.
+
+    A nice way to drive Win32 programs from a test script is to use
+    OLE Automation (ActiveX Scripting), but not all Win32 programs
+    support this interface. That's where SendKeys comes handy.
+
+    Some time ago Al Williams published a Delphi version in Dr.
+    Dobb's (http://www.ddj.com/ddj/1997/careers1/wil2.htm). I ported
+    it to C and packaged it using h2xs...
+
+    The tentative name for this module is Win32::GuiTest (mostly
+    because I plan to include more GUI testing functions).
+
+FUNCTIONS
+    $debug  When set enables the verbose mode.
+
+    SendKeys KEYS
+            Sends keystrokes to the active window as if typed at the
+            keyboard. The keystrokes to send are specified in KEYS.
+            There are several characters that have special meaning.
+            This allows sending control codes and modifiers: ~ means
+            ENTER + means SHIFT ^ means CTRL % means ALT
+
+            The parens allow character grouping. You may group
+            several characters, so that a specific keyboard modifier
+            applies to all of them.
+
+            E.g. SendKeys("ABC") <=> SendKeys("+(abc)")
+
+            The curly braces are used to quote special characters
+            (SendKeys("{+}{{}") sends a '+' and a '{'). You can also
+            use them to specify certain named actions:
+
+                    Name              Action
+
+                    {BACKSPACE}       Backspace
+                    {BS}              Backspace
+                    {BKSP}            Backspace
+                    {BREAK}           Break
+                    {CAPS}            Caps Lock
+                    {DELETE}          Delete
+                    {DOWN}            Down arrow
+                    {END}             End
+                    {ENTER}           Enter (same as ~)
+                    {ESCAPE}          Escape
+                    {HELP}            Help key
+                    {HOME}            Home
+                    {INSERT}          Insert
+                    {LEFT}            Left arrow
+                    {NUMLOCK}         Num lock
+                    {PGDN}            Page down
+                    {PGUP}            Page up
+                    {PRTSCR}          Print screen
+                    {RIGHT}           Right arrow
+                    {SCROLL}          Scroll lock
+                    {TAB}             Tab
+                    {UP}              Up arrow
+                    {PAUSE}           Pause
+
+            All these named actions take an optional integer
+            argument, like in {RIGHT 5}. For all of them, except
+            PAUSE, the argument means a repeat count. For PAUSE it
+            means the number of milliseconds SendKeys should pause
+            before proceding.
+
+            In this implementation, SendKeys always returns after
+            sending the keystrokes. There is no way to tell if an
+            application has processed those keys when the function
+            returns.
+
+    FindWindowLike WINDOW, TITLEPATTERN, CLASSPATTERN, CHILDID
+            Finds the window handles of the windows matching the
+            specified parameters and returns them as a list.
+
+            You may specify the handle of the window to search
+            under. The routine searches through all of this windows
+            children and their children recursively. If 'undef' then
+            the routine searches through all windows. There is also
+            a regexp used to match against the text in the window
+            caption and another regexp used to match against the
+            text in the window class. If you pass a child ID number,
+            the functions will only match windows with this id. In
+            each case undef matches everything.
+
+COPYRIGHT
+    The SendKeys function is based on the Delphi sourcecode
+    published by Al Williams (http://www.al-williams.com/awc/) in
+    Dr.Dobbs (http://www.ddj.com/ddj/1997/careers1/wil2.htm).
+
+    Copyright (c) 1998-1999 Ernesto Guisado. All rights reserved.
+    This program is free software; You may distribute it and/or
+    modify it under the same terms as Perl itself.
+
+AUTHOR
+    Ernesto Guisado <erngui@acm.org>
+
+
+

@@ -1,0 +1,122 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:46551
+Return-Path: <edmund.vonderburg@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22135 invoked from network); 22 Dec 2005 10:25:34 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 22 Dec 2005 10:25:34 -0000
+Received: (qmail 3691 invoked by uid 225); 22 Dec 2005 10:25:33 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3678 invoked by alias); 22 Dec 2005 10:25:31 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DK_SIGNED,DK_VERIFIED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of edmund.vonderburg@gmail.com designates 64.233.162.201 as permitted sender)
+Received: from zproxy.gmail.com (HELO zproxy.gmail.com) (64.233.162.201)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 22 Dec 2005 02:25:22 -0800
+Received: by zproxy.gmail.com with SMTP id n1so386771nzf
+        for <modules@perl.org>; Thu, 22 Dec 2005 02:25:19 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=gmail.com;
+        h=received:message-id:date:from:reply-to:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=Fmhty5K0wm51o2jIW2WL+1pzJ+2LOv5jHFTt8bqYvkETRImNJAC8zVFIJsK35DvwdqMariy8TbkSTe/ji/K/Co6jghMsd5oD1dXkXvyQkYqQlfjZqL9IvIOjUwmhFmNYyTdTTEAQ7ud5Seg2dp3X1Czz7Fl9tbCw0IcdzkXUx54=
+Received: by 10.36.108.10 with SMTP id g10mr1776422nzc;
+        Thu, 22 Dec 2005 02:25:19 -0800 (PST)
+Received: by 10.36.129.13 with HTTP; Thu, 22 Dec 2005 02:25:19 -0800 (PST)
+Message-ID: <f0145aa60512220225v4cd53225x@mail.gmail.com>
+Date: Thu, 22 Dec 2005 10:25:19 +0000
+Reply-To: evdb@ecclestoad.co.uk
+To: Adam Kennedy <adam@phase-n.com>
+Subject: Re: Module submission Module::API
+Cc: modules@perl.org, comdog@panix.com
+In-Reply-To: <43AA76D1.7050704@phase-n.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+References: <200512210024.jBL0ONjY019443@pause.perl.org>
+	 <43AA31D3.7090006@ali.as>
+	 <f0145aa60512220137m217768c0i@mail.gmail.com>
+	 <43AA76D1.7050704@phase-n.com>
+Approved: news@nntp.perl.org
+From: edmund.vonderburg@gmail.com (Edmund von der Burg)
+
+On 22/12/05, Adam Kennedy <adam@phase-n.com> wrote:
+> I'm not sure API::Framework would be accepted either.
+>
+> Your biggest problem is that "API" is so vague as to very nearly be
+> meaningless.
+
+Granted the term API is vague. However when you say it people know
+what you mean - some way of getting access to functionality without
+knowing how that functionality is implemented, or really caring where
+it is imlpemented. That is what my code tries to let you do.
+
+> The term "Framework" is almost as bad too...
+
+But again people know what it means. In a way the lack of precision is
+what makes these terms so useful.
+
+> The Flikr modules are located at Net::Flickr for a reason, they are a
+> module that talks to the Flikr service across a network.
+
+It is interesting that there is both a 'Net::Flickr::API' and a 'Flickr::AP=
+I'.
+
+> Other sorts of formalised interface languages have their own names, like
+> Corba and WSDL and so on. These get grouped at places such SOAP::WSDL
+> and Corba::
+>
+> ...snip...
+>
+> On the second, both "API" and "Framework" seem bad.
+>
+> How does your module different from RPC or WSDL or Corba IDL or some of
+> the other RPC modules...
+>
+> Is there something in that distinction that would help in naming?
+
+Here is the situation that lead to the code being developed: I wanted
+to create a dynamic website. This means at some point the cgi scripts
+(or whatever) would need to communicate with the business logic and
+database. If I do all of this communication over a clearly defined API
+then it would be really easy to access the functionality from
+elsewhere, eg other scripts possibly on other machines.
+
+With this in mind the code I have written hides how the API call is
+made - you just do something like:
+
+  $api_response =3D $api->send( 'method_name', { foo =3D> 'bar' } );
+
+and it then takes it from there. It can either send it remotely
+(dealing with the serialisation, and transport ). Then at the other
+end it recieves the request and processes it by loading an appropriate
+plugin. Then it recieves the response and presents it back. If no
+remotes sever is specified it does it all locally, skipping the
+serialization etc. But thu call remains the same. ( There is also a
+queue that lets you process several requests in paallel without
+blocking ).
+
+The user of the code needs to create a module that has 'use base
+'API::Framework';' and then specifiy some defaults. After that they
+just need to write their plugins and put them in the right place. And
+that is it.
+
+How the data is serialised, how it is transported etc is all hidden,
+the user need not care. At the moment the only transport mechanism is
+HTTP POSTs, but I intend to extend that as required. You can currently
+serialize using YAML, Storable or XML::Dumper, and you can add your
+own easily.
+
+The one thing that does not change is the way that the calls are made,
+the $api->send( .. ).
+
+'API' and 'Framework' are very general terms, but so is what this
+module aims to achieve.
+
+Any thoughts welcomed.
+
+--
+In reality I'm evdb@ecclestoad.co.uk - http://ecclestoad.co.uk

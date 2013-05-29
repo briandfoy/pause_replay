@@ -1,0 +1,114 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:339
+Return-Path: <joshua.pritikin@db.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10471 invoked from network); 27 Oct 1999 23:15:34 -0000
+Received: from gate0.de.deuba.com (193.150.166.50)
+  by tmtowtdi.perl.org with SMTP; 27 Oct 1999 23:15:34 -0000
+Received: by gate0.de.deuba.com
+          id BAA101870; Thu, 28 Oct 1999 01:15:01 +0200
+Received: from Deutsche Bank Mail Backbone by ebn00pgh00.de.deuba.com
+	id xma100042; Thu, 28 Oct 1999 01:14:58 +0200
+Received: from bmr1-e1.esb.eur.deuba.com by imr1.esb.eur.deuba.com 
+          id BAA14403; Thu, 28 Oct 1999 01:14:57 +0200 (MET DST)
+Received: from smail1.groga.eur.deuba.com by bmr1-e1.esb.eur.deuba.com 
+          id BAA29859; Thu, 28 Oct 1999 01:14:56 +0200 (MET DST)
+Received: from db.com by smail1.groga.eur.deuba.com 
+          id AAA18046; Thu, 28 Oct 1999 00:14:55 +0100 (BST)
+Received: by db.com (sSMTP sendmail emulation); Wed, 27 Oct 1999 19:13:09 -0400
+Date: Wed, 27 Oct 1999 19:13:09 -0400
+To: jdporter@min.net
+Cc: modules@perl.org
+Subject: Re: Fwd: Re: Edit a Module
+Message-ID: <19991027191309.U7054@eq1062.wks.na.deuba.com>
+References: <19991027152800.N7054@eq1062.wks.na.deuba.com> <19991027181542.A434@min.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 1.0pre3us
+In-Reply-To: <19991027181542.A434@min.net>
+Approved: news@nntp.perl.org
+From: joshua.pritikin@db.com (Joshua N Pritikin)
+
+On Wed, Oct 27, 1999 at 06:15:43PM -0400, jdporter@min.net wrote:
+> Joshua Pritikin wrote:
+> > andreas.koenig@anima.de wrote:
+> > > 
+> > >  > Envy              adcf Shell utility to manage environment vars     JPRIT
+> > > 
+> > > We have Env.pm for ages in the core. Why wouldn't Env::Tools or
+> > > something similar do? Or if it is more Shell related, why not use
+> > > Shell::Something or ShellScript::Something? All these root namespaces
+> > > exist and if there is not a good reason to reject them, they should
+> > > really be used.
+> > 
+> > Envy builds to a command program:
+> >...
+> > I'm not really willing to rename it.  I guess I don't mind if you wish
+> > to omit Envy from the module list.
+> 
+> If envy is not a module, then it shouldn't be in the modules list anyway.
+
+It also installs modules, such as Envy::Load and Envy::DB.  I am open to
+differing opinions on its proper home.
+
+> > >  > Rc                adcf Perl interface for the Rc shell              JPRIT
+> > > 
+> > > Shell::Rc ? ShellScript::Rc ? I'm not sure that a root namespace for
+> > > Rc is justified.
+> > 
+> > Rc mimics the B API.  It gives access to the Rc abstract syntax tree.
+> 
+> Well, Rc might be an appropriate top-level name, for modules
+> which pertain to the Rc shell.  But your module should have a
+> somewhat more specific name, like maybe Rc::SyntaxTree.
+
+Uh, well, it mimics B.  There are a whole bunch of packages for each
+syntactic element:
+
+no strict 'refs';
+for(qw(Undef WordX Cmd RedirX Pipe)) {
+    my $c = 'Rc::'.$_.'::ISA';
+    @{"$c"} = 'Rc::Node';
+}
+
+for (qw(UnaryCmd BinCmd Forin)) {
+    my $c = 'Rc::'.$_.'::ISA';
+    @{"$c"} = 'Rc::Cmd';
+}
+
+# WordX
+@Rc::Word::ISA = 'Rc::WordX';
+@Rc::Qword::ISA = 'Rc::WordX';
+
+# Cmd <= UnaryCmd
+for (qw(Bang Nowait Count Flat Rmfn Subshell Var Case)) {
+    my $c = 'Rc::'.$_.'::ISA';
+    @{"$c"} = 'Rc::UnaryCmd';
+}
+
+# Cmd <= BinCmd
+for (qw(Andalso Assign Backq Body Brace Concat Else Epilog
+        If Newfn Cbody Orelse Pre Args Switch Match Varsub While Lappend)) {
+    my $c = 'Rc::'.$_.'::ISA';
+    @{"$c"} = 'Rc::BinCmd';
+}
+
+# Node <= RedirX
+for (qw(Dup Redir Nmpipe)) {
+    my $c = 'Rc::'.$_.'::ISA';
+    @{"$c"} = 'Rc::RedirX';
+}
+
+#--------------------------
+
+And there are also backends:
+
+  Rc::Deparse
+  Rc::Sh
+  Rc::Terse
+
+-- 
+"Does `competition' have an abstract purpose?"
+       via, but not speaking for Deutsche Bank

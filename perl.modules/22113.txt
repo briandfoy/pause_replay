@@ -1,0 +1,157 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:22113
+Return-Path: <nobody@pause.x.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29645 invoked by uid 76); 28 Jun 2003 20:59:26 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.26) with SMTP; Sat, 28 Jun 2003 13:59:26 -0700
+Received: (qmail 27777 invoked by uid 225); 28 Jun 2003 20:59:25 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27772 invoked by uid 507); 28 Jun 2003 20:59:25 -0000
+Received: from pause.perl.org (HELO pause.perl.org) (212.40.160.59) by one.develooper.com (qpsmtpd/0.26) with SMTP; Sat, 28 Jun 2003 13:59:24 -0700
+Received: from pause.perl.org (IDENT:nobody@localhost [127.0.0.1])	by pause.perl.org (8.12.9/8.12.9) with ESMTP id h5SKxGtQ028818;	Sat, 28 Jun 2003 22:59:16 +0200
+Received: (from nobody@localhost)	by pause.perl.org (8.12.9/8.12.9/Submit) id h5SKxGY4028817;	Sat, 28 Jun 2003 22:59:16 +0200
+Date: Sat, 28 Jun 2003 22:59:16 +0200
+Message-ID: <200306282059.h5SKxGY4028817@pause.perl.org>
+Subject: Module submission File::LineEdit
+Reply-To: modules@perl.org
+To: modules@perl.org, miko@cpan.org
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=1.1 required=7.0 tests=CARRIAGE_RETURNS,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: upload@pause.x.perl.org ("Perl Authors Upload Server")
+
+
+The following module was proposed for inclusion in the Module List:
+
+  modid:       File::LineEdit
+  DSLIP:       RdpOp
+  description: Utility for editing files line-by-line
+  userid:      MIKO (Miko O'Sullivan)
+  chapterid:   10 (File_Names_Systems_Locking)
+  communities:
+
+  similar:
+    File::Searcher, File::Data
+
+  rationale:
+
+    File/LineEdit version 1.00 ========================
+
+    NAME
+
+    File::LineEdit - Small utility for editing each line of a file
+
+    SYNOPSIS my $le = File::LineEdit->new('myfile.txt'); foreach my
+    $line (@{$le->{'lines'}}) { $line =~ s|foo|bar|; }
+
+    INSTALLATION
+
+    File::LineEdit can be installed with the usual routine:
+
+    perl Makefile.PL make make test make install
+
+    You can also just copy LineEdit.pm into the File/ directory of one
+    of your library trees.
+
+    DESCRIPTION
+
+    File::LineEdit is just a small utility to simplify modiyfying a
+    file line-by-line. It performs the boring tasks of slurping in the
+    file, chomping each line (if you want it to), and then, after
+    changes are made, writing the data back to the file.
+
+    The basic usage is quite simple: instantiate a File::LineEdit
+    object, loop through the $object->{'lines'} array, modifying each
+    line however your want. When the object falls out of scope, it
+    automatically writes the modified lines back to the file. Here's a
+    simple example (actually, the same example used in the synopsis
+    above, this time with a little more documentation):
+
+    # instantiate a File::LineEdit object, passing in # the path to the
+    file as the only required argument. my $le =
+    File::LineEdit->new('myfile.txt');
+
+    # loop through the lines array foreach my $line (@{$le->{'lines'}})
+    { # change the line in some way $line =~ s|foo|bar|;
+
+    } # The data is saved back to the file # automatically when the
+    object falls # out of scope. No need for an # explicit save.
+
+    There are a few variations on this theme.
+
+    EXPLICIT SAVE
+
+    By default, LineEdit objects save their line data back
+
+    If you just somehow don't trust the concept of saving on object
+    destruction, you can tell your LineEdit object to explicitly save:
+
+    $le->save;
+
+    If you don't want the object to automatically save on destruction,
+    add the "autosave" argument to the instantiation params:
+
+    my $le = File::LineEdit->new('myfile.txt', autosave=>0);
+
+    AUTOMATIC LINE CHOMPING
+
+    By default, LineEdit automatically chomps the end of each line when
+    it slurps in the data from the file. If you prefer to keep your
+    lines unchomped then add an "autochomp" argument to the
+    instantiation params:
+
+    my $le = File::LineEdit->new('myfile.txt', autochomp=>0);
+
+    SIMILAR MODULES
+
+    There are a couple modules on CPAN that provide similar
+    functionality. File::Searcher provides the ability to do regular
+    expression based search and replaces on groups of files. File::Data
+    provides several ways to slurp in, modify, and write files.
+    File::Data also uses regular expressions for searching and
+    replacing. Be sure to look at both of those modules if you are
+    interested in simplified modification of files.
+
+    File::LineEdit differs from File::Searcher and File::Data in that
+    File::LineEdit focusses on line-based edits. The object of
+    File::LineEdit is to provide a simplified manner for looking at and
+    modifying files one line at a time.
+
+    TERMS AND CONDITIONS
+
+    Copyright (c) 2003 by Miko O'Sullivan. All rights reserved. This
+    program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself. This software comes with NO
+    WARRANTY of any kind.
+
+    AUTHORS
+
+    Miko O'Sullivan miko@idocs.com
+
+    VERSION
+
+    Version 1.00 June 27, 2003 Initial release
+
+  enteredby:   MIKO (Miko O'Sullivan)
+  enteredon:   Sat Jun 28 20:59:16 2003 GMT
+
+The resulting entry would be:
+
+File::
+::LineEdit        RdpOp Utility for editing files line-by-line       MIKO
+
+
+Thanks for registering,
+-- 
+The PAUSE
+
+PS: The following links are only valid for module list maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=20600000_d3fcbf02e28cda1b&SUBMIT_pause99_add_mod_preview=1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=add_mod&USERID=20600000_d3fcbf02e28cda1b&SUBMIT_pause99_add_mod_insertit=1

@@ -1,0 +1,71 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:54977
+Return-Path: <bnegrao@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 15630 invoked from network); 20 Jun 2007 21:02:29 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 20 Jun 2007 21:02:29 -0000
+Received: (qmail 32234 invoked by uid 225); 20 Jun 2007 21:02:28 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 32226 invoked by alias); 20 Jun 2007 21:02:28 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VERIFIED,DK_POLICY_SIGNSOME,DK_SIGNED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of bnegrao@gmail.com designates 209.85.146.177 as permitted sender)
+Received: from wa-out-1112.google.com (HELO wa-out-1112.google.com) (209.85.146.177)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 20 Jun 2007 14:02:22 -0700
+Received: by wa-out-1112.google.com with SMTP id v27so62179wah
+        for <modules@perl.org>; Wed, 20 Jun 2007 14:02:18 -0700 (PDT)
+DKIM-Signature: a=rsa-sha1; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=fiUayVIirD+fQRc0Fo/EGzJdqackrXsqGNHnLr844jw0qxERK55WmFkKUM3sCvWOkLhyad9aZsCwKnLHzB8YeoPxVjU4m+/GjshK77fOZIs6hLnz0GN8r2ueiuDHYmt13u5zEfosb5EpKN+DM5YCc5xW75kV1hyQB9uJs90AF0c=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=EcDt9KhAgxxkO0yj7BPSQtBufwJz8209K18LGiVzX5AIXMpuRogNlRLQggzcVpMSxlWKL45PMkh62HIQWMR3tukXVH7GstHpBY0PV9EQlOXFlUyiokgxfLZRcztvgAxIR3WkQIpKIJBnWfWZFuWaimsXKwDu1029cb0BRzxpD0A=
+Received: by 10.115.91.2 with SMTP id t2mr738998wal.1182373338461;
+        Wed, 20 Jun 2007 14:02:18 -0700 (PDT)
+Received: by 10.115.92.14 with HTTP; Wed, 20 Jun 2007 14:02:18 -0700 (PDT)
+Message-ID: <8a8a1ae30706201402w20936165l793186d0f3cbdabb@mail.gmail.com>
+Date: Wed, 20 Jun 2007 18:02:18 -0300
+To: modules@perl.org
+Subject: Re: Module submission Net::SSH::Expect
+Cc: bnegrao@cpan.org
+In-Reply-To: <200706202052.l5KKqU3K016049@pause.perl.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <200706202052.l5KKqU3K016049@pause.perl.org>
+Approved: news@nntp.perl.org
+From: bnegrao@gmail.com ("Bruno Negrao")
+
+The example program I sent had small errors, this one bellow is ok.
+bruno.
+
+#!/usr/bin/perl
+use lib '.';
+use Net::SSH::Expect;
+
+use strict;
+
+my $ssh = Net::SSH::Expect->new (host => "myserver.com",
+password=> 'pass87word', uid => 'username');
+
+# establishes the ssh connection,
+# authenticating with that user and password
+$ssh->connect();
+
+# runs arbitrary commands
+my $ls = $ssh->exec("ls -l /");
+print($ls);
+
+my $who = $ssh->exec("who");
+print ($who);
+
+# closes the ssh connection
+$ssh->close();

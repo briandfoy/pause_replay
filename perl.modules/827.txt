@@ -1,0 +1,71 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:827
+Return-Path: <sam@tregar.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18130 invoked from network); 9 Jan 2000 21:12:35 -0000
+Received: from kyle.vm.com (209.73.238.18)
+  by tmtowtdi.perl.org with SMTP; 9 Jan 2000 21:12:35 -0000
+Received: (qmail 15377 invoked from network); 9 Jan 2000 21:11:28 -0000
+Received: from zoltar.vm.com (209.73.238.19)
+  by kyle.vm.com with SMTP; 9 Jan 2000 21:11:28 -0000
+Date: Sun, 9 Jan 2000 16:10:42 -0500 (EST)
+X-Sender: sam@zoltar.vm.com
+To: modules@perl.org
+Subject: IPC::SharedCache - proposal
+Message-ID: <Pine.LNX.4.21.0001091551060.7803-100000@zoltar.vm.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: sam@tregar.com (Sam Tregar)
+
+Hello again.  I'd like to propose a module - IPC::SharedCache.  Recently
+I've added a shared memory cache to HTML::Template using IPC::ShareLite
+and Storable.  This requires HTML::Template to get pretty down and dirty
+with IPC::ShareLite and Storable - dealing with allocation and
+deallocation of IPC shared memory segments, freezing and thawing of
+references.  I'd like to abstract out the IPC::ShareLite and Storable
+interactions from HTML::Template into a new module.  I think that the
+result could be useful for a wide range of applications.
+
+My basic plan for an interface goes something like this:
+
+use IPC::SharedCache;
+
+# define a callback to validate cache objects - checks if the first
+# element of the array is greater than 10.  A typical real-world check
+# would compare against the mtime of a disk file, for example.
+sub validate_cache_object {
+  my ($cache_obj) = @_;
+  return ($cache_obj->[0] >= 10) ? 1 : 0;
+} 
+
+# define a callback to return a loaded object for a particular key.  This
+# gets called when an object is requested that is not in the cache and
+# when an object is invalidated by the validate callback.  This one just
+# puts some dummy data into an anonymous array, a typical real-world
+# function would read a disk file and do some processing, for example.
+sub reload_cache_object {
+   my ($key) = @_;
+   return [4, 'blah', $key];
+}
+
+my $shared_cache = IPC::SharedCache->new(ipc_key => 'ROOT',
+                                         valiadate => \&validate_cache_object,
+                                         reload => \&reload_cache_object,
+                                        );
+
+# get something from the cache, based on a key
+my $cache_obj = $shared_cache->fetch(key => '10');
+
+__END__
+
+Of course there are a lot of interface specifics to work out, but I
+thought I would fire this off before I really got down to the work of
+it.  How does this sound to you?
+
+-sam
+CPAN id: SAMTREGAR
+
+

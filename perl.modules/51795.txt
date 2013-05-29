@@ -1,0 +1,118 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:51795
+Return-Path: <cfaerber@googlemail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 21295 invoked from network); 14 Nov 2006 02:40:59 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 14 Nov 2006 02:40:59 -0000
+Received: (qmail 16800 invoked by uid 225); 14 Nov 2006 02:40:59 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 16777 invoked by alias); 14 Nov 2006 02:40:58 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=DK_SIGNED,DK_VERIFIED,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: domain of cfaerber@googlemail.com designates 64.233.182.189 as permitted sender)
+Received: from nf-out-0910.google.com (HELO nf-out-0910.google.com) (64.233.182.189)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 13 Nov 2006 18:40:53 -0800
+Received: by nf-out-0910.google.com with SMTP id c2so93420nfe
+        for <modules@perl.org>; Mon, 13 Nov 2006 18:40:14 -0800 (PST)
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+        s=beta; d=googlemail.com;
+        h=received:message-id:date:from:sender:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition:x-google-sender-auth;
+        b=HsQis/Fy4cBqltDNzeON36ZM0uyDxwehwbtMoV+6H6pha4pGJ7Xq72vubxQvJU3QvKa7458q2iJk2EPhZ/XYny+UEGCbyyXjMClUtJtJJ2u/A41HqpWl1nTPfKhW+VlJr1+epOyHNo2Rg5S4x90GoqhdEDBtrMySjNvZdSmX850=
+Received: by 10.82.153.5 with SMTP id a5mr48651bue.1163472013639;
+        Mon, 13 Nov 2006 18:40:13 -0800 (PST)
+Received: by 10.82.120.3 with HTTP; Mon, 13 Nov 2006 18:40:13 -0800 (PST)
+Message-ID: <1c35169f0611131840m7225bf24nd23e139075d7208f@mail.gmail.com>
+Date: Tue, 14 Nov 2006 03:40:13 +0100
+Sender: cfaerber@googlemail.com
+To: "Tatsuhiko Miyagawa" <miyagawa@bulknews.net>, 
+	"Robert Urban" <urban@UNIX-Beratung.de>
+Subject: Net::IDN::* perl modules
+Cc: "perl module list" <modules@perl.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+X-Google-Sender-Auth: 85d9e220d20d69d3
+Approved: news@nntp.perl.org
+From: CFAERBER@cpan.org ("=?ISO-8859-1?Q?Claus_F=E4rber_(CFAERBER)?=")
+
+Hallo,
+
+I'm the maintainer of the Net::IDN::Encode perl module, which depends
+on several other modules related to IDNs, including IDNA::Punycode and
+Net::IDN::Namestring.
+
+Unfortunately, these modules have been in bad shape for some time now:
+
+* Neither IDNA::Punycode nor Net::IDN::Namestring are registered in
+the modulelist (but Net::IDN::Encode *is*,
+http://rt.cpan.org/Ticket/Display.html?id=3D16150)
+* Encode::Punycode is broken because it uses IDNA::Punycode, which
+later introduced a default idn_prefix.
+http://rt.cpan.org/Ticket/Display.html?id=3D16144,
+http://rt.cpan.org/Ticket/Display.html?id=3D14883
+
+* IDNA::Punycode has a bug that was fixed in Feb 2006 - but it is not
+uploaded to CPAN. http://rt.cpan.org/Ticket/Display.html?id=3D16146
+* IDNA::Punycode is not reliable as any module can change the IDN
+prefix and thus break other modules.
+http://rt.cpan.org/Ticket/Display.html?id=3D16144
+* IDNA::Punycode's name is ugly and it probably is not registrable in
+the modulelist.
+* There's no module that provides low-level punycode functions without
+a prefix, which may be needed by other modules (that's the main reason
+Encode::Punycode and Net::IDN::Encode broke).
+
+Well, I'd propose to reorganise the modules as follows:
+
+* Net::IDN::Punycode provides low-level punycode functions and will
+just be copy of Tatsuhiko's original IDNA::Punycode v0.01. No prefix
+handling and it's output does not depend on global variables. Should
+be registered in the modulelist.
+
+* Net::IDN::Namestring does not need any changes but should be
+registered in the modulelist.
+
+* Net::IDN::Encode provides high-level functions and depends on
+Net::IDN::Namestring and Net::IDN::Punycode
+
+* Encode::Punycode depends on Net::IDN::Punycode (instead of IDNA::Punycode=
+).
+
+* IDNA::Punycode will be rewritten to use Net::IDN::Punycode and
+provide an interface compatible with earlier versions. It is just kept
+for compatibility with older programmes. $IDNA::Punycode::PREFIX is
+part of the documented interface (so it can be overwritten with
+local).
+
+* Bundle::Net::IDN includes:
+  - Net::IDN::Encode
+  - Net::IDN::Namestring
+  - Net::IDN::Punycode
+  - Encode::Punycode
+
+Do these changes make sense? (One option would be to combine
+Net::IDN::* into a single distribution Net-IDN-x.xx, with additional
+documentation.)
+
+Most of the code would not need much changes. If nobody else is
+willing to perform these changes, I'm prepared to do them.
+
+There also exists a project on SourceForge for Net::IDN::Encode:
+http://sourceforge.net/projects/net-idn-encode, the scope of which
+could be extended to cover all IDN-related perl modules. If you like,
+I'll add you to the list of developers.
+
+Claus
+--=20
+Connollystra=DFe 8, 80809 M=FCnchen - tel:+49.700.23237237 - fax:+49.89.357=
+09492
+Skype: cfaerber -  http://www.faerber.muc.de - http://www.claus.faerber.nam=
+e
+OpenPGP: DSS 1024/639680F0 E7A8 AADB 6C8A 2450 67EA AF68 48A5 0E63 6396 80F=
+0

@@ -1,0 +1,81 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:58153 perl.module-authors:6118
+Return-Path: <maddingue@free.fr>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 27233 invoked from network); 10 Dec 2007 21:14:01 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 10 Dec 2007 21:14:01 -0000
+Received: (qmail 14650 invoked by uid 225); 10 Dec 2007 21:14:01 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14619 invoked by alias); 10 Dec 2007 21:13:59 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received: from smtp8-g19.free.fr (HELO smtp8-g19.free.fr) (212.27.42.65)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 10 Dec 2007 13:04:47 -0800
+Received: from smtp8-g19.free.fr (localhost [127.0.0.1])
+	by smtp8-g19.free.fr (Postfix) with ESMTP id B7FF117F582;
+	Mon, 10 Dec 2007 22:04:22 +0100 (CET)
+Received: from [192.168.1.9] (ant06-1-82-242-109-222.fbx.proxad.net [82.242.109.222])
+	by smtp8-g19.free.fr (Postfix) with ESMTP id E45C017F589;
+	Mon, 10 Dec 2007 22:04:21 +0100 (CET)
+In-Reply-To: <20071210110738.GD2856@timac.local>
+References: <20071206221132.GB682@timac.local> <D2F46975-4C9A-48DD-B50C-D4CBD1C9FBC6@free.fr> <20071210110738.GD2856@timac.local>
+Mime-Version: 1.0 (Apple Message framework v752.2)
+Content-Type: text/plain; charset=ISO-8859-1; delsp=yes; format=flowed
+Message-ID: <7254CDCA-0B1C-41FF-B879-F575BC4633C6@free.fr>
+Cc: module-authors@perl.org,
+ modules@perl.org,
+ Patrick Galbraith <patg@patg.net>
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: Naming convention for thin wrappers around C lib<foo>.so ?
+Date: Mon, 10 Dec 2007 22:04:20 +0100
+To: Tim Bunce <Tim.Bunce@pobox.com>
+X-Mailer: Apple Mail (2.752.2)
+Approved: news@nntp.perl.org
+From: maddingue@free.fr (=?ISO-8859-1?Q?S=E9bastien_Aperghis-Tramoni?=)
+
+Tim Bunce wrote:
+
+> I'm looking to build a very thin wrapper around libmemcached
+> (http://tangent.org/552/libmemcached.html)
+> a high-performance feature-rich interface to memcached.
+> [...]
+>
+> I was thinking in terms of a low-level 'thin' extension called
+> Lib::libmemcached with separate pure-perl modules implementing the =20
+> Cache
+> and Cache::Cache interfaces.
+>
+> So, here's the point: does anyone have any good objections to my
+> establishing a new precident by using the Lib:: namespace for this?
+> (Or perhaps CLib:: or SysLib:: or ...)
+
+I was wondering why you wanted to build yet another Memcached module =20
+given there is already Cache::Memcached::XS, but now I understand: =20
+you want to do something similar to what Paul Marquess did with =20
+Compress::Zlib when he splitted it between a high-level Perl frontend =20=
+
+(Compress::Zlib) and a low-level driver (Compress::Raw::Zlib), which =20
+allowed him to provide bzip2 support (Compress::Raw::Bzip2).
+
+It's also similar to the Win32 situation: Win32API::* modules provide =20=
+
+low-level API, while Win32::* provide high-level API.
+
+IMHO, "Lib" doesn't carry as much information as "Raw" or even "API", =20=
+
+given the already existing modules. So possible namespaces are: =20
+Cache::Raw::Memcached or CacheAPI::Memcached.
+Or, if you don't want to be related to the Cache:: namespace, =20
+Memcached::Raw or Memcached::API.
+
+
+--=20
+S=E9bastien Aperghis-Tramoni
+
+Close the world, txEn eht nepO.
+

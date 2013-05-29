@@ -1,0 +1,102 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3986
+Return-Path: <ceosg@t-online.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1080 invoked from network); 26 Dec 2000 02:55:17 -0000
+Received: from mailout05.sul.t-online.com (194.25.134.82)
+  by tmtowtdi.perl.org with SMTP; 26 Dec 2000 02:55:17 -0000
+Received: from fwd03.sul.t-online.com 
+	by mailout05.sul.t-online.com with smtp 
+	id 14AkGi-00010x-01; Tue, 26 Dec 2000 03:55:16 +0100
+Received: from  (520059996807-0001@[217.80.68.61]) by fwd03.sul.t-online.com
+	with smtp id 14AkGh-1dLtdAC; Tue, 26 Dec 2000 03:55:15 +0100
+To: modules@perl.org
+Subject: new modules (Class::StructTemplate and Class::Persistent::StructTemplate)
+X-Mailer: T-Online eMail 2.34
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Date: Tue, 26 Dec 2000 03:55:15 +0100
+Message-ID: <14AkGh-1dLtdAC@fwd03.sul.t-online.com>
+X-Sender: 520059996807-0001@t-dialin.net
+Approved: news@nntp.perl.org
+From: ceosg@t-online.de ((Heiko Wundram))
+
+Hello fellow perl-mongers!
+
+I would like to propose two new modules I've written to be included in the CPAN. 
+They are a replacement of Class::Struct and Class::DBI, with some extensions to 
+both. Both modules are available as version 0.01 (functioning, but not 
+thoroughly tested... :))
+
+Class::StructTemplate is a template class which basically does the same as 
+Class::Struct. It creates a new class with accessors and a constructor, 
+according to a list of data-items made available at creation time. The class can 
+easily be extended with user-functions.
+
+Class::Persistent::StructTemplate is a derived class from Class::StructTemplate 
+that adds the ability to the newly created class to be serialized using a module 
+that was specified at creation-time (called a persistence-plugin). The following 
+functions can be used on each instance of the class: load, load_into, save, 
+delete. (they all work on the underlying database) load and load_into accept an 
+SQL-where-string so that class instances can be loaded according to an exact 
+specification. The speciality of Class::Persistent::StructTemplate is that it 
+handles references to different modules also derived from 
+Class::Persistent::StructTemplate correctly by saving them to their plugin, but 
+can also handle other data other from strings and numbers.
+
+Class::Persistent::Plugin::* contains all persistence-plugins. I have currently 
+written one plugin which enables persistence through a MySQL-database, but this 
+could easily be extended (I'm currently working on a DBM-persistence-plugin.) 
+The interface that must be supported by a persistence-plugin is very generic, 
+and quite cleanly documented (as of today... :))
+
+As I started writing both modules as a hack for another module I am planning to 
+implement (FileSys::DBFS - a file-system in a box, as to say...), I have not yet 
+submitted them to public screening... Quality control has thus only been done by 
+me...
+
+After having explained the modules, I'll start with the data you asked for:
+
+Name: Heiko Wundram
+eMail: ceosg@t-online.de (at the moment), in the near future: heikowu@ceosg.de
+HP: www.ceosg.de
+UID on CPAN: heikowu
+Description: see above
+DSLI entry: <<"END";
+
+Name
+1. Class::StructTemplate
+2. Class::Persistent::StructTemplate
+3. Class::Persistent::Plugin::*
+
+DSLI
+1. adpO
+2. adpO
+3. adpO
+
+Description
+1. Fascilitates creation of public class-data
+2. Fascilitates persistence of public class-data
+3. Plugins to allow persistence using Class::Persistent::StructTemplate
+
+END;
+
+Quality control: none yet... :)
+
+If you'd like to recieve the alpha of my modules, no problem! I'll have them 
+packed and ready tomorrow, or at the lastest in two days. Documentation is 
+currently still quite a major problem (only very little), but this will be added 
+in the weeks to come.
+
+I hope to receive a positive answer (soon... ;))!
+
+Yours,
+
+	Heiko Wundram
+	Head of the Celle Open Source Community.
+
+btw: Merry christmas to you all (although it might be a little late...)
+

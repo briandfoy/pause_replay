@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:47146
+Return-Path: <bk@bk.mbl.is>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 19756 invoked from network); 31 Jan 2006 09:51:22 -0000
+Received: from x1a.develooper.com (HELO x1.develooper.com) (216.52.237.111)
+  by lists.develooper.com with SMTP; 31 Jan 2006 09:51:22 -0000
+Received: (qmail 6211 invoked by uid 225); 31 Jan 2006 09:51:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6199 invoked by alias); 31 Jan 2006 09:51:18 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00
+X-Spam-Check-By: la.mx.develooper.com
+Received-SPF: pass (x1.develooper.com: local policy)
+Received: from pascal.mbl.is (HELO pascal.mbl.is) (193.4.96.33)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 31 Jan 2006 01:51:11 -0800
+Received: from bk.mbl.is (bk.mbl.is [192.168.3.90] (may be forged))
+	by pascal.mbl.is (8.13.1/linuxconf) with ESMTP id k0V9oLnP026980
+	for <modules@perl.org>; Tue, 31 Jan 2006 09:50:23 GMT
+Received: from bk by bk.mbl.is with local (Exim 4.60)
+	(envelope-from <bk@bk.mbl.is>)
+	id 1F3s9V-00026j-6f
+	for modules@perl.org; Tue, 31 Jan 2006 09:50:21 +0000
+Date: Tue, 31 Jan 2006 09:50:21 +0000
+To: modules@perl.org
+Subject: Re: Failed: PAUSE indexer report BALDUR/DBD-PgLite-0.02.tar.gz
+Message-ID: <20060131095021.GA7734@mbl.is>
+References: <200601301444.k0UEimhB012307@pause.perl.org> <20060130150501.GE30510@mbl.is> <87irs1y9hm.fsf@k75.linux.bogus> <20060130171459.GF30510@mbl.is> <87lkwxwb6y.fsf@k75.linux.bogus>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87lkwxwb6y.fsf@k75.linux.bogus>
+User-Agent: Mutt/1.5.11
+X-mbl.is-MailScanner-Information: Please contact the ISP for more information
+X-mbl.is-MailScanner: Found to be clean
+X-MailScanner-From: bk@bk.mbl.is
+Approved: news@nntp.perl.org
+From: bk@mbl.is (Baldur Kristinsson)
+
+Hi again,
+
+On Tue, Jan 31, 2006 at 12:25:09AM +0100, Andreas J. Koenig wrote:
+> >>>>> On Mon, 30 Jan 2006 17:14:59 +0000, Baldur Kristinsson <bk@mbl.is> said:
+>   > In the case of DBD::PgLite, I can easily avoid this and will do so in
+>   > future, but I have no problem imagining situations where doing something
+>   > with the DBI::db namespace is the only sensible thing to do given what
+>   > you want to accomplish.
+> 
+> And in the situations you envision, subclassing DBI::db would not be a
+> way out?
+
+Well, yes and no. Subclassing doesn't help unless you take steps to
+bless the database handle into another class than DBI::db, which means
+subclassing a couple of other DBI::something classes. (It's obviously not
+enough to let e.g. DBD::Whatever::dr inherit DBI::dr).
+
+It appears it's possible to do something like this:
+
+
+package MyDBI;
+our @ISA = qw(DBI);
+
+package MyDBI::dr;
+our @ISA = qw(DBI::dr);
+sub connect { 
+    my ($drh,@rest) = @_;
+    my $dbh = $drh->SUPER::connect(@rest);
+    return $dbh;
+}
+
+package MyDBI::db;
+our @ISA = qw(DBI::db);
+sub new_dbh_method { ... }
+
+
+And then you let your DBD::Whatever use MyDBI in place of DBI.
+
+As far as I can tell, this only works because of cooperation from DBI.
+I can't find any documentation about it, which is strange considering
+that DBI is one of the best documented modules out there. And if it's
+undocumented and not a consequence of standard inheritance mechanisms,
+there's no guarantee it won't change in future. So the risk of your DBD
+driver breaking when you upgrade DBI is just as great using this
+procedure as if you simply added a method to DBD::db. On the other hand,
+there is less risk of conflict between two different DBD drivers both of
+which add a method to the $dbh class, so I suppose it is still
+prefarable to go this way.
+
+Anyway, thanks for making my look into this question. It was quite
+enlightening. :-)
+
+-- 
+
+-  Baldur

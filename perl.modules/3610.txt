@@ -1,0 +1,406 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:3610
+Return-Path: <beppu@lineo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27107 invoked from network); 19 Nov 2000 00:43:13 -0000
+Received: from unknown (HELO yukari.lineo.com) (64.50.107.69)
+  by tmtowtdi.perl.org with SMTP; 19 Nov 2000 00:43:13 -0000
+Received: by yukari.lineo.com (Postfix, from userid 440)
+	id 5830F9B020; Sat, 18 Nov 2000 17:51:46 -0700 (MST)
+Date: Sat, 18 Nov 2000 17:51:46 -0700
+To: modules@perl.org
+Subject: registration request
+Message-ID: <20001118175146.A24893@yukari.lineo.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.2i
+Approved: news@nntp.perl.org
+From: beppu@lineo.com (John BEPPU)
+
+| personal info
+
+    {
+        name     => 'John Beppu',
+        email    => 'beppu@lbox.org',
+        homepage => 'http://lbox.org/beppu/',
+        user_id  => 'BEPPU',
+    };
+
+
+| dsli
+
+Name           DSLI  Description                                  Info
+-------------  ----  -------------------------------------------- -----
+Embedix::ECD   bdpO  represent ECD files as perl objects          BEPPU
+
+
+| discussion
+
+There currently exists 2 other ECD parsers (one in python and one in
+C++).  They're both proprietary, and I felt that there ought to be a
+[fF]ree alternative.
+
+I've discussed this perl module w/ my cow-orkers, and my perl-coding
+friends outside of work.  They like it.  I'm my own harshest critic,
+and I like it, too -- I think it is worthy of being my first CPAN
+contribution.  
+
+I've thought long and hard about the namespace issues, and I think
+I've chosen a good name for the module.  ECD files are only used in
+the Embedix distro made by lineo.com.  Also, I plan to contribute
+some more modules under the "Embedix" namespace which relate to the
+packaging system in the Embedix distro.  I believe that adding an
+a "Embedix" to the package hierarchy is a reasonable thing.
+
+
+| description of contribution
+
+NAME
+    Embedix::ECD - represent Embedix Component Descriptions as
+    objects
+
+SYNOPSIS
+    instantiate from a file
+
+        my $ecd = 
+            Embedix::ECD->newFromFile('busybox.ecd');
+        my $other_ecd = 
+            Embedix::ECD->newFromFile('tinylogin.ecd');
+
+    access nodes
+
+        my $busybox = $ecd->System->Utilities->busybox;
+
+    build from scratch
+
+        my $server = Embedix::ECD::Group->new(name => 'Server');
+        my $www    = Embedix::ECD::Group->new(name => 'WWW');
+        my $apache = Embedix::ECD::Component->new (
+            name   => 'apache',
+            srpm   => 'apache',
+            prompt => 'Include apache web server?',
+            help   => 'The most popular http server on the internet',
+        );
+        $ecd->addChild($server);
+        $ecd->Server->addChild($www);
+        $ecd->Server->WWW->addChild($apache);
+
+    get/set attributes
+
+        my $srpm = $busybox->srpm();
+        $busybox->help(
+            'i am busybox of borg -- unix will be assimilated.'
+        );
+
+    combine Embedix::ECD objects together
+
+        $ecd->mergeWith($other_ecd);
+
+    render as ASCII
+
+        print $ecd->toString;
+
+REQUIRES
+    Parse::RecDescent
+        for the ECD parser
+
+    Data::Dumper
+        for debugging
+
+    Tie::IxHash
+        for preserving the insertion order of children while
+        retaining `O(1)' named access (at the expense of memory).
+
+DESCRIPTION
+    Embedix::ECD allows one to represent ECD files as perl objects.
+    One can construct objects by parsing an ECD file, or one can
+    build an ECD object from scratch by combining instances of
+    Embedix::ECD and its subclasses. These objects can then be
+    turned back into ECD files via the `toString()' method.
+
+    The ECD format reminds me of the syntax for Apache configuration
+    files. Items are tag-delimited (like in XML) and attributes are
+    found between these tags. Comments are written by prefixing them
+    with /^\s*#/. Unlike apache configurations, attribute names and
+    values are separated by an "=" sign, whereas in apache the first
+    token is the attribute name and everything after that (sans
+    leading whitespace) and up to the end of the line is the
+    attribute's value. Also, unlike apache configurations,
+    attributes may also be enclosed in tags, whereas in apache tags
+    are used only to describe nodes. ECD files look like pseudo-XML
+    with shell-styled comments.
+
+METHODS
+  Constructors
+
+    There are two types of constructors provided by this class. The
+    first kind of constructor begins with "new" and returns an
+    Embedix::ECD object. There is another kind of constructor that
+    begins with "cons" and returns the syntax tree as nested
+    arrayrefs.
+
+    I realized that creating an object of the syntax tree takes a
+    long time (especially for long ECD files). I also realized that
+    sometimes, the simple nested arrayref is useful enough on its
+    own. It also has the nice property of retaining comments whereas
+    the object constructor disposes of comments. I thought if ECD
+    files were ever to be translated into XML, it'd be nice to be
+    able to keep the comments. These factors convinced me that it
+    would be useful to have 2 kinds of constructors.
+
+    $ecd = Embedix::ECD->new(...)
+        This returns an Embedix::ECD object. It can be initialized
+        with named parameters which represent the attributes the
+        object should have. The set of valid attributes is:
+
+            type
+            value
+            default_value
+            range
+            help
+            prompt
+            srpm
+            specpatch
+
+            static_size
+            min_dynamic_size
+            storage_size
+            startup_time
+
+            build_vars
+            provides
+            requires
+            keeplist
+            choicelist
+            trideps
+
+            requiresexpr
+            if
+
+        Their meanings are explained under the Attributes heading.
+
+    $ecd = Embedix::ECD->newFromCons($cons)
+        This returns an Embedix::ECD object from a nested arrayref.
+
+    $ecd = Embedix::ECD->newFromString($string)
+        This returns an Embedix::ECD object from a string in ECD
+        format.
+
+    $ecd = Embedix::ECD->newFromFile($filename)
+        This returns an Embedix::ECD object from an ECD file.
+
+    $cons = Embedix::ECD->consFromString($string)
+        This returns a nested arrayref from a string in ECD format.
+
+    $cons = Embedix::ECD->consFromFile($filename)
+        This returns a nested arrayref from an ECD file.
+
+    $ecd_parser = Embedix::ECD->parser()
+        This returns an instance of Parse::RecDescent configured to
+        understand the ECD grammar. This instance is a singleton, so
+        you will receive the same instance every time.
+
+  Accessors That Take Named Attributes
+
+    The most general kind of accessor takes the name of an attribute
+    as a parameter and gets or sets it.
+
+    $val = $ecd->getAttribute($name)
+        This gets the attribute called $name.
+
+    $ecd->setAttribute($name, $value)
+        This sets the attribute called $name to $value.
+
+  Accessors For Single-Valued Attributes
+
+    There are accessors for attributes. Methods for single-valued
+    attributes work like your typical perl getters and setters. That
+    is, when called without a parameter, the method behaves as a
+    getter. When called *with* a parameter, the method behaves as a
+    setter and the value of the parameter is assigned to the
+    attribute.
+
+    $ecd->name()
+        This is the name of the node.
+
+    $ecd->type()
+        This is the type of the node. This is usually (always?) seen
+        in the context of an option and it can contain values such
+        as "bool", "int", "int.hex", "string", and "tridep".
+
+    $ecd->value()
+        This is the value of a node which must be something
+        appropriate for its type.
+
+    $ecd->default_value()
+        This is the value taken by the node if value is not defined.
+
+    $ecd->range()
+        For the numerical types, it may be desirable to limit the
+        range of values that may be assigned such that `value()'
+        will always be meaningful. The use of this attribute has
+        only been observed in linux.ecd.
+
+    $ecd->help()
+        This often contains prose regarding the current node. I
+        think it would be nice if it were possible to use an
+        alternative form of mark-up language inside these sections.
+        (HTML, for instance).
+
+    $ecd->prompt()
+        The value in prompt is used in TargetWizard to pose a
+        question to the user regarding whether he/she wants to
+        enable an option or not.
+
+    $ecd->srpm()
+        This contains the name of the source RPM sans version
+        information and the file extension. This attribute almost
+        always has the same value as `name()'.
+
+    $ecd->specpatch()
+        This attribute is only meaningful within the context of a
+        component. Specpatches are applied to .spec files just prior
+        to the building of a component. They are often used to
+        configure the compilation of a component. The busybox
+        package provides a good example of this in action.
+
+    $ecd->static_size()
+        This is the sum of .text, .data, and .bss for an option
+        and/or component.
+
+    $ecd->min_dynamic_size()
+        The very least a program will `malloc()' during its
+        execution.
+
+    $ecd->storage_size()
+        This is the amount of space this component and/or option
+        would consume on a filesystem.
+
+    $ecd->startup_time()
+        The amount of time (in what metric?) from the time a program
+        is executed up to the point in time when the program becomes
+        useful.
+
+    $ecd->requiresexpr()
+        This contains a C-like expression describing node
+        dependencies.
+
+    $ecd->if()
+        I didn't know if using a keyword as a method name would be
+        legal, but apparently it is. I also wonder if more than on
+        'if' statement is allowed per node.
+
+  Accessing Aggregate Attributes
+
+    The following are attributes that frequently contain aggregate
+    values. When setting attributes with aggregate values, enclose
+    the values within an arrayref.
+
+    $ecd->build_vars()
+        This specifies a list of transformations that can be applied
+        to a .spec file prior to building.
+
+    $ecd->provides()
+        This is a list of symbolic names that a node is said to be
+        able to provide. For example, grep in busybox provides grep.
+        GNU/grep also provides grep. According to TargetWizard,
+        these two cannot coexist on the same instance of an Embedix
+        distro, because they both provide grep.
+
+    $ecd->requires()
+        This is a list of libraries, files, provides, and other
+        nodes required by the current node.
+
+    $ecd->keeplist()
+        This is a list of files and directories provided by a
+        component or option.
+
+    $ecd->choicelist()
+        This is used for options in the kernel.
+
+    $ecd->trideps()
+        This is used for options in the kernel.
+
+  Accessing Child Nodes
+
+    The following are accessor methods for child nodes.
+
+    $child_ecd = $ecd->getChild($name)
+        This returns a child node with the given $name or undef if
+        no such child exists.
+
+    $ecd->addChild($obj)
+        This adds a child to the current node.
+
+    @child_ecd = $ecd->getChildren()
+        This returns a list of all child nodes.
+
+  Accessing Child Nodes via AUTOLOAD
+
+    We also have a crazy AUTOLOAD method. The name of a node can be
+    used as a method. This is what makes it possible to say
+    something like:
+
+        my $busybox = $ecd->System->Utilities->busybox;
+
+    and get back the Embedix::ECD::Component object that contains
+    the information for the busybox package. "System", "Utilities",
+    and "busybox" are not predefined methods in Embedix::ECD or any
+    of its subclasses, so they are delegated to the AUTOLOAD method.
+    The AUTOLOAD method will try to find a child with the same name
+    as the undefined method and it will return it if found.
+
+    I have not yet decided whether the AUTOLOAD should die when a
+    child is not found.
+
+  Utility Methods
+
+    $ecd->mergeWith($the_other_ecd)
+        This combines the information contained in $the_other_ecd
+        with $ecd. In the event that there is conflicting
+        information, the information in $the_other_ecd takes
+        precedence over what already existed in $ecd.
+
+    $depth = $ecd->getDepth()
+        This method returns how many levels deep one is in the
+        object tree. The root level is considered 0.
+
+    $string = $ecd->toString()
+        This will render an $ecd object as ASCII in ECD format.
+        JavaScript programmers may find this familiar. An
+        interesting deviation from the JavaScript version of
+        `toString()' is that this one will accept parameters that
+        allow one to control the rendering options. to be continued
+
+    indent  This is the number of spaces the first level nodes should be
+            indented.
+
+    shiftwidth
+            This is the number of spaces a nested item should be
+            indented.
+
+CLASS VARIABLES
+    You shouldn't be touching these. This is just here for your
+    information.
+
+    Embedix::ECD::__grammar
+        This scalar contains the grammar for ECD files.
+
+    Embedix::ECD::__parser
+        This contains an instance of Parse::RecDescent.
+
+DIAGNOSTICS
+    Once I make the grammar a little more robust, I'll be emitting
+    messages to STDERR regarding imbalanced tags and unknown
+    attributes and maybe even illegal attributes for a given context
+    (if such a thing exists).
+
+AUTHOR
+    John BEPPU <beppu@lineo.com>
+
+SEE ALSO
+    `ecdlib.py(3)', `config2ecd(1)'
+

@@ -1,0 +1,143 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:74460
+Return-Path: <chm@alum.mit.edu>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 24917 invoked from network); 19 Jan 2011 11:04:11 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 19 Jan 2011 11:04:11 -0000
+Received: (qmail 13456 invoked by uid 225); 19 Jan 2011 11:04:11 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13452 invoked by alias); 19 Jan 2011 11:04:11 -0000
+X-Spam-Status: No, hits=-0.0 required=8.0
+	tests=SPF_PASS,T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from OUTGOING-ALUM.MIT.EDU (HELO outgoing-alum.mit.edu) (18.7.68.33)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 19 Jan 2011 03:04:09 -0800
+Received: from [192.168.1.32] (c-76-100-20-130.hsd1.va.comcast.net [76.100.20.130])
+	(authenticated bits=0)
+        (User authenticated as chm@ALUM.MIT.EDU)
+	by outgoing-alum.mit.edu (8.13.8/8.12.4) with ESMTP id p0JB3ejG012721
+	(version=TLSv1/SSLv3 cipher=AES256-SHA bits=256 verify=NOT);
+	Wed, 19 Jan 2011 06:03:46 -0500
+Message-ID: <4D36C50E.7040501@alum.mit.edu>
+Date: Wed, 19 Jan 2011 06:03:42 -0500
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7
+MIME-Version: 1.0
+To: Matt S Trout <mst@shadowcat.co.uk>
+CC: Steffen Mueller <wyp3rlx02@sneakemail.com>, pdl-porters@jach.hawaii.edu,
+        c.soeller@auckland.ac.nz, modules@perl.org
+Subject: Re: [Pdl-porters] PERLDL owner permissions for PDL maintenance
+References: <24426757.5064.1225836541078.JavaMail.help@alum.mit.edu> <4917EF37.2070403@sneakemail.com> <491B5BF1.8010306@alum.mit.edu> <4D3647AB.2070509@alum.mit.edu> <20110119092429.GT12394@agaton.scsys.co.uk>
+In-Reply-To: <20110119092429.GT12394@agaton.scsys.co.uk>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: chm@alum.mit.edu (Chris Marshall)
+
+On 1/19/2011 4:24 AM, Matt S Trout wrote:
+> On Tue, Jan 18, 2011 at 09:08:43PM -0500, Chris Marshall wrote:
+>> Hi-
+>>
+>> With respect to PDL module permissions for
+>> Tuomas Lukka, per his e-mail below, he has
+>> transferred all his modules to me.  However,
+>> in trying to clean up outdated PDL releases
+>> from CPAN I can find no way to remove the
+>> old PDL releases from CPAN if submitted with
+>> another PAUSE account.
+>>
+>> Is there any way to remove the old PDL
+>> releases from CPAN so that new PDL users
+>> don't get confused?
+>
+> What specific confusion do you have in mind? We can in theory schedule
+> deletions for old releases but I'm loath to remove stuff from CPAN without
+> having a clear explanation of why - and thereby a clear path to remove as
+> little as possible to be as unintrusive as possible.
+>
+
+Search on http://search.cpan.org for ^PDL and one will
+get, in addition to the current, stable PDL release
+items:
+
+
+   PDL::Impatient   (PDL-2.4.3)
+
+   PDL::Core        (PDL-1.99989)
+   PDL::PCA         (PDL-1.92_03)
+   PDL::PCARout     (PDL-1.92_03)
+   PDL::TriD        (PDL-1.92_03)
+
+Having links to old modules with similar but
+now with different naming (e.g., PDL::TriD is
+now PDL::Graphics::TriD) can be confusing to
+someone who doesn't realize that that is *not*
+the correct reference for the current PDL.
+
+For example, even though Tuomas Lukka has
+handed over his modules and does not work
+with perl any longer (per his e-mail), the
+fact that PDL::Core is provided in the
+PDL-199989 release appears to block the
+current, working, stable PDL::Core from
+linking to the PDL-2.4.7 version at
+
+   http://search.cpan.org/~chm/PDL-2.4.7/Basic/Core/Core.pm.PL
+
+rather than the pre-1999 one at
+
+   http://search.cpan.org/~lukka/PDL-1.99989/Basic/Core/Core.pm
+
+
+If you look at http://www.cpantesters.org for PDL
+test reports you'll see the following versions
+with no passes:
+
+   PDL-2.3.2
+   PDL-2.2
+   PDL-1.9906
+   PDL-1.9905 	
+   PDL-1.9904 	
+   PDL-1.9903 	
+   PDL-1.9902 	
+   PDL-1.9901 	
+   PDL-1.9900 	
+   PDL-1.92_03 	
+   PDL-1.92
+
+Much effort in the latest PDL-2.4.x series has
+been to improve the ability of PDL to be built
+and usable on more perl system platforms.
+
+The CPAN files under discussion are these:
+
+    LUKKA: PDL-1.99989
+           PDL-1.9906
+           PDL-1.9905
+           PDL-1.9904
+           PDL-1.9903
+           PDL-1.9902
+           PDL-1.9901
+           PDL-1.9900
+           PDL-1.92_03
+           PDL-1.92_02
+
+with the most recent being from 13-Nov-1998.
+In addition the change from the PDL-1.x series
+to PDL-2.x marked significant (and incompatible)
+change to the internal PDL routines.
+
+The idea for this cleanup of CPAN was to make
+the PDL information on CPAN via search.cpan.org
+fully consistent with the current PDL reality.
+
+There may be ways of jiggering the files in our
+21st century PDL to fix these artifacts but the
+removal of the files to backpan seemed to be
+less intrusive and simpler to accomplish.
+
+Cheers,
+Chris

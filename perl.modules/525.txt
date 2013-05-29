@@ -1,0 +1,74 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:3887 perl.modules:525
+Return-Path: <Raphael.Manfredi@st.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31417 invoked from network); 15 Nov 1999 15:20:33 -0000
+Received: from beta.st.com (HELO beta.dmz-eu.st.com) (164.129.1.35)
+  by tmtowtdi.perl.org with SMTP; 15 Nov 1999 15:20:33 -0000
+Received: from eux100.sgp.st.com (eux100.sgp.st.com [164.129.225.7])
+	by beta.dmz-eu.st.com (Postfix) with ESMTP id E306B2812
+	for <modules@perl.org>; Mon, 15 Nov 1999 15:19:46 +0000 (GMT)
+Received: from lod23.gnb.st.com (lod28.gnb.st.com [164.129.116.152])
+	by eux100.sgp.st.com (8.8.6 (PHNE_17190)/8.8.6) with ESMTP id QAA00140;
+	Mon, 15 Nov 1999 16:19:39 +0100 (MET)
+To: muir@idiom.com
+Cc: andreas.koenig@anima.de, modules@perl.org,
+	perl5-porters@perl.org, gsar@umich.edu
+Subject: Re: Need a module name... Transaction support for Storable file objects 
+In-reply-to: Your message of "Sun, 14 Nov 1999 14:05:01 PST."
+             <199911142205.OAA02429@idiom.com> 
+References: <199911142205.OAA02429@idiom.com> 
+X-Mailer: NMH [version 1.0.1]
+Organization: ST Microelectronics, Grenoble, France
+Date: Mon, 15 Nov 1999 16:20:07 +0100
+Message-ID: <6420.942679207@lod23.gnb.st.com>
+Sender: manfredi@lod23.gnb.st.com
+Approved: news@nntp.perl.org
+From: Raphael.Manfredi@st.com (Raphael Manfredi)
+
+Quoting muir@idiom.com:
+:    2. 	Common interfaces to all the marshalling code.   In MLDBM,
+:	there is custom interface glue for each of the published 
+:	marshalling modules.  The interface glue provides a common
+:	interface of 'serialize' and 'deserialize'.
+:
+:	This interface glue varies in complexity.
+:
+:	I would like to propose that all of the marhsalling modules 
+:	export a common set of identical interfaces.   
+:
+:	This should be too hard as Raphael Manfredi has already 
+:	written the glue...  It "just" needs to be moved into the various
+:	modules.
+
+To be sure I understand your point here, are you basically saying that
+all marshalling modules (Data::Dumper, FreezeThaw, Storable, others to
+come) actually conform to an abstract common serializaing interface?
+
+That is to say, in essence, that they all declare:
+
+	package XXX;
+	@ISA = qw(Serializer ...);
+
+where
+
+	package Serializer;
+
+	sub serialize { die "deferred" };
+	sub deserialize { die "deferred" };
+
+and therefore imposes heirs to actually define those primitives?
+
+If you're saying this, then I doubt it will reasonably happen. That's why
+the glue in MLDBM is there, to try offer a consistent serializing interface,
+yet delegating the work to the actual serializing modules , understanding
+their respective interfaces and features.
+
+For instance, Storable supports store() and nstore() to deal with native
+and network-neutral physical representation. But Data::Dumper has no need
+for this, and its designer was free to superbly ignore the issue. Which he
+did.
+
+Raphael

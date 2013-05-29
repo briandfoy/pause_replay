@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:78212
+Return-Path: <smueller@cpan.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13677 invoked from network); 31 Oct 2011 07:16:39 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 31 Oct 2011 07:16:39 -0000
+Received: (qmail 27682 invoked by uid 225); 31 Oct 2011 07:16:38 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27678 invoked by alias); 31 Oct 2011 07:16:38 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=RCVD_IN_DNSWL_NONE
+X-Spam-Check-By: la.mx.develooper.com
+Received: from caiajhbdcagg.dreamhost.com (HELO homiemail-a34.g.dreamhost.com) (208.97.132.66)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 31 Oct 2011 00:16:36 -0700
+Received: from homiemail-a34.g.dreamhost.com (localhost [127.0.0.1])
+	by homiemail-a34.g.dreamhost.com (Postfix) with ESMTP id 5CF3A10059;
+	Mon, 31 Oct 2011 00:16:33 -0700 (PDT)
+Received: from [192.168.1.10] (unknown [62.140.137.93])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: catch-all@steffen-mueller.net)
+	by homiemail-a34.g.dreamhost.com (Postfix) with ESMTPSA id 839F810058;
+	Mon, 31 Oct 2011 00:16:32 -0700 (PDT)
+Message-ID: <4EAE4B4D.6030703@cpan.org>
+Date: Mon, 31 Oct 2011 08:16:29 +0100
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.23) Gecko/20110922 Thunderbird/3.1.15
+MIME-Version: 1.0
+To: Eric Strom <ejstrom@gmail.com>
+CC: modules@perl.org
+Subject: Re: Naming a module that injects new code into a file's source at
+ compile time
+References: <CAL-uHDn+GbzCzwMYLCmd+PW2Sgpt954TXAD6+CPOgCLJ+tzUsQ@mail.gmail.com>
+In-Reply-To: <CAL-uHDn+GbzCzwMYLCmd+PW2Sgpt954TXAD6+CPOgCLJ+tzUsQ@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: smueller@cpan.org (Steffen Mueller)
+
+Generally speaking, you're much more likely to get useful feedback if 
+you post to the module-authors list or blog about it. modules@perl.org 
+is mostly an administrative list of PAUSE admins and we're spread a bit 
+thin.
+
+On 10/30/2011 02:32 AM, Eric Strom wrote:
+> I am working on a module and set of tools for injecting source into
+> another file at compile time.  It currently does this by using
+> Filter::Util::Call to hook into the compilation process, inject the
+> new code before the next line that perl will compile, and then remove
+> itself handing control back to the compiler.
+
+How nasty...
+
+> I have tentatively named this module `eval.pm`
+>
+>      use eval 'my $x = 1';
+>
+>      use eval some_sub(...);
+>
+> since `use` implies compile time and it is injecting the source into
+> the currently compiling `eval`.
+>
+> but I am considering any of the following names:
+
+Technically, any lower-case name needs approval from perl5-porters since 
+they're reserved for use by the core. Ignoring this issue (you could 
+always ucfirst):
+
+>      eval
+
+Makes some sense, but I'd say it's not specific enough.
+
+>      insert
+
+Way too overloaded.
+
+>      inject
+>      inline
+
+I'd say both of these make a sense.
+
+>      compile
+
+Hmm, you're not really compiling as such, so...
+
+>      here
+
+I think that's bound to confuse people greatly.
+
+Best regards,
+Steffen

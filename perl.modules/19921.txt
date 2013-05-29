@@ -1,0 +1,109 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:19921
+Return-Path: <jv@squirrel.nl>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 91773 invoked by uid 76); 28 Mar 2003 10:15:22 -0000
+Received: from qmailr@one.develooper.com (HELO ran-out.mx.develooper.com) (64.81.84.115) by onion.perl.org (qpsmtpd/0.25) with SMTP; Fri, 28 Mar 2003 02:15:22 -0800
+Received: (qmail 14031 invoked by uid 225); 28 Mar 2003 10:15:20 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14026 invoked by uid 507); 28 Mar 2003 10:15:20 -0000
+Received: from smtpzilla1.xs4all.nl (HELO smtpzilla1.xs4all.nl) (194.109.127.137) by one.develooper.com (qpsmtpd/0.25) with SMTP; Fri, 28 Mar 2003 02:15:19 -0800
+Received: from phoenix.squirrel.nl (sioban.squirrel.nl [213.84.56.213])	by smtpzilla1.xs4all.nl (8.12.0/8.12.0) with ESMTP id h2SAF18a036437;	Fri, 28 Mar 2003 11:15:01 +0100 (CET)
+Received: by phoenix.squirrel.nl (Postfix, from userid 501)	id F373E5530D; Fri, 28 Mar 2003 11:15:00 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-ID: <16004.8356.944911.191771@phoenix.squirrel.nl>
+Date: Fri, 28 Mar 2003 11:15:00 +0100
+To: Autrijus Tang <autrijus@autrijus.org>
+Cc: Mark Overmeer <Mark@Overmeer.net>, Johan Vromans <jvromans@squirrel.nl>,   Arthur Bergman <sky@nanisky.com>, modules@perl.org, markov@cpan.org
+Subject: Re: Module submission OODoc
+References: <200303261706.h2QH6jw06827@pause.perl.org>	<40D72F88-5FAE-11D7-847C-003065D64CBE@nanisky.com>	<20030326172649.GB4879@not.autrijus.org>	<16003.11590.911434.348813@phoenix.squirrel.nl>	<20030328035917.GB5303@not.autrijus.org>	<20030328081629.A1573@speeltuin.ATComputing.nl>	<20030328081434.GA789@not.autrijus.org>
+X-Mailer: VM 7.07 under Emacs 21.2.95.1
+Sender: jvromans@squirrel.nl
+Organisation: Squirrel Consultancy, Haarlem, The Netherlands
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+X-Spam-Check-By: one.develooper.com
+X-Spam-Status: No, hits=-0.2 required=7.0 tests=CARRIAGE_RETURNS,QUOTED_EMAIL_TEXT,REFERENCES,SPAM_PHRASE_00_01 version=2.44
+X-SMTPD: qpsmtpd/0.25, http://develooper.com/code/qpsmtpd/
+Approved: news@nntp.perl.org
+From: jvromans@squirrel.nl ((Johan Vromans))
+
+[Quoting Autrijus Tang, on March 28 2003, 16:14, in "Re: Module submissio"]
+> Well in fact, sure:
+> 
+>     =for docbook
+>     <method name="clone" type="instance">
+>       <parameters>
+>       </parameters>
+>     </method>
+
+Technically, this is true. But is this POD? Would you call this C:
+
+   int foo(int bar) {
+     _asm("...");
+     _asm("...");
+     _asm("...");
+     _asm("...");
+   }
+
+The =begin, =end and =for directives as recognized by POD parsers[1]
+are designed to add specific extensions to POD. However, when you only
+use the extensions then POD reduces to the bare mechanism to embed
+non-perl information in perl programs.
+
+The 'danger zone' for Mark's idea is to use POD-like stuctures, which
+may people trick into thinking they're dealing with POD while in fact
+they're not. If running OODF through a POD processor produces anything
+useful, people will think it _is_ POD.
+
+Mark writes (http://www.xray.mpe.mpg.de/mailing-lists/modules/2003-03/msg00503.html):
+
+> POD is a visual markup language, and therefore information is lost
+> about what is being documented. 
+
+Along the same lines, the embedded directives like B<>, I<> are wrong
+(or at least dangerous) and should be replaced with more descriptive
+directives. 
+
+So, I think the bottom line is: either use 100% POD, or make a small
+POD-compliant extension to POD, or do not try to POD at all.
+
+If I were Mark, I would leave POD completely and go for something new.
+
+  =begin oudf
+
+  @FILE Java Call In Implementation |
+	This file contains functions of Configuration Manager BeanInfo.
+
+  @IN_MODULE FF
+
+  @LOCAL
+	Function         Description
+	----------------------------------------------------------------------
+  @FUNC |
+
+  @COPYRIGHT
+	ACME Corporation <cp> 1998
+  @OWNER
+	URB
+  @HISTORY
+	Seq  Date     RefNum   Version   Who   Description
+	------------------------------------------------------------------------
+  @PR   0  | 981001 | e03371 | 7.2.04  | wwo | Initial version taken from the prototype
+
+  @COMMENTS
+   Sync with '$Id: ConfigManagerBeanBeanInfo.java,v 1.7 1998-12-02 15:31:01+01 jv Exp $'
+   (TAB = 8, INDENT SIZE = 2)
+  @XREF
+
+  =cut
+
+Why not?
+
+-- Johan
+
+[1] I want to emphasize "as recognized by POD parsers", since perl
+    itself does nothing with any directive.

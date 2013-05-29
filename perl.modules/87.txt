@@ -1,0 +1,57 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:2444 perl.modules:87
+Return-Path: <mike808@my-deja.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7191 invoked from network); 17 Oct 1999 19:12:53 -0000
+Received: from mc-qout4.whowhere.com (209.185.123.18)
+  by tmtowtdi.perl.org with SMTP; 17 Oct 1999 19:12:53 -0000
+Received: from Unknown/Local ([?.?.?.?]) by my-deja.com; Sun Oct 17 12:12:23 1999
+To: "'Ronald J Kimball'" <rjk@linguist.dartmouth.edu>, "Michael King" <mike808@my-Deja.com>, "Redford, John" <John.Redford@fmr.com>
+Date: Sun, 17 Oct 1999 12:12:23 -0700
+Message-ID: <PJDMAOLDDJGIAAAA@my-deja.com>
+Mime-Version: 1.0
+Cc: modules@perl.org, perl5-porters@perl.org
+X-Sent-Mail: on
+X-Mailer: MailCity Service
+Subject: RE: NEW MODULE (pragma): import.pm
+X-Sender-Ip: 209.16.220.10
+Organization: My Deja Email  (http://www.my-deja.com:80)
+Content-Type: text/plain; charset=us-ascii
+Content-Language: en
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: mike808@my-Deja.com ("Michael King")
+
+On Thu, 14 Oct 1999 12:03:51   Redford, John wrote:
+>This essentially is asking for a way for Module A to move symbols from
+>Module B to Module C. See my previous mail. This could easily be done by
+>dynamically setting up Module C as a "reflector" for another module or
+>modules.
+>
+>Interesting questions would be around what to do when there are symbols
+>conflicts, and should it be legal to export into Module C if Module C
+>already exists!
+
+Yes indeed. In my initial implementation, C is "merged", with B overwriting existing symbols. Per Java, I could throw an exception (die) if C already exists when A tries to import B onto it. However, since Perl is more run-time oriented, the C we want to protect might not exist yet when A loads B into its namespace.
+The path I picked was the "merge" path - the lazier one. But I do like the idea of behaving per Java and throwing an exception if the namespace already exists....It's now a feature that will go in this week.
+
+The more troublesome question is to only load the "C" modules we need to from a "load-everything" directive. That's the hard Q.
+
+>-----Original Message-----
+>From:	Ronald J Kimball [mailto:rjk@linguist.dartmouth.edu]
+>Sent:	Thursday, October 14, 1999 11:47 AM
+>I would suggest a different syntax for that functionality,
+>which I think has several advantages.  Something like this:
+>   use alias qw(Really::Long::Package::Name Name);
+>which would require Really/Long/Package/Name.pm, call its
+>import function, and then alias Name to the long package name.
+
+Since that's what 'import' does, and it has the same semantics its Java namesake does as well as the same syntax you suggest for single modules, I don't see what your alternate syntax has to add, other than confusing Java programmers, the very target audience of this module.
+
+Mike.
+
+
+--== Sent via Deja.com http://www.deja.com/ ==--
+Share what you know. Learn what you don't.

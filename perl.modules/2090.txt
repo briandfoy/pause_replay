@@ -1,0 +1,63 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:2090
+Return-Path: <matt@sergeant.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32003 invoked from network); 5 Jun 2000 11:50:37 -0000
+Received: from mailgate.sergeant.org (HELO mail.sergeant.org) (@194.70.26.133)
+  by tmtowtdi.perl.org with SMTP; 5 Jun 2000 11:50:37 -0000
+Received: (qmail 20386 invoked by uid 501); 5 Jun 2000 11:51:10 -0000
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 5 Jun 2000 11:51:10 -0000
+Date: Mon, 5 Jun 2000 12:51:09 +0100 (BST)
+To: modules@perl.org
+Subject: Very simple blessed exceptions
+Message-ID: <Pine.LNX.4.21.0006051229330.32525-100000@ted.sergeant.org>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Approved: news@nntp.perl.org
+From: matt@sergeant.org (Matt Sergeant)
+
+I'm thinking of uploading a very simple blessed exceptions class that can
+simply store key/value parameters. I'd probably call it
+SimpleException.pm. It doesn't try and confuse things with new syntax of
+try/catch or anything like that - it simply lets you do:
+
+eval {
+	die SimpleException->Error(text => 'Some text');
+};
+if ($@) {
+	if ($@->isa('SimpleException::Error')) {
+		print "Simple Error: $@->{text}";
+	}
+	else {
+		print "Uncaught Error: $@";
+	}
+}
+
+Of course you can overload simple exception to your heart's content. The
+most important thing it does is makes sure that $@->isa() works by
+overloading CORE::die, and dying with a SimpleException::Uncaught
+exception (which overloads "" so that "$@" works). This sort of simple
+base class is vital in things like mod_perl where you can have many
+applications that use blessed exceptions but you want 1 place where
+CORE::die is overloaded providing access to isa() without having first to
+check for ref($@).
+
+Of course CORE::die should be overloaded in core perl, as has been
+discussed on p5p endlessly with no results yet... And I also know of
+several other efforts for exception handling, but they all try and do a
+lot, whereas I'm trying to do a little and let the programmer do whatever
+he wants on top of that.
+
+Thoughts?
+
+-- 
+<Matt/>
+
+Fastnet Software Ltd. High Performance Web Specialists
+Providing mod_perl, XML, Sybase and Oracle solutions
+Email for training and consultancy availability.
+http://sergeant.org http://xml.sergeant.org
+
