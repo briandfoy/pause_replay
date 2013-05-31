@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Janek Schleicher",
+         "id" : "BIGJ"
+      },
+      "description" : "Tables with automatic col/row/total sums",
+      "communities" : "",
+      "chapterid" : {
+         "name" : "Data_Type_Utilities",
+         "id" : "6"
+      },
+      "similar" : "Data::Pivot Data::Pivoter Data::Xtab",
+      "DSLIP" : "bdpOp",
+      "modid" : "Data::TableAutoSum",
+      "enteredon" : "Thu Jul 25 06:01:02 2002 GMT",
+      "enteredby" : {
+         "name" : "Janek Schleicher",
+         "id" : "BIGJ"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "I first proposed this module with the name Data::CrossTable.\n    Following a suggestion of Tim Bunce, I renamed it to\n    Data::TableAutoSum.\n\n    This modules handles of tables with automatic generated\n    col/row/total sums.\n\n    Setting the values into the tables will force to recalculate the\n    sums. That is e.g. used when generating statistical reports.\n\n    Of course, you can use any associative, distributive operation\n    instead of sum (e.g. multiplication makes sense when working with\n    probabilities). Let's think e.g. to a population count. Let's say we\n    want to create a table showing the population in the U.S.A.\n    regarding to the towns 'New York', 'Chicago', 'L.A.', 'San\n    Francisco', 'Houston' and the sex 'female', 'male'.\n\n    Let's think I've got a big file with information of the population,\n    e.g. the phone books. Then I'd like to write a pseudocode like\n\n    my @towns = ('New York', 'Chicago', 'L.A.', 'San Francisco',\n    'Houston');\n\n    my @sex = qw/female male/;\n\n    my $population = Data::CrossTable->new(rows => \\@sex, cols =>\n    \\@towns);\n\n    while (<FILE>) {\n\n    my ($town, $sex) = /...../;\n\n    $population->data($sex,$town)++;\n\n    }\n\n    where the populations of each town, each sex and the total\n    population are updated in the background.\n\n    Finally we could say, e.g. there are\n    population->rowresult('female') women in the big cities.\n\n    Furthermore I'd like to calculate with the CrossTables. E.g. the\n    percentuage of inhabitants could be calculated with:\n\n    my $perc_population = $population / $population->totalresult();\n\n    or if we would like to have the more readable 12% reading than the\n    0.12, we could write something like my $perc100_population =\n    $perc_population->change( sub { $_ *= 100 } );\n\n    Another way is that we have built the tax payings for the big\n    cities. Then we could write\n\n    my $tax_per_inhabitent = $tax_per_city_and_sex / $population;"
+   },
+   "meta" : {
+      "message_id" : "200207250601.g6P614n29348@pause.perl.org",
+      "epoch" : 1027576864,
+      "from" : "upload@p11.speed-link.de",
+      "subject" : "Module submission Data::TableAutoSum",
+      "file" : "12842.txt",
+      "type" : "module_submission"
+   }
+}

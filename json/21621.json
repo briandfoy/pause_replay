@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Sagar R. Shah",
+         "id" : "SRSHAH"
+      },
+      "description" : "Script function delegation based on name",
+      "communities" : "modules@perl.org (under the thread Script::Delegate)",
+      "chapterid" : {
+         "name" : "Opt_Arg_Param_Proc",
+         "id" : "12"
+      },
+      "similar" : "None known.",
+      "DSLIP" : "idpfp",
+      "modid" : "Getopt::CallingName",
+      "enteredon" : "Sat Jun  7 12:52:00 2003 GMT",
+      "enteredby" : {
+         "name" : "Sagar R. Shah",
+         "id" : "SRSHAH"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "Sometimes you can have a script that can run in two or more 'modes'\n    of operation. Apart from an option to specify the mode, the command\n    line options are the same/very similar. Much of the code used by the\n    various modes is common.\n\n    As an application user interface decision, it may be more\n    useful/helpful to be able to call the script by two or more names -\n    i.e. one for each mode. This cuts out the command line option for\n    specifying the mode.\n\n    In some cases it might be appropriate just to move all the code, or\n    at least all the common code, into a module and have separate\n    wrapper perl scripts. The problem with this approach is either you\n    end up duplicating command line option handling in each of the\n    wrapper scripts or you end up moving the command line option\n    handling into a module also. The former case introduces maintenance\n    burden [or perhaps an excuse to use TT2 to generate your wrappers\n    ;-)]. The latter case can feel like a distortion/displacement of the\n    code.\n\n    Getopt::CallingName provides another alternative. The idea is that\n    you create symbolic links to your actual script (which you might\n    want to give a generic name). Each symbolic link corresponds to the\n    name/mode with which you call the script. Within your script, after\n    any common setup/options handling you call script delegate to call\n    the appropriate script function for the mode.\n\n    The exact features of Getopt::CallingName still have to be decided.\n    The most basic feature would be to accept a hash of regex =>\n    subrefs, evaluating $PROGRAM_NAME against the regexs. Failure could\n    be handled either via a default function, or perhaps a fatal error,\n    or perhaps throwing an Exception (Error.pm) for the script to deal\n    with. The delegate method itself would return the return value of\n    the subroutine that it delegated to. Slightly more advanced\n    functionality could include inspecting the stash for a method\n    corresponding to the $PROGRAM_NAME (perhaps also allow the script\n    author to specify a prefix so that scripts tv_play and tv_record\n    could be implemented by methods play() and record())."
+   },
+   "meta" : {
+      "message_id" : "200306071252.h57Cq1El003142@pause.perl.org",
+      "epoch" : 1054990321,
+      "from" : "upload@pause.x.perl.org",
+      "subject" : "Module submission Getopt::CallingName",
+      "file" : "21621.txt",
+      "type" : "module_submission"
+   }
+}

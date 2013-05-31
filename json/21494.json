@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Ian Brayshaw",
+         "id" : "IBB"
+      },
+      "description" : "Classes with method/attribute access control",
+      "communities" : "comp.lang.perl.modules",
+      "chapterid" : {
+         "name" : "Data_Type_Utilities",
+         "id" : "6"
+      },
+      "similar" : "Class::ArrayObjects Class::Contract",
+      "DSLIP" : "RdpOp",
+      "modid" : "Class::Declare",
+      "enteredon" : "Wed Jun  4 11:08:37 2003 GMT",
+      "enteredby" : {
+         "name" : "Ian Brayshaw",
+         "id" : "IBB"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "I am not 100% happy with the choice of Class::Declare, even though\n    it describes the module and how it's used: you declare the\n    attributes and methods and you declare how they are to be accessed\n    (public, private, protected, etc). Having run the name past\n    comp.lang.perl.modules as well as privately amoungst fellow\n    developers I've received no other suggestions.\n\n    Class::Declare offers a clean, Perl-ish interface, that would be\n    familiar to developers more accustomed to C++ and Java classes. It\n    also provides complete data encapsulation: the only way to access\n    object and class data is through the object and class accessors.\n\n    From the README:\n\n    NAME\n        Class::Declare - Declare classes with public, private and protected\n        attributes and methods.\n\n    SYNOPSIS       package My::Class;\n\n          use strict;       use warnings;\n          use base qw( Class::Declare );\n\n          __PACKAGE__->declare( public    => { public_attr    => 42         } ,\n                                private   => { private_attr   => 'Foo'      } ,\n                                protected => { protected_attr => 'Bar'      } ,\n                                class     => { class_attr     => [ 3.141 ]  }\n                                static    => { static_attr    => { a => 1 } } ,\n                                shared    => { shared_attr    => \\'string'  } ,\n                                friends   => 'main::trustedsub'               ,\n                                init      => sub { # object initialisation\n                                                ...\n                                                1;\n                                             }                                ,\n                                strict    => 0\n                              );\n\n          sub publicmethod {\n            my $self = __PACKAGE__->public( shift );\n            ...       }\n\n    The motivation behind the module was to provide a robust and\n    relatively secure framework for generating classes that supported\n    access control through standard OO relationships of public, private\n    and protected. Class::Declare objects are blessed scalar references,\n    helping to ensure access to object and class internals occurs only\n    through accessors (unlike using a blessed hash reference, where the\n    user can access the hash directly).\n\n    This type of class representation and construction is perhaps more\n    familiar to those coming from a Java or C++ background, and would\n    make porting of applications written in those languages more\n    straight forward. Class::Declare supports public, private and\n    protected instance and class methods and attributes.\n\n    I have used this approach (a predecessor to Class::Declare) in\n    large applications, and found the access control mechanisms (which\n    may be disabled in a production environment on a per-module basis to\n    accelerate the code execution) to be a great asset during\n    development.\n\n    Class::Declare supports multiple inheritance, as well as\n    serialisation via Storable. It also provides a number of helper\n    routines, such as automatic processing and validation of named\n    parameters, and a dump() routine for pretty-printing object and\n    class attributes while obeying the access control mechanisms. (Since\n    there is no way to access the internal hash in which Class::Declare\n    stores the object attribute values, Data::Dumper cannot give\n    meaningful output for Class::Declare objects.)"
+   },
+   "meta" : {
+      "message_id" : "200306041108.h54B8ciO015134@pause.perl.org",
+      "epoch" : 1054724918,
+      "from" : "upload@pause.x.perl.org",
+      "subject" : "Module submission Class::Declare",
+      "file" : "21494.txt",
+      "type" : "module_submission"
+   }
+}

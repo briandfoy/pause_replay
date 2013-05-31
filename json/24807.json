@@ -1,0 +1,35 @@
+{
+   "data" : {
+      "cd" : "print \"I'm an 'c' or 'd' process\\n\";",
+      "userid" : {
+         "name" : "David Muir Sharnoff",
+         "id" : "MUIR"
+      },
+      "abcd" : "print \"we are all running in lockstep\\n\";",
+      "description" : "Test suite support for multi-process program",
+      "communities" : "",
+      "chapterid" : {
+         "name" : "Development_Support",
+         "id" : "3"
+      },
+      "ab" : "print \"I'm an 'a' or 'b' process\\n\";",
+      "similar" : "",
+      "DSLIP" : "adphp",
+      "modid" : "Test::MultiFork",
+      "enteredon" : "Sun Nov 30 08:19:20 2003 GMT",
+      "enteredby" : {
+         "name" : "David Muir Sharnoff",
+         "id" : "MUIR"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "I wrote this so that I could test for deadlocks in my persistent\n    object store.\n\n    NAME Test::MultiFork - Test suite support for multi-process\n    programs\n\n    SYNOPSIS use Test::MultiFork;\n\n    ($name, $letter, $number) = procname([new name]) lockcommon()\n    @oldvalues = getcommon() setcommon(@newvalues) unlockcommon()\n\n    use Test::MultiFork qw(groupwait setgroup dofork)\n\n    groupwait([$tag]) $oldgroup = setgroup([$newgroup])\n    dofork(fork_specification)\n\n    DESCRIPTION This test module is to support creating test suites for\n    programs and modules that run as multiple processes and do mostly\n    blocking I/O.\n\n    Test::MultiFork handles the forking so that it can set up each\n    child to coordinate the output. The output from each child fork is\n    redirected to the parent. Each fork produces normal test output --\n    possibly using normal test modules like Test::Simple. The output is\n    collected and rewritten by the parent process.\n\n    Each child fork has a letter and number designation. The forks are\n    created by \"dofork()\". Dofork takes a specifiction on the form:\n    ([a-z](\\d*))+. That is to say, one or more lower-case letters, each\n    optionally followd by a number. The number says how many children to\n    fork for that letter (default one). The specifier \"ab2c3\" means have\n    one \"a\" child (numbered 1); two \"b\" children (numbered 1, 2); and\n    three \"c\" children (numbered 1, 2, 3).\n\n    To aid in writing tests, Test::MultiFork will pass data between the\n    child processes. The data is test-writer defined.\n\n    SOURCE FILTER Test::MultiFork acts as a source filter on your code.\n    It does this so that it can do lock-step execution control.\n\n    The source filtering is controlled with pseudo labels. The labels\n    must be the only thing on the line. The main source control is a\n    label like \"FORK_abc:\". This label tells Test::MultiFork how many\n    times to fork (see above). Whatever comes after the \"FORK_\" and\n    before the \":\" is a fork specifier.\n\n    With a \"FORK_abc:\" label, varient execution labels are enabled.\n    Varient execution labels must be all lowercase. This is to allow you\n    to use something different for you loop control labels. This module\n    can be used without putting in any special labels.\n\n    Outside of a function, a varient execution label does will\n    synchronize all the program forks to that line of code. As each fork\n    reaches that line, it will stop and wait until all forks get there.\n    At that point, all of the forks will start up and run again.\n\n    Inside or outside of a function, once a varient execution labels is\n    seen, source code is turned on or off (commented out) depending on\n    if the process fork letter is in the label.\n\n    For example:\n\n    # let's fork 5 times FORK_abc2d:\n\n    ab: print \"I'm an 'a' or 'b' process\\n\";\n\n    cd: print \"I'm an 'c' or 'd' process\\n\";\n\n    abcd: print \"we are all running in lockstep\\n\";\n\n    sub xyz { a: print \"only a does something in this function\\n\"; }\n\n    Since the processes run in lockstep (synchronized at the labels),\n    loops controls must cover all processes.\n\n    In addition to fork() and the varient execution labels, you can\n    override a default signal selection for debugging. By default the\n    \"USR1\" signal is used to aid debugging: if the parent process bails\n    out, it will send \"USR1\" signals to all the children to ask them to\n    print out some diagnostics. The special label \"SIGNAL_xyz:\" changes\n    which signal to use. Substitute \"xyz\" with your choice of signal or\n    \"none\" to disable this feature.\n\n    FUNCTIONS lockcommon() Sets a lock on the shared common data.\n\n    getcommon() Returns the current value of the common data. The\n    common data is an array. In scalar context, the first element is\n    returned. getcommon does not care if the common data is locked.\n\n    setcommon(@newvalues) Sets the value of the common data to the new\n    values. Dies if common data lock isn't held.\n\n    unlockcommon() Releases a lock on the shared common data. Dies if\n    the lock isn't already held.\n\n    groupwait([$tag]) Wait for all process forks in the process group\n    to get reach this same synchronization point as designated by the\n    $tag. The default tag is the current source file name and line\n    number. All processes start in the \"default\" group. This is the\n    function used to implement the varient execution lockstep\n    synchronization.\n\n    setgroup([$newgroup]) With a $newgroup, changes the process' group\n    identity. All processes start in group \"default\". Returns the old\n    group name.\n\n    dofork($fork_specification) Fork off children processes. The parent\n    process becomes the special-purpose test coordinator. The\n    specification is as detailed in the DESCRIPTION above.\n\n    INTEGRATION WITH TEST::* Test::Simple and Test::More encourage you\n    to specify a test plan at compile time. Make sure that dofork() is\n    called before the test plan is specified.\n\n    When using Test::MultiFork's source filter in conjunction with\n    Test::Builder anything built on top of it (eg: Test::Simple or\n    Test::More) put Test::MultiFork first in the \"use\" list.\n\n    SEE ALSO Test::Harness Test::Builder Test::Simple Test::More\n\n    BUGS This is brand-new and bearly tested. Please provide feedback!\n\n    LICENSE Copyright (C) 2003 David Muir Sharnoff <muir@idiom.com>.\n    This module may be used/copied/etc on the same terms as Perl itself."
+   },
+   "meta" : {
+      "message_id" : "200311300819.hAU8JLsY008807@pause.perl.org",
+      "epoch" : 1070180361,
+      "from" : "upload@pause.perl.org",
+      "subject" : "Module submission Test::MultiFork",
+      "file" : "24807.txt",
+      "type" : "module_submission"
+   }
+}

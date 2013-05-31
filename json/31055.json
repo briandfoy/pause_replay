@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Paul Jamieson Fenwick",
+         "id" : "PJF"
+      },
+      "description" : "Manipulate Unix Saved UID privileges.",
+      "communities" : "Will be presented to Melbourne Perl Mongers, form part of a security\n    tutorial at the SAGE-AU conference this year.",
+      "chapterid" : {
+         "name" : "Security_and_Encryption",
+         "id" : "14"
+      },
+      "similar" : "No modules with similar functionality. I'd love to be told I'm wrong\n    here. ;)",
+      "DSLIP" : "idhpp",
+      "modid" : "Secure::UID",
+      "enteredon" : "Thu Apr 22 03:07:07 2004 GMT",
+      "enteredby" : {
+         "name" : "Paul Jamieson Fenwick",
+         "id" : "PJF"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "POSIX and System V Unixes, including Linux, have the following UID\n    (and GID) concepts:\n\n    * The Real UID. When executing a suid program, this is the UID of\n    the person invoking the code. In Perl, this is represented by the\n    special variable $<.\n\n    * The Effective UID. Most operations are done with the privileges\n    of the Effective UID. When executing a suid program, this is the UID\n    of the program's owner. In Perl, this is represented by the special\n    variable $>.\n\n    * The Saved UID. This is the Effective UID of the process when it\n    was started. It exists so that the Effective UID can be dropped and\n    then later restored. Perl appears to have no concept of Saved UIDs.\n\n    As Perl has no concept of the Saved UID, it is impossible in plain\n    Perl to completely drop privileges when running in a suid-fashion,\n    as the effective UID can always be set back to the saved UID, as\n    demonstrated by the code at the end of this rationale (tested under\n    (2.4.x Linux kernel, Perl 5.6.1 and 5.8.3).\n\n    While I believe the overall goal should be to give Perl a concept\n    of saved UID, and this may already exist in the development branch\n    (I haven't checked yet), the purpose of this module would be to\n    introduce a concept of saved UID to current 5.6.x and 5.8.x\n    releases. Most importantly, this would allow for privileges to be\n    dropped in an *irrevocable* fashion. This has obvious security\n    benefits.\n\n    This module may be extended to allow manipulation of other exotic\n    UIDs (such as the filesystem UID under Linux) on systems that\n    support them.\n\n    Feedback, naming suggestions, and discussion is appreciated.\n\n    Cheers,\n\n    Paul\n\n    #!/usr/bin/perl -wT use strict;\n\n    my $old_euid = $>;\n\n    print \"Current EUID,UID: $> $<\\n\";\n\n    $> = $<;\n\n    print \"Dropped privs. $> $<\\n\";\n\n    $> = $old_euid;\n\n    print \"Regained privs? $> $<\\n\"; __END__"
+   },
+   "meta" : {
+      "message_id" : "200404220307.i3M378In021277@pause.perl.org",
+      "epoch" : 1082603228,
+      "from" : "upload@pause.perl.org",
+      "subject" : "Module submission Secure::UID",
+      "file" : "31055.txt",
+      "type" : "module_submission"
+   }
+}

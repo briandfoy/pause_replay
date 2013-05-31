@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Miko O'Sullivan",
+         "id" : "MIKO"
+      },
+      "description" : "File handle with a lot of extra features",
+      "communities" : "",
+      "chapterid" : {
+         "name" : "File_Handle_Input_Output",
+         "id" : "21"
+      },
+      "similar" : "FileHandle",
+      "DSLIP" : "bdpOp",
+      "modid" : "FileHandle::Deluxe",
+      "enteredon" : "Tue Aug 20 14:03:32 2002 GMT",
+      "enteredby" : {
+         "name" : "Miko O'Sullivan",
+         "id" : "MIKO"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "NAME\n\n    FileHandle::Deluxe - File handle with a lot of extra features\n\n    DESCRIPTION\n\n    FileHandle::Deluxe works like a regular FileHandle object, with the\n    addition of doing the routine file handle chores for you.\n    FileHandle::Deluxe (aka \"FD\") is targeted at beginning Perl users\n    who usually find those tasks intimidating and often elect to skip\n    them rather than learn how to do them. FileHandle::Deluxe defaults\n    to a set of best practices for working with file handles.\n\n    The following sections describe the practices and features\n    implemented by FD. Keep in mind as you read these descriptions that\n    every feature can be overridden if you do not want to use that\n    feature.\n\n    Security\n\n    FileHandles are the most notorious source of Perl application\n    security holes. FD implements a strict set of security rules. Rather\n    than allowing users \"enough rope to hang themselves\", FD forces the\n    user to either program more securely or explicitly acknowlege that\n    their program uses insecure techniques. Hopefully most FD users will\n    choose the first option.\n\n    For beginners, FD refuses to run unless either Perl is in taint\n    mode or the developer gives explicit permission for FD to run while\n    not in taint mode.\n\n    FD also dispenses with the traditional notation for indicating if a\n    file should be opened for reading, writing, etc. For example, the\n    argument \"> mydata.txt\" would be prohibited. Instead, to indicate\n    opening a file for writing, the command for a new file handle would\n    use the \"write\" option:\n\n    $fh = FileHandle::Deluxe->new($path, write=>1);\n\n    FD refuses to open any file using a tainted path. (Regular file\n    handles will open files for read using tainted paths.) Users,\n    however, frequently find the task of properly untainting paths more\n    than they want to deal with, so FD helps out. The user may indicate\n    that certain files, directories, or entire directory trees are\n    \"safe\". Tainted data paths may be used to open files within safe\n    locations.\n\n    FD also addresses security issues with executable files. When an FD\n    file handle is opened for piping to and from an executable, FD\n    automatically uses the more secure exec method for opening the file\n    handles. The exec method opens the executables directly, instead of\n    spawning an intermediate shell, thereby bypassing shell hacks.\n\n    File Locking\n\n    File locking is a file handle housekeeping nuisance that even\n    experienced Perl programmers often overlook. FD takes care of file\n    locking chores for you. Files that are opened as read only get a\n    shared lock. Files that are opened as writable get an exclusive\n    lock.\n\n    Resource Conservation\n\n    FD file handles are \"lazy\"... they do not open the files until they\n    are actually used. Furthermore, for read-only files, the file\n    handles are closed once the last line of the file is read. By using\n    these conservation features, a function can return a large number of\n    FD objects (perhaps representing all the files in a directory)\n    without using up limited system file handles.\n\n    Convenience\n\n    FD simplifies many tasks associated with working with files. For\n    beginners, FD objects stringify to the file paths, so a function can\n    return a series of FD objects that can be easily used to output file\n    names. FD handles also provide the ability to quickly slurp in the\n    entire contents of a file either as an array of pre-chomped lines or\n    as a single string.\n\n    FD also includes non-OO functions for slurping in file data without\n    having to create an object first.\n\n    Speaking of chomping, FD handles can also be set to automatically\n    chomp lines as you pull them from the file. Auto-chomping even works\n    for blank lines when looping through a file with a standard C<while\n    (<$fh>)> technique."
+   },
+   "meta" : {
+      "message_id" : "200208201403.g7KE3Xr32554@pause.perl.org",
+      "epoch" : 1029852213,
+      "from" : "upload@p11.speed-link.de",
+      "subject" : "Module submission FileHandle::Deluxe",
+      "file" : "13297.txt",
+      "type" : "module_submission"
+   }
+}

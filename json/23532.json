@@ -1,0 +1,33 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Brad Bowman",
+         "id" : "BOWMANBS"
+      },
+      "(?" : "(?{ $^R.'b' }) ) # b # |(?: (?{ $^R.'c' }) ) # c # ) # (?: . (?{",
+      "description" : "Get strings matching a regex, using a regex",
+      "communities" : "Idea & prior art search at perlmonks nodes: 284513 286981",
+      "chapterid" : {
+         "name" : "String_Lang_Text_Proc",
+         "id" : "11"
+      },
+      "similar" : "String::Random",
+      "DSLIP" : "cdpfp",
+      "modid" : "Regexp::Genex",
+      "enteredon" : "Sat Sep 13 10:08:48 2003 GMT",
+      "enteredby" : {
+         "name" : "Brad Bowman",
+         "id" : "BOWMANBS"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "I'm have a prelimiary version working which I'll upload soonish.\n    The basic idea is on the perlmonks link, although I'm using\n    YAPE::Regex to automate it.\n\n    Naming ------------------------------------------ Regexp::Genex\n    because the module is more focussed on the regex than the resulting\n    strings. Genex is the name I started using. (Admittedly, I like the\n    Reality Bites connotations)\n\n    I prefer it to Regexp::Generator because that sounds like what\n    Regexp::List & Regexp::PreSuf are doing. There's also\n    Regex::Generate in parrot.\n\n    I want to avoid these false associations but am open to better\n    ideas.\n\n    Synposis ------------------------------------------ This stuff is\n    going more or less:\n\n    use Regexp::Genex qw(strings regex rx_string count);\n\n    my $rx = shift || '^a(b|c)d{2,3}$' || qr/^ reg(ular\\s?)?\n    ex(p)?(ression)? $/x;\n\n    print \"'\", join(\"', '\", strings($rx)), \"'\\n\"; # 'abddd', 'abdd',\n    'acddd', 'acdd'\n\n    my $target = 'a' x 2; # limits total quantifiers, greed is search\n    order print \"got '$_'\\n\" for( $target =~ regex('^a(b|c)d*?$'); #\n    'ab', 'abd', 'abdd', 'abddd', 'ac', 'acd', 'acdd', 'acddd' do {\n    print 'len ',length($target),' => count ',count($rx); } while (\n    $target += 'a' x 3 ); # len 3 => count 8, len 6 => count 14, len 9\n    => 20 # count = 2 * (len + 1)\n\n    print rx_string($rx); # 'aaaaaaaaa' =~ /(?x-ims: # ^(?> (?{ @_ =\n    (); '' }) ) # Initialize $^R & @_ # (?: (?{ $^R.'a' }) ) # a # ( #\n    (?: (?{ $^R.'b' }) ) # b # |(?: (?{ $^R.'c' }) ) # c # ) # (?: . (?{\n    $^R.'d' }) ){0,20}? # d*? # # (?{ push @_, $^R }) (?!) # Save &\n    backtrack # ) # /x;\n\n    Utility ------------------------------------------- Test and debug\n    your regex. Generate test data. Generate combinations. Generate data\n    according to a lexical pattern (urls, etc) Edit the regex code to do\n    different things (eg. limit it) Analyse someone else's qr// object.\n    Use the strings to create a DFA :)\n\n    Unlike String::Random, the strings aren't random :) they're what\n    the regex engine would look for. They're ordered and exhaustive to\n    the limit of target string size.\n\n    I also plan to do something sensible to other regex elements. eg.\n    non-anchored has implicit .* at start and end, '.', \\d, [a-d]\n    produce random matches (exhaustive to much),"
+   },
+   "meta" : {
+      "message_id" : "200309131008.h8DA8ogU030027@pause.perl.org",
+      "epoch" : 1063447731,
+      "from" : "upload@pause.perl.org",
+      "subject" : "Module submission Regexp::Genex",
+      "file" : "23532.txt",
+      "type" : "module_submission"
+   }
+}

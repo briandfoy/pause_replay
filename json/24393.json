@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Theo Lengyel",
+         "id" : "DIRT"
+      },
+      "description" : "Indexed hash prepend w/ `-' to get index/key",
+      "communities" : "",
+      "chapterid" : {
+         "name" : "Data_Type_Utilities",
+         "id" : "6"
+      },
+      "similar" : "Tie::IxHash",
+      "DSLIP" : "bdprp",
+      "modid" : "Tie::Silk",
+      "enteredon" : "Thu Nov  6 19:38:15 2003 GMT",
+      "enteredby" : {
+         "name" : "Theo Lengyel",
+         "id" : "DIRT"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "Tie::Silk - Silk = Somewhat Intuitive List Knitter\n\n    This is an indexed hash with some added strange behavior. It is\n    useful for keeping track of several related lists based on the same\n    key set. When an (existing) key is prepended with a `-' (minus sign\n    - regular keys may NOT begin with a `-') it returns the index for\n    that element. When an index (integer) is used to access the hash it\n    acts like an array (new values may NOT be introduced with integer\n    keys) and returns/sets the VALUE in that slot. When an integer is\n    prepended with a `-' it returns/sets the corresponding KEY for that\n    slot. When accessed with normal text keys is behaves like a normal\n    hash, except that order is preserved.\n\n    # this is a hash that also acts like a funny array. It preserves\n    order # like an array(akin to Tie::IxHash), but also has some other\n    specific # behavior that is described below ( the `===' I am using\n    here to mean # `equivalent to') # where $x is an integer $x >= 0 #\n    then $h{$x} === $h{$h{\"-$x\"}} # # here is a sample hash: # $th = tie\n    %h, __PACKAGE__ # %h = qw( _foo bar # _baz fup # ); #\n    Taowebs::Tie::Silk; these are the behaviors we are after: # 1) when\n    accessed with a negative number it returns the hash hey for # the\n    indicated pair(need to be careful with a `minus zero' key # MUST be\n    a string because perl compiler will convert an unquoted -0 to 0) #\n    $h{'-0'} === _foo # $h{-1} === _baz # 2) when accessed with a\n    positive integer it returns the value for # the associated key pair\n    (same as fetching it with the normal # hash key, but now we are\n    accessing it with pseudo-array indexing # using {} instead of []\n    notation) # $h{0} === bar === $h{_foo} === $h{$h{'-0'}} # $h{1} ===\n    fup === $h{_baz} === $h{$h{-1}} # $h{_baz} === fup # $h{_foo} ===\n    bar # 3) a normal hash key preceded by a `-' (minus sign) returns\n    the # index of that pair ( except when setting a value this way, see\n    #4) # $h{-_baz} === 1 # $h{-_foo} === 0 # 4) when setting an element\n    and preceding the hash key with a minus # sign `-' this actually\n    replaces the hash key with the value # therefore we have: #\n    $h{-_foo} = '_new_foo' === $h{'-0'} # equivalently: # $h{'-0'} =\n    '_new_foo' === $h{'-0'} # $h{_new_foo} === bar # $h{-_new_foo} === 0\n    # $h{'-0'} === _new_foo # 5) you cannot set a new slot with an\n    integer unless the integer matches the next open slot, otherwise\n    confusion may ensue #"
+   },
+   "meta" : {
+      "message_id" : "200311061938.hA6JcGtH032363@pause.perl.org",
+      "epoch" : 1068147496,
+      "from" : "upload@pause.perl.org",
+      "subject" : "Module submission Tie::Silk",
+      "file" : "24393.txt",
+      "type" : "module_submission"
+   }
+}

@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Jeremy Kahn",
+         "id" : "KAHN"
+      },
+      "description" : "define phonology-style features for emes",
+      "communities" : "comp.lang.perl.modules",
+      "chapterid" : {
+         "name" : "String_Lang_Text_Proc",
+         "id" : "11"
+      },
+      "similar" : "",
+      "DSLIP" : "adpOp",
+      "modid" : "Lingua::FeatureSet",
+      "enteredon" : "Mon Sep  2 18:38:29 2002 GMT",
+      "enteredby" : {
+         "name" : "Jeremy Kahn",
+         "id" : "KAHN"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "I need a tool that constructs objects representing the featureset\n    of a phoneme. The standard linguistic notation for this is (for the\n    'ch', the 'eh', and the 's' sound in chess\"):\n\n    CH [ +stop +fric -voice +palat +cons -vow ] EH [ +vow -cons -low\n    -high +front -tense ] S [ +cons +fric -stop +alv -voice ]\n\n    Furthermore, I may want to be able to refer to \"feature classes\",\n    that is, composite features like \"affricate\":\n\n    class AFF [ +stop +fric ]\n\n    (this example would match 'CH' but not 'S' or 'EH').\n\n    To complicate things further, the list of primitive features is\n    linguistically controversial, the set of relevant classes varies\n    from language to language, even if you agree on the theoretical\n    primitives, and the choice of symbol set to represent the phoneme\n    (IPA, Sampa, DARPA-bet, etc) is varied and political.\n\n    Thus, in the finest Perl sense, TMTOWTDI. The dimensions of\n    flexibility provided are:\n\n    You, the user, define what you want to be the featureset by\n    subclassing \"Lingua::FeatureMatrix::Eme\", distributed with this\n    module. An added side bonus is that you decide whether the base unit\n    is a \"Phone\" or a \"Phoneme\" (or, for that matter, a \"SoundUnit\" or a\n    \"Letter\" -- that subclass is *your* module, and the goal is to\n    \"[put] the focus not so much onto the problem to be solved, but\n    rather onto the person trying to solve the problem.\" (see\n    http://kiev.wall.org/~larry/pm.html).\n\n    You, the user, define what the feature set is, and you define how\n    the phones distribute among those features, using the best of\n    *Impatience* -- use the existing linguistic typographic conventions,\n    and this module takes care of constructing your objects for you. No\n    translating among conventions for us.\n\n    But let's go one step further. Languages include redundancy, and\n    sometimes it's boring (and not *Lazy*) to have to specify yourself\n    that something that is \"[+stop]\" is also \"[-vow +cons]\", especially\n    if you have to specify this for every single \"[+stop]\" consonant.\n\n    So this module also introduces the concept of an *implicature* -- I\n    can say, also in simple linguistically-familiar format, that\n\n    ( [+stop] => [-vow +cons] )\n\n    and this will apply for all phones in the current dataset (unless\n    I'm speaking Berber, where this isn't necessarily true...). It's\n    also *Lazy*, because the module also does the work of letting me\n    know whether I have forgotten to specify any of the features of a\n    given phone:\n\n    # probably missing a feature or six; would generate a # warning. T\n    [ +cons -vow ]\n\n    Along the way, we pick up some *Hubris*:\n\n    * Doesn't apply just to phones anymore -- we can use it for letters\n    and ligatures, if we want.\n\n    * It should be extensible to use these objects to connect to other\n    linguistics-style programs like \"Lingua::SoundChange\", not to\n    mention homebrew pronunciation algorithms like \"Lingua::Soundex\"."
+   },
+   "meta" : {
+      "message_id" : "200209021838.g82IcUE25588@pause.perl.org",
+      "epoch" : 1030991910,
+      "from" : "upload@p11.speed-link.de",
+      "subject" : "Module submission Lingua::FeatureSet",
+      "file" : "13550.txt",
+      "type" : "module_submission"
+   }
+}

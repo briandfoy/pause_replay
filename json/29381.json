@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Miko O'Sullivan",
+         "id" : "MIKO"
+      },
+      "description" : "Fully indent here documents",
+      "communities" : "",
+      "chapterid" : {
+         "name" : "Perl_Core_Modules",
+         "id" : "2"
+      },
+      "similar" : "",
+      "DSLIP" : "MdpOp",
+      "modid" : "Filter::HereDocIndent",
+      "enteredon" : "Fri Mar 12 04:35:46 2004 GMT",
+      "enteredby" : {
+         "name" : "Miko O'Sullivan",
+         "id" : "MIKO"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "Filter::HereDocIndent - Indent here documents\n\n    SYNOPSIS\n\n    use Filter::HereDocIndent;\n\n    if ($sometest) { print <<'(MYDOC)'; Melody Starflower Miko (MYDOC)\n    }\n\n    outputs (with text beginning at start of line):\n\n    Melody Starflower Miko\n\n    HereDocIndent mimics the planned behavior of here documents in Perl\n    6.\n\n    DESCRIPTION\n\n    HereDocIndent allows you to indent your here documents along with\n    the rest of the code. The contents of the here doc and the ending\n    delimiter itself may be indented with any amount of whitespace. Each\n    line of content will have the leading whitespace stripped off up to\n    the amount of whitespace that the closing delimiter is indented.\n    Only whitespace is stripped off the beginning of the line, never any\n    other characters.\n\n    For example, in the following code the closing delimiter is\n    indented eight spaces:\n\n    if ($sometest) { print <<'(MYDOC)'; Melody Starflower Miko (MYDOC)\n    }\n\n    All of the content lines in the example will have the leading eight\n    whitespace characters removed, thereby outputting the content at the\n    beginning of the line:\n\n    Melody Starflower Miko\n\n    If a line is indented more than the closing delimiter, it will be\n    indented by the extra amount in the results. For example, this code:\n\n    if ($sometest) { print <<'(MYDOC)'; Melody Starflower Miko (MYDOC)\n    } produces this output:\n\n    Melody Starflower Miko\n\n    HereDocIndent does not distinguish between different types of\n    whitespace. If you indent the closing delimiter with a single tab,\n    and the contents eight spaces, each line of content will lose just\n    one space character. The best practice is to be consistent in how\n    you indent, using just tabs or just spaces.\n\n    HereDocIndent will only remove leading whitespace. If one of the\n    lines of content is not indented, the non-whitespace characters will\n    not be removed. The trailing newline is never removed.\n\n    INDENT_CONTENT\n\n    By default the contents of the here document are indented to the\n    same extent as the closing delimiter. If you want to leave the\n    contents indented, but still indent the closing delimiter so that it\n    lines up with its content, set the INDENT_CONTENT option to zero in\n    when you load HereDocIndent:\n\n    use Filter::HereDocIndent INDENT_CONTENT=>0;\n\n    LIMITATIONS\n\n    HereDocIndent was written to be conservative in what it decides are\n    here documents. HereDocIndent recognizes the most common usage for\n    here docs and disregards other less common usages. If you constrain\n    your here doc declarations to the format recognized by HereDocIndent\n    (which is by far the most popular format) then your code will\n    compile just fine.\n\n    The format recognized by HereDocIndent is a single print statement\n    or variable assignment, followed by <<, then a quoted string or\n    unquoted string of word characters, then a semicolon, then the end\n    of line. Here are a few examples that would be parsed properly by\n    HereDocIndent:\n\n    print << '(MYDOC)'; print << \"MYDOC\"; my $var = <<EOT; push @arr,\n    << '(MYDOC)';\n\n    Here are a few examples that would not be recognized by\n    HereDocIndent:\n\n    mysub (<<'MYDOC'); push @arr, <<'MYDOC', 'foo'; print <<'MYDOC',\n    \"------\\n\";\n\n    HereDocIndent does not currently recognize POD notation, so there\n    could be unintended problems if you put text in your POD that looks\n    like a here doc. This issue will need to be fixed in a later\n    release. HereDocIndent also does not recognize if an entire line is\n    inside quotes from another line, or even inside a here doc that it\n    didn't recognize.\n\n    COMPARISON TO OTHER HEREDOC INDENTATION TECHNIQUES\n\n    There are several other here doc indentation techniques,\n    particularly those discussed in the Perl FAQ. Those techniques\n    generally have several shortcomings.\n\n    First, they require you to modify how you create the here doc.\n    Instead of simply creating the here doc as you usually would, except\n    that it is indented, you have to pass the entire string into a\n    function of through a regex to modify it.\n\n    Second, they usually require that the ending delimiter is still\n    flush against the left margin. It should be noted that this\n    shortcoming can be overcome by creating the heredoc delimiter with\n    padded spaces in the left. However, even that technique requires you\n    to ensure that the here doc declaration and the actual delimiter\n    have matching amounts of padded space... something I personally find\n    to be a distasteful extra drain on my brain resources. HereDocIndent\n    allows you to simply create a delimeter and use it as usual.\n\n    Finally, many techniques either produce a string with padded spaces\n    in the left margin, or force a function to guess how many spaces it\n    should remove. With HereDocIndent, that information is cleanly and\n    unambiguously determined by the indentation of the delimiter.\n\n    It is worth noting the HereDocIndent mimics the planned behavior of\n    here docs in Perl 6."
+   },
+   "meta" : {
+      "message_id" : "200403120435.i2C4Zldp027971@pause.perl.org",
+      "epoch" : 1079066147,
+      "from" : "upload@pause.perl.org",
+      "subject" : "Module submission Filter::HereDocIndent",
+      "file" : "29381.txt",
+      "type" : "module_submission"
+   }
+}

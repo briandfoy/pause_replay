@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "James G Smith",
+         "id" : "JSMITH"
+      },
+      "description" : "Define an API for use by a package",
+      "communities" : "module-authors@perl.org (mentioned, no immediate cries of outrage),\n    irc",
+      "chapterid" : {
+         "name" : "Perl_Core_Modules",
+         "id" : "2"
+      },
+      "similar" : "Perl6::Class, but doesn't handle class prototypes (source filter\n    that adds a new Perl keyword comparable to `package'), but\n    `prototype' isn't a Perl6 thing",
+      "DSLIP" : "bdphp",
+      "modid" : "protocol",
+      "enteredon" : "Mon May 19 16:10:47 2003 GMT",
+      "enteredby" : {
+         "name" : "James G Smith",
+         "id" : "JSMITH"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "This package introduces a new Perl keyword, protocol, that allows\n    API declarations via subroutine prototypes.\n\n    Usually, an algorithm is written to require objects of particular\n    types to make sure certain methods are available. This can tie\n    certain programs to particular object frameworks, which might not\n    always be the best way to write a program. This module tries to\n    correct this by allowing interfaces to be defined without creating a\n    class. These interface definitions are called `protocols' after the\n    Objective-C concept (See Objective-C documentation for more\n    details). Protocols not only allow more flexible tracking of\n    implemented APIs, but can also aid in the debugging process during\n    module development. Any subroutines that are prototyped in a\n    protocol are prototyped in the using package. For example, if\n    package A uses protocol B, and protocol B defines subroutine C, then\n    A::C will be prototyped. Perl will then issue warnings if the\n    subsequent subroutine definition doesn't match the prototype given\n    in the protocol definition.\n\n    This allows declarations such as this:\n\n    use protocol;\n\n    protocol My::Protocol;\n\n    sub foo($); sub bar($);\n\n    Then, when implementing a class that conforms to My::Protocol:\n\n    package My::Class;\n\n    use protocol qw(My::Protocol);\n\n    sub foo($$) { } # Perl compile-time warning - not ($) sub bar($) {\n    } # okay\n\n    Later, in some other code, I can check to see if I have an object\n    that implements this protocol:\n\n    die \"Need to foo and bar\" unless $object ->\n    implements(\"My::Protocol\");\n\n    This works regardless of whether or not $object's class is aware of\n    My::Protocol.\n\n    Current documentation is available at\n    http://moya.tamu.edu/~jgsmith/protocol.html . The tarball is at\n    http://moya.tamu.edu/~jgsmith/protocol-0.00_02.tar.gz . Because this\n    module is `pragma'tic in its name, I'm waiting for feedback (esp. on\n    the name) before I upload to CPAN."
+   },
+   "meta" : {
+      "message_id" : "200305191610.h4JGAnov018001@pause.perl.org",
+      "epoch" : 1053360649,
+      "from" : "upload@pause.x.perl.org",
+      "subject" : "Module submission protocol",
+      "file" : "21224.txt",
+      "type" : "module_submission"
+   }
+}

@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Shay Harding",
+         "id" : "SHAYH"
+      },
+      "description" : "Interface to OpenSSL BIO functions",
+      "communities" : "",
+      "chapterid" : {
+         "name" : "Security_and_Encryption",
+         "id" : "14"
+      },
+      "similar" : "None",
+      "DSLIP" : "cdhOp",
+      "modid" : "Crypt::OpenSSL::BIO",
+      "enteredon" : "Mon Feb 11 22:38:37 2002 GMT",
+      "enteredby" : {
+         "name" : "Shay Harding",
+         "id" : "SHAYH"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "There already exists Crypt::OpenSSL::RSA which uses the openssl\n    libraries. Used same namespace to avoid adding yet another one. The\n    BIO modules make encryption/decryption and encoding/decoding very\n    simple. An example would be:\n\n    #!/usr/bin/perl\n\n    use Crypt::OpenSSL::BIO::CFB::Blowfish; my $bf = new\n    Crypt::OpenSSL::BIO::CFB::Blowfish(\"some_key\");\n\n    $cipher = $bf->encrypt($text); $plain = $bf->decrypt($cipher);\n\n    No need to write encrypt/decrypt wrapper functions to encrypt data\n    in chunks. Just pass it all in and it gets encrypted/decrypted\n    correctly.\n\n    OpenSSL is already widely used and is continuously developed. It\n    can be compiled on many operating systems so portability is less of\n    an issue.\n\n    Using the above example you could just as easily encode the data\n    for transport:\n\n    use Crypt::OpenSSL::BIO::Base64; my $b64 = new\n    Crypt::OpenSSL::BIO::Base64;\n\n    $b64_enc = $b64->encode($cipher); $b64_dec =\n    $b64->decode($b64_enc);\n\n    Again, 4 lines of simple code to Base64, the encrypted data. Can\n    then be sent via query string, posted, stored in database, etc\n    easily.\n\n    And if you need lower-level access to the BIO functions, just use\n    Crypt::OpenSSL::BIO directly. All other modules within this\n    namespace use this module for all functions. They are simply\n    provided for convenience."
+   },
+   "meta" : {
+      "message_id" : "200202112238.XAA28715@pause.perl.org",
+      "epoch" : 1013467118,
+      "from" : "upload@p11.speed-link.de",
+      "subject" : "Module submission Crypt::OpenSSL::BIO",
+      "file" : "10154.txt",
+      "type" : "module_submission"
+   }
+}

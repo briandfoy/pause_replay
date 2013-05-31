@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Stephen Oberholtzer",
+         "id" : "STEVIEO"
+      },
+      "description" : "Emulates loop-mounted ISO image",
+      "communities" : "comp.lang.misc.perl",
+      "chapterid" : {
+         "name" : "File_Names_Systems_Locking",
+         "id" : "10"
+      },
+      "similar" : "FileSys::SmbClient",
+      "DSLIP" : "bdprp",
+      "modid" : "VirtualFS::ISO9660",
+      "enteredon" : "Thu Jan 22 03:29:23 2004 GMT",
+      "enteredby" : {
+         "name" : "Stephen Oberholtzer",
+         "id" : "STEVIEO"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "VirtualFS::ISO9660 serves a (seemingly simple) purpose:\n\n    Give it an .ISO file, and it creates an object that lets you do\n    things like this:\n\n    $o = new VirtualFS::ISO9660 ('cdimage.iso'); $o->opendir($dirh,\n    '/'); print \"listing root directory:\\n\"; print \"$_\\n\" for\n    $dirh->readdir();\n\n    print \"here is the translation table file:\\n\"; $o->open($fh, '<',\n    '/TRANS.TBL'); print \"$_\\n\" while <$fh>;\n\n    I initially searched CPAN looking for any sort of functionality\n    similar to this, and found nothing. I proposed this namespace on\n    comp.lang.misc.perl, and there were a couple of suggestions for\n    alternate root namespaces. One person suggested CD:: so there might\n    be CD::Audio, CD::Joliet, etc. Another person suggested FileSys::.\n\n    I chose the root namespace VirtualFS:: because it forges a\n    filesystem (much like the Linux VFS) entirely in userspace. I\n    decided against a root namespace relating to the medium type (e.g.\n    CD::) because the underlying concept doesn't require any particular\n    medium. For example, someone could produce VirtualFS::Ext2, or\n    VirtualFS::Reiser, or VirtualFS::Minix, or some such thing if they\n    wanted to. One might even be able to pull off a VirtualFS::HTTP or a\n    VirtualFS::FTP.\n\n    The FileSys:: suggestion made slightly more sense, so I ran a CPAN\n    search for FileSys. One response that came back was\n    FileSys::SmbClient, which does fit into my VirtualFS concept.\n    However, FileSys::SmbClient actually seems out-of-place; while it\n    emulates a filesystem, all the other FileSys:: modules actually\n    concern metadata about a filesystem, not emulation of one. For\n    example, FileSys::DiskFree, FileSys::DiskSpace, and FileSys::Df\n    report filesystem freespace; FileSys::CygwinPaths does magic for the\n    virtual paths (like /bin) that Cygwin has; FileSys::Ext2 is a\n    chattr() wrapper; and FileSys::SmbClientParser is even further\n    separated; it's just a Perl wrapper for an application (smbclient).\n\n    Since, to me, overloading the meaning of a namespace isn't any\n    better than using two different namespaces for the same concept, I\n    decided it would probably be best to establish a new root namespace\n    that other authors could use for faked filesystems.\n\n    Is my reasoning acceptable?"
+   },
+   "meta" : {
+      "message_id" : "200401220329.i0M3TOfR010908@pause.perl.org",
+      "epoch" : 1074742164,
+      "from" : "upload@pause.perl.org",
+      "subject" : "Module submission VirtualFS::ISO9660",
+      "file" : "25846.txt",
+      "type" : "module_submission"
+   }
+}

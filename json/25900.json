@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Kragen Javier Sitaker",
+         "id" : "KRAGEN"
+      },
+      "description" : "fast, flexible, low-level, pure-Perl SNMP",
+      "communities" : "",
+      "chapterid" : {
+         "name" : "Networking_Devices_IPC",
+         "id" : "5"
+      },
+      "similar" : "Net::SNMP",
+      "DSLIP" : "adphb",
+      "modid" : "Net::SNMP::Fast",
+      "enteredon" : "Sun Jan 25 11:14:32 2004 GMT",
+      "enteredby" : {
+         "name" : "Kragen Javier Sitaker",
+         "id" : "KRAGEN"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "Why would you want to use this module instead of its\n    much-more-mature sibling, Net::SNMP?\n\n    Well, usually, you wouldn't. I anticipate that this module will get\n    better in time, but right now, you probably don't want to use it,\n    unless Net::SNMP just doesn't work for you.\n\n    Some of the reasons Net::SNMP doesn't work for me follow:\n\n    - it's slow. On my 500MHz laptop, Net::SNMP can do about 110 simple\n    request/response pairs per CPU second. These SNMP modules can do\n    about 1100, about as many as ucd-snmp snmpd can respond to. (The\n    SNMP agent in Net::SNMP::Fast::Agent is a little faster.)\n\n    - it's inconvenient to use for simple cases.\n\n    - its interface is bug-prone in a few ways.\n\n    - By default, it does all sorts of translations to make things\n    human-readable, but the translations are sometimes pretty heuristic.\n    This can result in bugs in your code. (For example, it renders\n    OCTET_STRINGs in hexadecimal if they contain any unprintable\n    characters. This (in combination, obviously, with our carelessness)\n    resulted in our software failing to handle MAC addresses correctly\n    if they happened to contain no unprintable characters.\n\n    - You can't do SNMP operations in blocking mode when nonblocking\n    SNMP sessions exist --- that is to say, Perl hasn't destructed them\n    yet. This occasionally catches performance bugs, but it's silly when\n    you're trying to send an SNMP trap, which doesn't block in any case,\n    or when your nonblocking SNMP sessions have merely not yet gone out\n    of scope.\n\n    - Its SNMP walk interface gives you the results of the walk in a\n    hash, so their order is scrobbled. There's another method to get the\n    order of the OIDs, though.\n\n    - With SNMPv2, it often returns error indicators in-band, as the\n    values of OIDs.\n\n    - it's completely unhelpful for dissecting captured SNMP packets\n    (say, for debugging) because demultiplexing and decoding logic are\n    closely intertwined, apparently for efficiency.\n\n    - it's not suitable for writing SNMP agents, because it discards\n    the types before it hands the data back to you. It also doesn't\n    document a way to receive requests and send responses. (It exists,\n    of course.)\n\n    - it's not suitable for making test stubs for systems that speak\n    SNMP, because it does too much on your behalf. For example, you\n    might want to verify that your management station handles negative\n    TIMETICKS values in a sane way, but Net::SNMP won't let you send\n    negative TIMETICKS values. (Net::SNMP does, by default.)\n\n    - it has a nonblocking mode, but it insists on using its own event\n    loop, which means you can't integrate it into, say, a POE program.\n\n    - it's huge and complicated, and therefore hard to maintain and\n    hard to find bugs in. Net::SNMP 4.1.2's .pm files total 9690 lines,\n    including 4456 distinct lines. These SNMP modules total 712 lines at\n    the moment, including 466 distinct lines. If you use Deparse,\n    Net::SNMP is about 2000 lines, while these SNMP modules are about\n    400. We had a couple of serious bugs in critical parts of our system\n    that turned out to come from bugs in Net::SNMP, but we only know\n    that because they disappeared when we upgraded to a new version of\n    Net::SNMP that fixed the bugs. I also find the Net::SNMP code hard\n    to read and understand, which may be just a dialect issue; you be\n    the judge.\n\n    Anyway, so as I posted a few days ago, I'm not sure what to call\n    it. I just uploaded it as NSNMP-0.5, after renaming it from SNMP.\n    Here I'm calling it Net::SNMP::Fast (with submodules\n    Net::SNMP::Fast::Mapper, Net::SNMP::Fast::Simple,\n    Net::SNMP::Fast::Agent, and soon, Net::SNMP::Fast::UsefulAgent) but\n    that seems awfully self-promoting. It's a lot like the CGI.pm vs.\n    CGI::Lite issue. Maybe I should call it Net::SNMP::Lite?\n\n    By the way, I hate using modules with lengthy names like\n    Net::SNMP::Fast::UsefulAgent. Net::NSNMP::UsefulAgent might be\n    better."
+   },
+   "meta" : {
+      "message_id" : "200401251114.i0PBEXcw031104@pause.perl.org",
+      "epoch" : 1075029273,
+      "from" : "upload@pause.perl.org",
+      "subject" : "Module submission Net::SNMP::Fast",
+      "file" : "25900.txt",
+      "type" : "module_submission"
+   }
+}
