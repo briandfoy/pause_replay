@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Ali Işık",
+         "id" : "LEPTON"
+      },
+      "description" : "Helps reduce error-handling clutter.",
+      "communities" : "",
+      "chapterid" : {
+         "name" : "Language_Extensions",
+         "id" : "2"
+      },
+      "similar" : "",
+      "DSLIP" : "adppp",
+      "modid" : "Error::Layout",
+      "enteredon" : "Mon Sep 17 15:27:02 2007 GMT",
+      "enteredby" : {
+         "name" : "Ali Işık",
+         "id" : "LEPTON"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "This module tries to help you organize your error handling code and\n    make your main logic code look less cluttered.\n\n    You C<use Error::Layout> in a central error-handling module of your\n    application:\n\n    package MyApp::Err; use Error::Layout; sub handle_err { ... } #\n    Optional default handler\n\n    Then, in any ordinary module of your application where\n    error-handling code seems to crowd out the main logic, you can C<use\n    MyApp::Err>, the error-handling module you created:\n\n    package MyApp::Foo; use MyApp::Err;\n\n    eval { # Risky business }; if ($@) { handle_err(); }\n\n    in which case Error::Layout will try to find a sub named\n    handle_err() in C<MyApp::Foo::Err> and C<MyApp::Err>, in that order.\n\n    package MyApp::Foo::Err; sub handle_err { ... }\n\n    If you want to pass arguments to your handler, you can use an\n    anonymous hash:\n\n    handle_err({ FOO => $foo });\n\n    If it is interested in the arguments, your handler should start by\n    unloading the arguments hashref:\n\n    sub handle_err { my (args_href) = @_; ... }\n\n    Your handler will always be passed an args_href, even if you did\n    not call it with one, and it will always have C<$@>, the eval error,\n    saved as the value for the key C<'_EVAL_ERR'>\n\n    sub handle_err { my (args_href) = @_; my $eval_err =\n    $args_href->{_EVAL_ERR}; ... }\n\n    If you have multiple handlers in one module, or just want to put\n    the handler in a module that is named in a way that reflects its\n    job, you can pass a module identifier (the name the handler's\n    separate module) to C<handle_err> as the first argument:\n\n    package MyApp::Foo; use MyApp::Err; # exports handle_err()\n\n    if ($error_condition_1) { handle_err('Condition_One'); } ... if\n    ($error_condition_2) { handle_err('Condition_Two', {FOO => $foo}); }\n\n    For the call C<handle_err('Condition_One');>, C<Error::Layout> will\n    look for an implementation of C<handle_err> in\n    C<MyApp::Foo::Err::Condition_One> and C<MyApp::Err::Condition_One>,\n    in that order. Any parameters hashref should come I<after> the\n    identifier, as shown in the C<'Condition Two'> example above.\n\n    If you want your error handlers to be named something other than\n    C<'handle_err'>, you should pass your desired name to\n    C<Error::Layout>:\n\n    use Error::Layout 'myapp_err';\n\n    Then, you should replace C<'handle_err'> with C<'myapp_err'> in all\n    the examples above."
+   },
+   "meta" : {
+      "message_id" : "200709171527.l8HFR2W3019253@pause.perl.org",
+      "epoch" : 1190042822,
+      "from" : "upload@pause.perl.org",
+      "subject" : "Module submission Error::Layout",
+      "file" : "56424.txt",
+      "type" : "module_submission"
+   }
+}

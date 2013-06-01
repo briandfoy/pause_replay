@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Mark Hedges",
+         "id" : "MARKLE"
+      },
+      "description" : "Perl Object-Oriented Framework",
+      "communities" : "modules@perl.org",
+      "chapterid" : {
+         "name" : "Data_Type_Utilities",
+         "id" : "6"
+      },
+      "similar" : "?",
+      "DSLIP" : "adpOg",
+      "modid" : "POOF",
+      "enteredon" : "Tue Nov 30 02:23:53 2004 GMT",
+      "enteredby" : {
+         "name" : "Mark Hedges",
+         "id" : "MARKLE"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "I guess this could be under Object::POOF too.\n\n    This is what I posted to modules@perl.org already...\n\n    Hi there. I've been working on and off for a few years on a generic\n    module/application framework I want to call POOF. I was impressed\n    reading about EJB's container-managed persistence and I wanted to\n    make SQL life for Perl objects a little easier to work with (and a\n    little more rigidly defined.)\n\n    Basically, a user setting up a web app defines a new class\n    MyApp::Whatever with a constructor that makes itself as a POOF, or a\n    more specialized POOF::User, POOF::Funk (function), or POOF::App,\n    POOF::Group, etc. Then the user defines fields in a database table\n    named \"whatever\" and optionally \"whatever_info\". This data is\n    automatically accessible:\n\n    # create a new db thread: $db = POOF::DB->new( [stuff] );\n\n    # share thread with new object: $whatever = MyApp::Whatever->new(\n    id => 1234, db => $db );\n\n    # get data from object's main table, # calls \"select * from\n    whatever where id = \".$self->id $quick_field =\n    $whatever->data->{field1};\n\n    # get data from object's info table $info_field =\n    $whatever->data_info->{field2};\n\n    # use cached data, instead of calling sql again: $info_cached =\n    $whatever->{data_info}->{field3};\n\n    # save routine does auto-quoting based on field types:\n    $whatever->{save}->{quick_field} = $newval_1;\n    $whatever->{save_info}->{info_field} = $newval_2; $whatever->save;\n\n    # commit the thread: $db->commit; # or $whatever->{db}->commit;\n\n    Additional features include POOF::Data::Shepherd, a machine class\n    object that operates on a 'herd' of objects of a particular class.\n    Simple fields set in MyApp::Whatever->init tell one Whatever that it\n    might contain many Whatsis objects, which would have an index\n    defined in the \"whatsis\" table called whatever_id. Then a particular\n    Whatever knows to instantiate a POOF::Data::Shepherd to call a herd\n    of Whatsis objects \"where whatsis.whatever_id = \".$whatever->id().\n    The Shepherd can do other things such as populating a tree or list\n    from a root or head object reference that contains a\n    self-referential field in its database table in addition to the\n    default 'id' field.\n\n    The POOF::DB object does some nifty tricks, including a subobject\n    POOF::DB::Fields that assigns dynamic subroutines that 'describe\n    table' and get field properties when called with a function matching\n    a table name. I did this with a typeglob and not autoload, I don't\n    know if that's preferred/faster. Right now it works with mysql, but\n    I plan to continue development with function space for other\n    databases in DB-related functions, especially POOF::Data::Shepherd's\n    methods of finding, breeding, crossing and comparing herds.\n\n    I would like to be able to create a second interface for an\n    application under POOF::App::NCurses (in addition to the current\n    defaut POOF::App::HTML), to provide equivalent interfaces for the\n    same POOF::Funk (function) tree. Who knows, maybe POOF::App::SOAP\n    eventually.\n\n    The POOF::Funk tree is managed by special POOF::Data::Shepherds\n    created by the user's MyApp::App instantiation of POOF::App. Each\n    leaf of the Funk tree can also be a head of a list, i.e. the start\n    of a sequential process or user interaction program. I still have to\n    write out menu functions to display the Funk tree in various ways.\n\n    It isn't done, but I've started a new job where I want to use the\n    code, only I don't want to give it to them, I want to release it to\n    the public. I think it's got a lot of potential and I will have\n    reason and occasion to work on it."
+   },
+   "meta" : {
+      "message_id" : "200411300224.iAU2O0vc019704@pause.perl.org",
+      "epoch" : 1101781440,
+      "from" : "upload@pause.perl.org",
+      "subject" : "Module submission POOF",
+      "file" : "36760.txt",
+      "type" : "module_submission"
+   }
+}

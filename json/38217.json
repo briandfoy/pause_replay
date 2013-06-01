@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "K Cody",
+         "id" : "KCODY"
+      },
+      "description" : "String data in SysV shared memory.",
+      "communities" : "",
+      "chapterid" : {
+         "name" : "Networking_Devices_IPC",
+         "id" : "5"
+      },
+      "similar" : "IPC::ShareLite",
+      "DSLIP" : "adpOp",
+      "modid" : "IPC::Shm::Simple",
+      "enteredon" : "Tue Feb  8 00:19:05 2005 GMT",
+      "enteredby" : {
+         "name" : "K Cody",
+         "id" : "KCODY"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "This class is the spawn of another, broader IPC::Shm project, which\n    aims to provide complete and intuitive access to PERL data shared\n    (or bequeathed) between processes.\n\n    That project originally used IPC::ShareLite as its lowest-level\n    interface to SysV shared memory. As the code progressed,\n    inadequacies in IPC::ShareLite's API became apparent:\n\n    1) Can only use ipckey's. No ability to attach to a shmid from\n    PERL, even though the C implementation itself does so. This results\n    in severe pollution of a 32-bit integer namespace... unfriendly\n    territory to begin with.\n\n    2) The existence of a sharelite_unlock() synonym at this layer\n    caused a major bug in sharelite_lock(LOCK_EX) to go undiscovered.\n\n    3) Redundant constructor arguments (create,exclusive).\n\n    4) Obtuse segment removal interface.\n\n    Of course, actually tearing through all the code revealed a few\n    more implementation shortcomings:\n\n    1) No real validation that IPC::ShareLite actually created the\n    shared memory segment it attached to, just the number '1' in the\n    segment header.\n\n    2) Inconsistent / broken error reporting. Even when the C code\n    appears to check error conditions, somehow only -EAGAIN ever gets\n    back to PERL.\n\n    3) The sharelite_version code doesn't seem to do anything about\n    wraparound, and it was coded as an unsigned int.\n\n    IPC::Shm::Simple aims to solve all of these issues, and provide a\n    clean and consistent API for IPC::Shm to complete.\n\n    Some of the changes will, of course, break existing IPC::ShareLite\n    users, thus are being made in a new module. At some later date, if\n    demand arises, a compatibility class would be trivial.\n\n    Namespace rationale: The usefulness of this (and the prior) module\n    is to store simple (string or numeric) data in SysV shared memory."
+   },
+   "meta" : {
+      "message_id" : "200502080019.j180J6hB015336@pause.perl.org",
+      "epoch" : 1107821946,
+      "from" : "upload@pause.perl.org",
+      "subject" : "Module submission IPC::Shm::Simple",
+      "file" : "38217.txt",
+      "type" : "module_submission"
+   }
+}

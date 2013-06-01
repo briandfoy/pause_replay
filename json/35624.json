@@ -1,0 +1,32 @@
+{
+   "data" : {
+      "userid" : {
+         "name" : "Laurent Dami",
+         "id" : "DAMI"
+      },
+      "description" : "pseudo-hashes as arrays tied to a \"type\"",
+      "communities" : "",
+      "chapterid" : {
+         "name" : "Data_Type_Utilities",
+         "id" : "6"
+      },
+      "similar" : "perlref fields Hash::Util Tie::Hash::FixedKeys Tie::StrictHash\n    Sort::Fields",
+      "DSLIP" : "Rdphp",
+      "modid" : "Hash::Type",
+      "enteredon" : "Tue Oct 12 19:33:47 2004 GMT",
+      "enteredby" : {
+         "name" : "Laurent Dami",
+         "id" : "DAMI"
+      },
+      "PS" : "The following links are only valid for module list maintainers:",
+      "rationale" : "The module has both a OO and a \"tie\" interface, so putting it in\n    the \"Tie\" namespace would not be appropriate.\n\n    I considered Hash::Pseudo, but this emphasizes too much the\n    implementation aspect. I prefer Hash::Type because it reads more\n    naturally in code like\n\n    my $personType = new Hash::Type (...) tie %thisGuy, $personType; my\n    $thisOtherGuy = new $personType (...)\n\n    A Hash::Type is a collection of field names. Internally, an index\n    is associated with each name. Such collections are created\n    dynamically and can be extended. They are used to build tied hashes,\n    either through C<tie> or through object-oriented method calls.\n\n    The 'pseudo-hashes' documented in L<perlref> are very similar, but\n    are deprecated starting from Perl 5.8.0. Each pseudo-hash holds its\n    own copy of key names in position 0 of the underlying array, whereas\n    hashes tied to C<Hash::Type> hold a reference to a shared collection\n    of keys.\n\n    Typed references together with the C<use fields> pragma provide\n    support for compile-time translation of key names to array indices;\n    see L<fields>. This will be faster, but will not help if field names\n    are only known at runtime (like in the flat file parsing example of\n    the synopsis).\n\n    For other ways to restrict the keys of a hash to a fixed set, see\n    L<Hash::Util/lock_keys>, L<Tie::Hash::FixedKeys>,\n    L<Tie::StrictHash>.\n\n    The L<Sort::Fields> module in CPAN uses similar techniques for\n    dynamically building sorting criterias according to field positions;\n    but it is intended for numbered fields, not for named fields, and\n    has no support for caller-supplied comparison operators. The design\n    is also a bit different : C<fieldsort> does everything at once\n    (splitting, comparing and sorting), whereas C<Hash::Type::cmp> only\n    compares, and leaves it to the caller to do the rest."
+   },
+   "meta" : {
+      "message_id" : "200410121933.i9CJXlL7011541@pause.perl.org",
+      "epoch" : 1097609627,
+      "from" : "upload@pause.perl.org",
+      "subject" : "Module submission Hash::Type",
+      "file" : "35624.txt",
+      "type" : "module_submission"
+   }
+}
