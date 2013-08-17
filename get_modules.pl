@@ -16,7 +16,7 @@ say "$count, $first, $last";
 my $dir = $group;
 mkdir $dir, 0755 unless -d $dir;
 
-foreach my $i ( $first .. $last ) {
+foreach my $i ( reverse $first .. $last ) {
 	my $file = catfile( $dir, "$i.txt" );
 	next if -s $file;
 	open my $fh, '>', $file;
