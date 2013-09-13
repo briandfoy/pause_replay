@@ -1,0 +1,117 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:87305
+Return-Path: <robrwo@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 11299 invoked from network); 30 Aug 2013 18:01:46 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 30 Aug 2013 18:01:46 -0000
+Received: (qmail 8796 invoked by uid 225); 30 Aug 2013 18:01:45 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8792 invoked by alias); 30 Aug 2013 18:01:45 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FROM,HTML_MESSAGE,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-pb0-f49.google.com (HELO mail-pb0-f49.google.com) (209.85.160.49)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 30 Aug 2013 11:01:39 -0700
+Received: by mail-pb0-f49.google.com with SMTP id xb4so2168474pbc.22
+        for <modules@perl.org>; Fri, 30 Aug 2013 11:01:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:date:message-id:subject:from:to:content-type;
+        bh=1fq27cm/e4tDu4E3rSrc3yVhG63WHyzvJ3g+tVWOp3o=;
+        b=FW8dF7keb8S7p2kFp/3stjtm4jFN8BbxJreVzpm7CphCOYu/M+yIyLU8+HkKf8WxqX
+         amz2l/Jvv8zthU71nOpJbhsQ7Jx2gLxmkxN0lZZA1rZpulIo3jW1mO7kwjG84u8AJVYs
+         IR/e4Ce7URFs0wEKNLicFKZkmaD7bvtp8jWFWndwrfacvEYh7eUYQoWR+5Oso85yODQg
+         ns2+f4ae9ULGF7xXW6pCwFEvh2p85s3YwED886HLXSGNospVM/wPZ5309LGWK8GSvYyw
+         zTbMr96MPxiiEifJCa8zScLJKixw2Z2IWZ39aXv/XcYPQrXe5upliSMS6C21/6zeF7uA
+         dHzg==
+MIME-Version: 1.0
+X-Received: by 10.68.167.132 with SMTP id zo4mr11468519pbb.129.1377885695428;
+ Fri, 30 Aug 2013 11:01:35 -0700 (PDT)
+Sender: robrwo@gmail.com
+Received: by 10.70.7.195 with HTTP; Fri, 30 Aug 2013 11:01:35 -0700 (PDT)
+Date: Fri, 30 Aug 2013 19:01:35 +0100
+X-Google-Sender-Auth: Lu1VXkfpD_r5oE2rn5U0Et35oQM
+Message-ID: <CANxqH4QkTLgS6-Md2XHmQwWcv5OZA8A0u6Z1V5jwcn7=WZ7wzA@mail.gmail.com>
+Subject: What to call a module that rewrites Perl code
+To: modules@perl.org
+Content-Type: multipart/alternative; boundary=047d7bd6aa706ad0ab04e52e03d8
+Approved: news@nntp.perl.org
+From: rrwo@cpan.org (Robert Rothenberg)
+
+--047d7bd6aa706ad0ab04e52e03d8
+Content-Type: text/plain; charset=ISO-8859-1
+
+At $work, I've been writing scripts that use PPI to munge massive amounts
+of legacy code. So far simple things like changing die/warn to croak/carp,
+ensuring all modules specify a minimum version number, or changing print
+"foo\n" so say "foo", etc. It seems worthy enough to turn this code into a
+CPAN module.
+
+My thoughts are that it would use a plugin system for specific tasks, and a
+command-line script that takes plugin names as arguments, so basically
+you'd run the script to apply various tasks to a set of modules or scripts
+in a directory, perhaps using a configuration file for each of the plugins.
+
+The early version would have simple plugins, but there's no reason why more
+complex plugins couldn't be written (e.g. to translate a non-Moose  class
+into something Moose-like), or other things like optimize certain kinds of
+expressions.
+
+I'm well aware of the limitations of doing this automatically. But the idea
+is to get a script that can do the bulk of the tedious rewriting, so that a
+human can clean up the mistakes. It's meant to be run by intelligent people
+who use things like version control and tests.
+
+So what should it be called? I'm thinking Perl::Rewrite is the best name.
+
+Alternatives are:
+- Perl::Refactor - except "refactoring" has a technical meaning that I
+don't think applies
+- Perl::Modernize - except that one might want a plugin that translates
+newer-style code into older code
+- Perl::Munge - except that it connotes sloppiness
+- Perl::Snorft - no, just kidding.... I have no idea what that means.
+- ?
+
+Thanks,
+Rob
+
+--047d7bd6aa706ad0ab04e52e03d8
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div><div><div><div><div><div><div>At $work, I&#39;ve been=
+ writing scripts that use PPI to munge massive amounts of legacy code. So f=
+ar simple things like changing die/warn to croak/carp, ensuring all modules=
+ specify a minimum version number, or changing print &quot;foo\n&quot; so s=
+ay &quot;foo&quot;, etc. It seems worthy enough to turn this code into a CP=
+AN module.<br>
+<br>My thoughts are that it would use a plugin system for specific tasks, a=
+nd a command-line script that takes plugin names as arguments, so basically=
+ you&#39;d run the script to apply various tasks to a set of modules or scr=
+ipts in a directory, perhaps using a configuration file for each of the plu=
+gins.<br>
+<br></div><div>The early version would have simple plugins, but there&#39;s=
+ no reason why more complex plugins couldn&#39;t be written (e.g. to transl=
+ate a non-Moose=A0 class into something Moose-like), or other things like o=
+ptimize certain kinds of expressions.<br>
+<br></div><div>I&#39;m well aware of the limitations of doing this automati=
+cally. But the idea is to get a script that can do the bulk of the tedious =
+rewriting, so that a human can clean up the mistakes. It&#39;s meant to be =
+run by intelligent people who use things like version control and tests.<br=
+>
+</div><div><br></div>So what should it be called? I&#39;m thinking Perl::Re=
+write is the best name.<br><br></div>Alternatives are:<br></div>- Perl::Ref=
+actor - except &quot;refactoring&quot; has a technical meaning that I don&#=
+39;t think applies<br>
+</div>- Perl::Modernize - except that one might want a plugin that translat=
+es newer-style code into older code<br></div>- Perl::Munge - except that it=
+ connotes sloppiness<br></div>- Perl::Snorft - no, just kidding.... I have =
+no idea what that means.<br>
+</div><div>- ?<br><br></div><div>Thanks,<br></div><div>Rob<br></div></div>
+
+--047d7bd6aa706ad0ab04e52e03d8--

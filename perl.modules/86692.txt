@@ -1,0 +1,147 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:86692
+Return-Path: <sludin@ludin.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 18615 invoked from network); 12 Jul 2013 22:57:14 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 12 Jul 2013 22:57:14 -0000
+Received: (qmail 31079 invoked by uid 225); 12 Jul 2013 22:57:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31074 invoked by alias); 12 Jul 2013 22:57:13 -0000
+X-Spam-Status: No, hits=-1.1 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,SPF_NEUTRAL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from nm15-vm6.access.bullet.mail.bf1.yahoo.com (HELO nm15-vm6.access.bullet.mail.bf1.yahoo.com) (216.109.115.37)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 12 Jul 2013 15:57:03 -0700
+Received: from [66.196.81.160] by nm15.access.bullet.mail.bf1.yahoo.com with NNFMP; 12 Jul 2013 22:56:51 -0000
+Received: from [98.138.226.243] by tm6.access.bullet.mail.bf1.yahoo.com with NNFMP; 12 Jul 2013 22:56:51 -0000
+Received: from [127.0.0.1] by smtp114.sbc.mail.ne1.yahoo.com with NNFMP; 12 Jul 2013 22:56:51 -0000
+X-Yahoo-Newman-Id: 199294.91841.bm@smtp114.sbc.mail.ne1.yahoo.com
+X-Yahoo-Newman-Property: ymail-3
+X-YMail-OSG: h6IANeEVM1mU0dVjDEW0H6VBOB75KspsByoPJMSLZC_YJvz
+ QOg3z03QDav66PQw6OMd00LmjFZrsLNbyQIknCZJ9usj1.gcF9k7Rv0wwfCP
+ Wt16FN9pHp.LkqH2xh2Yn2oacHOFlrWV0eMcSgDBRFSphehZM3fyJxOz3X9C
+ zwEZCsrb8Fr5AcwlR4qJWolNogyVm1ZsizlQ5PSbacnbabXsnnsuaXoiVOtp
+ vyHKawNoxODXKO8OyJULJMcEg56kqnKpo9eUQaNPZbFGaKA5S6rTJQiugWJ_
+ LGOqP05lQIB3P_TDRFo_MKATgYbe91U0plbsxtKDxTc.2VZdtY5b11d79eAU
+ Tx_4C5AXWqCxvZCwJVmsHP4SkziH6LF3gzSbGcarTsY9i.7cZk2NKyHDtlKR
+ sM8UF5NtYkDgL0Aoi_pM1HbpJe_ycbef.6zGYPfX1iflEgZT0veCq0JY_pXe
+ mRDr6WQq8jaRD2IVc5Q18uAfjsjpJDxRf7LD1IvWI2SS9harOh7OSrb3zhQ9
+ 70vR73G.IJ4e4hRQr0Bo3aFTZuDTTCxS4xzuSyk0WReGgMLkw4c75
+X-Yahoo-SMTP: BdXAlZqswBDiPyAaIQ5ChxAZ41z9jXQWAy5hSsjFtA--
+X-Rocket-Received: from [192.168.10.114] (sludin@75.57.12.208 with login)
+        by smtp114.sbc.mail.ne1.yahoo.com with SMTP; 12 Jul 2013 15:56:51 -0700 PDT
+User-Agent: Microsoft-MacOutlook/14.2.5.121010
+Date: Fri, 12 Jul 2013 15:56:44 -0700
+Subject: Naming for HTTP/2.0 modules
+To: <modules@perl.org>
+Message-ID: <CE05D7BC.46B21%sludin@ludin.org>
+Thread-Topic: Naming for HTTP/2.0 modules
+Mime-version: 1.0
+Content-type: multipart/alternative;
+	boundary="B_3456489410_66658092"
+Approved: news@nntp.perl.org
+From: sludin@ludin.org (Stephen Ludin)
+
+--B_3456489410_66658092
+Content-type: text/plain;
+	charset="US-ASCII"
+Content-transfer-encoding: 7bit
+
+Hello,
+
+I am a 20 year veteran of perl coding, but have taken that long to get
+around to a project that I think is worth sharing with the rest of the
+community.  I am taking part in the IETF httpbis working group and creating
+an implementation of the HTTP-draft-04/2.0 specification.  The initial goal
+of this implementation is to participate in the IEFT httpbis interim interop
+session in Hamburg at the beginning of August.  Eventually I would like it
+to evolve into a standard HTTP/2.0 implementation for use by all.  Walk,
+crawl, run.
+
+My inclination is to create modules in a new Net:HTTP2 namespace.  For
+example:
+
+Net::HTTP2
+Net::HTTP2::Compress
+Net::HTTP2::Frame
+Net::HTTP2::Stream
+Net::HTTP2::Connection
+
+Asynchronous IO code will leverage IO::Async ( IO::Async::SSL ):
+
+IO::Async::HTTP2::Framer
+
+Client and Server libraries which leverage the above protocol level
+libraries will be in:
+
+Net::HTTP2::Client
+Net::HTTP2::Server
+
+There will also be example scripts using the above two libraries which may
+or may not be appropriate for inclusion.
+
+I am considering making a user-agent interface compatible with
+LWP::UaerAgent.  Long term my hope would be LWP would leverage the above
+code, or something like it, for its HTTP/2.0 capability and few would use
+the HTTP/2.0 code directly.
+
+What are your thoughts?  I am not married to any naming scheme.  The above
+seemed logical.
+
+As an aside, in development of the HTTP2 I bootstrapped with a (yet another)
+SPDY/3 implementation.  I am very happy to contribute that as well but my
+gut says it would make more sense to build on one of the two existing
+modules I found rather than adding a third.
+
+-stephen
+
+
+
+
+
+
+--B_3456489410_66658092
+Content-type: text/html;
+	charset="US-ASCII"
+Content-transfer-encoding: quoted-printable
+
+<html><head></head><body style=3D"word-wrap: break-word; -webkit-nbsp-mode: s=
+pace; -webkit-line-break: after-white-space; color: rgb(0, 0, 0); font-size:=
+ 14px; font-family: Calibri, sans-serif; "><div>Hello,</div><div><br></div><=
+div>I am a 20 year veteran of perl coding, but have taken that long to get a=
+round to a project that I think is worth sharing with the rest of the commun=
+ity. &nbsp;I am taking part in the IETF httpbis working group and creating a=
+n implementation of the HTTP-draft-04/2.0 specification. &nbsp;The initial g=
+oal of this implementation is to participate in the IEFT httpbis interim int=
+erop session in Hamburg at the beginning of August. &nbsp;Eventually I would=
+ like it to evolve into a standard HTTP/2.0 implementation for use by all. &=
+nbsp;Walk, crawl, run.</div><div><br></div><div>My inclination is to create =
+modules in a new Net:HTTP2 namespace. &nbsp;For example:</div><div><br></div=
+><div>Net::HTTP2</div><div><div>Net::HTTP2::Compress</div></div><div><div>Ne=
+t::HTTP2::Frame</div></div><div><div>Net::HTTP2::Stream</div></div><div><div=
+>Net::HTTP2::Connection</div></div><div><br></div><div>Asynchronous IO code =
+will leverage IO::Async ( IO::Async::SSL ):</div><div><br></div><div>IO::Asy=
+nc::HTTP2::Framer</div><div><br></div><div>Client and Server libraries which=
+ leverage the above protocol level libraries will be in:</div><div><br></div=
+><div><div>Net::HTTP2::Client</div><div>Net::HTTP2::Server</div></div><div><=
+br></div><div>There will also be example scripts using the above two librari=
+es which may or may not be appropriate for inclusion.</div><div><br></div><d=
+iv>I am considering making a user-agent interface compatible with LWP::UaerA=
+gent. &nbsp;Long term my hope would be LWP would leverage the above code, or=
+ something like it, for its HTTP/2.0 capability and few would use the HTTP/2=
+.0 code directly.</div><div><br></div><div>What are your thoughts? &nbsp;I a=
+m not married to any naming scheme. &nbsp;The above seemed logical.</div><di=
+v><br></div><div>As an aside, in development of the HTTP2 I bootstrapped wit=
+h a (yet another) SPDY/3 implementation. &nbsp;I am very happy to contribute=
+ that as well but my gut says it would make more sense to build on one of th=
+e two existing modules I found rather than adding a third.</div><div><br></d=
+iv><div>-stephen</div><div><br></div><div><br></div><div><br></div></body></=
+html>
+
+--B_3456489410_66658092--
+
+
