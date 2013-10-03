@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:87673
+Return-Path: <brian.d.foy@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4941 invoked from network); 2 Oct 2013 18:17:28 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 2 Oct 2013 18:17:28 -0000
+Received: (qmail 9165 invoked by uid 225); 2 Oct 2013 18:17:28 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9160 invoked by alias); 2 Oct 2013 18:17:28 -0000
+X-Spam-Status: No, hits=-2.0 required=8.0
+	tests=ALL_TRUSTED,BAYES_00,DKIM_ADSP_CUSTOM_MED,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO x6.develooper.com) (207.171.7.86)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 02 Oct 2013 11:17:17 -0700
+Received: from lists-nntp.develooper.com (localhost.localdomain [127.0.0.1])
+	by x6.develooper.com (Postfix) with SMTP id 1A62F1781A
+	for <modules@perl.org>; Wed,  2 Oct 2013 11:17:14 -0700 (PDT)
+Received: (qmail 4938 invoked by uid 515); 2 Oct 2013 18:17:13 -0000
+To: modules@perl.org, kamelkev@underprint.com (Kevin Kamel)
+Subject: Re: problems with pause module import
+Date: Wed, 02 Oct 2013 14:17:13 -0400
+Reply-To: modules@perl.org
+Posted-And-Mailed: yes
+Message-ID: <021020131417135031%brian.d.foy@gmail.com>
+References: <CAPZfcucQMKmhXd=tPYL+JgbvmD577kidkiTMv1C4VN8RWcySbw@mail.gmail.com>
+Organization: The Perl Review, LLC
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+User-Agent: Thoth/1.9.0 (Mac OS X)
+X-Posted-By: 173.69.4.111
+Approved: news@nntp.perl.org
+From: brian.d.foy@gmail.com (brian d foy)
+
+[[ This message was both posted and mailed: see
+   the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+In article
+<CAPZfcucQMKmhXd=tPYL+JgbvmD577kidkiTMv1C4VN8RWcySbw@mail.gmail.com>,
+Kevin Kamel <kamelkev@underprint.com> wrote:
+
+> I've been using this service for a long time to distribute a module I have.
+> Today I made some updates and I started receiving import errors.
+
+> Status: Decreasing version number
+>           =================================
+> 
+>      module: CSS::Inliner
+>           version: undef
+>           in file: CSS-Inliner-3912/lib/CSS/Inliner.pm
+>           status: Not indexed because CSS-Inliner-3674/lib/CSS/Inliner.pm in
+>              K/KA/KAMELKEV/CSS-Inliner-3674.tar.gz has a higher version
+>              number (3674)
+
+The PAUSE indexer didn't find a $VERSION in that file, so it shows up
+as undef. A previous distribution, 3674, did declare a version:
+
+http://cpansearch.perl.org/src/KAMELKEV/CSS-Inliner-3674/lib/CSS/Inliner.
+pm
+
+It looks like you removed that in the next version:
+
+http://cpansearch.perl.org/src/KAMELKEV/CSS-Inliner-3901/lib/CSS/Inliner.
+pm
+
+PAUSE does not index files where the value of $VERSION is less than the
+previously indexed version. That's why you got the warning.
+
+You re-added a $VERSION in the latest version (3913):
+
+http://cpansearch.perl.org/src/KAMELKEV/CSS-Inliner-3913/lib/CSS/Inliner.
+pm
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+PAUSE instructions:  http://pause.perl.org/pause/query?ACTION=pause_04about
+Archives: http://www.xray.mpe.mpg.de/mailing-lists/modules
+Please send all messages back to modules@perl.org with no CC to me.
