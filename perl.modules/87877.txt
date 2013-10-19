@@ -1,0 +1,99 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:87877
+Return-Path: <wes@hardakers.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 31105 invoked from network); 16 Oct 2013 18:28:35 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 16 Oct 2013 18:28:35 -0000
+Received: (qmail 16802 invoked by uid 225); 16 Oct 2013 18:28:34 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 16798 invoked by alias); 16 Oct 2013 18:28:34 -0000
+X-Spam-Status: No, hits=-3.9 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_LOW,RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail.hardakers.net (HELO mail.hardakers.net) (168.150.236.43)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 16 Oct 2013 11:28:19 -0700
+Received: from localhost (50-1-19-226.dsl.dynamic.sonic.net [50.1.19.226])
+	by mail.hardakers.net (Postfix) with ESMTPSA id 617A82A4E2;
+	Wed, 16 Oct 2013 11:28:12 -0700 (PDT)
+To: Jens Rehsack <rehsack@gmail.com>
+Cc: modules@perl.org,  Wes Hardaker <wjhns117@hardakers.net>,  "David M. Town" <dtown@cpan.org>
+Subject: Re: ADOPTing SNMP (and maybe Net-SNMP)
+References: <2BE11E26-3C8A-4251-8235-60718B5B8334@gmail.com>
+	<0lk3hicayq.fsf@wjh.hardakers.net>
+	<4FFC315B-0BD9-4E9D-8D12-656036FE9A15@gmail.com>
+Date: Wed, 16 Oct 2013 11:28:09 -0700
+In-Reply-To: <4FFC315B-0BD9-4E9D-8D12-656036FE9A15@gmail.com> (Jens Rehsack's
+	message of "Tue, 15 Oct 2013 09:15:06 +0200")
+Message-ID: <0l38o13wau.fsf@wjh.hardakers.net>
+User-Agent: Gnus/5.130008 (Ma Gnus v0.8) Emacs/24.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: wes@hardakers.net (Wes Hardaker)
+
+Jens Rehsack <rehsack@gmail.com> writes:
+
+> The question is not, are you responsible - the question is, are you relia=
+ble.
+> Perl and CPAN have an active community. SNMP hasn't been updated since 20=
+07
+> and could need a lot of enhancements.
+
+Ah, but it's a lot more tricky than that.  Our recommended install path
+is actually to get the Net-SNMP source and install it, as it installs
+the perl SNMP module too.
+
+And the reason that CPAN is intentionally old is that people have
+complained (loudly) when the current SNMP module requires the most
+current Net-SNMP libraries, which *aren't* on their system.  And because
+the .xs file links against specific versions of the Net-SNMP library,
+they are tightly coupled.
+
+So in short, on most systems you should either:
+
+1) install the default perl/SNMP/Net-SNMP bundles that come with the OS
+2) build and install everything from the Net-SNMP source tarball that
+   properly aligns the libraries and SNMP module.
+
+At one point in the past we always had the SNMP module up to date on
+CPAN, and we got endless complaints about people doing auto-updates but
+couldn't for the SNMP module because of the versioning requirements.
+They *wanted* us to leave the one in CPAN old so that it wouldn't ask
+them to update.
+
+In short: everything is a huge pain and it's not a winable situation.
+Any option we had would make someone unhappy.
+
+> Further: SNMP should be a "meta-module" like JSON and switch to Alien::SN=
+MP or
+> Lib::SNMP (in favor), Net::SNMP or any other XS binding or Pure-Perl
+> module =E2=80=A6
+
+Maybe so, if we were going to ideally change the world.  But there is a
+huge amount of existing code out there that uses the SNMP perl module
+and thus unless the APIs were identical, all that existing code would
+break.  So that's likely a non-starter.
+
+> Adopting the module would allow me to do such namespace cleanup, and
+> having created an own SNMP agent and wrote a lot of ASN.1 based
+> communication software (SNMP, SUPL, =E2=80=A6) makes me experienced enoug=
+h to
+> honor previous authors contribution and improve for CPAN.
+
+You're welcome to contribute patches to the SNMP module through the
+Net-SNMP tracker if you like.  We always welcome new help.
+
+It sounds like you're wanting to rewrite an existing module.  IE, you're
+looking for a name space to take and make your own.  Why not just create
+a new module with a new name if you're intending to write something from sc=
+ratch?
+--=20
+Wes Hardaker=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+My Pictures:  http://capturedonearth.com/
+My Thoughts:  http://pontifications.hardakers.net/
