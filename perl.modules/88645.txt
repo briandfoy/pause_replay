@@ -1,0 +1,329 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:88645 perl.module-authors:10318
+Return-Path: <mt1957@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 865 invoked from network); 27 Dec 2013 18:19:15 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 27 Dec 2013 18:19:15 -0000
+Received: (qmail 11354 invoked by uid 225); 27 Dec 2013 18:19:15 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11342 invoked by alias); 27 Dec 2013 18:19:15 -0000
+X-Spam-Status: No, hits=-2.4 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,HTML_MESSAGE,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wi0-f179.google.com (HELO mail-wi0-f179.google.com) (209.85.212.179)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 27 Dec 2013 10:19:13 -0800
+Received: by mail-wi0-f179.google.com with SMTP id z2so9835303wiv.12
+        for <multiple recipients>; Fri, 27 Dec 2013 10:19:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:date:from:user-agent:mime-version:to:subject
+         :content-type;
+        bh=yJTHeQafPAr+NVDOwhT+ZwIa21zwC1DJ9mU0qLWznI8=;
+        b=fxK41Fu429ZrSs3Ok9nbmQ52tdLgV71PeRplCYUpRDg8t7DPTuzYtzxFf/mRCffqTz
+         FcUu0Y02IXb1PC3NhxOi82SZ6vUqwLmtvLlvkvVTOTOictXv1zpAhSXoDNiunQfaps3S
+         BRKx+7BaXfQQs67b9zaheTQqoG4pUCcUzl2KYnipoZuJXFyiaXu1MDp/RoUVfxtfqPkV
+         SyEBVxWrteoS3ZCU0jeffXa2clBtljzJGQOc+6EY75+1NKi82/vPWpQmJWRi9vHmE9kp
+         fFG6M3w81w4bmPMxilUs3k8ikN0dc9lFt+NUW+UNpRI75iPKsMGYepgoE5uP1y9ONBgg
+         d4xQ==
+X-Received: by 10.180.106.134 with SMTP id gu6mr34568206wib.31.1388168348216;
+        Fri, 27 Dec 2013 10:19:08 -0800 (PST)
+Received: from [192.168.0.22] (i37036.upc-i.chello.nl. [62.195.37.36])
+        by mx.google.com with ESMTPSA id x4sm52909982wif.0.2013.12.27.10.19.06
+        for <multiple recipients>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 27 Dec 2013 10:19:07 -0800 (PST)
+Message-ID: <52BDC499.90300@gmail.com>
+Date: Fri, 27 Dec 2013 19:19:05 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20100101 Thunderbird/24.1.0
+MIME-Version: 1.0
+To: modules@perl.org, module-authors@perl.org
+Subject: Choosing the right name
+Content-Type: multipart/alternative;
+ boundary="------------090901020904060905060106"
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: mt1957@gmail.com (mt1957)
+
+--------------090901020904060905060106
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Dear forum,
+
+I've created a set of modules for which I want to find a proper name. At 
+the moment I've named the top level AppState for Application State. I 
+will explain what it does and what the sub modules do below it. You will 
+see that there is also some reinvention of existing wheels but, of 
+course, slightly different. I would like to have comments and 
+suggestions too on that.
+
+The thought was that most programs have always the same ordinary tasks 
+to do like logging, storing data, communicating with servers, processing 
+commandline arguments etcetera thereby thinking of a 'state of being'. 
+There are modules out there for these things but not under one hood. 
+This set uses some of the modules already on the CPAN.
+
+*AppState*
+This module is a singleton module and does not do much except for 
+looking around for plugins in certain directories. The user of the 
+AppState object can ask for the plugin objects to do several tasks. 
+AppState keeps the addresses so when asked again it will give the same 
+object address back. Very handy when opening a log file in one part of 
+the program and use it again in another. AppState controls also some
+directories in which to store files for logging, pids, temp files and 
+config.
+
+*AppState::Config*
+Configuration file control. At the moment it uses the modules YAML, 
+Storable, Datadumper, JSON, FreezeThaw and Memcached to load and store 
+data in several formats. I have to check out if I can use other modules 
+such as Config::Any or Application::Config
+
+*AppState::Log*
+Logging of actions from anywhere in the program. Main differences from 
+other modules are
+
+  * Check for repeated messages
+  * Check of repetition of the date and time so there is more room for
+    the message
+  * Flag to show warning/error messages on STDOUT
+  * Flag to die on error. Takes away the need to have an extra test to
+    die after logging.
+  * Show stack dump on warning/error messages without path to file of
+    module. This makes it a lot cleaner and easier to find the line in
+    your code. The path to a modules file is not needed most of the time.
+
+*AppState::Process*
+Process control and communication. Purpose is to create server processes 
+and to communicate with a such server. There is one method only at the 
+moment which is IPC messaging. Ideas are to use dbus and several network 
+communication protocols to get to MongoDb, Http servers etc. From this 
+you can see that it is not necessary to
+create your own server but that it should be possible to reach existing 
+servers too.
+
+*AppState::CommandLine*
+Command-line options and argument processing. Module uses Getopt::Long 
+to get the options. The extra is that this module accepts extra 
+descriptions text from the caller to create a proper help message 
+explaining the complete use of the program. I believe there is such a 
+module available but it misses the possibility to add explanation text 
+of any arguments.
+
+*AppState::PluginManager*
+Plugin manager. This is the bases of several modules in this set. While 
+there are a few implementations for this purpose this one does the following
+   - Search for plugins in specified directories.
+   - Instanciate plugin objects only when called for.
+   - Plugin object addresses can be saved for next request or thrown away.
+   - Check plugins for obligatory methods and add stubs when not available.
+
+*AppState::NodeTree*
+Nodetree builder. Builds a hierarchical structure of node objects in 
+memory from a given data structure. After the build one can traverse the 
+tree in several ways. While traversing it calls user functions to do 
+something at each node. Methods must still be added to search for nodes 
+and manipulate the node tree.
+
+
+Well, this is it. However, I've been busy and created another set of 
+modules to convert data into other representations. It's based on a few 
+of the modules above. The module is called Data2any. It started as a 
+program to convert yaml into xml using a module Yaml2xml. With the above 
+modules it is possible to read the data from other representations and 
+changed the name into Data2xml. A short while ago I've extracted a 
+specific part from the main module as a Xml translator module so changed 
+the name again into Data2any.
+
+*Data2any*
+Module to control the data to something-else translation process.
+
+*Data2any::Tools*
+*Data2any::TranslatorTools*
+Tool boxes for the plugins and translators
+
+*Data2any::Xml*
+Translator to convert to xml
+
+*Data2any::Xml::****
+Location of plugins used with the Xml translator
+*
+Data2any::Xml::LinkFile.pm
+*Example plugin to include files from other locations instead of using 
+XML xinclude and others.
+
+*Data2any::Xml::LorumIpsum
+*Example plugin to generate text to fill in paragraphs and the like.*
+*
+
+
+Ideas for translators are Tex and LaTex, specific Xml dialects such as 
+Docbook, Html5 or something like that to support more control on what is 
+acceptable for that specific language. Other ideas I have are not really 
+using a module as a translator but for creating a GUI interface based on 
+Wx or Tk in the same way Qt designer and KDE Kommander has its GUI saved 
+in xml.
+
+
+Hopefully this info will not give a headache.
+I wish you all a happy new year,
+
+Marcel Timmerman
+
+
+
+
+
+--------------090901020904060905060106
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;
+      charset=ISO-8859-1">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    Dear forum,<br>
+    <br>
+    I've created a set of modules for which I want to find a proper
+    name. At the moment I've named the top level AppState for
+    Application State. I will explain what it does and what the sub
+    modules do below it. You will see that there is also some
+    reinvention of existing wheels but, of course, slightly different. I
+    would like to have comments and suggestions too on that.<br>
+    <br>
+    The thought was that most programs have always the same ordinary
+    tasks to do like logging, storing data, communicating with servers,
+    processing commandline arguments etcetera thereby thinking of a
+    'state of being'. There are modules out there for these things but
+    not under one hood. This set uses some of the modules already on the
+    CPAN.<br>
+    <br>
+    <b>AppState</b><br>
+    This module is a singleton module and does not do much except for
+    looking around for plugins in certain directories. The user of the
+    AppState object can ask for the plugin objects to do several tasks.
+    AppState keeps the addresses so when asked again it will give the
+    same object address back. Very handy when opening a log file in one
+    part of the program and use it again in another. AppState controls
+    also some<br>
+    directories in which to store files for logging, pids, temp files
+    and config.<br>
+    <br>
+    <b>AppState::Config</b><br>
+    Configuration file control. At the moment it uses the modules YAML,
+    Storable, Datadumper, JSON, FreezeThaw and Memcached to load and
+    store data in several formats. I have to check out if I can use
+    other modules such as Config::Any or Application<span
+      class="sh_symbol">::</span>Config <br>
+    <br>
+    <b>AppState::Log</b><br>
+    Logging of actions from anywhere in the program. Main differences
+    from other modules are<br>
+    <ul>
+      <li>Check for repeated messages</li>
+      <li>Check of repetition of the date and time so there is more room
+        for the message</li>
+      <li>Flag to show warning/error messages on STDOUT</li>
+      <li>Flag to die on error. Takes away the need to have an extra
+        test to die after logging.</li>
+      <li>Show stack dump on warning/error messages without path to file
+        of module. This makes it a lot cleaner and easier to find the
+        line in your code. The path to a modules file is not needed most
+        of the time.<br>
+      </li>
+    </ul>
+    <b>AppState::Process</b><br>
+    Process control and communication. Purpose is to create server
+    processes and to communicate with a such server. There is one method
+    only at the moment which is IPC messaging. Ideas are to use dbus and
+    several network communication protocols to get to MongoDb, Http
+    servers etc. From this you can see that it is not necessary to <br>
+    create your own server but that it should be possible to reach
+    existing servers too.<br>
+    <br>
+    <b>AppState::CommandLine</b><br>
+    Command-line options and argument processing. Module uses
+    Getopt::Long to get the options. The extra is that this module
+    accepts extra descriptions text from the caller to create a proper
+    help message explaining the complete use of the program. I believe
+    there is such a module available but it misses the possibility to
+    add explanation text of any arguments.<br>
+    <br>
+    <b>AppState::PluginManager</b><br>
+    Plugin manager. This is the bases of several modules in this set.
+    While there are a few implementations for this purpose this one does
+    the following<br>
+    &nbsp; - Search for plugins in specified directories.<br>
+    &nbsp; - Instanciate plugin objects only when called for.<br>
+    &nbsp; - Plugin object addresses can be saved for next request or thrown
+    away.<br>
+    &nbsp; - Check plugins for obligatory methods and add stubs when not
+    available.<br>
+    <br>
+    <b>AppState::NodeTree</b><br>
+    Nodetree builder. Builds a hierarchical structure of node objects in
+    memory from a given data structure. After the build one can traverse
+    the tree in several ways. While traversing it calls user functions
+    to do something at each node. Methods must still be added to search
+    for nodes and manipulate the node tree.<br>
+    <br>
+    <br>
+    Well, this is it. However, I've been busy and created another set of
+    modules to convert data into other representations. It's based on a
+    few of the modules above. The module is called Data2any. It started
+    as a program to convert yaml into xml using a module Yaml2xml. With
+    the above modules it is possible to read the data from other
+    representations and changed the name into Data2xml. A short while
+    ago I've extracted a specific part from the main module as a Xml
+    translator module so changed the name again into Data2any.<br>
+    <br>
+    <b>Data2any</b><br>
+    Module to control the data to something-else translation process.<br>
+    <br>
+    <b>Data2any::Tools</b><br>
+    <b>Data2any::TranslatorTools</b><br>
+    Tool boxes for the plugins and translators<br>
+    <br>
+    <b>Data2any::Xml</b><br>
+    Translator to convert to xml<br>
+    <br>
+    <b>Data2any::Xml::</b><b>*</b><br>
+    Location of plugins used with the Xml translator<br>
+    <b><br>
+      Data2any::Xml::LinkFile.pm<br>
+    </b>Example plugin to include files from other locations instead of
+    using XML xinclude and others.<br>
+    <br>
+    <b>Data2any::Xml::LorumIpsum<br>
+    </b>Example plugin to generate text to fill in paragraphs and the
+    like.<b><br>
+    </b>
+    <br>
+    <br>
+    <br>
+    Ideas for translators are Tex and LaTex, specific Xml dialects such
+    as Docbook, Html5 or something like that to support more control on
+    what is acceptable for that specific language. Other ideas I have
+    are not really using a module as a translator but for creating a GUI
+    interface based on Wx or Tk in the same way Qt designer and KDE
+    Kommander has its GUI saved in xml.<br>
+    <br>
+    <br>
+    Hopefully this info will not give a headache.<br>
+    I wish you all a happy new year,<br>
+    <br>
+    Marcel Timmerman<br>
+    <br>
+    <br>
+    <br>
+    <br>
+  </body>
+</html>
+
+--------------090901020904060905060106--
