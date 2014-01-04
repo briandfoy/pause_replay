@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:88717
+Return-Path: <brian.d.foy@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29640 invoked from network); 3 Jan 2014 14:12:12 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 3 Jan 2014 14:12:12 -0000
+Received: (qmail 25532 invoked by uid 225); 3 Jan 2014 14:12:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25528 invoked by alias); 3 Jan 2014 14:12:12 -0000
+X-Spam-Status: No, hits=-5.3 required=8.0
+	tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_HI,SPF_SOFTFAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from x6.develooper.com (HELO x6.develooper.com) (207.171.7.86)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 03 Jan 2014 06:12:10 -0800
+Received: from lists-nntp.develooper.com (localhost.localdomain [127.0.0.1])
+	by x6.develooper.com (Postfix) with SMTP id 3AB9E24A6
+	for <modules@perl.org>; Fri,  3 Jan 2014 06:12:07 -0800 (PST)
+Received: (qmail 29631 invoked by uid 515); 3 Jan 2014 14:12:07 -0000
+To: modules@perl.org, moritz@faui2k3.org (Moritz Lenz)
+Subject: Re: Fwd: Failed: PAUSE indexer report MORITZ/WebService-Libris-0.08.tar.gz
+Date: Fri, 03 Jan 2014 09:12:09 -0500
+Reply-To: modules@perl.org
+Posted-And-Mailed: yes
+Message-ID: <030120140912099094%brian.d.foy@gmail.com>
+References: <20140103024421.DDAE51FF8B@pause.perl.org> <52C62648.5070506@faui2k3.org>
+Organization: The Perl Review, LLC
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-transfer-encoding: 8bit
+User-Agent: Thoth/1.9.0 (Mac OS X)
+X-Posted-By: 67.250.46.0
+Approved: news@nntp.perl.org
+From: brian.d.foy@gmail.com (brian d foy)
+
+[[ This message was both posted and mailed: see
+   the "To," "Cc," and "Newsgroups" headers for details. ]]
+
+In article <52C62648.5070506@faui2k3.org>, Moritz Lenz
+<moritz@faui2k3.org> wrote:
+
+>  > Status: Decreasing version number
+>  >           =================================
+>  >
+>  >      module: WebService::Libris::Author
+>  >           version: undef
+>  >           in file: lib/WebService/Libris/Author.pm
+>  >           status: Not indexed because lib/WebService/Libris/Author.pm 
+
+>  >              M/MO/MORITZ/WebService-Libris-0.07.tar.gz has a higher
+>  >              version number (0)
+
+
+> Why is the absence of a version number considered less than version 0? 
+> And how can I make PAUSE forget that old version?
+
+
+I ran into this problem last month where I wanted to set a dependency
+on Mojo::UserAgent, but the version is always undef. So, I have to
+create a dependency on a module (Mojolicious) that I didn't actually
+use. People will say that this shouldn't be a problem, but we thought
+that about LWP too before it broke out several namespaces.
+
+As far as PAUSE is concerned, the behaviour makes sense to me and is
+only not confusing if you don't think about how Perl treats undef.
+
+Is there a reason you don't want to give the module a version? I know
+that doesn't help with the PAUSE stuff.
+
+For the reindexing, you can try deleting the old distros then trying to
+force a reindex.
+https://pause.perl.org/pause/authenquery?ACTION=reindex
+
+-- 
+brian d foy (one of many PAUSE admins), http://pause.perl.org
+PAUSE instructions:  http://pause.perl.org/pause/query?ACTION=pause_04about
+Archives: http://www.xray.mpe.mpg.de/mailing-lists/modules
+Please send all messages back to modules@perl.org with no CC to me.
