@@ -1,0 +1,159 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:89091
+Return-Path: <presnypreklad@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 26235 invoked from network); 31 Jan 2014 15:30:40 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 31 Jan 2014 15:30:40 -0000
+Received: (qmail 10221 invoked by uid 225); 31 Jan 2014 15:30:39 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10217 invoked by alias); 31 Jan 2014 15:30:39 -0000
+X-Spam-Status: No, hits=-1.5 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SARE_LWSHORTT,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-pa0-f44.google.com (HELO mail-pa0-f44.google.com) (209.85.220.44)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 31 Jan 2014 07:30:37 -0800
+Received: by mail-pa0-f44.google.com with SMTP id kq14so4541406pab.17
+        for <modules@perl.org>; Fri, 31 Jan 2014 07:30:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        bh=QMiUE/1sSMkY/j6myn4RI4sfwzcH0aqv4zOi6ckkBbc=;
+        b=K44MxJDPHRYIr/tGdBjnrFJfGYcYtDUwipbkA0I5VupCKoulrNMYXSWe/JLolN93gA
+         VtQl1At36ZmvH+kHd2/M22ZadibumBRPRjlK8f6cqh2dtwjTOJRfGeIoTXqWeKJSRyTC
+         TzmSgeUgVS6md4H0wQJJCGYgAaH1iayF5bYGtRMlAm2xEyMMC2WYkKgEVDAy1bN9E7R0
+         J0+jMuetSV1EZyRslwhHXiM3ZSRhND4FIrbMP9o/bDDA2o38ClpKG7BU11nWp0/fYUvU
+         L+Lz7irxtqRkkt4B+RHCQ/cQDS1PvTpLFhshrwOKZq/jEbZK9R/0PFyafOvbIyiY2qOJ
+         Oe3g==
+MIME-Version: 1.0
+X-Received: by 10.69.20.11 with SMTP id gy11mr21516480pbd.64.1391182233907;
+ Fri, 31 Jan 2014 07:30:33 -0800 (PST)
+Received: by 10.70.85.1 with HTTP; Fri, 31 Jan 2014 07:30:33 -0800 (PST)
+In-Reply-To: <52EADF4E.1030500@savage.net.au>
+References: <52EADF4E.1030500@savage.net.au>
+Date: Fri, 31 Jan 2014 16:30:33 +0100
+Message-ID: <CABNx+P9pMhwUBKFm8KkGXf1uGO--RBmi0XoxA4OHcF8e=mQwMQ@mail.gmail.com>
+Subject: Re: Naming my distro -- please advise
+To: Ron Savage <ron@savage.net.au>
+Cc: smithfarm@cpan.org, "modules-perl.org" <modules@perl.org>
+Content-Type: text/plain; charset=UTF-8
+Approved: news@nntp.perl.org
+From: presnypreklad@gmail.com (Nathan Cutler)
+
+Hi Ron:
+
+Thank you for writing me a personal email!  Time is our most valuable asset
+and I appreciate you giving me some of yours.
+
+Though you didn't answer my question of what namespace to put CELL
+in, I understand why. Hopefully I will not be committing a gross
+oversimplification when I say that I hear you saying two things:
+
+1. don't re-invent the wheel
+2. don't bundle stuff together
+
+As to the first point:
+
+* Configuration. App::CELL's configuration model is inspired by Request
+  Tracker. An App::CELL configuration file is actually a Perl module (written
+  as a series of calls to a 'set' function) that is loaded using 'require'.
+  Not only does this leverage Perl itself to do the parsing -- it provides
+  great flexibility when it comes to defining configuration parameter values:
+  they can be scalars, or they can be references to anonymous arrays,
+  hashes, or subroutines.
+
+  Maybe there's already a Config:: module that takes this approach, and I'm
+  just not aware of it?
+
+* Error-handling. I was inspired by brian d foy's article "Return
+  error objects instead of throwing exceptions"
+
+     http://www.effectiveperlprogramming.com/2011/10/return-error-objects-instead-of-throwing-exceptions/
+
+  Though my implementation is slightly different than brian's, I share
+  his reluctance to get into exception-throwing in Perl. App::CELL
+  provides a generic status class (which is i18n-able, since it inherits
+  from the message class). Functions can (but are not required to) return
+  this status object on both success and failure. On success, the status is
+  set to OK and the return value can be retrieved via a "payload" method. On
+  failure, the status is set to a "non-OK" value and the error text
+(in the user's
+  preferred language -- could even be "Australian English" :-) via a "text"
+  method. Functions are then called like this:
+
+      my $status = function_call( .. args ..);
+      return $status unless $status->ok;
+      my $result = $status->payload;
+
+  When an error occurs, it "bubbles" back up the stack and can be handled
+  wherever convenient.
+
+  Can you point me to an existing module that does this?
+
+* Localization. Just today I "discovered" GNU gettext (and libintl-perl),
+  which is clearly far superior to my first attempt at an i18n framework
+  for Perl. No questions there.
+
+* Logging. App::CELL implements a simple logging mechanism (Log::Fast-
+  based) that is integrated with CELL::Message objects. You are right that
+  this could be perceived as an attempt to force people to use my logging
+  mechanism instead of their preferred way. On the other hand, the
+  configuration, error-handling, and i18n functions _need_ to log. So I
+  guess I will need to provide a way for folks to overlay App::CELL's
+  logging functions with their own.
+
+As to your second point (bundling). I will follow your suggestion and think
+about how I could enable people to use individual components. This is
+already possible with the current version of Api::CELL -- just not
+particularly convenient.
+
+Thanks again for sharing your thoughts and for taking the time to consider
+mine!
+
+Nathan
+
+
+On Fri, Jan 31, 2014 at 12:25 AM, Ron Savage <ron@savage.net.au> wrote:
+> Hi Nathan
+>
+> Thanx for reading the advice re naming modules, even if a little late!
+>
+> There are a wide range of modules on CPAN handling issue such as yours does,
+> and tying them together is not the way many of us work.
+>
+> For instance, I already use config modules, logging modules, etc, and have a
+> policy of not adopting a module which forces me to adopt several such things
+> just to get the feature I want.
+>
+> In the short term you can simply delete CELL via the PAUSE web interface.
+>
+> Then, I strongly suggest you have a think about such matters before deciding
+> what to do next.
+>
+> There is of course no reason you'd like my way of doing things, but just for
+> the record my choices are:
+>
+> o Config::Tiny (and if that's insufficient, Config::IniFiles)
+>
+> Yes, there's a vast array of config modules on CPAN. No-one needs them all,
+> but we all need a good one.
+>
+> o Log::Handler
+>
+> Correspondence will not be entered into :-).
+>
+> o Try::Tiny, perhaps combined with Throwable::Factory
+>
+> The latter is written by Toby Inkster, which is always a good sign.
+>
+> o Etc.
+>
+> Cheers
+>
+> --
+> Ron Savage
+> http://savage.net.au/

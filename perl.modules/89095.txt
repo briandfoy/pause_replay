@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:89095
+Return-Path: <mst@shadowcat.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21127 invoked from network); 31 Jan 2014 18:58:00 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 31 Jan 2014 18:58:00 -0000
+Received: (qmail 28164 invoked by uid 225); 31 Jan 2014 18:58:00 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28160 invoked by alias); 31 Jan 2014 18:58:00 -0000
+X-Spam-Status: No, hits=-1.2 required=8.0
+	tests=BAYES_00,SPF_SOFTFAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from agaton.scsys.co.uk (HELO agaton.scsys.co.uk) (89.16.177.50)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 31 Jan 2014 10:57:58 -0800
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.72)
+	(envelope-from <mst@shadowcat.co.uk>)
+	id 1W9JHe-0005N7-Kp; Fri, 31 Jan 2014 18:57:46 +0000
+Date: Fri, 31 Jan 2014 18:57:46 +0000
+To: Nathan Cutler <presnypreklad@gmail.com>
+Cc: Ron Savage <ron@savage.net.au>, smithfarm@cpan.org,
+	"modules-perl.org" <modules@perl.org>
+Subject: Re: Naming my distro -- please advise
+Message-ID: <20140131185746.GK17080@newagaton.scsys.co.uk>
+References: <52EADF4E.1030500@savage.net.au>
+ <CABNx+P9pMhwUBKFm8KkGXf1uGO--RBmi0XoxA4OHcF8e=mQwMQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABNx+P9pMhwUBKFm8KkGXf1uGO--RBmi0XoxA4OHcF8e=mQwMQ@mail.gmail.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Fri, Jan 31, 2014 at 04:30:33PM +0100, Nathan Cutler wrote:
+> * Configuration. App::CELL's configuration model is inspired by Request
+>   Tracker. An App::CELL configuration file is actually a Perl module (written
+>   as a series of calls to a 'set' function) that is loaded using 'require'.
+>   Not only does this leverage Perl itself to do the parsing -- it provides
+>   great flexibility when it comes to defining configuration parameter values:
+>   they can be scalars, or they can be references to anonymous arrays,
+>   hashes, or subroutines.
+> 
+>   Maybe there's already a Config:: module that takes this approach, and I'm
+>   just not aware of it?
+
+Not really. The usual approach to format-agnostic configuration is
+Config::Any which allows you to have a perl file returning a data structure.
+
+Personally I'm not fond of perl for configuration unless the config files
+are to be written by developers and ignored by sysadmins, which tends not
+to be what I use config files for.
+ 
+>   When an error occurs, it "bubbles" back up the stack and can be handled
+>   wherever convenient.
+> 
+>   Can you point me to an existing module that does this?
+
+No, because it's a terrible idea. Whst the linked article doesn't discuss
+is the fact that the try/catch approach allows you to run a sequence of
+methods and trap errors from all of them in a single block, at which point
+the try/catch based approach is much less code.
+
+Try::Tiny::ByClass would be a nice approach to structured exception catching,
+and if you want to be able to resume or return *optionally* when errors
+occur then look at Worlogog::Incident and Worlogog::Restart.
+
+Using the latter two would allow users who want to do things the standard
+way to continue to do so, and you to use your own approach internally. I
+still think it's a terrible idea, but I entirely support your right to do
+so, especially if I can still get exceptions :)
+ 
+> * Logging. App::CELL implements a simple logging mechanism (Log::Fast-
+>   based) that is integrated with CELL::Message objects. You are right that
+>   this could be perceived as an attempt to force people to use my logging
+>   mechanism instead of their preferred way. On the other hand, the
+>   configuration, error-handling, and i18n functions _need_ to log. So I
+>   guess I will need to provide a way for folks to overlay App::CELL's
+>   logging functions with their own.
+
+Look at Log::Any as a way to allow use of arbitrary logging systems.
+
+-- 
+Matt S Trout - Shadowcat Systems - Perl consulting with a commit bit and a clue
+
+http://shadowcat.co.uk/blog/matt-s-trout/   http://twitter.com/shadowcat_mst/
+
+Email me now on mst (at) shadowcat.co.uk and let's chat about how our CPAN
+commercial support, training and consultancy packages could help your team.
