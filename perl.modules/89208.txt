@@ -1,0 +1,1651 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:89208
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 8494 invoked from network); 11 Feb 2014 20:14:58 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 11 Feb 2014 20:14:58 -0000
+Received: (qmail 21496 invoked by uid 225); 11 Feb 2014 20:14:58 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 21492 invoked by alias); 11 Feb 2014 20:14:58 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-lb0-f178.google.com (HELO mail-lb0-f178.google.com) (209.85.217.178)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 11 Feb 2014 12:14:53 -0800
+Received: by mail-lb0-f178.google.com with SMTP id u14so6441200lbd.9
+        for <modules@perl.org>; Tue, 11 Feb 2014 12:14:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=A5vbn6u3KmSCL9LnmpywnCuDUoEDtqcJ2Kg3t0Th7TA=;
+        b=Jw/FbtIIKWRKwFrEszeQaZFgq6AuKNBU7uNpFv8UY//Mbunm7iEcB1FhYWe4xicFQI
+         mEc7BMOC76mhNqxq/6MofoaUgRgHrYtHpYUQ897VXwIuewXrQsPyyXicOUWpsmazUrmC
+         I+2wr6f9fYtIJQgOivl34bXQKAXseju8xSQ7YA5DzqUuyFSA5OzT1R5DGbSUWzAEXJ9s
+         OrqjDfkHxPN/Bm+R2v5kpuqYr3pCreN1cG3GVyiN5yQ95yVmgEHc7WgisJYikBs8gnUc
+         81247CR3a2BzGVf7xZQdWA1LSr0Zi2PNKkEC0FAfgoD138HsEvb4HMTmC3DjogGZhHzs
+         lwRg==
+X-Gm-Message-State: ALoCoQmsLYlbt3+UVypiF0x9qP7VMaAzbwaXVg+HYO2IrIfrZk2DJxjjIBDgvLt6edrJmPAqb6+D
+X-Received: by 10.112.211.233 with SMTP id nf9mr2814152lbc.50.1392149687622;
+ Tue, 11 Feb 2014 12:14:47 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.114.177.36 with HTTP; Tue, 11 Feb 2014 12:14:17 -0800 (PST)
+In-Reply-To: <52FA6459.1060506@PCCC.com>
+References: <20140211174828.7D7D92FCE@pause.perl.org> <52FA6459.1060506@PCCC.com>
+Date: Tue, 11 Feb 2014 15:14:17 -0500
+Message-ID: <CAOeq1c_yydB7CZ=RCWeSvLGzseY2eOZoge0uNLETBAxbxDJXgw@mail.gmail.com>
+Subject: Re: Failed: PAUSE indexer report KMCGRAIL/SpamAssassin/ Mail-SpamAssassin-3.4.0.tar.gz
+To: "Kevin A. McGrail" <KMcGrail@pccc.com>
+Cc: "modules@perl.org" <modules@perl.org>, 
+	"private@spamassassin.apache.org" <private@spamassassin.apache.org>
+Content-Type: multipart/alternative; boundary=001a11c3c8a69af18f04f2271bd2
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+--001a11c3c8a69af18f04f2271bd2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi, Kevin.
+
+Sounds like a couple of PAUSE bugs.  I'm not sure where the "bogus" got
+into the database.  Generally, I'd say an invalid $VERSION shouldn't get
+indexed.
+
+The $VERSION parsing code has a number of issues like the one you found.
+ E.g. https://github.com/andk/pause/pull/70 is the same issue.
+
+So what can be done in the meantime?
+
+(1) I'll flag your email specially to Andreas and see if he can clear out
+the "bogus" from the database.
+
+(2) You can use C<< eval { HTML::Parser->VERSION(3.46) >> for your
+comparison which won't get picked up by mistake.
+
+David
+
+
+
+On Tue, Feb 11, 2014 at 12:56 PM, Kevin A. McGrail <KMcGrail@pccc.com>wrote=
+:
+
+>  Good morning,
+>
+> I was hoping to get some guidance on the parsing issues below.
+>
+> First,  the version=3Dbogus issue should be overridden as we removed thos=
+e
+> versions because of old CPAN workarounds.  Is there anyway to do that,
+> please?
+>
+> Second , the
+>
+> Mail::SpamAssassin::Conf version issue appears to be a bug in the parsing=
+ because it has nothing to do with the version of the module. It's code tha=
+t checks the version of another module:
+>
+> ...
+>         unless ($] > 5.008004) {
+>             $self->{parser}->lint_warn("config: normalize_charset require=
+s Perl 5.8.5 or later");
+>             return $INVALID_VALUE;
+>         }
+>         require HTML::Parser;
+>         unless ($HTML::Parser::VERSION >=3D 3.46) {
+>             $self->{parser}->lint_warn("config: normalize_charset require=
+s HTML::Parser 3.46 or later");
+>             return $INVALID_VALUE;
+>         }
+>         unless (eval 'require Encode::Detect::Detector') {
+>             $self->{parser}->lint_warn("config: normalize_charset require=
+s Encode::Detect");
+>             return $INVALID_VALUE;
+>         }
+> ...
+>
+>
+> Finally, I was a little surprised about this because I did upload a
+> developer release
+> http://search.cpan.org/~kmcgrail/Mail-SpamAssassin-3.4.0-rc6-TRIAL/ that
+> didn't appear to flag any of these issues.  Just a side note that we did
+> try and test for this!
+>
+> Regards,
+> KAM
+>
+>
+>
+>
+> -------- Original Message --------  Subject: Failed: PAUSE indexer report
+> KMCGRAIL/SpamAssassin/ Mail-SpamAssassin-3.4.0.tar.gz  Date: Tue, 11 Feb
+> 2014 17:48:28 +0000  From: PAUSE <upload@pause.perl.org><upload@pause.per=
+l.org>  To:
+> kevin@mcgrail.com, andreas.koenig.gmwojprw+pause@franz.ak.mind.de
+>
+> The following report has been written by the PAUSE namespace indexer.
+>   Please contact modules@perl.org if there are any open questions.
+>
+>   User: KMCGRAIL (Kevin A. McGrail)
+>   Distribution file: Mail-SpamAssassin-3.4.0.tar.gz
+>   Number of files: 543
+>   *.pm files: 112
+>   README: Mail-SpamAssassin-3.4.0/README
+>   META-File: Mail-SpamAssassin-3.4.0/META.json
+>   META-Parser: Parse::CPAN::Meta 1.4404
+>   META-driven index: no
+>   Timestamp of file: Tue Feb 11 17:45:36 2014 UTC
+>   Time of this run: Tue Feb 11 17:48:28 2014 UTC
+>
+> Status of this distro: Version parsing problem
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> The following packages (grouped by status) have been found in the distro:
+>
+> Status: Version parsing problem
+>           =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+>      module: Mail::SpamAssassin::Conf
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Conf.pm
+>           status: The PAUSE indexer was not able to parse the following l=
+ine
+>              in that file: C< unless ($HTML::Parser::VERSION >=3D 3.46) {
+>              > Note: the indexer is running in a Safe compartement and
+>              cannot provide the full functionality of perl in the
+>              VERSION line. It is trying hard, but sometime it fails. As
+>              a workaround, please consider writing a META.yml that
+>              contains a 'provides' attribute or contact the CPAN admins
+>              to investigate (yet another) workaround against "Safe"
+>              limitations.)
+>
+> Status: Decreasing version number
+>           =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+>      module: Mail::SpamAssassin::Dns
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Dns.pm
+>           status: Not indexed because
+>              Mail-SpamAssassin-3.3.2/lib/Mail/SpamAssassin/Dns.pm in
+>              K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz has a higher
+>              version number (bogus)
+>
+>      module: Mail::SpamAssassin::Plugin
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin.p=
+m
+>           status: Not indexed because
+>              Mail-SpamAssassin-3.3.2/lib/Mail/SpamAssassin/Plugin.pm in
+>              K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz has a higher
+>              version number (bogus)
+>
+>      module: Mail::SpamAssassin::PluginHandler
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/PluginHa=
+ndler.pm
+>           status: Not indexed because
+>              Mail-SpamAssassin-3.3.2/lib/Mail/SpamAssassin/PluginHandler.=
+pm
+>              in K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz has a
+>              higher version number (bogus)
+>
+>      module: Mail::SpamAssassin::Reporter
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Reporter=
+.pm
+>           status: Not indexed because
+>              Mail-SpamAssassin-3.3.2/lib/Mail/SpamAssassin/Reporter.pm
+>              in K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz has a
+>              higher version number (bogus)
+>
+> Status: Successfully indexed
+>           =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+>
+>      module: Mail::SpamAssassin
+>           version: 3.004000
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::AICache
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/AICache.=
+pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::ArchiveIterator
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/ArchiveI=
+terator.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::AsyncLoop
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/AsyncLoo=
+p.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::AutoWhitelist
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/AutoWhit=
+elist.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Bayes
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Bayes.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Bayes::Combine
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Bayes/Co=
+mbineNaiveBayes.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Bayes::CombineChi
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Bayes/Co=
+mbineChi.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Bayes::CombineNaiveBayes
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Bayes/Co=
+mbineNaiveBayes.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::BayesStore
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesSto=
+re.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::BayesStore::BDB
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesSto=
+re/BDB.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::BayesStore::DBM
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesSto=
+re/DBM.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::BayesStore::MySQL
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesSto=
+re/MySQL.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::BayesStore::PgSQL
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesSto=
+re/PgSQL.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::BayesStore::Redis
+>           version: 0.09
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesSto=
+re/Redis.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::BayesStore::SDBM
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesSto=
+re/SDBM.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::BayesStore::SQL
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesSto=
+re/SQL.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Client
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Client.p=
+m
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Conf::LDAP
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Conf/LDA=
+P.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Conf::Parser
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Conf/Par=
+ser.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Conf::SQL
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Conf/SQL=
+.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Constants
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Constant=
+s.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::DBBasedAddrList
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/DBBasedA=
+ddrList.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::DnsResolver
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/DnsResol=
+ver.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::HTML
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/HTML.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Locales
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Locales.=
+pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Locker
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Locker.p=
+m
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Locker::Flock
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Locker/F=
+lock.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Locker::UnixNFSSafe
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Locker/U=
+nixNFSSafe.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Locker::Win32
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Locker/W=
+in32.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Logger
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Logger.p=
+m
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Logger::File
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Logger/F=
+ile.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Logger::Stderr
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Logger/S=
+tderr.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Logger::Syslog
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Logger/S=
+yslog.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::MailingList
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/MailingL=
+ist.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Message
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Message.=
+pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Message::Metadata
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Message/=
+Metadata.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Message::Metadata::Received
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Message/=
+Metadata/Received.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Message::Node
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Message/=
+Node.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::NetSet
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/NetSet.p=
+m
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::PerMsgLearner
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/PerMsgLe=
+arner.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::PerMsgStatus
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/PerMsgSt=
+atus.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::PersistentAddrList
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Persiste=
+ntAddrList.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::ASN
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/A=
+SN.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::AWL
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/A=
+WL.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::AccessDB
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/A=
+ccessDB.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::AntiVirus
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/A=
+ntiVirus.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::AskDNS
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/A=
+skDNS.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::AutoLearnThreshold
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/A=
+utoLearnThreshold.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::Bayes
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/B=
+ayes.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::BodyEval
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/B=
+odyEval.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::BodyRuleBaseExtractor
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/B=
+odyRuleBaseExtractor.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::Check
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/C=
+heck.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::DCC
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/D=
+CC.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::DKIM
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/D=
+KIM.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::DNSEval
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/D=
+NSEval.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::FreeMail
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/F=
+reeMail.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::HTMLEval
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/H=
+TMLEval.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::HTTPSMismatch
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/H=
+TTPSMismatch.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::Hashcash
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/H=
+ashcash.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::HeaderEval
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/H=
+eaderEval.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::ImageInfo
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/I=
+mageInfo.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::MIMEEval
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/M=
+IMEEval.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::MIMEHeader
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/M=
+IMEHeader.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::OneLineBodyRuleType
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/O=
+neLineBodyRuleType.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::PhishTag
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/P=
+hishTag.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::Pyzor
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/P=
+yzor.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::Razor2
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/R=
+azor2.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::RelayCountry
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/R=
+elayCountry.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::RelayEval
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/R=
+elayEval.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::ReplaceTags
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/R=
+eplaceTags.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::Reuse
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/R=
+euse.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::Rule2XSBody
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/R=
+ule2XSBody.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::SPF
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/S=
+PF.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::Shortcircuit
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/S=
+hortcircuit.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::SpamCop
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/S=
+pamCop.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::Test
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/T=
+est.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::TextCat
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/T=
+extCat.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::URIDNSBL
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/U=
+RIDNSBL.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::URIDetail
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/U=
+RIDetail.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::URIEval
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/U=
+RIEval.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::VBounce
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/V=
+Bounce.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::WLBLEval
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/W=
+LBLEval.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Plugin::WhiteListSubject
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/W=
+hiteListSubject.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Pool
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAss=
+assin/Spamd.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::SQLBasedAddrList
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/SQLBased=
+AddrList.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Spamd
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAss=
+assin/Spamd.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Spamd::Apache2
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAss=
+assin/Spamd/Apache2.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Spamd::Apache2::AclIP
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAss=
+assin/Spamd/Apache2/AclIP.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Spamd::Apache2::AclRFC1413
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAss=
+assin/Spamd/Apache2/AclRFC1413.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Spamd::Apache2::Config
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAss=
+assin/Spamd/Apache2/Config.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Spamd::Config
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAss=
+assin/Spamd/Config.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::SpamdForkScaling
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/SpamdFor=
+kScaling.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::SubProcBackChannel
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/SubProcB=
+ackChannel.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Timeout
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Timeout.=
+pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Util
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Util::DependencyInfo
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/Dep=
+endencyInfo.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Util::Progress
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/Pro=
+gress.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Util::RegistrarBoundaries
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/Reg=
+istrarBoundaries.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Util::ScopedTimer
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/Sco=
+pedTimer.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Util::TieOneStringHash
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/Tie=
+OneStringHash.pm
+>           status: indexed
+>
+>      module: Mail::SpamAssassin::Util::TinyRedis
+>           version: undef
+>           in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/Tin=
+yRedis.pm
+>           status: indexed
+>
+> __END__
+>
+>
+>
+>
+
+
+--=20
+*David Golden* <xdg@xdg.me>
+*Take back your inbox!* =E2=86=92 http://www.bunchmail.com/
+Twitter/IRC: @xdg
+
+--001a11c3c8a69af18f04f2271bd2
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi, Kevin.<div><br></div><div>Sounds like a couple of PAUS=
+E bugs. =C2=A0I&#39;m not sure where the &quot;bogus&quot; got into the dat=
+abase. =C2=A0Generally, I&#39;d say an invalid $VERSION shouldn&#39;t get i=
+ndexed.</div>
+
+<div><br></div><div>The $VERSION parsing code has a number of issues like t=
+he one you found. =C2=A0E.g. <a href=3D"https://github.com/andk/pause/pull/=
+70">https://github.com/andk/pause/pull/70</a> is the same issue.</div><div>=
+<br>
+
+</div><div>So what can be done in the meantime?</div><div><br></div><div>(1=
+) I&#39;ll flag your email specially to Andreas and see if he can clear out=
+ the &quot;bogus&quot; from the database.</div><div><br></div><div>(2) You =
+can use C&lt;&lt; eval { HTML::Parser-&gt;VERSION(3.46) &gt;&gt; for your c=
+omparison which won&#39;t get picked up by mistake.</div>
+
+<div><br></div><div>David</div><div><br></div></div><div class=3D"gmail_ext=
+ra"><br><br><div class=3D"gmail_quote">On Tue, Feb 11, 2014 at 12:56 PM, Ke=
+vin A. McGrail <span dir=3D"ltr">&lt;<a href=3D"mailto:KMcGrail@pccc.com" t=
+arget=3D"_blank">KMcGrail@pccc.com</a>&gt;</span> wrote:<br>
+
+<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
+x #ccc solid;padding-left:1ex">
+ =20
+
+   =20
+ =20
+  <div bgcolor=3D"#FFFFFF" text=3D"#000000">
+    Good morning,<br>
+    <br>
+    I was hoping to get some guidance on the parsing issues below.=C2=A0 <b=
+r>
+    <br>
+    First,=C2=A0 the version=3Dbogus issue should be overridden as we remov=
+ed
+    those versions because of old CPAN workarounds.=C2=A0 Is there anyway t=
+o
+    do that, please?<br>
+    <br>
+    Second , the=C2=A0
+    <pre>Mail::SpamAssassin::Conf version issue appears to be a bug in the =
+parsing because it has nothing to do with the version of the module. It&#39=
+;s code that checks the version of another module:
+
+...
+        unless ($] &gt; 5.008004) {
+            $self-&gt;{parser}-&gt;lint_warn(&quot;config: normalize_charse=
+t requires Perl 5.8.5 or later&quot;);
+            return $INVALID_VALUE;
+        }
+        require HTML::Parser;
+        unless ($HTML::Parser::VERSION &gt;=3D 3.46) {
+            $self-&gt;{parser}-&gt;lint_warn(&quot;config: normalize_charse=
+t requires HTML::Parser 3.46 or later&quot;);
+            return $INVALID_VALUE;
+        }
+        unless (eval &#39;require Encode::Detect::Detector&#39;) {
+            $self-&gt;{parser}-&gt;lint_warn(&quot;config: normalize_charse=
+t requires Encode::Detect&quot;);
+            return $INVALID_VALUE;
+        }
+...
+</pre>
+    <br>
+    Finally, I was a little surprised about this because I did upload a
+    developer release
+    <a href=3D"http://search.cpan.org/~kmcgrail/Mail-SpamAssassin-3.4.0-rc6=
+-TRIAL/" target=3D"_blank">http://search.cpan.org/~kmcgrail/Mail-SpamAssass=
+in-3.4.0-rc6-TRIAL/</a>
+    that didn&#39;t appear to flag any of these issues.=C2=A0 Just a side n=
+ote
+    that we did try and test for this!<br>
+    <br>
+    Regards,<br>
+    KAM<br>
+    <br>
+    <br>
+    <div><br>
+      <br>
+      -------- Original Message --------
+      <table cellpadding=3D"0" cellspacing=3D"0" border=3D"0">
+        <tbody>
+          <tr>
+            <th align=3D"RIGHT" nowrap valign=3D"BASELINE">Subject:
+            </th>
+            <td>Failed: PAUSE indexer report KMCGRAIL/SpamAssassin/
+              Mail-SpamAssassin-3.4.0.tar.gz</td>
+          </tr>
+          <tr>
+            <th align=3D"RIGHT" nowrap valign=3D"BASELINE">Date: </th>
+            <td>Tue, 11 Feb 2014 17:48:28 +0000</td>
+          </tr>
+          <tr>
+            <th align=3D"RIGHT" nowrap valign=3D"BASELINE">From: </th>
+            <td>PAUSE <a href=3D"mailto:upload@pause.perl.org" target=3D"_b=
+lank">&lt;upload@pause.perl.org&gt;</a></td>
+          </tr>
+          <tr>
+            <th align=3D"RIGHT" nowrap valign=3D"BASELINE">To: </th>
+            <td><a href=3D"mailto:kevin@mcgrail.com" target=3D"_blank">kevi=
+n@mcgrail.com</a>,
+              <a href=3D"mailto:andreas.koenig.gmwojprw+pause@franz.ak.mind=
+.de" target=3D"_blank">andreas.koenig.gmwojprw+pause@franz.ak.mind.de</a></=
+td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <br>
+      <pre>The following report has been written by the PAUSE namespace ind=
+exer.
+  Please contact <a href=3D"mailto:modules@perl.org" target=3D"_blank">modu=
+les@perl.org</a> if there are any open questions.
+
+  User: KMCGRAIL (Kevin A. McGrail)
+  Distribution file: Mail-SpamAssassin-3.4.0.tar.gz
+  Number of files: 543
+  *.pm files: 112
+  README: Mail-SpamAssassin-3.4.0/README
+  META-File: Mail-SpamAssassin-3.4.0/META.json
+  META-Parser: Parse::CPAN::Meta 1.4404
+  META-driven index: no
+  Timestamp of file: Tue Feb 11 17:45:36 2014 UTC
+  Time of this run: Tue Feb 11 17:48:28 2014 UTC
+
+Status of this distro: Version parsing problem
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+The following packages (grouped by status) have been found in the distro:
+
+Status: Version parsing problem
+          =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+     module: Mail::SpamAssassin::Conf
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Conf.pm
+          status: The PAUSE indexer was not able to parse the following lin=
+e
+             in that file: C&lt; unless ($HTML::Parser::VERSION &gt;=3D 3.4=
+6) {
+             &gt; Note: the indexer is running in a Safe compartement and
+             cannot provide the full functionality of perl in the
+             VERSION line. It is trying hard, but sometime it fails. As
+             a workaround, please consider writing a META.yml that
+             contains a &#39;provides&#39; attribute or contact the CPAN ad=
+mins
+             to investigate (yet another) workaround against &quot;Safe&quo=
+t;
+             limitations.)
+
+Status: Decreasing version number
+          =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+     module: Mail::SpamAssassin::Dns
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Dns.pm
+          status: Not indexed because
+             Mail-SpamAssassin-3.3.2/lib/Mail/SpamAssassin/Dns.pm in
+             K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz has a higher
+             version number (bogus)
+
+     module: Mail::SpamAssassin::Plugin
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin.pm
+          status: Not indexed because
+             Mail-SpamAssassin-3.3.2/lib/Mail/SpamAssassin/Plugin.pm in
+             K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz has a higher
+             version number (bogus)
+
+     module: Mail::SpamAssassin::PluginHandler
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/PluginHand=
+ler.pm
+          status: Not indexed because
+             Mail-SpamAssassin-3.3.2/lib/Mail/SpamAssassin/PluginHandler.pm
+             in K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz has a
+             higher version number (bogus)
+
+     module: Mail::SpamAssassin::Reporter
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Reporter.p=
+m
+          status: Not indexed because
+             Mail-SpamAssassin-3.3.2/lib/Mail/SpamAssassin/Reporter.pm
+             in K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz has a
+             higher version number (bogus)
+
+Status: Successfully indexed
+          =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+     module: Mail::SpamAssassin
+          version: 3.004000
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::AICache
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/AICache.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::ArchiveIterator
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/ArchiveIte=
+rator.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::AsyncLoop
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/AsyncLoop.=
+pm
+          status: indexed
+
+     module: Mail::SpamAssassin::AutoWhitelist
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/AutoWhitel=
+ist.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Bayes
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Bayes.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Bayes::Combine
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Bayes/Comb=
+ineNaiveBayes.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Bayes::CombineChi
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Bayes/Comb=
+ineChi.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Bayes::CombineNaiveBayes
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Bayes/Comb=
+ineNaiveBayes.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::BayesStore
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesStore=
+.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::BayesStore::BDB
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesStore=
+/BDB.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::BayesStore::DBM
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesStore=
+/DBM.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::BayesStore::MySQL
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesStore=
+/MySQL.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::BayesStore::PgSQL
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesStore=
+/PgSQL.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::BayesStore::Redis
+          version: 0.09
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesStore=
+/Redis.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::BayesStore::SDBM
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesStore=
+/SDBM.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::BayesStore::SQL
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/BayesStore=
+/SQL.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Client
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Client.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Conf::LDAP
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Conf/LDAP.=
+pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Conf::Parser
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Conf/Parse=
+r.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Conf::SQL
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Conf/SQL.p=
+m
+          status: indexed
+
+     module: Mail::SpamAssassin::Constants
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Constants.=
+pm
+          status: indexed
+
+     module: Mail::SpamAssassin::DBBasedAddrList
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/DBBasedAdd=
+rList.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::DnsResolver
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/DnsResolve=
+r.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::HTML
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/HTML.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Locales
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Locales.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Locker
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Locker.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Locker::Flock
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Locker/Flo=
+ck.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Locker::UnixNFSSafe
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Locker/Uni=
+xNFSSafe.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Locker::Win32
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Locker/Win=
+32.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Logger
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Logger.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Logger::File
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Logger/Fil=
+e.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Logger::Stderr
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Logger/Std=
+err.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Logger::Syslog
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Logger/Sys=
+log.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::MailingList
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/MailingLis=
+t.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Message
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Message.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Message::Metadata
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Message/Me=
+tadata.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Message::Metadata::Received
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Message/Me=
+tadata/Received.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Message::Node
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Message/No=
+de.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::NetSet
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/NetSet.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::PerMsgLearner
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/PerMsgLear=
+ner.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::PerMsgStatus
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/PerMsgStat=
+us.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::PersistentAddrList
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Persistent=
+AddrList.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::ASN
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/ASN=
+.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::AWL
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/AWL=
+.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::AccessDB
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Acc=
+essDB.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::AntiVirus
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Ant=
+iVirus.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::AskDNS
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Ask=
+DNS.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::AutoLearnThreshold
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Aut=
+oLearnThreshold.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::Bayes
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Bay=
+es.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::BodyEval
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Bod=
+yEval.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::BodyRuleBaseExtractor
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Bod=
+yRuleBaseExtractor.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::Check
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Che=
+ck.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::DCC
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/DCC=
+.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::DKIM
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/DKI=
+M.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::DNSEval
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/DNS=
+Eval.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::FreeMail
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Fre=
+eMail.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::HTMLEval
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/HTM=
+LEval.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::HTTPSMismatch
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/HTT=
+PSMismatch.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::Hashcash
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Has=
+hcash.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::HeaderEval
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Hea=
+derEval.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::ImageInfo
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Ima=
+geInfo.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::MIMEEval
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/MIM=
+EEval.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::MIMEHeader
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/MIM=
+EHeader.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::OneLineBodyRuleType
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/One=
+LineBodyRuleType.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::PhishTag
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Phi=
+shTag.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::Pyzor
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Pyz=
+or.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::Razor2
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Raz=
+or2.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::RelayCountry
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Rel=
+ayCountry.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::RelayEval
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Rel=
+ayEval.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::ReplaceTags
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Rep=
+laceTags.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::Reuse
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Reu=
+se.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::Rule2XSBody
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Rul=
+e2XSBody.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::SPF
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/SPF=
+.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::Shortcircuit
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Sho=
+rtcircuit.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::SpamCop
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Spa=
+mCop.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::Test
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Tes=
+t.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::TextCat
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Tex=
+tCat.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::URIDNSBL
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/URI=
+DNSBL.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::URIDetail
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/URI=
+Detail.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::URIEval
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/URI=
+Eval.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::VBounce
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/VBo=
+unce.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::WLBLEval
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/WLB=
+LEval.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Plugin::WhiteListSubject
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Plugin/Whi=
+teListSubject.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Pool
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAssas=
+sin/Spamd.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::SQLBasedAddrList
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/SQLBasedAd=
+drList.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Spamd
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAssas=
+sin/Spamd.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Spamd::Apache2
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAssas=
+sin/Spamd/Apache2.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Spamd::Apache2::AclIP
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAssas=
+sin/Spamd/Apache2/AclIP.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Spamd::Apache2::AclRFC1413
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAssas=
+sin/Spamd/Apache2/AclRFC1413.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Spamd::Apache2::Config
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAssas=
+sin/Spamd/Apache2/Config.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Spamd::Config
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/spamd-apache2/lib/Mail/SpamAssas=
+sin/Spamd/Config.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::SpamdForkScaling
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/SpamdForkS=
+caling.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::SubProcBackChannel
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/SubProcBac=
+kChannel.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Timeout
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Timeout.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Util
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Util::DependencyInfo
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/Depen=
+dencyInfo.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Util::Progress
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/Progr=
+ess.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Util::RegistrarBoundaries
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/Regis=
+trarBoundaries.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Util::ScopedTimer
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/Scope=
+dTimer.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Util::TieOneStringHash
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/TieOn=
+eStringHash.pm
+          status: indexed
+
+     module: Mail::SpamAssassin::Util::TinyRedis
+          version: undef
+          in file: Mail-SpamAssassin-3.4.0/lib/Mail/SpamAssassin/Util/TinyR=
+edis.pm
+          status: indexed
+
+__END__
+</pre>
+      <br>
+    </div>
+    <br>
+  </div>
+
+</blockquote></div><br><br clear=3D"all"><div><br></div>-- <br><b style=3D"=
+color:rgb(51,51,51);font-family:arial,helvetica,sans-serif">David Golden</b=
+><span style=3D"font-family:arial,helvetica,sans-serif"> &lt;<a href=3D"mai=
+lto:xdg@xdg.me" target=3D"_blank">xdg@xdg.me</a>&gt;</span><br style=3D"fon=
+t-family:arial,helvetica,sans-serif">
+
+<i style=3D"font-family:arial,helvetica,sans-serif">Take back your inbox!</=
+i><span style=3D"font-family:arial,helvetica,sans-serif"> =E2=86=92 </span>=
+<a style=3D"font-family:arial,helvetica,sans-serif" href=3D"http://www.bunc=
+hmail.com/" target=3D"_blank">http://www.bunchmail.com/</a><br>
+
+Twitter/IRC: @xdg<br>
+</div>
+
+--001a11c3c8a69af18f04f2271bd2--

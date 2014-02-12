@@ -1,0 +1,190 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:89211
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23830 invoked from network); 11 Feb 2014 21:20:24 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 11 Feb 2014 21:20:24 -0000
+Received: (qmail 30259 invoked by uid 225); 11 Feb 2014 21:20:24 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30255 invoked by alias); 11 Feb 2014 21:20:24 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-lb0-f178.google.com (HELO mail-lb0-f178.google.com) (209.85.217.178)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 11 Feb 2014 13:20:22 -0800
+Received: by mail-lb0-f178.google.com with SMTP id u14so6332012lbd.37
+        for <modules@perl.org>; Tue, 11 Feb 2014 13:20:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=90TJdPtLBua8A2uoRu9co9BvaB1WYvC/M5ftiF9mYjI=;
+        b=DUVOMecv7FbXQ0RYLlZTPVs/qSti5R8q9rLUFnkCQz8r7vZ3VjFpaAO0bEGmahL5Md
+         qTQQFRIuaHofs7pVxs9h2enVdGmhrq3OElJga9V/PZygtWA+aCH9Sp8GtIqSq/qvx3VL
+         mjUumZDz53xmY1KfUud1oN+uk0UTFCpqEpwtUlmqaZOLxDgiF8Z3dOQ3QD+32u69tXJT
+         icvZWScj5aKnKb4OoED9kP0lUfGMmX4I8bQnwOrPVVf2gz9U13yqUfKu6j9T0lKFUYKE
+         VsBJE0iK3kKhYZqcu1HNpvVDfs0jwpa2VaKgA3O/64n8wFPJbn+oZG/P76GB2GnndraX
+         beBg==
+X-Gm-Message-State: ALoCoQk5OSy2FpusKfvqvrIjwbSbXpJC4PLcw2oqGMspyg8fwWO+FTEofJd3ZZtE8xsGkfIYtQmC
+X-Received: by 10.112.26.79 with SMTP id j15mr150327lbg.73.1392153617176; Tue,
+ 11 Feb 2014 13:20:17 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.114.177.36 with HTTP; Tue, 11 Feb 2014 13:19:47 -0800 (PST)
+In-Reply-To: <52FA8AD1.3020500@PCCC.com>
+References: <20140211174828.7D7D92FCE@pause.perl.org> <52FA6459.1060506@PCCC.com>
+ <CAOeq1c_yydB7CZ=RCWeSvLGzseY2eOZoge0uNLETBAxbxDJXgw@mail.gmail.com> <52FA8AD1.3020500@PCCC.com>
+Date: Tue, 11 Feb 2014 16:19:47 -0500
+Message-ID: <CAOeq1c--vSy2aR5baZBbFgKFoTraYh2nJpNMOs+kG53i8f-=4Q@mail.gmail.com>
+Subject: Re: Failed: PAUSE indexer report KMCGRAIL/SpamAssassin/ Mail-SpamAssassin-3.4.0.tar.gz
+To: "Kevin A. McGrail" <KMcGrail@pccc.com>
+Cc: "modules@perl.org" <modules@perl.org>, 
+	"private@spamassassin.apache.org" <private@spamassassin.apache.org>
+Content-Type: multipart/alternative; boundary=001a1133f07cd32e0c04f22805ff
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+--001a1133f07cd32e0c04f22805ff
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Feb 11, 2014 at 3:40 PM, Kevin A. McGrail <KMcGrail@pccc.com> wrote=
+:
+
+> (2) You can use C<< eval { HTML::Parser->VERSION(3.46) >> for your
+> comparison which won't get picked up by mistake.
+>
+> I can look at changing that for 3.4.1 but SA 3.4.0 is effectively a
+> released artifact at this point so it sounds like we'll need a 3.4.1
+> release to handle this.  I've been handling the release all day and night
+> now so I'm running on empty.  With the eval above, how would you recommen=
+d
+> implementing it because I don't know the C<< syntax you are showing.  Thi=
+s
+> is the current block.  A little direction would help a lot!
+>
+>
+Sorry.  That was POD code quoting, which I use occasionally in email.  I
+mean this:
+
+    unless ( eval { HTML::Parser->VERSION(3.46) } ) {
+        ...
+    }
+
+The VERSION method (see "perldoc UNIVERSAL") with an argument is an
+assertion so it needs to be wrapped with eval.
+
+>  Finally, could you tell me more for a second about the real world
+>     impact of this indexing issue?  From a CPAN lay-perspective, I was
+>     able to run cpan and do install Mail-SpamAssassin and things appear
+>     to have worked.
+>     http://search.cpan.org/~kmcgrail/Mail-SpamAssassin-3.4.0/ also looks
+>     ok.
+>
+>
+As long as "Mail::SpamAssassin" was indexed, then people can install it.
+ The things that failed to index did not get updated. So, for example,
+compare these index entries:
+
+    Mail::SpamAssassin             3.004000
+ K/KM/KMCGRAIL/SpamAssassin/Mail-SpamAssassin-3.4.0.tar.gz
+    Mail::SpamAssassin::Conf          bogus
+ K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz
+
+Should some crazy person do "cpan Mail::SpamAssassin::Conf" they would get
+the 3.3.2 tarball.
+
+Realistically, you probably don't need to care.
+
+David
+
+--=20
+*David Golden* <xdg@xdg.me>
+*Take back your inbox!* =E2=86=92 http://www.bunchmail.com/
+Twitter/IRC: @xdg
+
+--001a1133f07cd32e0c04f22805ff
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div class=3D"gmail_extra"><div class=3D"gmail_quote">On T=
+ue, Feb 11, 2014 at 3:40 PM, Kevin A. McGrail <span dir=3D"ltr">&lt;<a href=
+=3D"mailto:KMcGrail@pccc.com" target=3D"_blank">KMcGrail@pccc.com</a>&gt;</=
+span> wrote:<br>
+
+<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
+left-width:1px;border-left-color:rgb(204,204,204);border-left-style:solid;p=
+adding-left:1ex">
+ =20
+   =20
+ =20
+  <div bgcolor=3D"#FFFFFF" text=3D"#000000"><div class=3D""><blockquote typ=
+e=3D"cite"><div dir=3D"ltr"><div>(2) You can use C&lt;&lt; eval {
+          HTML::Parser-&gt;VERSION(3.46) &gt;&gt; for your comparison
+          which won&#39;t get picked up by mistake.</div>
+      </div>
+    </blockquote></div>
+    I can look at changing that for 3.4.1 but SA 3.4.0 is effectively a
+    released artifact at this point so it sounds like we&#39;ll need a 3.4.=
+1
+    release to handle this.=C2=A0 I&#39;ve been handling the release all da=
+y and
+    night now so I&#39;m running on empty.=C2=A0 With the eval above, how w=
+ould
+    you recommend implementing it because I don&#39;t know the C&lt;&lt;
+    syntax you are showing.=C2=A0 This is the current block.=C2=A0 A little
+    direction would help a lot!<div class=3D""><br></div></div></blockquote=
+><div><br></div><div>Sorry. =C2=A0That was POD code quoting, which I use oc=
+casionally in email. =C2=A0I mean this:</div><div><br></div><div>=C2=A0 =C2=
+=A0 unless ( eval { HTML::Parser-&gt;VERSION(3.46) } ) {</div>
+
+<div>=C2=A0 =C2=A0 =C2=A0 =C2=A0 ...</div><div>=C2=A0 =C2=A0 }</div><div><b=
+r></div><div>The VERSION method (see &quot;perldoc UNIVERSAL&quot;) with an=
+ argument is an assertion so it needs to be wrapped with eval.</div><blockq=
+uote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-wi=
+dth:1px;border-left-color:rgb(204,204,204);border-left-style:solid;padding-=
+left:1ex">
+
+<div bgcolor=3D"#FFFFFF" text=3D"#000000"><div class=3D"">
+    <pre><span style=3D"font-family:arial">Finally, could you tell me more =
+for a second about the real world
+    impact of this indexing issue?=C2=A0 From a CPAN lay-perspective, I was
+    able to run cpan and do install Mail-SpamAssassin and things appear
+    to have worked.=C2=A0
+    </span><a href=3D"http://search.cpan.org/~kmcgrail/Mail-SpamAssassin-3.=
+4.0/" target=3D"_blank" style=3D"font-family:arial">http://search.cpan.org/=
+~kmcgrail/Mail-SpamAssassin-3.4.0/</a><span style=3D"font-family:arial"> al=
+so looks
+    ok.</span></pre></div></div></blockquote><div><br></div><div>As long as=
+ &quot;Mail::SpamAssassin&quot; was indexed, then people can install it. =
+=C2=A0The things that failed to index did not get updated. So, for example,=
+ compare these index entries:</div>
+
+<div><br></div><div><div>=C2=A0 =C2=A0 Mail::SpamAssassin =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 3.004000 =C2=A0K/KM/KMCGRAIL/SpamAssassin/Mail-Spa=
+mAssassin-3.4.0.tar.gz</div><div>=C2=A0 =C2=A0 Mail::SpamAssassin::Conf =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0bogus =C2=A0K/KM/KMCGRAIL/Mail-SpamAssassin-=
+3.3.2.tar.gz<br>
+
+</div></div><div><br></div><div>Should some crazy person do &quot;cpan Mail=
+::SpamAssassin::Conf&quot; they would get the 3.3.2 tarball.</div><div><br>=
+</div><div>Realistically, you probably don&#39;t need to care.</div><div>
+
+<br></div><div>David<br>=C2=A0</div></div>-- <br><b style=3D"color:rgb(51,5=
+1,51);font-family:arial,helvetica,sans-serif">David Golden</b><span style=
+=3D"font-family:arial,helvetica,sans-serif"> &lt;<a href=3D"mailto:xdg@xdg.=
+me" target=3D"_blank">xdg@xdg.me</a>&gt;</span><br style=3D"font-family:ari=
+al,helvetica,sans-serif">
+
+<i style=3D"font-family:arial,helvetica,sans-serif">Take back your inbox!</=
+i><span style=3D"font-family:arial,helvetica,sans-serif"> =E2=86=92 </span>=
+<a style=3D"font-family:arial,helvetica,sans-serif" href=3D"http://www.bunc=
+hmail.com/" target=3D"_blank">http://www.bunchmail.com/</a><br>
+
+Twitter/IRC: @xdg<br>
+</div></div>
+
+--001a1133f07cd32e0c04f22805ff--
