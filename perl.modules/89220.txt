@@ -1,0 +1,172 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:89220
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5781 invoked from network); 12 Feb 2014 12:09:10 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 12 Feb 2014 12:09:10 -0000
+Received: (qmail 28500 invoked by uid 225); 12 Feb 2014 12:09:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28496 invoked by alias); 12 Feb 2014 12:09:09 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-la0-f51.google.com (HELO mail-la0-f51.google.com) (209.85.215.51)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 12 Feb 2014 04:09:07 -0800
+Received: by mail-la0-f51.google.com with SMTP id c6so6934103lan.38
+        for <modules@perl.org>; Wed, 12 Feb 2014 04:09:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type:content-transfer-encoding;
+        bh=FQ3nYtSCLk1skoFlJXE1oZ2iFzRix3gA75YxQmg3QLo=;
+        b=I7Z7ZFtaZcs9w2FWi3tlgxEvxN4MZjPSefq031IU2rBmfu/UdnySWAbiXEBSsCo/+Z
+         NdJKWJX2mAYP4SJGpqCHGTlfWsoNoPoLilrT5p8+ZlVHXSUyWzPJKYQ274pSwO58d8Rl
+         YLHLRBzY31f3cAkym5G7UorXlMVifHbWCFXEa0ZGdVPPMyJhA42tqU9HJNdosIZdpfQ+
+         +lbmgveFJ0yYlY2z1d2RSvYGftDcECCaYNuUcwIl3jdR1nQlHTf+ORGOy5mn/kZz61nJ
+         uXMPY4la9/LIGWOmd9qTssbI4/KMdHcTMwgsHI/kxvyVfMFvIE8KWFnm0CRgjrV5DJz8
+         Ci8w==
+X-Gm-Message-State: ALoCoQkcOz3E26d/2l5FIdXu1QQ6I94grA2m4i44u7lGyVUtWCIGUqC1BGO+3+hGe8gDtqf4uKBM
+X-Received: by 10.112.56.237 with SMTP id d13mr29914031lbq.2.1392206942569;
+ Wed, 12 Feb 2014 04:09:02 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.114.177.36 with HTTP; Wed, 12 Feb 2014 04:08:31 -0800 (PST)
+In-Reply-To: <CAOeq1c--vSy2aR5baZBbFgKFoTraYh2nJpNMOs+kG53i8f-=4Q@mail.gmail.com>
+References: <20140211174828.7D7D92FCE@pause.perl.org> <52FA6459.1060506@PCCC.com>
+ <CAOeq1c_yydB7CZ=RCWeSvLGzseY2eOZoge0uNLETBAxbxDJXgw@mail.gmail.com>
+ <52FA8AD1.3020500@PCCC.com> <CAOeq1c--vSy2aR5baZBbFgKFoTraYh2nJpNMOs+kG53i8f-=4Q@mail.gmail.com>
+Date: Wed, 12 Feb 2014 07:08:31 -0500
+Message-ID: <CAOeq1c-xbxgAWpEYnM=1y4WNoohCr4+t1vHHXK8ui3ZY=jCtRA@mail.gmail.com>
+Subject: Re: Failed: PAUSE indexer report KMCGRAIL/SpamAssassin/ Mail-SpamAssassin-3.4.0.tar.gz
+To: "Kevin A. McGrail" <KMcGrail@pccc.com>
+Cc: "modules@perl.org" <modules@perl.org>, 
+	"private@spamassassin.apache.org" <private@spamassassin.apache.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+fyi, "bogus" is fixed
+
+---------- Forwarded message ----------
+From: andk <notifications@github.com>
+Date: Wed, Feb 12, 2014 at 12:39 AM
+Subject: Re: [pause] Should not index non-lax VERSON numbers (#73)
+To: andk/pause <pause@noreply.github.com>
+Cc: David Golden <xdg@xdg.me>
+
+
+David Golden <notifications@github.com> writes:
+
+> We should probably purge from 02packages (and the underlying table) any s=
+uch
+> examples.
+
+Thanks for the note, first aid:
+
+mysql> select package,version,dist from packages where version =3D 'bogus' =
+;
++-----------------------------------+---------+----------------------------=
+------------------+
+| package | version | dist |
++-----------------------------------+---------+----------------------------=
+------------------+
+| Mail::SpamAssassin::Plugin | bogus |
+K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz |
+| Mail::SpamAssassin::PluginHandler | bogus |
+K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz |
+| Mail::SpamAssassin::Reporter | bogus |
+K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz |
+| Mail::SpamAssassin::Dns | bogus |
+K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz |
+| Mail::SpamAssassin::Conf | bogus |
+K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz |
++-----------------------------------+---------+----------------------------=
+------------------+
+5 rows in set (0.06 sec)
+
+mysql> delete from packages where version =3D 'bogus' ;
+Query OK, 5 rows affected (0.10 sec)
+
+
+--=20
+andreas
+
+=E2=80=94
+Reply to this email directly or view it on GitHub.
+
+
+
+
+--=20
+David Golden <xdg@xdg.me>
+Take back your inbox! =E2=86=92 http://www.bunchmail.com/
+Twitter/IRC: @xdg
+
+On Tue, Feb 11, 2014 at 4:19 PM, David Golden <xdg@xdg.me> wrote:
+> On Tue, Feb 11, 2014 at 3:40 PM, Kevin A. McGrail <KMcGrail@pccc.com> wro=
+te:
+>>
+>> (2) You can use C<< eval { HTML::Parser->VERSION(3.46) >> for your
+>> comparison which won't get picked up by mistake.
+>>
+>> I can look at changing that for 3.4.1 but SA 3.4.0 is effectively a
+>> released artifact at this point so it sounds like we'll need a 3.4.1 rel=
+ease
+>> to handle this.  I've been handling the release all day and night now so=
+ I'm
+>> running on empty.  With the eval above, how would you recommend implemen=
+ting
+>> it because I don't know the C<< syntax you are showing.  This is the cur=
+rent
+>> block.  A little direction would help a lot!
+>>
+>
+> Sorry.  That was POD code quoting, which I use occasionally in email.  I
+> mean this:
+>
+>     unless ( eval { HTML::Parser->VERSION(3.46) } ) {
+>         ...
+>     }
+>
+> The VERSION method (see "perldoc UNIVERSAL") with an argument is an
+> assertion so it needs to be wrapped with eval.
+>>
+>> Finally, could you tell me more for a second about the real world
+>>     impact of this indexing issue?  From a CPAN lay-perspective, I was
+>>     able to run cpan and do install Mail-SpamAssassin and things appear
+>>     to have worked.
+>>     http://search.cpan.org/~kmcgrail/Mail-SpamAssassin-3.4.0/ also looks
+>>     ok.
+>
+>
+> As long as "Mail::SpamAssassin" was indexed, then people can install it.
+> The things that failed to index did not get updated. So, for example,
+> compare these index entries:
+>
+>     Mail::SpamAssassin             3.004000
+> K/KM/KMCGRAIL/SpamAssassin/Mail-SpamAssassin-3.4.0.tar.gz
+>     Mail::SpamAssassin::Conf          bogus
+> K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz
+>
+> Should some crazy person do "cpan Mail::SpamAssassin::Conf" they would ge=
+t
+> the 3.3.2 tarball.
+>
+> Realistically, you probably don't need to care.
+>
+> David
+>
+> --
+> David Golden <xdg@xdg.me>
+> Take back your inbox! =E2=86=92 http://www.bunchmail.com/
+> Twitter/IRC: @xdg
+
+
+
+--=20
+David Golden <xdg@xdg.me>
+Take back your inbox! =E2=86=92 http://www.bunchmail.com/
+Twitter/IRC: @xdg

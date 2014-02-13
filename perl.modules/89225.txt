@@ -1,0 +1,486 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:89225
+Return-Path: <KMcGrail@PCCC.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28203 invoked from network); 12 Feb 2014 22:42:22 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 12 Feb 2014 22:42:22 -0000
+Received: (qmail 15931 invoked by uid 225); 12 Feb 2014 22:42:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15927 invoked by alias); 12 Feb 2014 22:42:21 -0000
+X-Spam-Status: No, hits=-1.2 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_LOW,SARE_GIF_ATTACH,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from intel1.peregrinehw.com (HELO intel1.peregrinehw.com) (38.124.232.10)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 12 Feb 2014 14:42:19 -0800
+Received: from [10.10.10.158] (firewall.pccc.com [71.163.15.130])
+	(authenticated bits=0)
+	by intel1.peregrinehw.com (8.14.5/8.14.5) with ESMTP id s1CMgDxM024857
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NO);
+	Wed, 12 Feb 2014 17:42:13 -0500
+Message-ID: <52FBF8C5.7000300@PCCC.com>
+Date: Wed, 12 Feb 2014 17:42:13 -0500
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.3.0
+MIME-Version: 1.0
+To: David Golden <xdg@xdg.me>
+CC: "modules@perl.org" <modules@perl.org>,
+        "private@spamassassin.apache.org" <private@spamassassin.apache.org>
+Subject: Re: Failed: PAUSE indexer report KMCGRAIL/SpamAssassin/ Mail-SpamAssassin-3.4.0.tar.gz
+References: <20140211174828.7D7D92FCE@pause.perl.org> <52FA6459.1060506@PCCC.com> <CAOeq1c_yydB7CZ=RCWeSvLGzseY2eOZoge0uNLETBAxbxDJXgw@mail.gmail.com> <52FA8AD1.3020500@PCCC.com> <CAOeq1c--vSy2aR5baZBbFgKFoTraYh2nJpNMOs+kG53i8f-=4Q@mail.gmail.com>
+In-Reply-To: <CAOeq1c--vSy2aR5baZBbFgKFoTraYh2nJpNMOs+kG53i8f-=4Q@mail.gmail.com>
+Content-Type: multipart/alternative;
+ boundary="------------050000010505080201050308"
+X-Authorized-User: 71.163.15.130
+X-KAM-Reverse-AUTH: Exempt - 71.163.15.130 is an Authorized Sender
+X-Scanned-By: MIMEDefang 2.72 on 38.124.232.10
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: KMcGrail@PCCC.com ("Kevin A. McGrail")
+
+--------------050000010505080201050308
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Thanks David,
+
+I believe it should be fixed and we'll move towards a 3.4.1 fix soon to 
+resolve it with some decent finality:
+
+https://issues.apache.org/SpamAssassin/show_bug.cgi?id=7008
+
+regards,
+KAM
+
+On 2/11/2014 4:19 PM, David Golden wrote:
+> On Tue, Feb 11, 2014 at 3:40 PM, Kevin A. McGrail <KMcGrail@pccc.com 
+> <mailto:KMcGrail@pccc.com>> wrote:
+>
+>>     (2) You can use C<< eval { HTML::Parser->VERSION(3.46) >> for
+>>     your comparison which won't get picked up by mistake.
+>     I can look at changing that for 3.4.1 but SA 3.4.0 is effectively
+>     a released artifact at this point so it sounds like we'll need a
+>     3.4.1 release to handle this. I've been handling the release all
+>     day and night now so I'm running on empty.  With the eval above,
+>     how would you recommend implementing it because I don't know the
+>     C<< syntax you are showing.  This is the current block.  A little
+>     direction would help a lot!
+>
+>
+> Sorry.  That was POD code quoting, which I use occasionally in email. 
+>  I mean this:
+>
+>     unless ( eval { HTML::Parser->VERSION(3.46) } ) {
+>         ...
+>     }
+>
+> The VERSION method (see "perldoc UNIVERSAL") with an argument is an 
+> assertion so it needs to be wrapped with eval.
+>
+>     Finally, could you tell me more for a second about the real world
+>          impact of this indexing issue?  From a CPAN lay-perspective, I was
+>          able to run cpan and do install Mail-SpamAssassin and things appear
+>          to have worked.
+>          http://search.cpan.org/~kmcgrail/Mail-SpamAssassin-3.4.0/  <http://search.cpan.org/%7Ekmcgrail/Mail-SpamAssassin-3.4.0/>  also looks
+>          ok.
+>
+>
+> As long as "Mail::SpamAssassin" was indexed, then people can install 
+> it.  The things that failed to index did not get updated. So, for 
+> example, compare these index entries:
+>
+>     Mail::SpamAssassin             3.004000 
+>  K/KM/KMCGRAIL/SpamAssassin/Mail-SpamAssassin-3.4.0.tar.gz
+>     Mail::SpamAssassin::Conf          bogus 
+>  K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz
+>
+> Should some crazy person do "cpan Mail::SpamAssassin::Conf" they would 
+> get the 3.3.2 tarball.
+>
+> Realistically, you probably don't need to care.
+>
+> David
+> -- 
+> *David Golden*<xdg@xdg.me <mailto:xdg@xdg.me>>
+> /Take back your inbox!/→ http://www.bunchmail.com/
+> Twitter/IRC: @xdg
+
+
+-- 
+*Kevin A. McGrail*
+President
+
+Peregrine Computer Consultants Corporation
+3927 Old Lee Highway, Suite 102-C
+Fairfax, VA 22030-2422
+
+http://www.pccc.com/
+
+703-359-9700 x50 / 800-823-8402 (Toll-Free)
+703-359-8451 (fax)
+KMcGrail@PCCC.com <mailto:kmcgrail@pccc.com>
+
+
+--------------050000010505080201050308
+Content-Type: multipart/related;
+ boundary="------------080001010801080704030004"
+
+
+--------------080001010801080704030004
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    <div class="moz-cite-prefix">Thanks David,<br>
+      <br>
+      I believe it should be fixed and we'll move towards a 3.4.1 fix
+      soon to resolve it with some decent finality:<br>
+      <br>
+      <a class="moz-txt-link-freetext" href="https://issues.apache.org/SpamAssassin/show_bug.cgi?id=7008">https://issues.apache.org/SpamAssassin/show_bug.cgi?id=7008</a><br>
+      <br>
+      regards,<br>
+      KAM<br>
+      <br>
+      On 2/11/2014 4:19 PM, David Golden wrote:<br>
+    </div>
+    <blockquote
+cite="mid:CAOeq1c--vSy2aR5baZBbFgKFoTraYh2nJpNMOs+kG53i8f-=4Q@mail.gmail.com"
+      type="cite">
+      <div dir="ltr">
+        <div class="gmail_extra">
+          <div class="gmail_quote">On Tue, Feb 11, 2014 at 3:40 PM,
+            Kevin A. McGrail <span dir="ltr">&lt;<a
+                moz-do-not-send="true" href="mailto:KMcGrail@pccc.com"
+                target="_blank">KMcGrail@pccc.com</a>&gt;</span> wrote:<br>
+            <blockquote class="gmail_quote" style="margin:0px 0px 0px
+0.8ex;border-left-width:1px;border-left-color:rgb(204,204,204);border-left-style:solid;padding-left:1ex">
+              <div bgcolor="#FFFFFF" text="#000000">
+                <div class="">
+                  <blockquote type="cite">
+                    <div dir="ltr">
+                      <div>(2) You can use C&lt;&lt; eval {
+                        HTML::Parser-&gt;VERSION(3.46) &gt;&gt; for your
+                        comparison which won't get picked up by mistake.</div>
+                    </div>
+                  </blockquote>
+                </div>
+                I can look at changing that for 3.4.1 but SA 3.4.0 is
+                effectively a released artifact at this point so it
+                sounds like we'll need a 3.4.1 release to handle this. 
+                I've been handling the release all day and night now so
+                I'm running on empty.  With the eval above, how would
+                you recommend implementing it because I don't know the
+                C&lt;&lt; syntax you are showing.  This is the current
+                block.  A little direction would help a lot!
+                <div class=""><br>
+                </div>
+              </div>
+            </blockquote>
+            <div><br>
+            </div>
+            <div>Sorry.  That was POD code quoting, which I use
+              occasionally in email.  I mean this:</div>
+            <div><br>
+            </div>
+            <div>    unless ( eval { HTML::Parser-&gt;VERSION(3.46) } )
+              {</div>
+            <div>        ...</div>
+            <div>    }</div>
+            <div><br>
+            </div>
+            <div>The VERSION method (see "perldoc UNIVERSAL") with an
+              argument is an assertion so it needs to be wrapped with
+              eval.</div>
+            <blockquote class="gmail_quote" style="margin:0px 0px 0px
+0.8ex;border-left-width:1px;border-left-color:rgb(204,204,204);border-left-style:solid;padding-left:1ex">
+              <div bgcolor="#FFFFFF" text="#000000">
+                <div class="">
+                  <pre><span style="font-family:arial">Finally, could you tell me more for a second about the real world
+    impact of this indexing issue?  From a CPAN lay-perspective, I was
+    able to run cpan and do install Mail-SpamAssassin and things appear
+    to have worked. 
+    </span><a moz-do-not-send="true" href="http://search.cpan.org/%7Ekmcgrail/Mail-SpamAssassin-3.4.0/" target="_blank" style="font-family:arial">http://search.cpan.org/~kmcgrail/Mail-SpamAssassin-3.4.0/</a><span style="font-family:arial"> also looks
+    ok.</span></pre>
+                </div>
+              </div>
+            </blockquote>
+            <div><br>
+            </div>
+            <div>As long as "Mail::SpamAssassin" was indexed, then
+              people can install it.  The things that failed to index
+              did not get updated. So, for example, compare these index
+              entries:</div>
+            <div><br>
+            </div>
+            <div>
+              <div>    Mail::SpamAssassin             3.004000
+                 K/KM/KMCGRAIL/SpamAssassin/Mail-SpamAssassin-3.4.0.tar.gz</div>
+              <div>    Mail::SpamAssassin::Conf          bogus
+                 K/KM/KMCGRAIL/Mail-SpamAssassin-3.3.2.tar.gz<br>
+              </div>
+            </div>
+            <div><br>
+            </div>
+            <div>Should some crazy person do "cpan
+              Mail::SpamAssassin::Conf" they would get the 3.3.2
+              tarball.</div>
+            <div><br>
+            </div>
+            <div>Realistically, you probably don't need to care.</div>
+            <div>
+              <br>
+            </div>
+            <div>David<br>
+               </div>
+          </div>
+          -- <br>
+          <b
+            style="color:rgb(51,51,51);font-family:arial,helvetica,sans-serif">David
+            Golden</b><span
+            style="font-family:arial,helvetica,sans-serif"> &lt;<a
+              moz-do-not-send="true" href="mailto:xdg@xdg.me"
+              target="_blank">xdg@xdg.me</a>&gt;</span><br
+            style="font-family:arial,helvetica,sans-serif">
+          <i style="font-family:arial,helvetica,sans-serif">Take back
+            your inbox!</i><span
+            style="font-family:arial,helvetica,sans-serif"> → </span><a
+            moz-do-not-send="true"
+            style="font-family:arial,helvetica,sans-serif"
+            href="http://www.bunchmail.com/" target="_blank">http://www.bunchmail.com/</a><br>
+          Twitter/IRC: @xdg<br>
+        </div>
+      </div>
+    </blockquote>
+    <br>
+    <br>
+    <div class="moz-signature">-- <br>
+      <b>Kevin A. McGrail</b><br>
+      President
+      <p>
+        Peregrine Computer Consultants Corporation<br>
+        3927 Old Lee Highway, Suite 102-C<br>
+        Fairfax, VA 22030-2422</p>
+      <p>
+        <a href="http://www.pccc.com/">http://www.pccc.com/</a></p>
+      <p>
+        703-359-9700 x50 / 800-823-8402 (Toll-Free)<br>
+        703-359-8451 (fax)<br>
+        <a href="mailto:kmcgrail@pccc.com">KMcGrail@PCCC.com</a></p>
+      <p>
+      </p>
+      <div align="center"><img
+          src="cid:part7.05030409.05080009@PCCC.com"></div>
+    </div>
+  </body>
+</html>
+
+--------------080001010801080704030004
+Content-Type: image/gif;
+ name="pccc_logo.gif"
+Content-Transfer-Encoding: base64
+Content-ID: <part7.05030409.05080009@PCCC.com>
+Content-Disposition: inline;
+ filename="pccc_logo.gif"
+
+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
+--------------080001010801080704030004--
+
+--------------050000010505080201050308--
