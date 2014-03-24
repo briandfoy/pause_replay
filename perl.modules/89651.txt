@@ -1,0 +1,132 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:89651
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19139 invoked from network); 24 Mar 2014 00:17:21 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 24 Mar 2014 00:17:21 -0000
+Received: (qmail 695 invoked by uid 225); 24 Mar 2014 00:17:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 690 invoked by alias); 24 Mar 2014 00:17:21 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-la0-f47.google.com (HELO mail-la0-f47.google.com) (209.85.215.47)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 23 Mar 2014 17:17:18 -0700
+Received: by mail-la0-f47.google.com with SMTP id y1so3149424lam.34
+        for <modules@perl.org>; Sun, 23 Mar 2014 17:17:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=JjwOpWc3iTv9jHzGvxuD9fpXZKgLlPOQTBnWUi4dKgc=;
+        b=G1eO7l2IoZkK0i6xrs3pVmjUnoIBh89X9PhOaLMTt5kaBywydLdjYTAU4A93hKrjCK
+         mznY3eAuDgSCOFhl0NYkHG+fdQhOrjhuOGewD56F7fb7ULDVn06RG5tobDK9aHZHkOn/
+         KSaOZ+fP3ohiEZxmdKjuCl2yW3VWLuHQ8lTwb3k1/InwopYDeun24B9tYuB5gQrVizkM
+         2t6IGp1U11IynOrAIMGSdfM6/g/7Bqzad6s3VW7gNjcdjAAUFcVeurEjqOyKlSdczRyj
+         UR4jpbudjOqGixYmhZN/Tx0ENZSGf3LICo2/hbdP2DMtbjhl/NfygVtyfY7jnaK0ljP5
+         HkcA==
+X-Gm-Message-State: ALoCoQkubWS8PKyS/nFMfXhIeBMaQQem3oRu+UcNOhZiiwp0IOQekVmQVty1Re/RGJ8/+0zGC0nb
+X-Received: by 10.112.46.225 with SMTP id y1mr41028398lbm.12.1395620233490;
+ Sun, 23 Mar 2014 17:17:13 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.114.67.12 with HTTP; Sun, 23 Mar 2014 17:16:43 -0700 (PDT)
+In-Reply-To: <CAN+Wnj2-Zw7AS2dAims6sxQn8uoWHXmQmBhP1y+vE1zhDAGDuA@mail.gmail.com>
+References: <20140323111004.3553730ED@pause.perl.org> <CAN+Wnj2-Zw7AS2dAims6sxQn8uoWHXmQmBhP1y+vE1zhDAGDuA@mail.gmail.com>
+Date: Sun, 23 Mar 2014 20:16:43 -0400
+Message-ID: <CAOeq1c-U2Srk_OB2_kOX7BxzxzqYJm2t2AkPXbVJpCFkPLhvGg@mail.gmail.com>
+Subject: Re: Failed: PAUSE indexer report ELOHMROW/Convert-Pluggable-0.014.tgz
+To: Bradley Andersen <bradley.d.andersen@gmail.com>
+Cc: "modules@perl.org" <modules@perl.org>, bradley.d.andersen+cpan@gmail.com, 
+	Ricardo Signes <rjbs@manxome.org>, 
+	"Andreas J. Koenig" <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Content-Type: text/plain; charset=UTF-8
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+Hi, Bradley.
+
+You've run afoul of some very recent changes to tighten security of
+PAUSE.  Specifically, you need to "own" the namespace
+"Convert::Pluggable" to be able to upload a distribution starting with
+"Convert-Pluggable-*".  However, PAUSE should be able to see that you
+are the first person to upload "Convert/Pluggable.pm" with the package
+"Convert::Pluggable" and assign permissions to you on the fly.  So I
+suspect there might be a bug in the recent change to PAUSE and I've
+copied the relevant people.
+
+That said, the Convert-Pluggable-0.014.tgz you uploaded looks very
+odd.  The directory inside is not "Convert-Pluggable-0.014" and it
+contains a "blib" directory, a "Makefile" and "MYMETA.*" files.  It
+looks like you just tarred your development directory and that's
+wrong.  You should run "make dist" and the makefile will create a
+proper tarball for you and that's what you should upload.  I don't
+think that's the problem, but I mention it both to help you do it
+better next time and to help those who can look into the bug to rule
+it in or out as a cause.
+
+So... please be patient and let us try to resolve the bug.  You can
+follow along on a ticket I opened here:
+https://github.com/andk/pause/issues/108
+
+Apologies for the problems but thank you for being persistent in
+asking for help.
+
+Regards,
+David Golden
+
+
+
+On Sun, Mar 23, 2014 at 7:11 AM, Bradley Andersen
+<bradley.d.andersen@gmail.com> wrote:
+> Fourth request - I'd really like to upload some code.
+>
+> This is my first attempt - help please?! Here's the last email I sent:
+>
+> "
+> Hello,
+>
+> I'd like to use this namespace.  If I am not so permitted, please suggest an
+> appropriate namespace.
+>
+> As this is my first attempted upload to CPAN, I could really use some help
+> figuring out how to get it officially up there.
+>
+> Thank you!
+> /bda
+> "
+>
+>
+>
+>
+>
+> On Sun, Mar 23, 2014 at 7:10 AM, PAUSE <upload@pause.perl.org> wrote:
+>>
+>> The following report has been written by the PAUSE namespace indexer.
+>> Please contact modules@perl.org if there are any open questions.
+>>
+>>   User: ELOHMROW (Bradley Andersen)
+>>   Distribution file: Convert-Pluggable-0.014.tgz
+>>   Number of files: 26
+>>   *.pm files: 2
+>>   README: Convert-Pluggable/README
+>>   META-File: No META.yml or META.json found
+>>   META-Parser: Parse::CPAN::Meta 1.4404
+>>   META-driven index: no
+>>   Timestamp of file: Sun Mar 23 11:08:36 2014 UTC
+>>   Time of this run: Sun Mar 23 11:10:04 2014 UTC
+>>
+>> This distribution name can only be used by users with permission for the
+>> package Convert::Pluggable, which you do not have.
+>>
+>>
+>> __END__
+>
+>
+
+
+
+-- 
+David Golden <xdg@xdg.me> Twitter/IRC: @xdg
