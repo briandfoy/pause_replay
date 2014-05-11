@@ -1,0 +1,155 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:90111
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32386 invoked from network); 6 May 2014 10:16:48 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 6 May 2014 10:16:48 -0000
+Received: (qmail 7580 invoked by uid 225); 6 May 2014 10:16:48 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7576 invoked by alias); 6 May 2014 10:16:48 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_LOW,URIBL_BLOCKED
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-lb0-f169.google.com (HELO mail-lb0-f169.google.com) (209.85.217.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 06 May 2014 03:16:45 -0700
+Received: by mail-lb0-f169.google.com with SMTP id s7so5599715lbd.0
+        for <modules@perl.org>; Tue, 06 May 2014 03:16:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=1wlKvIMUMlOINVxpAvjTBWyNHckV+xynd0xAOurJzmo=;
+        b=SPNryPtEewqKWvX9SRfvEJHO0TGi3Qh5PSBLKACKTolK4S1v5pxgWaw+8OSk2Qx00d
+         YqROVWIhbymsvZZRK+XaPJnSZjnlXgU5yxjFgiQtV+TkTC3VkXHEqKsdeyO+zHYs5+qr
+         NXOZ5ZcIzmmbcj//UJqUKeFs9DQdH39GmFSOBWy9JCUn0SQ+N8XvWVrd+nM4KWIueAh5
+         eullWnnplExjjqjUEUsya7y0PBS4C5+zEGJNQ03YZKZWy6c0vCqvL6ixX3GAzvIBXg8T
+         UFDZmbKfbVg8Mrta/DtxE7RVp3Ovbz84WEexAlHlMTBcwAhyLWIxhpCRr+6ouZd2uzNl
+         mJXA==
+X-Gm-Message-State: ALoCoQkyj4+4zIFns7qDMdhCLO91zpjEYzNubYEAGHLpAFMOgtRCdotA7k88JZ2TQun5h0duemAT
+X-Received: by 10.112.142.68 with SMTP id ru4mr2528469lbb.49.1399371400234;
+ Tue, 06 May 2014 03:16:40 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.114.68.140 with HTTP; Tue, 6 May 2014 03:16:10 -0700 (PDT)
+In-Reply-To: <5367EA07.8000606@gmail.com>
+References: <20140505182913.BC4D7533@pause.perl.org> <5367EA07.8000606@gmail.com>
+Date: Tue, 6 May 2014 06:16:10 -0400
+Message-ID: <CAOeq1c-puMuC0hb=0i82VpAj8Ab4e2PxmLSKMiRvqBhmdeo6Gg@mail.gmail.com>
+Subject: Re: Failed: PAUSE indexer report BRMILLER/LaTeXML-0.8.0.tar.gz
+To: "NebCon, Inc" <nebconinc@gmail.com>
+Cc: "modules@perl.org" <modules@perl.org>
+Content-Type: text/plain; charset=UTF-8
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+I'm pretty sure you can't load a module on that line -- that's the
+"Safe" compartment limitation to avoid PAUSE running arbitrary perl
+code, which could cause a server compromise:
+
+    our $VERSION = do { use Malicious::Hack; 1 };
+
+If you've got IRC, jump onto irc.perl.org in the #toolchain channel
+and ask for help there and someone (maybe me) will be able to give you
+options for what to do.
+
+My 2cents -- consider using a tool like the one bundled in
+Perl::Version to set a version into all your modules at once instead
+of trying to pick it up from a "main" module.  Or, just set the
+version in your main module and leave the rest of them with an undef
+version.
+
+Regards,
+David
+
+
+On Mon, May 5, 2014 at 3:44 PM, NebCon, Inc <nebconinc@gmail.com> wrote:
+> Hi CPAN Guys;
+>   Pardon my frustration, after wrestling with Perl's versioning
+> issues (distribution vs file vs formats vs ...),
+> getting fairly successfully through cpantesters and Kwalitee,
+> and then when I think I've finally got a Proper release,
+> I get a brand new puzzle.
+>
+> I guess the first question is: What is the impact of
+> failing the PAUSE indexer on a Version parsing problem?
+> (It seems that both CPAN & CPANTesters are seeing the
+> new module)
+>
+> There was no issue raised in CPANTesters with
+> development releases (with underscore);
+> presumably they don't get "indexed".
+> The version number is overtly in the upload,
+> and also should be in META.yml.
+>
+> Thanks;
+> bruce
+>
+>
+> -------- Original Message --------
+> Subject: Failed: PAUSE indexer report BRMILLER/LaTeXML-0.8.0.tar.gz
+> Date: Mon, 5 May 2014 18:29:13 +0000
+> From: PAUSE <upload@pause.perl.org>
+> To: nebconinc@gmail.com, andreas.koenig.gmwojprw+pause@franz.ak.mind.de
+>
+> The following report has been written by the PAUSE namespace indexer.
+> Please contact modules@perl.org if there are any open questions.
+>
+>   User: BRMILLER (Bruce Miller)
+>   Distribution file: LaTeXML-0.8.0.tar.gz
+>   Number of files: 1046
+>   *.pm files: 96
+>   README: LaTeXML-0.8.0/README
+>   META-File: LaTeXML-0.8.0/META.json
+>   META-Parser: Parse::CPAN::Meta 1.4404
+>   META-driven index: no
+>   Timestamp of file: Mon May  5 18:26:56 2014 UTC
+>   Time of this run: Mon May  5 18:29:13 2014 UTC
+>
+> Status of this distro: Version parsing problem
+> ==============================================
+>
+> The following packages (grouped by status) have been found in the distro:
+>
+> Status: Version parsing problem
+> ===============================
+>
+>      module : LaTeXML
+>      version: undef
+>      in file: LaTeXML-0.8.0/lib/LaTeXML.pm
+>      status : The PAUSE indexer was not able to parse the following line
+>              in that file: C< $LaTeXML::VERSION = do { use
+>              LaTeXML::Version; $LaTeXML::Version::VERSION; }; > Note:
+>              the indexer is running in a Safe compartement and cannot
+>              provide the full functionality of perl in the VERSION line.
+>              It is trying hard, but sometime it fails. As a workaround,
+>              please consider writing a META.yml that contains a
+>              'provides' attribute or contact the CPAN admins to
+>              investigate (yet another) workaround against "Safe"
+>              limitations.)
+>
+> Status: Successfully indexed
+> ============================
+>
+>      module : LaTeXML::Common::Color
+>      version: undef
+>      in file: LaTeXML-0.8.0/lib/LaTeXML/Common/Color.pm
+>      status : indexed
+>
+>      module : LaTeXML::Common::Color::Derived
+>      version: undef
+>      in file: LaTeXML-0.8.0/lib/LaTeXML/Common/Color/Derived.pm
+>      status : indexed
+>
+>
+> [a whole bunch of stuff]
+>
+> __END__
+>
+>
+
+
+
+-- 
+David Golden <xdg@xdg.me> Twitter/IRC: @xdg
