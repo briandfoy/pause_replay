@@ -1,0 +1,243 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:90483
+Return-Path: <KWittrock@web.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 17466 invoked from network); 21 Jun 2014 16:52:40 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 21 Jun 2014 16:52:40 -0000
+Received: (qmail 17586 invoked by uid 225); 21 Jun 2014 16:52:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17582 invoked by alias); 21 Jun 2014 16:52:40 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,T_RP_MATCHES_RCVD,URIBL_BLOCKED
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mout.web.de (HELO mout.web.de) (212.227.15.3)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 21 Jun 2014 09:52:37 -0700
+Received: from [192.168.2.102] ([87.178.120.179]) by smtp.web.de (mrweb001)
+ with ESMTPSA (Nemesis) id 0LwZA7-1WdeMJ1m19-018LnH for <modules@perl.org>;
+ Sat, 21 Jun 2014 18:52:32 +0200
+Message-ID: <53A5B84A.2030300@web.de>
+Date: Sat, 21 Jun 2014 18:52:26 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Thunderbird/24.6.0
+MIME-Version: 1.0
+To: modules@perl.org
+Subject: Failed: PAUSE indexer report WITTROCK/SudokuTrainer-0.01.4.tar.gz
+Content-Type: multipart/mixed;
+ boundary="------------050809010901050508040708"
+X-Provags-ID:  V03:K0:wExM6GjclZO5Y3ySOyOCsXglYbHK3sFKkQxujEubpnwTpKcl8lJ
+ u8g6sSxipN9zPG/GiofSmIEvDTVncMZ/BsU4eTx4lZxQf1/VwxbDmcWUELkpV9vBINOZuEi
+ kzQUlUwbFY5gns3z+MjRhs2mc+V8uAIGGattLIrAAzp0kbrCAsYz+Y3UiMbEZwRnY1g2iUR
+ 78AmRuqIaDaEA6sMEIzSg==
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: KWittrock@web.de ("K. Wittrock")
+
+--------------050809010901050508040708
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
+
+I reply to the subject report, which I attach to this email.
+
+Nearly all modules of my distro SudokuTrainer are specific to the distro 
+and hence of no use for other CPAN authors. So I wanted to avoid getting 
+them indexed, for the sole purpose of not further flood CPAN with 
+useless modules. On the module-authors maillist I was first advised to 
+do so by splitting the package directives to 2 lines. I thought this as 
+a hack, but it worked fine.
+
+Later I got attentive to the meta_merge section of CPAN::Meta::Spec. So 
+I changed several package directives back to single line form, and added 
+a parameter "meta_merge => { no_index => { file => [ 
+'Games/Sudoku/Trainer/Check_pause.pm', ... ],},}," to my Build.PL. The 
+result was that only those modules who's package directive was still 
+split on 2 lines were not indexed. In other words, the no_index had no 
+effect.
+
+For my latest upload (version 0.01.4) I changed the meta_merge parameter to
+
+ >     meta_merge          => {
+ >         no_index => {
+ >           file      => [
+ >               'Games/Sudoku/Trainer/Cell.pm',
+ > #              'Games/Sudoku/Trainer/Check_pause.pm',
+ > #              'Games/Sudoku/Trainer/Const_structs.pm',
+ > #              'Games/Sudoku/Trainer/Found_info.pm',
+ > #              'Games/Sudoku/Trainer/GUI.pm',
+ > #              'Games/Sudoku/Trainer/GUIdetails.pm',
+ >               'Games/Sudoku/Trainer/Priorities.pm',
+ > #              'Games/Sudoku/Trainer/Strategies.pm',
+ >           ],
+ >           package   => [
+ >               'Games::Sudoku::Trainer::Check_pause',
+ >               'Games::Sudoku::Trainer::Const_structs',
+ >               'Games::Sudoku::Trainer::Found_info',
+ >               'Games::Sudoku::Trainer::GUI',
+ >               'Games::Sudoku::Trainer::GUIdetails',
+ >               'Games::Sudoku::Trainer::Strategies',
+ >],
+ >         },
+ >     },
+
+As your indexer report shows, the no_index again had no effect. 
+Apparently I do something wrong with the use of the meta_merge 
+parameter. I really hope that you may help me to correct my mistake.
+
+Thank you very much for your patience.
+
+Klaus
+
+
+--------------050809010901050508040708
+Content-Type: message/rfc822;
+ name="Nachricht als Anhang"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+ filename="Nachricht als Anhang"
+
+X-Account-Key: account1
+X-Mozilla-Keys:                                                                                 
+Return-Path: upload@pause.perl.org
+Received: from pause.perl.org ([207.171.7.119]) by mx-ha.web.de (mxweb008)
+ with ESMTP (Nemesis) id 0LjISN-1WQrmB1PPb-00dSjC for <KWittrock@web.de>; Fri,
+ 20 Jun 2014 16:28:16 +0200
+Received: by pause.perl.org (Postfix, from userid 0)
+	id CD1302355; Fri, 20 Jun 2014 14:28:14 +0000 (UTC)
+To: KWittrock@web.de, andreas.koenig.gmwojprw+pause@franz.ak.mind.de
+Subject: Failed: PAUSE indexer report WITTROCK/SudokuTrainer-0.01.4.tar.gz
+From: PAUSE <upload@pause.perl.org>
+Date: Fri, 20 Jun 2014 14:28:14 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <20140620142814.CD1302355@pause.perl.org>
+Envelope-To: <KWittrock@web.de>
+X-UI-Filterresults: notjunk:1;V01:K0:Vsl+cbir0Ao=:hzQ6srPBVlT1gLt6c3IeHwNrXG
+ 1BZIGRoPfqeATXRt92EHapmDbHzpfWx6qZJzcPbjbNdKyl1pMT4dipINvHcKO/CZiaKXsHNwx
+ SyXaGwd2ICo/iTeZNSrv5RV/M8CwebTeXFWqJIUkHUP+kMIwnEdsZKk5jMpS4o3XLEIxq/wLH
+ UlBrAORY9UJIxtUrLr5ER5Mf8N3goqQYd49mjo4QgoCoJ6hcvNE87BoQ/4KAX8/AYuEZpoWg4
+ YHTBxO0I1eYFWr45OLUiQ2+1jiLrrp3YtnGb0xm5flQFktZGiSpPyTtchLH0gZ+19ap31zngJ
+ 3tK0BvCtONZ8mnfE4jmRYZNNYU/1rR+vYfCnmRr3N/AkMXrU9XuqFn8v1VUctGQUpXQDhMt6V
+ 2alXm8N9AVJmgpcYZrT1/bdWzM13xh9ZCidPtxXiZWROUN08m2w1n1dN6VCScIO3WQGVvoDDJ
+ TNY3rrry6DJYt8lDBmCD9COFl5mdBO8f6g0r7OjS5Sg66+c1HUHqWGkw4/PAWuZ0SPm0o9cnA
+ /gOyAfxZZeCPWR2TTMBU8b9Ddnp35Dc20fGV9sk9RQZAga/UCeebwn+Eux4R7pm4nUlGfGpoX
+ tu+Yx3l9egsFaVDOJHViAiGvKcCo0O/2TCKGsyQ8lV+z78n+VarAoUSBLcjIE2REZ3oWLjUUB
+ qhpuc9wtJjm1YjqxkefkqvQWxhBORUmpqqy1MtHi2iVCg7QXpaBnzqtdfYlk8bQM3ebOQPGQs
+ IDOgNE2MyGPtjAv8xBpR3ucjmN1Wu3F/VztPh0oseZHaUA70Oo3MryD+rB69OaV6xThzGZgbR
+ vCcXCPg7bXR1M1tx1KIDXHlybKGQUOwu9IEU7z/51xdKYIaSSdNao3O0k36/SF8VCF7GYfvNA
+ VJMg4+jnVk8kS+MPy5Cpm0WnmcJfKMgodIQ7F/GiYbuLBG+C3khCFqR1vVZhUdIvNfS9MZbwg
+ I6S3MQ8RU9GVmSAqxEkGr8UfzNTOhPeBlfmI9koRq1z0cBcejWvoBiyYeERWDUoxIlEQSnO3c
+ 31OZ9BpcCoBReKL74y/7p7saBVY8akq8umFI6uSvGZFh/6zapsv7SRKulfHNIzzFpXRuFznps
+ v4WbI51fRZvOF2TBE21W82b2UpMzaw4vt6sJzFkSB06yVnADZBRu9x3MRlvf4ULT9a4h7V8h+
+ 64qQHYrUrWupHK0HAh7JxPPzgX4gV1qJ4Cgoh96ztIBocsPJsyVZgSXntpDPWRCs5wVfVeCtO
+ KTpIUT/zuvDaAUoZxomSUoDfHycAkwY3JpCDEVsmXIs7VP4nIC+vUCASF01MdogaLWZ1slGLN
+ 3ZBxh185mWJphNeHxBC2bWTPe86MceB8fv4a0Oo8aXGSu+Q8W8ASauOGtsfFdVTVnVsz4qagF
+ 0epIGk54iLouQOrE5o1dZHRCRUv5zBT3XalCGlB6FW6dC/Lo37BqShngDei
+
+The following report has been written by the PAUSE namespace indexer.
+Please contact modules@perl.org if there are any open questions.
+
+  User: WITTROCK (Klaus Wittrock)
+  Distribution file: SudokuTrainer-0.01.4.tar.gz
+  Number of files: 45
+  *.pm files: 19
+  README: SudokuTrainer-0.01.4/README
+  META-File: SudokuTrainer-0.01.4/META.json
+  META-Parser: Parse::CPAN::Meta 1.4404
+  META-driven index: yes
+  Timestamp of file: Fri Jun 20 14:26:37 2014 UTC
+  Time of this run: Fri Jun 20 14:28:14 2014 UTC
+
+Status of this distro: Decreasing version number
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+The following packages (grouped by status) have been found in the distro:
+
+Status: Decreasing version number
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+
+     module : Games::Sudoku::Trainer::Clues
+     version: undef
+     in file: lib/Games/Sudoku/Trainer/GUIdetails.pm
+     status : Not indexed because lib/Games/Sudoku/Trainer/GUIdetails.pm
+             in W/WI/WITTROCK/SudokuTrainer-0.01.3.tar.gz has a higher
+             version number (0)
+
+Status: Successfully indexed
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+
+     module : Games::Sudoku::Trainer::Cell
+     version: v0.2.0
+     in file: lib/Games/Sudoku/Trainer/Cell.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::Check_pause
+     version: v0.2.0
+     in file: lib/Games/Sudoku/Trainer/Check_pause.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::Const_structs
+     version: v0.2.0
+     in file: lib/Games/Sudoku/Trainer/Const_structs.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::Found_info
+     version: v0.3.0
+     in file: lib/Games/Sudoku/Trainer/Found_info.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::GUI
+     version: v0.2.0
+     in file: lib/Games/Sudoku/Trainer/GUI.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::GUIdetails
+     version: v0.3.0
+     in file: lib/Games/Sudoku/Trainer/GUIdetails.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::General_info
+     version: v0.1.0
+     in file: lib/Games/Sudoku/Trainer/General_info.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::Nextvalue
+     version: v0.2.0
+     in file: lib/Games/Sudoku/Trainer/Nextvalue.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::Obstacle
+     version: v0.3.0
+     in file: lib/Games/Sudoku/Trainer/Obstacle.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::Priorities
+     version: v0.2.0
+     in file: lib/Games/Sudoku/Trainer/Priorities.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::Run
+     version: v0.4.0
+     in file: lib/Games/Sudoku/Trainer/Run.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::Strategies
+     version: v0.4.0
+     in file: lib/Games/Sudoku/Trainer/Strategies.pm
+     status : indexed
+
+     module : Games::Sudoku::Trainer::Training
+     version: v0.2.0
+     in file: lib/Games/Sudoku/Trainer/Training.pm
+     status : indexed
+
+__END__
+
+
+
+--------------050809010901050508040708--
