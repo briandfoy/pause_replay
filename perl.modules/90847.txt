@@ -1,0 +1,127 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:90847
+Return-Path: <gbarr@pobox.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 16762 invoked from network); 23 Jul 2014 16:26:29 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 23 Jul 2014 16:26:29 -0000
+Received: (qmail 19265 invoked by uid 225); 23 Jul 2014 16:26:29 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19261 invoked by alias); 23 Jul 2014 16:26:29 -0000
+X-Spam-Status: No, hits=-2.7 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,RP_MATCHES_RCVD,SPF_PASS,URIBL_BLOCKED
+X-Spam-Check-By: la.mx.develooper.com
+Received: from sasl.smtp.pobox.com (HELO sasl.smtp.pobox.com) (208.72.237.25)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 23 Jul 2014 09:26:26 -0700
+Received: from sasl.smtp.pobox.com (unknown [127.0.0.1])
+	by pb-sasl0.pobox.com (Postfix) with ESMTP id 3F2C225F66;
+	Wed, 23 Jul 2014 12:26:21 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=subject
+	:mime-version:content-type:from:in-reply-to:date:cc
+	:content-transfer-encoding:message-id:references:to; s=sasl; bh=
+	heBeiO6HzmNlBxcwCBjzuZmWLKc=; b=NkRYXV94HdP60/zVKODT3mljAd93xDyR
+	HvUfJyN2i3CB/6zB2OmJ1QzEyanvKWAGaPk/3gsK00F0v8DUjzV6n0dl5eQkZ2rd
+	Y3laRoSnVz2xesdHhuDfi5FNLshQI6MUb1BXt9mJYI2kLK1emVoFjVuVo6QBIlNj
+	6Pc0Vr5vOag=
+DomainKey-Signature: a=rsa-sha1; c=nofws; d=pobox.com; h=subject
+	:mime-version:content-type:from:in-reply-to:date:cc
+	:content-transfer-encoding:message-id:references:to; q=dns; s=
+	sasl; b=v08nn95vD5nng1MDluC1HVpAInm/xMDiOnN83FrBGsb4953MeG5bGF96
+	ObKzXm6DDbWyQuvtVN7YFn6vfKNmh2ENWYPamg7o8gzYeqwkuEMDnRlz3HzQP45X
+	63CS8iVWPdqebdi67/xLOTBUDitkt0ynS2p+DSjJPR9SnsABSBs=
+Received: from pb-sasl0.int.icgroup.com (unknown [127.0.0.1])
+	by pb-sasl0.pobox.com (Postfix) with ESMTP id 33C5525F65;
+	Wed, 23 Jul 2014 12:26:21 -0400 (EDT)
+Received: from mail.goingon.net (unknown [70.85.157.106])
+	by pb-sasl0.pobox.com (Postfix) with ESMTPA id 2F88525F61;
+	Wed, 23 Jul 2014 12:26:12 -0400 (EDT)
+Received: from [192.168.1.86] (99-74-251-59.lightspeed.rcsntx.sbcglobal.net [99.74.251.59])
+	(using TLSv1 with cipher AES128-SHA (128/128 bits))
+	(No client certificate requested)
+	by mail.goingon.net (Postfix) with ESMTP id 209E81015E31;
+	Wed, 23 Jul 2014 11:26:11 -0500 (CDT)
+Subject: Re: FindBin::libs isn't indexed, Test-BDD-Cucumber needs it to test
+Mime-Version: 1.0 (Mac OS X Mail 7.3 \(1878.6\))
+Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <CAOeq1c-KAq2mqh6B-xso96oBYNKpO1Tr+LZmYRAtuXSw9wBOgA@mail.gmail.com>
+Date: Wed, 23 Jul 2014 11:26:17 -0500
+Cc: "modules@perl.org" <modules@perl.org>,
+ Phillip Moore <w.phillip.moore@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-ID: <4F2901B0-39DA-4058-AA55-380CABE1D673@pobox.com>
+References: <CAJY0+QCP55fXh7yPuSiBLRnPvhomcOk-mcas-Dhy_H3XHd7=yg@mail.gmail.com> <CAOeq1c-KAq2mqh6B-xso96oBYNKpO1Tr+LZmYRAtuXSw9wBOgA@mail.gmail.com>
+To: David Golden <xdg@xdg.me>
+X-Mailer: Apple Mail (2.1878.6)
+ 0F72F5F0-1286-11E4-87A2-7FB96395E023-36227416!pb-sasl0.pobox.com
+Approved: news@nntp.perl.org
+From: gbarr@pobox.com (Graham Barr)
+
+This happens because the author is playing tricks for installation.
+
+Notice on http://search.cpan.org/~lembark/FindBin-libs-1.11/ thee are no =
+modules listed, there is only a documentation section.
+
+Browsing to =
+http://cpansearch.perl.org/src/LEMBARK/FindBin-libs-1.11/lib/FindBin/
+
+shows there are 2 module files, but the author specifically hides them =
+from pause with
+
+package         # hak to avoid indexing the extra module
+FindBin::libs;
+
+Then in the Makefile.PL they create libs.pm as a link based on the =
+version of perl being installing the module.
+
+so PAUSE never finds any modules, because they are specifically hidden =
+and search.cpan.org finds the documentation in those files.
+
+Graham.
+
+On Jul 23, 2014, at 10:56 , David Golden <xdg@xdg.me> wrote:
+
+> Forwarding to modules@perl.org for consideration.
+>=20
+>=20
+> ---------- Forwarded message ----------
+> From: Phillip Moore <w.phillip.moore@gmail.com>
+> Date: Wed, Jul 23, 2014 at 11:07 AM
+> Subject: FindBin::libs isn't indexed, Test-BDD-Cucumber needs it to =
+test
+> To: cpan-testers-discuss@perl.org
+>=20
+>=20
+> If this is the wrong mailing list to whine about this, feel free to
+> flame me, just redirect me to the right location.
+>=20
+> While installing Test-BDD-Cucumber, the tests fail because
+> FindBin::libs can't be found.   This test dependency is missing from
+> the Test-BDD-Cucumber META.json file, but that's a separate issue.
+>=20
+> I tried to install FindBin::libs, but while you can "see" it on CPAN
+> (i.e. browse via search.cpan.org), it's not listed in
+> 02packages.details.txt.    I just updated my minicpan mirror, and
+> checked the file.  These are the only FindBin modules listed there:
+>=20
+> FindBin                            1.51  R/RJ/RJBS/perl-5.20.0.tar.gz
+> FindBin::Real                      1.05  =
+S/ST/STRO/FindBin-Real-1.05.tar.gz
+> FindBinNew                         1.51  =
+J/JW/JWB/Bio-Grid-Run-SGE-0.0386.tar.gz
+>=20
+> The latest version published by the author is
+> FindBin-libs-1.11.tar.gz, but this is NOT visible in my mirror (I'm
+> mirroring from http://www.cpan.org, FWIW).  That was released 2 days
+> ago, but FindBin::libs has been around for a lot longer than that, so
+> it should have already been indexed.
+>=20
+> Does this possibly indicate a problem with the code that creates the
+> 02packages.details.txt file?
+>=20
+>=20
+> --=20
+> David Golden <xdg@xdg.me> Twitter/IRC: @xdg
+>=20
+
