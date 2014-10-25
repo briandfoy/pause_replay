@@ -4,8 +4,11 @@ use utf8;
 use strict;
 use warnings;
 
+use IO::Interactive qw(interactive);
 use File::Spec::Functions;
 use Net::NNTP;
+
+select( interactive() );
 
 my $group = 'perl.modules';
 
