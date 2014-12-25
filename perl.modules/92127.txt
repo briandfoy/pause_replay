@@ -1,0 +1,102 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:92127
+Return-Path: <dcollinsn@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 22413 invoked from network); 23 Dec 2014 22:56:30 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 23 Dec 2014 22:56:30 -0000
+Received: (qmail 14672 invoked by uid 225); 23 Dec 2014 22:56:29 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14668 invoked by alias); 23 Dec 2014 22:56:28 -0000
+X-Spam-Status: No, hits=-2.7 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,HTML_MESSAGE,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-yh0-f49.google.com (HELO mail-yh0-f49.google.com) (209.85.213.49)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 23 Dec 2014 14:56:25 -0800
+Received: by mail-yh0-f49.google.com with SMTP id f10so3530589yha.8
+        for <modules@perl.org>; Tue, 23 Dec 2014 14:56:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:from:date:message-id:subject:to:cc:content-type;
+        bh=Ccm6GUcvm0WXtBTFX3ejnB2HPsQF1BjNoOc/uFbUTx4=;
+        b=MT7hauAofGwOHnHqXmFNVoZ6QBOd3/LOcLHIc2uhlG96ZCjsfKCKYFqFsv4192eUDd
+         yUvScpBNeuxwwmZ+H0aTTsxfR7XCAkU3fx8lznyQ06Yk7eL1pJ2dmnHSnUAqknCQeZtD
+         bzx1w1tYQKgh+Rjqxwr6122Sbj55nLKD8upmobFhJw/mT6IIHPsPHPd9mQD2/nAvWWqR
+         0dVc/Y8ktyeso6DpRLSC5kyvoNVNYk3f0TES6Md0Q3KEPUM3bwmNjSAXVMdUwSaPtfCY
+         GJmxSCRaG3sdwiGAJ5WYWdpRZ7fObd3OcPSE5+pj1RrLtcX+WPIGggepAKkuPEn62m9V
+         uDBQ==
+X-Received: by 10.170.67.132 with SMTP id j126mr27398811ykj.4.1419375382432;
+ Tue, 23 Dec 2014 14:56:22 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.170.52.75 with HTTP; Tue, 23 Dec 2014 14:56:02 -0800 (PST)
+Date: Tue, 23 Dec 2014 17:56:02 -0500
+Message-ID: <CA+tt54++RQUFC5V55r3DiZ76e8DExYaFNsPiTUL3wyHxULekjg@mail.gmail.com>
+Subject: Perl Unicode::String requires an update to correct an error
+To: gisle@activestate.com, GAAS@cpan.org
+Cc: modules@perl.org
+Content-Type: multipart/alternative; boundary=001a113932d279113f050aea1567
+Approved: news@nntp.perl.org
+From: dcollinsn@gmail.com (Dan Collins)
+
+--001a113932d279113f050aea1567
+Content-Type: text/plain; charset=UTF-8
+
+Greetings!
+
+I'm a Perl user who is doing automated testing on CPAN modules to help
+authors identify bugs on different platforms and versions of Perl. I
+noticed that your module Unicode::String is currently failing its test
+suite on the "bleeding-edge" perl 5.21 and will also fail in future
+releases due to `defined(%hash)` being deprecated. Fixing this requires a
+one-line patch to CharName.pm line 80:
+
+
+      return join("", "HANGUL SYLLABLE ", @s)
+  }
+    }
+<    _init_names() unless defined %NAMES;
+>    _init_names() unless %NAMES;
+    $NAMES{sprintf("%04X",$code)}
+}
+
+I noticed that you haven't updated this module since 2005. Nevertheless,
+this module will stop working for users starting with the next release of
+Perl, version 5.22. If you're no longer interested in maintaining it,
+consider adding me (DCOLLINS) or another colleague as a co-maintainer on
+pause.perl.org so that this bug can be fixed (and you don't start getting
+many failure reports from CPAN Testers once this deprecation makes it into
+5.22).
+
+Thanks,
+Dan Collins
+
+--001a113932d279113f050aea1567
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Greetings!<div><br></div><div>I&#39;m a Perl user who is d=
+oing automated testing on CPAN modules to help authors identify bugs on dif=
+ferent platforms and versions of Perl. I noticed that your module Unicode::=
+String is currently failing its test suite on the &quot;bleeding-edge&quot;=
+ perl 5.21 and will also fail in future releases due to `defined(%hash)` be=
+ing deprecated. Fixing this requires a one-line patch to CharName.pm line 8=
+0:</div><div><br></div><div><div><br></div><div><span style=3D"white-space:=
+pre">=C2=A0   </span>=C2=A0 =C2=A0 return join(&quot;&quot;, &quot;HANGUL S=
+YLLABLE &quot;, @s)</div></div><div><div><span style=3D"white-space:pre">  =
+  =C2=A0 </span>}</div><div>=C2=A0 =C2=A0 }</div><div>&lt; =C2=A0 =C2=A0_in=
+it_names() unless defined %NAMES;</div><div>&gt; =C2=A0 =C2=A0_init_names()=
+ unless %NAMES;</div><div>=C2=A0 =C2=A0 $NAMES{sprintf(&quot;%04X&quot;,$co=
+de)}<br></div><div>}</div></div><div><br></div><div>I noticed that you have=
+n&#39;t updated this module since 2005. Nevertheless, this module will stop=
+ working for users starting with the next release of Perl, version 5.22. If=
+ you&#39;re no longer interested in maintaining it, consider adding me (DCO=
+LLINS) or another colleague as a co-maintainer on <a href=3D"http://pause.p=
+erl.org">pause.perl.org</a> so that this bug can be fixed (and you don&#39;=
+t start getting many failure reports from CPAN Testers once this deprecatio=
+n makes it into 5.22).</div><div><br></div><div>Thanks,</div><div>Dan Colli=
+ns</div></div>
+
+--001a113932d279113f050aea1567--
