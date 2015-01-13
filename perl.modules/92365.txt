@@ -1,0 +1,171 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:92365
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10393 invoked from network); 12 Jan 2015 15:55:42 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 12 Jan 2015 15:55:42 -0000
+Received: (qmail 15400 invoked by uid 225); 12 Jan 2015 15:55:42 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15396 invoked by alias); 12 Jan 2015 15:55:42 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wg0-f53.google.com (HELO mail-wg0-f53.google.com) (74.125.82.53)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 12 Jan 2015 07:55:38 -0800
+Received: by mail-wg0-f53.google.com with SMTP id x13so20077526wgg.12
+        for <modules@perl.org>; Mon, 12 Jan 2015 07:55:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=KboxS2asM+ZPeiN11VSFWBIze0Ge0qoCjQldKQ+2s0o=;
+        b=FhwOcly/Tc/BjMbwWWnrpZMipeLbQOLLPMhyUgPQepZPHYaIK1lxuIkpigxFGrzbtF
+         Zd7iLKa1j7N/tV3Ov9HTy7c/IzhvvXnjC5yfBV5AVCFzEodLto0AA9bGVyvyq4jesyJT
+         wx8tassRnjcAYxlY2WyzJWlbbN1SVmnaYJqm2ONMboJnWETK115hoilOzdGflN6t9UUx
+         1shZbyogotj/zmg8MXLU1dT3dTgiJr354JqnM2FmYp7cSe14+RBtMfjvVmaTD0zx0KRg
+         8sBmY5MPngH5hAVKQuJ0FKZYbc5xigoz9yCAittYQWnIX4u3fa7YhH3BbPhp6MThGwmn
+         cFiw==
+X-Gm-Message-State: ALoCoQn0DlW58SEZqOxZ1HnbNDgfhLVM5+ZGCtA5inpFcelhe97ey0X2NSXMW+N1UANt245k2+i9
+X-Received: by 10.194.191.164 with SMTP id gz4mr60903330wjc.70.1421078133377;
+ Mon, 12 Jan 2015 07:55:33 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.27.137.68 with HTTP; Mon, 12 Jan 2015 07:55:03 -0800 (PST)
+In-Reply-To: <CAPTtexKEUm--hZYLNjq1jEKtvr_9NUE4_3zrwEFXewSfXTjyfw@mail.gmail.com>
+References: <CAPTtexLmNjDRSSTCLxyuz+a4Zhq05tT95Gv-y0WqujJDXbXpjw@mail.gmail.com>
+ <CAOeq1c8NiwmS6t9aUfrrJ6OVowQTV3aVnHrb-ojARNwC7928Jw@mail.gmail.com> <CAPTtexKEUm--hZYLNjq1jEKtvr_9NUE4_3zrwEFXewSfXTjyfw@mail.gmail.com>
+Date: Mon, 12 Jan 2015 10:55:03 -0500
+Message-ID: <CAOeq1c-B1BQusv-+V1fcBofZ5WdLbAeC9fbi54+zs7KZiBfBEA@mail.gmail.com>
+Subject: Re: need pumpkin assist for PDL::Slatic perms
+To: Chris Marshall <devel.chm.01@gmail.com>
+Cc: "modules@perl.org" <modules@perl.org>, Karl Glazebrook <karlglazebrook@mac.com>
+Content-Type: multipart/alternative; boundary=047d7ba9821256aadc050c7689b8
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+--047d7ba9821256aadc050c7689b8
+Content-Type: text/plain; charset=UTF-8
+
+It's sort of secret knowledge among Perl toolchain maintainers.
+"x_authority" is a custom CPAN META key, but PAUSE now respects it (and has
+for a couple years, I think).
+
+Google found this blog post about it:
+https://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/
+
+And I opened a ticket about it, too:
+https://github.com/andk/pause/issues/140
+
+David
+
+
+On Mon, Jan 12, 2015 at 10:49 AM, Chris Marshall <devel.chm.01@gmail.com>
+wrote:
+
+> Thanks for the tip, David.  The current PDL permissions has been around
+> for a long time (and seemed good at the time).  It would be nice to have
+> this cleaned up and made more sane.  Do you have some refs/docs for this
+> including which versions of perl might be supported...
+>
+> --Chris
+>
+>
+> On Mon, Jan 12, 2015 at 10:37 AM, David Golden <xdg@xdg.me> wrote:
+>
+>> FYI, a strategy that works well for bigger team projects is to assign
+>> primary permissions to one ID, and then add an "x_authority" field to
+>> META.json like "cpan:YOURIDHERE".  When PAUSE sees that field, it makes any
+>> *new* modules get primary permissions assigned to that ID and existing
+>> comaintainers get added as comaintainers of the new module.  It helps avoid
+>> fragmenting the primary ownership over time if different maintainers are
+>> involved in releasing.
+>>
+>> David
+>>
+>>
+>> On Sun, Jan 11, 2015 at 11:00 AM, Chris Marshall <devel.chm.01@gmail.com>
+>> wrote:
+>>
+>>> We're preparing for a PDL-2.008 release this month.  Our current
+>>> developers release shows that in assigning permissions for PDL release to
+>>> me (the current PDL release manager) we missed a couple.  PDL::Slatec is
+>>> owned by the pseudo author PERLDL.  Would one of the PAUSE admins please
+>>> add me (CHM) as a co-maintainer of PDL::Slatec so that our releases are no
+>>> longer UNAUTHORIZED?
+>>>
+>>> Thanks in advance,
+>>> Chris
+>>>
+>>
+>>
+>>
+>> --
+>> David Golden <xdg@xdg.me> Twitter/IRC: @xdg
+>>
+>
+>
+
+
+-- 
+David Golden <xdg@xdg.me> Twitter/IRC: @xdg
+
+--047d7ba9821256aadc050c7689b8
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div><div>It&#39;s sort of secret knowledge among Perl too=
+lchain maintainers.=C2=A0 &quot;x_authority&quot; is a custom CPAN META key=
+, but PAUSE now respects it (and has for a couple years, I think).<br><br><=
+/div>Google found this blog post about it: <a href=3D"https://jawnsy.wordpr=
+ess.com/2011/02/20/what-is-x_authority/">https://jawnsy.wordpress.com/2011/=
+02/20/what-is-x_authority/</a><br><br>And I opened a ticket about it, too: =
+<a href=3D"https://github.com/andk/pause/issues/140">https://github.com/and=
+k/pause/issues/140</a><br><br></div>David<br><br></div><div class=3D"gmail_=
+extra"><br><div class=3D"gmail_quote">On Mon, Jan 12, 2015 at 10:49 AM, Chr=
+is Marshall <span dir=3D"ltr">&lt;<a href=3D"mailto:devel.chm.01@gmail.com"=
+ target=3D"_blank">devel.chm.01@gmail.com</a>&gt;</span> wrote:<br><blockqu=
+ote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc s=
+olid;padding-left:1ex"><div dir=3D"ltr"><div>Thanks for the tip, David.=C2=
+=A0 The current PDL permissions has been around for a long time (and seemed=
+ good at the time).=C2=A0 It would be nice to have this cleaned up and made=
+ more sane.=C2=A0 Do you have some refs/docs for this including which versi=
+ons of perl might be supported...<span class=3D"HOEnZb"><font color=3D"#888=
+888"><br><br></font></span></div><span class=3D"HOEnZb"><font color=3D"#888=
+888">--Chris<br><br></font></span></div><div class=3D"HOEnZb"><div class=3D=
+"h5"><div class=3D"gmail_extra"><br><div class=3D"gmail_quote">On Mon, Jan =
+12, 2015 at 10:37 AM, David Golden <span dir=3D"ltr">&lt;<a href=3D"mailto:=
+xdg@xdg.me" target=3D"_blank">xdg@xdg.me</a>&gt;</span> wrote:<br><blockquo=
+te class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc so=
+lid;padding-left:1ex"><div dir=3D"ltr">FYI, a strategy that works well for =
+bigger team projects is to assign primary permissions to one ID, and then a=
+dd an &quot;x_authority&quot; field to META.json like &quot;cpan:YOURIDHERE=
+&quot;.=C2=A0 When PAUSE sees that field, it makes any *new* modules get pr=
+imary permissions assigned to that ID and existing comaintainers get added =
+as comaintainers of the new module.=C2=A0 It helps avoid fragmenting the pr=
+imary ownership over time if different maintainers are involved in releasin=
+g.<br><br>David<br><br></div><div class=3D"gmail_extra"><div><div><br><div =
+class=3D"gmail_quote">On Sun, Jan 11, 2015 at 11:00 AM, Chris Marshall <spa=
+n dir=3D"ltr">&lt;<a href=3D"mailto:devel.chm.01@gmail.com" target=3D"_blan=
+k">devel.chm.01@gmail.com</a>&gt;</span> wrote:<br><blockquote class=3D"gma=
+il_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-lef=
+t:1ex"><div dir=3D"ltr"><div><div>We&#39;re preparing for a PDL-2.008 relea=
+se this month.=C2=A0 Our current developers release shows that in assigning=
+ permissions for PDL release to me (the current PDL release manager) we mis=
+sed a couple.=C2=A0 PDL::Slatec is owned by the pseudo author PERLDL.=C2=A0=
+ Would one of the PAUSE admins please add me (CHM) as a co-maintainer of PD=
+L::Slatec so that our releases are no longer UNAUTHORIZED?<br><br></div>Tha=
+nks in advance,<br></div>Chris<br></div>
+</blockquote></div><br><br clear=3D"all"><br></div></div><span><font color=
+=3D"#888888">-- <br><div>David Golden &lt;<a href=3D"mailto:xdg@xdg.me" tar=
+get=3D"_blank">xdg@xdg.me</a>&gt; Twitter/IRC: @xdg</div>
+</font></span></div>
+</blockquote></div><br></div>
+</div></div></blockquote></div><br><br clear=3D"all"><br>-- <br><div class=
+=3D"gmail_signature">David Golden &lt;<a href=3D"mailto:xdg@xdg.me" target=
+=3D"_blank">xdg@xdg.me</a>&gt; Twitter/IRC: @xdg</div>
+</div>
+
+--047d7ba9821256aadc050c7689b8--
