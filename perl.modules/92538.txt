@@ -1,0 +1,274 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:92538
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4052 invoked from network); 3 Feb 2015 04:16:00 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 3 Feb 2015 04:16:00 -0000
+Received: (qmail 2522 invoked by uid 225); 3 Feb 2015 04:16:00 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 2516 invoked by alias); 3 Feb 2015 04:15:59 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-ig0-f173.google.com (HELO mail-ig0-f173.google.com) (209.85.213.173)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 02 Feb 2015 20:15:56 -0800
+Received: by mail-ig0-f173.google.com with SMTP id a13so23734247igq.0
+        for <modules@perl.org>; Mon, 02 Feb 2015 20:15:52 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=oo6XZnOn3kX9zldnC+Tx7xXrB0CNPtSOX5bfTPNtOY4=;
+        b=ZNdjNf+ZhM+/RtDiJKCQ77CVXfZd+nGuY52RsYxIQP+cMfa7cNycmvJiCcMkoXqojo
+         xoX/R7OGxBtN/UbcZ0yP2ytoQN6Mcb/ZyoH3kqpEhkhqA35ZZuv72d3jERG5qDNRn+AF
+         6aHFhAOma9CV0xHCLYPoy2MpWiUKiSoVeo6Rx9C+Vmlb3Dx6XiiMaIfryJReLfPPl6GU
+         aJc7b99nsYPSMrKnsOE/eDscL7YvYb+dUMq4DJUoww9Je4OblGHQIKt7TltXgrtr+Fft
+         DGAZbTEYf+c2f8fgJXIk4fEXsC3eRcDwaHEbAqdeBRaE0n1PQDmg4hN27VRwuY8+pomm
+         EFKw==
+X-Gm-Message-State: ALoCoQkBH0tMzZ4cXJR/XPZGc6Ol4/FsFQFb1Um+Ozg3OsP9zJR4+5IIs0oKsFAkf9tPcFG3fHig
+X-Received: by 10.50.66.179 with SMTP id g19mr15703712igt.34.1422936952625;
+ Mon, 02 Feb 2015 20:15:52 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.36.99.67 with HTTP; Mon, 2 Feb 2015 20:15:22 -0800 (PST)
+In-Reply-To: <CABc+CwSc0fRz_hUi-KFKA7qjsR0ctM-ZFHsfWBBLWsoan2mHrg@mail.gmail.com>
+References: <CABc+CwTJP+PcrWEJNetdCoJMvgaS4-UgeKc4tYtX6dsuWQTCJA@mail.gmail.com>
+ <CAOeq1c87-8kHM-+E_JQ-ZtLTOiBypvfNf94x7mtwdvu7yACb6A@mail.gmail.com> <CABc+CwSc0fRz_hUi-KFKA7qjsR0ctM-ZFHsfWBBLWsoan2mHrg@mail.gmail.com>
+Date: Mon, 2 Feb 2015 23:15:22 -0500
+Message-ID: <CAOeq1c_+NQj1uB9s3FXgoNyNebMvrnPX0BEgJd8EnVEGxLC27A@mail.gmail.com>
+Subject: Re: Getting PAUSE Permissions
+To: John Kennedy <johngkennedy4@gmail.com>
+Cc: "modules@perl.org" <modules@perl.org>
+Content-Type: multipart/alternative; boundary=047d7bdc15b2998704050e2753fb
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+--047d7bdc15b2998704050e2753fb
+Content-Type: text/plain; charset=UTF-8
+
+Looks like you packed up your own tarball (or zipfile, really) because
+Net-IPFromZip-0.02.zip contains the folder "Net-IPFromZip" without the
+version number, which could be related to the permissions problem.
+
+Try creating your tarball with the Makefile.  Run "perl Makefile.PL" and
+then "make dist" and if that works, upload the result.
+
+Separately -- unrelated, but will cause problems for anyone who tries to
+install your module -- your test file has hard-coded paths to your own home
+directory.  :-)
+
+Usually, people put test data into a "t/data" folder or a top level
+"corpus" folder and load it from there.  And the "use lib" line isn't
+necessary if you're testing with "make test".  The Makefile will set the
+library path for you when it runs.  If you're testing with prove, you can
+get a similar effect with "prove -l t/Net-IPFromZip.t".
+
+Regards,
+David
+
+
+On Mon, Feb 2, 2015 at 11:05 PM, John Kennedy <johngkennedy4@gmail.com>
+wrote:
+
+> Sure. I re-uploaded my module as per your instructions in the second
+> paragraph of your email. That upload failed, with the report as follows:
+>
+>   User: JGK (John Kennedy)
+>   Distribution file: Net-IPFromZip-0.02.zip
+>   Number of files: 74
+>   *.pm files: 1
+>   README: Net-IPFromZip/README
+>   META-File: No META.yml or META.json found
+>   META-Parser: Parse::CPAN::Meta 1.4404
+>   META-driven index: no
+>   Timestamp of file: Tue Feb  3 03:58:16 2015 UTC
+>   Time of this run: Tue Feb  3 03:59:43 2015 UTC
+>
+> This distribution name can only be used by users with permission for the
+> package Net::IPFromZip, which you do not have.
+>
+>
+> __END__
+>
+> *My previous message:*
+>
+>   User: JGK (John Kennedy)
+>   Distribution file: Net-IPFromZip.zip
+>   Number of files: 47
+>   *.pm files: 1
+>   README: Net-IPFromZip/README
+>   META-File: No META.yml or META.json found
+>   META-Parser: Parse::CPAN::Meta 1.4404
+>   META-driven index: no
+>   Timestamp of file: Mon Feb  2 20:27:32 2015 UTC
+>   Time of this run: Mon Feb  2 20:28:59 2015 UTC
+>
+> This distribution name can only be used by users with permission for the
+> package Net::IPFromZip, which you do not have.
+>
+>
+> __END__
+>
+>
+> My tarball link:
+> https://www.dropbox.com/s/jmzcznlhchzmh5n/Net-IPFromZip-0.02.zip?dl=0
+>
+> Thanks very much for the help
+>
+> john
+>
+> On Mon, Feb 2, 2015 at 9:54 PM, David Golden <xdg@xdg.me> wrote:
+>
+>> John,
+>>
+>> Could you please attach a copy of the emails you received from PAUSE with
+>> the error messages?  Also, can you post your tarballs to dropbox or some
+>> other public site and give us a link?
+>>
+>> Generally speaking, if you're uploading Geo::IP::Reverse, you need to
+>> have a tarball named Geo-IP-Reverse-1.23.tar.gz (or whatever your version
+>> number is).  You also need to have a lib/Geo/IP/Reverse.pm file with
+>> "package Geo::IP::Reverse" that PAUSE can parse.
+>>
+>> There are other problems that can inadvertently trigger a permissions
+>> error, even when that isn't the real issue, so without the specific error
+>> message and tarball, it's hard to diagnose further.
+>>
+>> Regards,
+>> David
+>>
+>>
+>>
+>>
+>> On Mon, Feb 2, 2015 at 3:33 PM, John Kennedy <jgk@cpan.org> wrote:
+>>
+>>> Hi,
+>>> I tried twice uploading a module (my first) and I twice got a message
+>>> that I don't have permission for the package name. I uploaded under the
+>>> names Geo::IP::Reverse and Net::IPFromZip
+>>>
+>>> Any help would be greatly appreciated.
+>>>
+>>> Thanks,
+>>>
+>>> jgk
+>>>
+>>
+>>
+>>
+>> --
+>> David Golden <xdg@xdg.me> Twitter/IRC: @xdg
+>>
+>
+>
+
+
+-- 
+David Golden <xdg@xdg.me> Twitter/IRC: @xdg
+
+--047d7bdc15b2998704050e2753fb
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Looks like you packed up your own tarball (or zipfile=
+, really) because Net-IPFromZip-0.02.zip contains the folder &quot;Net-IPFr=
+omZip&quot; without the version number, which could be related to the permi=
+ssions problem.<br><br>Try creating your tarball with the Makefile.=C2=A0 R=
+un &quot;perl Makefile.PL&quot; and then &quot;make dist&quot; and if that =
+works, upload the result.<br><br></div>Separately -- unrelated, but will ca=
+use problems for anyone who tries to install your module -- your test file =
+has hard-coded paths to your own home directory.=C2=A0 :-)<br><br>Usually, =
+people put test data into a &quot;t/data&quot; folder or a top level &quot;=
+corpus&quot; folder and load it from there.=C2=A0 And the &quot;use lib&quo=
+t; line isn&#39;t necessary if you&#39;re testing with &quot;make test&quot=
+;.=C2=A0 The Makefile will set the library path for you when it runs.=C2=A0=
+ If you&#39;re testing with prove, you can get a similar effect with &quot;=
+prove -l t/Net-IPFromZip.t&quot;.<br><br>Regards,<br>David<br><br></div><di=
+v class=3D"gmail_extra"><br><div class=3D"gmail_quote">On Mon, Feb 2, 2015 =
+at 11:05 PM, John Kennedy <span dir=3D"ltr">&lt;<a href=3D"mailto:johngkenn=
+edy4@gmail.com" target=3D"_blank">johngkennedy4@gmail.com</a>&gt;</span> wr=
+ote:<br><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border=
+-left:1px #ccc solid;padding-left:1ex"><div dir=3D"ltr">Sure. I re-uploaded=
+ my module as per your instructions in the second paragraph of your email. =
+That upload failed, with the report as follows:<div><br></div><blockquote s=
+tyle=3D"margin:0px 0px 0px 40px;border:none;padding:0px"><div><span style=
+=3D"font-size:13px">=C2=A0 User: JGK (John Kennedy)</span></div><div><span =
+style=3D"font-size:13px">=C2=A0 Distribution file: Net-IPFromZip-0.02.zip</=
+span></div><div><span style=3D"font-size:13px">=C2=A0 Number of files: 74</=
+span></div><div><span style=3D"font-size:13px">=C2=A0 *.pm files: 1</span><=
+/div><div><span style=3D"font-size:13px">=C2=A0 README: Net-IPFromZip/READM=
+E</span></div><div><span style=3D"font-size:13px">=C2=A0 META-File: No META=
+.yml or META.json found</span></div><div><span style=3D"font-size:13px">=C2=
+=A0 META-Parser: Parse::CPAN::Meta 1.4404</span></div><div><span style=3D"f=
+ont-size:13px">=C2=A0 META-driven index: no</span></div><div><span style=3D=
+"font-size:13px">=C2=A0 Timestamp of file: Tue Feb=C2=A0 3 03:58:16 2015 UT=
+C</span></div><div><span style=3D"font-size:13px">=C2=A0 Time of this run: =
+Tue Feb=C2=A0 3 03:59:43 2015 UTC</span></div><div><br style=3D"font-size:1=
+3px"></div><div><span style=3D"font-size:13px">This distribution name can o=
+nly be used by users with permission for the</span></div><div><span style=
+=3D"font-size:13px">package Net::IPFromZip, which you do not have.</span></=
+div><div><br></div><div><br style=3D"font-size:13px"></div><div><span style=
+=3D"font-size:13px">__END__</span></div><div><span style=3D"font-size:13px"=
+><br></span></div></blockquote><u>My previous message:</u><div><br></div><b=
+lockquote style=3D"margin:0px 0px 0px 40px;border:none;padding:0px"><div><s=
+pan style=3D"font-size:13px">=C2=A0 User: JGK (John Kennedy)</span></div><d=
+iv><span style=3D"font-size:13px">=C2=A0 Distribution file: Net-IPFromZip.z=
+ip</span></div><div><span style=3D"font-size:13px">=C2=A0 Number of files: =
+47</span></div><div><span style=3D"font-size:13px">=C2=A0 *.pm files: 1</sp=
+an></div><div><span style=3D"font-size:13px">=C2=A0 README: Net-IPFromZip/R=
+EADME</span></div><div><span style=3D"font-size:13px">=C2=A0 META-File: No =
+META.yml or META.json found</span></div><div><span style=3D"font-size:13px"=
+>=C2=A0 META-Parser: Parse::CPAN::Meta 1.4404</span></div><div><span style=
+=3D"font-size:13px">=C2=A0 META-driven index: no</span></div><div><span sty=
+le=3D"font-size:13px">=C2=A0 Timestamp of file: Mon Feb=C2=A0 2 20:27:32 20=
+15 UTC</span></div><div><span style=3D"font-size:13px">=C2=A0 Time of this =
+run: Mon Feb=C2=A0 2 20:28:59 2015 UTC</span></div><div><br style=3D"font-s=
+ize:13px"></div><div><span style=3D"font-size:13px">This distribution name =
+can only be used by users with permission for the</span></div><div><span st=
+yle=3D"font-size:13px">package Net::IPFromZip, which you do not have.</span=
+></div><div><br style=3D"font-size:13px"></div><div><br style=3D"font-size:=
+13px"></div><div><span style=3D"font-size:13px">__END__</span></div></block=
+quote><div><div><br></div></div><div>My tarball link:=C2=A0<a href=3D"https=
+://www.dropbox.com/s/jmzcznlhchzmh5n/Net-IPFromZip-0.02.zip?dl=3D0" target=
+=3D"_blank">https://www.dropbox.com/s/jmzcznlhchzmh5n/Net-IPFromZip-0.02.zi=
+p?dl=3D0</a></div><div><br></div><div>Thanks very much for the help</div><s=
+pan class=3D"HOEnZb"><font color=3D"#888888"><div><br></div><div>john</div>=
+</font></span></div><div class=3D"HOEnZb"><div class=3D"h5"><div class=3D"g=
+mail_extra"><br><div class=3D"gmail_quote">On Mon, Feb 2, 2015 at 9:54 PM, =
+David Golden <span dir=3D"ltr">&lt;<a href=3D"mailto:xdg@xdg.me" target=3D"=
+_blank">xdg@xdg.me</a>&gt;</span> wrote:<br><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">=
+<div dir=3D"ltr"><div><div>John,<br><br>Could you please attach a copy of t=
+he emails you received from PAUSE with the error messages?=C2=A0 Also, can =
+you post your tarballs to dropbox or some other public site and give us a l=
+ink?<br><br>Generally speaking, if you&#39;re uploading Geo::IP::Reverse, y=
+ou need to have a tarball named Geo-IP-Reverse-1.23.tar.gz (or whatever you=
+r version number is).=C2=A0 You also need to have a lib/Geo/IP/Reverse.pm f=
+ile with &quot;package Geo::IP::Reverse&quot; that PAUSE can parse.<br><br>=
+</div>There are other problems that can inadvertently trigger a permissions=
+ error, even when that isn&#39;t the real issue, so without the specific er=
+ror message and tarball, it&#39;s hard to diagnose further.<br><br>Regards,=
+<br></div>David<br><br><div><div><br><br></div></div></div><div class=3D"gm=
+ail_extra"><div><div><br><div class=3D"gmail_quote">On Mon, Feb 2, 2015 at =
+3:33 PM, John Kennedy <span dir=3D"ltr">&lt;<a href=3D"mailto:jgk@cpan.org"=
+ target=3D"_blank">jgk@cpan.org</a>&gt;</span> wrote:<br><blockquote class=
+=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padd=
+ing-left:1ex"><div dir=3D"ltr"><div>Hi,</div>I tried twice uploading a modu=
+le (my first) and I twice got a message that I don&#39;t have permission fo=
+r the package name. I uploaded under the names Geo::IP::Reverse and Net::IP=
+FromZip<div><br></div><div>Any help would be greatly appreciated.</div><div=
+><br></div><div>Thanks,</div><div><br></div><div>jgk</div></div>
+</blockquote></div><br><br clear=3D"all"><br></div></div><span><font color=
+=3D"#888888">-- <br><div>David Golden &lt;<a href=3D"mailto:xdg@xdg.me" tar=
+get=3D"_blank">xdg@xdg.me</a>&gt; Twitter/IRC: @xdg</div>
+</font></span></div>
+</blockquote></div><br></div>
+</div></div></blockquote></div><br><br clear=3D"all"><br>-- <br><div class=
+=3D"gmail_signature">David Golden &lt;<a href=3D"mailto:xdg@xdg.me" target=
+=3D"_blank">xdg@xdg.me</a>&gt; Twitter/IRC: @xdg</div>
+</div>
+
+--047d7bdc15b2998704050e2753fb--
