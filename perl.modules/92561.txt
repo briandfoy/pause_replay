@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:92561
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15607 invoked from network); 6 Feb 2015 10:17:15 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 6 Feb 2015 10:17:15 -0000
+Received: (qmail 20890 invoked by uid 225); 6 Feb 2015 10:17:15 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20886 invoked by alias); 6 Feb 2015 10:17:15 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wi0-f170.google.com (HELO mail-wi0-f170.google.com) (209.85.212.170)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 06 Feb 2015 02:17:13 -0800
+Received: by mail-wi0-f170.google.com with SMTP id bs8so1362238wib.1
+        for <modules@perl.org>; Fri, 06 Feb 2015 02:17:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:content-type:mime-version:subject:from
+         :in-reply-to:date:cc:content-transfer-encoding:message-id:references
+         :to;
+        bh=zNS6utZ3b8+h0M9iCfjI7dmhOgGaXqftG78aCt1xa0g=;
+        b=UZKO/F0AFpUevN7+ucrbMoAYVTfE1mmRx092bS2PMgUcNoLYHnpa9Leba/VSgoLTYi
+         oyB134Q9KGKJigIMXDdj/gqsCUPeu05+EgRKUWnHezvUbwVbgRRxN7mvwnHEPdNFMHSK
+         j647xqlH1+6ww1SPf22Enf1o+K/j3+x9sVE0z0gUHseKcDdoGBCDlCEa7+4LXOjCFIfe
+         RXWujpmvvWmjQyZcElTOTih9XetcAXDRHMFH7Nbt/372NU6LVi14iGXEA/4ZuNR36zmY
+         fEsiUhHzH+RHR0eVJACNyuVxDiXzYONwPOrZt80AgGsKm1IoKV0EgGxONZ/fBPcyqAdB
+         4JXg==
+X-Gm-Message-State: ALoCoQmPiTYRP8j96bPnG6epjmxUooBFYSB6OBpGmATKkefWSz+qzWJzRRMEZQJMB4lp2LhRF0QA
+X-Received: by 10.194.205.162 with SMTP id lh2mr5958910wjc.34.1423217828956;
+        Fri, 06 Feb 2015 02:17:08 -0800 (PST)
+Received: from [192.168.0.13] (cpc17-rdng20-2-0-cust59.15-3.cable.virginm.net. [82.8.77.60])
+        by mx.google.com with ESMTPSA id ej10sm838092wib.2.2015.02.06.02.17.08
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 06 Feb 2015 02:17:08 -0800 (PST)
+Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2070.6\))
+Subject: Re: Upload failed. What can I do?
+In-Reply-To: <54D1C52E.3030506@fs.wettzell.de>
+Date: Fri, 6 Feb 2015 10:17:05 +0000
+Cc: modules@perl.org
+Content-Transfer-Encoding: quoted-printable
+Message-ID: <FA482B19-A717-4D7F-8677-75087104B87E@cogendo.com>
+References: <54D1C52E.3030506@fs.wettzell.de>
+To: chart <chart@fs.wettzell.de>
+X-Mailer: Apple Mail (2.2070.6)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Reiner,
+
+> I tried to upload a distribution as user CHARTGRP.
+>=20
+> I received the following error message.
+> What do I to do to solve this problem.
+> I never got it.
+> Do I miss something in 'make dist'?
+
+The 'problem' is that PAUSE now considers package names =
+case-insensitively when resolving permissions.
+
+The Finance::Quant module defines a package =E2=80=98chart=E2=80=99, so =
+SANTEX got ownership of =E2=80=98chart=E2=80=99, and now when you try to =
+upload something with =E2=80=98Chart=E2=80=99, it=E2=80=99s the same =
+permission that=E2=80=99s being checked. And because someone else has =
+permission for that package, the indexing step fails.
+
+I=E2=80=99ll raise an issue on Finance-Quant, and ask Hagen to refactor =
+his dist to use package names under Finance::Quant::*. Once he=E2=80=99s =
+done that he=E2=80=99ll need to delete all releases from CPAN that =
+contain the =E2=80=98chart=E2=80=99 package, then free up the permission =
+or transfer it to you.
+
+Please bear with us while I try to get this resolved as quickly as =
+possible.
+
+Neil
+
