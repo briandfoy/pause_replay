@@ -1,0 +1,100 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:92732
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19595 invoked from network); 3 Mar 2015 11:37:31 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 3 Mar 2015 11:37:31 -0000
+Received: (qmail 9649 invoked by uid 225); 3 Mar 2015 11:37:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 9644 invoked by alias); 3 Mar 2015 11:37:29 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-ie0-f170.google.com (HELO mail-ie0-f170.google.com) (209.85.223.170)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 03 Mar 2015 03:37:27 -0800
+Received: by iebtr6 with SMTP id tr6so56544553ieb.7
+        for <modules@perl.org>; Tue, 03 Mar 2015 03:37:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc:content-type;
+        bh=jfvAlKtuM0mvyTK9Bqjt507WuV5LeWtL2imm/9ow0k0=;
+        b=gOoemQc1DGiELhicKOace/kFcPewwEFpH7yFXFG0rnYWSGbKjJSyrKI1RMDDyaDJuI
+         F/08h2QS0vVASHDCiit19GKPBKr7fgFyxHHJvc+DkMk3VX8u5hkk/Go3tNgrYLu9nEEl
+         yjwelaNXVD+YylPnF+Zs6RlCjg2LnNXmHxoWuvSKBgcHwRCYvJ+j2a85ssAUjKNmad89
+         qvyry0P52MAiOg89ke8EEjMU3mcGgiy2VjzbWWGogOd74PGtOnrnrhRvECKwq8Sy76WL
+         PZWrURuIdHdaJ5NDb4psO/nR11j0Dx2RVPmG+lGaraGfN8pQ7cA4Vx3Gq8TmrigXGbIF
+         Ex7w==
+X-Gm-Message-State: ALoCoQn6WNUZcK7LZsPUDuPQ/s7YnISzqjLUOFdGNfs0DBs/fKv52YoCwSNq1kIjLdF3p/NZ5cS1
+X-Received: by 10.42.224.71 with SMTP id in7mr998964icb.44.1425382643921; Tue,
+ 03 Mar 2015 03:37:23 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.36.42.203 with HTTP; Tue, 3 Mar 2015 03:36:53 -0800 (PST)
+In-Reply-To: <49171966.y6BirWY1Cd@jddwww>
+References: <2842082.EobA5yzhb7@jddwww> <20150301211305.GK21245@newagaton.scsys.co.uk>
+ <49171966.y6BirWY1Cd@jddwww>
+Date: Tue, 3 Mar 2015 06:36:53 -0500
+Message-ID: <CAOeq1c9w9UMZCRK9ABMKQFxhg3X1RaeA6aMvymwa8eemwUz3Xw@mail.gmail.com>
+Subject: Re: PAUSE indexer report JDDPAUSE/MarpaX-Languages-M4-0.007.tar.gz
+ (was: Re: PAUSE indexer report JDDPAUSE/Gnulib-Regex-0.001.tar.gz)
+To: Jean-Damien Durand <jeandamiendurand@free.fr>
+Cc: "modules@perl.org" <modules@perl.org>
+Content-Type: multipart/alternative; boundary=001a1133338e290b08051060c2f7
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+--001a1133338e290b08051060c2f7
+Content-Type: text/plain; charset=UTF-8
+
+Jean-Damien,
+
+You added the file, but it's not listed in your META.json provides field:
+http://cpansearch.perl.org/src/JDDPAUSE/MarpaX-Languages-M4-0.007/META.json
+
+Here's what's happening:
+
+* You're using Moops for most of your files, but not MarpaX::Languages::M4
+* You're using the [MetaProvides::Class] Dist::Zilla plugin in your dist.ini
+* You get a META.json with only the "class" declarations, not "package"
+declarations
+* PAUSE trusts your META.json 'provides' and doesn't scan the distribution
+itself
+* PAUSE thinks you don't provide "MarpaX::Languages::M4"
+
+You need to either use Moops for MarpaX::Languages::M4 as well, or you need
+to add [MetaProvides::Package] to your dist.ini file to pick up the
+"package" statement.  I think you can have multiple providers like this,
+but I'm not 100% sure -- you might ask on the #distzilla channel on
+irc.perl.org.  Or just use Moops everywhere.
+
+David
+
+--001a1133338e290b08051060c2f7
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div><div><div><div><div>Jean-Damien,<br><br></div>You add=
+ed the file, but it&#39;s not listed in your META.json provides field: <a h=
+ref=3D"http://cpansearch.perl.org/src/JDDPAUSE/MarpaX-Languages-M4-0.007/ME=
+TA.json">http://cpansearch.perl.org/src/JDDPAUSE/MarpaX-Languages-M4-0.007/=
+META.json</a><br><br></div>Here&#39;s what&#39;s happening:<br><br></div>* =
+You&#39;re using Moops for most of your files, but not MarpaX::Languages::M=
+4<br></div>* You&#39;re using the <span class=3D"">[MetaProvides::Class] Di=
+st::Zilla plugin in your dist.ini<br></span></div><div><span class=3D"">* Y=
+ou get a META.json with only the &quot;class&quot; declarations, not &quot;=
+package&quot; declarations<br></span></div><div><span class=3D"">* PAUSE tr=
+usts your META.json &#39;provides&#39; and doesn&#39;t scan the distributio=
+n itself<br></span></div><div><span class=3D"">* PAUSE thinks you don&#39;t=
+ provide &quot;MarpaX::Languages::M4&quot;<br><br></span></div><div><span c=
+lass=3D"">You need to either use Moops for MarpaX::Languages::M4 as well, o=
+r you need to add [MetaProvides::Package] to your dist.ini file to pick up =
+the &quot;package&quot; statement.=C2=A0 I think you can have multiple prov=
+iders like this, but I&#39;m not 100% sure -- you might ask on the #distzil=
+la channel on <a href=3D"http://irc.perl.org">irc.perl.org</a>.=C2=A0 Or ju=
+st use Moops everywhere.<br><br></span></div><div><span class=3D"">David<br=
+><br></span></div></div>
+
+--001a1133338e290b08051060c2f7--
