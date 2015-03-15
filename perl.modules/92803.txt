@@ -1,0 +1,88 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:92803
+Return-Path: <jeandamiendurand@free.fr>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 543 invoked from network); 14 Mar 2015 10:49:18 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 14 Mar 2015 10:49:18 -0000
+Received: (qmail 19954 invoked by uid 225); 14 Mar 2015 10:49:17 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19950 invoked by alias); 14 Mar 2015 10:49:17 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from smtp5-g21.free.fr (HELO smtp5-g21.free.fr) (212.27.42.5)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 14 Mar 2015 03:49:13 -0700
+Received: from jddwww.localnet (unknown [88.160.190.154])
+	by smtp5-g21.free.fr (Postfix) with ESMTPS id 184FBD48037
+	for <modules@perl.org>; Sat, 14 Mar 2015 11:48:07 +0100 (CET)
+To: "modules@perl.org" <modules@perl.org>
+Subject: Re: PAUSE indexer report JDDPAUSE/MarpaX-Languages-M4-0.007.tar.gz (was: Re: PAUSE indexer report JDDPAUSE/Gnulib-Regex-0.001.tar.gz)
+Date: Sat, 14 Mar 2015 11:49:09 +0100
+Message-ID: <27432637.b1tQJsUZt1@jddwww>
+User-Agent: KMail/4.14 (Linux/3.16-1-686-pae; KDE/4.14.0; i686; ; )
+In-Reply-To: <1798170.blvZJtO5Br@jddwww>
+References: <2842082.EobA5yzhb7@jddwww> <CAOeq1c9w9UMZCRK9ABMKQFxhg3X1RaeA6aMvymwa8eemwUz3Xw@mail.gmail.com> <1798170.blvZJtO5Br@jddwww>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="ISO-8859-1"
+Approved: news@nntp.perl.org
+From: jeandamiendurand@free.fr (Jean-Damien Durand)
+
+David, Matt,
+
+Just to say that this is now OK, thanks for your advices:
+
+- MarpaX-Languages-M4-0.008 has a Moops-like M4.pm
+- The other Gnulib::Regexp has been replaced by a true new regexp engin=
+e, i.e. re::engine::GNU
+
+Thanks, Cheers, JD.
+
+Le mardi 3 mars 2015, 21:30:36 Jean-Damien Durand a =E9crit :
+> David, Matt,
+>=20
+> Many thanks for your patience and clear answers.
+> Let me finish my last dev branch and push the corrected thing on that=
+ package, based on your advices!
+>=20
+> Cheers, JD.
+>=20
+>=20
+> Le mardi 3 mars 2015, 06:36:53 David Golden a =E9crit :
+> > Jean-Damien,
+> >=20
+> > You added the file, but it's not listed in your META.json provides =
+field:
+> > http://cpansearch.perl.org/src/JDDPAUSE/MarpaX-Languages-M4-0.007/M=
+ETA.json
+> >=20
+> > Here's what's happening:
+> >=20
+> > * You're using Moops for most of your files, but not MarpaX::Langua=
+ges::M4
+> > * You're using the [MetaProvides::Class] Dist::Zilla plugin in your=
+ dist.ini
+> > * You get a META.json with only the "class" declarations, not "pack=
+age"
+> > declarations
+> > * PAUSE trusts your META.json 'provides' and doesn't scan the distr=
+ibution
+> > itself
+> > * PAUSE thinks you don't provide "MarpaX::Languages::M4"
+> >=20
+> > You need to either use Moops for MarpaX::Languages::M4 as well, or =
+you need
+> > to add [MetaProvides::Package] to your dist.ini file to pick up the=
+
+> > "package" statement.  I think you can have multiple providers like =
+this,
+> > but I'm not 100% sure -- you might ask on the #distzilla channel on=
+
+> > irc.perl.org.  Or just use Moops everywhere.
+> >=20
+> > David
+
