@@ -1,0 +1,289 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:92952
+Return-Path: <david@autopragmatic.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29414 invoked from network); 1 Apr 2015 23:30:46 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 1 Apr 2015 23:30:46 -0000
+Received: (qmail 22299 invoked by uid 225); 1 Apr 2015 23:30:44 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22295 invoked by alias); 1 Apr 2015 23:30:43 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-ig0-f178.google.com (HELO mail-ig0-f178.google.com) (209.85.213.178)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 01 Apr 2015 16:30:40 -0700
+Received: by igcau2 with SMTP id au2so62500022igc.0
+        for <modules@perl.org>; Wed, 01 Apr 2015 16:30:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=MW9a3xYPUKIIMn86GnsW3Ctu77KFQ+2piTG/9I45NxM=;
+        b=j0XUYixvdOTpymNfdl9Kdv2+wBHm997qp3xXOtCh069RIadHA3qQU+u+8KUs7LAgCk
+         pF4E/VI7YbAAUHF64+wvaj8cAX2dcWslCfEVoUlryFM0SP1m5ndbe8S0YxLHCBR02WBR
+         lw+9gc9yb/RREew7fnouuePE0UduRiTNtkYcS8sRh2V8TrN2l2agej4lKktbGFcJh2SL
+         Llfa/o6J9K+XgbW17TRjBa5ISD41VDy7IvAbJzP0Z90QSO6kiOTP6zq82qK0Dp/luNkg
+         Kr4tgqLADAM5uVe5vDxXbQ3q7ixbeb9vvzGwTfQjG5eudT8ELyn0FIALYBg04tziQU9G
+         abSA==
+X-Gm-Message-State: ALoCoQmByAy4ViKzaDi5fbITa28tqhcPYJrAmwBQehUJ/pbD59IX+x00JAr6sfP4uOL3HEm/kiRo
+MIME-Version: 1.0
+X-Received: by 10.50.78.232 with SMTP id e8mr15755380igx.5.1427931036633; Wed,
+ 01 Apr 2015 16:30:36 -0700 (PDT)
+Received: by 10.36.101.133 with HTTP; Wed, 1 Apr 2015 16:30:35 -0700 (PDT)
+Received: by 10.36.101.133 with HTTP; Wed, 1 Apr 2015 16:30:35 -0700 (PDT)
+In-Reply-To: <1427930832.710.7.camel@gmail.com>
+References: <20150330191639.ECFC51C61@pause.perl.org>
+	<1427832696.1319.16.camel@gmail.com>
+	<CAOeq1c-pcwZe7fDaTFfTC4mOh+DE=BqEfa2-npYgpZymvBq3SA@mail.gmail.com>
+	<1427930832.710.7.camel@gmail.com>
+Date: Wed, 1 Apr 2015 19:30:35 -0400
+Message-ID: <CAOeq1c-6pfGFfYYyLSQ6vVVds_j07K0F+CPL1WzOroFjwiTHkQ@mail.gmail.com>
+Subject: Re: Failed: PAUSE indexer report VDB/Systemd-Daemon-0.03.tar.gz
+To: Van de Bugger <van.de.bugger@gmail.com>
+Cc: modules@perl.org
+Content-Type: multipart/alternative; boundary=089e013c6a203411260512b21a5c
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: xdg@xdg.me (David Golden)
+
+--089e013c6a203411260512b21a5c
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+We know the message can be improved, but there are many reasons the
+permissions might not be known or found, so it's hard to be exact without
+being misleading about what to do about it.
+
+I hope to improve the PAUSE docs overall about this soon.
+
+David
+On Apr 1, 2015 7:27 PM, "Van de Bugger" <van.de.bugger@gmail.com> wrote:
+
+> Thanks for explanation, I'll try to add 'provides' key.
+>
+> However, why the message is so cryptic? It would be better to say
+> "Cannot find Systemd/Daemon.pm file" rather than complain on permissions
+> which I do not have.
+>
+> =E2=80=94Van
+>
+> On Wed, 2015-04-01 at 10:00 -0400, David Golden wrote:
+> > Because of the way you generate your modules, PAUSE can't find the
+> > package "Systemd::Daemon" because there is no .pm file in the lib
+> > directory.
+> >
+> >
+> > You need to include a 'provides' section in your META.json and
+> > META.yml files using META_ADD that follows this structure:
+> > https://metacpan.org/pod/CPAN::Meta::Spec#provides
+> >
+> >
+> > David
+> >
+> >
+> >
+> > On Tue, Mar 31, 2015 at 4:11 PM, Van de Bugger
+> > <van.de.bugger@gmail.com> wrote:
+> >         Hi,
+> >
+> >         Recently I uploaded my module Systemd::Daemon to PAUSE. Before
+> >         uploading, I have search both search.cpan.org and metacpan.org
+> >         for both
+> >         "Systemd" and "Systemd::Daemon", and find nothing. (The
+> >         closest result
+> >         "Linux::Systemd::Journal" is in "Linux" namespace).
+> >
+> >         As described in
+> >         http://www.cpan.org/modules/04pause.html#comparison
+> >
+> >         >  In order for a module to be indexed, the submitting author
+> >         must be
+> >         the owner or an authorized maintainer for every package
+> >         namespace found
+> >         (unless the namespace is new, in which case the uploading
+> >         author becomes
+> >         the owner of it).
+> >
+> >         I though the "Systemd::Daemon" namespace is new, but I
+> >         received PAUSE
+> >         report (see below) that I do not have permission for the
+> >         package
+> >         "Systemd::Daemon". Could you explain Why?
+> >
+> >         Thanks.
+> >         =E2=80=94Van
+> >
+> >         On Mon, 2015-03-30 at 19:16 +0000, PAUSE wrote:
+> >         > The following report has been written by the PAUSE namespace
+> >         indexer.
+> >         > Please contact modules@perl.org if there are any open
+> >         questions.
+> >         >
+> >         >   User: VDB (Van de Bugger)
+> >         >   Distribution file: Systemd-Daemon-0.03.tar.gz
+> >         >   Number of files: 19
+> >         >   *.pm files: 1
+> >         >   README: Systemd-Daemon-0.03/README
+> >         >   META-File: Systemd-Daemon-0.03/META.json
+> >         >   META-Parser: Parse::CPAN::Meta 1.4404
+> >         >   META-driven index: no
+> >         >   Timestamp of file: Mon Mar 30 19:15:11 2015 UTC
+> >         >   Time of this run: Mon Mar 30 19:16:39 2015 UTC
+> >         >
+> >         > This distribution name can only be used by users with
+> >         permission for the
+> >         > package Systemd::Daemon, which you do not have.
+> >         >
+> >         >
+> >         > __END__
+> >
+> >
+> >
+> >
+> >
+> > --
+> > David Golden <xdg@xdg.me> Twitter/IRC: @xdg
+>
+>
+>
+
+--089e013c6a203411260512b21a5c
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<p dir=3D"ltr">We know the message can be improved, but there are many reas=
+ons the permissions might not be known or found, so it&#39;s hard to be exa=
+ct without being misleading about what to do about it.</p>
+<p dir=3D"ltr">I hope to improve the PAUSE docs overall about this soon.</p=
+>
+<p dir=3D"ltr">David</p>
+<div class=3D"gmail_quote">On Apr 1, 2015 7:27 PM, &quot;Van de Bugger&quot=
+; &lt;<a href=3D"mailto:van.de.bugger@gmail.com">van.de.bugger@gmail.com</a=
+>&gt; wrote:<br type=3D"attribution"><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">Thanks =
+for explanation, I&#39;ll try to add &#39;provides&#39; key.<br>
+<br>
+However, why the message is so cryptic? It would be better to say<br>
+&quot;Cannot find Systemd/Daemon.pm file&quot; rather than complain on perm=
+issions<br>
+which I do not have.<br>
+<br>
+=E2=80=94Van<br>
+<br>
+On Wed, 2015-04-01 at 10:00 -0400, David Golden wrote:<br>
+&gt; Because of the way you generate your modules, PAUSE can&#39;t find the=
+<br>
+&gt; package &quot;Systemd::Daemon&quot; because there is no .pm file in th=
+e lib<br>
+&gt; directory.<br>
+&gt;<br>
+&gt;<br>
+&gt; You need to include a &#39;provides&#39; section in your META.json and=
+<br>
+&gt; META.yml files using META_ADD that follows this structure:<br>
+&gt; <a href=3D"https://metacpan.org/pod/CPAN::Meta::Spec#provides" target=
+=3D"_blank">https://metacpan.org/pod/CPAN::Meta::Spec#provides</a><br>
+&gt;<br>
+&gt;<br>
+&gt; David<br>
+&gt;<br>
+&gt;<br>
+&gt;<br>
+&gt; On Tue, Mar 31, 2015 at 4:11 PM, Van de Bugger<br>
+&gt; &lt;<a href=3D"mailto:van.de.bugger@gmail.com">van.de.bugger@gmail.com=
+</a>&gt; wrote:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Hi,<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Recently I uploaded my module Systemd=
+::Daemon to PAUSE. Before<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0uploading, I have search both <a href=
+=3D"http://search.cpan.org" target=3D"_blank">search.cpan.org</a> and <a hr=
+ef=3D"http://metacpan.org" target=3D"_blank">metacpan.org</a><br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0for both<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;Systemd&quot; and &quot;Systemd=
+::Daemon&quot;, and find nothing. (The<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0closest result<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;Linux::Systemd::Journal&quot; i=
+s in &quot;Linux&quot; namespace).<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0As described in<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<a href=3D"http://www.cpan.org/module=
+s/04pause.html#comparison" target=3D"_blank">http://www.cpan.org/modules/04=
+pause.html#comparison</a><br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 In order for a module to b=
+e indexed, the submitting author<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0must be<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0the owner or an authorized maintainer=
+ for every package<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0namespace found<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0(unless the namespace is new, in whic=
+h case the uploading<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0author becomes<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0the owner of it).<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I though the &quot;Systemd::Daemon&qu=
+ot; namespace is new, but I<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0received PAUSE<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0report (see below) that I do not have=
+ permission for the<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0package<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;Systemd::Daemon&quot;. Could yo=
+u explain Why?<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Thanks.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=80=94Van<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0On Mon, 2015-03-30 at 19:16 +0000, PA=
+USE wrote:<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt; The following report has been wr=
+itten by the PAUSE namespace<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0indexer.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt; Please contact <a href=3D"mailto=
+:modules@perl.org">modules@perl.org</a> if there are any open<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0questions.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0User: VDB (Van de Bu=
+gger)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0Distribution file: S=
+ystemd-Daemon-0.03.tar.gz<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0Number of files: 19<=
+br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0*.pm files: 1<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0README: Systemd-Daem=
+on-0.03/README<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0META-File: Systemd-D=
+aemon-0.03/META.json<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0META-Parser: Parse::=
+CPAN::Meta 1.4404<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0META-driven index: n=
+o<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0Timestamp of file: M=
+on Mar 30 19:15:11 2015 UTC<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0Time of this run: Mo=
+n Mar 30 19:16:39 2015 UTC<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt; This distribution name can only =
+be used by users with<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0permission for the<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt; package Systemd::Daemon, which y=
+ou do not have.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&gt; __END__<br>
+&gt;<br>
+&gt;<br>
+&gt;<br>
+&gt;<br>
+&gt;<br>
+&gt; --<br>
+&gt; David Golden &lt;<a href=3D"mailto:xdg@xdg.me">xdg@xdg.me</a>&gt; Twit=
+ter/IRC: @xdg<br>
+<br>
+<br>
+</blockquote></div>
+
+--089e013c6a203411260512b21a5c--
