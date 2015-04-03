@@ -1,0 +1,139 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:92956
+Return-Path: <van.de.bugger@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 27675 invoked from network); 1 Apr 2015 23:27:22 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 1 Apr 2015 23:27:22 -0000
+Received: (qmail 21878 invoked by uid 225); 1 Apr 2015 23:27:22 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 21873 invoked by alias); 1 Apr 2015 23:27:22 -0000
+X-Spam-Status: No, hits=1.3 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,RCVD_IN_CBL,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-lb0-f171.google.com (HELO mail-lb0-f171.google.com) (209.85.217.171)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 01 Apr 2015 16:27:20 -0700
+Received: by lboc7 with SMTP id c7so47587787lbo.1
+        for <modules@perl.org>; Wed, 01 Apr 2015 16:27:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :content-type:mime-version:content-transfer-encoding;
+        bh=W0Mx/QqiaxaHNwuQxJ6ESMHeW1FB+BbR3YhIKl6gkzk=;
+        b=f5x9KL2t+dydnKh5e1qQHf7953BBtHiLOqMXE8CLRewETGcRZYkIerOf2Lq5nU7pem
+         mtTlcPm5ngMjB227FjNiwBS0qLztpD1BRgtvJ5R+bs5CEyyJxFlZ156lZzljE1m/kstj
+         a4cWLJVbT0b9isYjby7TETs3ui3IrNi+dNmUH4M+hrlSB460mYO3L+YsnzcMvjH6rZRW
+         0wcgXGHwsZUNSasY9JE8AkBmJqJFmeF1rjvdx7xQd9+4Re1BJsLcrhksqvyAKkcwsJ/Q
+         EEcPzQA1WNO2zMQQzHRz2MqlDEb2oN0euE80dUOeV1hbUTK6sGLsGEX/yeQjTrMONgTB
+         eD4A==
+X-Received: by 10.112.173.41 with SMTP id bh9mr37417188lbc.107.1427930836490;
+        Wed, 01 Apr 2015 16:27:16 -0700 (PDT)
+Received: from antec.home (95-37-175-2.dynamic.mts-nn.ru. [95.37.175.2])
+        by mx.google.com with ESMTPSA id k2sm702725lag.9.2015.04.01.16.27.14
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 01 Apr 2015 16:27:15 -0700 (PDT)
+Message-ID: <1427930832.710.7.camel@gmail.com>
+Subject: Re: Failed: PAUSE indexer report VDB/Systemd-Daemon-0.03.tar.gz
+To: David Golden <xdg@xdg.me>
+Cc: "modules@perl.org" <modules@perl.org>
+Date: Thu, 02 Apr 2015 02:27:12 +0300
+In-Reply-To: <CAOeq1c-pcwZe7fDaTFfTC4mOh+DE=BqEfa2-npYgpZymvBq3SA@mail.gmail.com>
+References: <20150330191639.ECFC51C61@pause.perl.org>
+	 <1427832696.1319.16.camel@gmail.com>
+	 <CAOeq1c-pcwZe7fDaTFfTC4mOh+DE=BqEfa2-npYgpZymvBq3SA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.12.11 (3.12.11-1.fc21) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Approved: news@nntp.perl.org
+From: van.de.bugger@gmail.com (Van de Bugger)
+
+Thanks for explanation, I'll try to add 'provides' key.
+
+However, why the message is so cryptic? It would be better to say
+"Cannot find Systemd/Daemon.pm file" rather than complain on permissions
+which I do not have.
+
+—Van
+
+On Wed, 2015-04-01 at 10:00 -0400, David Golden wrote:
+> Because of the way you generate your modules, PAUSE can't find the
+> package "Systemd::Daemon" because there is no .pm file in the lib
+> directory.
+> 
+> 
+> You need to include a 'provides' section in your META.json and
+> META.yml files using META_ADD that follows this structure:
+> https://metacpan.org/pod/CPAN::Meta::Spec#provides
+> 
+> 
+> David
+> 
+> 
+> 
+> On Tue, Mar 31, 2015 at 4:11 PM, Van de Bugger
+> <van.de.bugger@gmail.com> wrote:
+>         Hi,
+>         
+>         Recently I uploaded my module Systemd::Daemon to PAUSE. Before
+>         uploading, I have search both search.cpan.org and metacpan.org
+>         for both
+>         "Systemd" and "Systemd::Daemon", and find nothing. (The
+>         closest result
+>         "Linux::Systemd::Journal" is in "Linux" namespace).
+>         
+>         As described in
+>         http://www.cpan.org/modules/04pause.html#comparison
+>         
+>         >  In order for a module to be indexed, the submitting author
+>         must be
+>         the owner or an authorized maintainer for every package
+>         namespace found
+>         (unless the namespace is new, in which case the uploading
+>         author becomes
+>         the owner of it).
+>         
+>         I though the "Systemd::Daemon" namespace is new, but I
+>         received PAUSE
+>         report (see below) that I do not have permission for the
+>         package
+>         "Systemd::Daemon". Could you explain Why?
+>         
+>         Thanks.
+>         —Van
+>         
+>         On Mon, 2015-03-30 at 19:16 +0000, PAUSE wrote:
+>         > The following report has been written by the PAUSE namespace
+>         indexer.
+>         > Please contact modules@perl.org if there are any open
+>         questions.
+>         >
+>         >   User: VDB (Van de Bugger)
+>         >   Distribution file: Systemd-Daemon-0.03.tar.gz
+>         >   Number of files: 19
+>         >   *.pm files: 1
+>         >   README: Systemd-Daemon-0.03/README
+>         >   META-File: Systemd-Daemon-0.03/META.json
+>         >   META-Parser: Parse::CPAN::Meta 1.4404
+>         >   META-driven index: no
+>         >   Timestamp of file: Mon Mar 30 19:15:11 2015 UTC
+>         >   Time of this run: Mon Mar 30 19:16:39 2015 UTC
+>         >
+>         > This distribution name can only be used by users with
+>         permission for the
+>         > package Systemd::Daemon, which you do not have.
+>         >
+>         >
+>         > __END__
+>         
+>         
+> 
+> 
+> 
+> -- 
+> David Golden <xdg@xdg.me> Twitter/IRC: @xdg
+
+
