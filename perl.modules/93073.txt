@@ -1,0 +1,70 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:93073
+Return-Path: <rt-cpan-org-return@perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1831 invoked from network); 23 Apr 2015 19:55:46 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 23 Apr 2015 19:55:46 -0000
+Received: (qmail 3614 invoked by uid 225); 23 Apr 2015 19:55:46 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3610 invoked by alias); 23 Apr 2015 19:55:45 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from rtcpan.develooper.com (HELO rtcpan.develooper.com) (207.171.7.181)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 23 Apr 2015 12:55:40 -0700
+Received: by rtcpan.develooper.com (Postfix, from userid 536)
+	id 42D7927E; Thu, 23 Apr 2015 12:55:37 -0700 (PDT)
+Subject: [rt.cpan.org #99432] indexing conflict with Git dist
+Reply-To: bug-Git-Sub@rt.cpan.org
+In-Reply-To: <rt-4.0.18-12491-1429784109-1553.99432-7-0@rt.cpan.org>
+References: <RT-Ticket-99432@rt.cpan.org>
+ <rt-4.0.18-30541-1413036448-1282.99432-7-0@rt.cpan.org>
+ <rt-4.0.18-12491-1429784109-1553.99432-7-0@rt.cpan.org>
+Message-ID: <rt-4.0.18-10237-1429818936-316.99432-7-0@rt.cpan.org>
+X-RT-Loop-Prevention: rt.cpan.org
+RT-Ticket: rt.cpan.org #99432
+Managed-BY: RT 4.0.18 (http://www.bestpractical.com/rt/)
+RT-Originator: ether@cpan.org
+CC: modules@perl.org
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+X-RT-Original-Encoding: utf-8
+Date: Thu, 23 Apr 2015 15:55:37 -0400
+Approved: news@nntp.perl.org
+From: bug-Git-Sub@rt.cpan.org ("Karen Etheridge via RT")
+
+<URL: https://rt.cpan.org/Ticket/Display.html?id=99432 >
+
+On 2015-04-23 03:15:09, DOLMEN wrote:
+> Le 2014-10-11 16:07:28, MSOUTH a écrit :
+> > Hi,
+> 
+> Hi,
+> 
+> My Git::Sub module injects functions in the git:: (lower case)
+> namespace.
+> 
+> So that is on purpose that I have $git::VERSION set in Git::Sub, in
+> order to
+> reserve the git:: namespace on PAUSE.
+> 
+> But my distribution is a bit special as I reserve the 'git::'
+> namespace without
+> providing a git.pm file. I don't intend to provide one just to leave
+> filesystem
+> space for Git.pm (on case-sensitive filesystems).
+> 
+> PAUSE tells me that I have rights on git:: and you have rights on
+> Git:: so I
+> don't see an issue.
+> https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=ml&pause99_peek_perms_query=git
+> https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=ml&pause99_peek_perms_query=Git
+
+Namespaces in PAUSE are case-insensitive, because some filesystems are case-insensitive.
+However, it looks like the 06perms.txt file (and the underlying database) are organized in a case sensitive fashion, so it looks like the two modules are entirely separate, but they're not.
+
+I'm cc-ing modules@perl.org as it looks like you'll need to get this sorted out at the PAUSE level.
