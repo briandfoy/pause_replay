@@ -1,0 +1,75 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:93123
+Return-Path: <hlieberman@setec.io>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29776 invoked from network); 30 Apr 2015 21:27:16 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 30 Apr 2015 21:27:16 -0000
+Received: (qmail 30540 invoked by uid 225); 30 Apr 2015 21:27:16 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30536 invoked by alias); 30 Apr 2015 21:27:16 -0000
+X-Spam-Status: No, hits=0.0 required=8.0
+	tests=
+X-Spam-Check-By: la.mx.develooper.com
+Received: from xmenrevolution.com (HELO xmenrevolution.com) (97.107.134.16)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 30 Apr 2015 14:27:15 -0700
+Received: by xmenrevolution.com (Postfix, from userid 113)
+	id 82BDF16A9E; Thu, 30 Apr 2015 17:27:11 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=setec.io; s=mail;
+	t=1430429231; bh=l2MfKJSt30+doJdq6qliKg/jvkZq3BH+zFjjaf3HmyQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=KsbhGLG5tyX8p4pK7rS6RpsFaEzGkIzcvjhrcqv8yRQ3ViEL4hc2cZSbdDb7NKAn4
+	 QTcX5cw0a7wVmgX+f1tluOfY6s9sS9EMgm/2ergfXjZ3RmvgeJDJcPH2OCDkx4xfut
+	 +fM1zVElZ340V7V1+eyOjNuuuEEf7T9bk6cCTt3I=
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on
+	li64-16.members.linode.com
+X-Spam-Level: 
+Received: from agartha (209-6-40-250.c3-0.smr-ubr1.sbo-smr.ma.cable.rcn.com [209.6.40.250])
+	by xmenrevolution.com (Postfix) with ESMTPSA id 9C1DA16A9B;
+	Thu, 30 Apr 2015 17:27:10 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=setec.io; s=mail;
+	t=1430429230; bh=l2MfKJSt30+doJdq6qliKg/jvkZq3BH+zFjjaf3HmyQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=aHYxLNTQd54S7DNk9af7F2Wgd+AmNyluUULPDwn2uS4LsGAloPDCCdnvYLmse9wgV
+	 lW8k5gAcAQWGI7aqet19zXcXLoRz4rY9MeIvLWu7z4/OidEnpC2anz+Czftj9RtfTL
+	 mGisfCcqIQi8ApJ6hZuprOynqxesmShBA9BkAnYU=
+To: Boris Zentner <bzm@2bz.de>, Matt S Trout <mst@shadowcat.co.uk>
+Cc: David Golden <xdg@xdg.me>, bug-nanomsg-raw@rt.cpan.org, "modules\@perl.org" <modules@perl.org>, rafl@cpan.org
+Subject: Re: [rt.cpan.org #98340] Release
+In-Reply-To: <9818C0D3-81F5-45F6-B0C6-A52E0F250C4F@2bz.de>
+References: <87twwjlaua.fsf@setec.io> <20150430201914.GA20998@newagaton.scsys.co.uk> <CAOeq1c9Amc-b7h9uh79gVTB5bVUxAXKSNe=PbTJQOEs789yvMw@mail.gmail.com> <20150430210028.GB20998@newagaton.scsys.co.uk> <9818C0D3-81F5-45F6-B0C6-A52E0F250C4F@2bz.de>
+User-Agent: Notmuch/0.18.1 (http://notmuchmail.org) Emacs/24.4.1 (x86_64-pc-linux-gnu)
+Date: Thu, 30 Apr 2015 17:27:10 -0400
+Message-ID: <87d22ls3wx.fsf@setec.io>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Old-Spam-Status: No, score=-1.0 required=5.0 tests=ALL_TRUSTED,T_DKIM_INVALID
+	autolearn=unavailable version=3.3.2
+Approved: news@nntp.perl.org
+From: hlieberman@setec.io (Harlan Lieberman-Berg)
+
+Boris Zentner <bzm@2bz.de> writes:
+
+> I think those bugs are fixed long ago. If not please create issues on
+> github or here patches are welcome.But I think everything is already
+> fixed in the latest release.
+
+Hi Boris,
+
+Unfortunately, this bug is definitely extant.  I've applied one patch in
+this thread that fixes problems under Perl 5.20, but we've been trying
+to solve problems in the test suite in Debian for a while now.
+(https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=756350).
+
+I think the threads.t test is broken enough that it simply should be
+removed entirely; I've been unable to figure out why it intermittentely
+fails, but it's using the old thread code in Perl anyway, and probably
+isn't providing any value.
+
+Sincerely,
+
+-- 
+Harlan Lieberman-Berg
+~hlieberman
