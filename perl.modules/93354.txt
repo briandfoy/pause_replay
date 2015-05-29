@@ -1,0 +1,379 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:93354
+Return-Path: <julvr@broadcom.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 23207 invoked from network); 28 May 2015 20:41:45 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 28 May 2015 20:41:45 -0000
+Received: (qmail 32020 invoked by uid 225); 28 May 2015 20:41:45 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 32016 invoked by alias); 28 May 2015 20:41:44 -0000
+X-Spam-Status: No, hits=-4.2 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_MED,T_RP_MATCHES_RCVD
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-gw3-out.broadcom.com (HELO mail-gw3-out.broadcom.com) (216.31.210.64)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 28 May 2015 13:41:36 -0700
+X-IronPort-AV: E=Sophos;i="5.13,514,1427785200"; 
+   d="scan'208,217";a="65931633"
+Received: from irvexchcas06.broadcom.com (HELO IRVEXCHCAS06.corp.ad.broadcom.com) ([10.9.208.53])
+  by mail-gw3-out.broadcom.com with ESMTP; 28 May 2015 13:52:01 -0700
+Received: from SJEXCHCAS07.corp.ad.broadcom.com (10.16.203.16) by
+ IRVEXCHCAS06.corp.ad.broadcom.com (10.9.208.53) with Microsoft SMTP Server
+ (TLS) id 14.3.235.1; Thu, 28 May 2015 13:41:32 -0700
+Received: from SJEXCHMB09.corp.ad.broadcom.com ([fe80::3da7:665e:cc78:181f])
+ by SJEXCHCAS07.corp.ad.broadcom.com ([::1]) with mapi id 14.03.0235.001; Thu,
+ 28 May 2015 13:41:32 -0700
+To: "modules@perl.org" <modules@perl.org>
+Subject: Looking to publish unifdef+
+Thread-Topic: Looking to publish unifdef+
+Thread-Index: AdCZg41qMo9ygkS1SS2gTIeaRG5OKw==
+Date: Thu, 28 May 2015 20:41:31 +0000
+Message-ID: <F61457A753D573478DB768F576EEDBDB2AD01866@SJEXCHMB09.corp.ad.broadcom.com>
+Accept-Language: en-US
+Content-Language: en-US
+x-originating-ip: [10.16.203.100]
+Content-Type: multipart/alternative;
+	boundary="_000_F61457A753D573478DB768F576EEDBDB2AD01866SJEXCHMB09corpa_"
+MIME-Version: 1.0
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: julvr@broadcom.com (John Ulvr)
+
+--_000_F61457A753D573478DB768F576EEDBDB2AD01866SJEXCHMB09corpa_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Hi there.  I've developed a module for scripting at Broadcom, and I receive=
+d permissions to publish it to CPAN.    The module is "unifdef+".    It's f=
+unctionality is based on the bash utility unifdef, but it's a bit more adva=
+nced (it simplifies the precompiler conditionals for example, and has suppo=
+rt to process dependencies in Kconfig files, and some limited support for M=
+akefiles, which still needs work).   It would be good to push upstream, as =
+it is very useful for feature tracking.
+
+I was reading through http://engineering.tilt.com/lessons-learned-cpan/ and=
+ they suggested I email this address to figure out the best name for this m=
+odule.    Currently, it exists as UnifdefPlus.pm, which is invoked from som=
+e wrappers: unifdef+.pl, unkconfig.pl and unmakefile.pl.     The usage for =
+unifdef+ is as follows:
+
+
+
+Usage:
+
+  unifdef+ [options] file
+
+  unifdef+ [options] -F file
+
+  unifdef+ [options] [-I file] [-O file]
+
+  unifdef+ --version
+
+
+
+Options:
+
+  -D name[=3Dval]     declare name as defined.  All compiler directives rel=
+ated to name will be
+
+                    simplified as if name was defined as val.  If val is no=
+t specified, a value
+
+                    of 'y' will be assumed.  This option may be repeated mu=
+ltiple times.
+
+  -U name           declare name as undefined.  All compiler directives rel=
+ated to name will be
+
+                    simplified as if name was undefined.  This option may b=
+e repeated multiple
+
+                    times.
+
+  -I filename       Take input from filename
+
+  -O filename       Send output to filename
+
+  -F filename       Modify filename
+
+  --simplifiedonly  Only output lines within a simplified #if/#elif/#else/#=
+endif clause
+
+  --dbg             run with debugging enabled
+
+  --version         outputs the current version of unifdef+
+
+
+
+
+
+Description:
+
+  The unifdef+ utility is designed to simplify c and cpp files based on pre=
+processor conditionals.
+
+It has the ability to expand and simplify preprocessor conditionals ( #if, =
+#ifdef, #elif, #else,
+
+#endif statements) based on the values passed in on the command line.  If a=
+ preprocessor conditional
+
+contains any of the macros specified on the command line, unifdef+ will sub=
+stitute the known values
+
+and then proceed to simplify the expression.  If the condition resolves to =
+either true or false, all
+
+unused code is removed from the output.  Otherwise, the condition is replac=
+ed with the simplified
+
+version in the output.
+
+
+
+Exit Status:
+
+  The exit status will be 0 if the input has not been modified, 1 if there =
+are modifications, or
+
+  2 if there is an error processing the input.
+
+
+
+Example:
+
+  unifdef+ -U CC_FEATURE1 -D CC_VER=3D12 -D CC_FEATURE2=3Dy somefile.c
+Thanks,
+
+John
+
+--_000_F61457A753D573478DB768F576EEDBDB2AD01866SJEXCHMB09corpa_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<meta name=3D"Generator" content=3D"Microsoft Word 14 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+h1
+	{mso-style-priority:9;
+	mso-style-link:"Heading 1 Char";
+	margin-top:24.0pt;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:0cm;
+	margin-bottom:.0001pt;
+	page-break-after:avoid;
+	font-size:14.0pt;
+	font-family:"Cambria","serif";
+	color:#365F91;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:purple;
+	text-decoration:underline;}
+span.EmailStyle15
+	{mso-style-type:personal-compose;
+	font-family:"Calibri","sans-serif";
+	color:windowtext;}
+span.CodeInline
+	{mso-style-name:Code_Inline;
+	mso-style-priority:1;
+	font-family:"Courier New";
+	color:black;
+	border:none;
+	background:#DBE5F1;}
+p.CodePara, li.CodePara, div.CodePara
+	{mso-style-name:Code_Para;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	background:#ECF0F4;
+	font-size:11.0pt;
+	font-family:"Courier New";
+	color:black;}
+span.Heading1Char
+	{mso-style-name:"Heading 1 Char";
+	mso-style-priority:9;
+	mso-style-link:"Heading 1";
+	font-family:"Cambria","serif";
+	color:#365F91;
+	font-weight:bold;}
+span.CodeInlineH
+	{mso-style-name:Code_Inline_H;
+	mso-style-priority:1;
+	font-family:"Courier New";
+	color:black;
+	border:none;
+	background:#DBE5F1;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri","sans-serif";}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"EN-US" link=3D"blue" vlink=3D"purple">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal">Hi there.&nbsp; I&#8217;ve developed a module for sc=
+ripting at Broadcom, and I received permissions to publish it to CPAN.&nbsp=
+;&nbsp; &nbsp;The module is &#8220;unifdef&#43;&#8221;.&nbsp; &nbsp;&nbsp;I=
+t&#8217;s functionality is based on the bash utility unifdef, but it&#8217;=
+s a bit more advanced (it simplifies
+ the precompiler conditionals for example, and has support to process depen=
+dencies in Kconfig files, and some limited support for Makefiles, which sti=
+ll needs work).&nbsp;&nbsp; It would be good to push upstream, as it is ver=
+y useful for feature tracking.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">I was reading through <a href=3D"http://engineering.=
+tilt.com/lessons-learned-cpan/">
+http://engineering.tilt.com/lessons-learned-cpan/</a> and they suggested I =
+email this address to figure out the best name for this module.&nbsp;&nbsp;=
+&nbsp; Currently, it exists as UnifdefPlus.pm, which is invoked from some w=
+rappers: unifdef&#43;.pl, unkconfig.pl and unmakefile.pl.&nbsp;
+ &nbsp;&nbsp;&nbsp;The usage for unifdef&#43; is as follows:<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">Usage: <o:p></o:p></=
+span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp;&nbsp;unifdef&=
+#43; [options] file<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; unifdef&#43; =
+[options] -F file<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; unifdef&#43; =
+[options] [-I file] [-O file]<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; unifdef&#43; =
+--version<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt"><o:p>&nbsp;</o:p></s=
+pan></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">Options:<o:p></o:p><=
+/span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; -D name[=3Dva=
+l]&nbsp;&nbsp;&nbsp;&nbsp; declare name as defined.&nbsp; All compiler dire=
+ctives related to name will be
+<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;simplified as if name was defined as val.&nbsp; If=
+ val is not specified, a value
+<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;of 'y' will be assumed.&nbsp; This option may be r=
+epeated multiple times.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp;&nbsp;-U name&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; declare name as=
+ undefined.&nbsp; All compiler directives related to name will be<o:p></o:p=
+></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; simplified as if name was undefined.&nbsp; This option =
+may be repeated multiple<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; times.<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; -I filename&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Take input from filename<o:p></o:p></spa=
+n></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; -O filename&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Send output to filename<o:p></o:p></span=
+></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; -F filename&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Modify filename<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; --simplifiedo=
+nly&nbsp; Only output lines within a simplified #if/#elif/#else/#endif clau=
+se<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; --dbg&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; run with d=
+ebugging enabled<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; --version&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; outputs the current version of=
+ unifdef&#43;<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt"><o:p>&nbsp;</o:p></s=
+pan></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt"><o:p>&nbsp;</o:p></s=
+pan></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">Description:<o:p></o=
+:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; The unifdef&#=
+43; utility is designed to simplify c and cpp files based on preprocessor c=
+onditionals.<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">It has the ability t=
+o expand and simplify preprocessor conditionals ( #if, #ifdef, #elif, #else=
+,<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">#endif statements) b=
+ased on the values passed in on the command line.&nbsp; If a preprocessor c=
+onditional
+<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">contains any of the =
+macros specified on the command line, unifdef&#43; will substitute the know=
+n values
+<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">and then proceed to =
+simplify the expression.&nbsp; If the condition resolves to either true or =
+false, all
+<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">unused code is remov=
+ed from the output.&nbsp; Otherwise, the condition is replaced with the sim=
+plified
+<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">version in the outpu=
+t.<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt"><o:p>&nbsp;</o:p></s=
+pan></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">Exit Status:<o:p></o=
+:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; The exit stat=
+us will be 0 if the input has not been modified, 1 if there are modificatio=
+ns, or<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp; 2 if there is=
+ an error processing the input.<o:p></o:p></span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt"><o:p>&nbsp;</o:p></s=
+pan></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">Example: <o:p></o:p>=
+</span></p>
+<p class=3D"CodePara"><span style=3D"font-size:10.0pt">&nbsp;&nbsp;unifdef&=
+#43; -U CC_FEATURE1 -D CC_VER=3D12 -D CC_FEATURE2=3Dy somefile.c</span><o:p=
+></o:p></p>
+<p class=3D"MsoNormal"><o:p></o:p></p>
+<p class=3D"MsoNormal">Thanks,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">John<o:p></o:p></p>
+</div>
+</body>
+</html>
+
+--_000_F61457A753D573478DB768F576EEDBDB2AD01866SJEXCHMB09corpa_--
