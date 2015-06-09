@@ -1,0 +1,168 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:93448
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3309 invoked from network); 8 Jun 2015 19:21:26 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 8 Jun 2015 19:21:26 -0000
+Received: (qmail 29182 invoked by uid 225); 8 Jun 2015 19:21:26 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29178 invoked by alias); 8 Jun 2015 19:21:26 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+	tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wi0-f180.google.com (HELO mail-wi0-f180.google.com) (209.85.212.180)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 08 Jun 2015 12:21:17 -0700
+Received: by wiga1 with SMTP id a1so96910864wig.0
+        for <modules@perl.org>; Mon, 08 Jun 2015 12:21:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:subject:mime-version:content-type:from
+         :in-reply-to:date:cc:message-id:references:to;
+        bh=ZXLtF/LgHyf8r0oxGzrnUH6RBovswdAUCintnWVZmd4=;
+        b=CSEL1LnKhi3qJLiOqn5F/pL0/TlnqdF3MJ89m467/cPodGGWTBQvXlJ7OzZLpqHLUO
+         jAC2j384YKB4HzvWvCK7MwJP3JNLnaeeNgNDVAfdUHvz97lwY7EonwaO9jTE6u53A70o
+         7dTzKvtBc2h05ToyqI5ru+6k3lDKNe1/dLPA+W3lIaF8GJytX/BE5eLFpyeJILEgebNK
+         j3DwEngSl5RG67jy/aglNk8CqatE/gE4Dcw12IrG8/zQaJBj+tmoP14DQxdFDHZgHxMB
+         4TioM61aFMOWiv4qQH+n2UjmgIwSWkN452FNScKf1DDQcj/YMj1qgam2kAeRSaNbuQX5
+         14rg==
+X-Gm-Message-State: ALoCoQmUpU/5mkVRQvTdmWvB99hTmXDGppYx3LQI+voDKv9ZbaslO1u7AXefMa4ukFnpQ2J4s95W
+X-Received: by 10.180.86.234 with SMTP id s10mr24786042wiz.50.1433791271939;
+        Mon, 08 Jun 2015 12:21:11 -0700 (PDT)
+Received: from [192.168.0.13] (cpc17-rdng20-2-0-cust59.15-3.cable.virginm.net. [82.8.77.60])
+        by mx.google.com with ESMTPSA id r9sm5767981wjo.26.2015.06.08.12.21.10
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Mon, 08 Jun 2015 12:21:10 -0700 (PDT)
+Subject: Re: Uploaded module has not been indexed
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2098\))
+Content-Type: multipart/alternative; boundary="Apple-Mail=_B617377A-0175-416D-9550-2EEFB7AF9048"
+X-Priority: 3 (Normal)
+In-Reply-To: <1433777082.898111323@f164.i.mail.ru>
+Date: Mon, 8 Jun 2015 20:21:09 +0100
+Cc: modules@perl.org
+Message-ID: <B2E22E70-3A09-4E58-A774-4F58B9CED336@cogendo.com>
+References: <1433777082.898111323@f164.i.mail.ru>
+To: =?utf-8?B?0J7Qu9C10LMg0JrQvtCy0LDQu9C10LI=?= <o.kovalev@corp.mail.ru>
+X-Mailer: Apple Mail (2.2098)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+--Apple-Mail=_B617377A-0175-416D-9550-2EEFB7AF9048
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+Hi Oleg,
+
+> I have uploaded my perl module about 3 weeks ago through this form - =
+https://pause.perl.org/pause/authenquery?ACTION=3Dadd_uri =
+<https://pause.perl.org/pause/authenquery?ACTION=3Dadd_uri>
+> FIle name is Captcha-NocaptchaMailru-v0.1.1.tar.gz
+> But it seems that it has not been indexed. I can't find it in =
+https://cpan.metacpan.org/modules/02packages.details.txt =
+<https://cpan.metacpan.org/modules/02packages.details.txt>
+
+The problem is that you renamed your module, but you didn=E2=80=99t =
+update the name of the .pm file in MANIFEST. As a result, when you ran =
+=E2=80=9Cmake dist=E2=80=9D, it didn=E2=80=99t include the .pm file in =
+the tarball:
+
+Captcha-NocaptchaMailru-v0.1.1% ls -1R
+MANIFEST
+MANIFEST.SKIP
+META.json
+META.yml
+Makefile.PL
+README
+lib/
+
+./lib:
+Captcha/
+
+./lib/Captcha:
+
+Your MANIFEST file has the line:
+
+	lib/Captcha/Nocaptcha.pm
+
+Which should instead be:
+
+	lib/Captcha/NocaptchaMailru.pm
+
+When you run =E2=80=9Cperl Makefile.PL=E2=80=9D check that you don=E2=80=99=
+t get any error messages, and the same when you run =E2=80=9Cmake =
+dist=E2=80=9D.
+
+Neil
+
+
+--Apple-Mail=_B617377A-0175-416D-9550-2EEFB7AF9048
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html =
+charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space;" =
+class=3D"">Hi Oleg,<div class=3D""><br class=3D""><div><blockquote =
+type=3D"cite" class=3D""><div class=3D"">I have uploaded my perl module =
+about 3 weeks ago through this form - <a =
+href=3D"https://pause.perl.org/pause/authenquery?ACTION=3Dadd_uri" =
+target=3D"_blank" =
+class=3D"">https://pause.perl.org/pause/authenquery?ACTION=3Dadd_uri</a></=
+div><div class=3D""><div class=3D""><div class=3D"js-helper =
+js-readmsg-msg"><div class=3D""><div =
+id=3D"style_14334268410000000199_BODY" class=3D"">FIle name is =
+Captcha-NocaptchaMailru-v0.1.1.tar.gz<br class=3D"">But it seems that it =
+has not been indexed. I can't find it in <a =
+href=3D"https://cpan.metacpan.org/modules/02packages.details.txt" =
+class=3D"">https://cpan.metacpan.org/modules/02packages.details.txt</a><br=
+ class=3D""></div></div></div></div></div></blockquote><br =
+class=3D""></div><div>The problem is that you renamed your module, but =
+you didn=E2=80=99t update the name of the .pm file in MANIFEST. As a =
+result, when you ran =E2=80=9Cmake dist=E2=80=9D, it didn=E2=80=99t =
+include the .pm file in the tarball:</div></div><div><br =
+class=3D""></div><blockquote style=3D"margin: 0 0 0 40px; border: none; =
+padding: 0px;" class=3D""><div><div><font face=3D"Courier New" =
+style=3D"font-size: 14px;" class=3D"">Captcha-NocaptchaMailru-v0.1.1% ls =
+-1R</font></div></div><div><div><font face=3D"Courier New" =
+style=3D"font-size: 14px;" =
+class=3D"">MANIFEST</font></div></div><div><div><font face=3D"Courier =
+New" style=3D"font-size: 14px;" =
+class=3D"">MANIFEST.SKIP</font></div></div><div><div><font face=3D"Courier=
+ New" style=3D"font-size: 14px;" =
+class=3D"">META.json</font></div></div><div><div><font face=3D"Courier =
+New" style=3D"font-size: 14px;" =
+class=3D"">META.yml</font></div></div><div><div><font face=3D"Courier =
+New" style=3D"font-size: 14px;" =
+class=3D"">Makefile.PL</font></div></div><div><div><font face=3D"Courier =
+New" style=3D"font-size: 14px;" =
+class=3D"">README</font></div></div><div><div><font face=3D"Courier New" =
+style=3D"font-size: 14px;" =
+class=3D"">lib/</font></div></div><div><div><font face=3D"Courier New" =
+style=3D"font-size: 14px;" class=3D""><br =
+class=3D""></font></div></div><div><div><font face=3D"Courier New" =
+style=3D"font-size: 14px;" =
+class=3D"">./lib:</font></div></div><div><div><font face=3D"Courier New" =
+style=3D"font-size: 14px;" =
+class=3D"">Captcha/</font></div></div><div><div><font face=3D"Courier =
+New" style=3D"font-size: 14px;" class=3D""><br =
+class=3D""></font></div></div><div><div><font face=3D"Courier New" =
+style=3D"font-size: 14px;" =
+class=3D"">./lib/Captcha:</font></div></div></blockquote><div><div><br =
+class=3D""></div><div>Your MANIFEST file has the line:</div><div><br =
+class=3D""></div><div><span class=3D"Apple-tab-span" =
+style=3D"white-space:pre">	=
+</span>lib/Captcha/Nocaptcha.pm</div><div><br class=3D""></div><div>Which =
+should instead be:</div><div><br class=3D""></div><div><span =
+class=3D"Apple-tab-span" style=3D"white-space:pre">	=
+</span>lib/Captcha/NocaptchaMailru.pm</div><div><br =
+class=3D""></div><div>When you run =E2=80=9Cperl Makefile.PL=E2=80=9D =
+check that you don=E2=80=99t get any error messages, and the same when =
+you run =E2=80=9Cmake dist=E2=80=9D.</div><div><br =
+class=3D""></div><div>Neil</div><div><br =
+class=3D""></div></div></body></html>=
+
+--Apple-Mail=_B617377A-0175-416D-9550-2EEFB7AF9048--
