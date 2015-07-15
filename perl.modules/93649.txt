@@ -1,0 +1,112 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:93649
+Return-Path: <ron@savage.net.au>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1865 invoked from network); 14 Jul 2015 23:00:48 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 14 Jul 2015 23:00:48 -0000
+Received: (qmail 31035 invoked by uid 225); 14 Jul 2015 23:00:48 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31031 invoked by alias); 14 Jul 2015 23:00:48 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+	tests=BAYES_00,RCVD_IN_DNSWL_NONE,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail1.qnetau.com (HELO mail1.qnetau.com) (202.146.209.5)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 14 Jul 2015 16:00:41 -0700
+Received: (qmail 78712 invoked by uid 399); 14 Jul 2015 23:00:32 -0000
+Received: from unknown (HELO ?192.168.1.21?) (ron@savage.net.au@124.170.53.36)
+  by mail1.qnetau.com with ESMTPAM; 14 Jul 2015 23:00:32 -0000
+X-Mail-From: ron@savage.net.au
+X-Originating-IP: 124.170.53.36
+X-Sender: ron@savage.net.au
+Message-ID: <55A595B3.8090408@savage.net.au>
+Date: Wed, 15 Jul 2015 09:05:23 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Icedove/31.7.0
+MIME-Version: 1.0
+To: rbh@cpan.org, "modules@perl.org" <modules@perl.org>
+Subject: My first module
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: ron@savage.net.au (Ron Savage)
+
+Hi Rolf
+
+Thank you for you detailed message:
+http://www.nntp.perl.org/group/perl.modules/2015/07/msg93645.html
+which I won't copy here. I'll just address some of your points.
+
+To discuss the naming of module, consider:
+http://prepan.org/
+
+On that subject, it's common to prefix scraper modules with 
+WWW::Scraper::*. Search MetaCPAN and you'll see many of them, 2 of them 
+being mine.
+
+Now, more on your questions:
+
+1) One or two modules?
+
+WWWW::Scraper::Digitalarkivet with sub-modules starting with 
+WWW::Scraper::Digitalarkivet::Database would be my recommendation.
+
+2) Should it be a module at all?
+
+Of course!
+
+Users might wish to sub-class your main module and use your database 
+module. And they could subclass the latter, too.
+
+I strongly recommend you base each module on Moo and Types::Standard, 
+despite the fact you are at risk of getting far too many conflicting 
+suggestions on this topic.
+
+You could also release App::Digitalarkivet containing your 
+now-much-simplified script, if you wish. But why, when the main module 
+can ship with a bin/a.script.pl?
+
+3) Namespace
+
+See above.
+
+Remember: You need to consider this topic from the point of view of 
+someone searching CPAN for code relevant to their needs. Any name which 
+is cryptic, as in the DA you mention, is meaningless to every single 
+person except yourself. So, please don't use it.
+
+3) Best practice for POD?
+
+You mean (4), right :-)?
+
+I put all my POD at the end. And in scripts/ I often ship a pod2html.sh, 
+plus scripts to create all table, drop all tables, populate constant 
+tables. You get the idea. See any db-using module, such as 
+https://metacpan.org/release/App-Office-Contacts. Download it and check 
+the scripts/ dir for ideas.
+
+Note: In the past, I used to use the very sophisticated DBIx::Class, but 
+have decided that for my work it's too complex, so now I use 
+DBIx::Simple. You should too. Whatever you do, don't reinvent the wheel, 
+and that applies to both your db-interface and your web-scraping code. 
+And /that's/ why I'm recommending you release your code as a set of modules.
+
+4) To CPAN or not to - Licence
+
+The 'Creative Commons' people don't recommend their works for software, 
+as I understand it. I always use the Artistic Licence (aka License for 
+you non-Australians).
+
+Lastly, please also put the code on github. I'm here:
+https://github.com/ronsavage?tab=repositories
+
+That way, others can fork you code and push patches, which you can then 
+adopt or reject.
+
+You'll still release the code to CPAN, of course. Github is for interacting.
+
+
+Good luck!
+-- 
+Ron Savage - savage.net.au

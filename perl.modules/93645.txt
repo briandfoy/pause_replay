@@ -1,0 +1,230 @@
+Newsgroups: perl.modules,perl.module-authors
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:93645 perl.module-authors:10632
+Return-Path: <rolf.holte@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 13679 invoked from network); 13 Jul 2015 21:21:20 -0000
+Received: from x1.develooper.com (207.171.7.70)
+  by x6.develooper.com with SMTP; 13 Jul 2015 21:21:20 -0000
+Received: (qmail 8855 invoked by uid 225); 13 Jul 2015 21:21:20 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8848 invoked by alias); 13 Jul 2015 21:21:19 -0000
+X-Spam-Status: No, hits=-2.7 required=8.0
+	tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,HTML_MESSAGE,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-ig0-f169.google.com (HELO mail-ig0-f169.google.com) (209.85.213.169)
+    by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 13 Jul 2015 14:21:09 -0700
+Received: by igvi1 with SMTP id i1so41164695igv.1;
+        Mon, 13 Jul 2015 14:20:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=6W39fi55YT1rN8VWl16B5f9GUSvUstYHn0bLFpFCILo=;
+        b=yjlfObrEnwXtIwcIjnileM9uV6MWL6Cc0SZCPC8KTB8douK+RocCEwHq8GNYzvX9AV
+         NbXAFF7jQd/HbbuSc0e6YV09OaKtkeRCt7VWLXLvbZ0Q4fW45eAtV4slT4TJUIXG4DDB
+         q8+pmOJQ9CLWsiU6uWJVGRj1eJiv8mDvmh9TMan+Tv6eoSs7sCkCsq3HO8xl0m/cg+NI
+         xG1pHi0LptnIKVJSgRN7GGEzWDgVf6adfSyDOFkwUuIGaFxDJeg45dF7VGT5yySaeEMM
+         23wNrM5J1ZkR9bUGj9S6p46Wz0HBa4yV5czMchpMEgerjihhx170sOaIIYHRPs5LoBNG
+         cbjw==
+MIME-Version: 1.0
+X-Received: by 10.50.44.100 with SMTP id d4mr13683766igm.67.1436822457040;
+ Mon, 13 Jul 2015 14:20:57 -0700 (PDT)
+Received: by 10.64.20.193 with HTTP; Mon, 13 Jul 2015 14:20:57 -0700 (PDT)
+Date: Mon, 13 Jul 2015 23:20:57 +0200
+Message-ID: <CAN3+rX2e7F_dDHEVsERqid5nMaUb3Dx8aH+7g_nG0s+deXd2Rg@mail.gmail.com>
+Subject: My first module
+To: modules@perl.org, module-authors@perl.org
+Content-Type: multipart/alternative; boundary=e89a8f839f912846af051ac84c18
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: rolf.holte@gmail.com (Rolf Holte)
+
+--e89a8f839f912846af051ac84c18
+Content-Type: text/plain; charset=UTF-8
+
+I've made some scripts to harvest (web scrape) metadata on Digitalarkivet
+(DA). Since the task is formidable I've split it into stages and use
+several scripts for each stage, common "stuff" is put into 2 scripts for
+reuse  to keep scripts cleaner/more readable. These 2 scripts are always
+"included" in my scripts, and are a candidate for a module. I'm thinking of
+making these into 1 or 2 modules.The concept works on first 2 stages (just
+need to code more the rest).
+
+Mainly have five questions (seek advice on these matters)
+
+1) One or two modules?
+
+Is it a good idea to split database operations into a separate module. I
+use DBI and try to avoid non-standard SQL most SQL is basic SELECT or
+INSERT/ LOAD DATA (more advanced SQL is placed in stored procedures, and I
+call these when more intricate tasks are needed) So far I've got 4 subs in
+"DA.pl" and 20 subs for "DA-DBI.pl". There will be more methods when I code
+for 2 next stages.  I always need both scripts for my use. Can't really run
+without database in back-end (although I often opt storage to file.. mainly
+for either temporary/speed issues or debugging/informational purpose)
+
+or
+
+should I just put everything into 1 module since config file can alter
+database (from MySQL to anything also supported by DBI, some minor things
+are mysql dependent, and could instead be moved to stored procedures )
+
+2) Should it be a module at all?
+
+Since I heavily depend on database back-end should it be a module of its
+own? I need to reuse code for many tasks (different scripts) in order to
+web scrape metadata on the site. Is it more an App?
+
+
+3) Namespace
+
+Not quite sure if I'm going to release all code to scrape site. I've put
+code in several scripts which may or not be included along side with my
+module(s). The 2 main reason's are it took me 4 days to scrape site first
+time. Don't want everyone to scrape whole site just for fun. secondly not
+completely confident that everyone would respect my licence. I'm happy to
+share on non-commercial basis. But would like something in return if used
+commercially If it's released as an app (working code for everyone) then
+APP namespace should be used if I understood "pause_namingmodules".
+Otherwise depending on one or modules I've been thinking of DIS::DA &
+DIS::DA::DBI (DIS is the acronym for the Genealogy society I'm a member of,
+and making code for. DA is a known acronym for Digitalarkivet (Digital
+Archive of Norway).  If one module DigitalArkivet.pm might be the best
+choice?
+
+
+3) Best practice for POD?
+
+As a "newbie" on POD, I've put the pod in between in code, reducing the
+need for (extra) header comments on subs. The POD documents the code of
+each sub, as a header to each sub. Most POD I've seen puts all pod at the
+end of the file. (Both can be done, but is the latter highly recommended /
+BEST practice?) I find it easier to write POD when I see what is going on,
+also it forces me to write POD at once.. I could copy everything to the end
+of the file, before "release", but then I feel I've got to (re)write header
+documentation on each sub.
+
+4) To CPAN or not to - Licence
+
+My first thought is to licence it as something like this:
+
+DA-DBI.pl by Rolf B. Holte is licensed under a Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International License. Permissions
+beyond the scope of this license may be available at
+http://dev.perl.org/licenses/artistic.html.
+
+Why? I'd like to share code but not for commercial use?
+
+Would that be OK, or do I have to use Perl/ artistic license to put on
+CPAN? Can I prohibit commercial use?
+-- 
+rbh
+
+--e89a8f839f912846af051ac84c18
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div><p style=3D"margin:0px 0px 1em;padding:0px;border:0px=
+;font-size:15px;clear:both;font-family:&#39;Helvetica Neue&#39;,Helvetica,A=
+rial,sans-serif;line-height:19.5px">I&#39;ve made some scripts to harvest (=
+web scrape) metadata on Digitalarkivet (DA). Since the task is formidable I=
+&#39;ve split it into stages=C2=A0and use several scripts for each stage, c=
+ommon &quot;stuff&quot; is put into 2 scripts for reuse =C2=A0to keep scrip=
+ts cleaner/more readable. These 2 scripts are always &quot;included&quot; i=
+n my scripts, and are a candidate for a module. I&#39;m thinking of making =
+these into 1 or 2 modules.The concept works on first 2 stages (just need to=
+ code more the rest).=C2=A0</p><p style=3D"margin:0px 0px 1em;padding:0px;b=
+order:0px;font-size:15px;clear:both;font-family:&#39;Helvetica Neue&#39;,He=
+lvetica,Arial,sans-serif;line-height:19.5px">Mainly have five questions (se=
+ek advice on these matters)</p><p style=3D"margin:0px 0px 1em;padding:0px;b=
+order:0px;font-size:15px;clear:both;font-family:&#39;Helvetica Neue&#39;,He=
+lvetica,Arial,sans-serif;line-height:19.5px">1) One or two modules?</p><p s=
+tyle=3D"margin:0px 0px 1em;padding:0px;border:0px;font-size:15px;clear:both=
+;font-family:&#39;Helvetica Neue&#39;,Helvetica,Arial,sans-serif;line-heigh=
+t:19.5px">Is it a good idea to split database operations into a separate mo=
+dule. I use DBI and try to avoid non-standard SQL most SQL is basic SELECT =
+or INSERT/ LOAD DATA (more advanced SQL is placed in stored procedures, and=
+ I call these when more intricate tasks are needed) So far I&#39;ve got 4 s=
+ubs in &quot;DA.pl&quot; and 20 subs for &quot;DA-DBI.pl&quot;. There will =
+be more methods when I code for 2 next stages.=C2=A0 I always need both scr=
+ipts for my use. Can&#39;t really run without database in back-end (althoug=
+h I often opt storage to file.. mainly for either temporary/speed issues or=
+ debugging/informational purpose)</p><p style=3D"margin:0px 0px 1em;padding=
+:0px;border:0px;font-size:15px;clear:both;font-family:&#39;Helvetica Neue&#=
+39;,Helvetica,Arial,sans-serif;line-height:19.5px">or</p><p style=3D"margin=
+:0px 0px 1em;padding:0px;border:0px;font-size:15px;clear:both;font-family:&=
+#39;Helvetica Neue&#39;,Helvetica,Arial,sans-serif;line-height:19.5px">shou=
+ld I just put everything into 1 module since config file can alter database=
+ (from MySQL to anything also supported by DBI, some minor things are mysql=
+ dependent, and could instead be moved to stored procedures )</p><p style=
+=3D"margin:0px 0px 1em;padding:0px;border:0px;font-size:15px;clear:both;fon=
+t-family:&#39;Helvetica Neue&#39;,Helvetica,Arial,sans-serif;line-height:19=
+.5px">2) Should it be a module at all?</p><p style=3D"margin:0px 0px 1em;pa=
+dding:0px;border:0px;font-size:15px;clear:both;font-family:&#39;Helvetica N=
+eue&#39;,Helvetica,Arial,sans-serif;line-height:19.5px">Since I heavily dep=
+end on database back-end should it be a module of its own? I need to reuse =
+code for many tasks (different scripts) in order to web scrape metadata on =
+the site. Is it more an App?</p><p style=3D"margin:0px 0px 1em;padding:0px;=
+border:0px;font-size:15px;clear:both;font-family:&#39;Helvetica Neue&#39;,H=
+elvetica,Arial,sans-serif;line-height:19.5px"><br></p><p style=3D"margin:0p=
+x 0px 1em;padding:0px;border:0px;font-size:15px;clear:both;font-family:&#39=
+;Helvetica Neue&#39;,Helvetica,Arial,sans-serif;line-height:19.5px">3) Name=
+space</p><p style=3D"margin:0px 0px 1em;padding:0px;border:0px;font-size:15=
+px;clear:both;font-family:&#39;Helvetica Neue&#39;,Helvetica,Arial,sans-ser=
+if;line-height:19.5px">Not quite sure if I&#39;m going to release all code =
+to scrape site. I&#39;ve put code in several scripts which may or not be in=
+cluded=C2=A0along side with my module(s). The 2 main reason&#39;s are it to=
+ok me 4 days to scrape site first time. Don&#39;t want everyone to scrape w=
+hole site just for fun. secondly not completely=C2=A0confident that everyon=
+e would respect my licence. I&#39;m happy to share on non-commercial=C2=A0b=
+asis. But would like something in return if used commercially If it&#39;s r=
+eleased as an app (working code for everyone) then APP namespace should be =
+used if I understood &quot;pause_namingmodules&quot;. Otherwise depending o=
+n one or modules I&#39;ve been thinking of DIS::DA &amp; DIS::DA::DBI (DIS =
+is the acronym for the Genealogy society=C2=A0I&#39;m a member of, and maki=
+ng code for. DA is a known acronym for Digitalarkivet (Digital Archive of N=
+orway).=C2=A0 If one module DigitalArkivet.pm might be the=C2=A0best choice=
+?</p><p style=3D"margin:0px 0px 1em;padding:0px;border:0px;font-size:15px;c=
+lear:both;font-family:&#39;Helvetica Neue&#39;,Helvetica,Arial,sans-serif;l=
+ine-height:19.5px"><br></p><p style=3D"margin:0px 0px 1em;padding:0px;borde=
+r:0px;font-size:15px;clear:both;font-family:&#39;Helvetica Neue&#39;,Helvet=
+ica,Arial,sans-serif;line-height:19.5px">3) Best practice for POD?</p><p st=
+yle=3D"margin:0px 0px 1em;padding:0px;border:0px;font-size:15px;clear:both;=
+font-family:&#39;Helvetica Neue&#39;,Helvetica,Arial,sans-serif;line-height=
+:19.5px">As a &quot;newbie&quot; on POD, I&#39;ve put the pod in between in=
+ code, reducing the need for (extra) header comments on subs. The POD docum=
+ents the code of each sub, as a header to each sub. Most POD I&#39;ve seen =
+puts all pod at the end of the file. (Both can be done, but is the latter h=
+ighly recommended / BEST practice?) I find it easier to write POD when I se=
+e what is going on, also it forces me to write POD at once.. I could copy e=
+verything to the end of the file, before &quot;release&quot;, but then I fe=
+el I&#39;ve got to (re)write header documentation on each sub.</p><p style=
+=3D"margin:0px 0px 1em;padding:0px;border:0px;font-size:15px;clear:both;fon=
+t-family:&#39;Helvetica Neue&#39;,Helvetica,Arial,sans-serif;line-height:19=
+.5px">4) To CPAN or not to - Licence</p><p style=3D"margin:0px 0px 1em;padd=
+ing:0px;border:0px;font-size:15px;clear:both;font-family:&#39;Helvetica Neu=
+e&#39;,Helvetica,Arial,sans-serif;line-height:19.5px">My first thought is t=
+o licence it as something like this:</p><p style=3D"margin:0px 0px 1em;padd=
+ing:0px;border:0px;font-size:15px;clear:both;font-family:&#39;Helvetica Neu=
+e&#39;,Helvetica,Arial,sans-serif;line-height:19.5px">DA-DBI.pl by Rolf B. =
+Holte is licensed under a Creative Commons Attribution-NonCommercial-ShareA=
+like 4.0 International License. Permissions beyond the scope of this licens=
+e may be available at=C2=A0<a href=3D"http://dev.perl.org/licenses/artistic=
+.html" rel=3D"nofollow" style=3D"margin:0px;padding:0px;border:0px;text-dec=
+oration:none;color:rgb(12,101,165)">http://dev.perl.org/licenses/artistic.h=
+tml</a>.</p><p style=3D"margin:0px 0px 1em;padding:0px;border:0px;font-size=
+:15px;clear:both;font-family:&#39;Helvetica Neue&#39;,Helvetica,Arial,sans-=
+serif;line-height:19.5px">Why? I&#39;d like to share code but not for comme=
+rcial use?</p><p style=3D"margin:0px 0px 1em;padding:0px;border:0px;font-si=
+ze:15px;clear:both;font-family:&#39;Helvetica Neue&#39;,Helvetica,Arial,san=
+s-serif;line-height:19.5px">Would that be OK, or do I have to use Perl/ art=
+istic license to put on CPAN? Can I prohibit commercial use?</p></div>-- <b=
+r><div class=3D"gmail_signature">rbh</div>
+<img src=3D"http://t.sidekickopen08.com/e1t/o/5/f18dQhb0S7ks8dDMPbW2n0x6l2B=
+9gXrN7sKj6v5dpFqW4X9JSd2BplDCVRs65C2zlZNzW3k64q31k1H6H0?si=3D51716862503813=
+12&amp;pi=3D8e75fb85-1778-4f85-92d0-39ace62a22c2" style=3D"display:none!imp=
+ortant" height=3D"1" width=3D"1"></div>
+
+--e89a8f839f912846af051ac84c18--
