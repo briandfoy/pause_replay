@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:93816
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15695 invoked from network); 13 Aug 2015 09:12:13 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 13 Aug 2015 09:12:13 -0000
+Received: (qmail 27860 invoked by uid 225); 13 Aug 2015 09:12:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27856 invoked by alias); 13 Aug 2015 09:12:13 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wi0-f175.google.com (HELO mail-wi0-f175.google.com)
+ (209.85.212.175) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 13
+ Aug 2015 02:12:06 -0700
+Received: by wicne3 with SMTP id ne3so131224929wic.0 for <modules@perl.org>;
+ Thu, 13 Aug 2015 02:12:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:content-type:mime-version:subject:from
+ :in-reply-to:date:cc:content-transfer-encoding:message-id:references :to;
+ bh=RXf4MsB9kF7JQX93I1vfWA8z1BMdZ/igIgrPTemowFc=;
+ b=aqfr7dPM+0Ng6tFl0qqAQid3l61EUBrJSc40zZlUw/+3fRc2dfMZ9VB6Rke1LliG8E
+ Ju0PycE4rfUzsS4QCYTvmnAV227sJqkUdnwI3MoZfU5shboPNGGI2JvYTp9RcMfMDepX
+ FEKlyK6wf/iZu70lgWgM/ARZz65VQLLWwkZWnHqBVngH1jwCKnkqYoXgAu/Yzv81RY4/
+ NFYii6qoAmCLHiUHI2S4tJzfyGpCaLFz5d2WczGZoaqx0UsTHUONiJW6hy13Ztck3Vks
+ DUeL/p7jYgKwZ4FGLvW/EUvIEtl3+3vJd3QXKuJVXbyla5255lkNHjCD898Wwc2afqVy VqDw==
+X-Gm-Message-State:
+ ALoCoQnfN2EbDI0KjpVKTNgZeGv9bSFogOv6GxbjmPJF7zJsV0eiWEF/xO9KrDEfiQcsqcQ35607
+X-Received: by 10.180.104.68 with SMTP id gc4mr4576278wib.78.1439457122370;
+ Thu, 13 Aug 2015 02:12:02 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc17-rdng20-2-0-cust59.15-3.cable.virginm.net. [82.8.77.60]) by
+ smtp.gmail.com with ESMTPSA id g16sm2336273wiw.17.2015.08.13.02.12.01
+ (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Thu, 13 Aug 2015
+ 02:12:01 -0700 (PDT)
+Content-Type: text/plain; charset=windows-1252
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2102\))
+Subject: Re: [upload@pause.perl.org: Failed: PAUSE indexer report
+ KARASIK/App-PLab-1.00.tar.gz]
+In-Reply-To: <20150812173259.GA76574@karasik2>
+Date: Thu, 13 Aug 2015 10:12:12 +0100
+Cc: modules@perl.org
+Content-Transfer-Encoding: quoted-printable
+Message-ID: <41402504-0580-48A6-B994-81C5FC6D512E@cogendo.com>
+References: <20150812173259.GA76574@karasik2>
+To: Dmitry Karasik <dmitry@karasik.eu.org>
+X-Mailer: Apple Mail (2.2102)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Dmitry,
+
+> Can you possibly point me out on why the indexer thinks I don't have =
+permission
+> to App::PLab? There doesn't seem to be an existing module with that =
+name on
+> CPAN. I'm confused.
+
+PAUSE now requires that distributions include a module with a name that =
+matches the distribution.
+So for distribution App-PLab there must be a module App::PLab.
+
+This is because PAUSE=92s permissions model is based on module =
+permissions rather than distributions;
+the restriction was added to protect namespaces.
+
+PAUSE was trying to tell you this in the email you got:
+
+> This distribution name can only be used by users with permission for =
+the
+> package App::PLab, which you do not have. No modules will be indexed.
+
+But I agree that the wording could be improved: Normally if no-one has =
+permission, when you upload a module, then you get the permission. But =
+your dist doesn=92t include the module, so you don=92t get the =
+permission.
+
+Cheers,
+Neil
+
