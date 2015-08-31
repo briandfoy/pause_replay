@@ -1,0 +1,66 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:93920
+Return-Path: <reini.urban@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26806 invoked from network); 30 Aug 2015 13:42:04 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 30 Aug 2015 13:42:04 -0000
+Received: (qmail 17034 invoked by uid 225); 30 Aug 2015 13:42:04 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17026 invoked by alias); 30 Aug 2015 13:42:04 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wi0-f171.google.com (HELO mail-wi0-f171.google.com)
+ (209.85.212.171) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 30
+ Aug 2015 06:42:01 -0700
+Received: by wicpl12 with SMTP id pl12so8273912wic.0; Sun, 30 Aug 2015
+ 06:41:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com;
+ s=20120113;
+ h=mime-version:sender:in-reply-to:references:date:message-id:subject
+ :from:to:cc:content-type; bh=hkChRFhXic71r7JAOioGYDvw9/8ugGypKJy0/1QQnec=;
+ b=wHPaTURSz04GeYs4rTaWjb1uDbvdsiNl5hT3aGmHmig+l5Nfv22R2G5pOspyD78Gk2
+ 1MXduGkaaz7nvqjZOX8PfNbanyHM+alCcghzzNws8wYztawOi+Bkl6UOJPkKGfuTzZDc
+ WUyWgeBF/IhFpcMDokZZXjJndDhngk6p1DrylIrGb83BNaV3sHgR7ZC7ZHdBIXCyZ1AF
+ /Q1e8SIqmxeeEjeurvtgqbXZ6gIkFjAPr5gQ+15usS5dhm3xIgONVKErlvu//HAWRsN4
+ 11hTM9VfC7eu6TjsarE0xP8zKLxZ0abvhnuuzbZ10gKhcrjth5rhqZ3WmlN4ZrDOB/C8 8mxQ==
+MIME-Version: 1.0
+X-Received: by 10.194.142.178 with SMTP id
+ rx18mr2618498wjb.106.1440942117709; Sun, 30 Aug 2015 06:41:57 -0700 (PDT)
+Sender: reini.urban@gmail.com
+Received: by 10.28.93.14 with HTTP; Sun, 30 Aug 2015 06:41:57 -0700 (PDT)
+In-Reply-To:
+ <CAHiT=DH5CBKx1wRrvHb2Ho2xc-QqTOrQgwQjiWMn0GyowbD_=Q@mail.gmail.com>
+References: <BLU436-SMTP386772CCEFE6612FCA65C3DF790@phx.gbl>
+ <BLU436-SMTP2230128A0B2312C2EFB4DBADF6C0@phx.gbl>
+ <CAHiT=DH5CBKx1wRrvHb2Ho2xc-QqTOrQgwQjiWMn0GyowbD_=Q@mail.gmail.com>
+Date: Sun, 30 Aug 2015 15:41:57 +0200
+X-Google-Sender-Auth: XxNSPiCau-FXYTFNPi7jCEc8lZ8
+Message-ID:
+ <CAHiT=DEji6_zdGBoGuQYGvC8L8ervFAFXgE=auGdvtBSbrg-tw@mail.gmail.com>
+Subject: Re: maintenance of ExtUtils-Constant
+To: bulk88 <bulk88@hotmail.com>
+Cc: Nicholas Clark <nick@ccl4.org>, nick@flirble.org,  Perl 5 Porters
+ <perl5-porters@perl.org>, "modules@perl.org" <modules@perl.org>
+Content-Type: text/plain; charset=UTF-8
+Approved: news@nntp.perl.org
+From: rurban@cpan.org (Reini Urban)
+
+2015-08-30 14:27 GMT+02:00 Reini Urban <rurban@cpan.org>:
+> I work on this here:
+> https://github.com/rurban/ExtUtils-Constant
+
+uploaded with all fixes to pause as 0.23_01 without perms
+if this smokes clean will bump to 0.24 and add to core.
+
+Note that the current simple len-based switch scheme is nice,
+but I'll probably optimize it to bypass memcmp as described here:
+http://blogs.perl.org/users/rurban/2014/08/perfect-hashes-and-faster-than-memcmp.html
+which is 50% - 2000% faster and uses less memory.
+But it still uses much more memory than a normal perfect hash,
+30% with 127 keys.
+
+-- Reini
