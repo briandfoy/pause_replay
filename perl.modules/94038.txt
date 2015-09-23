@@ -1,0 +1,124 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:94038
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10829 invoked from network); 23 Sep 2015 08:06:57 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 23 Sep 2015 08:06:57 -0000
+Received: (qmail 25458 invoked by uid 225); 23 Sep 2015 08:06:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25452 invoked by alias); 23 Sep 2015 08:06:55 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wi0-f179.google.com (HELO mail-wi0-f179.google.com)
+ (209.85.212.179) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 23
+ Sep 2015 01:06:50 -0700
+Received: by wicge5 with SMTP id ge5so195209433wic.0 for <modules@perl.org>;
+ Wed, 23 Sep 2015 01:06:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:content-type:mime-version:subject:from
+ :in-reply-to:date:cc:message-id:references:to;
+ bh=vSVz1utJbqk0SCjNEUWTzG0Esw83I9BhSIl9N7v+Iok=;
+ b=Yj+RV/zk89qCRgXRB1EACH9R0Gmmh3YSSPnkayN1T67kb3u8hyB7MoFWw9I0D5umpX
+ qQOZe8mljzj9HhqGQOWbgE+QyEG9m2SZ/uR/B/bf92jXD/7APpMgd+Al0Ie/LoF9dtiC
+ 5SkZ9p2cc7YRguLwVb2ed+r8on8S/Try0sYd8dW6Xw1cHjfrrFcaIQSQivYJ5uVfTcN5
+ nE/Nc6vu9U55TzO5Vj43UVRNlhWYixaNmCGPKz9KijTVyUHnSPevycVCmboOSReBqfT1
+ HIxoxVSSQ9+x6GfiWVSZmqEcoRkYj9VX9rZgnDmymuth1jX65uBt3aFjiCEMtemF/Q+3 LOxQ==
+X-Gm-Message-State:
+ ALoCoQk6596NB9Wr5iVQd39VK58u2iQtCbdJ+/drd4g1vABWN9ZHM4Cc/xzuFAMkfdTwl83UYXMA
+X-Received: by 10.194.121.40 with SMTP id lh8mr21591623wjb.115.1442995606442;
+ Wed, 23 Sep 2015 01:06:46 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc17-rdng20-2-0-cust59.15-3.cable.virginm.net. [82.8.77.60]) by
+ smtp.gmail.com with ESMTPSA id z2sm7230325wij.1.2015.09.23.01.06.44
+ (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Wed, 23 Sep 2015
+ 01:06:44 -0700 (PDT)
+Content-Type: multipart/alternative; boundary="Apple-Mail=_8006DB03-DE6A-4BA4-9CAC-76C89C6DE7D2"
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
+Subject: Re: Failed: PAUSE indexer report
+ BPRASAD/Amibroker-AFL-Tools-0.03.tar.gz
+In-Reply-To:
+ <CABqV8sELh1vk0FAxaLu25SeCYbS3KMkWY928xA1y5YurOjBx7Q@mail.gmail.com>
+Date: Wed, 23 Sep 2015 09:06:43 +0100
+Cc: modules@perl.org
+Message-ID: <F8AA2F47-DDCA-479F-A7BF-F119E5504B84@cogendo.com>
+References: <20150922171811.AD5111A1E@pause.perl.org>
+ <CABqV8sEmEhO+upaCYbNCeVh9C=n0k=zvWTK5VCZ6EOyxGuYF2w@mail.gmail.com>
+ <679E47F2-E838-4731-8F31-D40A7417E9E9@cogendo.com>
+ <CABqV8sELh1vk0FAxaLu25SeCYbS3KMkWY928xA1y5YurOjBx7Q@mail.gmail.com>
+To: Babu Prasad HP <babuprasad.hp@gmail.com>
+X-Mailer: Apple Mail (2.2104)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+--Apple-Mail=_8006DB03-DE6A-4BA4-9CAC-76C89C6DE7D2
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+Hi Babu,
+
+> I realized missing module in my first package : Amibroker::AFL::Tools =
+and added it in version 0.02 and 0.03,
+> but still I am getting this error.
+>=20
+> Amibroker::AFL::Tools has only pod information and does not actually =
+contain any code.
+> So, is that a problem?
+
+Firstly, you forgot to add lib/Amibroker/AFL/Tools.pm to your MANIFEST =
+file, so when you ran =E2=80=9Cmake dist=E2=80=9D, it didn=E2=80=99t =
+include that file.
+
+Secondly, the module can be mainly documentation, as long as the package =
+is defined. A minimal package is something like:
+
+    package Amibroker::AFL::Tools;
+    our $VERSION =3D =E2=80=980.04=E2=80=99;
+    1;
+
+You don=E2=80=99t have to include the VERSION, but it=E2=80=99s good =
+practice for every module in your dist to have a version, and for that =
+version to match the release's version number.
+
+Neil
+
+
+--Apple-Mail=_8006DB03-DE6A-4BA4-9CAC-76C89C6DE7D2
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html =
+charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space;" =
+class=3D"">Hi Babu,<div class=3D""><br class=3D""><div><blockquote =
+type=3D"cite" class=3D""><div class=3D"">I realized missing module in my =
+first package : Amibroker::AFL::Tools and added it in version 0.02 and =
+0.03,</div><div class=3D""><div dir=3D"ltr" class=3D""><div =
+class=3D""><div class=3D""><div class=3D"">but still I am getting this =
+error.<br class=3D""><br class=3D"">Amibroker::AFL::Tools has only pod =
+information and does not actually contain any code.<br =
+class=3D""></div>So, is that a problem?<br =
+class=3D""></div></div></div></div></blockquote></div><br =
+class=3D""></div><div class=3D"">Firstly, you forgot to add =
+lib/Amibroker/AFL/Tools.pm to your MANIFEST file, so when you ran =
+=E2=80=9Cmake dist=E2=80=9D, it didn=E2=80=99t include that =
+file.</div><div class=3D""><br class=3D""></div><div class=3D"">Secondly, =
+the module can be mainly documentation, as long as the package is =
+defined. A minimal package is something like:</div><div class=3D""><br =
+class=3D""></div><div class=3D""><font face=3D"Courier New" =
+class=3D"">&nbsp; &nbsp; package Amibroker::AFL::Tools;</font></div><div =
+class=3D""><font face=3D"Courier New" class=3D"">&nbsp; &nbsp; our =
+$VERSION =3D =E2=80=980.04=E2=80=99;</font></div><div class=3D""><font =
+face=3D"Courier New" class=3D"">&nbsp; &nbsp; 1;</font></div><div =
+class=3D""><br class=3D""></div><div class=3D"">You don=E2=80=99t have =
+to include the VERSION, but it=E2=80=99s good practice for every module =
+in your dist to have a version, and for that version to match the =
+release's version number.</div><div class=3D""><br class=3D""></div><div =
+class=3D"">Neil</div><div class=3D""><br class=3D""></div></body></html>=
+
+--Apple-Mail=_8006DB03-DE6A-4BA4-9CAC-76C89C6DE7D2--
