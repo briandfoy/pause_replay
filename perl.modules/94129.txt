@@ -1,0 +1,117 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:94129
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23799 invoked from network); 13 Oct 2015 11:18:30 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 13 Oct 2015 11:18:30 -0000
+Received: (qmail 19377 invoked by uid 225); 13 Oct 2015 11:18:30 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19373 invoked by alias); 13 Oct 2015 11:18:30 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,HTML_MESSAGE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wi0-f174.google.com (HELO mail-wi0-f174.google.com)
+ (209.85.212.174) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 13
+ Oct 2015 04:18:24 -0700
+Received: by wieq12 with SMTP id q12so27046294wie.1 for <modules@perl.org>;
+ Tue, 13 Oct 2015 04:18:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:subject:mime-version:content-type:from
+ :in-reply-to:date:cc:message-id:references:to;
+ bh=W0mQAnvWAfsz7LrnjqBBbQlQta2dA28QliaoIRrrYPk=;
+ b=fkp7wNYip3lrxKEg3GmrZehs8NJG+JIQv3DI9BkbWO3IqwOhx4OioaiYIanBcABthg
+ 33VFJWyPrplPdU+TZeKhLQfeXUCedPfqX2cvHuHGOgMrwkyX57irC5yai4lDEz9Yl/qQ
+ tjbfIOGVO1TTRNnI/3opNrgTVFFNFQcHVcTNOCblIaGZXkKJcHvPqS68ckaSkP7Scf0D
+ waTiJr159uK2Rdp4GxVuK5PlcqVZ8EZ5Os92bKFX0RmBtXS4FBjUcuC4ki3R7mj84wq4
+ 1KYhMw20XJDVvSBaEn0tIQ75HBrgIod6oKtJi4Zs6Dkds9I4qLgEBzhqenQ8fVq1l0f6 w4uA==
+X-Gm-Message-State:
+ ALoCoQn+E0N9Hdu8bTiNuXZWF4HhURh2loD/LdQGiaefPzpWy4d0NpsZDyV9G0C+zUnA1KUKd/4l
+X-Received: by 10.180.19.41 with SMTP id b9mr19425736wie.71.1444735099894;
+ Tue, 13 Oct 2015 04:18:19 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc17-rdng20-2-0-cust59.15-3.cable.virginm.net. [82.8.77.60]) by
+ smtp.gmail.com with ESMTPSA id h6sm2471407wiy.14.2015.10.13.04.18.18
+ (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128); Tue, 13 Oct 2015
+ 04:18:18 -0700 (PDT)
+Subject: Re: Preventing PAUSE from indexing certain packages in a
+ distribution
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
+Content-Type: multipart/alternative; boundary="Apple-Mail=_483F3ED3-75E1-4E4C-9034-9DFE67F55A04"
+X-Priority: 3
+In-Reply-To: <BAY174-DS11FCFBBF7275A71831B26CB9340@phx.gbl>
+Date: Tue, 13 Oct 2015 12:18:16 +0100
+Cc: modules@perl.org
+Message-ID: <7CD8F851-BBB6-4F66-B4F3-6BD781DCCB80@cogendo.com>
+References: <BAY174-DS11FCFBBF7275A71831B26CB9340@phx.gbl>
+To: Francisco Zarabozo <fzarabozo@hotmail.com>
+X-Mailer: Apple Mail (2.2104)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+--Apple-Mail=_483F3ED3-75E1-4E4C-9034-9DFE67F55A04
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+Hi Francisco,
+
+> Today I uploaded to PAUSE a distribution that contained at root level =
+a folder called =E2=80=98fakelibs=E2=80=99, which contained fake modules =
+intended for testing. PAUSE then tried to index them and I received a =
+report informing that =E2=80=98Some::Module=E2=80=99 (one of my fake =
+modules) cannot be indexed because it=E2=80=99s already with someone =
+else.
+> =20
+> [=E2=80=A6]
+> =20
+> How can I prevent this from happening in the future?
+
+PAUSE will ignore modules in certain directories, including the =E2=80=99t=
+=E2=80=99 directory where your tests live. So put all the fake modules =
+in there. If you have an =E2=80=98xt=E2=80=99 directory (for extended =
+tests, like release and author tests), then any modules in there will =
+also be ignored by PAUSE.
+
+Cheers,
+Neil
+
+
+
+--Apple-Mail=_483F3ED3-75E1-4E4C-9034-9DFE67F55A04
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html =
+charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space;" =
+class=3D"">Hi Francisco,<div class=3D""><br class=3D""><div><blockquote =
+type=3D"cite" class=3D""><div class=3D""><span style=3D"font-family: =
+Calibri; font-size: 12pt;" class=3D"">Today I uploaded to PAUSE a =
+distribution that contained at root level a=20
+folder called =E2=80=98fakelibs=E2=80=99, which contained fake modules =
+intended for testing.=20
+PAUSE then tried to index them and I received a report informing that=20
+=E2=80=98Some::Module=E2=80=99 (one of my fake modules) cannot be =
+indexed because it=E2=80=99s already=20
+with someone else.</span></div><div class=3D""><div dir=3D"ltr" =
+class=3D""><div dir=3D"ltr" class=3D""><div style=3D"font-size: 12pt; =
+font-family: Calibri;" class=3D"">
+<div class=3D"">&nbsp;</div>
+<div class=3D"">[=E2=80=A6]</div>
+<div class=3D"">&nbsp;</div>
+<div class=3D"">How can I prevent this from happening in the =
+future?</div>
+</div></div></div></div></blockquote><br class=3D""></div><div>PAUSE =
+will ignore modules in certain directories, including the =E2=80=99t=E2=80=
+=99 directory where your tests live. So put all the fake modules in =
+there. If you have an =E2=80=98xt=E2=80=99 directory (for extended =
+tests, like release and author tests), then any modules in there will =
+also be ignored by PAUSE.</div><div><br =
+class=3D""></div><div>Cheers,</div><div>Neil</div><div><br =
+class=3D""></div><br class=3D""></div></body></html>=
+
+--Apple-Mail=_483F3ED3-75E1-4E4C-9034-9DFE67F55A04--
