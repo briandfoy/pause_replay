@@ -1,0 +1,59 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:94185
+Return-Path: <mst@shadowcat.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24534 invoked from network); 22 Oct 2015 23:29:23 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 22 Oct 2015 23:29:23 -0000
+Received: (qmail 18025 invoked by uid 225); 22 Oct 2015 23:29:23 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18021 invoked by alias); 22 Oct 2015 23:29:23 -0000
+X-Spam-Status: No, hits=-1.2 required=8.0 tests=BAYES_00,SPF_SOFTFAIL
+X-Spam-Check-By: la.mx.develooper.com
+Received: from agaton.scsys.co.uk (HELO agaton.scsys.co.uk) (89.16.177.50) by
+ la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 22 Oct 2015 16:29:20
+ -0700
+Received: from matthewt by agaton.scsys.co.uk with local (Exim 4.72)
+ (envelope-from <mst@shadowcat.co.uk>) id 1ZpPII-0000Uu-Pr; Thu, 22 Oct 2015
+ 23:29:14 +0000
+Date: Thu, 22 Oct 2015 23:29:14 +0000
+To: Neil Bowers <neil.bowers@cogendo.com>
+Cc: Francisco Zarabozo <fzarabozo@hotmail.com>, modules@perl.org
+Subject: Re: Preventing PAUSE from indexing certain packages in a
+ distribution
+Message-ID: <20151022232914.GZ20998@newagaton.scsys.co.uk>
+References: <BAY174-DS11FCFBBF7275A71831B26CB9340@phx.gbl>
+ <7CD8F851-BBB6-4F66-B4F3-6BD781DCCB80@cogendo.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7CD8F851-BBB6-4F66-B4F3-6BD781DCCB80@cogendo.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Tue, Oct 13, 2015 at 12:18:16PM +0100, Neil Bowers wrote:
+> Hi Francisco,
+> 
+> > Today I uploaded to PAUSE a distribution that contained at root level a folder called ‘fakelibs’, which contained fake modules intended for testing. PAUSE then tried to index them and I received a report informing that ‘Some::Module’ (one of my fake modules) cannot be indexed because it’s already with someone else.
+> >  
+> > […]
+> >  
+> > How can I prevent this from happening in the future?
+> 
+> PAUSE will ignore modules in certain directories, including the ’t’ directory where your tests live. So put all the fake modules in there. If you have an ‘xt’ directory (for extended tests, like release and author tests), then any modules in there will also be ignored by PAUSE.
+
+You can add a no_index entry to META.* to specifically avoid your fakelibs
+directory - but t/lib is the normal place to put them, and would already
+be ignored, so for this case I'd go with 'put them in the standard place'.
+
+-- 
+Matt S Trout - Shadowcat Systems - Perl consulting with a commit bit and a clue
+
+http://shadowcat.co.uk/blog/matt-s-trout/   http://twitter.com/shadowcat_mst/
+
+Email me now on mst (at) shadowcat.co.uk and let's chat about how our CPAN
+commercial support, training and consultancy packages could help your team.
