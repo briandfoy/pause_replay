@@ -1,0 +1,117 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:94350
+Return-Path: <livxtrm@codechild.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 693 invoked from network); 29 Nov 2015 18:52:59 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 29 Nov 2015 18:52:59 -0000
+Received: (qmail 27983 invoked by uid 225); 29 Nov 2015 18:52:58 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27979 invoked by alias); 29 Nov 2015 18:52:58 -0000
+X-Spam-Status: No, hits=-1.2 required=8.0
+ tests=BAYES_00,HK_RANDOM_ENVFROM,HTML_MESSAGE,MIME_HTML_ONLY,RCVD_IN_DNSWL_NONE
+X-Spam-Check-By: la.mx.develooper.com
+Received: from p3plsmtp12-04-2.prod.phx3.secureserver.net (HELO
+ p3plwbeout12-04.prod.phx3.secureserver.net) (173.201.192.60) by
+ la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 29 Nov 2015 10:52:51
+ -0800
+Received: from localhost ([173.201.192.24]) by
+ p3plwbeout12-04.prod.phx3.secureserver.net with bizsmtp id
+ nWsn1r0010Y2di501WsnSj; Sun, 29 Nov 2015 11:52:47 -0700
+X-SID: nWsn1r0010Y2di501
+Received: (qmail 29855 invoked by uid 99); 29 Nov 2015 18:52:47 -0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="utf-8"
+X-Originating-IP: 50.135.155.11
+User-Agent: Workspace Webmail 5.16.0
+Message-ID:
+ <20151129115246.2bebdc69f04a0df25b0369139f17f6c8.eabc67c955.wbe@email12.secureserver.net>
+X-Sender: livxtrm@codechild.com
+To: "Neil Bowers" <neil.bowers@cogendo.com>, modules@perl.org
+Subject: RE: Top Level Namespace "Ginger"
+Date: Sun, 29 Nov 2015 11:52:46 -0700
+Mime-Version: 1.0
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: ecm@codechild.com ("David Helkowski")
+
+<html><body><span style=3D"font-family:Verdana; color:#000000; font-size:10=
+pt;"><div>Neil,</div><div><br></div><div>Thank you for clarifying this. I w=
+ill create a core <a href=3D"http://Ginger.pm">Ginger.pm</a> for this purpo=
+se and include it. Really it should be there anyway in order to describe th=
+e purpose and arrangement of the 'Ginger' namespace.</div><div><br></div><d=
+iv>I assume that I can still release other deeper modules in the same packa=
+ge, ( Ginger::Reference::... ), and they will properly be accepted? I alrea=
+dy do see them CPAN, but I do not see updated permissions in Pause.</div><d=
+iv><br></div><div>Some additional questions that I don't see answered elsew=
+here, for you or anyone else on the list who can answer these:</div><div><b=
+r></div><div>1. I want Ginger::Reference to be reserved for official ginger=
+ modules. In order to make that be true, do I need to also release a 'Ginge=
+r/<a href=3D"http://Reference.pm">Reference.pm</a>' module in the release t=
+o ensure people don't add random things under that namespace?</div><div><br=
+></div><div>2. Is it acceptable to create a 'Ginger::WebApp' namespace, and=
+ suggest people place Apps created using Ginger inside of that? Obviously t=
+hey could simply place them in the normal 'App' namespace, but I feel like =
+it may be more meaningful to home them in Ginger since they will have stron=
+g dependencies upon many modules under Ginger. I say 'Ginger::WebApp' and n=
+ot 'Ginger::App', since 'Ginger::ShellApp' should be applications that can =
+run under a command line.</div><div><br></div><div>3. I created 'Ginger::Re=
+ference' to contain all the modules that are the 'Reference' implementation=
+s for core functionality of the framework. I say 'Reference' because I want=
+ people to be able to write different implementations that still function w=
+ith the same API. I was thinking of having those go under 'Ginger::Custom'.=
+ The advice being that the custom modules names would mirror the reference =
+modules names. So, someone would create 'Ginger::Custom::Log::Log4J' and it=
+ would act similar to 'Ginger::Reference::Log::Default'. I want to keep use=
+r implementations separate namespace wise so that it is clear what the "off=
+icial" interactions are among the core modules.</div><div><br></div><div>4.=
+ One of the facets of the Framework is that it is meant to facilitate havin=
+g whole web applications live in CPAN. Install a 'Ginger::WebApp::...' and =
+it will function completely just by running a tiny script calling it. As a =
+result, those applications will need to be serving out JS libraries. I was =
+thinking of having something like "Ginger::Lib::Web::JS::JQuery", and actua=
+lly placing a module containing the JQuery distribution itself. Is it accep=
+table for me to home entire JS libraries in CPAN for this purpose? I though=
+t of having them download automatically from the internet, but there are pe=
+ople running CPAN behind firewalls where they cannot reach the internet. If=
+ I did that those people would not be able to use the WebApps as internal a=
+pplications as easily.</div><div><br></div><div>Thanks again for all help w=
+ith this.</div><div>- David</div><div><br></div>=0A<blockquote id=3D"replyB=
+lockquote" webmail=3D"1" style=3D"border-left: 2px solid blue; margin-left:=
+ 8px; padding-left: 8px; font-size:10pt; color:black; font-family:verdana;"=
+>=0A<div id=3D"wmQuoteWrapper">=0A-------- Original Message --------<br>=0A=
+Subject: Re: Top Level Namespace "Ginger"<br>=0AFrom: Neil Bowers &lt;<a hr=
+ef=3D"mailto:neil.bowers@cogendo.com">neil.bowers@cogendo.com</a>&gt;<br>=
+=0ADate: Sun, November 29, 2015 1:34 am<br>=0ATo: <a href=3D"mailto:livxtrm=
+@codechild.com">livxtrm@codechild.com</a><br>=0ACc: <a href=3D"mailto:modul=
+es@perl.org">modules@perl.org</a><br>=0A<br>=0AHi David,<div class=3D""><br=
+ class=3D""><div><blockquote type=3D"cite" class=3D""><div class=3D""><span=
+ style=3D"font-family: Verdana; font-size: 10pt;" class=3D"">I have uploade=
+d the changed module to my pause account, but it says I do not have permiss=
+ions to the top level namespace. Could someone please give permissions to m=
+y account so that I can make this change?</span></div><div class=3D""><div =
+class=3D""><span style=3D"font-family: Verdana; font-size: 10pt;" class=3D"=
+"><div class=3D""><br class=3D""></div><div class=3D"">"<span class=3D"">Th=
+is distribution name can only be used by users with permission for the</spa=
+n></div><div class=3D""><span class=3D"">package Ginger, which you do not h=
+ave. No modules will be indexed.=E2=80=9D</span></div></span></div></div></=
+blockquote><br class=3D""></div><div>The problem is that you uploaded a dis=
+tribution called Ginger, but it doesn=E2=80=99t contain a module called Gin=
+ger.</div><div><br class=3D""></div><div>PAUSE now requires that all new di=
+stributions have a module of the equivalent name (so a distribution called =
+Ginger-Snaps would have to include a module called Ginger::Snaps). This is =
+a security measure, to prevent someone else messing with your namespace. Yo=
+u can read more about it in this blog post written by David Golden:</div><d=
+iv><br class=3D""></div></div><blockquote style=3D"margin: 0 0 0 40px; bord=
+er: none; padding: 0px;" class=3D""><div class=3D""><div><a target=3D"_blan=
+k" href=3D"http://www.dagolden.com/index.php/2414/this-distribution-name-ca=
+n-only-be-used-by-users-with-permission/" class=3D"">http://www.dagolden.co=
+m/index.php/2414/this-distribution-name-can-only-be-used-by-users-with-perm=
+ission/</a></div></div></blockquote><div class=3D""><br class=3D""></div>On=
+ce you add a Ginger module, your next release should be indexed by PAUSE.<d=
+iv class=3D""><br class=3D""></div><div class=3D"">Cheers,</div><div class=
+=3D"">Neil</div><div class=3D""><br class=3D""><div class=3D""><div><br cla=
+ss=3D""></div><br class=3D""></div></div>=0A</div>=0A</blockquote></span></=
+body></html>

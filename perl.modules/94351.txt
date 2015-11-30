@@ -1,0 +1,154 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:94351
+Return-Path: <livxtrm@codechild.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21112 invoked from network); 29 Nov 2015 19:55:26 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 29 Nov 2015 19:55:26 -0000
+Received: (qmail 30876 invoked by uid 225); 29 Nov 2015 19:55:26 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 30872 invoked by alias); 29 Nov 2015 19:55:26 -0000
+X-Spam-Status: No, hits=-1.2 required=8.0
+ tests=BAYES_00,HK_RANDOM_ENVFROM,HTML_MESSAGE,MIME_HTML_ONLY,RCVD_IN_DNSWL_NONE
+X-Spam-Check-By: la.mx.develooper.com
+Received: from p3plsmtp12-01-2.prod.phx3.secureserver.net (HELO
+ p3plwbeout12-01.prod.phx3.secureserver.net) (173.201.192.54) by
+ la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 29 Nov 2015 11:55:18
+ -0800
+Received: from localhost ([173.201.192.24]) by
+ p3plwbeout12-01.prod.phx3.secureserver.net with bizsmtp id
+ nXvE1r0010Y2di501XvEH7; Sun, 29 Nov 2015 12:55:14 -0700
+X-SID: nXvE1r0010Y2di501
+Received: (qmail 3550 invoked by uid 99); 29 Nov 2015 19:55:14 -0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="utf-8"
+X-Originating-IP: 50.135.155.11
+User-Agent: Workspace Webmail 5.16.0
+Message-ID:
+ <20151129125513.2bebdc69f04a0df25b0369139f17f6c8.fb64635793.wbe@email12.secureserver.net>
+To: "Neil Bowers" <neil.bowers@cogendo.com>, modules@perl.org
+Subject: RE: Top Level Namespace "Ginger"
+Date: Sun, 29 Nov 2015 12:55:13 -0700
+Mime-Version: 1.0
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: livxtrm@codechild.com
+
+<html><body><span style=3D"font-family:Verdana; color:#000000; font-size:10=
+pt;"><div>A bit more in regard to my question #4 below regarding packaging =
+JS libraries into CPAN.</div><div>I do see "JS::" (&nbsp;<a href=3D"http://=
+search.cpan.org/~ingy/JS-0.29">http://search.cpan.org/~ingy/JS-0.29</a>/ ) =
+and JS::jQuery (&nbsp;<a href=3D"http://search.cpan.org/~ingy/JS-jQuery-1.2=
+.6.001">http://search.cpan.org/~ingy/JS-jQuery-1.2.6.001</a>/ )</div><div>T=
+hey seem to be unmaintained. ( latest version of jQuery is 1.11 )</div><div=
+>If I implement this I will setup scripts to allow me to regularly pull in =
+newer version to keep it up to date.</div><div>It's pointless replicating l=
+ibraries into CPAN if they are not consistently updated.</div><div><br></di=
+v><div>I see a pile of different modules that pull in jQuery dynamically, s=
+pread randomly across CPAN in different namespaces...</div><div><br></div><=
+div>One of the ones that is similar to what I wish to do is 'Resource::Pack=
+'. (&nbsp;<a href=3D"http://search.cpan.org/~doy/Resource-Pack-0.03">http:/=
+/search.cpan.org/~doy/Resource-Pack-0.03</a> )</div><div>It uses Moose...</=
+div><div>Example resource pack including jQuery (&nbsp;<a href=3D"http://se=
+arch.cpan.org/~doy/Resource-Pack-jQuery-0.01">http://search.cpan.org/~doy/R=
+esource-Pack-jQuery-0.01</a> )</div><div>Notably it -does- include a copy o=
+f jQuery, but once again, it has not been updated since the creation of the=
+ module.</div><div><br></div><div>Notably there is no "JS::Dojo", nor "Reso=
+urce::Pack::Dojo", which seems to indicate that the people who added these =
+modules did it in a one off fashion and weren't serious about including a f=
+air handful of the top competing libraries.</div><div><br></div><div>My que=
+stion here once again is whether it is acceptable and reasonable to create =
+a single consistent place to put all of the various JS libraries I am going=
+ to import. I'd rather not home them inside the Ginger namespace if there i=
+s some better place to put them. It seems that there ought to be a proper w=
+ay to include "resources" for Perl modules to use, rather than have them pr=
+etend to be Perl modules, but not really function in a meaningful way as a =
+standalone Perl module...</div>=0A<blockquote id=3D"replyBlockquote" webmai=
+l=3D"1" style=3D"border-left: 2px solid blue; margin-left: 8px; padding-lef=
+t: 8px; font-size:10pt; color:black; font-family:verdana;">=0A<div id=3D"wm=
+QuoteWrapper">=0A-------- Original Message --------<br>=0ASubject: RE: Top =
+Level Namespace "Ginger"<br>=0AFrom: "David Helkowski" &lt;<a href=3D"mailt=
+o:ecm@codechild.com">ecm@codechild.com</a>&gt;<br>=0ADate: Sun, November 29=
+, 2015 10:52 am<br>=0ATo: "Neil Bowers" &lt;<a href=3D"mailto:neil.bowers@c=
+ogendo.com">neil.bowers@cogendo.com</a>&gt;, <a href=3D"mailto:modules@perl=
+.org">modules@perl.org</a><br>=0A<br>=0A<span style=3D"font-family:Verdana;=
+ color:#000000; font-size:10pt;"><div>Neil,</div><div><br></div><div>Thank =
+you for clarifying this. I will create a core <a target=3D"_blank" href=3D"=
+http://Ginger.pm">Ginger.pm</a> for this purpose and include it. Really it =
+should be there anyway in order to describe the purpose and arrangement of =
+the 'Ginger' namespace.</div><div><br></div><div>I assume that I can still =
+release other deeper modules in the same package, ( Ginger::Reference::... =
+), and they will properly be accepted? I already do see them CPAN, but I do=
+ not see updated permissions in Pause.</div><div><br></div><div>Some additi=
+onal questions that I don't see answered elsewhere, for you or anyone else =
+on the list who can answer these:</div><div><br></div><div>1. I want Ginger=
+::Reference to be reserved for official ginger modules. In order to make th=
+at be true, do I need to also release a 'Ginger/<a target=3D"_blank" href=
+=3D"http://Reference.pm">Reference.pm</a>' module in the release to ensure =
+people don't add random things under that namespace?</div><div><br></div><d=
+iv>2. Is it acceptable to create a 'Ginger::WebApp' namespace, and suggest =
+people place Apps created using Ginger inside of that? Obviously they could=
+ simply place them in the normal 'App' namespace, but I feel like it may be=
+ more meaningful to home them in Ginger since they will have strong depende=
+ncies upon many modules under Ginger. I say 'Ginger::WebApp' and not 'Ginge=
+r::App', since 'Ginger::ShellApp' should be applications that can run under=
+ a command line.</div><div><br></div><div>3. I created 'Ginger::Reference' =
+to contain all the modules that are the 'Reference' implementations for cor=
+e functionality of the framework. I say 'Reference' because I want people t=
+o be able to write different implementations that still function with the s=
+ame API. I was thinking of having those go under 'Ginger::Custom'. The advi=
+ce being that the custom modules names would mirror the reference modules n=
+ames. So, someone would create 'Ginger::Custom::Log::Log4J' and it would ac=
+t similar to 'Ginger::Reference::Log::Default'. I want to keep user impleme=
+ntations separate namespace wise so that it is clear what the "official" in=
+teractions are among the core modules.</div><div><br></div><div>4. One of t=
+he facets of the Framework is that it is meant to facilitate having whole w=
+eb applications live in CPAN. Install a 'Ginger::WebApp::...' and it will f=
+unction completely just by running a tiny script calling it. As a result, t=
+hose applications will need to be serving out JS libraries. I was thinking =
+of having something like "Ginger::Lib::Web::JS::JQuery", and actually placi=
+ng a module containing the JQuery distribution itself. Is it acceptable for=
+ me to home entire JS libraries in CPAN for this purpose? I thought of havi=
+ng them download automatically from the internet, but there are people runn=
+ing CPAN behind firewalls where they cannot reach the internet. If I did th=
+at those people would not be able to use the WebApps as internal applicatio=
+ns as easily.</div><div><br></div><div>Thanks again for all help with this.=
+</div><div>- David</div><div><br></div> <blockquote id=3D"replyBlockquote" =
+webmail=3D"1" style=3D"border-left: 2px solid blue; margin-left: 8px; paddi=
+ng-left: 8px; font-size:10pt; color:black; font-family:verdana;"> <div id=
+=3D"wmQuoteWrapper"> -------- Original Message --------<br> Subject: Re: To=
+p Level Namespace "Ginger"<br> From: Neil Bowers &lt;<a target=3D"_blank" h=
+ref=3D"mailto:neil.bowers@cogendo.com">neil.bowers@cogendo.com</a>&gt;<br> =
+Date: Sun, November 29, 2015 1:34 am<br> To: <a target=3D"_blank" href=3D"m=
+ailto:livxtrm@codechild.com">livxtrm@codechild.com</a><br> Cc: <a target=3D=
+"_blank" href=3D"mailto:modules@perl.org">modules@perl.org</a><br> <br> Hi =
+David,<div class=3D""><br class=3D""><div><blockquote type=3D"cite" class=
+=3D""><div class=3D""><span style=3D"font-family: Verdana; font-size: 10pt;=
+" class=3D"">I have uploaded the changed module to my pause account, but it=
+ says I do not have permissions to the top level namespace. Could someone p=
+lease give permissions to my account so that I can make this change?</span>=
+</div><div class=3D""><div class=3D""><span style=3D"font-family: Verdana; =
+font-size: 10pt;" class=3D""><div class=3D""><br class=3D""></div><div clas=
+s=3D"">"<span class=3D"">This distribution name can only be used by users w=
+ith permission for the</span></div><div class=3D""><span class=3D"">package=
+ Ginger, which you do not have. No modules will be indexed.=E2=80=9D</span>=
+</div></span></div></div></blockquote><br class=3D""></div><div>The problem=
+ is that you uploaded a distribution called Ginger, but it doesn=E2=80=99t =
+contain a module called Ginger.</div><div><br class=3D""></div><div>PAUSE n=
+ow requires that all new distributions have a module of the equivalent name=
+ (so a distribution called Ginger-Snaps would have to include a module call=
+ed Ginger::Snaps). This is a security measure, to prevent someone else mess=
+ing with your namespace. You can read more about it in this blog post writt=
+en by David Golden:</div><div><br class=3D""></div></div><blockquote style=
+=3D"margin: 0 0 0 40px; border: none; padding: 0px;" class=3D""><div class=
+=3D""><div><a target=3D"_blank" href=3D"http://www.dagolden.com/index.php/2=
+414/this-distribution-name-can-only-be-used-by-users-with-permission/" clas=
+s=3D"">http://www.dagolden.com/index.php/2414/this-distribution-name-can-on=
+ly-be-used-by-users-with-permission/</a></div></div></blockquote><div class=
+=3D""><br class=3D""></div>Once you add a Ginger module, your next release =
+should be indexed by PAUSE.<div class=3D""><br class=3D""></div><div class=
+=3D"">Cheers,</div><div class=3D"">Neil</div><div class=3D""><br class=3D""=
+><div class=3D""><div><br class=3D""></div><br class=3D""></div></div> </di=
+v> </blockquote></span> =0A</div>=0A</blockquote></span></body></html>
