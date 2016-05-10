@@ -1,0 +1,439 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95101
+Return-Path: <ikesuke@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 4853 invoked from network); 8 May 2016 21:57:59 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 8 May 2016 21:57:59 -0000
+Received: (qmail 11938 invoked by uid 225); 8 May 2016 21:57:59 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11934 invoked by alias); 8 May 2016 21:57:59 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FROM,HTML_MESSAGE,RCVD_IN_DNSWL_LOW,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-oi0-f54.google.com (HELO mail-oi0-f54.google.com)
+ (209.85.218.54) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 08
+ May 2016 14:57:50 -0700
+Received: by mail-oi0-f54.google.com with SMTP id v145so191771209oie.0 for
+ <modules@perl.org>; Sun, 08 May 2016 14:57:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com;
+ s=20120113;
+ h=mime-version:sender:in-reply-to:references:date:message-id:subject
+ :from:to:cc; bh=voXKZJXbXYDCldKEuf0n6GVkZzaGYe+u+oJp0wv140A=;
+ b=uip6Ymco8L0Qe56iXC6WbOAaDU7cmQjH9d4yCyFXbwOjzBLR1iWm7wqHVteZKJ1aUk
+ ZojXU8Nxagm5GL4lKXyLhxcOASi2eyVjaj3P3QJVK9YJ4uWoDRq7PELbRMHsN0yNb6TA
+ p+JL5e+GrP3nOpL0d3NZSogUc7NooY4RW61Y11tY55lxgewiI5ks7aga6u5vNVn6K1jW
+ KrHFYYTgEbslbkGCxgYTNTthgcMUbTyBQWjhSlK+Hfv96w/GlIU9d/r/4xRtd9D0nMfh
+ IAzllxjhMt47lGgaDLPrtZ/nAJyn9QrLfNhgAThZoRJmdCLfE4sZ58MK8wdGsZmT9QTs 0fdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820;
+ h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+ :message-id:subject:from:to:cc;
+ bh=voXKZJXbXYDCldKEuf0n6GVkZzaGYe+u+oJp0wv140A=;
+ b=mY2ylbK9FgtIgHdoLiDUUtr4nLnFyI8S+uA+rfbAPGEiduk5tbdx3zLTiLhfzJSdEk
+ 9qSTeWS2cxQMgZwHGslKw0WamDZ5tMQO1a8YWvsyQu5Yhh/XsDj6wx0CBRyMaNBA86OA
+ Z9CkvZf7ONq6QWInJKQLNZG0pBIeq7qYHFCfGA/7ZxHjhs6bJtd4x2rZd8Qz0Z1TNfWl
+ 8htWWRd2T3ngLw5igSD1ZOAuqSdUV/PJswYaz30d8BDdVwlQwuImubQRFkquWXgmg8vI
+ Rr8homt2w4AbanxzoW7kuk4tbZ+fG1nBKqJY6FUFJE9hw2Hs2lxZsZYkSejJuWg4XyEz AIow==
+X-Gm-Message-State:
+ AOPr4FWiyWh0R/XSL4vnVidX1sUl5Z6+lHupAFEqY4+1cZGuZYUE/mOevNeVjhUdbKpcHY0mzpxOABeXRqvidQ==
+MIME-Version: 1.0
+X-Received: by 10.157.44.173 with SMTP id p42mr3461518otb.116.1462744666969;
+ Sun, 08 May 2016 14:57:46 -0700 (PDT)
+Sender: ikesuke@gmail.com
+Received: by 10.182.122.104 with HTTP; Sun, 8 May 2016 14:57:46 -0700 (PDT)
+Received: by 10.182.122.104 with HTTP; Sun, 8 May 2016 14:57:46 -0700 (PDT)
+In-Reply-To:
+ <CALJW-qFRXB8y5eJPOk9si7nVDcPdD0H1uopfiFC-y+V+Xw2HWg@mail.gmail.com>
+References:
+ <CALJW-qHdmFhjwbQhFh=3L-=2k-_OjnW3oHykQXbCy0remgpQKA@mail.gmail.com>
+ <CALJW-qEuX_vFQC9A5im12=M=S4Gqp1WaUng+z0jtZSsiy8BMjw@mail.gmail.com>
+ <CALJW-qFRXB8y5eJPOk9si7nVDcPdD0H1uopfiFC-y+V+Xw2HWg@mail.gmail.com>
+Date: Sun, 8 May 2016 17:57:46 -0400
+X-Google-Sender-Auth: jkpv0g5SqxniA0zqO9y5uI75uvk
+Message-ID:
+ <CALJW-qF-ND66xkSGXVQWggqHZqT-6-y+wtQvBDh=q5z8AZQH8Q@mail.gmail.com>
+Subject: Re: Failed: PAUSE indexer report
+ IKEGAMI/WWW-Kickstarter-v1.8.0.tar.gz
+To: modules@perl.org
+Cc: andreas.koenig.gmwojprw+pause@franz.ak.mind.de
+Content-Type: multipart/alternative; boundary=001a113cd906459f0805325bc888
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: ikegami@adaelis.com (Eric Brine)
+
+--001a113cd906459f0805325bc888
+Content-Type: text/plain; charset=UTF-8
+
+The spurious error doesn't seem to have had any effect. 1.8 and it's
+modules are currently properly indexed on search.cpan.org.  (If you got an
+email saying otherwise, ignore it. I caught the site in the middle of
+updating itself.)
+On May 8, 2016 3:46 PM, "Eric Brine" <ikegami@adaelis.com> wrote:
+
+
+Why is it claiming that the version numbers changed when the files neither
+changed nor have a version number?
+
+On Sun, May 8, 2016 at 3:38 PM, PAUSE <upload@pause.perl.org> wrote:
+
+> The following report has been written by the PAUSE namespace indexer.
+> Please contact modules@perl.org if there are any open questions.
+>
+>   User: IKEGAMI (ikegami)
+>   Distribution file: WWW-Kickstarter-v1.8.0.tar.gz
+>   Number of files: 32
+>   *.pm files: 16
+>   README: WWW-Kickstarter-v1.8.0/README.txt
+>   META-File: WWW-Kickstarter-v1.8.0/META.json
+>   META-Parser: Parse::CPAN::Meta 1.4414
+>   META-driven index: no
+>   Timestamp of file: Sun May  8 19:36:36 2016 UTC
+>   Time of this run: Sun May  8 19:38:17 2016 UTC
+>
+> Status of this distro: Decreasing version number
+> ================================================
+>
+> The following packages (grouped by status) have been found in the distro:
+>
+> Status: Decreasing version number
+> =================================
+>
+>      module : WWW::Kickstarter::Data
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Data.pm
+>      status : Not indexed because lib/WWW/Kickstarter/Data.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::Data::Categories
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Data/Categories.pm
+>      status : Not indexed because lib/WWW/Kickstarter/Data/Categories.pm
+>              in I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::Data::Category
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Data/Category.pm
+>      status : Not indexed because lib/WWW/Kickstarter/Data/Category.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::Data::Location
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Data/Location.pm
+>      status : Not indexed because lib/WWW/Kickstarter/Data/Location.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::Data::NotificationPref
+>      version: undef
+>      in file:
+> WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Data/NotificationPref.pm
+>      status : Not indexed because
+>              lib/WWW/Kickstarter/Data/NotificationPref.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::Data::Project
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Data/Project.pm
+>      status : Not indexed because lib/WWW/Kickstarter/Data/Project.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::Data::Reward
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Data/Reward.pm
+>      status : Not indexed because lib/WWW/Kickstarter/Data/Reward.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::Data::User
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Data/User.pm
+>      status : Not indexed because lib/WWW/Kickstarter/Data/User.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::Data::User::Myself
+>      version: undef
+>      in file:
+> WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Data/User/Myself.pm
+>      status : Not indexed because lib/WWW/Kickstarter/Data/User/Myself.pm
+>              in I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::Error
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Error.pm
+>      status : Not indexed because lib/WWW/Kickstarter/Error.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::HttpClient
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/HttpClient.pm
+>      status : Not indexed because lib/WWW/Kickstarter/HttpClient.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::HttpClient::Lwp
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/HttpClient/Lwp.pm
+>      status : Not indexed because lib/WWW/Kickstarter/HttpClient/Lwp.pm
+>              in I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::Iterator
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Iterator.pm
+>      status : Not indexed because lib/WWW/Kickstarter/Iterator.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::JsonParser
+>      version: undef
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/JsonParser.pm
+>      status : Not indexed because lib/WWW/Kickstarter/JsonParser.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+>      module : WWW::Kickstarter::JsonParser::JsonXs
+>      version: undef
+>      in file:
+> WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/JsonParser/JsonXs.pm
+>      status : Not indexed because
+>              lib/WWW/Kickstarter/JsonParser/JsonXs.pm in
+>              I/IK/IKEGAMI/WWW-Kickstarter-v1.6.0.tar.gz has a higher
+>              version number (0)
+>
+> Status: Successfully indexed
+> ============================
+>
+>      module : WWW::Kickstarter
+>      version: 1.008000
+>      in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter.pm
+>      status : indexed
+>
+> __END__
+>
+
+--001a113cd906459f0805325bc888
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<p dir=3D"ltr">The spurious error doesn&#39;t seem to have had any effect. =
+1.8 and it&#39;s modules are currently properly indexed on <a href=3D"http:=
+//search.cpan.org">search.cpan.org</a>.=C2=A0 (If you got an email saying o=
+therwise, ignore it. I caught the site in the middle of updating itself.)</=
+p>
+<div class=3D"gmail_quote">On May 8, 2016 3:46 PM, &quot;Eric Brine&quot; &=
+lt;<a href=3D"mailto:ikegami@adaelis.com">ikegami@adaelis.com</a>&gt; wrote=
+:<br type=3D"attribution"><blockquote class=3D"quote" style=3D"margin:0 0 0=
+ .8ex;border-left:1px #ccc solid;padding-left:1ex"><div dir=3D"ltr"><div><d=
+iv class=3D"gmail_extra"><br></div><div class=3D"gmail_extra">Why is it cla=
+iming that the version numbers changed when the files neither changed nor h=
+ave a version number?</div><div class=3D"elided-text"><div class=3D"gmail_e=
+xtra"><br><div class=3D"gmail_quote">On Sun, May 8, 2016 at 3:38 PM, PAUSE =
+<span dir=3D"ltr">&lt;<a href=3D"mailto:upload@pause.perl.org" target=3D"_b=
+lank">upload@pause.perl.org</a>&gt;</span> wrote:<br><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-=
+left-color:rgb(204,204,204);border-left-style:solid;padding-left:1ex">The f=
+ollowing report has been written by the PAUSE namespace indexer.<br>
+Please contact <a href=3D"mailto:modules@perl.org" target=3D"_blank">module=
+s@perl.org</a> if there are any open questions.<br>
+<br>
+=C2=A0 User: IKEGAMI (ikegami)<br>
+=C2=A0 Distribution file: WWW-Kickstarter-v1.8.0.tar.gz<br>
+=C2=A0 Number of files: 32<br>
+=C2=A0 *.pm files: 16<br>
+=C2=A0 README: WWW-Kickstarter-v1.8.0/README.txt<br>
+=C2=A0 META-File: WWW-Kickstarter-v1.8.0/META.json<br>
+=C2=A0 META-Parser: Parse::CPAN::Meta 1.4414<br>
+=C2=A0 META-driven index: no<br>
+=C2=A0 Timestamp of file: Sun May=C2=A0 8 19:36:36 2016 UTC<br>
+=C2=A0 Time of this run: Sun May=C2=A0 8 19:38:17 2016 UTC<br>
+<br>
+Status of this distro: Decreasing version number<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+The following packages (grouped by status) have been found in the distro:<b=
+r>
+<br>
+Status: Decreasing version number<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::Data<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Dat=
+a.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/Data.p=
+m in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::Data::Categories<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Dat=
+a/Categories.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/Data/C=
+ategories.pm<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0in I/IK/IKEGAMI/WWW-Kicksta=
+rter-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::Data::Category<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Dat=
+a/Category.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/Data/C=
+ategory.pm in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::Data::Location<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Dat=
+a/Location.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/Data/L=
+ocation.pm in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::Data::NotificationPref<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Dat=
+a/NotificationPref.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0lib/WWW/Kickstarter/Data/No=
+tificationPref.pm in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::Data::Project<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Dat=
+a/Project.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/Data/P=
+roject.pm in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::Data::Reward<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Dat=
+a/Reward.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/Data/R=
+eward.pm in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::Data::User<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Dat=
+a/User.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/Data/U=
+ser.pm in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::Data::User::Myself<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Dat=
+a/User/Myself.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/Data/U=
+ser/Myself.pm<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0in I/IK/IKEGAMI/WWW-Kicksta=
+rter-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::Error<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Err=
+or.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/Error.=
+pm in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::HttpClient<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Htt=
+pClient.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/HttpCl=
+ient.pm in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::HttpClient::Lwp<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Htt=
+pClient/Lwp.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/HttpCl=
+ient/Lwp.pm<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0in I/IK/IKEGAMI/WWW-Kicksta=
+rter-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::Iterator<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Ite=
+rator.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/Iterat=
+or.pm in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::JsonParser<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Jso=
+nParser.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because lib/WWW/Kickstarter/JsonPa=
+rser.pm in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter::JsonParser::JsonXs<br>
+=C2=A0 =C2=A0 =C2=A0version: undef<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter/Jso=
+nParser/JsonXs.pm<br>
+=C2=A0 =C2=A0 =C2=A0status : Not indexed because<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0lib/WWW/Kickstarter/JsonPar=
+ser/JsonXs.pm in<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0I/IK/IKEGAMI/WWW-Kickstarte=
+r-v1.6.0.tar.gz has a higher<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0version number (0)<br>
+<br>
+Status: Successfully indexed<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0module : WWW::Kickstarter<br>
+=C2=A0 =C2=A0 =C2=A0version: 1.008000<br>
+=C2=A0 =C2=A0 =C2=A0in file: WWW-Kickstarter-v1.8.0/lib/WWW/Kickstarter.pm<=
+br>
+=C2=A0 =C2=A0 =C2=A0status : indexed<br>
+<br>
+__END__<br>
+</blockquote></div><br></div></div></div></div>
+</blockquote></div>
+
+--001a113cd906459f0805325bc888--
