@@ -1,0 +1,235 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95156
+Return-Path: <info@maximka.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 9796 invoked from network); 17 May 2016 12:18:13 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 17 May 2016 12:18:13 -0000
+Received: (qmail 14286 invoked by uid 225); 17 May 2016 12:18:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14280 invoked by alias); 17 May 2016 12:18:10 -0000
+X-Spam-Status: No, hits=-2.0 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mo4-p00-ob.smtp.rzone.de (HELO mo4-p00-ob.smtp.rzone.de)
+ (81.169.146.221) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 17
+ May 2016 05:18:07 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1463487480; l=5349;
+ s=domk; d=maximka.de;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+ References:In-Reply-To:To:Reply-To:From:Date;
+ bh=pbmKHnkVqznfXkeMnFlnLO+CkT8p6AMgSWKkWC/3J74=;
+ b=egUeurSCtYJHR1spiWiNrD3MUCxf+fiBcK2sOYeUfTgXkpZ85CK90+NVLw9H9QCYd56
+ fAd9wQCUR2qP3TgrTxvXskrGXrHDnS10CeKSrmtyc9ojwaQsgVxkgHo9JaKcnxzJ+pdNq
+ k6k5P6zTpyRJQqunq+V7WNgAcLFlUl+FGMU=
+X-RZG-AUTH: :JWICemCleucEZGNurnXz/7xIHcObuBACZ6lGQhP5hdYp0dYekE3CAUAW
+X-RZG-CLASS-ID: mo00
+Received: from omgreatgod.store (com4.strato.de [81.169.145.237]) by
+ smtp-ox.front (RZmta 37.26 AUTH) with ESMTPSA id U062e6s4HCHxIW3 (using
+ TLSv1.2 with cipher ECDHE-RSA-AES128-SHA (curve X9_62_prime256v1 with 256
+ ECDH bits, eq. 3072 bits RSA)) (Client did not present a certificate); Tue,
+ 17 May 2016 14:17:59 +0200 (CEST)
+Date: Tue, 17 May 2016 14:17:59 +0200 (CEST)
+Reply-To: Alexei Pastuchov <info@maximka.de>
+To: brad@danga.com, dormando@rydia.net, modules@perl.org
+Message-ID:
+ <2099308896.236130.1463487479651.JavaMail.open-xchange@omgreatgod.store>
+In-Reply-To:
+ <2129637318.346168.1419003358597.JavaMail.open-xchange@omgreatgod.store>
+References: <53508AFA-4DD3-44CA-A37E-0504E0359B88@maximka.de>
+ <alpine.DEB.2.10.1412152320090.11536@dtop>
+ <1233083847.114314.1418733114756.JavaMail.open-xchange@omgreatgod.store>
+ <alpine.DEB.2.10.1412161038060.15870@dtop>
+ <2129637318.346168.1419003358597.JavaMail.open-xchange@omgreatgod.store>
+Subject: Fwd: Re: Gearman-1.12
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Priority: 3
+Importance: Medium
+X-Mailer: Open-Xchange Mailer v7.6.2-Rev54
+X-Originating-Client: open-xchange-appsuite
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: info@maximka.de (Alexei Pastuchov)
+
+Dear all,
+I'm going again to ask for co-mainter permissions on the Gearman module to =
+be
+able to close open issues. Because some of the issues are opened for seven
+years:
+https://rt.cpan.org/Public/Dist/Display.html?Name=3DGearman
+
+Some of the issues are closed in unauthorized release:
+https://rt.cpan.org/Public/Bug/Display.html?id=3D100594
+
+BR,
+Alexei
+
+> ---------- Original Message ----------
+> From: Alexei Pastuchov <info@maximka.de>
+> To: dormando <dormando@rydia.net>
+> Date: 19 December 2014 at 16:35
+> Subject: Re: Gearman-1.12
+>=20
+> Hi,
+>=20
+>  here is a short report about my work.
+>=20
+> - Bug 46373
+> use $worker->work( stop_if =3D> sub { return shift } ) instead of $worker=
+->work(
+> stop_if =3D> sub { return shift } )
+> see bug 89382
+>=20
+> - Bug 78710
+> it's an issue for a maintainer. I'm a volunteer yet.
+>=20
+> - 85191
+> lost connection, etc. will be managed in work sub by calling uncache_sock=
+ if
+> some thing gone wrong.
+> The behaviour of Worker.pm does not changed after patching.
+> - Bug 85192 fixed
+>=20
+> - Bug 88054
+> the is no timeout option in Client v1.12. command_timeout=3D30 on default=
+ is
+> used
+> in _option_request sub
+> I'm not sure you'll use command_timeout property in proposed way in
+> _get_js_sock.
+>=20
+> - Bug 89037
+> fixed
+>=20
+> - Bug 91973
+> use of environment variable GEARMAN_SERVERS will solve the issue
+>=20
+> - Bug 94403
+> it's not an issue in v1.12
+> $jssock check is applied in Taskset->add_task
+>=20
+> - Bug 100594
+> is fixed
+>=20
+> - I've added two new tickets: 101012, 101013
+>=20
+> - cpan tester report 586f5968-8489-11e4-adb9-802de0bfc7aa is - ugly - fix=
+ed
+> too
+>=20
+> All described issues are in
+> https://github.com/p-alik/perl-Gearman-Client/tree/upstream and on
+> https://metacpan.org/pod/release/PALIK/Gearman-1.12.001/lib/Gearman/Clien=
+t.pm
+> Your feedback is welcome.
+>=20
+> Please give me co-maintenance permissions If you are interested in my fur=
+ther
+> support.
+>=20
+> Regards,
+> Alexei
+>=20
+>=20
+> > dormando <dormando@rydia.net> hat am 16. Dezember 2014 um 19:39 geschri=
+eben:
+> >
+> >
+> > Hi,
+> >
+> > if you'd like to maintain it, hop on the public mailing list. Look over
+> > the RT buglist and any PR's in github and create tested integration tre=
+es
+> > for upstreaming. I'll review each tree and cut a release from it, and i=
+f
+> > you're able to cut things down well enough I'll give you commit and upl=
+oad
+> > bits.
+> >
+> > So far nobody else has stepped forward. We need someone who'll actively
+> > watch the community and deal with open requests.
+> >
+> > thanks!
+> >
+> > On Tue, 16 Dec 2014, Alexei Pastuchov wrote:
+> >
+> > > Thank you for quick response.
+> > > I've imported v1.12 in upstream
+> > > https://github.com/p-alik/perl-Gearman-Client/tree/upstream and start=
+ed
+> > >  failed tests bug
+> > > fixing
+> > > http://www.cpantesters.org/distro/G/Gearman.html?oncpan=3D1&distmat=
+=3D1&version=3D1.12
+> > > Then I would add SUBMIT_JOB_HIGH_BG-solution from the master branch i=
+n
+> > > v1.12
+> > > too.
+> > > If you have a new maintainer candidate, let him know about my work.
+> > > If no, let me maintain it because I'm using the package over a year i=
+n our
+> > > production environment and now have to start to bug fixing gearmand
+> > > self. https://bugs.launchpad.net/gearmand/+bug/1348865=20
+> > > =20
+> > > I never used Gearman::Server, but I would maintain it too if you mind=
+.
+> > > =20
+> > > Regards,
+> > > Alexei
+> > >
+> > > > dormando <dormando@rydia.net> hat am 16. Dezember 2014 um 08:21
+> > > > geschrieben:
+> > > >
+> > > >
+> > > > Hey,
+> > > >
+> > > > I'm looking for a new maintainer on the Gearman::Client and
+> > > > Gearman::Server modules. In the meantime I shipped what was already
+> > > > sitting in the repos but unreleased.
+> > > >
+> > > > Need someone trustworthy who has the time to carefully review patch=
+es
+> > > > and
+> > > > avoid regressions for any production users of this old, relatively
+> > > > stable
+> > > > codebase.
+> > > >
+> > > > Sorry for the neglect for so many years on it :/ I feel pretty bad =
+for
+> > > > not
+> > > > trying harder.
+> > > >
+> > > > On Mon, 15 Dec 2014, Alexei Pastuchov wrote:
+> > > >
+> > > > > Hi,
+> > > > > there is a new release of Gearman in CPAN appeared. It=E2=80=99s =
+look like you
+> > > > > are working on it.
+> > > > > A few weeks ago I=E2=80=99ve reported a SUBMIT_JOB_HIGH_BG-bug in=
+ v1.11
+> > > > > https://rt.cpan.org/Public/Bug/Display.html?id=3D100594
+> > > > > It is very important for me, because in my company the deployment
+> > > > > depends on in Debian contained packages. For Gearman it=E2=80=99s=
+ currently
+> > > libgearman-client-perl related to Gearman v.11.
+> > > > > To be able to create an SUBMIT_JOB_HIGH_BG job I=E2=80=99ve creat=
+ed a v1.11
+> > > > > Backport https://github.com/p-alik/perl-Gearman-Client
+> > > > > But if Debian takes v1.12 without SUBMIT_JOB_HIGH_BG-bug fix, I=
+=E2=80=99ve to
+> > > > > back port it again.
+> > > > > I=E2=80=99ll gently ask you if you intend to apply to the ticket =
+appended
+> > > > > patches?
+> > > > > If you need any help it would be my pleasure to support you.
+> > > > >
+> > > > > Best regards,
+> > > > > Alexei
+> > > > >
+> > >
+> > >
