@@ -1,0 +1,293 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95172
+Return-Path: <info@maximka.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 11507 invoked from network); 20 May 2016 09:29:46 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 20 May 2016 09:29:46 -0000
+Received: (qmail 22949 invoked by uid 225); 20 May 2016 09:29:47 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 22945 invoked by alias); 20 May 2016 09:29:47 -0000
+X-Spam-Status: No, hits=-2.0 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mo4-p00-ob.smtp.rzone.de (HELO mo4-p00-ob.smtp.rzone.de)
+ (81.169.146.217) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 20
+ May 2016 02:29:39 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1463736573; l=7227;
+ s=domk; d=maximka.de;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+ References:In-Reply-To:Cc:To:Reply-To:From:Date;
+ bh=c+DR3/cSzuL6zFkweIyKQKGPR4T9gd2fGK0JsiCi4T8=;
+ b=ahnfZxIeKAVMFl0VWMZ9d2v/wgbs155KHd2iBftsYVMzJDSzDDXAC6Ahdy4GswZP1kx
+ m+2jBL+TVYruBHzlLnyCpbDNDoHUuRgjw3Gcag7ZFhtGb+ouxd8DItOw9lH+SGm4C6hvw
+ XKDfly1jJvjrVukWx/ndktncZd+e1OHPHdg=
+X-RZG-AUTH: :JWICemCleucEZGNurnXz/7xIHcObuBACZ6lGQhP5hdYp0dYekE3CAUAW
+X-RZG-CLASS-ID: mo00
+Received: from patina.store (com4.strato.de [81.169.145.237]) by
+ smtp-ox.front (RZmta 37.27 AUTH) with ESMTPSA id d02eefs4K9TV8Ms (using
+ TLSv1.2 with cipher ECDHE-RSA-AES128-SHA (curve X9_62_prime256v1 with 256
+ ECDH bits, eq. 3072 bits RSA)) (Client did not present a certificate); Fri,
+ 20 May 2016 11:29:31 +0200 (CEST)
+Date: Fri, 20 May 2016 11:29:30 +0200 (CEST)
+Reply-To: Alexei Pastuchov <info@maximka.de>
+To: Ron Savage <ron@savage.net.au>
+Cc: Neil Bowers <neil@bowers.com>, palik@cpan.org, modules@perl.org
+Message-ID:
+ <1508570056.554446.1463736571012.JavaMail.open-xchange@patina.store>
+In-Reply-To: <573E47CE.3000407@savage.net.au>
+References: <573E47CE.3000407@savage.net.au>
+Subject: Re: Fwd: Failed: PAUSE indexer report PALIK/Gearman-1.12.006.tar.gz
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Priority: 3
+Importance: Medium
+X-Mailer: Open-Xchange Mailer v7.6.2-Rev54
+X-Originating-Client: open-xchange-appsuite
+X-Virus-Checked: Checked
+Approved: news@nntp.perl.org
+From: info@maximka.de (Alexei Pastuchov)
+
+Hi Ron,
+
+Gearman package originally created by BRADFITZ contained:
+
+lib/
+=E2=94=94=E2=94=80=E2=94=80 Gearman
+    =E2=94=9C=E2=94=80=E2=94=80 Client.pm
+    =E2=94=9C=E2=94=80=E2=94=80 JobStatus.pm
+    =E2=94=9C=E2=94=80=E2=94=80 Objects.pm
+    =E2=94=9C=E2=94=80=E2=94=80 ResponseParser
+    =E2=94=82=C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=94=80 Taskset.pm
+    =E2=94=9C=E2=94=80=E2=94=80 ResponseParser.pm
+    =E2=94=9C=E2=94=80=E2=94=80 Task.pm
+    =E2=94=9C=E2=94=80=E2=94=80 Taskset.pm
+    =E2=94=9C=E2=94=80=E2=94=80 Util.pm
+    =E2=94=94=E2=94=80=E2=94=80 Worker.pm
+
+Regarding to the comment in
+https://api.metacpan.org/source/DORMANDO/Gearman-1.12/lib/Gearman/Objects.p=
+m
+was Objects.pm not realy usefull at all. Therefore I replaced it by Base.pm=
+, a
+parent for Gearman::Client and Gearman::Worker. That's only change I actual=
+ly
+did on the hole Gearman package.
+
+I guess missing permissions are a part of my request about maintainership t=
+hree
+days ago. See the mail below.
+
+So to get rid of indexer faults I need permissions for all in Gearman packa=
+ge
+defined modules:
+Gearman::Base
+Gearman::Client
+Gearman::Job
+Gearman::JobStatus
+Gearman::ResponseParser
+Gearman::ResponseParser::Taskset
+Gearman::Task
+Gearman::Taskset
+Gearman::Util
+Gearman::Worker
+
+BR,
+Alexei
+
+> ---------- Original Message ----------
+> From: Alexei Pastuchov <info@maximka.de>
+> To: brad@danga.com, dormando@rydia.net, modules@perl.org
+> Date: 17 May 2016 at 14:17
+> Subject: Fwd: Re: Gearman-1.12
+>=20
+> Dear all,
+> I'm going again to ask for co-mainter permissions on the Gearman module t=
+o be
+> able to close open issues. Because some of the issues are opened for seve=
+n
+> years:
+> https://rt.cpan.org/Public/Dist/Display.html?Name=3DGearman
+>=20
+> Some of the issues are closed in unauthorized release:
+> https://rt.cpan.org/Public/Bug/Display.html?id=3D100594
+>=20
+> BR,
+> Alexei
+>=20
+> > ---------- Original Message ----------
+> > From: Alexei Pastuchov <info@maximka.de>
+> > To: dormando <dormando@rydia.net>
+> > Date: 19 December 2014 at 16:35
+> > Subject: Re: Gearman-1.12
+> >=20
+> > Hi,
+> >=20
+> >  here is a short report about my work.
+> >=20
+> > - Bug 46373
+> > use $worker->work( stop_if =3D> sub { return shift } ) instead of
+> > $worker->work(
+> > stop_if =3D> sub { return shift } )
+> > see bug 89382
+> >=20
+> > - Bug 78710
+> > it's an issue for a maintainer. I'm a volunteer yet.
+> >=20
+> > - 85191
+> > lost connection, etc. will be managed in work sub by calling uncache_so=
+ck if
+> > some thing gone wrong.
+> > The behaviour of Worker.pm does not changed after patching.
+> > - Bug 85192 fixed
+> >=20
+> > - Bug 88054
+> > the is no timeout option in Client v1.12. command_timeout=3D30 on defau=
+lt is
+> > used
+> > in _option_request sub
+> > I'm not sure you'll use command_timeout property in proposed way in
+> > _get_js_sock.
+> >=20
+> > - Bug 89037
+> > fixed
+> >=20
+> > - Bug 91973
+> > use of environment variable GEARMAN_SERVERS will solve the issue
+> >=20
+> > - Bug 94403
+> > it's not an issue in v1.12
+> > $jssock check is applied in Taskset->add_task
+> >=20
+> > - Bug 100594
+> > is fixed
+> >=20
+> > - I've added two new tickets: 101012, 101013
+> >=20
+> > - cpan tester report 586f5968-8489-11e4-adb9-802de0bfc7aa is - ugly - f=
+ixed
+> > too
+> >=20
+> > All described issues are in
+> > https://github.com/p-alik/perl-Gearman-Client/tree/upstream and on
+> > https://metacpan.org/pod/release/PALIK/Gearman-1.12.001/lib/Gearman/Cli=
+ent.pm
+> > Your feedback is welcome.
+> >=20
+> > Please give me co-maintenance permissions If you are interested in my
+> > further
+> > support.
+> >=20
+> > Regards,
+> > Alexei
+> >=20
+> >=20
+> > > dormando <dormando@rydia.net> hat am 16. Dezember 2014 um 19:39
+> > > geschrieben:
+> > >
+> > >
+> > > Hi,
+> > >
+> > > if you'd like to maintain it, hop on the public mailing list. Look ov=
+er
+> > > the RT buglist and any PR's in github and create tested integration t=
+rees
+> > > for upstreaming. I'll review each tree and cut a release from it, and=
+ if
+> > > you're able to cut things down well enough I'll give you commit and u=
+pload
+> > > bits.
+> > >
+> > > So far nobody else has stepped forward. We need someone who'll active=
+ly
+> > > watch the community and deal with open requests.
+> > >
+> > > thanks!
+> > >
+> > > On Tue, 16 Dec 2014, Alexei Pastuchov wrote:
+> > >
+> > > > Thank you for quick response.
+> > > > I've imported v1.12 in upstream
+> > > > https://github.com/p-alik/perl-Gearman-Client/tree/upstream and sta=
+rted
+> > > >  failed tests bug
+> > > > fixing
+> > > > http://www.cpantesters.org/distro/G/Gearman.html?oncpan=3D1&distmat=
+=3D1&version=3D1.12
+> > > > Then I would add SUBMIT_JOB_HIGH_BG-solution from the master branch=
+ in
+> > > > v1.12
+> > > > too.
+> > > > If you have a new maintainer candidate, let him know about my work.
+> > > > If no, let me maintain it because I'm using the package over a year=
+ in
+> > > > our
+> > > > production environment and now have to start to bug fixing gearmand
+> > > > self. https://bugs.launchpad.net/gearmand/+bug/1348865=20
+> > > > =20
+> > > > I never used Gearman::Server, but I would maintain it too if you mi=
+nd.
+> > > > =20
+> > > > Regards,
+> > > > Alexei
+> > > >
+> > > > > dormando <dormando@rydia.net> hat am 16. Dezember 2014 um 08:21
+> > > > > geschrieben:
+> > > > >
+> > > > >
+> > > > > Hey,
+> > > > >
+> > > > > I'm looking for a new maintainer on the Gearman::Client and
+> > > > > Gearman::Server modules. In the meantime I shipped what was alrea=
+dy
+> > > > > sitting in the repos but unreleased.
+> > > > >
+> > > > > Need someone trustworthy who has the time to carefully review pat=
+ches
+> > > > > and
+> > > > > avoid regressions for any production users of this old, relativel=
+y
+> > > > > stable
+> > > > > codebase.
+> > > > >
+> > > > > Sorry for the neglect for so many years on it :/ I feel pretty ba=
+d for
+> > > > > not
+> > > > > trying harder.
+> > > > >
+> > > > > On Mon, 15 Dec 2014, Alexei Pastuchov wrote:
+> > > > >
+> > > > > > Hi,
+> > > > > > there is a new release of Gearman in CPAN appeared. It=E2=80=99=
+s look like
+> > > > > > you
+> > > > > > are working on it.
+> > > > > > A few weeks ago I=E2=80=99ve reported a SUBMIT_JOB_HIGH_BG-bug =
+in v1.11
+> > > > > > https://rt.cpan.org/Public/Bug/Display.html?id=3D100594
+> > > > > > It is very important for me, because in my company the deployme=
+nt
+> > > > > > depends on in Debian contained packages. For Gearman it=E2=80=
+=99s currently
+> > > > libgearman-client-perl related to Gearman v.11.
+> > > > > > To be able to create an SUBMIT_JOB_HIGH_BG job I=E2=80=99ve cre=
+ated a v1.11
+> > > > > > Backport https://github.com/p-alik/perl-Gearman-Client
+> > > > > > But if Debian takes v1.12 without SUBMIT_JOB_HIGH_BG-bug fix, I=
+=E2=80=99ve
+> > > > > > to
+> > > > > > back port it again.
+> > > > > > I=E2=80=99ll gently ask you if you intend to apply to the ticke=
+t appended
+> > > > > > patches?
+> > > > > > If you need any help it would be my pleasure to support you.
+> > > > > >
+> > > > > > Best regards,
+> > > > > > Alexei
+> > > > > >
+> > > >
+> > > >

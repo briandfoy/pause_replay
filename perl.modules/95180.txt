@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95180
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13588 invoked from network); 20 May 2016 23:07:47 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 20 May 2016 23:07:47 -0000
+Received: (qmail 3682 invoked by uid 225); 20 May 2016 23:07:47 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 3678 invoked by alias); 20 May 2016 23:07:47 -0000
+X-Spam-Status: No, hits=-1.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,FSL_HELO_HOME,MIME_QP_LONG_LINE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f42.google.com (HELO mail-wm0-f42.google.com)
+ (74.125.82.42) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 20 May
+ 2016 16:07:42 -0700
+Received: by mail-wm0-f42.google.com with SMTP id n129so2857438wmn.1 for
+ <modules@perl.org>; Fri, 20 May 2016 16:07:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=jVWs2wvRd9W0GhY7VjmYxK+eIPjvvoiK7BMU15y+ko8=;
+ b=FGft5+ry62JymN9wAhrfioqVnZILXShBi7pK1fUrNOVekKcTX5qDUVqtmW0S6K6Bv5
+ z7h+ZV7dcz2BBJ8zr7Ndwqn2kgbpziICAZns8f7QMmqMTxM9E7HVrvMu39hV1xDjdmoT
+ M856NNQRPedRDFX9QUQ8XpohjsWbJ1tlUUF/yoLg4HDDgGfIXPLcmXwY2FsmvOqdKlSa
+ piKbG/RKtrNTjLE89C2/4e1zhJ3NWeWAiNMT/sbSqNUOgqR3DERw5m6CK1/D53X5mfoX
+ iaEtZZ7FQvncVyL2pDmhtuqApSXz9OlS9HW0dt66kL1UB2QWweZR2Pf7nRBmP4uMhcJ7 gcsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=jVWs2wvRd9W0GhY7VjmYxK+eIPjvvoiK7BMU15y+ko8=;
+ b=fZKGAYgvhLDGTL9Efq+mqBd2WjWhmXT9NU3F4RwUymAXAvlt7M5LELWD3FhaRs+Ump
+ KQ++2Zd2EbVMwyt7X2TwLgUQzPQDwhkQWWfl4JPGsSbRAICelpXoRYvuLtEaEvREfvL7
+ zI8SqcRHbxlYrZLotA6d9eQQnDAPwiIMBfgCKt3ckLdl4Q8vKmMHwcJYt1HZ9huhgYq0
+ knt3jILdeh4mbL8sJjOLSMwxh70A4se9XF8FGCuwGsmeseamCjsoWlI3HBQop6BHpmZV
+ pIkw7f7XpkYjt+iPhhgFXf7Lc8g7gjdADPNizSCyKhi/wVtZmHc255kb/S6ouN1NMvNJ gbXQ==
+X-Gm-Message-State:
+ AOPr4FVuoDF9yJirp/EsfcvjzXsEa4wD9jzZkiM2jIIl83CUl+w973ShZh0G4gigUnuHqQ==
+X-Received: by 10.28.6.17 with SMTP id 17mr6185266wmg.26.1463785651542; Fri,
+ 20 May 2016 16:07:31 -0700 (PDT)
+Received: from tucumcari.home
+ (host165-120-23-236.range165-120.btcentralplus.com. [165.120.23.236]) by
+ smtp.gmail.com with ESMTPSA id n66sm379651wmn.7.2016.05.20.16.07.29
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Fri, 20 May 2016
+ 16:07:29 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: The "stem" package on CPAN
+Date: Sat, 21 May 2016 00:07:29 +0100
+Message-ID: <F3A2BE72-3744-4417-B514-61CE37DC974F@bowers.com>
+Cc: PAUSE <modules@perl.org>
+To: sidd@cs.utah.edu, duluthted@gmail.com, jmichelizzi@gmail.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Siddharth, Ted, and Jason,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+SID has ownership of =E2=80=9Cstem=E2=80=9D, but there is no =E2=80=9Cstem=
+=E2=80=9D module on CPAN (I haven=E2=80=99t checked to see whether there =
+has been in the past). JASONM and TPEDERSE have co-maint on =E2=80=9Cstem=E2=
+=80=9D.
+
+This conflicts with the =E2=80=9CStem=E2=80=9D module, which is owned by =
+user URI, and *is* on CPAN, in the release U/UR/URI/Stem-0.11.tar.gz
+Maybe the =E2=80=9Cstem=E2=80=9D module was renamed to be =E2=80=9CStem=E2=
+=80=9D, or perhaps they=E2=80=99re entirely distinct.
+
+To resolve this conflict I=E2=80=99d like to drop your permissions on =
+the =E2=80=9Cstem=E2=80=9D namespace. It doesn=E2=80=99t look like it =
+would cause any problems, but I wanted to check if you=E2=80=99re all ok =
+for me to drop these permissions?
+
+Cheers,
+Neil=
