@@ -1,0 +1,84 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95198
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 462 invoked from network); 22 May 2016 08:40:04 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 22 May 2016 08:40:04 -0000
+Received: (qmail 14668 invoked by uid 225); 22 May 2016 08:40:03 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14664 invoked by alias); 22 May 2016 08:40:02 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,MIME_QP_LONG_LINE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f53.google.com (HELO mail-wm0-f53.google.com)
+ (74.125.82.53) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 22 May
+ 2016 01:40:00 -0700
+Received: by mail-wm0-f53.google.com with SMTP id i142so36049653wmf.0 for
+ <modules@perl.org>; Sun, 22 May 2016 01:40:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=Zl3Splf0CFkZw5NSZ8Cv2s0bZtqZ1hA18FivnzDb8os=;
+ b=IKPMFTAE7lRlxu49EXZfvh81X2/tDDkCZd+LNRz1S50TusjazsvESpK53uEm54LSz2
+ JAXl6s79M1wlUqz1n4tSF1+dxLEXUy1xjABY35CU+YFdBdJPZLigO2asqE3jc8srEBNm
+ CMVT+5pQMERg1TrRbfWZYd1yi3M2g+mU1tjEe/nDGGTc2sOI/ND5i1ozJGUAyTriNIre
+ Mkmw1RHy0ItKRX09ZMWI7gQPUh7YTNtKGHSb+uASYNoWH/Vx9phqIb4wVGaqms7hyfIE
+ zfc9SU9PZwPh74lROUtnbvXuZfHmifuThoMC4pbDnu7FCEfuKbvWygTIb1BUEKMvMS3h 5T6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=Zl3Splf0CFkZw5NSZ8Cv2s0bZtqZ1hA18FivnzDb8os=;
+ b=k3QJe45Q0PQgSk8VP1cFrNuA2K0JCCcvXtDGBL/E/e4vsbIKADUmfnb4nJlZFCgC70
+ 8a4nEYY/lvWQs0ZzucQMYQQtVDzfVYFGON/o3GxyyAhhTSKB7GNr3w7I03IHKkQfrcso
+ uqHlvIdNJQZMwZ71Fxa/Nzecj6TArCi4hqZmKProHrPuZoODottZN4iFvj2BKpbWhBOQ
+ akgv6kdPAfTrZpAHE5zBt8huHYPixSIGLWXTijqO6Gmi1bCsxzDOVYCh4sk24X36/Ww+
+ sEVJJCYhuYxYPtepU+rVf/ISezId8JqsdYZy3AIm/e3sB8dTk0Jb50NaGOra18A6PKkP dSig==
+X-Gm-Message-State:
+ AOPr4FWGvN1OmlL0h97qq4aNTW1tiB6QYzpTTky9mwOt45I+rUupDzBCyRMlCZxlEjwouQ==
+X-Received: by 10.194.171.194 with SMTP id
+ aw2mr12590015wjc.113.1463906396638; Sun, 22 May 2016 01:39:56 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id f8sm28816849wjm.13.2016.05.22.01.39.55
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Sun, 22 May 2016
+ 01:39:55 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: The "autoload" namespace on PAUSE/CPAN
+Date: Sun, 22 May 2016 09:39:54 +0100
+Message-ID: <1B735652-9EC1-4F7D-90C5-AE89C0B77E1E@cogendo.com>
+Cc: PAUSE <modules@perl.org>
+To: lincoln.stein@gmail.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Lincoln,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of the =E2=80=9Cautoload=E2=80=9D namespace, but =
+there isn=E2=80=99t an autoload module on CPAN, and from what I can see =
+(looking at BackPAN), there never has been.
+
+User BBB has ownership of the AutoLoad namespace, and has an AutoLoad =
+module indexed on CPAN.
+
+These were previously considered distinct namespaces, but now they=E2=80=99=
+re not, resulting in a permissions conflict. To resolve this conflict =
+I=E2=80=99d like to drop all of your permissions on the =E2=80=9Cautoload=E2=
+=80=9D namespace. It looks like this shouldn=E2=80=99t cause any =
+problems, but I wanted to check with you first: ok for me to do this =
+please?
+
+Cheers,
+Neil
+
