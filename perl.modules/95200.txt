@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95200
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22878 invoked from network); 22 May 2016 10:13:17 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 22 May 2016 10:13:17 -0000
+Received: (qmail 18495 invoked by uid 225); 22 May 2016 10:13:17 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18491 invoked by alias); 22 May 2016 10:13:17 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f42.google.com (HELO mail-wm0-f42.google.com)
+ (74.125.82.42) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 22 May
+ 2016 03:13:10 -0700
+Received: by mail-wm0-f42.google.com with SMTP id i142so5350143wmf.0 for
+ <modules@perl.org>; Sun, 22 May 2016 03:13:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=l+Ekv+O2A3sSnEDjgw2ALM8ShSGd9NvGYcKYcVIcq4o=;
+ b=TnubEFMywimXba2lIQ6krJMLrPlpDR2UNNjAXcaTJOsGdTlPO7D93QTVpfhnHLQFEE
+ uUKDvTm8wlJcmowEaC8ETM0mcCM2R0m66O4pRHiWm5R9kxr0xa8yalBpo4vSjtMyqywU
+ eNG44uzAWMyJZhClTY/fpWk/b6rfAu8DZoC2Nx/hbEMbYgZRFKLdPoBP+TQkBZ+Iy6ot
+ y95n/UzPCLZhC28BzID962DUP2iJN2Oc5hOa782Yt/SyJV3Zal2Ga0GQ/OgiqT3zM0Kt
+ tyPLNYcYnd79nCmZWbVXJHaZJ6gzSvxuKJ8EOnjtKLgIa74io9BhrwCd8KRiny7v7ne7 WOQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=l+Ekv+O2A3sSnEDjgw2ALM8ShSGd9NvGYcKYcVIcq4o=;
+ b=JCl8UJC6atU1QVpB4eEGrAbJwQ4ZgbuhEs4KXHu52hzxg0pon3x+s5zBHgVyL5bnxt
+ lhOiFy1H1QHZjFfHDYGaAmsk+KSiGHeLlsOvIGNuzMp58QiBriWLvDRZQNRB0mK7tRHE
+ aRMNIH33Xhtskvp5zeAVFWFKNZYLYYppe89F6rkgbPdlkTfp1+4j3I6su93q8XvRw3aO
+ o8fu9NIISyE4n8mSA8kNDD59yjOrGCnv83nUQT6sixg0OTPELH9Mu7Q4Vh1nDBCuzAfN
+ Lq4Wg/cSCeoXHSbNizJNf0TznUefX1TiuQL46yRPhVLaAd4Vg38Zbums+jvG50OzXXig vpkg==
+X-Gm-Message-State:
+ AOPr4FUIoELrusvBPWjP1C9e3yj/oNtW3wNeQGB8fpnHA+Mfjl+m1vDDfY6AhlHdNnSOiQ==
+X-Received: by 10.28.54.33 with SMTP id d33mr12462428wma.62.1463911985648;
+ Sun, 22 May 2016 03:13:05 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id gk6sm29099707wjc.31.2016.05.22.03.13.04
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Sun, 22 May 2016
+ 03:13:04 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Ownership of the "profiler" namespace [PFEIFFER: profiler]
+Date: Sun, 22 May 2016 11:13:03 +0100
+Message-ID: <13D5997F-1233-44C7-869D-A7D05CAAF490@cogendo.com>
+Cc: PAUSE <modules@perl.org>
+To: occitan@esperanto.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Daniel,
+
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of the =E2=80=9Cprofiler=E2=80=9D namespace, but you =
+don=E2=80=99t have a =E2=80=9Cprofiler=E2=80=9D module on CPAN.
+This now conflicts with the =E2=80=9CProfiler=E2=80=9D package, owned by =
+NIGE, and currently on CPAN in the N/NI/NIGE/Goo-0.09.tar.gz release.
+
+To resolve this conflict I=E2=80=99d like to drop your ownership of the =
+=E2=80=9Cprofiler=E2=80=9D package. I don=E2=80=99t think this will =
+cause any problems, but wanted to check you=E2=80=99re happy for me to =
+do this?
+
+Cheers,
+Neil
+
