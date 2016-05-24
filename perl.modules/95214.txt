@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95214
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11399 invoked from network); 23 May 2016 23:25:15 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 23 May 2016 23:25:15 -0000
+Received: (qmail 26315 invoked by uid 225); 23 May 2016 23:25:15 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26308 invoked by alias); 23 May 2016 23:25:14 -0000
+X-Spam-Status: No, hits=-1.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,FSL_HELO_HOME,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f54.google.com (HELO mail-wm0-f54.google.com)
+ (74.125.82.54) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 23 May
+ 2016 16:25:08 -0700
+Received: by mail-wm0-f54.google.com with SMTP id n129so102493196wmn.1 for
+ <modules@perl.org>; Mon, 23 May 2016 16:25:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=XT0DYdz+BE+mPEIY8CO+pYq7nPlSEe7JEASKFG2uNeA=;
+ b=gAKq92FjPrOUaHDwHnR8RMdaBM2+jywaB+UwhqRcJMgUDLndWf9F5a2fucJoDNKmQZ
+ CyxEOkqjbAQsSvulWGKnX3GZQolBSvdV8JrrtXla9fE3Izu5NTviMAGEiO4oD/Z4YA6I
+ v4YbjtaHSaZH1DQa1MqqbwFM/OUCaAii7IjUdc4YIi8NYOve4xiPByyfUUHQzdU8AVw6
+ wXay0gvH9eBtEgLultgtkVCFQAJdHazKRjvTs8hFfi5BwhWK+xN3CtVPLypxE9b84UYE
+ tEmgxSTquB8wGdIatjB2id8TqtqqLzVBc1tMzwAm9S+kxb2qMTzsgO08FmdB0++M3AJb 7xhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=XT0DYdz+BE+mPEIY8CO+pYq7nPlSEe7JEASKFG2uNeA=;
+ b=M5zdz806L3EDdkGhQNgmj8d7nHRY4NKrzR6Ww5wP//O2Bi6fqkUlDlOomud6PWyKD+
+ Zw7J3F7NpWFINobRzG0y2CYHytTIi6acbHZWAxcv5IPN9t3SJFZ0n25vCkatbRNm9llz
+ 6GOxwaGLV4ZoVRinRDbltwhlbpkkePnngdDzudbmiADj8RcCV4ky3q+v3TcBFCNQTsaU
+ 2tgodefq04HoqDjFjzSE3X5m9djuOqdLz/uQWHdEddvrdaNWGuZm6abVetFmfHXjr5k+
+ etNjvTGkPdNPbcGktdoLGNmRb7tMMoak/KT1ksnQ/kZI4MhfI6j5rSnne5r/UeouWDLI a+7w==
+X-Gm-Message-State:
+ AOPr4FXnLa3dTFIQbudwBVI6tqnLlJB+sxDSZdCQPlcUffhVMlPA5VXeeycLdYB1q/46hA==
+X-Received: by 10.28.87.6 with SMTP id l6mr20887348wmb.48.1464045904312; Mon,
+ 23 May 2016 16:25:04 -0700 (PDT)
+Received: from tucumcari.home
+ (host165-120-23-236.range165-120.btcentralplus.com. [165.120.23.236]) by
+ smtp.gmail.com with ESMTPSA id a63sm491717wmh.11.2016.05.23.16.25.02
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Mon, 23 May 2016
+ 16:25:02 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: The Input namespace on CPAN
+Date: Tue, 24 May 2016 00:25:02 +0100
+Message-ID: <23A1F2BF-635E-4AB5-B1AD-8ECF1E4F3BFE@bowers.com>
+Cc: PAUSE <modules@perl.org>
+To: Brian.Kelly@FullAuto.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Brian,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of the =E2=80=9CInput=E2=80=9D namespace, but you =
+don=E2=80=99t have a =E2=80=9CInput=E2=80=9D module on CPAN =E2=80=94 =
+you renamed it from Input to Term::RawInput in January 2011. But your =
+ownership of the =E2=80=9CInput=E2=80=9D namespace conflicts with the =
+=E2=80=9Cinput=E2=80=9D package, owned by JPRIT, and currently on CPAN =
+in the J/JP/JPRIT/ObjStore-1.59.tar.gz release.
+
+To resolve this conflict I=E2=80=99d like to drop your ownership of the =
+=E2=80=9CInput=E2=80=9D package. I don=E2=80=99t think this will cause =
+any problems, but wanted to check you=E2=80=99re happy for me to do =
+this?
+
+Cheers,
+Neil
+

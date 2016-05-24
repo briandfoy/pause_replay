@@ -1,0 +1,131 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95208
+Return-Path: <slaven@rezic.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 1048 invoked from network); 22 May 2016 08:42:02 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 22 May 2016 08:42:02 -0000
+Received: (qmail 14753 invoked by uid 225); 22 May 2016 08:41:59 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14744 invoked by alias); 22 May 2016 08:41:57 -0000
+X-Spam-Status: No, hits=0.1 required=8.0 tests=BAYES_00,HELO_DYNAMIC_IPADDR
+X-Spam-Check-By: la.mx.develooper.com
+Received: from bbbike.de (HELO lvps176-28-19-132.dedicated.hosteurope.de)
+ (176.28.19.132) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 22
+ May 2016 01:41:54 -0700
+Received: from localhost ([::1] helo=localhost.localdomain) by
+ lvps176-28-19-132.dedicated.hosteurope.de with esmtp (Exim 4.72)
+ (envelope-from <slaven@rezic.de>) id 1b4OxH-0002Dy-TX; Sun, 22 May 2016
+ 10:41:48 +0200
+Received: from cvrsnica.herceg.de (localhost [127.0.0.1]) by
+ cvrsnica.herceg.de (8.14.7/8.14.7) with ESMTP id u4M8fEeP007963; Sun, 22 May
+ 2016 10:41:14 +0200 (CEST) (envelope-from eserte@cvrsnica.herceg.de)
+Received: (from eserte@localhost) by cvrsnica.herceg.de
+ (8.14.7/8.14.7/Submit) id u4M8fEpe007962; Sun, 22 May 2016 10:41:14 +0200
+ (CEST) (envelope-from eserte)
+To: Neil Bowers <neil.bowers@cogendo.com>
+Cc: ptk@mailman.stanford.edu, PAUSE <modules@perl.org>, sharifulin@gmail.com
+Subject: Re: Anyone here?
+References: <136031F5-D89A-4500-ADF0-793598275AFE@cogendo.com>
+ <87a8jja6s5.fsf@cvrsnica.herceg.de>
+ <AC0F534B-AE06-4340-A95A-D76279F5CA7D@cogendo.com>
+Reply-to: slaven@rezic.de
+X-Mailer: GNU Emacs/sendmail [version 24.4.1]
+Date: Sun, 22 May 2016 10:41:14 +0200
+In-Reply-To: <AC0F534B-AE06-4340-A95A-D76279F5CA7D@cogendo.com> (Neil
+ Bowers's message of "Sun, 22 May 2016 09:28:51 +0100")
+Message-ID: <87k2imcwnp.fsf@cvrsnica.herceg.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.4 (berkeley-unix)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: ::1
+X-SA-Exim-Mail-From: slaven@rezic.de
+X-SA-Exim-Scanned: No (on lvps176-28-19-132.dedicated.hosteurope.de);
+ SAEximRunCond expanded to false
+Approved: news@nntp.perl.org
+From: slaven@rezic.de (Slaven Rezic)
+
+Neil Bowers <neil.bowers@cogendo.com> writes:
+
+> Hi Slaven, & TKML (the Perl/Tk mailing list),
+>
+> I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names case i=
+nsensitively. This has left us with some situations where people are owners=
+ of namespaces previously considered distinct, and now considered the same.
+>
+> Context for modules@perl.org: TKML is a pause id associated with the Perl=
+/Tk mailing list. I=E2=80=99ve joined the list to try and track down who co=
+ntrols the pause ID, since I want to resolve some permissions issues that i=
+nvolve TKML.
+>
+>
+>> On 21 May 2016, at 14:18, Slaven Rezic <slaven@rezic.de> wrote:
+>> I am here, but I cannot tell you anything about this pause id.
+>
+> Very handy that you replied Slaven, since one of the cases involves you a=
+nd TKML :-)
+>
+> 	TKML has ownership of the =E2=80=9CPlot=E2=80=9D namespace.
+> 	You and NI-S have co-maint on this namespace.
+> 	There is no =E2=80=9CPlot=E2=80=9D module on CPAN, and from checking Bac=
+kPAN, there never has been.
+> 	Your =E2=80=9CPlot=E2=80=9D permissions conflict with =E2=80=9Cplot=E2=
+=80=9D, which is owned by CJONES.
+> 	CJONES has an indexed release on CPAN for =E2=80=9Cplot=E2=80=9D: C/CJ/C=
+JONES/Microarray-0.45c.zip
+>
+> I=E2=80=99d like to drop all the permissions on =E2=80=9CPlot=E2=80=9D, t=
+o remove this
+> conflict. Are you happy with that?
+
+Yes, you can drop the permissions. Since this commit Plot.pm was
+explicitly hidden from PAUSE indexer:
+https://github.com/eserte/perl-tk/commit/329c53d4fce2f3eb491372fbe6eb10a508=
+c9a6ff
+Feel free to drop permissions also for the other three modules mentioned
+in this commit.
+
+>
+> The other case is the =E2=80=9CBundle::Tk=E2=80=9D namespace, which TKML =
+owns. Again, there isn=E2=80=99t a Bundle::Tk module on CPAN at this time.
+> SHARIFULN (also copied on this email) owns the Bundle::TK namespace, and =
+also doesn=E2=80=99t have a Bundle::TK module on CPAN.
+> To resolve this I=E2=80=99d like to drop one or both of Bundle::Tk and Bu=
+ndle::TK =E2=80=94 everyone ok with that?
+
+OK.
+
+Regards,
+    Slaven
+
+>
+> Cheers,
+> Neil
+>
+>
+>> Neil Bowers <neil.bowers@cogendo.com> writes:
+>>=20
+>>> I=E2=80=99m trying to track down anyone who knows about the TKML pause =
+ID, which is apparently linked to this mailing list.
+>>>=20
+>>> Anyone?
+>>>=20
+>>> Neil
+>>> --++**=3D=3D--++**=3D=3D--++**=3D=3D--++**=3D=3D--++**=3D=3D--++**=3D=
+=3D--++**=3D=3D
+>>> ptk mailing list
+>>> ptk@lists.stanford.edu
+>>> https://mailman.stanford.edu/mailman/listinfo/ptk
+>>>=20
+>
+>
+
+--=20
+Slaven Rezic - slaven <at> rezic <dot> de
+
+    Berlin Perl Mongers - http://berlin.pm.org

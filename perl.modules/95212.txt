@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95212
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6184 invoked from network); 23 May 2016 23:08:02 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 23 May 2016 23:08:02 -0000
+Received: (qmail 25279 invoked by uid 225); 23 May 2016 23:08:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25275 invoked by alias); 23 May 2016 23:08:02 -0000
+X-Spam-Status: No, hits=-1.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,FSL_HELO_HOME,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f51.google.com (HELO mail-wm0-f51.google.com)
+ (74.125.82.51) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 23 May
+ 2016 16:07:56 -0700
+Received: by mail-wm0-f51.google.com with SMTP id z87so2986259wmh.0 for
+ <modules@perl.org>; Mon, 23 May 2016 16:07:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=/lAxbPwJmsul5DTRu82YbIBj88kEB9NhJVcCygtW4OQ=;
+ b=q3VLHJ6uwQQz7HvQL39HLy6cu5bgUXbf/9Z7ABwloY+NHfhi3X2kcGwa7nswy7FKPj
+ LMDM5slAzT18aTr3aLSOB9kw4VX8tZHuouEE4LYmgVL24zEbht3n985KgeE96/aX4LoJ
+ +QII0+twHIALGvUdp+nysiKJwxDkVN0FrEtlLzZ1BuOkAzfkkxkOEtdsdaqYYt/vt9tj
+ T8+yWiIFbthT8yaybquNFKOx76Fs5+wQRC3aD6TRC6byMU8THh7A6f5fUP1Pa8j25nwl
+ rWJTZwEAUMijAkIG7c6L/gkkgDYeySxPxpl7qtSgw/WqztJgMAkYSEfeynD7MMNDWfjV j0tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=/lAxbPwJmsul5DTRu82YbIBj88kEB9NhJVcCygtW4OQ=;
+ b=fXXTBr4QqzycFxv6uOaRZ+3r2iUBpVMWoD70xMUkS2hP9vEFf70j4q6hTVi0XZOkl0
+ FOr0r25oS2Jef5JHcGLPMNTmRtMRrEPfI6vvoL/3NMvJKMKKF3NtQZ6kcTAUTLGk6fI6
+ z2fYh08mvZlng7vgwOQhChL2/i8FYuED5PMoPjKuVossz1tFtAe4Q3SbsKJU990XohNV
+ DpsQFg3LBm3ZeVcu7s2j48tVeg1cpe5zJWIcDORg+HHxoD6WK7e0iWDIC5fv1Q8DWdwo
+ obT2PHVyNuim20GX6G4rpwvPaytXJ7FTh/Ln7tJzZZwfiXsUIv7lxG2FkP8t7Gm2Pv0B rzcA==
+X-Gm-Message-State:
+ ALyK8tL+HtPt6Yvex6ZANg8jdm2Dn7QzlMesSTWNmSnqXm1pwQvd/EjRYni0C76tvQQKLA==
+X-Received: by 10.194.234.71 with SMTP id uc7mr1245362wjc.80.1464044870347;
+ Mon, 23 May 2016 16:07:50 -0700 (PDT)
+Received: from tucumcari.home
+ (host165-120-23-236.range165-120.btcentralplus.com. [165.120.23.236]) by
+ smtp.gmail.com with ESMTPSA id t3sm15915355wmf.20.2016.05.23.16.07.49
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Mon, 23 May 2016
+ 16:07:49 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: The Env::path namespace on CPAN
+Date: Tue, 24 May 2016 00:07:48 +0100
+Message-ID: <F8CC8B0D-E735-4AE1-9C64-390DF94B65E6@bowers.com>
+Cc: PAUSE <modules@perl.org>
+To: sven@zen.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Sven,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of the Env::path namespace, but you don=E2=80=99t =
+have an Env::path module on CPAN.
+This now conflicts with the Env::Path package, owned by DSB, and =
+currently on CPAN in the D/DS/DSB/Env-Path-0.19.tar.gz release.
+
+To resolve this conflict I=E2=80=99d like to drop your ownership of the =
+Env::Path package. I don=E2=80=99t think this will cause any problems, =
+but wanted to check you=E2=80=99re happy for me to do this?
+
+Cheers,
+Neil
+
