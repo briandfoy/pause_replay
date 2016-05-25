@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95223
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26974 invoked from network); 24 May 2016 22:09:11 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 24 May 2016 22:09:11 -0000
+Received: (qmail 15163 invoked by uid 225); 24 May 2016 22:09:11 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15159 invoked by alias); 24 May 2016 22:09:11 -0000
+X-Spam-Status: No, hits=-1.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,FSL_HELO_HOME,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f67.google.com (HELO mail-wm0-f67.google.com)
+ (74.125.82.67) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 24 May
+ 2016 15:09:07 -0700
+Received: by mail-wm0-f67.google.com with SMTP id 67so10090873wmg.0 for
+ <modules@perl.org>; Tue, 24 May 2016 15:09:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=N5BobhGcDybac3n80g4K5doHKby9S/J6L8WygQmA3VU=;
+ b=iBjTsC95M4GqFsmoXiH3dQ/L83TA8VRO/RApou5Vdhn1BAreqPNwNXKHjwFvKfNbaO
+ BUOlkEmqpgSiuuTr9ideiUkzlPU2VeBcvmeQ+jIUNXJ4CSaxiSR/vFzNtROd0KJtf0YI
+ 46nLgqzoxZ4m+AJAaW9zo+Gw6NuytKDf2uUTVhZ0XR1T9aMUx28hzsSBZMVG+eOGlXHT
+ +/FyO+igh9l35tnFDz36tHIpQog5Evv5wiwhK/IquoVT5mrdk0Fm8dhC6kR+VFzlAaj4
+ 34L1oC+KRrCxtLaJGlTOEX1QDOt6tC4UHHmSM6MuD+kGCCPnGdTHQzWJja3kmYIpMwxO zjdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=N5BobhGcDybac3n80g4K5doHKby9S/J6L8WygQmA3VU=;
+ b=Tg8AE/2Yu4didz+1l3fR1OlnqdHblmeP4dpeFfJ0Lsa+4QDgJ9Ws7A14+0zSsJ/fYY
+ 0Gzu6X9jcMJTxOPCCqmtPyooiE7H/gMCYrn1cE19hK/UWcUa1maN/bM+pXL/CF0ztZwZ
+ m8+5UeSXujQGwGjm3KaJsWQwXYraekJTxGhl2aLKGtjStJKH8hMiEyyOXK3kaWnKWPwo
+ T0gANcTykgUiRWpZSHmfuRjYNMV0ezZoW0Q/6vycvd0lY5uHcW4G0+PbIht1ZzpDHavw
+ aU614+xRVMdikese3+njElCf1WhY+c7Fn/886gAbCUHxQe5pQ4v6YSXTQ/3/1ddUV6fo oBOA==
+X-Gm-Message-State:
+ AOPr4FUZtRAjXXkApAYVN4OZRlfyF4Du/C7TiSukyJNwCt1KLf8ru5xiyKIVVrEdRUiu5g==
+X-Received: by 10.28.126.72 with SMTP id z69mr25603729wmc.22.1464127736726;
+ Tue, 24 May 2016 15:08:56 -0700 (PDT)
+Received: from tucumcari.home
+ (host165-120-23-236.range165-120.btcentralplus.com. [165.120.23.236]) by
+ smtp.gmail.com with ESMTPSA id lf9sm5321532wjc.44.2016.05.24.15.08.54
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Tue, 24 May 2016
+ 15:08:54 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Resolving permissions conflicts in Aspect::Point[Cc]ut*
+Date: Tue, 24 May 2016 23:08:53 +0100
+Message-ID: <8C6E642C-39EC-4733-A692-C5169F899CA8@cogendo.com>
+Cc: PAUSE <modules@perl.org>
+To: Adam Kennedy <adam@ali.as>, coderepos@cpan.org, eilara@cpan.org,
+ marcel@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You all had permissions on Aspect::PointCut, which is now no longer used =
+(Aspect::Pointcut being the name in use). To remove the conflict I =
+dropped these permissions. You also had permissions on =
+Aspect::PointCut::{AndOp,BinOp,NotOp,OrOp} and =
+Aspect::Pointcut::{AndOp,BinOp,NotOp,OrOp}. Reading through the Changes =
+file, I could see that these modules were dropped some years back, and =
+are no longer indexed. So I=E2=80=99ve dropped the conflicting =
+permissions on these pairs of modules.
+
+You still retain all the permissions you had for the modules that are =
+still indexed on CPAN =E2=80=94 I=E2=80=99ve just dropped permissions on =
+old namespaces that are no longer used.
+
+PAUSE doesn=E2=80=99t let these sort of conflicts arise now, so I=E2=80=99=
+m working through the cases that remain, to make life easier for tool =
+writers. In most cases I=E2=80=99m checking first, but these changes =
+seemed obvious and safe, given the history of the Aspect dist. But =
+please shout if you see any problems with this.
+
+Cheers,
+Neil=
