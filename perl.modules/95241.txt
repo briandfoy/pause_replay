@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95241
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24030 invoked from network); 26 May 2016 19:52:09 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 26 May 2016 19:52:09 -0000
+Received: (qmail 10489 invoked by uid 225); 26 May 2016 19:52:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10485 invoked by alias); 26 May 2016 19:52:09 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,MIME_QP_LONG_LINE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f45.google.com (HELO mail-wm0-f45.google.com)
+ (74.125.82.45) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 26 May
+ 2016 12:52:02 -0700
+Received: by mail-wm0-f45.google.com with SMTP id n129so242494969wmn.1 for
+ <modules@perl.org>; Thu, 26 May 2016 12:52:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=QYxdm1bcYOLBuUKlGSgpOZGvs7xEIw2wK2M/eBt5dVA=;
+ b=glwGCXGfNuQSj3mbdwdA8xoAiB8zj89QsAtyIDOWhJZnoBFwH4TfKi8BvoyYXZgC81
+ XeocmElGY/JniOT15kxoHGFtHUj8XbbiaUE9SbqcVN2OPgjNeCgEJsGqgmfQShO4DuBz
+ fz3pH0Z7P3ybQj3oqPrZh0iVxqB6frbHmT0diAB+u93sb3PDJO1JVKcvgllBn8OcZOF4
+ +J0PRrIdkuIg6TGLLbOhLUHA3Z716o72yTWbrkIoBje1YP6NzPoPICiAfBnrpkmyvtKc
+ qnsrIa2+Dw0ekQDehChoWIyxdhf9nhAkc+cNxQTAzGsDPO5KxaSDnzI1PSqIXWZBVVjg Ewfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=QYxdm1bcYOLBuUKlGSgpOZGvs7xEIw2wK2M/eBt5dVA=;
+ b=dGy0xlxnIPKb1TWVHtaPga9ZfHU/odQy2/kALb148w/gIRqv0uto/+IPZZxaS6QmYQ
+ Ahp9TXwXJGl8s5/FsqyAiD/Qb+ODtyHOIA2/gjEGl2/hBhDYPbEvxLuuhlDc8a7EP7sQ
+ spHy6q4ERarn6GImCdtktDKISpiWbihpcHCxb1BgaiAOZjYwkKdhRJUqLybOMxNqLWas
+ 7SWFat3VgLyuIgV8eVLktSESihEBG6XV1fBtMSa7x+VjNQJtO/UVbt9zb7Rq72uNnYZU
+ SarSH9uquY8gCYSY31TRXMdmb40Wvk2LSu8PLpkxzA6F4P6CzoWRI/+g9f+JCdO4mY/D qy2Q==
+X-Gm-Message-State:
+ ALyK8tJHj2qanOHbOg+LTs8TpSahuIdSeMRaUbGawaAN74X57XaGi6sf7q/Ob2J3GjamMA==
+X-Received: by 10.28.63.5 with SMTP id m5mr5599272wma.24.1464292317901; Thu,
+ 26 May 2016 12:51:57 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id o129sm4991151wmb.17.2016.05.26.12.51.56
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Thu, 26 May 2016
+ 12:51:56 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Cleaning up PAUSE permission conflicts [DCOPPIT]
+Date: Thu, 26 May 2016 20:51:55 +0100
+Message-ID: <0C001A19-6E1F-4901-9C40-57541198BCCF@cogendo.com>
+Cc: PAUSE <modules@perl.org>
+To: david@coppit.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi David,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of the following namespaces:
+
+	Array
+	Hash
+	String
+
+None of these modules are on CPAN (they may have been in the past). But =
+your ownership clashes with ARRAY and HASH which are part of the =
+autobox-Core distribution on CPAN (owned by SWALTERS), and the =
+=E2=80=9Cstring=E2=80=9D module which is part of the =E2=80=9Ctypes=E2=80=9D=
+ distribution, owned by ABERGMAN.
+
+As a result I=E2=80=99d like to drop your permissions on these =
+namespaces, to resolve the conflict. =46rom looking at your releases, I =
+don=E2=80=99t think this will cause any problems, but wanted to check =
+with you. Are you ok with this?
+
+PAUSE will no longer let situations like this occur, so I=E2=80=99m =
+cleaning up historical cases like yours.
+
+Cheers,
+Neil
+

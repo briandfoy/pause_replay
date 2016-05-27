@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95243
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25846 invoked from network); 26 May 2016 22:19:57 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 26 May 2016 22:19:57 -0000
+Received: (qmail 17488 invoked by uid 225); 26 May 2016 22:19:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17484 invoked by alias); 26 May 2016 22:19:56 -0000
+X-Spam-Status: No, hits=-1.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,FSL_HELO_HOME,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f44.google.com (HELO mail-wm0-f44.google.com)
+ (74.125.82.44) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 26 May
+ 2016 15:19:52 -0700
+Received: by mail-wm0-f44.google.com with SMTP id z87so115751685wmh.0 for
+ <modules@perl.org>; Thu, 26 May 2016 15:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=qu2MwTROJkb+efEGvZmXOcf7I/FggXD/XOOc2+x0z1g=;
+ b=k1Hku0hL7heZdejCZMBJfOob5BRM5yDekpzhM63+XGPdul9CGLr74mDuR4wfEL+yjO
+ 9rGNEXIrWdiaKYFAELGE9ePoLwfcY0Keknf3zGt3ekkLh7/iX3BOSJKqUjL25wXCz+eO
+ H3XgsXSRasWNi4YF4R/ell3qkkhxS7OiZJlA8exrxSVZ6x1YxJjtqPcwjYGkfzs5fZPG
+ ZyZEMoR8KqLOv5McbrH6a4tizn5t9MEflxIKFyM/4bbkqs5NAK9RybO5r3ow7+K9j1nT
+ WFfR96o4ZmIAXKCFKzNFE8yfPgrF7hgcEGUpMow/kH4qElIG60OPRscFqcu3wQQEP5/k eKIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=qu2MwTROJkb+efEGvZmXOcf7I/FggXD/XOOc2+x0z1g=;
+ b=GKqqY1x3tVXaTvWcsq0iTgJVtJSFF1FWWIHLDo2H/b1h7uKKWEDC9cGor+m4mQH7Zp
+ 8X8r6bFle4XTRn8cROnOhdNyldu0dgongQ5+jccMReSAsl1hkAdlCJ7TiWmrfOgqkLOt
+ 9VLjMwU6V1WkperifZgZVi6cT1a2aeGxL6pCD9NgssAkHFskpg0An9l/882SD4+NIY1L
+ UbvPi/oMzP46Pr6Rf8ei/f2vGwVyyEvLhLZatJ0SicC2imP1Mk4mEu/iDB/lOIOwlwqy
+ Dg+K6x+LpVff09fL3f/31NfmSdcsknleqcRkd3QH+S8xwpONeAGuBylSGRqpUYxIcwHk fB1w==
+X-Gm-Message-State:
+ ALyK8tJfqjF5CxUYhTQGLn1Pz1n7ZmxA01auCed9qxg0j8ycjupHtJaUTuAipJq5s9J1nA==
+X-Received: by 10.28.113.86 with SMTP id m83mr6097614wmc.67.1464301187806;
+ Thu, 26 May 2016 15:19:47 -0700 (PDT)
+Received: from tucumcari.home
+ (host86-156-200-217.range86-156.btcentralplus.com. [86.156.200.217]) by
+ smtp.gmail.com with ESMTPSA id y6sm5515278wmy.8.2016.05.26.15.19.46
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Thu, 26 May 2016
+ 15:19:46 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions clash between PARENT and parent
+Date: Thu, 26 May 2016 23:19:45 +0100
+Message-ID: <350AF3A1-8886-44F5-A96F-3860E8BF7AF0@bowers.com>
+Cc: PAUSE <modules@perl.org>
+To: lrpalmer@gmail.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Luke,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of the PARENT namespace, which is used by your =
+Class::Role module (last released in 2003), in the Class-Role =
+distribution. Your PARENT namespace now conflicts with the =E2=80=9Cparent=
+=E2=80=9D module, which has been shipped with Perl since 5.10.1.
+
+To resolve this I=E2=80=99d like to drop your ownership of the =
+=E2=80=9CPARENT=E2=80=9D namespace. To fully clean this up you should =
+really release a new version that doesn=E2=80=99t use the PARENT =
+namespace, or delete Class-Role from CPAN entirely. But because this is =
+a cuckoo package (not a stand-alone module), installing your Class::Role =
+module can=E2=80=99t clobber =E2=80=9Cparent=E2=80=9D on =
+case-insensitive filesystems.
+
+Are you ok with me dropping your ownership of the PARENT namespace?
+
+PAUSE will no longer let situations like this occur, so I=E2=80=99m =
+cleaning up historical cases like yours.
+
+Cheers,
+Neil
+
