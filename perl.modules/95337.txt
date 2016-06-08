@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95337
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 14877 invoked from network); 7 Jun 2016 21:31:46 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 7 Jun 2016 21:31:46 -0000
+Received: (qmail 31612 invoked by uid 225); 7 Jun 2016 21:31:46 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31608 invoked by alias); 7 Jun 2016 21:31:46 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f53.google.com (HELO mail-wm0-f53.google.com)
+ (74.125.82.53) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 07 Jun
+ 2016 14:31:37 -0700
+Received: by mail-wm0-f53.google.com with SMTP id k204so86499149wmk.0 for
+ <modules@perl.org>; Tue, 07 Jun 2016 14:31:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=njKi09c8jaqkHhV/FNDeR/UOHVz+jvsh00TTUsKr4jI=;
+ b=VwnAu6i3YRCJW/FcBuq+tOOlrH/IME7uwzMVOJH8B4YIODbezywbQsktMAV8i2Omd+
+ 3WDNY3L95i1Tu4YTS9Lad11UGMQXi+CSjeM2OPDFsMa6F7UnoLWPscIUQesU8hdinGEe
+ 1GQgPEmnzL7q8kBTMSje8bsWHYCAx9uLdKZS4NNz35l5sJ/JJTE9auqhbnWgbHmTB2QE
+ qdTUc9og/uDstWOsaZixd24KuQLr6tFZy0reDLgzqdWTPaXK8CDz7yI5oS36sdmymHjJ
+ 33o36LX1+krfP5ELOb9akjiasTGpKc0oIq6ECRJS/mdmp+uoq9eEYnYLfGtkw5uDMNyR t8Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=njKi09c8jaqkHhV/FNDeR/UOHVz+jvsh00TTUsKr4jI=;
+ b=VpzWmx8uzqISUCEG1sANezp2S/SIezI5SavuOEnhf71znF4GXHqBoVVhLgdyvzEVcy
+ bhOjzH5c/M4WNgrCstkF8hhsUSrZTo1C0dcrHGL8Mc9ocvCrst5yinc5G7+MkWPunfMo
+ yYFbnkD3NdyuGXVfyU4EJZKqfLpfwTj0Wryj1ZbCIA4069KOrtTxk5lrK2kyUMjW6XiA
+ OwOVcgezBLqFi8MsNWaExrx6AYGfXx36Xy2a3dmwfs51It5vE+uypNQwi1g1Ct9wXOck
+ p++Ht/Ax2g3OUhui0HaHSbDfg2T0UY9PRm+F4hKYGuTHhytrxDhd2FkWtMG3PVQnMQBj 3iWQ==
+X-Gm-Message-State:
+ ALyK8tKUBgXkrEIJEyG1urW6XtDp1gqVbmLRYgQAz0LprpGqPQP5r1qbZk2hpTK50Q4ZBA==
+X-Received: by 10.28.44.70 with SMTP id s67mr4833892wms.14.1465335093045;
+ Tue, 07 Jun 2016 14:31:33 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id a128sm21318502wme.16.2016.06.07.14.31.31
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Tue, 07 Jun 2016
+ 14:31:31 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Permissions conflict caused by Apache::Session::Ipc
+Date: Tue, 7 Jun 2016 22:31:30 +0100
+Message-ID: <8A1D8A6D-A575-4BA0-9AF7-F2117B8C017F@cogendo.com>
+Cc: "modules@perl.org" <modules@perl.org>
+To: Xavier <x.guimard@free.fr>, clem.oudot+cpan@gmail.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Xavier and Cl=C3=A9ment,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+Xavier has ownership of the =E2=80=9CApache::Session::Ipc" namespace, =
+and Cl=C3=A9ment has co-maint, but there isn=E2=80=99t an =
+=E2=80=9CApache::Session::Ipc" module on CPAN. This conflicts with the =
+=E2=80=9CApache::Session::IPC" module, owned by CHORNY, and currently on =
+CPAN in the J/JB/JBAKER/Apache-Session-0.17.1.tar.gz release (that =
+itself is an old release of the distribution, but that=E2=80=99s an =
+issue for another day).
+
+To resolve this conflict I=E2=80=99d like to drop both of your =
+permissions on the =E2=80=9CApache::Session::Ipc" package. I don=E2=80=99t=
+ think this will cause any problems, but wanted to check you=E2=80=99re =
+happy for me to do this?
+
+Cheers,
+Neil
+

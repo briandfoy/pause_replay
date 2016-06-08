@@ -1,0 +1,59 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95326
+Return-Path: <mst@shadowcat.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12030 invoked from network); 7 Jun 2016 17:02:13 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 7 Jun 2016 17:02:13 -0000
+Received: (qmail 17058 invoked by uid 225); 7 Jun 2016 17:02:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 17054 invoked by alias); 7 Jun 2016 17:02:12 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0 tests=BAYES_00,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from sloth.scsys.co.uk (HELO sloth.scsys.co.uk) (217.168.150.252)
+ by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 07 Jun 2016 10:02:09
+ -0700
+Received: from agaton.scsys.co.uk ([89.16.177.50] helo=newagaton.scsys.co.uk)
+ by sloth.scsys.co.uk with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16) (Exim
+ 4.69) (envelope-from <mst@shadowcat.co.uk>) id 1bAKOD-0004fO-6C; Tue, 07 Jun
+ 2016 17:02:05 +0000
+Date: Tue, 7 Jun 2016 17:02:03 +0000
+To: Johan Vromans <jvromans@squirrel.nl>
+Cc: modules@perl.org
+Subject: Re: Problem with indexing
+Message-ID: <20160607170203.GH22736@newagaton.scsys.co.uk>
+References: <20160606084218.6c4a2636@phoenix.squirrel.nl>
+ <878tyi0xpr.fsf@k85.linux.bogus>
+ <20160607111152.0883137f@phoenix.squirrel.nl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20160607111152.0883137f@phoenix.squirrel.nl>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Tue, Jun 07, 2016 at 11:11:52AM +0200, Johan Vromans wrote:
+>
+> It seems to be crucial to avoid no_index/provides conflicts, since these
+> are dealt with in opposite ways by CPAN (right) and MetaCPAN (wrong).
+
+provides means "you don't need to index this dist at all", so while not an
+error, having a no_index entry seems superfluous if you're setting provides.
+
+Which is probably why nobody noticed metacpan didn't handle it right until
+now.
+
+I wonder if some form of META linting should squeal about this, simply on
+the grounds of it makes no sense so other downstream software may also fail
+to handle it sanely.
+
+-- 
+Matt S Trout - Shadowcat Systems - Perl consulting with a commit bit and a clue
+
+http://shadowcat.co.uk/blog/matt-s-trout/   http://twitter.com/shadowcat_mst/
+
+Email me now on mst (at) shadowcat.co.uk and let's chat about how our CPAN
+commercial support, training and consultancy packages could help your team.
