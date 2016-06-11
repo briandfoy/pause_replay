@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95373
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1978 invoked from network); 10 Jun 2016 17:42:17 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 10 Jun 2016 17:42:17 -0000
+Received: (qmail 27561 invoked by uid 225); 10 Jun 2016 17:42:16 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27557 invoked by alias); 10 Jun 2016 17:42:16 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f50.google.com (HELO mail-wm0-f50.google.com)
+ (74.125.82.50) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 10 Jun
+ 2016 10:42:14 -0700
+Received: by mail-wm0-f50.google.com with SMTP id v199so1840903wmv.0 for
+ <modules@perl.org>; Fri, 10 Jun 2016 10:42:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=XMbmdpihllwKrfQwu+zQDsgMObjfxw6M2EEuL3pA7a0=;
+ b=uZKVjs3CRmOSpfCi2QkaZstUPoi3PJjP8lgXnBbmvp0Ag26SjGQgRiSyeiZYt7CofH
+ 3Inv+hjI0naKpd9MAmrpz4LFWTOCJ19ZTQUFuCNiyt0gWjpK8PtjRbSsCMIHkY8RkUZ2
+ JPb1Ez7MY2mpsxc5DGO7GtJptD4Ddayj7l1r+jxbXaycLcMBYBkGLDvmXXjX/Nz2n3vF
+ QP599NIv0Os8LNBq5rQlWTikoZW46WpQeFV/5rV0cqMVTcNFNKI+runbxiq0LoQN7VCQ
+ W4wPlcsdXstyRHnFjhgKh6T4/ymOzcwklPzt9HiPirB/s8cm1M5HhMHqMapoPGTbqNCr kqeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=XMbmdpihllwKrfQwu+zQDsgMObjfxw6M2EEuL3pA7a0=;
+ b=jcHmpjt3t+rIVPZ4vFQJuyVV5sVYbc5ZUCFWiC0I35kRrQXH2iGgIOVteyKWZ9p9Cs
+ D5FuNpS2TWXM1lfSgRStw3esdr8L7DuN4c6kc0myl857o8x0HtObchgYcFJxCiuobxJc
+ eJnws09y8XNor0EfcYmzoDFwqITzCqVAHf7kSqxjAwVFjFsuws8Qca6F5gfMmov9xRzN
+ g6OUTB7HNOqbuZ0y1609IscYGAxTwT0Mf6PZYPnTfTNH1ENBc1NCwvzi7NrCSqZ6tw5Y
+ QTar5H0X2rHHT07E56Sr1L938pGmFEAB3MB34sj9VDCzrrTxB7D0s9j9lo26qar+LHr3 U2tA==
+X-Gm-Message-State:
+ ALyK8tK3zp+WKUvnuBuk3YVA3x285rehmScxHCfsNTHYzn3oa95nrMlg+OWRJfDcszGksw==
+X-Received: by 10.28.44.87 with SMTP id s84mr182957wms.61.1465580530736; Fri,
+ 10 Jun 2016 10:42:10 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id q71sm188794wme.17.2016.06.10.10.42.08
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Fri, 10 Jun 2016
+ 10:42:08 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: The "UnderScore" namespace
+Date: Fri, 10 Jun 2016 18:42:06 +0100
+Message-ID: <4A992F4D-7297-4EBE-8958-93A54F08609B@cogendo.com>
+Cc: brian d foy <bdfoy@cpan.org>, PAUSE Admins <modules@perl.org>
+To: tomc@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Tom,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+You have ownership of the package name =E2=80=9CUnderScore=E2=80=9D, =
+which relates to:
+    T/TO/TOMC/scripts/CS-Talk/source/dstructs/ties/UnderScore.pm.gz
+This is listed in the CPAN Index, but doesn=E2=80=99t appear against =
+your id on MetaCPAN or search.cpan.org, so is essentially unreachable.
+
+Your ownership of UnderScore conflicts with =E2=80=9Cunderscore=E2=80=9D, =
+which is owned by DANKOGAI:
+    D/DA/DANKOGAI/underscore-0.01.tar.gz
+
+I can think of several ways to resolve the conflict:
+
+ 1. drop your ownership of UnderScore, but leave the file on CPAN
+ 2. drop ownership and delete the file from CPAN as well
+ 3. rename the module, release a new dist, then drop the permission and =
+delete the existing file
+
+If you want to go with either 1 or 2, I=E2=80=99m happy to do these for =
+you, since I=E2=80=99m working through situations like this.
+
+PAUSE doesn=E2=80=99t let these kind of conflicts arise now, so I=E2=80=99=
+m working through the existing cases (this is your only occurrence in my =
+hit list).
+
+Thanks,
+Neil=

@@ -1,0 +1,96 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95378
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 6983 invoked from network); 11 Jun 2016 09:20:51 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 11 Jun 2016 09:20:51 -0000
+Received: (qmail 31965 invoked by uid 225); 11 Jun 2016 09:20:51 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31961 invoked by alias); 11 Jun 2016 09:20:50 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f65.google.com (HELO mail-wm0-f65.google.com)
+ (74.125.82.65) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 11 Jun
+ 2016 02:20:46 -0700
+Received: by mail-wm0-f65.google.com with SMTP id n184so3506643wmn.1 for
+ <modules@perl.org>; Sat, 11 Jun 2016 02:20:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=tObaSoA47cJl4cgnK8FqGCPuFhbpxj+C9YwjLONCU/Y=;
+ b=Xsun/Q3J3oCO6+m7YShqz24IJacCeX0ynzSdiIqxDYZLSt9nP3TE5JStgoB4k/9TWZ
+ dwxAK6tvRB44oya5tqj0If2NZNdk8FZQMI7z0zMXh3qMwyDC3K0fmQC7uF2Af4RHlZyp
+ 60Ol4AoMdnmx9r55eRGjo6XvY2IBy+8MfgaSuI7kTulPx4+cfXKJMQoJrRoRNb47hdYr
+ u+SuDskF3g7q/HkH4If8Riq81YngulkyX9N2a3hWUjdBaYARBNI/8Dz+1J8lyjU9X6hp
+ l7/jGOoJeRUYDcDVvYkca9mLNqbZ9aYa8JUNuC0AT/CL7la1XNrJO7GWW1kHGZ7iU9Xe NmcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=tObaSoA47cJl4cgnK8FqGCPuFhbpxj+C9YwjLONCU/Y=;
+ b=HJCmFBeYwHsx1WCNLVo+0FutfuRcBJKMvWE1EmmHulnX7X7kFRlXu5K8z5kUrxhmyS
+ eVziyDKSFusWhV+RJV8pmvYt7iuZRU2z3HRrG1u6xdaWYqXO8aLAuoaHj+LkxLambNpF
+ 3W5Ca6okVmLylEnsKR3YqwRLhWtE252ZT1XaU9iQ7PJ75wiIx4DlmXyg1hSBH/RcmOex
+ zyHw8hRaMChClrZexUs8jhk4OB4SgMuN5NiMzADCKS9fE7e3kDSzAqn3oHKDa5uqp87I
+ hc2YChXmeh0f+QsetABz7UKRz8lWHd3pDoSkyt2yKxgYSjF3+oOecge3dut+8lYNgEwP IrdA==
+X-Gm-Message-State:
+ ALyK8tISOurcrNoJtgveakUHhfDX5UdyazADXVS9k2xOVXq2UIiC1eigDbY21umJOZr/wg==
+X-Received: by 10.28.133.210 with SMTP id h201mr2674618wmd.86.1465636842374;
+ Sat, 11 Jun 2016 02:20:42 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id s125sm3150662wms.14.2016.06.11.02.20.40
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Sat, 11 Jun 2016
+ 02:20:41 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions clash
+Date: Sat, 11 Jun 2016 10:20:39 +0100
+Message-ID: <0FE6045E-4503-450A-AAF9-93A661EB0DC2@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: Moritz Onken <onken@netcubed.de>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Moritz,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+You have ownership of the =E2=80=9Cunicode=E2=80=9D package, which is =
+clashing with GAAS=E2=80=99s ownership of =E2=80=9CUnicode=E2=80=9D.
+In fact you have ownership of:
+
+    unicode
+    unicode::Controller::Root
+    unicode::Model::DB
+    unicode::Schema
+    unicode::Schema::Unicode
+    unicode::View::TT
+    unicode::View::TT::Alloy
+
+These are all in the CPAN index against the =
+P/PE/PERLER/HTML-FormFu-0.09006.tar.gz release.
+That=E2=80=99s a pretty old release of HTML-FormFu: the latest is 2.02, =
+released a week ago by NIGELM.
+
+To resolve the permissions clash I propose that we delete all the old =
+HTML-FormFu-* releases from your CPAN author directory, and drop your =
+ownership of the unicode* packages. I=E2=80=99m happy to do this for =
+you, as I know it=E2=80=99s tedious housekeeping, and I=E2=80=99m =
+working through the cases like this anyway.
+
+Are you happy for me to go ahead and do this?
+
+Cheers,
+Neil
+

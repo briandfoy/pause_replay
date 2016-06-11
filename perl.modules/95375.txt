@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95375
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 11321 invoked from network); 10 Jun 2016 21:02:01 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 10 Jun 2016 21:02:01 -0000
+Received: (qmail 6130 invoked by uid 225); 10 Jun 2016 21:02:01 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6126 invoked by alias); 10 Jun 2016 21:02:01 -0000
+X-Spam-Status: No, hits=-1.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,FSL_HELO_HOME,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f54.google.com (HELO mail-wm0-f54.google.com)
+ (74.125.82.54) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Fri, 10 Jun
+ 2016 14:01:57 -0700
+Received: by mail-wm0-f54.google.com with SMTP id n184so7068421wmn.1 for
+ <modules@perl.org>; Fri, 10 Jun 2016 14:01:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=2sUDMLzBYTwtJiAfCF5+vR7mwgP74JSBIbIXIgxTVfU=;
+ b=Ipg+rvqHNK/ZsWbPBBkAUWTDnZvdc0c4srn07egIEMzZKmh/Ui3RH/3iWm7+ryTMG5
+ iRiapgifaAVXlNItZ13+KvecLeUBWCSm4fHbOXjGzIDit+xgLWtA8lG+HTMRgQXgVlIi
+ VJSLLprj63WMYD61+Hfz/XcxoeoEvigH4ZlVk1mrKeD/bZnwI+fahd68tOV68XdtXpAz
+ UXEhGWlh/pJ+smBFNl+ayUfxBVd4fwqac9q33VRTr/slzUdNVQE4/FCSNvSoY4wdNgBh
+ Tfy0GnelswErvrRKdnDE/vymE+CVqsiEV7HWfCJf5/xL1Wv8K+YXL2I2foJyUC5t8bQE wjAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=2sUDMLzBYTwtJiAfCF5+vR7mwgP74JSBIbIXIgxTVfU=;
+ b=U5hvXAnNbfGbOAa3i4xDbk5RDaayDUN1UVOIso7t+Jvl6XO9o2ruQvFDHVkhRAFB4z
+ nwuG+9kY2QLgcU/X6WTGZHHqX/LhID/Rp2/jBP93y000C3GsxANtnfEnbZCCqtHwJw0S
+ 0NmCtmFR9d0S/EGKZOx7taoFy8ARH+BJVJ/aHRwr/Hz3aQ093XxK7PPZQgY5/HeaJt7g
+ V7LBU+IVR42p+BdNi9Ql/5T6PR+cdFkpjg2XfTHp1AXm8W7RNx0u1ABSvLznj3fxMugm
+ fP48LvMn2g0dQztFy7/Z16wJtZdTDys/II/31wydR6tl3H9jDDxU/M03aFaovwNFkXmp EJyw==
+X-Gm-Message-State:
+ ALyK8tIk3af+tuLMaqYw2hR61neUAvf61M9dJPe1ym1GvcaC6/vfNoR1CTpUEPcYEV9H8g==
+X-Received: by 10.28.4.7 with SMTP id 7mr789878wme.77.1465592513083; Fri, 10
+ Jun 2016 14:01:53 -0700 (PDT)
+Received: from tucumcari.home
+ (host165-120-20-223.range165-120.btcentralplus.com. [165.120.20.223]) by
+ smtp.gmail.com with ESMTPSA id f1sm866722wmf.22.2016.06.10.14.01.51
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Fri, 10 Jun 2016
+ 14:01:51 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: namespace conflict with "timer" from your Tamino distribution
+Date: Fri, 10 Jun 2016 22:01:50 +0100
+Message-ID: <169655D1-887B-486E-ABB9-F4ACDA5C8ADD@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: yuran@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Yury,
+
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+Your Tamino release includes package =E2=80=9Ctimer=E2=80=9D, which =
+you=E2=80=99re the owner of. This conflicts with the PHILCROW=E2=80=99s =
+Timer module.
+
+The best solution would be to rename =E2=80=9Ctimer=E2=80=9D to =
+=E2=80=9CTamino::Tran::Timer=E2=80=9D, so that=E2=80=99s it contained =
+within your distribution=E2=80=99s namespace. Then I could drop your =
+permissions on =E2=80=9Ctimer=E2=80=9D. Would you be happy to make this =
+change?
+
+Cheers,
+Neil
+
