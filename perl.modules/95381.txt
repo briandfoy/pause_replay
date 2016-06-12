@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95381
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24806 invoked from network); 11 Jun 2016 18:15:53 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 11 Jun 2016 18:15:53 -0000
+Received: (qmail 24500 invoked by uid 225); 11 Jun 2016 18:15:53 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24496 invoked by alias); 11 Jun 2016 18:15:53 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f42.google.com (HELO mail-wm0-f42.google.com)
+ (74.125.82.42) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 11 Jun
+ 2016 11:15:50 -0700
+Received: by mail-wm0-f42.google.com with SMTP id k204so29519471wmk.0 for
+ <modules@perl.org>; Sat, 11 Jun 2016 11:15:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=dX9zcueGZyvb+LxyHHJDDj5ViP1IScL1XEi5CC8iJ2o=;
+ b=ZLJCQOqChU7UV1PId/vZiCt3blBRB5XYxI7V/2Fb2y+6S7RRa9KBEub3UaQc9ngq9B
+ x1X26MBzGBGMJPs2lCCiP6o2KMGjh8LjmGgjNylDNsOxFjaUShVe0bjkdhoJG+3QIOGs
+ bS+TZvt7Zny0t8F8suKlFUSYaUC9bnonqjtsrEUNW+vJqF7XdbcmhYLeDPK4l31SdyDL
+ hHsoDd37fP7o+KVdifDzZZqbnlrKCqdBXzZ8rcRLwkgd+NAqo68x7RauVVlAZjaDeXjW
+ hHZgIll7elTHDPtpiqF7/Le+cXrkbMu3gZvLTcJ6AO1jLWmqnRozL5x+JYKVJefGSYWH J58Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=dX9zcueGZyvb+LxyHHJDDj5ViP1IScL1XEi5CC8iJ2o=;
+ b=iRmkeaj56xk6gnYx3f4Hgm6F3mfAV0mgD4/4ZU6Ry8RfANoDKHZm01bukaqXxAg7xG
+ vTN6wxUhLNkoKBjFL5XIpjJURU6I7/yAn4u7VH8D3shspodYHsvG6BvZesZPwVByQU/h
+ IB7bNrT30DXKKNxYgmIiZ3Yl/Vy5CE9dD4oF9EeG5C3spAz4x4VTXQcncfr2blmAUeEz
+ MrWDQdCR2WtFM4apKfP/DdxCo6ypa4Ofep/2WyJtVFhbXoVs4yByNVdp43xYOEUIUP+I
+ dxXHqcSkkkBahGRWgGjtNNxj/lP7A+BaYDNCUv7jU7Ih93mXY70GrMRSivDWUMa5K4oj rZZQ==
+X-Gm-Message-State:
+ ALyK8tI9nokeGbzxNvPH3EEHmwgTTbPM1NsC/O7qZEJ2T0ONDFSkwDPb1CfrSqmvoSffzg==
+X-Received: by 10.28.130.12 with SMTP id e12mr4187408wmd.20.1465668945846;
+ Sat, 11 Jun 2016 11:15:45 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id s9sm18425964wjh.48.2016.06.11.11.15.44
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Sat, 11 Jun 2016
+ 11:15:44 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict with ExtUtils::AutoConf
+Date: Sat, 11 Jun 2016 19:15:43 +0100
+Message-ID: <7E6A53BF-9B3C-49CC-BE1C-A6C058646998@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: Alberto Simoes <ambs@perl-hackers.net>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Alberto,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+You have ownership of ExtUtils::AutoConf, which was last release in =
+2005, but is now no longer on CPAN (I can see it on BackPAN). This =
+conflicts with ExtUtils::Autoconf, which is owned by FLORA and indexed =
+on CPAN as part of the F/FL/FLORA/ExtUtils-Autoconf-0.02.tar.gz release.
+
+To resolve this I=E2=80=99d like to drop your permissions on =
+ExtUtils::AutoConf. This doesn=E2=80=99t look like it should cause any =
+problems, but I wanted to check you=E2=80=99re happy for me to do this?
+
+Cheers,
+Neil
+

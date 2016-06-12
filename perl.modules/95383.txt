@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95383
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 30247 invoked from network); 11 Jun 2016 18:44:03 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 11 Jun 2016 18:44:03 -0000
+Received: (qmail 27112 invoked by uid 225); 11 Jun 2016 18:44:02 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 27108 invoked by alias); 11 Jun 2016 18:44:02 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f46.google.com (HELO mail-wm0-f46.google.com)
+ (74.125.82.46) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 11 Jun
+ 2016 11:44:00 -0700
+Received: by mail-wm0-f46.google.com with SMTP id v199so29384080wmv.0 for
+ <modules@perl.org>; Sat, 11 Jun 2016 11:43:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=48g1u6lEmiMIqXBMr5StWwbrNDfsBU0fc+okwhDUbmo=;
+ b=KR7msFb13LNASLv1JzJ1KlbE5288h0osu/jg5BGQuErRdKUGbkFkbs7t84xSyhky9L
+ DnWqoOVxLH/8Ms6V3HQjv43akcLazCs5/5uEQxoCGAPJ97vws6S4eyvudsOevZkEYVX/
+ AfdJ/2mfnC7iYR+8zO6syc5JofBge87FP2cHZrsN3ri4ot6QQuEzE1FAOzF968Zdp2Vz
+ vtiiSfK9GxtIopOewNrpEI89KQr6TIADPcedsJeyk2vWqj5Bkt/Iz8WYkBDVbQIHnkld
+ BPMIVRXsp+ujHWWsA7Os6npyge84Wx/MjBDnxp1RKrYBqusly9kevCmMEJHOAyfI6oXl vG7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=48g1u6lEmiMIqXBMr5StWwbrNDfsBU0fc+okwhDUbmo=;
+ b=YKlMoSICEm1AtjTLWA+/BoSKo0AYXwafeMgzP3Py4OdDx9jBgEj2/700c5fmeSjOZd
+ 0RkQyJubOjo0EhoPsmIGHIAfrBgWIa5qae2Xu1+c+9bKoTpV2VxpHETKWAu16kFhzNoW
+ MOAKntyN1iC3nwwMJOb/64kVPctYway9M/LWwauqvjSU3KueXuJUH9SaFX+lrwiBCOme
+ ymSJ6rc5txVAjNZ3Zvxbthoj/BQzTE83SAOXHubGujL8Sz2rLTgCuPZyduM2vwYHcTZF
+ k0tsSJYNjZyz70zFOPBbcbb1FobMxX41G28AMvu/OD8f2w6ZByASdkbBuw8Urbc7rhDG aMAA==
+X-Gm-Message-State:
+ ALyK8tKFeE3QOBSRMR83XRhYHJQmgxYAZJADAJVkU0rn8yktOQAxFSHmsYtjN8KMm/7Q/Q==
+X-Received: by 10.28.132.144 with SMTP id g138mr4268042wmd.47.1465670636120;
+ Sat, 11 Jun 2016 11:43:56 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id o10sm18511249wjz.37.2016.06.11.11.43.54
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Sat, 11 Jun 2016
+ 11:43:54 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict on Html namespace
+Date: Sat, 11 Jun 2016 19:43:53 +0100
+Message-ID: <4B72ADCC-7C69-4A27-87C9-E6C398EE7607@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: brummett@cpan.org, sakoht@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Anthony and Scott,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+Scott has ownership of the =E2=80=9CHtml" package name, and Anthony has =
+co-maint. There is no =E2=80=9CHtml=E2=80=9D module on CPAN, but this =
+permission conflicts with BJEPS=E2=80=99s ownership of =E2=80=9Chtml=E2=80=
+=9D, which is on CPAN.
+
+To resolve this conflict I propose dropping your permissions on the =
+=E2=80=9CHtml" namespace. I don=E2=80=99t think this will cause any =
+problems, but wanted to check you=E2=80=99re ok with me doing this?
+
+PAUSE doesn=E2=80=99t let this sort of situation arise any more, so =
+I=E2=80=99m just tidying up the historical cases.
+
+Cheers,
+Neil
+
