@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95413
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29770 invoked from network); 15 Jun 2016 20:25:21 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 15 Jun 2016 20:25:21 -0000
+Received: (qmail 6253 invoked by uid 225); 15 Jun 2016 20:25:21 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 6249 invoked by alias); 15 Jun 2016 20:25:21 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f45.google.com (HELO mail-wm0-f45.google.com)
+ (74.125.82.45) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 15 Jun
+ 2016 13:25:18 -0700
+Received: by mail-wm0-f45.google.com with SMTP id m124so40438955wme.1 for
+ <modules@perl.org>; Wed, 15 Jun 2016 13:25:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=6QOzPOsaCyWFJptu04KMvM8zUMOCJqBAM9olL7CPxAw=;
+ b=KV8wsAYXWz/ZcSfzGfsVx930wPIsrK7lxa0QEuwFxOQ1JggOk60KflqQjBjESZ/NgI
+ YOQEckg0zmq67lAD73+tjj2VoIwDR+JXWysQO28qbHoMJxJ+5Nuhxnxi7t+A/ZlCTG7D
+ WfUaGse2Tk2wZ7ZJBUPz3MzY866t3qt+OD0NdgSudBwQTeYBStVtA+3CuTi0D7fKPzKn
+ KA4e/7197lKcAfNakhWY+yEhxMgtrRH8RP4CiOOstYaiWO9wUNQ5REniw6d7lubtUdwz
+ C0h18GaWw13orMjlfAtXm/sAHa9EKa+/W/6xSaL3oujM1BhrgMqbBFX/IkiHzU5SPZpu QEwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=6QOzPOsaCyWFJptu04KMvM8zUMOCJqBAM9olL7CPxAw=;
+ b=RtY5U6+ST6kwuCh0UrtBd3ij3d0iZ5YB7ohz7ZZ+RNqUPRPYeeBp7JyHObmcBX5xQy
+ pTqOM5qxbFYHp/74bNozh7AA22kGL4DIQOwI+gMb0rZUpsCK25P3po2LXLffs3LUbd2h
+ q5UNJ70RPS2/4h95O28oduP3uBbU4nIPahKOo81ZYCzRgVyun9nIKqylH1D4p0ZRLHVI
+ GIsBJO5JPdKDRKJZ9LnrWgyWzMF3adeWDksiK+N0xbvlVa6FXG5ouEI5H6x0U/riBwF6
+ d7nrBRSrkkj5MT1/nz8rIul4pgEAjt3aA8oNq73PYke/XyaJp4AfwrXyZfj4UBfzdgoW AXGw==
+X-Gm-Message-State:
+ ALyK8tIhXAqQh+BjvRABEAQzmWVWR+Fimm4YQki/GzmwCrSiBqhejmp0bm3j0DSdOviyIg==
+X-Received: by 10.28.12.199 with SMTP id 190mr993404wmm.15.1466022314030;
+ Wed, 15 Jun 2016 13:25:14 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id f196sm5871742wmg.15.2016.06.15.13.25.12
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Wed, 15 Jun 2016
+ 13:25:12 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions clash between Lab::Instrument::DummySource and
+ Lab::Instrument::Dummysource
+Date: Wed, 15 Jun 2016 21:25:11 +0100
+Message-ID: <CF251729-CBD8-4E40-88E2-0E4EAEB1D169@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: schroeer@cpan.org, mail@akhuettel.de
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Daniel & Andreas,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+Daniel (SCHROEER) has ownership of Lab::Instrument::Dummysource, and =
+Andreas has co-maint. But Andreas has ownership of =
+Lab::Instrument::DummySource, which is the version of the module indexed =
+on CPAN (in the A/AK/AKHUETTEL/Lab-Measurement-3.500.tar.gz release).
+
+To resolve this conflict, I=E2=80=99d like to drop both of your =
+permissions on Lab::Instrument::Dummysource. I don=E2=80=99t think this =
+will cause any problems, but I wanted to check with you.
+
+Furthermore Daniel, you still have some releases of Lab-Instrument-* in =
+your CPAN directory. These have now been superseded by Lab-Measurement, =
+but because some modules have been renamed, your older releases are =
+still being indexed. Are you happy for all the releases of =
+Lab-Measurement-* to be scheduled for deletion as well?
+
+Cheers,
+Neil
+
