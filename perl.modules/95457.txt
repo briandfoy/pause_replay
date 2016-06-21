@@ -1,0 +1,83 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95457
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27636 invoked from network); 20 Jun 2016 22:01:47 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 20 Jun 2016 22:01:47 -0000
+Received: (qmail 19427 invoked by uid 225); 20 Jun 2016 22:01:47 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19423 invoked by alias); 20 Jun 2016 22:01:47 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,MIME_QP_LONG_LINE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-lf0-f47.google.com (HELO mail-lf0-f47.google.com)
+ (209.85.215.47) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 20
+ Jun 2016 15:01:45 -0700
+Received: by mail-lf0-f47.google.com with SMTP id h129so47846704lfh.1 for
+ <modules@perl.org>; Mon, 20 Jun 2016 15:01:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=/iTeBaj4OjWJpi4PEWUm2UhUNRpNYjFyTdITkcv0hUU=;
+ b=rVolvFadKkzbCIdytLSbfWHdAHKonIQjOMU9Bs6AdN593fGo457M7y6tvPFEawqon6
+ CQz6+t4mIHYQkWpA7B7F4wo0Bgd8SDf5fJAL4f2Wqksy/GJr2+IxtpC0NDq/TsGfyEB/
+ MBHxlNXs1QeqH6tgvK3HHB2gOoJ4Skmfap8iryi6HGysT/Pv0uY4+N95u4g/Ob+r7ibW
+ gY0oDKI0Z57tR66+ftZUJjAyPJHachEgShaTWmhZOx87xQKar4d/yO8ijIV2tKBqZZh5
+ C6nEFO+MAJCmN4dztlIRWzAKIUXwreNy5HfpB7XKEmG0iLyNrnQWjc91r1RhtZDWpT6+ UvNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=/iTeBaj4OjWJpi4PEWUm2UhUNRpNYjFyTdITkcv0hUU=;
+ b=OxvrpmHb1fOUWvEw32k/KjwX8MxnOq6Fx6NyBtNySmjV71XNDN20iY75SqA17YoKWe
+ uRDEfc2eOIxMiMY8c7VPkdfWuW/cH2YctTnFjSV6tHCkRrEa1C5vtRJOMngFnuocDw0Y
+ gkRx0hvwmnkztxr92OgGpkzGfvtYhmf3CxGE6pxOWD+gr+RyiFy3x6+vDHsuRcrhEgNI
+ c2CLQqt5hRsMQ4M3vZZJTdVLP8/Z3L971MLolTqX3kwmSYSnQqhORHXEL8vvNFsKOFG5
+ 8okAvvqioyBYDZy0UowSKg3CsPDRKeD6VhCcZfX8BSrVmIwKIiM4/J1IrQFGUNohdc6I TkhA==
+X-Gm-Message-State:
+ ALyK8tKbG3uaQsOu0McCk1YbYCJ1PgaUhMrU/BPb5pHJaCHRnm6g5tw0va58Oh5PVHiTuA==
+X-Received: by 10.28.85.3 with SMTP id j3mr161643wmb.0.1466460100447; Mon, 20
+ Jun 2016 15:01:40 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id v200sm15558703wmv.4.2016.06.20.15.01.39
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Mon, 20 Jun 2016
+ 15:01:39 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE Permissions conflict on "Statement" package
+Date: Mon, 20 Jun 2016 23:01:38 +0100
+Message-ID: <C0775316-4335-4971-9DAA-C208E77048D8@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: jmac@jmac.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Jason,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+You have ownership of the =E2=80=9CStatement=E2=80=9D package, but =
+don=E2=80=99t have a Statement module on CPAN. This conflicts with =
+SCHWIGON=E2=80=99s ownership of the =E2=80=9Cstatement=E2=80=9D =
+namespace.
+
+To resolve this I propose dropping your permissions on =E2=80=9CStatement=E2=
+=80=9D. I don=E2=80=99t think this will cause any problems, but want to =
+check that you=E2=80=99re ok with me doing this?
+
+PAUSE doesn=E2=80=99t let these kind of conflicts occur any more, so =
+I=E2=80=99m resolving the existing cases.
+
+Cheers,
+Neil
+

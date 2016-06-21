@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95460
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27129 invoked from network); 21 Jun 2016 07:53:49 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 21 Jun 2016 07:53:49 -0000
+Received: (qmail 25036 invoked by uid 225); 21 Jun 2016 07:53:49 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25031 invoked by alias); 21 Jun 2016 07:53:49 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-lf0-f46.google.com (HELO mail-lf0-f46.google.com)
+ (209.85.215.46) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 21
+ Jun 2016 00:53:45 -0700
+Received: by mail-lf0-f46.google.com with SMTP id h129so10729125lfh.1 for
+ <modules@perl.org>; Tue, 21 Jun 2016 00:53:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=COMJcEFcYj/rOUhLOp3llzme1/8AmQ7ZjMfJV2onQC8=;
+ b=xKDrAcuPdt/UISeBM213Bjji6uKdNuSWejMvpdfxcq+Cxc7fEAYf86jUWbguG30d22
+ oxFl2CAaA0ONnet0L6yy/sQRnwzjAwVAZu0VRFWHEhyYnbBLlv4DzsOaPOpIzi4oenjj
+ kgyWQYPFTIkHGuuYDE86r664Vzy7SFgF9GwcPvWVtSuaRCjMDNkyBao/t2xrHmNsPuFn
+ gPBIn1wuJn//bV8p7zzOlKstaaO8nDFzQRmIKmaW5QW2YM2MBDtP5pqLEsIm5h3knux/
+ 447gN1g7Rx3C9RIWowr/haE4u8ZyR4SjBXx7zZy3WgLT3GvheNPtbUcJhE2n/LSqaJ6W V04w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=COMJcEFcYj/rOUhLOp3llzme1/8AmQ7ZjMfJV2onQC8=;
+ b=k442KTFjsVgVq1J48u5HGgPIk4dkUv3U9HULH755Suskgc7h9veBB6GqkjbPerKeuh
+ HRLmyFsRfx+DyYSTJ5MaPnC52HjLmZocGVDQXcUTeIMhPrbqjeIjS1wiObF0N/ZjwcXE
+ k0wVB65ZPtJha8FvLnRCQ75J9rbE3edcY4uEnGUgIUiWju4gMpq23U0v2PMn0hibP7Lc
+ fo0lcM2ajw8sc7qjZ1/z5pQIG6wzXs2hSpkmilA8l3tZ3Nft7M8tT0MHmSdVwz2hXqIY
+ tYo2Ec0SNurfqhaF8Nse8OCrmDnNsbO6ZVN80zwkJHIVq7TyrJ1DQktsRAmWOaHDT8JB ghpQ==
+X-Gm-Message-State:
+ ALyK8tL3a9a5HIit4+MunIvs/9TUB/fvHmkHMq5OBBjniRYkIzsHyq5/oZWrb2CG3QJrwQ==
+X-Received: by 10.28.47.16 with SMTP id v16mr1840432wmv.6.1466495612707; Tue,
+ 21 Jun 2016 00:53:32 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id el4sm34685872wjd.23.2016.06.21.00.53.31
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Tue, 21 Jun 2016
+ 00:53:31 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: The "Variable" module in old Parse-Nibbler releases
+Date: Tue, 21 Jun 2016 08:53:30 +0100
+Message-ID: <FF92B5F5-4AEE-4749-9EB9-EF48933B9DD6@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: email@greglondon.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Greg,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+You have ownership of the =E2=80=9CVariable=E2=80=9D namespace, which =
+was part of the 0.23 release of your Parse-Nibbler distribution (the =
+latest release of which is 1.10). That release (0.23) has a number of =
+modules which are no longer in the distribution, but because 0.23 is =
+still in your CPAN author directory, they=E2=80=99re still appearing in =
+the CPAN index.
+
+Your ownership of =E2=80=9CVariable=E2=80=9D now conflicts with =
+ABIGAIL=E2=80=99s ownership of the =E2=80=9Cvariable=E2=80=9D namespace =
+=E2=80=94 they were previously considered separate, but now are treated =
+as the same by PAUSE.
+
+To resolve this conflict, I propose dropping your permissions on the =
+=E2=80=9CVariable=E2=80=9D namespace, and other package names that =
+haven=E2=80=99t been used since the 0.23 release, and also deleting the =
+older releases of Parse-Nibbler from your author directory.
+
+I don=E2=80=99t think these steps will cause any problems, but wanted to =
+check =E2=80=94 are you happy for me to do this please?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more =E2=80=94 =
+I=E2=80=99m resolving the existing cases.
+
+Cheers,
+Neil
+

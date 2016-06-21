@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95454
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23089 invoked from network); 20 Jun 2016 21:44:35 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 20 Jun 2016 21:44:35 -0000
+Received: (qmail 18265 invoked by uid 225); 20 Jun 2016 21:44:35 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18261 invoked by alias); 20 Jun 2016 21:44:35 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-lf0-f48.google.com (HELO mail-lf0-f48.google.com)
+ (209.85.215.48) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 20
+ Jun 2016 14:44:32 -0700
+Received: by mail-lf0-f48.google.com with SMTP id l188so48117445lfe.2 for
+ <modules@perl.org>; Mon, 20 Jun 2016 14:44:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=0gYyPKCFBZF0KEn3ivDzJf5JeEFBWzpT0Xjnb6xwWUI=;
+ b=QAjdi7ZhBsLyN3uiLy1Zo1afWkeni1jgWeflsA1TyCZCAYnkMgimnP2/y7L2UiDCMd
+ 0/xPnyVIDKMnfJyV8gELe//Crk1pLAqnOlHXmhXadYrba/Lp8DU0+PuxrQmm2Nz8p9H7
+ kLIL1l4epwboaWtKCj1KoqkHNq+dctdue9EaeuePY+wHEIfwYT/qlqFZCfXv+SsLnIAQ
+ lMQJ9BBDZUT6O6wys9wb8RbolBLtOV0hymEpeMlc6HPsEfY8aXxKlBa3n7+ooSdMcTZS
+ zhjmP/+uMAyHdj1iUlIEKeDRf7ovla5ENndE6/dEe1bEFWvA0gU9QGyCTucNrdZfzQh0 3AOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=0gYyPKCFBZF0KEn3ivDzJf5JeEFBWzpT0Xjnb6xwWUI=;
+ b=Wos2mWjQ0ro4xHHMMiKpfpdtSz1TW7SFTsv1WKEX7tK7gxnfPZEORB29D+Z3dSD7qx
+ M0BUZ8SBVwBe3ImWDHINaxNm1Sv4XmseJrKpYQzohr2QCunQRcNgFBSLvSB1AFM18oAP
+ Sc8evFvCnwszmmtWZel45LO/qi9kExRLjSelGjdBdpgThYp8hwLtBX4+p0atrUwYYvlT
+ 2wUEBKofCM2NAMw2NfBXq4EUn38OwgCofO6gJDzT10raTZHe+XyaJrIaJX6mp4SH2qi3
+ WWWpBXHI/rah69+EydGpH2v9jtO3wctGpP52eE0Y6jlDfo+GY5oA3DFceGvdjuVy077N ya9w==
+X-Gm-Message-State:
+ ALyK8tJtbiKCvLf8YUnmUzRkA6F3/WP9EUj2w8922tbuiJOXwm/EW8DAGHZ3UTuvyMGkzg==
+X-Received: by 10.28.67.131 with SMTP id q125mr98657wma.94.1466459067625;
+ Mon, 20 Jun 2016 14:44:27 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id g195sm15532624wme.23.2016.06.20.14.44.26
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Mon, 20 Jun 2016
+ 14:44:26 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict over MAIN namespace
+Date: Mon, 20 Jun 2016 22:44:25 +0100
+Message-ID: <C5A62459-1040-4E7D-BFDD-9695D2EBC98C@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: ping07642@yahoo.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Ping,
+
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+Your PBJ-JNI release uses the =E2=80=9CMAIN=E2=80=9D namespace, so you =
+currently have ownership of =E2=80=9CMAIN=E2=80=9D. But this now =
+conflicts with the =E2=80=9CMain=E2=80=9D namespace, which is owned by =
+FGLOCK.
+
+You could resolve this by releasing a new version of the module, which =
+uses PBJ::JNI::Main, in both PBJ::JNI::Callback and t/callback.t. Or =
+maybe you meant to use the =E2=80=9Cmain=E2=80=9D package?
+
+If you=E2=80=99re not interested in this module any more, maybe you =
+could also consider deleting the PBJ-JNI release from CPAN?
+
+PAUSE doesn=E2=80=99t allow these kinds of conflicts to occur any more, =
+so I=E2=80=99m working through resolving the existing cases.
+
+Cheers,
+Neil
+
