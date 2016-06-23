@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95480
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31234 invoked from network); 22 Jun 2016 18:13:42 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 22 Jun 2016 18:13:42 -0000
+Received: (qmail 14402 invoked by uid 225); 22 Jun 2016 18:13:42 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14391 invoked by alias); 22 Jun 2016 18:13:41 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,MIME_QP_LONG_LINE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f50.google.com (HELO mail-wm0-f50.google.com)
+ (74.125.82.50) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 22 Jun
+ 2016 11:13:39 -0700
+Received: by mail-wm0-f50.google.com with SMTP id a66so17270138wme.0 for
+ <modules@perl.org>; Wed, 22 Jun 2016 11:13:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=cxh6jqw0urJu4oXNHPx1ndb26FLsSinTX+aBSEEGUcg=;
+ b=W3VOmgfWwziu2uRnQKT6DHMTPm9fK0gIDQ4NmJQgimV1JknwmcrzjWGfsqsTx4j/5h
+ XPUTfR7Khdqq8j45hTo2eUhl+G2fKtwgWmVmCzys/XFSNIjyvJTyr+h8Sbr7GSBds4dR
+ KJouU8E8AuqS+7QyiyMFjbM95KJZZZbg/gwJzn1p82h3NKy3vhztBsbmwuRQgoXgEi9O
+ Z4sTEGhcp7eGuFSb+utT0vUPfayHcvvLRyuF+QA0BdlOJ0W4lXWILr8zByPUnTCl3kt3
+ 3Kg4q550gTT7a7NJ0HTRKgq45hENPRhZFmFuEM3Tb5dQ5YaTPhOO9xUiBqVEmqTrTJS0 VkBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=cxh6jqw0urJu4oXNHPx1ndb26FLsSinTX+aBSEEGUcg=;
+ b=LWdr0CXgd9rdDR3iEBjrGZQ5Ya3oou8i8UrQ/IfcbI/F3Lo1BpI7q3Z7SK7zO0CuP0
+ qpC67+7jUo74TiybdKXsTSz7xPE0AGxj6CDsQtZmRR79fULgf2yEhK16pmK+9uVTEFhT
+ Jefie1hNuXLCWAwrd9g5jp8GijCbmnX2Pet8ztGJa84b3Kh9gp8cfQh5zhskvl70F+qL
+ oOJehRj3WDun3bpk94FAbOXIgurOPBrntXytNoM8JWJ7O3CzTSlV9XZiZher01pvOa8A
+ sIwBXthfsBZMbEkck9FkV81mUmVphLOz88NFXxieh0lW/0Hy99YOiVBG9xIscmNI7t4a N6WA==
+X-Gm-Message-State:
+ ALyK8tIdhO6zB5qQb24QBJlMC4ZebpqTeBFPFJ7FMwDALspO+sxIg7zxCtiQc4YI37jC8g==
+X-Received: by 10.28.145.68 with SMTP id t65mr9450608wmd.31.1466619214360;
+ Wed, 22 Jun 2016 11:13:34 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id vu10sm512359wjb.27.2016.06.22.11.13.33
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Wed, 22 Jun 2016
+ 11:13:33 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict between "uri" and "URI" package names
+Date: Wed, 22 Jun 2016 19:13:31 +0100
+Message-ID: <EFF61529-83F7-42C9-B827-94DA38A6EA8A@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: loic@dachary.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Lo=C3=AFc,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+Your distribution =E2=80=98URIC=E2=80=99 (last released in 1998) =
+contains a module =E2=80=98uri=E2=80=99:
+	https://metacpan.org/release/URIC
+
+This now conflicts with the widely used =E2=80=98URI=E2=80=99 module:
+	https://metacpan.org/pod/URI
+
+I noticed that your URIC distribution doesn=E2=80=99t successfully test =
+on any recent versions of Perl:
+	http://matrix.cpantesters.org/?dist=3DURIC
+
+I think that the easiest way to resolve this conflict will be to delete =
+the URIC distribution from CPAN, and to drop your permissions on the =
+=E2=80=9Curi=E2=80=9D namespace. You could do those things yourself, but =
+I=E2=80=99m happy to do them for you, since I=E2=80=99m tidying up cases =
+like these anyway.
+
+PAUSE doesn=E2=80=99t let situations like this occur any more, so I=E2=80=99=
+m tidying up the existing cases.
+
+Cheers,
+Neil=
