@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95543
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25698 invoked from network); 27 Jun 2016 23:16:39 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 27 Jun 2016 23:16:39 -0000
+Received: (qmail 18139 invoked by uid 225); 27 Jun 2016 23:16:39 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18135 invoked by alias); 27 Jun 2016 23:16:39 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f41.google.com (HELO mail-wm0-f41.google.com)
+ (74.125.82.41) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 27 Jun
+ 2016 16:16:32 -0700
+Received: by mail-wm0-f41.google.com with SMTP id a66so3269767wme.0 for
+ <modules@perl.org>; Mon, 27 Jun 2016 16:16:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=+OHkNUJERbReN/QkuBkONsw2sPVr0O1/1aiGWrrTSQA=;
+ b=V1beQuTPMRvmWqShbBfyEtrKqxObGuIiePrDkYsIGPpndY3TuUjiRggZrKt0F4HKMp
+ nVU7jwtAQPs8pjEoU8rHSUOjeZUt7twZ6QeknHZyVfDgVEXwrA4dqs8QAt9aZ98tco0f
+ DEzDHNg5GEiISxPDRhrFyelf90NNWdOslx1eW1d5wkZMjfR61D+1gp3LIgROHKyVX+16
+ VWcc3ti/Pa9JuRqwV1DgecCJJm05y39eAV/ZpMLrx8E+9fhpEdyKzsnKXI3zF+foDHiZ
+ AKgzTVOA78U3fWgbMK3QjJre1EYpEi6J7ra1HalttrVDM//hxvNaeZcMgHcVgUNtdO1G Kung==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=+OHkNUJERbReN/QkuBkONsw2sPVr0O1/1aiGWrrTSQA=;
+ b=H/wnfsOwarVWRixdfCxUvuaI6DjuxKD4FkxkqQB1P/cMbcUHQqKCyi3+6q0X8ZB1Cv
+ VuITxgBp70yRLjwckQdjQtpDXIxwCbkFXgTLOEzZSqwOXH+go5ayQhE8BtEarMjm9De1
+ 0N7dY7i6+IdQeZ7nGa0stPiAuezcygjPcedQwzUM4DSRn9ZQEQCqXQqVMyBmLwkwFrBZ
+ vgMKaiM9tzL861nCLMTE5pQrl3DNw/8oZGG5NHXo19ZFBLPIDWbUP8F9tA5+1+tYwPyZ
+ rMokccH4PZfgG/b1paofPzKby/Q/N+MSQN8CSjcfMoVBwl38jwlYeNz9jT+wgcRjpaIo sJZQ==
+X-Gm-Message-State:
+ ALyK8tKD7N10qXFBQw9kch/lJBuQnqddIgmtFnTY4wreOsPdZZXRJdfYWCgFt8CcQ0RhWQ==
+X-Received: by 10.28.236.73 with SMTP id k70mr238492wmh.65.1467069387554;
+ Mon, 27 Jun 2016 16:16:27 -0700 (PDT)
+Received: from tucumcari.home
+ (host165-120-20-223.range165-120.btcentralplus.com. [165.120.20.223]) by
+ smtp.gmail.com with ESMTPSA id b84sm13941606wmb.6.2016.06.27.16.16.25
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Mon, 27 Jun 2016
+ 16:16:26 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: permissions conflict between INTEGER and integer namespaces
+Date: Tue, 28 Jun 2016 00:16:25 +0100
+Message-ID: <8C7E03C1-E769-4215-96EE-557E6110374D@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: sherzodr@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Sherzod,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+You have ownership of the =E2=80=9CINTEGER=E2=80=9D namespace, but =
+don=E2=80=99t have an INTEGER module on CPAN. This permission now =
+conflicts with the =E2=80=9Cinteger=E2=80=9D module, which is shipped =
+with Perl itself.
+
+To resolve this conflict I propose dropping your permissions on the =
+INTEGER namespace. I don=E2=80=99t think this will cause any problems, =
+but want to check you=E2=80=99re happy for me to do this?
+
+PAUSE doesn=E2=80=99t let situations like this occur now =E2=80=94 I=E2=80=
+=99m cleaning up the existing cases.
+
+Cheers,
+Neil=
