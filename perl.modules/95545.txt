@@ -1,0 +1,88 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95545
+Return-Path: <rt-cpan-org-return@perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23931 invoked from network); 28 Jun 2016 13:40:33 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 28 Jun 2016 13:40:33 -0000
+Received: (qmail 24643 invoked by uid 225); 28 Jun 2016 13:40:32 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 24639 invoked by alias); 28 Jun 2016 13:40:31 -0000
+X-Spam-Status: No, hits=-0.9 required=8.0
+ tests=BAYES_00,MISSING_HEADERS,RCVD_IN_DNSWL_NONE,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from rtcpan.develooper.com (HELO rtcpan.develooper.com)
+ (207.171.7.181) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 28
+ Jun 2016 06:40:28 -0700
+Received: by rtcpan.develooper.com (Postfix, from userid 536) id EB53B60;
+ Tue, 28 Jun 2016 06:40:10 -0700 (PDT)
+Subject: [rt.cpan.org #99432] indexing conflict with Git dist
+Reply-To: bug-Git-Sub@rt.cpan.org
+In-Reply-To: <rt-4.0.18-10237-1429818936-572.99432-7-0@rt.cpan.org>
+References: <RT-Ticket-99432@rt.cpan.org>
+ <rt-4.0.18-30541-1413036448-1282.99432-7-0@rt.cpan.org>
+ <rt-4.0.18-12491-1429784109-1553.99432-7-0@rt.cpan.org>
+ <rt-4.0.18-10237-1429818936-572.99432-7-0@rt.cpan.org>
+Message-ID: <rt-4.0.18-25001-1467121210-1685.99432-7-0@rt.cpan.org>
+X-RT-Loop-Prevention: rt.cpan.org
+RT-Ticket: rt.cpan.org #99432
+Managed-BY: RT 4.0.18 (http://www.bestpractical.com/rt/)
+RT-Originator: dolmen@cpan.org
+CC: modules@perl.org
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+X-RT-Original-Encoding: utf-8
+Date: Tue, 28 Jun 2016 09:40:10 -0400
+Approved: news@nntp.perl.org
+From: bug-Git-Sub@rt.cpan.org ("=?UTF-8?B?T2xpdmllciBNZW5ndcOp?= via RT")
+
+<URL: https://rt.cpan.org/Ticket/Display.html?id=99432 >
+
+Le 2015-04-23 21:55:36, ETHER a écrit :
+> On 2015-04-23 03:15:09, DOLMEN wrote:
+> > Le 2014-10-11 16:07:28, MSOUTH a écrit :
+> > > Hi,
+> >
+> > Hi,
+> >
+> > My Git::Sub module injects functions in the git:: (lower case)
+> > namespace.
+> >
+> > So that is on purpose that I have $git::VERSION set in Git::Sub, in
+> > order to
+> > reserve the git:: namespace on PAUSE.
+> >
+> > But my distribution is a bit special as I reserve the 'git::'
+> > namespace without
+> > providing a git.pm file. I don't intend to provide one just to leave
+> > filesystem
+> > space for Git.pm (on case-sensitive filesystems).
+> >
+> > PAUSE tells me that I have rights on git:: and you have rights on
+> > Git:: so I
+> > don't see an issue.
+> >
+https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=ml&pause99_peek_perms_query=git
+> >
+https://pause.perl.org/pause/authenquery?pause99_peek_perms_by=ml&pause99_peek_perms_query=Git
+>
+> Namespaces in PAUSE are case-insensitive, because some filesystems are
+> case-insensitive.
+
+If the issue is about filesystems, this shows that permissions should be
+applied to file paths, not to package names.
+This conflict would not happen if that was the case because my distribution
+does not provides a "git.pm" file.
+
+
+I did not intent to export $git::VERSION ($Git::Sub::VERSION is the one that
+matter for this distribution), but it has been injected by my Dist::Zilla
+build.
+I will make a new release that does not have $git::VERSION.
+
+--
+Olivier Mengué - http://perlresume.org/DOLMEN
+

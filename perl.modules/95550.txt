@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95550
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23520 invoked from network); 28 Jun 2016 21:03:13 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 28 Jun 2016 21:03:13 -0000
+Received: (qmail 19410 invoked by uid 225); 28 Jun 2016 21:03:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19406 invoked by alias); 28 Jun 2016 21:03:13 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f51.google.com (HELO mail-wm0-f51.google.com)
+ (74.125.82.51) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 28 Jun
+ 2016 14:03:08 -0700
+Received: by mail-wm0-f51.google.com with SMTP id a66so45166084wme.0 for
+ <modules@perl.org>; Tue, 28 Jun 2016 14:03:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=lFd4CYX1v32fqA7HUaAluAp2TRjvnFSMeMmOdceI0P4=;
+ b=v80iSZ9O2BVJC8IoM3sr87ed3+JyRRZgS/znHRfcBgIjTMiBYjaZ8s59mhlhroUbau
+ N4ek34D2dBvQENGku0fZtL7ZzWU2/CyEyceL1XZaVL2K02Ixg6bb9gu14sUWmq6QNk6g
+ mY3h9N4FzyB1WFwTebHbwT1Qs/lOTesMnkHKEkbJQ9+WmeI3bWGl0TeF8WuFw/ZQR4Lx
+ NXoE352Wi7i5Ng4n5yN+xXNzrZxS4dw//LxJx+pgDqF4mCal2LVsoIQI3ckUzVF9IvPs
+ jhw2GFeSg2iwfrPwm0bIjsMCf+9tpYWk3yTmk/jhExns5O69rPt0lci1bRJGrLhlUSSR blJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=lFd4CYX1v32fqA7HUaAluAp2TRjvnFSMeMmOdceI0P4=;
+ b=WyLdghU2bCenRt3G3jXrQiNI/Yeys/iMZtsIo1rvUFuvFVMOLpZPbHeiBOiBYUEmLG
+ a5uv9ED2mojSK7DX3SLjf0sjyl0u87SH0VqEBsbj6KsR6uwLabBg24Nz5lLLIVY6faL6
+ /E6sF8i9Dvv/sq0dAlDTIula54pQyVfdjlSpaQOoXEE5a/IstbHkBF39WOOTUc/8745S
+ 3yyD4a5txeojiSiBW+eAnFsUSbH/7B+0+q7S878RC45l0RWikGc6laQEIWaMBmHL+Ux6
+ eDqis2AI896eeuy5iWKvvjDfr2MAG5HuKx5rTx2cNVWsIaBo09j4IMngrSyNeQe9RbaT E0Jg==
+X-Gm-Message-State:
+ ALyK8tIDqLSNEhxXfPJx2OLncLHuhGhmcMpYSpJ9OQXsWP8oePFBqrx9KOtFQLj5ixYSpg==
+X-Received: by 10.28.145.17 with SMTP id t17mr5713518wmd.14.1467147783247;
+ Tue, 28 Jun 2016 14:03:03 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id f140sm694988wmf.22.2016.06.28.14.03.00
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Tue, 28 Jun 2016
+ 14:03:01 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions clash between "Qt::Base" and "Q::base"
+ [AWIN/Qt::Base & GGARAND/Qt::base]
+Date: Tue, 28 Jun 2016 22:03:00 +0100
+Message-ID: <EA5150CC-C8B6-4A06-901A-BC8A87621B15@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: germain@ebooksfrance.com, awinters@users.sourceforge.net
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Ashley & Germain,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+Ashley (AWIN) has ownership of Qt::Base, which is on CPAN in =
+PerlQt-1.04.tar.gz, and Germain (GGARAND) has ownership of Qt::base, =
+which is on CPAN in PerlQt-3.008.tar.gz. To resolve this conflict, I =
+propose dropping AWIN=E2=80=99s permissions on the older Qt::Base, and =
+also deleting all of the older releases of PerlQt from Ashley=E2=80=99s =
+CPAN author directory (there are a number of older releases of PerlQt =
+appearing in the CPAN index, because various module names were changed =
+across a number of releases. As a result someone could (theoretically) =
+accidentally install the wrong version of PerlQt).
+
+Are you happy for me to make these changes? I don=E2=80=99t think =
+they=E2=80=99ll cause any problems, but wanted to check you=E2=80=99re =
+happy for me to do this?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more =E2=80=94 =
+I=E2=80=99m tidying up the existing cases.
+
+Cheers,
+Neil
+

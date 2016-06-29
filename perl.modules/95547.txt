@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95547
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 18316 invoked from network); 28 Jun 2016 20:37:41 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 28 Jun 2016 20:37:41 -0000
+Received: (qmail 18231 invoked by uid 225); 28 Jun 2016 20:37:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 18227 invoked by alias); 28 Jun 2016 20:37:40 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f41.google.com (HELO mail-wm0-f41.google.com)
+ (74.125.82.41) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 28 Jun
+ 2016 13:37:36 -0700
+Received: by mail-wm0-f41.google.com with SMTP id v199so154727548wmv.0 for
+ <modules@perl.org>; Tue, 28 Jun 2016 13:37:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=n/ZLyk3/5X3mvrsRzIRrl8veo+6Z4KY2VqxqJwOZfD4=;
+ b=Y3ttAhbd1JZO6z4EqavZH/QyeSQ8bey4YZwHX+uw6s4KIwIciTYGdbjcrEXfKI+ixO
+ ZyaF9EfaZWwtpDAl2n0k8EgyTU/K2kmq/u6x9B/oqtvbKmuOQjVTJl3+IJ8ogTncEXUV
+ zPSGhi9n91Pfp3t0M/U0/ab6Ee7VT44I3w3frZpgZhJkx5C2iTF4dsHuKYtoaW+sneta
+ K1nCjti1TF38UnDrWuu01Wn/18ZBgQqRfH61+YME/M+gPkI34RDHwE82WRtqCWWsvR5V
+ kG9qV1QNncWGl6Inab31L6rr+ZbSPHJt+KPsF2cTj6dBE9YBRR12hhMqcphPnFufmlmY jMjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=n/ZLyk3/5X3mvrsRzIRrl8veo+6Z4KY2VqxqJwOZfD4=;
+ b=JKevllGObYCMMmSsUNiy0z5UrZJsxgu2JpkEPZJGams71faiQz9LFPkA+oC0Ihwm/p
+ UaYvpuJcgIvYn8dArFuZwoSjFtPYYHwrCD6Rkuv7nHCwo/FMc272ef7aJOlo6bpLebAZ
+ DqUklBT6ZJ8NKve475Ly7dfWNtJlr/tCcjVqV4YWm41g7SOPoaSm9LmeaZ0PoPpx5lZ2
+ 1msuz9CPQnE2BPww+CPm0yzcNpKTIZs2om3iD7uEv2OyyQLEZc9s0RWK2Pr5RMGh7V4K
+ F37jCN69Ea5lMRNUgHdt9draCxV9pOiRjJ7fchyR7llOqyS696dHXqg9bptdc1GxP4yp 0Mpw==
+X-Gm-Message-State:
+ ALyK8tKedaXm6Hf/EnuMX5TKxq/6UuPKafqtY4HtXcuuCZZM08Ibbm8vd7DLi14rqLInTw==
+X-Received: by 10.194.94.69 with SMTP id da5mr4754207wjb.158.1467146249699;
+ Tue, 28 Jun 2016 13:37:29 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id w15sm5074498wmd.11.2016.06.28.13.37.28
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Tue, 28 Jun 2016
+ 13:37:28 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions clashes for "If", "For", and "Use" packages
+Date: Tue, 28 Jun 2016 21:37:27 +0100
+Message-ID: <87B702C9-A23B-40F3-96B6-5207324EDFB2@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: "Flavio S. Glock" <fglock@gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Fl=C3=A1vio,
+
+I=E2=80=99m again emailing you wearing my PAUSE admin hat: I=E2=80=99m =
+working on resolving conflicts caused by PAUSE now considering package =
+names case insensitively. This has left us with some situations where =
+two or more people are owners of namespaces previously considered =
+distinct, and now considered the same.
+
+You have ownership of the =E2=80=9CIf=E2=80=9D, =E2=80=9CFor=E2=80=9D, =
+and =E2=80=9CUse" packages. These are used in your v6 distribution, but =
+=E2=80=9CIf=E2=80=9D now clashes with the core =E2=80=9Cif=E2=80=9D =
+module (which is shipped with Perl itself), =E2=80=9CUse=E2=80=9D =
+clashes with AUDREYT=E2=80=99s =E2=80=9Cuse=E2=80=9D module, and =
+=E2=80=9CFor=E2=80=9D clashes with the =E2=80=9Cfor=E2=80=9D pragma =
+which looks like it was included with some old versions of Perl.
+
+I previously emailed you about =E2=80=9Cv6=E2=80=9D, which uses a lot of =
+toplevel namespaces, rather than nested namespaces.
+
+To resolve this clash I=E2=80=99d like to drop your PAUSE permissions on =
+these namespaces =E2=80=94 do you think you might be able to do a new =
+release of v6 which doesn=E2=80=99t use all the toplevel namespaces? For =
+example, right now installing your v6 distribution on Windows or Mac OS =
+X would probably mean you can=E2=80=99t use the core =E2=80=9Cif=E2=80=9D =
+module.
+
+Cheers,
+Neil
+
