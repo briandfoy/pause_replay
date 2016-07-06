@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95596
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32500 invoked from network); 5 Jul 2016 21:31:57 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 5 Jul 2016 21:31:57 -0000
+Received: (qmail 16687 invoked by uid 225); 5 Jul 2016 21:31:57 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 16683 invoked by alias); 5 Jul 2016 21:31:57 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f68.google.com (HELO mail-wm0-f68.google.com)
+ (74.125.82.68) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 05 Jul
+ 2016 14:31:55 -0700
+Received: by mail-wm0-f68.google.com with SMTP id c82so31475360wme.3 for
+ <modules@perl.org>; Tue, 05 Jul 2016 14:31:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=1DwP8Et6tfXDoaooy70Q4HhkTVAAELu2EXJqfNZWe4g=;
+ b=lGhRDybmbS99xuAhP8Gw4fJfADixAQlLr4N3kOKMIkDg07cO/AocUijcarUxflh6sx
+ bPCuTX6H/k+zV10lNkw99Xrg8pSbN+N3zILqy+bkAsvUJQFTY6Vq96p1nTdpX7ij1edD
+ LTZzVxSpjgj3eoLF1E1tgeQ2QUCBY6U/rDGHOIJAjWZX8E846LDmaxr2xZvPNXGDT1pP
+ E0sh2GuqKWTdXxbLCDza60RUV1nHmYcsTobXsd4LF9BPS6AID+GvzQ9lcThqy1s2MWyR
+ v4O05Em7VQrBCO8rqEwE95yzWsFKm7jdEpzQJKd6IOME3F1ttXpfvEJa8yECb2hfmnKy yQRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=1DwP8Et6tfXDoaooy70Q4HhkTVAAELu2EXJqfNZWe4g=;
+ b=K075HAu3ZjTPy1mWB9UQ/v2hdFTbz4Xzevzxuv5JslUVZVP1dxZlCN7lh0ygUONlfU
+ lAZx3YYEnGoZu45CZ6x9qLadtiJDbxCh0Q4FPVaSt+0P0Gv55DDk4NPuf4YIt4S+Ukfy
+ yo6gjQ3ppd+0kesiz2BoNvc3beqeuQqbG4D4WALP6R8ZZm9+Bt2T2oGLoaR5slaEspQ2
+ vgPqFc6ebUYlCaNXW2QjEbUM9HnkSQR4K74RpzD6Swjc/b1ZS5wP12yNMVC0KthMW9U4
+ d2D9MeJsv/lQm/zIpib33oLmztQe67Mzajm9swlIv9l1xPv8ZOj55Xp/71ZG/onx+IiC BQbA==
+X-Gm-Message-State:
+ ALyK8tJv97UGNT91GlLqGljEe+sehxmGTO5z87ybcFkLnrYdNlvyRKGkcgGRq5+rrpPo+g==
+X-Received: by 10.28.31.204 with SMTP id f195mr16829762wmf.45.1467754311053;
+ Tue, 05 Jul 2016 14:31:51 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id b84sm441372wmb.6.2016.07.05.14.31.49
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Tue, 05 Jul 2016
+ 14:31:50 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict with "file" 
+Date: Tue, 5 Jul 2016 22:31:49 +0100
+Message-ID: <E599A722-BFE9-41F1-ADCB-B602C9D0A104@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: schitresh@ibab.ac.in
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Chitresh,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m emailing you because =
+I=E2=80=99m working on resolving conflicts caused by PAUSE now =
+considering package names case insensitively. This has left us with some =
+situations where two or more people are owners of namespaces previously =
+considered distinct, and now considered the same.
+
+You have ownership of the =E2=80=9Cfile=E2=80=9D namespace, and have a =
+=E2=80=9Cfile=E2=80=9D module in your link_NCBI distribution:
+	https://metacpan.org/release/link_NCBI
+This now conflicts with the =E2=80=9CFile=E2=80=9D namespace, owned by =
+ADAMK.
+
+The link_NCBI zip file isn=E2=80=99t packaged as a proper CPAN =
+distribution, and so cannot be installed. As a result I=E2=80=99d like =
+to propose that we resolve the conflict by dropping your ownership of =
+the =E2=80=9Cfile=E2=80=9D namespace. Furthermore, I=E2=80=99d suggest =
+that the link_NCBI.* files can be deleted from your CPAN author =
+directory as well.
+
+I don=E2=80=99t think these actions will cause anyone any problems, but =
+wanted to check with you =E2=80=94 are you happy for me to do these =
+things?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more; I=E2=80=99m=
+ working on resolving the existing cases.
+
+Cheers,
+Neil
+
