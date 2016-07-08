@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95624
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7943 invoked from network); 7 Jul 2016 20:27:23 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 7 Jul 2016 20:27:23 -0000
+Received: (qmail 26230 invoked by uid 225); 7 Jul 2016 20:27:23 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26221 invoked by alias); 7 Jul 2016 20:27:23 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,MIME_QP_LONG_LINE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f52.google.com (HELO mail-wm0-f52.google.com)
+ (74.125.82.52) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 07 Jul
+ 2016 13:27:20 -0700
+Received: by mail-wm0-f52.google.com with SMTP id n127so29624873wme.1 for
+ <modules@perl.org>; Thu, 07 Jul 2016 13:27:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=is1RMA9oqo/wMgp55O3gvWMzHdNJa/ulOk3BwXlfdQI=;
+ b=QtKQ22wpzAzpS3VjpO3Zepa/nY6ywOMcLTegBYeV66FOw/zqTP4CdiPx2sBH2vh/jv
+ TKeHgmgTJoJA0XalZ8BjsANyU0a8eai5OHTvQbVypz4qordCXgZRK3oZip+HaZYuo9j3
+ HHbxP8iH7I4vKLPYIa2j3H0qXYEq3e7lsEKnyrk7KJRQX3fpwhJyhgUOArsxIVDKwcc9
+ Md3rxwxfweuYFfIYSQbU5NghM9ycTpuWfHqZ7bEnonvzniL+XE2nyhEsqy6rII03Oa+K
+ l2D3v7NH/+1I8ShxHDnwgBn7Q2ViYzxUjwYpeRTf4T3MSobJhqR6Qv3x3DQadKzcrKZo oZ2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=is1RMA9oqo/wMgp55O3gvWMzHdNJa/ulOk3BwXlfdQI=;
+ b=DGBZZeSmGU8i1tI+yeCl0+LMaWuBGYC2aP/fyhDfkiGhj4m2d95LZ/aI+NKPrKSbtB
+ gza+wiRLP/Su58oz7STRLA9+2/Qz9/LgJiuYptSl2YIa9SuoYF8NNz6INigCcm1rblj5
+ jfinQTt0kh9aQ9jXVOAn85f1n7sgbQd+1i0ezMS0vZLzM3WqA1hjryA93l0G7xfxiw7R
+ ndaCrqR3M/maLdxFLtPWDPWe/wxuBWmMXRFpaFUZ5Uyk0u2LqgPPoi2rEV68zehIQ+rQ
+ VWNYA9SA/JaO9AXCrtxVLToAigdROkNuOSrn6AQDmCAMnlTMYoXoYDEozOjScFdiklVR v5nA==
+X-Gm-Message-State:
+ ALyK8tItbBjIHI20/bEJTO8A0eCSgBawbTSMG6EHOJHxOEgpwOe3nA1HAlzcYd9e3EMBnA==
+X-Received: by 10.194.236.69 with SMTP id us5mr1793408wjc.165.1467923234457;
+ Thu, 07 Jul 2016 13:27:14 -0700 (PDT)
+Received: from tucumcari.home
+ (host165-120-20-223.range165-120.btcentralplus.com. [165.120.20.223]) by
+ smtp.gmail.com with ESMTPSA id g4sm1371861wju.30.2016.07.07.13.27.12
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Thu, 07 Jul 2016
+ 13:27:12 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions clash with your "beagle" module [RVOSA: beagle]
+Date: Thu, 7 Jul 2016 21:27:12 +0100
+Message-ID: <2A0C86C7-954D-492F-A4BA-5F7A2B19BCEA@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: rutgeraldo@gmail.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Rutger,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+You have ownership of the =E2=80=9Cbeagle=E2=80=9D namespace, as a =
+result of your beagle module, which is part of your Bio-Phylo-Beagle =
+distribution. This now clashes with the Beagle module, owned by SUNNAVY, =
+and part of his Beagle distribution. This conflict means that people =
+couldn=E2=80=99t install your distribution and Beagle at the same time =
+on case-insensitive filesystems (eg Windows and Mac OS X).
+
+The best solution would be for you to rename the =E2=80=9Cbeagle=E2=80=9D =
+module to something inside the Bio::Phylo::Beagle:: namespace, so that =
+everything in the Bio-Phylo-Beagle distribution would then have the =
+expected name.
+
+Would you be happy to make this change? Once you=E2=80=99ve released a =
+new version, all old releases could then be deleted from your CPAN =
+author directory, and I=E2=80=99d then drop your permissions on =
+=E2=80=9Cbeagle=E2=80=9D.
+
+PAUSE doesn=E2=80=99t let situations like this occur any more, so I=E2=80=99=
+m working on resolving the existing cases.
+
+Cheers,
+Neil
+
