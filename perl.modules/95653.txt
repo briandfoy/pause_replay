@@ -1,0 +1,108 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95653
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 3774 invoked from network); 10 Jul 2016 11:47:02 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 10 Jul 2016 11:47:02 -0000
+Received: (qmail 4300 invoked by uid 225); 10 Jul 2016 11:47:01 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 4296 invoked by alias); 10 Jul 2016 11:47:01 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f49.google.com (HELO mail-wm0-f49.google.com)
+ (74.125.82.49) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 10 Jul
+ 2016 04:46:57 -0700
+Received: by mail-wm0-f49.google.com with SMTP id f65so34955204wmi.0 for
+ <modules@perl.org>; Sun, 10 Jul 2016 04:46:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=lwR/Wn1TpcW167HptcRGTYP1PIWhq4HkXVEXtC3izs8=;
+ b=BzjMnoWFKMxm41ZlyH6cbUz/trOJyO0RlteeCiHwb8OJshFw7hVbQZ41ucT+Hzro+7
+ lXOY8oyG51Zqluf/2P552BPcAwOcTpQ4I9eIqNjNiJ4MsNtLbA1YAENGkaRyHu4uBrGw
+ 2kJQOphlLV1781ZsN+qo/JPSZ29d2drBpSMPNr89/ZwE1MFgdmZ1jxx/vZUrItclKEJ6
+ 7rgj7YnjlS8RsbJlbHSjdiy9w48rcu5Lnp3Of/BDJ8lP3ZL3fD3e16uZpWMTN7XfmL8N
+ x2Bb1j97YOJ4pRLZa9KA2NCc2r/VYSoeb96lXmzmRvHy/HopiJRFSFgB4AYbRg+I1wHJ +jvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=lwR/Wn1TpcW167HptcRGTYP1PIWhq4HkXVEXtC3izs8=;
+ b=hbwUwk47tLCpi/FHrocKaRZEuRIIFeBui21MNMnYJkWmCRcdV+qjUH8EG5ED1GdBSr
+ ROS3b4hE7neu2p4nJFvyJFo5uEfHsi2b8qEZo1WgASlD5VXfb7ztsV4kWUnHkOtojPXX
+ RNB3uUWzLXehI4dZcFjh+GJeSltVrcOssAG83Ek/iHFcb7y8gXQoEVOEgpmrS4Q0l6ye
+ /snPHThQhrzddOQ6r2a4Q0JDfOh+e5YNvrsIg/Zy2nr5aBtNgMtJYmTUubW480shj451
+ u9GW5tBwQ83uqHIFm4VoZynkhYx00l+gfQlEuSzZmX6hCaXS2ULNsv9ZQ6JBf1/HCn78 +zmA==
+X-Gm-Message-State:
+ ALyK8tLkNRfrwaXBhZl8kWjzPnENp2mxd1LRkxQVlgacP9o28HiWjRf/KnL1LWNLyeCbbw==
+X-Received: by 10.28.97.4 with SMTP id v4mr12139630wmb.71.1468151211089; Sun,
+ 10 Jul 2016 04:46:51 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id q23sm5325543wme.17.2016.07.10.04.46.49
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Sun, 10 Jul 2016
+ 04:46:49 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Tidying up your CPAN author directory
+Date: Sun, 10 Jul 2016 12:46:48 +0100
+Message-ID: <CDBC02E0-3969-4878-B16B-DFF6E5EAF2B2@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: taniguchi@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Taniguchi-san,
+
+    Summary: please delete old CPAN releases from your author directory
+
+
+I=E2=80=99m one of the PAUSE admins. The NOC have let us know that =
+we=E2=80=99re getting low on diskspace on the CPAN master[*]. This is =
+caused by old (superseded) releases being retained in CPAN author =
+directories. So we=E2=80=99ve identified the authors who can free up the =
+most diskspace by deleting old releases from their author directory.
+
+Your CPAN directory has a lot of old releases of Number-ZipCode-JP:
+   http://www.cpan.org/authors/id/T/TA/TANIGUCHI/
+Deleting all of the old releases could free up nearly 90M. Note that =
+everything you=E2=80=99ve ever released to CPAN will always be available =
+in your BackPAN directory:
+   http://backpan.perl.org/authors/id/T/TA/TANIGUCHI/
+
+You could also delete old releases of other dists in your directory, =
+like Number-Phone-JP for example.
+
+
+There are at least 3 ways we can make this happen:
+
+1. you could use the script here: =
+https://gist.github.com/xdg/1739bea8ef36c4a48e4d2969bc31bf38
+2. you can manually mark files for deletion via the PAUSE interface
+3. you can give me permission to do this on your behalf
+
+The script mentioned in (1) was written by David Golden and Rik Signes. =
+It keeps all developer releases later than a stable release, keeps up to =
+3 stable releases, and deletes everything else. Use at your own risk, of =
+course.
+
+If you give me permission, I would delete everything other than the =
+latest release for anything older than a year, and 3 releases of =
+anything less than a year old. When marked for deletion, you=E2=80=99d =
+have 3 days to check and revert anything you=E2=80=99re not happy with, =
+before PAUSE would actually delete them.
+
+Thanks for your help =E2=80=94 please ask if anything isn=E2=80=99t =
+clear, or if you want to suggest something else.
+
+Cheers,
+Neil
+
+[*] This is a temporary problem, which will eventually be resolved with =
+more diskspace, but in the meantime we need to help out the NOC by =
+freeing up some space.=
