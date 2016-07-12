@@ -1,0 +1,164 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95670
+Return-Path: <info@maximka.de>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 20781 invoked from network); 11 Jul 2016 14:48:57 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 11 Jul 2016 14:48:57 -0000
+Received: (qmail 28369 invoked by uid 225); 11 Jul 2016 14:48:56 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 28365 invoked by alias); 11 Jul 2016 14:48:56 -0000
+X-Spam-Status: No, hits=-2.7 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mo4-p00-ob.smtp.rzone.de (HELO mo4-p00-ob.smtp.rzone.de)
+ (81.169.146.160) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 11
+ Jul 2016 07:48:51 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1468248526; l=3372;
+ s=domk; d=maximka.de;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+ References:In-Reply-To:Cc:To:Reply-To:From:Date;
+ bh=GsOEDBV0ZcGU4gQzVwuBI1Naj8Ess+binITa3zVmaRU=;
+ b=XQq4r3oH6a4mGdkOdM5kUA9Fq6LGideoNM9r+EQao6vXYirqy+TOYFVMqzPhXKAoMiT
+ Zo2yZH6KIHi/sOZ1k9D9o3ERiwrnYkgQ3hIRqg3psoh41zak8kQXRylWxErC0nmAzzQZv
+ cN89JF24TvYG35VKCl464r7ZigUpGO4wR9A=
+X-RZG-AUTH: :JWICemCleucEZGNurnXz/7xIHcObuBACZ6lGQhP5hdYp0dYekE3CAUAW
+X-RZG-CLASS-ID: mo00
+Received: from oxapp01-01.store.d0m.de (com4.strato.de [81.169.145.237]) by
+ smtp-ox.front (RZmta 38.11 AUTH) with ESMTPSA id 006173s6BEmkNRH (using
+ TLSv1.2 with cipher ECDHE-RSA-AES128-SHA (curve X9_62_prime256v1 with 256
+ ECDH bits, eq. 3072 bits RSA)) (Client did not present a certificate); Mon,
+ 11 Jul 2016 16:48:46 +0200 (CEST)
+Date: Mon, 11 Jul 2016 16:48:45 +0200 (CEST)
+Reply-To: Alexei Pastuchov <info@maximka.de>
+To: David Golden <xdg@xdg.me>
+Cc: modules@perl.org
+Message-ID:
+ <997510216.308730.c6640691-5ec5-4e39-bef4-976488e8ea11.open-xchange@communicator.strato.de>
+In-Reply-To:
+ <CAOeq1c9f=rMrM1bgo8zS16y=7z3KwX_O+yMGxaOcU6geak1CNQ@mail.gmail.com>
+References: <20160711135514.627701A8B@pause.perl.org>
+ <80485816.304085.c6640691-5ec5-4e39-bef4-976488e8ea11.open-xchange@communicator.strato.de> <CAOeq1c9f=rMrM1bgo8zS16y=7z3KwX_O+yMGxaOcU6geak1CNQ@mail.gmail.com>
+Subject: Re: PAUSE indexer failed on "Decreasing version number"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+Importance: Medium
+X-Mailer: Open-Xchange Mailer v7.8.0-Rev34
+X-Originating-Client: open-xchange-appsuite
+Approved: news@nntp.perl.org
+From: info@maximka.de (Alexei Pastuchov)
+
+Hi, David.
+
+Thank you for the swift and elaborate replay.
+
+> FWIW, I strongly encourage you to do it like this (in all your modules):
+> 
+>     use version;
+>     our $VERSION = "v1.121.0";
+
+Your suggestion is not new to me and I'm going to follow it now.
+http://www.dagolden.com/index.php/369/version-numbers-should-be-boring/ 
+
+Best Regards,
+Alexei
+
+> On 11 July 2016 at 16:33 David Golden <xdg@xdg.me> wrote:
+> 
+> 
+> Hi, Alexei.
+> 
+> 1.12 is equivalent "1.120000" so thus equal to v1.120.0.  To go up, you
+> need to jump to something like v1.121.0 or v1.130.0 or v2.0.0 or whatever
+> makes you happy.
+> 
+> FWIW, I strongly encourage you to do it like this (in all your modules):
+> 
+>     use version;
+>     our $VERSION = "v1.121.0";
+> 
+> This will save your users a lot of hassle and surprises across various
+> versions of Perl and the toolchain.
+> 
+> Regards,
+> David
+> 
+> 
+> On Mon, Jul 11, 2016 at 10:11 AM, Alexei Pastuchov <info@maximka.de> wrote:
+> 
+> > Hi,
+> > is the a proper way to get rid of the issue?
+> > I've tried to switch of to MAJOR.MINOR.PATCH versioning (
+> > http://semver.org/) and
+> > trapped into this.
+> > Any help would be greatly appreciated.
+> >
+> > Best regards,
+> > Alexei
+> >
+> > > ---------- Original Message ----------
+> > > From: PAUSE <upload@pause.perl.org>
+> > > To: info@maximka.de, andreas.koenig.gmwojprw+pause@franz.ak.mind.de
+> > > Date: 11 July 2016 at 15:55
+> > > Subject: Failed: PAUSE indexer report
+> > PALIK/Gearman-Server-1.13.001.tar.gz
+> > >
+> > > The following report has been written by the PAUSE namespace indexer.
+> > > Please contact modules@perl.org if there are any open questions.
+> > >
+> > >   User: PALIK (Alexei Pastuchov)
+> > >   Distribution file: Gearman-Server-1.13.001.tar.gz
+> > >   Number of files: 13
+> > >   *.pm files: 4
+> > >   README: Gearman-Server-1.13.001/README.md
+> > >   META-File: Gearman-Server-1.13.001/META.json
+> > >   META-Parser: Parse::CPAN::Meta 1.4414
+> > >   META-driven index: no
+> > >   Timestamp of file: Mon Jul 11 12:54:53 2016 UTC
+> > >   Time of this run: Mon Jul 11 13:55:14 2016 UTC
+> > >
+> > > Status of this distro: Decreasing version number
+> > > ================================================
+> > >
+> > > The following packages (grouped by status) have been found in the distro:
+> > >
+> > > Status: Decreasing version number
+> > > =================================
+> > >
+> > >      module : Gearman::Server
+> > >      version: 1.013001
+> > >      in file: Gearman-Server-1.13.001/lib/Gearman/Server.pm
+> > >      status : Not indexed because
+> > >              Gearman-Server-1.12/lib/Gearman/Server.pm in
+> > >              D/DO/DORMANDO/Gearman-Server-1.12.tar.gz has a higher
+> > >              version number (1.12)
+> > >
+> > > Status: Successfully indexed
+> > > ============================
+> > >
+> > >      module : Gearman::Server::Client
+> > >      version: 1.013001
+> > >      in file: Gearman-Server-1.13.001/lib/Gearman/Server/Client.pm
+> > >      status : indexed
+> > >
+> > >      module : Gearman::Server::Job
+> > >      version: 1.013001
+> > >      in file: Gearman-Server-1.13.001/lib/Gearman/Server/Job.pm
+> > >      status : indexed
+> > >
+> > >      module : Gearman::Server::Listener
+> > >      version: 1.013001
+> > >      in file: Gearman-Server-1.13.001/lib/Gearman/Server/Listener.pm
+> > >      status : indexed
+> > >
+> > > __END__
+> >
+> 
+> 
+> 
+> -- 
+> David Golden <xdg@xdg.me> Twitter/IRC/GitHub: @xdg

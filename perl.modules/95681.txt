@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95681
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4151 invoked from network); 11 Jul 2016 22:18:13 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 11 Jul 2016 22:18:13 -0000
+Received: (qmail 11592 invoked by uid 225); 11 Jul 2016 22:18:13 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 11586 invoked by alias); 11 Jul 2016 22:18:13 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f42.google.com (HELO mail-wm0-f42.google.com)
+ (74.125.82.42) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 11 Jul
+ 2016 15:18:07 -0700
+Received: by mail-wm0-f42.google.com with SMTP id f126so107254251wma.1 for
+ <modules@perl.org>; Mon, 11 Jul 2016 15:18:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=YFm7A2kZsQnRpPVxWP+ptHsWy97dU4DzPkOjK78rII0=;
+ b=ngLvpvL1SGoyTDvpS7t9VEGOLq6fumVPQAcxb+KuYrDg2PCNRbzs3iwFnYO2HSNuVS
+ txoW1KVzH8v9n2aABSJlhiujRVlO2XhRF5qp0IVIEsFoNycIR46986Fj7JqYzr/1VwO+
+ 5a2hmwmE7qdBiYSj5NOyHP3NuKruDpUbLy2y9J5f44dRWF/CLqim4+lar71npBLYMQlD
+ P49BrbTTqMcjnfsXcHrY0kJZkfTa/ObwmswtKwkWxrD8Bjlt6XbJmUoeLUMr0WRml9XZ
+ zSJB2um3Z/insxvbLRXwKX0B4V5M+DT4tm8S5IszNxH6BT3Ftcjkltoj24wCuJs7cJ2R f4SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=YFm7A2kZsQnRpPVxWP+ptHsWy97dU4DzPkOjK78rII0=;
+ b=TxTj8xIDcYXSr4HqW9TckZgu6bweM25KUK1Z8ikIb0l3um9NLdgfN28x1jKrWgqvwS
+ 3qSMcSrgoD6vNRzYCB3sGw+5I2Dnd9gk/x+gZOYRGOt/HDNmHcQ9Em4Pt6G3uLc5hW+L
+ ZRadpgqNAs8+Y3G3JwdcZBXSAhmoSLDMf+IJAjvdwCu+4rKsFElOSHzuzfyufiq9XkZD
+ cHy5vJJTwNl0aUZpzNhDydQr6DgNYpwLqeQKANQf+v8/zq8ydVC/6qVmnjuM3TpxVdbp
+ jQhcsHQDOUMCdUvagREujC9No30l1c4Q5fdUYejljmvZBjv2FeazmashJp0dj34QeyZd YtrQ==
+X-Gm-Message-State:
+ ALyK8tJxmQJa96aRXHJ0xsSnsxHnx9HBDonn7F4NxaqGkObh7PZDKcvnSNLdEq12J7sknA==
+X-Received: by 10.194.72.163 with SMTP id e3mr1635591wjv.15.1468275482821;
+ Mon, 11 Jul 2016 15:18:02 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id p6sm8566618wme.19.2016.07.11.15.18.00
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Mon, 11 Jul 2016
+ 15:18:01 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict between SELF and self modules
+Date: Mon, 11 Jul 2016 23:18:00 +0100
+Message-ID: <3B90E0AD-4F8E-47F6-AED4-AFAE2A022DB2@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: Damian Conway <damian@conway.org>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Damian,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+Your Class-Delegation distribution includes a SELF package, and you have =
+ownership of the SELF namespace as a result. But this now clashes with =
+GUGOD=E2=80=99s =E2=80=9Cself=E2=80=9D package, which is in his =
+=E2=80=9Cself=E2=80=9D distribution. His distribution has dependent =
+distributions on CPAN, whereas yours doesn=E2=80=99t appear to.
+
+It looks like the most appropriate solution would be for you to rename =
+the SELF package to something else which isn=E2=80=99t already taken, so =
+I can then drop your permissions. This would resolve the conflict, which =
+currently means that GUGOD=E2=80=99s distribution isn=E2=80=99t fully =
+indexed. Or you could delete it from CPAN, but I don=E2=80=99t know =
+enough to say whether that=E2=80=99s an appropriate course of action.
+
+Would you be happy to refactor your Class-Delegation distribution?
+
+Cheers,
+Neil
+

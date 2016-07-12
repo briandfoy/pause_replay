@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95677
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 8349 invoked from network); 11 Jul 2016 20:31:17 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 11 Jul 2016 20:31:17 -0000
+Received: (qmail 8365 invoked by uid 225); 11 Jul 2016 20:31:17 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8361 invoked by alias); 11 Jul 2016 20:31:17 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f52.google.com (HELO mail-wm0-f52.google.com)
+ (74.125.82.52) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 11 Jul
+ 2016 13:31:11 -0700
+Received: by mail-wm0-f52.google.com with SMTP id o80so67507470wme.1 for
+ <modules@perl.org>; Mon, 11 Jul 2016 13:31:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=W+JzZRa9E+S7aPrj1VFIlPubGzqPARUDBGrfW52exLk=;
+ b=eDPjZVZC9kpplhib1NnWLawGw2X8B1XYBITKLqI71s7WFvpkHS86UbTCz/dfsng4AG
+ hBqbHPvVg+qXhfxscND50WGOMoQT9rLYmV3oxwOgW/hfEzyzhVQiMIwbJ6VlfJJ9+Rha
+ 0NxDxzY5GGPOyAjB4Mr5+n2aInGdqz9xpE6nDy9KlHz3YoBRijbbKPrfFGn9+MpbW8av
+ qvpk/qSY1uawjzhL6UM5oEg4Bq5gBf5wYm08tt+nRztyv5Y1pCDzQE26OBHv0Kj4Y1As
+ DBKGG36sGXkO1RvAEYd3Joz3MyPxOAo5oU/4KTDW8apdo8cbHoxOs0UN0VfnsJE4yl2I t9qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=W+JzZRa9E+S7aPrj1VFIlPubGzqPARUDBGrfW52exLk=;
+ b=YizzsFa0Vg1NZJpin3ATKpyYRkxJKG5rY3WSVsQvMfGcqXE650NpQgopZ2YHc/w+is
+ ods4w6Unt+8zTPm+PtChxvx+r0UT/90rs9GY2+/Zu1pW60mlpKcaFawiJl7lg4Xsdqud
+ simoe0EtLyLX2FJeBFamyClmonsiAcf3l16Cs+sxyor8tYYAuAWk31CULYKKOyBR4GKO
+ EufwxHPTsjKq6JemDsU6LP2g1givGbjNPHoBKuabSJspuCvZ0ri+a7Yi5zF4DttiFrmG
+ oWb7y53Be7d10ds74/ssBaUOt5q21zsz8sqH6SEUGFXMERSg9q0yyn09YRRx94Cz1F+q ZV2g==
+X-Gm-Message-State:
+ ALyK8tJYMWW43YSOlJy8f2S/rLHXMd4PlrUgTasEZiLJEX4Y/WwpqpOKV2R/U4vCxrpMgQ==
+X-Received: by 10.28.47.207 with SMTP id v198mr20675466wmv.40.1468269066682;
+ Mon, 11 Jul 2016 13:31:06 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id h2sm1508616wje.41.2016.07.11.13.31.05
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Mon, 11 Jul 2016
+ 13:31:05 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict between your "config" package and core
+ "Config"
+Date: Mon, 11 Jul 2016 21:31:05 +0100
+Message-ID: <3BF96DC5-76AC-4851-B1F8-1A5830E56928@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: hakan@debian.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Hakan,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m working on resolving =
+conflicts caused by PAUSE now considering package names case =
+insensitively. This has left us with some situations where two or more =
+people are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of the =E2=80=9Cconfig=E2=80=9D namespace, and have a =
+=E2=80=9Cconfig=E2=80=9D module in your DBIx-HTMLView-LATEST =
+distribution. This conflicts with permissions for the Config module, =
+which is part of the core Perl distribution.
+
+To resolve this, the best solution would probably be a new release, with =
+the config module renamed to DBIx::HTMLView::Config, or similar. Once =
+you=E2=80=99ve done that we can drop the permissions on =E2=80=9Cconfig=E2=
+=80=9D.
+
+Or another option: I noticed that it hasn=E2=80=99t been released since =
+2001, and doesn=E2=80=99t have any passing CPAN Testers results. So =
+would it just be easiest to delete this from CPAN entirely? If you want =
+to go this way, I can do it for you, and then will drop all the relevant =
+permissions.
+
+Which approach would you like to take?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more =E2=80=94 =
+I=E2=80=99m resolving the existing cases.
+
+Cheers,
+Neil
+

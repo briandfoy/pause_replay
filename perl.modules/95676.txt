@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95676
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7173 invoked from network); 11 Jul 2016 20:21:13 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 11 Jul 2016 20:21:13 -0000
+Received: (qmail 8153 invoked by uid 225); 11 Jul 2016 20:21:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 8149 invoked by alias); 11 Jul 2016 20:21:12 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f54.google.com (HELO mail-wm0-f54.google.com)
+ (74.125.82.54) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 11 Jul
+ 2016 13:21:10 -0700
+Received: by mail-wm0-f54.google.com with SMTP id o80so67177984wme.1 for
+ <modules@perl.org>; Mon, 11 Jul 2016 13:21:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=Y1zWh+PXEdyeB36c8GeejwjBywijsW6ajlCBfLOwXC0=;
+ b=uQ6f6V9LPFEE6sbdVpVsRwWdxmWCWMPM1jWZfw+1mpE0Ew8/UlYLnaxZWApxLE9IZS
+ p8JhEO6lnepeV13GSlt++YJS9dCLA+BI/dnMMMMq7srFHXYAPbTvRVucA2/kzjDLQ+MW
+ /Jpjy89Pg0JgsUWs4dW4Hy9cQxJl8JBqmsn8c3j6IIOKAFPiFVtYLJkpq51usgCzf+sK
+ umFGSgc5TDp1Y/FhFtK77/Hg8zx+RuDKgngmL0+X+VgWTTJmKF0Z4BnJza7FEQnH95gH
+ BleugteygOFmwPC49dZkiNxDq4UiCNf6TBo/CgHPMjmNF2QUsW1fwv7a+vXh8GmfdZMn O2uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=Y1zWh+PXEdyeB36c8GeejwjBywijsW6ajlCBfLOwXC0=;
+ b=eoo4EbZ6HIjDKi2W5wxv42ZFmseH+Cf8PbATiMfkKAnHg5aDBHZoClhB+jSUnDGSpT
+ FOcHVS6i1Hv03Z1cgFrR/fPXUsAavez2NVeWLcVtvJXLeIZsb/HxzOhD+fqFX78wseTQ
+ Letq+MQTPlq0MOLwL6hMbb4HCso5+BZiY7bARXJNiDv1XUEec5K7k7kHE6QyBwYc2riO
+ Ctj0MhhSJZbKHPu9sqX5rC1krXkHIUX/tnU+FWJPqvaroIHvNyp/kVaGSw+Xjg2sUZtn
+ mQaZveEp6xkyRbadNNe3yR3K5QLMJmaPrRSec2yuwwK83saazb4hG1UFRYFTikrOMaOk rK7g==
+X-Gm-Message-State:
+ ALyK8tJGuy+EdtEQzkOrgFZ531LapETPyuGBAb3sD4AoaqNiWDt21qJeALPhHPfq3o2v0A==
+X-Received: by 10.195.2.132 with SMTP id bo4mr1375094wjd.123.1468268466694;
+ Mon, 11 Jul 2016 13:21:06 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id b130sm12238601wmg.3.2016.07.11.13.21.05
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Mon, 11 Jul 2016
+ 13:21:05 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict with DEBUG package in your STD
+ distribution
+Date: Mon, 11 Jul 2016 21:21:04 +0100
+Message-ID: <82203229-6653-40AC-A8BE-D82899762296@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: sorear@cpan.org, pawelmurias@gmail.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Pawe=C5=82 & Stefan,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m working on resolving =
+conflicts caused by PAUSE now considering package names case =
+insensitively. This has left us with some situations where two or more =
+people are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+Pawe=C5=82 has ownership of the DEBUG namespace and Stefan has co-maint. =
+You have a package of that name in your STD distribution, last released =
+in 2010. This now conflicts with the =E2=80=9CDebug=E2=80=9D and =
+=E2=80=9Cdebug=E2=80=9D namespaces, which are owned by other people.
+
+If you want to keep your STD distribution on CPAN, the best solution =
+would be to rename this to STD::DEBUG. Then we could drop your =
+permissions on the DEBUG namespace. Or if the STD distribution is no =
+longer relevant, we could just delete it from CPAN, and drop all =
+associated permissions.
+
+Can you let us know which way you=E2=80=99d like to progress please?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more =E2=80=94 =
+so I=E2=80=99m resolving the existing cases.
+
+Cheers,
+Neil
+
