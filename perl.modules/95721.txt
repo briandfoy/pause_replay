@@ -1,0 +1,80 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95721
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28798 invoked from network); 17 Jul 2016 23:24:14 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 17 Jul 2016 23:24:14 -0000
+Received: (qmail 20122 invoked by uid 225); 17 Jul 2016 23:24:14 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20118 invoked by alias); 17 Jul 2016 23:24:14 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f51.google.com (HELO mail-wm0-f51.google.com)
+ (74.125.82.51) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 17 Jul
+ 2016 16:24:06 -0700
+Received: by mail-wm0-f51.google.com with SMTP id i5so94257697wmg.0 for
+ <modules@perl.org>; Sun, 17 Jul 2016 16:24:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=zDosbDaaiEY0UoRtKHZ6w9pZHyVsxeROrzNiv3CZns4=;
+ b=xbotSadKra7BC/dXVv1nA2gu14N12pVOUylTKAsllQJsj8P2ZusfaXkbk46IGmzhhA
+ KQuzrc9YX+cMWfpP3x1txM0inJVm/Gyi5Ul/CFQvnfDQ1lMfgqhd3FrrPpRRV1m0aJDV
+ u6AuwWTdBpiNJhT2b+Ti2YrzmgGrdLu0nYobvTsUuZwkYw2mm0WDRDf+XG9CQHoSHN2V
+ lU5wmfkvC03OxOFl2Y7MNHDKVGhaSdYrdNxtM7L3vIqsliSLC6PcueyGPgLpXz1as2li
+ 2l8xYj27PoM6t3FLK7HSam8HGAAe79HE1PaI0VYLcHEaWNlWszLtarNzlUHvmYky2RqX 1zAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=zDosbDaaiEY0UoRtKHZ6w9pZHyVsxeROrzNiv3CZns4=;
+ b=HrZq7TdbYA9rgmduRQY9NGofUcayZZxUnvztLho/edPwNJYySDEc/FRR4T+X8GGgM3
+ 2iDHBoHfJo0lh8yqWYkQQM8XyX4lrgHr8LPomzMrzJNsvwmWLFiYmjwoWVfpZA3/T5FU
+ o3r/xiT9KZAZfaOUuK2eUkRs7QzLHFB/yHicRgNJg3HAu5lMGDeOHMpu9N/UovaTBt31
+ Mx26i5BiC9PhEKC26jPac+x7l7RLPt+01AWGUJR0zztr38RxXiWGtJUZOs78SZyNvoDU
+ X2ROW4iFWJ5e1xtJ4bnUdmB4t6CVJW9Q5+ai+vAv7uCcF3t/SXkk2+A8McSjqVTOAST5 kaVg==
+X-Gm-Message-State:
+ ALyK8tJE9dbF2TIQp7piP9j0k91/0JurNmiywGYbp86unomIRb43Vd7UH04OuioXG/c2hQ==
+X-Received: by 10.28.148.148 with SMTP id w142mr738929wmd.48.1468797840786;
+ Sun, 17 Jul 2016 16:24:00 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id a203sm12528235wma.0.2016.07.17.16.23.59
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Sun, 17 Jul 2016
+ 16:23:59 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict between Lvalue and lvalue packages
+Date: Mon, 18 Jul 2016 00:23:58 +0100
+Message-ID: <3B50C257-96D1-4F3C-9796-8A72BDF7DFA2@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: asg@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Eric,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+You are the owner of the =E2=80=9CLvalue=E2=80=9D package, and have an =
+Lvalue module indexed on CPAN. This now conflicts with the =E2=80=9Clvalue=
+=E2=80=9D package, owned by PAUSE use MONS.
+
+Your module hasn=E2=80=99t worked with any version of Perl from 5.17.1 =
+onwards, so if you=E2=80=99re not planning to maintain it, perhaps we =
+could delete it from CPAN, to resolve the conflict? If you want to keep =
+it on CPAN, would you be happy to rename it please? Maybe to something =
+like Lvalue::Accessors or something like that?
+
+Cheers,
+Neil
+

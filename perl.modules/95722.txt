@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95722
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31720 invoked from network); 17 Jul 2016 23:32:12 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 17 Jul 2016 23:32:12 -0000
+Received: (qmail 20297 invoked by uid 225); 17 Jul 2016 23:32:12 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20293 invoked by alias); 17 Jul 2016 23:32:11 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f45.google.com (HELO mail-wm0-f45.google.com)
+ (74.125.82.45) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 17 Jul
+ 2016 16:32:08 -0700
+Received: by mail-wm0-f45.google.com with SMTP id f126so83875109wma.1 for
+ <modules@perl.org>; Sun, 17 Jul 2016 16:32:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=sEZTb8L9qFev41W8B5HAOW21GYvKRa+ha93RydPGHdM=;
+ b=PtO3edhk+5Tu86dq2DTaVD3S6WQKk5S8MiG2bk78zSRkiVcVoaNcoMCJ8Kgy0dtyv2
+ jRohyccbsSR62AWnpb25AqfEkGvzQAed3fYweEeRo+ZXTkJjM2A3DpIEbtfd+E2c8QXL
+ 1atG8zu4FNGjQIR1w7O0i2n1EhL5GO8KLgV2afYCC8WvaUbEQUJaNsVPsL4kQIst0Sd8
+ T7r6mFx4h12daUUFqyc+qVzkoTxzb6JxzBKIFD1OBOs1seExxHmGBX5M0wYrZwMdEbKP
+ rWuUheuMlAs69Q+GBYYFfpO1nwqnogM8by0KBcKGDTpiJuPlXU8ccy8tLrUxpCuFZRUf CIzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=sEZTb8L9qFev41W8B5HAOW21GYvKRa+ha93RydPGHdM=;
+ b=BVP9VsEKKlyTtxDR+ry/4UWI3X8R0dqZ9lruTM5ozquF/6YlPIIOZcGapCeDYWUKRK
+ 5F4uWagMEgFGMi1ssbNGP5CEGUSb46FRvHABtsPBw2ZrBV6s8gOepD4nvKTFMmT+/GYv
+ VMLTprlzlK9mIzzvJ1TYzpNRbp+IybJvI0bVgF/8f8Fpd/bFfVcPJr22gWG5xQ5UaoFR
+ fv/7Qru2CDEMxsVTD+Xv1XDjwnKWRu08UkB66wTnN2eNWvrXemkYGlDsmZBY8ajzajnn
+ Iltn/cbZ1jMP1br4xZMG4b5W+0kT3/5qAstdx1jZubzot9vxtE1QM7QITKQyTbQ0RoO+ 6qpg==
+X-Gm-Message-State:
+ ALyK8tLPIKJk8dqcra21U8zQ9Ty/Rj7ch/Q9NXNdkrF0OHbhvH/RZ0qiAB7YNEqv6KVu6g==
+X-Received: by 10.28.41.195 with SMTP id p186mr35134716wmp.41.1468798324448;
+ Sun, 17 Jul 2016 16:32:04 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id 3sm12184694wms.1.2016.07.17.16.32.03
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Sun, 17 Jul 2016
+ 16:32:03 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict with "EVERY" and "Every" package
+Date: Mon, 18 Jul 2016 00:32:02 +0100
+Message-ID: <B9809978-E925-4916-A8AC-4DFF5388BF64@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: rafl@debian.org, Damian Conway <damian@conway.org>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Florian & Damian,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+Damian is owner of the =E2=80=9CEVERY=E2=80=9D package, which is part of =
+the NEXT distribution. This now conflicts with the Every package, owned =
+by TEODOR, and part of his =E2=80=9CEvery=E2=80=9D distribution.
+
+I think this can be resolved in the way you did your other distribution, =
+Damian: since EVERY is a cuckoo package, it could be hidden from PAUSE =
+with the usual trick:
+
+    package
+        EVERY;
+
+In both places where it appears in the module. I couldn=E2=80=99t find a =
+github repo for this, otherwise I would have just sent you a PR.
+
+Once a release is done, a day or so later we=E2=80=99d need to delete =
+old releases of NEXT. Then I=E2=80=99d be able to drop both of your =
+permissions on the EVERY namespace, resolve the permissions conflict.
+
+Cheers,
+Neil
+
+
