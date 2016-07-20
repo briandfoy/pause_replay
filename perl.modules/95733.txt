@@ -1,0 +1,85 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95733
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15560 invoked from network); 19 Jul 2016 23:35:19 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 19 Jul 2016 23:35:19 -0000
+Received: (qmail 14654 invoked by uid 225); 19 Jul 2016 23:35:19 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 14650 invoked by alias); 19 Jul 2016 23:35:19 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f46.google.com (HELO mail-wm0-f46.google.com)
+ (74.125.82.46) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 19 Jul
+ 2016 16:35:12 -0700
+Received: by mail-wm0-f46.google.com with SMTP id f65so155024102wmi.0 for
+ <modules@perl.org>; Tue, 19 Jul 2016 16:35:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=zkmUsOJexL3STfMAfCA75PZY7n4wVMSVBHgQQpGRnR8=;
+ b=TAKNUlUbEXnJRm1qLselsgvgTFa24Kj55WqoqdxOx7tDIRo/uchXTni2PB19y85jNi
+ drrw3VvUwvvPgrJkzyC2he8hGHq45vJ1amn1hVSZ6ACnRPB9S7tu7ljjmGnu4d2PWOHL
+ X1PSqORvpNtPTjWpidt6N7QCQ5ibFi4C0qDvlsAozVid+O1Zm+BrZz7xwAR+MpWc/0Ne
+ skD8+YrS43koD+9uQCrHTJvkf4u94i2Vemrp/C0sJsdu40w+b7vju9dH97BPPpRccZrq
+ 8ZIfTfXbjpCbWjHQccEs4N2B65MuQHTnjfw4new3eM9QcUosjn1PjbCwK51QeF2+A4qp l1kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=zkmUsOJexL3STfMAfCA75PZY7n4wVMSVBHgQQpGRnR8=;
+ b=mvKEzE3PorBJkI8ko+XhuBA4gNhT0cZJtWbRE9jAyE/hn4DDY7fgPMA9ILvQlS+Uik
+ lFHcsFfEA9pS08/mBABgzihYWVKANNC2Njec+LO48By3SzcAWbZvONqBXUhgxBx1O/Sg
+ SIWW+SWlJszC2pu1+wLRZGshgSZLZW9VcxUu+4kyIWgPee+NiYa5hAR9gL5pM7UwRT/O
+ r0X23SDzzg1CepRiMQ5D7HwRYijW3LRbxm4+fHfZsmhw6wIh156pJwOq6AxH3T5pt2to
+ N6OvD7bhB3ZK3tu5/UABqE5KL5xV+gZfWqQQnW999QSeFwBLY0LVcVmdzxvzLpn/K8gv JebA==
+X-Gm-Message-State:
+ ALyK8tKRivNW3tbO0Lwy0UxFFWIl9I9ddb/VkLrhHR/ueVuiCO2wQqtv4PR7L2GqOImuXA==
+X-Received: by 10.28.155.212 with SMTP id d203mr7189201wme.103.1468971304841;
+ Tue, 19 Jul 2016 16:35:04 -0700 (PDT)
+Received: from tucumcari.home
+ (host165-120-20-223.range165-120.btcentralplus.com. [165.120.20.223]) by
+ smtp.gmail.com with ESMTPSA id m81sm26944840wmf.1.2016.07.19.16.35.02
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Tue, 19 Jul 2016
+ 16:35:03 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict between "Types" and "types" modules
+ [EBUSBOOM: Types]
+Date: Wed, 20 Jul 2016 00:35:02 +0100
+Message-ID: <38AB4F8B-3765-4B14-AD68-A6E7193F64A9@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: ericbusboom@yahoo.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi again Eric,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m still =
+working on resolving conflicts caused by PAUSE now considering package =
+names case insensitively. This has left us with some situations where =
+people are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of the =E2=80=9CTypes=E2=80=9D namespace, because a =
+Types module was previously included in Net-ICal. More recent releases =
+of Net-ICal don=E2=80=99t include this module, and as a result the Types =
+module is in the CPAN index against your Net-ICal-0.11.tar.gz release. =
+This conflicts with the =E2=80=9Ctypes=E2=80=9D module, owned by =
+ABERGMAN, and included in his =E2=80=9Ctypes=E2=80=9D distribution.
+
+To resolve this I propose we do the following:
+ - delete the older releases of Net-ICal from your CPAN author directory
+ - drop your permissions on the Types namespace
+
+Are you happy for me to do this on your behalf? I don=E2=80=99t see any =
+problems with this.
+
+Cheers,
+Neil
+
