@@ -1,0 +1,96 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95749
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 31611 invoked from network); 20 Jul 2016 21:59:22 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 20 Jul 2016 21:59:22 -0000
+Received: (qmail 25054 invoked by uid 225); 20 Jul 2016 21:59:22 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25050 invoked by alias); 20 Jul 2016 21:59:21 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f65.google.com (HELO mail-wm0-f65.google.com)
+ (74.125.82.65) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 20 Jul
+ 2016 14:59:19 -0700
+Received: by mail-wm0-f65.google.com with SMTP id i5so113565wmg.2 for
+ <modules@perl.org>; Wed, 20 Jul 2016 14:59:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=oH/3TSeWz7ILhOmBDU4zLrGQzpSw75Fc11EpqW8eA9s=;
+ b=PfiVefk8lFkg/wadgzkE7RrTlUxOI1uV/h3dv0e3Otnjn1vnYRPkrgkv5eSP263aHa
+ Ed4lAt8ZYFo9Bp193tWh2w7NsNJdEGLprK52vtjfsyBLSKgcY04DC+j4b30IFyiPzJKB
+ AKTuFZPbpdzLIxlMtefBJp8n/doenw+mR425rAN4/r1tFje3L7I/bacunKvuRBDiwlz4
+ 5LkqMgbgvYQ+/xZLKoFm3has6t1ik/Z8bUvYkXBvbDv9L/5sVYonvghU2uhtdrtly9gj
+ Z/eBhWWsResFwvnbA63YgG+eLF1vV8XI8hdvcvIOk+ODeBlzKRZU9vsalotBsdlw+X/v 2wxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=oH/3TSeWz7ILhOmBDU4zLrGQzpSw75Fc11EpqW8eA9s=;
+ b=dRlTaK3GEYvolcnGM3KwKMV8MTB04YgeK97MUbVjJT617zS+zDCZPSSt4VvIBL0yjB
+ /k+xOU5Bn30lqS+FVM5JKl5sCI5xYbg0SRoHtRsbo80m+i0xioqeNF3SwCUqIIuujIB3
+ B8dSjN3TG056q0qwcl30su6iiXh7bhtcj1HzKv7N1zrAHAXexhZwyenXvX5icziLDHAn
+ k4f15t3sLnWWXYGnEal45xZ/45QfQwCMSF816gdJXE62qblc5rkFQrfwST/B/8bOpmM9
+ Y5zU/0afMJChIsJKD+SbowqwNu9hrEDZztYtFiwe9f9S7oV9qIknMEDqJT3qgDEtrsyz WHMA==
+X-Gm-Message-State:
+ ALyK8tKd9M0mytpgA6GfhdPLFIAyE96BsJv7wfidCL16RGevMqCKOy8Bf+dInT/GHBA+Eg==
+X-Received: by 10.194.117.161 with SMTP id kf1mr4037823wjb.112.1469051954595;
+ Wed, 20 Jul 2016 14:59:14 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id qq6sm3161457wjc.34.2016.07.20.14.59.13
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Wed, 20 Jul 2016
+ 14:59:13 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict between your Text package and the TEXT
+ package
+Date: Wed, 20 Jul 2016 22:59:12 +0100
+Message-ID: <2277FAFF-16D7-46D3-9FFD-80C858CC4C25@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: akhobov@yahoo.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Alexey,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m working on resolving =
+conflicts caused by PAUSE now considering package names case =
+insensitively. This has left us with some situations where two or more =
+people are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of the =E2=80=9CText=E2=80=9D namespace, which is =
+used for the Text package which is defined and used within your =
+Business::OnlinePayment::SurePay module. This now clashes with the TEXT =
+module, which is owned by user SHERZODR.
+
+To resolve this conflict, the easiest change would be to rename the =
+package from =E2=80=9CText=E2=80=9D to =
+Business::OnlinePayment::SurePay::Text, which is the usual way to name =
+internal packages.
+
+Or there is another option: I noticed that this module doesn=E2=80=99t =
+work on any version of Perl released in roughly the last 15 years:
+	=
+http://matrix.cpantesters.org/?dist=3DBusiness-OnlinePayment-SurePay+0.01
+So another option would be to just delete this from CPAN and then drop =
+your permissions on the relevant namespaces.
+
+Would you be happy to do one of these please? If you=E2=80=99re not =
+interested in maintaining this module any, are you ok for me to do this =
+on your behalf?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more =E2=80=94 =
+I=E2=80=99m tidying up the existing cases.
+
+Cheers,
+Neil
+
