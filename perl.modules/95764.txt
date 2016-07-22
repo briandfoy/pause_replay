@@ -1,0 +1,79 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95764
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 10983 invoked from network); 21 Jul 2016 23:50:32 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 21 Jul 2016 23:50:32 -0000
+Received: (qmail 10194 invoked by uid 225); 21 Jul 2016 23:50:31 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10190 invoked by alias); 21 Jul 2016 23:50:31 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,MIME_QP_LONG_LINE,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f42.google.com (HELO mail-wm0-f42.google.com)
+ (74.125.82.42) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 21 Jul
+ 2016 16:50:26 -0700
+Received: by mail-wm0-f42.google.com with SMTP id f65so38149258wmi.0 for
+ <modules@perl.org>; Thu, 21 Jul 2016 16:50:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=MQBh7UVT6jHfKcxsLfE1CJMiS96khYAtAQrtfxpDIyQ=;
+ b=DtbIz3abpTZVED1JWzphvqkcOxAaVAa/iO305LaHCv1kWIrQjxx7mKSHHAesEtu5Fd
+ u0TkAz0xrwIvxJ9X9nxWrOCQkywnv4ywIPcO/FwLriwLMO/P4HubLdyiWc5MByI3sy+0
+ FcRPsa8GEWMU40UjzS4pcM2kQu1xdTFvU1BQlEwa6+Mug1NAVgX8ET7naC8gaVh8t0HE
+ +YaIZhlE/YvFtigeAE7N5X/eC8WB1QRQlC7jAqqJXPR7dCWL2zYiKxbJT5d/6ywciWdO
+ Sdjtorf1ciHvHkSLi6gI7T0EdFioXk1FKGaHiasjuL+s0zP7V7Anj1BcQ8HM/2hGz46N kzgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=MQBh7UVT6jHfKcxsLfE1CJMiS96khYAtAQrtfxpDIyQ=;
+ b=CaNYdUmfx1wNH+s4J7aEea8rgb05fTqNjeF0WxePioZcaJ92iVNKdWVBEvgAZNofL4
+ zaCwstbC9OAOXls9FX5T8SHJRyoLrEyvmdhE7vmKQKDDx9twDutI1jIFiVrVYPpLunjL
+ PZs5tZdJ3V+COwdOExnyYT0TvPWTX0PnNHnt6hb7Azy+4ermEPLe+pnfJIqihzaDCldU
+ lo4eRLXf/frGWgUKy9EvwziB7bDOeZEnSckHo6f7w+loPc1p6k+4NN4DkLFv1oTCd3VB
+ idUKh8265yRrgauwIM17Bu/W2xYEw0W1MZ5H+ubrkg8THBzfRBDMMz6vRHS3qzmXnmag 5ahQ==
+X-Gm-Message-State:
+ AEkoousIQy0Brp90Ecn/d2ell0bIFP8YqbGaLYrgtIrFM5+GARkJnuBEvh2/ZQbhMplUug==
+X-Received: by 10.28.209.136 with SMTP id i130mr175915wmg.0.1469145021345;
+ Thu, 21 Jul 2016 16:50:21 -0700 (PDT)
+Received: from tucumcari.home
+ (host165-120-20-223.range165-120.btcentralplus.com. [165.120.20.223]) by
+ smtp.gmail.com with ESMTPSA id t188sm8202938wme.19.2016.07.21.16.50.19
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Thu, 21 Jul 2016
+ 16:50:20 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict on "Underscore" package
+Date: Fri, 22 Jul 2016 00:50:18 +0100
+Message-ID: <EE2024D5-031A-4690-B3A8-C716135F0309@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: vti <viacheslav.t@gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Viacheslav,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m still =
+working on resolving conflicts caused by PAUSE now considering package =
+names case insensitively. This has left us with some situations where =
+people are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of the =E2=80=9CUnderscore=E2=80=9D namespace, but =
+don=E2=80=99t have a module of that name on CPAN any more, as you =
+renamed it to UnderscoreJS. Because you still have the permission, =
+it=E2=80=99s conflicting with DANKOGAI=E2=80=99s underscore module.
+
+Would you be happy for me to drop your permissions on =E2=80=9CUnderscore=E2=
+=80=9D, since you=E2=80=99re not using it? I=E2=80=99m pretty sure this =
+is fine, but wanted to check with you first.
+
+Cheers,
+Neil
+
