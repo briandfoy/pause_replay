@@ -1,0 +1,81 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95797
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5264 invoked from network); 27 Jul 2016 22:11:39 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 27 Jul 2016 22:11:39 -0000
+Received: (qmail 7283 invoked by uid 225); 27 Jul 2016 22:11:39 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7279 invoked by alias); 27 Jul 2016 22:11:39 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f47.google.com (HELO mail-wm0-f47.google.com)
+ (74.125.82.47) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 27 Jul
+ 2016 15:11:36 -0700
+Received: by mail-wm0-f47.google.com with SMTP id q128so229148707wma.1 for
+ <modules@perl.org>; Wed, 27 Jul 2016 15:11:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=WxHOcRS4g48HoC9aZ3NXrA7vsbzkSc4FP2XVzd1dc50=;
+ b=JLvrb2oz0lBu9n7ViVe15eL6bgac+EURh+L1obOU0MLrTRopoVYBTfVMXrv+MnSnPo
+ 8OGb4AeEnoDKX4Q4XC67tAV+m+83f06jOHXcVXWMj3wFggkzll8KS6AG+zTnuUBX8Ckm
+ Y8Cd2X6lDFxHz/UyhlNQG1NCo2yPmqzmw43CNFg2Nx18O0v3IyPujro5ehHRmXMAfRmU
+ BgRadC9g4GZ+/mASQTRuNG9Ud7Uk1gGPWjbC1T8iY1ex4YFcUiJtSJ5CIkJLajrWGPqA
+ 2z1Sj2yxqdO54b7+m5ZUL2guto20yXODfIqXWvpqBNAzKGYo72yXCIyGXlAqjUm/OBBE QtJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=WxHOcRS4g48HoC9aZ3NXrA7vsbzkSc4FP2XVzd1dc50=;
+ b=SUWSr2Y3fYKykQNII+IkKxWROIBanIuB7wIHZIhvZ9kHePZ8Sp9lWMUtYJJC68lUWL
+ maXGARjibD1uBpK4W9vy217rJO7Ald7YOnuOn8V7FJbLGQbhvt5LuXCe0pGvawO8HPue
+ MOk2v+fFxTZemM0SfApTTYj3tiE1ludnWnISUYGXAwSwlLLZP7UrfrUWXPLM1b47LVDi
+ U0P/wYEND4UGcM7W2DY/wHiv1X19MM+rTdaG7FO1CT9dDwzTi5HKlhuwJ6U2CLRYKQnP
+ t1EQXLTpEnhx6Q7sLRAV76C1072lmFUFmckq5vg3x/j5RQB6wGvqpDAKKox10nbqY4TL yo6Q==
+X-Gm-Message-State:
+ AEkoouv7xZyDTx+/sjVMEbRuppRnm52M2eUb8N9bj8XAAOVajVYbi2zfxS29TGAn0kPUgQ==
+X-Received: by 10.28.135.133 with SMTP id j127mr36170840wmd.9.1469657491367;
+ Wed, 27 Jul 2016 15:11:31 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id za2sm8338540wjb.34.2016.07.27.15.11.29
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Wed, 27 Jul 2016
+ 15:11:29 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Permissions conflict between IMS::LOM::LangString and
+ IMS::LOM::Langstring
+Date: Wed, 27 Jul 2016 23:11:28 +0100
+Message-ID: <0DE0B0E9-EDC3-4B95-9CF7-097D0833FAAB@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: Chris Prather <chris@prather.org>, robin@smidsrod.no
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Chris and Robin,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m still working on =
+resolving conflicts caused by PAUSE now considering CPAN package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+Robin has ownership of IMS::LOM::LangString (in IMS-CP-Manifest), and =
+Chris has ownership of IMS::LOM::Langstring (an example in XML-Toolkit). =
+Following a recent change, PAUSE will no longer index examples (things =
+in example, or examples, or eg, or ex), so I would be able to drop =
+Chris=E2=80=99s ownership.
+
+But looking at these modules, they=E2=80=99re pretty much the same =
+thing, so I wonder if you two want to discuss it, and decide on a way =
+forward?
+
+Cheers,
+Neil
+

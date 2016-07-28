@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95796
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32461 invoked from network); 27 Jul 2016 21:43:49 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 27 Jul 2016 21:43:49 -0000
+Received: (qmail 5471 invoked by uid 225); 27 Jul 2016 21:43:48 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 5467 invoked by alias); 27 Jul 2016 21:43:48 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f49.google.com (HELO mail-wm0-f49.google.com)
+ (74.125.82.49) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Wed, 27 Jul
+ 2016 14:43:46 -0700
+Received: by mail-wm0-f49.google.com with SMTP id q128so228508410wma.1 for
+ <modules@perl.org>; Wed, 27 Jul 2016 14:43:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=YiBv3iXI2D5Jyi0Ct9nbL/iwA+6KcU2A4RfaXniAeGc=;
+ b=TtvuSXs0Wtfspo1XkAlhX6ImNdG3vqWDpDtPnuwF/NuCIGBn9RW3TI0APXHgCBYzcT
+ op/tc5mEctEtllAtjWpKMRerc4qLkgKjmSLTQ47zYghCP4hT45nLkdjbblJbOf7PfQFc
+ X3LyMu1PEDqie+koiU+5U2JNpostPpXFSmkNnCFe6n2IobWnS9AY7pyuZ2N8+ZVBJKll
+ qBayI1oPVpDlhohN1+II2te21RNLyqkBCoXloE9HYo9kwBTlXwKhoE+GQdLy0guvKcvA
+ RDbBrTqmQH/Os0Ifx585u3BzFOF7Yfm4HvbbpsqqUw6HiTVA+OLP+QVSFvu/kvUatzQ+ in6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=YiBv3iXI2D5Jyi0Ct9nbL/iwA+6KcU2A4RfaXniAeGc=;
+ b=NOjS8Vj85NERTxqT7411YuslGCllamTtDh+yqfbPgVE+i6O28qrgp2JgvB9eR6ceje
+ B3UwQfZgKrN3qeH5NprzzR7qC4YnR5GtWwi6jVeDMMaToNxgSJB66fuWFgFGeYh4oPOi
+ Lj6mckl1Jicj5/5mheDOwAgDIuACKg9rju6alje60dlA5UBnrm2nsWTDDASMKH90JLvi
+ lT7/YCVA6LqBK1l8Ku4/xkOAsE2DJCsZTLEusJFNV7UCgrGSLYay+k0c6W2nlxKMQ0bv
+ PT1hc+UUQocjehDD8ds86mQVywXx6PItTK420qreX74zA/QELrQ+AF/RKVZHTQj2t1/5 /VKg==
+X-Gm-Message-State:
+ AEkoouu6RoWpp0HP/DyPW8a3uynnfTWLoVgrbb94KnIhyB6KNjHR9/+s+qQlYgJDUcE/lw==
+X-Received: by 10.28.25.71 with SMTP id 68mr35098594wmz.91.1469655821450;
+ Wed, 27 Jul 2016 14:43:41 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id x133sm9028678wmf.16.2016.07.27.14.43.39
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Wed, 27 Jul 2016
+ 14:43:40 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict with "example1" namespace
+Date: Wed, 27 Jul 2016 22:43:39 +0100
+Message-ID: <2478A025-1046-4943-AE5D-D335A59DF02E@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: phish@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Christian,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m still working on =
+resolving conflicts caused by PAUSE now considering CPAN package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of the =E2=80=9Cexample1=E2=80=9D package, because =
+your CGI-XMLApplication distribution has example1.pm in the examples =
+directory. Until recently PAUSE indexed modules in an examples =
+directory, which is how you ended up with this permission. This now =
+conflicts with =E2=80=9CExample1=E2=80=9D, owned by MHAT (which is a =
+similar example module).
+
+PAUSE now doesn=E2=80=99t indexed files in a directory called =
+=E2=80=9Cexamples=E2=80=9D (or =E2=80=9Cexample=E2=80=9D, or =E2=80=9Ceg=E2=
+=80=9D, or =E2=80=9Cdemo=E2=80=9D), as they don=E2=80=99t get installed.
+
+As a result I now plan to drop your permissions on =E2=80=9Cexample1, as =
+this will resolve the conflict, and won=E2=80=99t stop your distribution =
+being indexed. I=E2=80=99ll go ahead and do this over the coming =
+weekend, but please shout if you have any questions or concerns.
+
+Cheers,
+Neil
+
