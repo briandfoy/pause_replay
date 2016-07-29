@@ -1,0 +1,87 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95809
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 490 invoked from network); 28 Jul 2016 21:49:09 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 28 Jul 2016 21:49:09 -0000
+Received: (qmail 29561 invoked by uid 225); 28 Jul 2016 21:49:09 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29557 invoked by alias); 28 Jul 2016 21:49:08 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f49.google.com (HELO mail-wm0-f49.google.com)
+ (74.125.82.49) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 28 Jul
+ 2016 14:49:05 -0700
+Received: by mail-wm0-f49.google.com with SMTP id o80so126425549wme.1 for
+ <modules@perl.org>; Thu, 28 Jul 2016 14:49:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=Zc9+yHF6PoMUUNjR9ColPUjSlVpOJB9Uxfm49Zjx0QI=;
+ b=Yd3A1SpVwzyRYwrOBJ9wvhNBHnNMLW6sHck/N76B3Kh3kBopyOVR4bFCDVQejjH1iR
+ 5bqJMY8LNWAtGsn//cji3qLepcBcfAoBKysxrWu6APM4ojYWAmDKl/DVgoMb5+n3Qb/y
+ 5Mo81ifYNE26J+ywY1e+Di0beITY/Mgf11u+T+O5MKdUEdDsw6cATKBDL/ct0o4mW7Yg
+ +TwDnoN5LYfUPr+evwlk+0DrgAaYkCEaDGq5RI5uhN6Y+8/av7amWmTdj7ZYfEZ+RiOd
+ c1LvrJS09pZZ5epHVSc2kWSLI2SHuO7abI7G0kbMAisQP2SjRj2V6eiot0sYBTuvyrAW LCAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=Zc9+yHF6PoMUUNjR9ColPUjSlVpOJB9Uxfm49Zjx0QI=;
+ b=jQgqSvWAejqK49gwpP+mjvjiNAyZIm9iGD4ntXp21KZq4Lny4j8udDpISBmeNph8Ze
+ C7BZHu6VSyiVL3bKiCSmrV3vKXFZLgfc1+HJTSQwGR/FGvuogJmqJszjQjq111RQhE2A
+ /bdVhhPOZUJZjo+2HNRkp+L63SYUQDWBqdIyEcIYUSVNgRoOQkwobo0krTL9BWFSbU6X
+ cMTO0hJQHJYLGdJpU7ut7PcpUwMowWmnu7CSvbP0SUf/QKDdSuLSDmKJStWvTvmeptjS
+ VqASyFmNYU/orIKc5pmXopuhlPqbQaYrF1DTt4pxyLWaJRRl8QJ+2wa8j1BE+H9985FG PZIA==
+X-Gm-Message-State:
+ ALyK8tJnj/vepeQ7hkzSuHJFBJ+6oCf+c+2i5BHy/vhlDM6THCSLlPuKNfnHguAVFqd9bQ==
+X-Received: by 10.28.131.199 with SMTP id f190mr61249770wmd.30.1469742541584;
+ Thu, 28 Jul 2016 14:49:01 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id uo4sm13340180wjc.36.2016.07.28.14.49.00
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Thu, 28 Jul 2016
+ 14:49:00 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict between MyLib and mylib
+Date: Thu, 28 Jul 2016 22:49:00 +0100
+Message-ID: <CF4DFD91-7369-4FD6-A8DC-8132A0AE16EA@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: darren@DarrenDuncan.net
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Darren,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m still working on =
+resolving conflicts caused by PAUSE now considering CPAN package names =
+case insensitively. This has left us with some situations where people =
+are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+Your Locale-KeyedText distribution includes a number of example modules, =
+and until very recently PAUSE would index example modules and assign =
+permissions. As a result you have ownership of the MyLib namespace, =
+which conflicts with GAAS=E2=80=99s ownership of =E2=80=9Cmylib=E2=80=9D, =
+which is in his mylib distribution.
+
+Given PAUSE no longer indexes example modules (because they=E2=80=99re =
+not installed when someone installs the distribution), I=E2=80=99m going =
+to drop your permissions on the example modules, to resolve this =
+conflict. This shouldn=E2=80=99t cause any problem (and if it does, =
+I=E2=80=99ll sort that out), but please shout if you have any concerns =
+or questions.
+
+PAUSE doesn=E2=80=99t let these kinds of conflicts occur any more =E2=80=94=
+ I=E2=80=99m cleaning up the existing cases.
+
+Cheers,
+Neil
+

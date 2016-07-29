@@ -1,0 +1,116 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95811
+Return-Path: <darren@darrenduncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32661 invoked from network); 29 Jul 2016 00:12:40 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 29 Jul 2016 00:12:40 -0000
+Received: (qmail 482 invoked by uid 225); 29 Jul 2016 00:12:40 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 478 invoked by alias); 29 Jul 2016 00:12:40 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from twelve.baremetal.com (HELO twelve.baremetal.com)
+ (67.223.102.253) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 28
+ Jul 2016 17:12:38 -0700
+Received: from Darrens-iMac.local (S0106f0f24983bfe3.gv.shawcable.net
+ [184.66.240.122]) by twelve.baremetal.com (8.14.9/8.14.9) with ESMTP id
+ u6T0CUMD012674; Thu, 28 Jul 2016 17:12:31 -0700
+Subject: Re: PAUSE permissions conflict between MyLib and mylib
+To: Neil Bowers <neil.bowers@cogendo.com>
+References: <CF4DFD91-7369-4FD6-A8DC-8132A0AE16EA@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+Message-ID: <579A9F6E.9070200@darrenduncan.net>
+Date: Thu, 28 Jul 2016 17:12:30 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:38.0)
+ Gecko/20100101 Thunderbird/38.8.0
+MIME-Version: 1.0
+In-Reply-To: <CF4DFD91-7369-4FD6-A8DC-8132A0AE16EA@bowers.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Approved: news@nntp.perl.org
+From: darren@darrenduncan.net (Darren Duncan)
+
+On 2016-07-28 2:49 PM, Neil Bowers wrote:
+> Hi Darren,
+>
+> I’m one of the PAUSE admins. I’m still working on resolving conflicts caused by PAUSE now considering CPAN package names case insensitively. This has left us with some situations where people are owners of namespaces previously considered distinct, and now considered the same.
+>
+> Your Locale-KeyedText distribution includes a number of example modules, and until very recently PAUSE would index example modules and assign permissions. As a result you have ownership of the MyLib namespace, which conflicts with GAAS’s ownership of “mylib”, which is in his mylib distribution.
+>
+> Given PAUSE no longer indexes example modules (because they’re not installed when someone installs the distribution), I’m going to drop your permissions on the example modules, to resolve this conflict. This shouldn’t cause any problem (and if it does, I’ll sort that out), but please shout if you have any concerns or questions.
+>
+> PAUSE doesn’t let these kinds of conflicts occur any more — I’m cleaning up the existing cases.
+>
+> Cheers,
+> Neil
+
+Hello Neil, and whom else it concerns.
+
+Thank you for doing this!
+
+It has long bothered me that the PAUSE indexer treated example or demo modules 
+as something to reserve namespace for, or they otherwise pollute lists of normal 
+modules, or get treated as more significant than they actually are.
+
+I actually have 2 legacy distributions that need this kind of index cleanup, and 
+I will spell it out for you to help you deal with them.
+
+First, regarding my legacy Locale-KeyedText distribution, all of the following 
+modules (all examples/* files) should NOT be indexed or reserved; please remove 
+all reservations on them:
+
+     examples/inverter1/MyApp/L/Eng.pm
+     examples/inverter1/MyApp/L/Fre.pm
+     examples/inverter1/MyApp/L/Homer.pm
+     examples/inverter1/MyLib.pm
+     examples/inverter1/MyLib/L/Eng.pm
+     examples/inverter1/MyLib/L/Fre.pm
+     examples/inverter2/MyApp/L/Homer.pm
+     examples/inverter2/MyLib.pm
+
+Only the 2 lib/* modules should be indexed/reserved.
+
+Second, regarding my legacy CGI-Portable distribution, all of the following 
+modules (all demos/* files) should NOT be indexed or reserved; please remove all 
+reservations on them:
+
+     demos/animals/DemoAardvark.pm
+     demos/animals/DemoCamel.pm
+     demos/animals/DemoOwl.pm
+     demos/animals/DemoPanda.pm
+     demos/animals/DemoTiger.pm
+     demos/frameset/DemoFrameSet.pm
+     demos/image/DemoDrawImage.pm
+     demos/smarthouse/DemoLM465.pm
+     demos/smarthouse/DemoX10.pm
+
+Only the 11 lib/* modules should be indexed/reserved.
+
+Note that, despite having Demo in their name, the 5 lib/Demo*.pm modules SHOULD 
+actually remain indexed/reserved, because they are actually as complete and 
+production-useable as any of the other lib/* modules, and they get installed.
+
+While I COULD rename those 5 say to lib/CGI/Portable/Demo/*.pm to clean up the 
+global namespace, I'm disinclined at least from the perspective of that I 
+consider my web-related distributions to be legacy, they work but aren't being 
+updated anymore, so I prefer not to make a new release.
+
+On the other hand, I could make a new release with that rename anyway for the 
+sole purpose that it would help clean the CPAN global namespace.
+
+Do you want me to do that?
+
+On a separate matter, and a heads-up, I consider all of my distributions with 
+"Rosetta" in their name to be obsolete and they will be replaced with ones 
+having "Muldis" in their name, which are actively under development; but until 
+the replacements arrive I have left the older ones up as placeholders of sorts 
+and they should remain indexed.
+
+Thank you.
+
+-- Darren Duncan
+
