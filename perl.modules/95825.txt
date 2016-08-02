@@ -1,0 +1,106 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95825
+Return-Path: <kenneth@olwing.se>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 18066 invoked from network); 31 Jul 2016 09:09:24 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 31 Jul 2016 09:09:24 -0000
+Received: (qmail 12693 invoked by uid 225); 31 Jul 2016 09:09:24 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 12689 invoked by alias); 31 Jul 2016 09:09:24 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0 tests=BAYES_00,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from hotelroom13.mainloop.net (HELO hotelroom13.mainloop.net)
+ (194.132.82.40) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sun, 31
+ Jul 2016 02:09:20 -0700
+Received: from [192.168.1.18] (unknown [185.31.199.158]) by
+ hotelroom13.mainloop.net (Postfix) with ESMTPSA id 833C043A; Sun, 31 Jul 2016
+ 11:09:14 +0200 (CEST)
+Subject: Re: RFC on a new module 'Grep::Query'
+References: <579D4ADE.3000605@savage.net.au>
+To: ron@savage.net.au, modules@perl.org
+Message-ID: <32fc9d61-5406-d4a8-fc21-595f7f076f5b@olwing.se>
+Date: Sun, 31 Jul 2016 11:09:14 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
+MIME-Version: 1.0
+In-Reply-To: <579D4ADE.3000605@savage.net.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: kenneth@olwing.se (=?UTF-8?Q?Kenneth_=c3=96lwing?=)
+
+Hi Ron, thank you for responding!
+
+If you don't mind, I have some follow up questions and comments :-)
+
+First a question about deps and how I treated them - maybe you can have 
+some advice on that too...
+
+Most simply see, my comments in Makefile.PL. But in short: I've set my 
+deps to NOT request a specific Perl version, and for those dependencies
+I do know I have, I've set them to '0'. This is since that while I've 
+developed this on a specific Perl and specific extra modules, I could 
+put that in, but obviously there's a whole range of combinations that 
+will work (including that some distros appear to have some deps I have 
+in their core, while others have not). So I figured, rather than 
+blocking out everything but a very narrow combination (or trying to 
+figure out boundaries myself), I 'allow' everything, with the intent 
+that as bug and test reports happen it can be refined.
+
+Does this approach look reasonable?
+
+ > At first, I was surprised by this proposal, since I often use 
+App::Ack (https://metacpan.org/release/ack),
+ > but the examples in the docs make a good case for having this module 
+too available to us.
+
+I wasn't aware of that module, but yes, I think they serve different use 
+cases.
+
+ > Some Suggestions:
+ >
+ > o Move the pod tests into xt/author, and make any modules used to 
+test pod optional,
+ > so end users can install the module even if there are failing pod tests.
+ > Ah, I see running the tests that it requires AUTHOR_TESTING.
+ > Excellent, but could be a little bit better.
+
+Ok, sounds reasonable, although I'm hoping you can clear up a few things 
+I don't quite grasp...
+
+I used module-starter to get a template, so I initially had an xt dir, 
+which was new to me. Is there a common wisdom as to how conveniently run 
+them? I.e. in the spirit of 'make test' I figured 'make xtest' would 
+make sense, but no go. I can't find anything else premade in the 
+makefile to achieve this so I'm either not looking hard enough 
+or...something else :-). I understand there are ways to add my own 
+targets in Makefile.PL so I'm assuming that is the approach I should 
+take but just checking so I'm not missing something obvious...maybe 
+there is a common wisdom for running 'xt' tests very simply?
+
+Also, note that in some of the regular tests I do make use of 
+conditional around $ENV{RELEASE_TESTING} - I utilize SQLite to verify 
+that my query language works and gives the same results as a comparable 
+SQL query. That however, is not necessary for an end user, and it adds a 
+dependency on DBI/DBD::SQLite which isn't really needed for the module 
+per se so I make sure to work around that. Technically I guess such 
+tests could go into xt, but since I already have the entire test 
+infrastructure running there it makes sense to keep the code where it is 
+- it should be invisible in end user tests. I assume this is alright & 
+in the spirit of things?
+
+ > o Change search.cpan.org to metacpan.org.
+
+Admittedly, I haven't researched this...can you elaborate on why (or 
+point to a good resource)? Not at all opposed, it's just that I've 
+always used just CPAN so I'm not clear on what MetaCPAN brings to the table.
+
+ > Other than that, got for it!
+
+Thank you, I'll take a stab at the stuff above first and then proceed.
+
+ken1
