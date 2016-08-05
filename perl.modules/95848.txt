@@ -1,0 +1,91 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95848
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1086 invoked from network); 4 Aug 2016 19:49:07 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 4 Aug 2016 19:49:07 -0000
+Received: (qmail 19176 invoked by uid 225); 4 Aug 2016 19:49:07 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19172 invoked by alias); 4 Aug 2016 19:49:07 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f46.google.com (HELO mail-wm0-f46.google.com)
+ (74.125.82.46) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 04 Aug
+ 2016 12:49:03 -0700
+Received: by mail-wm0-f46.google.com with SMTP id i5so7354733wmg.0 for
+ <modules@perl.org>; Thu, 04 Aug 2016 12:49:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=sVKjdu9jlPa7RYf1/XtjHD/9oFSuskbGjNDhe5orRgA=;
+ b=j7fwvEemMhPOq7dB8u7ILu4hsBAy21xvthXWeXHciDyscQXoAFD0wfutcE9bnTvHlL
+ 61FPTGqUbCZO6SLOvgJ9TlDUXiaWkFapCUNb9f2Of/XyeDq0eoV5nd+uW0DEp2fMU3rk
+ ChWikTOSQjL9LP0Tz/p0LmrZ85rSsbPczOpLy9vCS5Z7Zc6xSNl/1e0R7jpu9kjCPF9W
+ gIEfVpNLN28caVvOMKHiVMXQoKB+o4bt6KtK8bhE5my+o2OjwXZwN224E7ZAVgp/QDhX
+ Mm01onMuFmck/v4Artt4paa4WxNVZmkDFHdetxifzUdq2bLJtQ6BKJ5VIkVpro6hXpfm L2iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=sVKjdu9jlPa7RYf1/XtjHD/9oFSuskbGjNDhe5orRgA=;
+ b=Ty1rr5tycVtyaun/U/EgLiRs9vpG9t/HQFhptlJJuLzCY5y9Brv/yX1o+YG8vaYCje
+ 9Ar+kIF457ETGE2OO7OVK2AE7kFjLeCCwO2BFmekIOwixnVD6Qo0RCOKZRR3Isrf2G4C
+ PwkUaj7Hg6VgMZMlzTXNLbl0YwEx57pw8tI5detLmt1rhfxIb1s/fQlKFV6/jprGtZvU
+ m99rR5ZaAsLxWkFj/xkeiideDN/bmPjgNNeAjP/PQozYOm9Xy8Q02Za18vhoIg97LoCQ
+ dfLEHOC/X8GUCx0YVYqPcQUSIBzHngjfefXmoi/IP513HgAql6mrgaePUoTf5JXn/kVI ehBA==
+X-Gm-Message-State:
+ AEkoouueb/MsRhKpF9zb5A4uFCu6mvvWBjjLgNeLBlpa+8f08S0LAJplb8jGcj99zJwqvA==
+X-Received: by 10.28.111.4 with SMTP id k4mr79072246wmc.94.1470340138431;
+ Thu, 04 Aug 2016 12:48:58 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id b186sm5085838wmg.23.2016.08.04.12.48.55
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Thu, 04 Aug 2016
+ 12:48:55 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions clash between test::helper and Test::Helper
+Date: Thu, 4 Aug 2016 20:48:54 +0100
+Message-ID: <053F6D6D-F584-45A7-BD83-AFECDAB53BE6@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: dpavlin@rot13.org, demon@now.ai
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Dobrica & Derrik,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m still =
+working on resolving conflicts caused by PAUSE now considering package =
+names case insensitively. This has left us with some situations where =
+people are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+Dobrica has ownership of the test::helper namespace, which was last =
+indexed in your Fuse 0.14 release =E2=80=94 it hasn=E2=80=99t been =
+indexed for subsequent releases, because Derrik (DPATES) who=E2=80=99s =
+done those releases, doesn=E2=80=99t have permission for it.
+
+Your test::helper class is just used in tests, so shouldn=E2=80=99t =
+really be indexed. If the dist was refactored:
+
+   - rename the =E2=80=9Ctest=E2=80=9D directory to =E2=80=9Ct=E2=80=9D, =
+as per the CPAN convention
+   - move any test libraries to t/lib/
+
+then PAUSE wouldn=E2=80=99t try to index it or check permissions, as it =
+ignores any modules found in the t/ directory.
+
+In the meantime, I=E2=80=99d like to resolve the permissions clash by =
+dropping your permissions on =E2=80=9Ctest::helper=E2=80=9D. This =
+won=E2=80=99t stop Fuse from being indexed, or prevent people from =
+installing Fuse. Are you happy for me to do this?
+
+Cheers,
+Neil
+

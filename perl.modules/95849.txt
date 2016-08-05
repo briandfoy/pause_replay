@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95849
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 5200 invoked from network); 4 Aug 2016 20:06:25 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 4 Aug 2016 20:06:25 -0000
+Received: (qmail 19910 invoked by uid 225); 4 Aug 2016 20:06:25 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 19906 invoked by alias); 4 Aug 2016 20:06:25 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f68.google.com (HELO mail-wm0-f68.google.com)
+ (74.125.82.68) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 04 Aug
+ 2016 13:06:23 -0700
+Received: by mail-wm0-f68.google.com with SMTP id o80so758484wme.0 for
+ <modules@perl.org>; Thu, 04 Aug 2016 13:06:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=k5MKn4/ynp6JKKwUlou79vRGKnmUdpLX95oXeaSH5cQ=;
+ b=SDr1Fq/KMvCW1EduhsDmyY3p2P2g8dAjrlCDaniGUPnPrKsloPyt2NBv1eCQMUD1vh
+ GhyV+jpN+r3gadHWm5WTmBwy3NaL0RHv4PbZv0Xhn8PVKX/A07Xs1WvlfHW2LKFgy4Ht
+ eJBhQPPTF/ZH5+W7MH2FvzreZ79A/o0A2nOLASncTt4yusI2LZcZmKeglEp+qh5AV4+B
+ Tt69/OcZib02udylXg7HVUPt9o5ghYrm7CcN6XT648He1N+W7Npmv7XxKWd9YtTOAiG/
+ W+Eo9cO1cLBXCK0Yne5Gt/meH29DeMCXrgPcMJGp2h+Z6Yup/2HCKhDWVPocsgLP+3N4 bdZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=k5MKn4/ynp6JKKwUlou79vRGKnmUdpLX95oXeaSH5cQ=;
+ b=VEWwEGEmPRm7FPwqB3ceUQPSvwm++Ioa1nKebSCHgaN0wsBQWTZgSX+DEbw2hECN4G
+ vIwv0kFRtW/xXnk5xfWsfAgmUEQD2QiYa028L1PCAmRNtMo0lgbXqTT5qT0dHeX6STFc
+ KzJoJ+eBNrrB7Q1iiE4LRGxbiWzZKwKaqkxTKHh3xLqyvwBrC1s9eNZNdWYu8SIIrWvM
+ 8M/hmhqcXpxueTBQ1NpFSFWrYeXOTq64LEAgLCrUSfZXE7m1XR/yQC71pYGIvaoRYT96
+ JjQWXXWQ3LDVqp8cnVakU+W/+umcOQV2Tr0Z5w00Btwjaz+0BnPfqzHLV0cHoXzrL6dC Vs2Q==
+X-Gm-Message-State:
+ AEkoous8jCEZjK0jDgQraCqi1qZ23L63l0W0+ZgwIkSVL0rVXpN3XiDicqioO3TMibHWsQ==
+X-Received: by 10.28.230.205 with SMTP id e74mr76760957wmi.42.1470341179106;
+ Thu, 04 Aug 2016 13:06:19 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id va3sm14403803wjb.18.2016.08.04.13.06.17
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Thu, 04 Aug 2016
+ 13:06:18 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions clash between "stash" and "Stash"
+Date: Thu, 4 Aug 2016 21:06:17 +0100
+Message-ID: <BFCD4087-83EA-4447-82F5-CBC80961C030@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: tkeefer@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Tim,
+
+I=E2=80=99m one of the PAUSE admins, and I=E2=80=99m working on =
+resolving conflicts caused by PAUSE now considering package names case =
+insensitively. This has left us with some situations where people are =
+owners of namespaces previously considered distinct, and now considered =
+the same.
+
+You have ownership of the package name =E2=80=9Cstash=E2=80=9D, which =
+now conflicts with =E2=80=9CStash=E2=80=9D, which is owned by PMURIAS.
+
+You have ownership of this because your Gantry distribution has a module =
+Gantry::Stash, which starts with:
+
+    package Gantry::Stash;
+    package stash;
+
+If you dropped the =E2=80=9Cpackage stash=E2=80=9D line, this would keep =
+the package name within your namespace. Would you be happy to do a =
+release with this change please?
+
+Regardless, I=E2=80=99d like to drop your permissions on the =E2=80=9Cstas=
+h=E2=80=9D namespace, to resolve the conflict. This won=E2=80=99t stop =
+Gantry from being indexed, and won=E2=80=99t stop people from being able =
+to install it, so there isn=E2=80=99t really any reason to not do this =
+now. But I wanted to check you=E2=80=99re happy for me to do this?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more =E2=80=94 =
+I=E2=80=99m working on resolving the existing cases.
+
+Cheers,
+Neil
+
