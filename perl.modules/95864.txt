@@ -1,0 +1,113 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95864
+Return-Path: <darren@darrenduncan.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 26760 invoked from network); 7 Aug 2016 02:05:27 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 7 Aug 2016 02:05:27 -0000
+Received: (qmail 25706 invoked by uid 225); 7 Aug 2016 02:05:27 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 25702 invoked by alias); 7 Aug 2016 02:05:27 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from twelve.baremetal.com (HELO twelve.baremetal.com)
+ (67.223.102.253) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Sat, 06
+ Aug 2016 19:05:18 -0700
+Received: from Darrens-iMac.local (S0106f0f24983bfe3.gv.shawcable.net
+ [184.66.240.122]) by twelve.baremetal.com (8.14.9/8.14.9) with ESMTP id
+ u7725BYS030707; Sat, 6 Aug 2016 19:05:11 -0700
+Subject: Re: BackPAN permissions block file downloads
+To: Douglas Bell <preaction@me.com>, David Golden <xdg@xdg.me>
+References: <57A5A8C4.9060907@darrenduncan.net>
+ <CAOeq1c-BsA6U2z9viYjRRCOiXvWEh9TL6Env=FfwdkpkYA0Y6A@mail.gmail.com>
+ <CAF80DDF-2ADF-4928-A930-C0A472C75EF9@me.com>
+Cc: PAUSE Admins <modules@perl.org>
+Message-ID: <57A69757.90904@darrenduncan.net>
+Date: Sat, 6 Aug 2016 19:05:11 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:38.0)
+ Gecko/20100101 Thunderbird/38.8.0
+MIME-Version: 1.0
+In-Reply-To: <CAF80DDF-2ADF-4928-A930-C0A472C75EF9@me.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Approved: news@nntp.perl.org
+From: darren@darrenduncan.net (Darren Duncan)
+
+Thank you Douglas,
+
+That change solved my primary concern, the .pl files can now be viewed and saved.
+
+Now, the server treating them as text on one hand is fine because they actually 
+are text.
+
+(On a tangent, the convention of a web server automatically executing files it 
+finds in web dirs is a dangerous default and web servers should never execute 
+anything except when whitelisted.)
+
+However, I believe it can be worthwhile to take an extra step and force it to be 
+a "download".  This makes the behavior consistent with the tarballs which 
+conceptually they are an alternative for.
+
+I was going to say that a primary benefit of "download" is that the file keeps 
+the original file datestamp on my computer when saved rather than being changed 
+to "now" if one were to click it and then choose "Save As".
+
+However, I found that an easy workaround is to right-click on the link and 
+choose "Download Linked File" etc from the contextual menu, and then in that 
+case the original datestamp is preserved.
+
+Considering that, I would be fine either way, and in fact leaving things as they 
+are now may be more beneficial to people that just want to quickly browse the 
+source as if it were a README.
+
+Thanks again.
+
+-- Darren Duncan
+
+On 2016-08-06 5:51 PM, Douglas Bell wrote:
+> Alright, this seems to be fixed. Thanks for letting us know: That error meant
+> that it was still trying to execute it as CGI (though there were 2 permission
+> failures that were preventing it). Now both the backpan and cpan mirrors on
+> cpantesters do not even know what CGI is, so you can download those scripts.
+> Apache thinks they're text, and I'm not presently concerned about arguing with
+> it, but I could force it to be a real "download" if anyone thinks that's better.
+>
+>> On Aug 6, 2016, at 6:21 AM, David Golden <xdg@xdg.me> wrote:
+>>
+>> Doug, can you please take a look?
+>>
+>> David
+>>
+>>
+>> On Aug 6, 2016 5:07 AM, "Darren Duncan" <darren@darrenduncan.net> wrote:
+>>
+>>     For context, please see this BackPAN user directory:
+>>
+>>     http://backpan.cpantesters.org/authors/id/G/GL/GLEACH/
+>>
+>>     BackPAN has permissions problems such that if one tries to download files
+>>     named *.pl, such as the handful at the end of the above file listing, a
+>>     403 error results, eg "You don't have permission to access
+>>     /authors/id/G/GL/GLEACH/pod2indexed_html-0.1.pl on this server."
+>>
+>>     The expected result would be a 200 response with type text/plain that
+>>     shows the source code of that file, same as when clicking on a *.meta or a
+>>     *.readme file.
+>>
+>>     In this case, the underlying problem is that there is a Perl script that
+>>     was distributed bare a decade ago and not in a tarball, so a part of CPAN
+>>     history so done can't be viewed easily without the fix.
+>>
+>>     As the front page for BackPAN says it is run by the PAUSE admins and
+>>     doesn't give other contact info, I'm writing modules@ to get the attention
+>>     of whomever is best to deal with this problem.
+>>
+>>     Thank you in advance for fixing this.
+>>
+>>     -- Darren Duncan
+>>
+>
+
