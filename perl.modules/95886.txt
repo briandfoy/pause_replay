@@ -1,0 +1,106 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95886
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 13123 invoked from network); 9 Aug 2016 21:05:57 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 9 Aug 2016 21:05:57 -0000
+Received: (qmail 13835 invoked by uid 225); 9 Aug 2016 21:05:57 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 13831 invoked by alias); 9 Aug 2016 21:05:57 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f51.google.com (HELO mail-wm0-f51.google.com)
+ (74.125.82.51) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 09 Aug
+ 2016 14:05:55 -0700
+Received: by mail-wm0-f51.google.com with SMTP id f65so54753787wmi.0 for
+ <modules@perl.org>; Tue, 09 Aug 2016 14:05:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=auC4IasxTemtulqMBKYgI0BbLR498AotE8Ivxunlgzo=;
+ b=f5M3/WjqbwyWNgi/aVUBokmMJKEeaRuZKYLzhRK1RqwAfHHjaOmSQNYiwgyBNx5+O1
+ C2Ml31guYC+7QPWU46pHXvp+rYyhqA8vkjdAbRhDOJo7qA+2c/SLmAFAcdUXIJmuhdp6
+ 4kp4tJa76pr+dwx5Xc3/wjBU+Mlni+a32Lh69QFL0km59juQAAjnVTEwbcdSFCp10943
+ TeDz9h3MsTqdHbTBHKnp9kZkB2WIuejDdYCLXcQ6ahU12m1IaeLMx1kXBEiwXbdg7dxM
+ IIy8/vqsP4tF8RD+MGgIwZqwf1sr9Fje2cmHoOYB93aP+Id4gLwkxUPHC0H6DYrgHWJx NO/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=auC4IasxTemtulqMBKYgI0BbLR498AotE8Ivxunlgzo=;
+ b=IjYJ9g1FzYz1DsATALT0VFqj2ZHhVBRIIbetxQYV7C6GGImSfHEKj8BUhhRZY8vYQN
+ On1r341UCW4TWhjD13+zfZgmF8BPs6b3qSTK6YM5zfwGVDvPSAznYD/0juc44HEbqO71
+ nlnZLsG5wCqWkowEeoZ7JPIi8i478HqZR8UrLniCl8ZR9tQFfrpPLeffRhk8sUbNjQjx
+ Y6Va32E88QkaSoKHIajzpYmeHJ0OzBn0DyF8ceDa1RIGN6/p8p4jesZY8je/Nhk8thf1
+ D4rSPi7t41zFz8sm1JWWZV0CybevkWCBUYf7kxuXwml+S6WecShC6nBE5hc8SYMaHeXH BtrQ==
+X-Gm-Message-State:
+ AEkoouuCITpB5VPIkUcn4wWzy737Ey4U6oDDeCITagbdDIgrsGUTNWuCnnA7xB2iqwtRpQ==
+X-Received: by 10.28.232.149 with SMTP id f21mr941160wmi.51.1470776750958;
+ Tue, 09 Aug 2016 14:05:50 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id d64sm5020654wmc.22.2016.08.09.14.05.48
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Tue, 09 Aug 2016
+ 14:05:48 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions clash between HTML::Template::DEFAULT and
+ HTML::Template::Default
+Date: Tue, 9 Aug 2016 22:05:47 +0100
+Message-ID: <2551EB6D-8489-4709-8A1C-1EC61B995E92@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: sam@tregar.com, wonko@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Sam and Michael,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m emailing you because =
+I=E2=80=99m working on resolving conflicts caused by PAUSE now =
+considering package names case insensitively. This has left us with some =
+situations where two or more people are owners of namespaces previously =
+considered distinct, and now considered the same.
+
+The HTML::Template module defines a number of inner classes, including =
+HTML::Template::DEFAULT. These aren=E2=80=99t currently being indexed, =
+because Michael (WONKO), who=E2=80=99s done the recent releases, =
+doesn=E2=80=99t have permission for them. So HTML::Template::DEFAULT is =
+still indexed against the last release SAMTREGAR did, 2.9.
+
+This now conflicts with HTML::Template::Default, which is owned by =
+LEOCHARRE, and included in his HTML-Template-Default.
+
+Given these are inner classes, the easiest way to resolve this is to =
+tell PAUSE not to index any of the inner classes. Then I=E2=80=99ll be =
+able to drop SAMTREGAR=E2=80=99s ownership of HTML::Template::DEFAULT.
+
+The easiest way to do this is to add the following to dist.ini
+
+	[MetaNoIndex]
+	package =3D HTML::Template::COND
+	package =3D HTML::Template::DEFAULT
+	package =3D HTML::Template::ESCAPE
+	package =3D HTML::Template::JSESCAPE
+	package =3D HTML::Template::LOOP
+	package =3D HTML::Template::NOOP
+	package =3D HTML::Template::PRINTSCALAR
+	package =3D HTML::Template::URLESCAPE
+	package =3D HTML::Template::VAR
+
+I could then drop permissions on HTML::Template::DEFAULT, once there=E2=80=
+=99s a new release on CPAN, we can schedule deletion of the old =
+releases.
+
+Are you ok to do this?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more =E2=80=94 =
+I=E2=80=99m working through the existing cases resolving them.
+
+Cheers,
+Neil
+

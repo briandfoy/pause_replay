@@ -1,0 +1,96 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:95882
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 29585 invoked from network); 9 Aug 2016 20:30:08 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 9 Aug 2016 20:30:08 -0000
+Received: (qmail 10187 invoked by uid 225); 9 Aug 2016 20:30:07 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 10175 invoked by alias); 9 Aug 2016 20:30:05 -0000
+X-Spam-Status: No, hits=-2.6 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f51.google.com (HELO mail-wm0-f51.google.com)
+ (74.125.82.51) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 09 Aug
+ 2016 13:30:03 -0700
+Received: by mail-wm0-f51.google.com with SMTP id q128so55158739wma.1 for
+ <modules@perl.org>; Tue, 09 Aug 2016 13:30:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=VcyErikkN7YzmF1RkPzn2fDel5+bqnlW7U2wFg/R73U=;
+ b=Qt8ehQ85n7JsWAXIwKXnL3OwfS53Xt1gKB1LYHNcZAqSWTNP9Wv8+w/O1qHtjkf9HQ
+ FX7b4gwwdXyIp7szurJ8NNAkw4RdVzBoR5PULVlARJT9MzH6Rf84R3E4WzKj+sMvv8dP
+ Pyrg4tDCwVdVBO32KMLMK/+qCquuDgNstLadTnx9jcR5HUCvhYJQQ+UZCcxNtoiGFxFG
+ tI3uT8jnTQQG6Kv7A9ceRJcl0DQinXXmGelVcEWOjqbl/a48IrOWTB8PP5sy8BqN2G8a
+ l0HKpR4DkCJ3ulmZf8o+DQ581hRi4D5T0AxF9tkk9PdCsoAavAtR4VfcYC728H07EhBK NQPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=VcyErikkN7YzmF1RkPzn2fDel5+bqnlW7U2wFg/R73U=;
+ b=bdFIqA809oJxPWjiGFYw0WoHjusWMOQnuWGDSMnFmTwmtSY0DUfm6CRdyjdXSqfuXE
+ wWPYB9alE11+aj+HtJ/BmjjDoVmzBO8vaHNvYdiuJ5E0WNmtAwoju73WDEZE2QPv4o+g
+ 5RjtjcpdkuRHrKUdpK2UHzZH1K0/Ra0ltNZkAb0O7KhM1jlErRUcS6ugYvNaJ9jF9Lk2
+ 3n3U5Svi5QQDbP2XcTQuSkWIcarGu8yG/z7Dz2ejrz87XWAw2CZSPjcaa/sFYBoMYObC
+ OJlZ1lwslGjix/nEKu/cjjOgVApoee5nDBQTF38N4Ubxh3h6YDaVkbO3BNKgZjgcjiHx SjNg==
+X-Gm-Message-State:
+ AEkoouuer5GiPR4KwA8Kd/NZ8OuR+p6JUfj+YbkkAjoVOTiz4HTmmU6TqmY9yznR8yRT8w==
+X-Received: by 10.28.56.3 with SMTP id f3mr36086wma.59.1470741958499; Tue, 09
+ Aug 2016 04:25:58 -0700 (PDT)
+Received: from tucumcari.home
+ (host165-120-20-223.range165-120.btcentralplus.com. [165.120.20.223]) by
+ smtp.gmail.com with ESMTPSA id kq2sm37521692wjc.41.2016.08.09.04.25.56
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Tue, 09 Aug 2016
+ 04:25:56 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict between Asterisk::Config and
+ Asterisk::config
+Date: Tue, 9 Aug 2016 12:25:55 +0100
+Message-ID: <E0B19E79-7A3F-43A6-BF27-913864F81339@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: James Golovich <james@gnuinter.net>, Charlie Gonzalez
+ <itcharlie@gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi James & Charlie,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+James has ownership of Asterisk::Config and Charlie has co-maint. This =
+is part of the asterisk-perl distribution.
+
+It now conflicts with the Asterisk::config package, owned by PAUSE id =
+HOOWA, and on CPAN in the Asterisk-config distribution.
+ These used to be distinct package names, but now they=E2=80=99re not.
+
+I think the easiest way to resolve this would be if you could rename =
+Asterisk::Config to Asterisk::Configuration, or similar, and then update =
+the modules currently in the Asterisk::Config:: namespace.
+
+PAUSE doesn=E2=80=99t let situations like this occur any more =E2=80=94 =
+I=E2=80=99m just working through the existing cases. I realise this is a =
+PITA, so sorry for the hassle, and thanks in advance for helping tidy up =
+some of the dusty corners of CPAN :-)
+
+The steps would be something like this:
+ - You do a release with renamed modules
+ - I can drop permissions on the old package names
+ - In a few days (once your release has made it to all CPAN mirrors), we =
+can schedule the old releases for deletion
+   (as they have the conflicting module in them).
+
+Cheers,
+Neil
+
