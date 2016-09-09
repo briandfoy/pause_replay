@@ -1,0 +1,90 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:96078
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 21201 invoked from network); 8 Sep 2016 20:34:15 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 8 Sep 2016 20:34:15 -0000
+Received: (qmail 20306 invoked by uid 225); 8 Sep 2016 20:34:15 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20302 invoked by alias); 8 Sep 2016 20:34:14 -0000
+X-Spam-Status: No, hits=-0.2 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_LOW,RCVD_IN_SORBS_SPAM
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f42.google.com (HELO mail-wm0-f42.google.com)
+ (74.125.82.42) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 08 Sep
+ 2016 13:34:11 -0700
+Received: by mail-wm0-f42.google.com with SMTP id w12so56116650wmf.0 for
+ <modules@perl.org>; Thu, 08 Sep 2016 13:34:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=sTDXVItgxEjeXpayCQ3GL+oChLORCZw9lPfa1nEaz2Q=;
+ b=EIUgtTdzYMaOFYkmnjlzJMQFCFb//QxJorkVc/sYH5UVXQZo00tAtVz21W3zxtcTbz
+ xGqoA/1u8VKZTA0JeXhTMX2V3dzXhVxuA+iDkw3IgU423+DANJKOIKrbq5dJlDOfnoch
+ 3PryTE958QIyP5rj9/0nvA/k5CXSpqo5i2ADm0Un/pcHTNTB/jxlGADbPEpjd0ygjcnL
+ 2PzhViexDqfOSnAN+5rZhtBhVf2/tqD/96EoaUdB52OQ8wZ5/N4SLaaYaQ1llsnPr84T
+ qXNnI43HSDY/4NrmMyRyAdzWMt9pq82NGij+cv4kxtjxEPLxo14D8ZFujq5tgygHSI0t cmoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=sTDXVItgxEjeXpayCQ3GL+oChLORCZw9lPfa1nEaz2Q=;
+ b=PM3PL7LVOWk5fAU5ixqc41gwk5DU0N+HV9kDDCk+ArNHWaZZD22ZNpihLvu4eH16xs
+ CYpzguX039deOsDo3xI8Xo12/MkkmMzcxxNX4uj52ZFHhbXOsN1HJ4xwV+gT5iFVjWI2
+ MmHwfK8L/BeJz7d4cLMuj+KFP+R1tTpsAyTYHrOu7MxJ6A1L8+8ja4cpYoiq6P3kt1xt
+ tMhlSuXFBl/OlzeDh2jlM6iDdpc90BqTVUwKu3a5rxmyLOaiWxQYn7tHx+LFjkAXm8tY
+ ChrSI7obuNI1cUD1fPYgp43JWorOupgRhM3DKNqqkZe+UZ6LC19ktHkKL0Jn3uvgBU10 topw==
+X-Gm-Message-State:
+ AE9vXwP1R6kGHmSM5LkZ4hjOuoohxAWM931B74kuI1TXLLezsrfJfJFRJWwfqNaoyl4dEg==
+X-Received: by 10.28.12.209 with SMTP id 200mr321675wmm.118.1473366840933;
+ Thu, 08 Sep 2016 13:34:00 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id n7sm45973506wjf.11.2016.09.08.13.33.59
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Thu, 08 Sep 2016
+ 13:33:59 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions clash between MCrypt and Mcrypt
+Date: Thu, 8 Sep 2016 21:33:58 +0100
+Message-ID: <9E09193F-4D9F-409A-A76E-1BC98503C129@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: frey@engineer.com, jesus@omniti.com
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Frey & Theo,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m emailing you because =
+I=E2=80=99m working on resolving conflicts caused by PAUSE now =
+considering package names case insensitively. This has left us with some =
+situations where two or more people are owners of namespaces previously =
+considered distinct, and now considered the same.
+
+Frey has ownership of MCrypt (last released in 2000), and Theo has =
+ownership of Mcrypt (last released in 2007). These are now considered =
+the same from a permissions perspective, resulting in a conflict, which =
+wouldn=E2=80=99t let anyone release a new version.
+
+There are at least ways we can resolve this:
+
+ 1. One of you could rename this to Crypt::MCrypt or similar
+ 2. I noticed that MCrypt won=E2=80=99t install under any recent =
+versions of Perl:
+       http://matrix.cpantesters.org/?dist=3DMCrypt
+    So maybe the quickest solution would be to delete MCrypt from CPAN,
+    if Frey is ok with that? I can do that for you.
+
+How would you like to proceed?
+
+PAUSE no longer lets situations like this occur, so I=E2=80=99m working =
+on resolving the existing cases.
+
+Cheers,
+Neil
+

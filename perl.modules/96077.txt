@@ -1,0 +1,110 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:96077
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 19188 invoked from network); 8 Sep 2016 20:24:26 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 8 Sep 2016 20:24:26 -0000
+Received: (qmail 20122 invoked by uid 225); 8 Sep 2016 20:24:26 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20118 invoked by alias); 8 Sep 2016 20:24:26 -0000
+X-Spam-Status: No, hits=-0.2 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,MIME_QP_LONG_LINE,RCVD_IN_DNSWL_LOW,RCVD_IN_SORBS_SPAM
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f48.google.com (HELO mail-wm0-f48.google.com)
+ (74.125.82.48) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 08 Sep
+ 2016 13:24:19 -0700
+Received: by mail-wm0-f48.google.com with SMTP id b187so188910468wme.1 for
+ <modules@perl.org>; Thu, 08 Sep 2016 13:24:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=KbEiz7+XVVHJCC+RuXFqbgcVwEulZ8QRE53m+uqW2V4=;
+ b=tRcCSwz9aGX+tlXBbMQ2Xe23qKgH70OMXULGAeiHkQWsK3BhuptTdZTwtqWLbbFCWs
+ C/04N3vgtK2IU110FjYJog0gEtMWE5OH7S/a+QmFtznln0aexixPYGT11TlfYFDVo+co
+ buRbQPSNVoZeiBTi1lzbDGnme8Ncg0g0v3WJV3SbDkryJBDSSsXz4ZFrk2p66fcvEUn0
+ yY+xvfFhTfz3mg9yD8W9UaLEJCjrptehV0JiD1+mBs8QIHJUMWX/Q4zUH9lsun89EhBr
+ SGY0t8ld0/hQuNQv4mvyIxIAPqqMfywF4s4bwohX45NLM24xZfxnPHqxgFEtl5QNPvC8 SGPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=KbEiz7+XVVHJCC+RuXFqbgcVwEulZ8QRE53m+uqW2V4=;
+ b=cQlf2K/tklFlH9RcKtu9LhpAwa9Mvw/dkJHV2qJ09QJA2pGXMYCOFwSHFNoGScElRy
+ n3QkYryYVa9+cyjWtAiyuYCkfUNgbDqVJoiZT52TCy0UVQh8ILc4JojbY56PARBFLRU4
+ wLoSDOL2YanTQn9fU/3Jl9kV4d6hR8voP/excOR/2pesAb6qc1gNJAAVCHVvLyjVPTyA
+ /WwzO7X7tmZ4B6+g1ZRfM0CyPTUFmMWUHTuoEoAuHvJbGdnkJrJz5/YMqn+zdvPjXGlX
+ EOfVxn6XwmcpphCuI8YfAxw7ewJFvECDV1GmXbh8GVD8uIA3kXj8/PEIXZdZt9OhR91m lUZw==
+X-Gm-Message-State:
+ AE9vXwOHsUAnUvsRQ/lX9zwa+4OjWgyy8vw1NaV14BFR+XNIChlGZCDZfMVskKHx1ZFKcQ==
+X-Received: by 10.194.94.225 with SMTP id df1mr1493656wjb.51.1473366254821;
+ Thu, 08 Sep 2016 13:24:14 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc96988-rdng25-2-0-cust147.15-3.cable.virginm.net. [82.13.18.148]) by
+ smtp.gmail.com with ESMTPSA id d8sm393127wmi.0.2016.09.08.13.24.13
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Thu, 08 Sep 2016
+ 13:24:13 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Use of toplevel package names in Class-PObject, and permissions
+ clashes
+Date: Thu, 8 Sep 2016 21:24:12 +0100
+Message-ID: <FFC8165A-0B29-4E6B-A0C8-565370AE54B8@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: sherzodr@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Sherzod,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m emailing you because =
+I=E2=80=99m working on resolving conflicts caused by PAUSE now =
+considering package names case insensitively. This has left us with some =
+situations where two or more people are owners of namespaces previously =
+considered distinct, and now considered the same.
+
+Your Class-PObject defines packages VARCHAR, CHAR, INTEGER, TEXT, =
+ENCRYPT, and MD5. These are classes defined in Class::PObject::Template, =
+just as subclasses of the relevant Class::PObject::Type::<type> class. =
+In general, a distribution should keep package names within its own =
+namespace. But beyond that, your permissions on the TEXT package clashes =
+with AKHOBOV=E2=80=99s ownership of the =E2=80=9CText=E2=80=9D package.
+
+There are several ways to resolve this:
+
+  1. You could tell PAUSE not to index these special classes, since =
+they=E2=80=99re only used in PObject/Template.pm
+  2. You could change the code in Template.pm to directly use the =
+Class::PObject::Type::<typename> classes
+  3. You could delete the distribution from CPAN entirely, if you=E2=80=99=
+re no longer interested in maintaining it.
+     I can see from the CPAN Testers result matrix that it doesn=E2=80=99t=
+ work on a lot of recent versions of Perl:
+         http://matrix.cpantesters.org/?dist=3DClass-PObject+2.17
+
+The first option is the simplest for you to do: just change the package =
+line:
+
+    package TEXT;
+
+to this:
+
+    # breaking the line hides it from PAUSE=E2=80=99s indexer
+    package
+        TEXT;
+
+Then PAUSE won=E2=80=99t see the package. If you do that, then I=E2=80=99l=
+l be able to drop the permissions on all of those packages (VARCHAR, =
+CHAR, INTEGER, TEXT, ENCRYPT, and MD5).
+
+Please let me know which way you=E2=80=99d like to resolve this?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more, so I=E2=80=99=
+m resolving the remaining cases.
+
+Cheers,
+Neil
+

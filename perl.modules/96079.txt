@@ -1,0 +1,69 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:96079
+Return-Path: <mst@shadowcat.co.uk>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22163 invoked from network); 8 Sep 2016 20:38:42 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 8 Sep 2016 20:38:42 -0000
+Received: (qmail 20387 invoked by uid 225); 8 Sep 2016 20:38:42 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 20383 invoked by alias); 8 Sep 2016 20:38:42 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0 tests=BAYES_00,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from sloth.scsys.co.uk (HELO sloth.scsys.co.uk) (217.168.150.252)
+ by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 08 Sep 2016 13:38:39
+ -0700
+Received: from agaton.scsys.co.uk ([89.16.177.50] helo=newagaton.scsys.co.uk)
+ by sloth.scsys.co.uk with esmtpsa (TLS1.0:DHE_RSA_AES_128_CBC_SHA1:16) (Exim
+ 4.69) (envelope-from <mst@shadowcat.co.uk>) id 1bi65i-0007ts-Qo; Thu, 08 Sep
+ 2016 20:38:34 +0000
+Date: Thu, 8 Sep 2016 20:38:33 +0000
+To: Neil Bowers <neil.bowers@cogendo.com>
+Cc: sherzodr@cpan.org, PAUSE Admins <modules@perl.org>
+Subject: Re: Use of toplevel package names in Class-PObject, and permissions
+ clashes
+Message-ID: <20160908203833.GI19278@newagaton.scsys.co.uk>
+References: <FFC8165A-0B29-4E6B-A0C8-565370AE54B8@cogendo.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <FFC8165A-0B29-4E6B-A0C8-565370AE54B8@cogendo.com>
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Approved: news@nntp.perl.org
+From: mst@shadowcat.co.uk (Matt S Trout)
+
+On Thu, Sep 08, 2016 at 09:24:12PM +0100, Neil Bowers wrote:
+> Hi Sherzod,
+> 
+> I’m one of the PAUSE admins. I’m emailing you because I’m working on resolving conflicts caused by PAUSE now considering package names case insensitively. This has left us with some situations where two or more people are owners of namespaces previously considered distinct, and now considered the same.
+> 
+> Your Class-PObject defines packages VARCHAR, CHAR, INTEGER, TEXT, ENCRYPT, and MD5. These are classes defined in Class::PObject::Template, just as subclasses of the relevant Class::PObject::Type::<type> class. In general, a distribution should keep package names within its own namespace. But beyond that, your permissions on the TEXT package clashes with AKHOBOV’s ownership of the “Text” package.
+> 
+> There are several ways to resolve this:
+> 
+>   1. You could tell PAUSE not to index these special classes, since they’re only used in PObject/Template.pm
+>   2. You could change the code in Template.pm to directly use the Class::PObject::Type::<typename> classes
+
+The easy way to do 2:
+
+  use aliased 'Class::Object::Type::VARCHAR';
+  use aliased 'Class::Object::Type::CHAR';
+  ...
+
+which will export constants for VARCHAR(), CHAR() etc. (this is how
+JSON::MaybeXS provides JSON->new btw).
+
+Or you could automate generation of said constants with 'use constant'.
+
+Or whatever.
+
+-- 
+Matt S Trout - Shadowcat Systems - Perl consulting with a commit bit and a clue
+
+http://shadowcat.co.uk/blog/matt-s-trout/   http://twitter.com/shadowcat_mst/
+
+Email me now on mst (at) shadowcat.co.uk and let's chat about how our CPAN
+commercial support, training and consultancy packages could help your team.
