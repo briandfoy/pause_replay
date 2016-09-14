@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:96100
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 27104 invoked from network); 13 Sep 2016 22:21:49 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 13 Sep 2016 22:21:49 -0000
+Received: (qmail 26434 invoked by uid 225); 13 Sep 2016 22:21:49 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 26430 invoked by alias); 13 Sep 2016 22:21:49 -0000
+X-Spam-Status: No, hits=-1.4 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_SPAM
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f53.google.com (HELO mail-wm0-f53.google.com)
+ (74.125.82.53) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 13 Sep
+ 2016 15:21:46 -0700
+Received: by mail-wm0-f53.google.com with SMTP id i130so18808716wmf.0 for
+ <modules@perl.org>; Tue, 13 Sep 2016 15:21:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=vFCG3K5Dvk7UK8PpIpZLEJjWedZFSUseWlChcZKPeEw=;
+ b=jN2KWxH77yeyzYE6IqynVCL+A0Uo890g37WzHmnNz99kTbvI0KtKjvyp+Z24++1rCP
+ Hfu3SsRoT2P6XsStbQaMrOKNwCzyirKhVnj+RqnipQSTEap6Ab0Z/QythUinJaYr0Ezl
+ CErEf4GF8neMnoqWW89fY56sh0DmeFzJOILN6hBN3aWyMgQbgK5hc1jdZeRx/GUSVOCT
+ JeNC2o9+e4+Zh1NM4JZ48CruQMJ5BF/+dT/hIQaQ12RPQcnvmaYpZDVPvqIIhISe+UTf
+ J+4du7BT0UO68JeOD4unG9Asu2fVaWA1msvf4cZ4/hmD02fJF1SgntDwwUCaIOR9lkDV Io3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=vFCG3K5Dvk7UK8PpIpZLEJjWedZFSUseWlChcZKPeEw=;
+ b=U0S0SkvPjtpTxjTxDiJeexiDW1vFQJrNaKgW1+VDWp30Fq1VUXBCk5+myH8fQgJOWe
+ rH6lMcZvo9UfW2LV/6eolwKGB937lJXInOyUK564YcEOsgRqpx9RTd8nGlR83jMRpXkm
+ GULa0PIpIMBQHSuyfT15TysJsRq7h4RwjPLKC3YgjMk/N/qvrMDU8Yt39pXG/nl6sYlz
+ 78mbTTbK4KBRE9emreDjQhPNTltzH3HouLhSJdjQzM6TJ5GVVaJ7XZKse4++RhPYMi1N
+ Dgy5snriMJz5ZVCqvOLwd+Oq5y2ZvH7Hub2FaRwbYrzVnQjS5uXIxfvH53ijIISB91EQ fEOQ==
+X-Gm-Message-State:
+ AE9vXwNZ0583DjLD8WXb7NL0++6fVqXYg6Ihm53W8IqVc9sCnI11SKaoX27Wooia7RUjHA==
+X-Received: by 10.28.184.199 with SMTP id i190mr6999803wmf.43.1473805301391;
+ Tue, 13 Sep 2016 15:21:41 -0700 (PDT)
+Received: from tucumcari.home
+ (host81-129-251-134.range81-129.btcentralplus.com. [81.129.251.134]) by
+ smtp.gmail.com with ESMTPSA id bl3sm878906wjc.26.2016.09.13.15.21.40
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Tue, 13 Sep 2016
+ 15:21:40 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict between Lvalue and lvalue
+Date: Tue, 13 Sep 2016 23:21:39 +0100
+Message-ID: <A0A7ADFB-BE1F-4061-80F1-43D3A79DF85F@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: asg@cpan.org, mons@cpan.org
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Eric & Mons,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m working on resolving =
+conflicts caused by PAUSE now considering package names case =
+insensitively. This has left us with some situations where two or more =
+people are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+Eric (ASG) has ownership of the namespace =E2=80=9CLvalue=E2=80=9D, with =
+the Lvalue module being on CPAN in the Lvalue distribution. And Mons has =
+ownership of =E2=80=9Clvalue=E2=80=9D, which is on CPAN in the lvalue =
+distribution.
+
+These two packages are now considered the same by PAUSE when looking at =
+permissions, which means there=E2=80=99s a conflict with your dual =
+ownership, which means that any releases you do now won=E2=80=99t be =
+indexed.
+
+There are at least two ways we can resolve this:
+
+  1. One of you could rename your module and distribution.
+     Eg Mons, you could switch to Sub::lvalue, or Attribute::lvalue
+
+  2. You could delete one of your distributions from CPAN. I can do this =
+for you.
+     Eg Eric, I notice that your distribution doesn=E2=80=99t install on =
+any Perl since 5.17.1
+         http://matrix.cpantesters.org/?dist=3DLvalue
+
+How would you like to progress?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more; I=E2=80=99m=
+ working on resolving the existing cases.
+
+Cheers,
+Neil
+
