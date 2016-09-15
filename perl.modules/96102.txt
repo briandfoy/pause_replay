@@ -1,0 +1,182 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:96102
+Return-Path: <v.perepelitsa@corp.mail.ru>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=perl.org; h=
+	content-type:mime-version:subject:from:in-reply-to:date:cc
+	:message-id:references:to:reply-to; s=dr1; bh=AiV3SjsemLPi+u2Iwg
+	EynXbINkDN9vy+ML5Hsszru44=; b=amQxjmioZoRhHxIGTIgPk2yUjJbSF01JSm
+	DZJ4ZXNQBCDc+4le4HMo80PuaRO3znm+PDBu/jOrvn3T8H3VVJISGvHumxqGAdyv
+	Bt2LnbekvHfj7TkRQCxHD5TM7iWOBKuK3NzigLcF02jEv8VJz4qGZ+isw22Hzfnv
+	L/Cngv3X/E9rLXofU7ciOl+edeUCY0hQKxN07X5xxVCuIU8e2oGn4IAQ5GTdFHBx
+	WxNYQTO8VJum1Fjz7gR0AYjtDKrRpUCW4R6uhrG3HnTEjHuQjUbtF+Cz3PAaBPAb
+	+iusYiAnhLgQuORbwpSgyImkMroGn6rwO7N2huWmmvFsRUU4X5uw==
+Received: (qmail 2924 invoked from network); 13 Sep 2016 22:58:08 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 13 Sep 2016 22:58:08 -0000
+Received: (qmail 29263 invoked by uid 225); 13 Sep 2016 22:58:08 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 29259 invoked by alias); 13 Sep 2016 22:58:08 -0000
+X-Spam-Status: No, hits=-2.7 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HTML_MESSAGE,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from smtp49.i.mail.ru (HELO smtp49.i.mail.ru) (94.100.177.109) by
+ la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 13 Sep 2016 15:58:04
+ -0700
+Received: from 81.5.118.10.dhcp.mipt-telecom.ru ([81.5.118.10]:50329
+ helo=[192.168.1.54]) by smtp49.i.mail.ru with esmtpa (envelope-from
+ <v.perepelitsa@corp.mail.ru>) id 1bjweM-0001c5-Qw; Wed, 14 Sep 2016 01:57:59
+ +0300
+Content-Type: multipart/alternative; boundary="Apple-Mail=_91FC0928-CF74-4ACB-B35E-8F0CC820FB00"
+Mime-Version: 1.0 (Mac OS X Mail 8.2 \(2104\))
+Subject: Re: PAUSE permissions conflict between Lvalue and lvalue
+In-Reply-To: <A0A7ADFB-BE1F-4061-80F1-43D3A79DF85F@bowers.com>
+Date: Wed, 14 Sep 2016 01:57:55 +0300
+Cc: asg@cpan.org, Mons Anderson <mons@cpan.org>, PAUSE Admins
+ <modules@perl.org>
+Message-ID: <2B345510-86D1-44AC-9E14-2A80C2B0775B@corp.mail.ru>
+References: <A0A7ADFB-BE1F-4061-80F1-43D3A79DF85F@bowers.com>
+To: Neil Bowers <neil.bowers@cogendo.com>
+X-Mailer: Apple Mail (2.2104)
+X-Mailru-Sender:
+ 45C5BE9D00B4E2BF407C5F7F0785877EA3A9D81A325394701BA945C6C2B4C320A06B2B8EA832C531
+X-Mras: OK
+X-Virus-Checked: Checked
+Original-From: Mons Anderson <v.perepelitsa@corp.mail.ru>
+Reply-To: Mons Anderson <v.perepelitsa@corp.mail.ru>
+Approved: news@nntp.perl.org
+From: modules@perl.org (Mons Anderson via modules)
+
+--Apple-Mail=_91FC0928-CF74-4ACB-B35E-8F0CC820FB00
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+Hi, Neil!
+
+This module was written as a PoC and never was used in any of production =
+code.
+As I can see from deps, there is no CPAN modules, that uses it also.
+After all, for now there is another module LV, that was inspired by =
+lvalue and do more, than my.
+
+So, I renamed lvalue into Sub::Lvalue for the historical reasons and =
+deleted lvalue.
+
+--=20
+Mons Anderson
+<mons@cpan.org>
+
+
+
+> On 14 =D1=81=D0=B5=D0=BD=D1=82. 2016 =D0=B3., at 1:21, Neil Bowers =
+<neil.bowers@cogendo.com> wrote:
+>=20
+> Hi Eric & Mons,
+>=20
+> I=E2=80=99m one of the PAUSE admins. I=E2=80=99m working on resolving =
+conflicts caused by PAUSE now considering package names case =
+insensitively. This has left us with some situations where two or more =
+people are owners of namespaces previously considered distinct, and now =
+considered the same.
+>=20
+> Eric (ASG) has ownership of the namespace =E2=80=9CLvalue=E2=80=9D, =
+with the Lvalue module being on CPAN in the Lvalue distribution. And =
+Mons has ownership of =E2=80=9Clvalue=E2=80=9D, which is on CPAN in the =
+lvalue distribution.
+>=20
+> These two packages are now considered the same by PAUSE when looking =
+at permissions, which means there=E2=80=99s a conflict with your dual =
+ownership, which means that any releases you do now won=E2=80=99t be =
+indexed.
+>=20
+> There are at least two ways we can resolve this:
+>=20
+>  1. One of you could rename your module and distribution.
+>     Eg Mons, you could switch to Sub::lvalue, or Attribute::lvalue
+>=20
+>  2. You could delete one of your distributions from CPAN. I can do =
+this for you.
+>     Eg Eric, I notice that your distribution doesn=E2=80=99t install =
+on any Perl since 5.17.1
+>         http://matrix.cpantesters.org/?dist=3DLvalue
+>=20
+> How would you like to progress?
+>=20
+> PAUSE doesn=E2=80=99t let situations like this occur any more; I=E2=80=99=
+m working on resolving the existing cases.
+>=20
+> Cheers,
+> Neil
+>=20
+
+
+--Apple-Mail=_91FC0928-CF74-4ACB-B35E-8F0CC820FB00
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html =
+charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space;" =
+class=3D"">Hi, Neil!<div class=3D""><br class=3D""></div><div =
+class=3D"">This module was written as a PoC and never was used in any of =
+production code.</div><div class=3D"">As I can see from deps, there is =
+no CPAN modules, that uses it also.</div><div class=3D"">After all, for =
+now there is another module LV, that was inspired by lvalue and do more, =
+than my.</div><div class=3D""><br class=3D""></div><div class=3D"">So, I =
+renamed lvalue into Sub::Lvalue for the historical reasons and deleted =
+lvalue.</div><div class=3D""><div class=3D""><br class=3D""><div =
+apple-content-edited=3D"true" class=3D"">
+<div style=3D"color: rgb(0, 0, 0); font-family: Helvetica;  font-style: =
+normal; font-variant: normal; font-weight: normal; letter-spacing: =
+normal; line-height: normal; orphans: 2; text-align: -webkit-auto; =
+text-indent: 0px; text-transform: none; white-space: normal; widows: 2; =
+word-spacing: 0px; -webkit-text-size-adjust: auto; =
+-webkit-text-stroke-width: 0px; word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space; " =
+class=3D""><div class=3D"">--&nbsp;</div><div class=3D"">Mons =
+Anderson</div><div class=3D"">&lt;<a href=3D"mailto:mons@cpan.org" =
+class=3D"">mons@cpan.org</a>&gt;</div></div><br =
+class=3D"Apple-interchange-newline"><br =
+class=3D"Apple-interchange-newline">
+</div>
+<br class=3D""><div><blockquote type=3D"cite" class=3D""><div =
+class=3D"">On 14 =D1=81=D0=B5=D0=BD=D1=82. 2016 =D0=B3., at 1:21, Neil =
+Bowers &lt;<a href=3D"mailto:neil.bowers@cogendo.com" =
+class=3D"">neil.bowers@cogendo.com</a>&gt; wrote:</div><br =
+class=3D"Apple-interchange-newline"><div class=3D"">Hi Eric &amp; =
+Mons,<br class=3D""><br class=3D"">I=E2=80=99m one of the PAUSE admins. =
+I=E2=80=99m working on resolving conflicts caused by PAUSE now =
+considering package names case insensitively. This has left us with some =
+situations where two or more people are owners of namespaces previously =
+considered distinct, and now considered the same.<br class=3D""><br =
+class=3D"">Eric (ASG) has ownership of the namespace =E2=80=9CLvalue=E2=80=
+=9D, with the Lvalue module being on CPAN in the Lvalue distribution. =
+And Mons has ownership of =E2=80=9Clvalue=E2=80=9D, which is on CPAN in =
+the lvalue distribution.<br class=3D""><br class=3D"">These two packages =
+are now considered the same by PAUSE when looking at permissions, which =
+means there=E2=80=99s a conflict with your dual ownership, which means =
+that any releases you do now won=E2=80=99t be indexed.<br class=3D""><br =
+class=3D"">There are at least two ways we can resolve this:<br =
+class=3D""><br class=3D""> &nbsp;1. One of you could rename your module =
+and distribution.<br class=3D""> &nbsp;&nbsp;&nbsp;&nbsp;Eg Mons, you =
+could switch to Sub::lvalue, or Attribute::lvalue<br class=3D""><br =
+class=3D""> &nbsp;2. You could delete one of your distributions from =
+CPAN. I can do this for you.<br class=3D""> &nbsp;&nbsp;&nbsp;&nbsp;Eg =
+Eric, I notice that your distribution doesn=E2=80=99t install on any =
+Perl since 5.17.1<br class=3D""> =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a =
+href=3D"http://matrix.cpantesters.org/?dist=3DLvalue" =
+class=3D"">http://matrix.cpantesters.org/?dist=3DLvalue</a><br =
+class=3D""><br class=3D"">How would you like to progress?<br =
+class=3D""><br class=3D"">PAUSE doesn=E2=80=99t let situations like this =
+occur any more; I=E2=80=99m working on resolving the existing cases.<br =
+class=3D""><br class=3D"">Cheers,<br class=3D"">Neil<br class=3D""><br =
+class=3D""></div></blockquote></div><br =
+class=3D""></div></div></body></html>=
+
+--Apple-Mail=_91FC0928-CF74-4ACB-B35E-8F0CC820FB00--
