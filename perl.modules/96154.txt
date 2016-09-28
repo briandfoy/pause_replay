@@ -1,0 +1,82 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:96154
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 28314 invoked from network); 27 Sep 2016 21:18:59 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 27 Sep 2016 21:18:59 -0000
+Received: (qmail 7513 invoked by uid 225); 27 Sep 2016 21:18:59 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 7509 invoked by alias); 27 Sep 2016 21:18:59 -0000
+X-Spam-Status: No, hits=-1.4 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_SPAM
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f44.google.com (HELO mail-wm0-f44.google.com)
+ (74.125.82.44) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Tue, 27 Sep
+ 2016 14:18:53 -0700
+Received: by mail-wm0-f44.google.com with SMTP id b130so36194393wmc.0 for
+ <modules@perl.org>; Tue, 27 Sep 2016 14:18:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=8hv4Vj0FZsxVHR5B4+EVrFpG9omifY+vlgWei4JU5ZQ=;
+ b=JBzWcm3Aw6OdGEpg52DAuMaxxN+Z8FL0xRgeqwtt7pfgNHe54wcKLfgPtFLdWEfANf
+ JlWWsLNT3QG9IQfCm5laQq2ZEBTE4LIym8d3oKJwu7Nsj0gUFGs2qqOtgoEJZfgoTJ07
+ UWWwHLjgXrNuuSXAjhILQK13SwrSeYG6F3bDpve6qJJEZFZuqTCNKQz75kuH8Y87Ylne
+ TYyqNosw5PhkXsXt0ZvsZQGgmXeQFka1CUzwvPF53SkJae7+w7HB/8+/4UT6cr8upzj9
+ jAihFPf8ysU51lziUDcSuBxdL5MA3iTL5JoFcPZvydC4lLzbm0yRsFlr2DXfmg25hHcr 2Xyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=8hv4Vj0FZsxVHR5B4+EVrFpG9omifY+vlgWei4JU5ZQ=;
+ b=UcBhrwNczQT4ACIqw4fXvFLTnCRZlvVgTUT1Ngg2wyzaPcIXDRyGLj6TRS7NVGvmNy
+ fSLD24x0I42ADJRd/fBa/1C/I9hSgAvPr/f8d4LW6YAsI6TK8LIor/PXIPAGa5PlIxPP
+ wZP1UtR8EV8vTasQvQZZyAP2FRFGn3NEgGXpY0Ga4pBKty2RhLZrOXpNtFcbJRlZ4Nsg
+ 63S4rNS7Jwta/HGUQU6draw1RjtwQHA91YNH4tyUZHCcCdrAaEiN+PuDd1TW+rBMFhzh
+ Zc2FQT6ALbEO4l2a+IjTdU2BkyMS8+VY9Pbj/vHfsRzEL3SHLgbd7kCXFgRYgeP4DmR4 4aWg==
+X-Gm-Message-State:
+ AE9vXwNJMssY5SeKwXEMDiCByrJG78bUmvF865DlT0XuPlT8oBNzqaFlttAwHd3YD85G4A==
+X-Received: by 10.194.75.227 with SMTP id f3mr23630638wjw.2.1475011129353;
+ Tue, 27 Sep 2016 14:18:49 -0700 (PDT)
+Received: from tucumcari.home
+ (host81-157-122-148.range81-157.btcentralplus.com. [81.157.122.148]) by
+ smtp.gmail.com with ESMTPSA id gg10sm4698386wjd.4.2016.09.27.14.18.48
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Tue, 27 Sep 2016
+ 14:18:48 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: Tidying up CPAN: Qt::Base
+Date: Tue, 27 Sep 2016 22:18:47 +0100
+Message-ID: <4CB3CEB2-E44A-4EF0-BA0C-0214BBE9F60F@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: awinters@users.sourceforge.net
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Ashley,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m working on resolving =
+conflicts caused by PAUSE now considering package names case =
+insensitively. This has left us with some situations where two or more =
+people are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+You have ownership of Qt::Base, which is on CPAN in PerlQt-1.04.tar.gz =
+(released in 1997), and Germain (GGARAND) has ownership of Qt::base, =
+which is on CPAN in PerlQt-3.008.tar.gz. To resolve this conflict, I =
+would like to drop your ownership of the older Qt::Base, and delete all =
+of the older releases of PerlQt from your author directory (there are a =
+number of older releases of PerlQt appearing in the CPAN index, because =
+various module names were changed across a number of releases. As a =
+result someone could (theoretically) accidentally install the wrong =
+version of PerlQt).
+
+Are you happy for me to do this?
+
+Cheers,
+Neil
+
