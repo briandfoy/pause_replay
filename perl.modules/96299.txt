@@ -1,0 +1,89 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:96299
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15130 invoked from network); 17 Oct 2016 20:18:19 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 17 Oct 2016 20:18:19 -0000
+Received: (qmail 15060 invoked by uid 225); 17 Oct 2016 20:18:18 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 15056 invoked by alias); 17 Oct 2016 20:18:18 -0000
+X-Spam-Status: No, hits=-2.1 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,MIME_QP_LONG_LINE,RCVD_IN_DNSWL_LOW,RCVD_IN_SORBS_SPAM
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-lf0-f49.google.com (HELO mail-lf0-f49.google.com)
+ (209.85.215.49) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Mon, 17
+ Oct 2016 13:18:12 -0700
+Received: by mail-lf0-f49.google.com with SMTP id l131so257680029lfl.2 for
+ <modules@perl.org>; Mon, 17 Oct 2016 13:18:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=m1XsR6xWA4oqSkqzf2NZ5g5Ez9LeBHqHIFV+hbXdj7U=;
+ b=aobBCanD3LzVqdWuXklf6fvyyWoy4v2d+bWgeWa8nblHgJov2nlGh192IreDLKUXZJ
+ BoHLg90K6ax0qLEVZUFi/FJTAvY6mJ0KIF+5d6wk5Ni4EOrmF9FLfoUfsKroLrRq1dk2
+ YiXLrAhCUWsgRAxJp/Uaxbmziu2eLFj7GMP6g1xF1tIyoAadQHRE6EgNL7uzsBq+DhVG
+ B7cguhbIIaPF6qmoN4DPDolhF4FiIxIznEzBa2INtL82+lfsORdlOpt75w+henX5teQW
+ waiRwOLwA3ZBUdgMo8yxxXKlyPzpaCSBq8hPfTRvfqBrqZ5e+1okpcgm3xceIZHAt8SQ 0aVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=m1XsR6xWA4oqSkqzf2NZ5g5Ez9LeBHqHIFV+hbXdj7U=;
+ b=Ud2NzMQuYFxcxniwDGxsABxAhtJwJ0D7M1Z164yowSDWYPjG7kmQ3bTIAheQp6EWvd
+ UFG65xEE1hhUFbtXMf7E7EYOMP6/6ponTGMFNKSajC7zJtxNGxAMr6AextXZhTFif1dU
+ Rqike/MtSqk6HEqFjCSW4yoKki3MfPMepIG4/PkT8SzgSUeiiygYpjYraHlnOl9Mt1Dr
+ FUv8DLYDQLLdN0CMAdiH6Vr56ZddXkWUG9DRgugoS3BxKJ3eNys5a7GuqZtDTYoCeXqX
+ rfjOn1KewpLJFwFj2GyGe3seOPE8OIWdMCLF6H26WxllUjD9Zw3jD7Re+xVERpGXjvBd VFDg==
+X-Gm-Message-State:
+ AA6/9RljR2RUJYBElDSvrpEsv+AgCjeNAI3a2qB+7G4wWGyw6aer7RPR8+EeprDippnH3g==
+X-Received: by 10.28.194.7 with SMTP id s7mr9875295wmf.4.1476735486873; Mon,
+ 17 Oct 2016 13:18:06 -0700 (PDT)
+Received: from [192.168.0.13]
+ (cpc95904-rdng25-2-0-cust668.15-3.cable.virginm.net. [82.21.186.157]) by
+ smtp.gmail.com with ESMTPSA id p9sm55916184wjs.11.2016.10.17.13.18.05
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Mon, 17 Oct 2016
+ 13:18:05 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions conflict with "settings" module
+Date: Mon, 17 Oct 2016 21:18:04 +0100
+Message-ID: <870D10BF-DDB9-48A4-8D27-551AC5CDB6EB@cogendo.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: a@openervpn.us
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Alex,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m emailing you because =
+I=E2=80=99m working on resolving conflicts caused by PAUSE now =
+considering package names case insensitively. This has left us with some =
+situations where two or more people are owners of namespaces previously =
+considered distinct, and now considered the same.
+
+You have ownership of the =E2=80=9Csettings=E2=80=9D namespace, as you =
+have a settings module in your =E2=80=9COpener_chat=E2=80=9D =
+distribution. This now conflicts with the Settings module, owned by =
+MARKPF.
+
+There are a number of ways this could be resolved. You could release a =
+new version with =E2=80=9Csettings=E2=80=9D renamed to =
+Opener_chat::settings, or similar.
+
+Another option: this was last released in 2009, and isn=E2=80=99t =
+packaged as a full CPAN distribution. If you=E2=80=99re not maintaining =
+this any more, then we could delete it from CPAN, and then free up the =
+associated permissions.
+
+Which option would you like to go with?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more, so I=E2=80=99=
+m tidying up the historical cases.
+
+Cheers,
+Neil
+
