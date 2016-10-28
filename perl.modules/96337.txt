@@ -1,0 +1,93 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:96337
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 23541 invoked from network); 27 Oct 2016 23:16:53 -0000
+Received: from x1.develooper.com (207.171.7.70) by x6.develooper.com with
+ SMTP; 27 Oct 2016 23:16:53 -0000
+Received: (qmail 31675 invoked by uid 225); 27 Oct 2016 23:16:53 -0000
+Delivered-To: modules@perl.org
+Received: (qmail 31671 invoked by alias); 27 Oct 2016 23:16:53 -0000
+X-Spam-Status: No, hits=-1.9 required=8.0
+ tests=BAYES_00,DKIM_SIGNED,DKIM_VALID,MIME_QP_LONG_LINE,RCVD_IN_DNSWL_NONE,SPF_PASS
+X-Spam-Check-By: la.mx.develooper.com
+Received: from mail-wm0-f42.google.com (HELO mail-wm0-f42.google.com)
+ (74.125.82.42) by la.mx.develooper.com (qpsmtpd/0.28) with ESMTP; Thu, 27 Oct
+ 2016 16:16:48 -0700
+Received: by mail-wm0-f42.google.com with SMTP id e69so64914530wmg.0 for
+ <modules@perl.org>; Thu, 27 Oct 2016 16:16:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:subject:date:message-id:cc:to :mime-version;
+ bh=n3wUp8N8jSJFUiTeAP/4+gH/5jSJ1FlhX2hh+ULy00w=;
+ b=tcv48A/tm0gD9RosBNYYzYvP5yBFObYjpi0TKohYbFiFxU0kqPGokq8sszT7+MUF42
+ zgK5/FNHd8juDZdNVBv3gbaU+KDux85Ubz0i4RfiaFs+jhRqPEAtEIyUjRFa9xX+tErG
+ 96fTxGDo5TMzGFWmxEw1t/7l93DcrvYUaJVLc87zYr8wPmTdqCIxFxf4UiM9WMmEygsh
+ q8S6uNwN6CKUenfpd1GHvJgD6X2mVwlUlwx0LyYLQqa/ujTozuCEBJPSSNvYdqeS9UFk
+ bD0hg+CfPi5fzGQeGDrW0Ud1/giyX0+YLGNj8eORcQJDVG3J2k38kqYF4LrcQ/SlJXkV bzWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:subject:date
+ :message-id:cc:to:mime-version;
+ bh=n3wUp8N8jSJFUiTeAP/4+gH/5jSJ1FlhX2hh+ULy00w=;
+ b=JoF0SPqmnPj4kPBBeJsMwgkkI3t9tw/X/XsdhRUrU4k+U3KTDJgTaB1RzTbxF10UUj
+ CWyFFRi/H4C2qNbSGjLfGJXGIh+8RH9qk9S8WHn3pyEdJUSOj20CCfKxuCqP7QAM7xSi
+ hFzPMPpFMk0cBwbixKq9JOh9k2jpXlso4qiVnnfwqhsPSgdwBZJf+3p3yb87Zfy5hiZe
+ 7gjOUsBVd0d1mtmjc8vC5Em01BHmbUGpvNQ+FeY+5jXpUm1Atz8CFJPLHk8uZnFhZQ2v
+ c/cUo7YNuXIGyGfKzBSOkdAE7BkUPvy8qTVV/Zgf3GilgRxTB4QtkxjrMe3HflwLmu12 rV9w==
+X-Gm-Message-State:
+ ABUngveh4dg7LFpDOkSSm/h7wYwXRId05m/r0q/UM7RUC6aQDawzSrzbJPNsxFMHvfVOYA==
+X-Received: by 10.28.103.70 with SMTP id b67mr749099wmc.74.1477610204212;
+ Thu, 27 Oct 2016 16:16:44 -0700 (PDT)
+Received: from tucumcari.home
+ (host86-164-36-43.range86-164.btcentralplus.com. [86.164.36.43]) by
+ smtp.gmail.com with ESMTPSA id 18sm5803730wmr.6.2016.10.27.16.16.43
+ (version=TLS1 cipher=ECDHE-RSA-AES128-SHA bits=128/128); Thu, 27 Oct 2016
+ 16:16:43 -0700 (PDT)
+X-Google-Original-From: Neil Bowers <neil@bowers.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Subject: PAUSE permissions clash between Load and load modules [MPOURASG -
+ Load]
+Date: Fri, 28 Oct 2016 00:16:42 +0100
+Message-ID: <7E9B6FAE-4741-4993-8543-B31AB5B4FF8A@bowers.com>
+Cc: PAUSE Admins <modules@perl.org>
+To: bourasg@unisystems.gr
+Mime-Version: 1.0 (Mac OS X Mail 9.3 \(3124\))
+X-Mailer: Apple Mail (2.3124)
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi George,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat: I=E2=80=99m working =
+on resolving conflicts caused by PAUSE now considering package names =
+case insensitively. This has left us with some situations where two or =
+more people are owners of namespaces previously considered distinct, and =
+now considered the same.
+
+You own the Load namespace, which is used in your FastDB distribution. =
+This now clashes with the =E2=80=9Cload=E2=80=9D module, which is owned =
+by PAUSE user ELIZABETH.
+
+To resolve this conflict, I=E2=80=99d like to propose that you rename =
+the modules in your distribution to follow the usual convention of all =
+being in the namespace of the distribution. So your modules would be =
+renamed as follows:
+
+	Delete	=3D>	FastDB::Delete
+	Load		=3D>	FastDB::Load
+	Question	=3D>	FastDB::Question
+
+I could then drop your permissions on the Delete, Load, and Question =
+namespaces.
+
+Are you happy to make this change please?
+
+PAUSE doesn=E2=80=99t let situations like this occur any more, so I=E2=80=99=
+m working through the existing cases, trying to get them resolved.
+
+Cheers,
+Neil
+
