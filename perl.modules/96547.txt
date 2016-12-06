@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:96547
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2898 invoked from network); 6 Dec 2016 08:44:37 -0000
+Received: from xx1.develooper.com (207.171.7.115) by x6.develooper.com with
+ SMTP; 6 Dec 2016 08:44:37 -0000
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 6F90411D86F for
+ <perlmail-modules@onion.perl.org>; Tue,  6 Dec 2016 00:44:36 -0800 (PST)
+Received: from mail-wm0-f47.google.com (mail-wm0-f47.google.com
+ [74.125.82.47]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ A2F8A11ED32 for <modules@perl.org>; Tue,  6 Dec 2016 00:44:27 -0800 (PST)
+Received: by mail-wm0-f47.google.com with SMTP id f82so117235937wmf.1 for
+ <modules@perl.org>; Tue, 06 Dec 2016 00:44:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:mime-version:subject:message-id:date :cc:to;
+ bh=Dh41n1bRQylxgzmyt1Ii/wYAlTZWqA0BADq45uWUhkM=;
+ b=dQ6UYRPiOQwajPEVhG9VawqDexsxbAhrBwVKJeuYLYZz5AsM2pIhkxRgc7qi+ZtMRC
+ LLq8/KhNSLGIjc8hnrP5Dj3huL/ODSoLyjgkEOeedIXOxG/mOuFEqFkBo2SF3oHf4Uj6
+ M/3v8JvQ72UM6R3Gyb97vfFhRuHC2IVs7IANYuX1tEKCPLETs7nPMecZ7rTrB5HGHZlL
+ VhD0PZkxw1Wy0ToWJgdALvRNLEQyP85NdyUvtnFsNDeq0TbqmK+K1hiLFLpYew4ian2C
+ NwHJPkJjV66te2tgCL3vfCDG/CIog3SM7PDjo39jO0lpnCyKsMceYchRLB716/ihZCyV QrWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20130820; h=x-gm-message-state:from:content-transfer-encoding:mime-version
+ :subject:message-id:date:cc:to;
+ bh=Dh41n1bRQylxgzmyt1Ii/wYAlTZWqA0BADq45uWUhkM=;
+ b=JP4tfL8IgpVtR1iMlhVuBpkDh2uR1vmc+eFBMDYfMIScGI5Ln7dPU7N48VAlRNCWRf
+ S0eoPlyW1y+4DitI6gekDvR11waMdTfmZ6mY35raVByWa/A/8KGLNDWb5EyDK1m9Rw4D
+ BMad7DPRqEGoGOo1K84KdyvSG/KC00tfs9GY6rZAvfXNhE3vD9yw8OOW1T+F17H4LXc4
+ HKJeh0VcJ0MySZ9paNji6AbjcA7CDdo5JeAu/3qC3csDyz3GPY6mkC8j2PME5IqJiGD7
+ 5BZ2r2bhOaENIOebwjanYZc/FuGCjgsZgjebeyEo5grwFrCTHEIJRdZFxZ7Wx+s8Kppm fBXA==
+X-Gm-Message-State:
+ AKaTC00KVEZKrojLnrFnS767PwxXNVWiJmDysjqvuxXzN0VNvNA+N32s7a6NG5OctnHHTQ==
+X-Received: by 10.28.197.6 with SMTP id v6mr1496416wmf.130.1481013865910;
+ Tue, 06 Dec 2016 00:44:25 -0800 (PST)
+Received: from tucumcari.home
+ (host86-128-217-69.range86-128.btcentralplus.com. [86.128.217.69]) by
+ smtp.gmail.com with ESMTPSA id w7sm2755324wmd.24.2016.12.06.00.44.25
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128); Tue, 06 Dec
+ 2016 00:44:25 -0800 (PST)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 10.1 \(3251\))
+Subject: PAUSE permissions clash with Stash vs stash
+Message-ID: <2BABD093-0698-46DD-BDCC-E641A0F032CD@cogendo.com>
+Date: Tue, 6 Dec 2016 08:44:26 +0000
+Cc: "modules@perl.org" <modules@perl.org>
+To: pawelmurias@gmail.com, sorear@cpan.org
+X-Mailer: Apple Mail (2.3251)
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2016.12.6.83018
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' HTML_00_01 0.05,
+ HTML_00_10 0.05, MIME_LOWER_CASE 0.05, SUPERLONG_LINE 0.05,
+ BODYTEXTP_SIZE_3000_LESS 0, BODY_SIZE_1000_LESS 0, BODY_SIZE_2000_LESS 0,
+ BODY_SIZE_5000_LESS 0, BODY_SIZE_7000_LESS 0, BODY_SIZE_800_899 0,
+ DKIM_SIGNATURE 0, NO_CTA_URI_FOUND 0, NO_URI_FOUND 0, NO_URI_HTTPS 0,
+ SPF_PASS 0, WEBMAIL_SOURCE 0, __CC_NAME 0, __CT 0, __CTE 0, __CT_TEXT_PLAIN
+ 0, __DQ_NEG_HEUR 0, __DQ_NEG_IP 0, __HAS_CC_HDR 0, __HAS_FROM 0, __HAS_MSGID
+ 0, __HAS_X_MAILER 0, __HELO_GMAIL 0, __MIME_TEXT_ONLY 0, __MIME_TEXT_P 0,
+ __MIME_TEXT_P1 0, __MIME_VERSION 0, __MSGID_APPLEMAIL 0, __NO_HTML_TAG_RAW 0,
+ __RDNS_GMAIL 0, __SANE_MSGID 0, __SUBJ_ALPHA_END 0, __TO_MALFORMED_2 0,
+ __TO_NO_NAME 0, __USER_AGENT_APPLEMAIL 0, __X_MAILER_APPLEMAIL 0,
+ __YOUTUBE_RCVD 0, __blackholes.mail-abuse.org_TIMEOUT ,
+ __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Pawe=C5=82 & Stefan,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m working on resolving =
+conflicts caused by PAUSE now considering package names case =
+insensitively. This left us with some situations where two or more =
+people are owners of namespaces previously considered distinct, and now =
+considered the same.
+
+Pawe=C5=82 has ownership of the Stash package, and Stefan has co-maint =
+on it. This is used in the STD distribution, last released by Stefan in =
+2010. Your permissions on =E2=80=9CStash" clash with the =E2=80=9Cstash=E2=
+=80=9D package, used by TKEEFER in his Gantry distribution.
+
+Many of the packages in your distribution come under the STD:: =
+namespace, so the best solution would be if you could move all the =
+packages which aren=E2=80=99t in STD:: to be in the STD:: namespace.
+
+Are you happy to do this please?
+
+Cheers,
+Neil
+
+
+
+
