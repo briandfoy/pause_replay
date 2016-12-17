@@ -1,0 +1,162 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:96606
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 25774 invoked from network); 16 Dec 2016 18:08:54 -0000
+Received: from xx1.develooper.com (207.171.7.115) by x6.develooper.com with
+ SMTP; 16 Dec 2016 18:08:54 -0000
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 5DD2111EF7D for
+ <perlmail-modules@onion.perl.org>; Fri, 16 Dec 2016 10:08:54 -0800 (PST)
+Received: from mail-wm0-f41.google.com (mail-wm0-f41.google.com
+ [74.125.82.41]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ 499AD11EF6B for <modules@perl.org>; Fri, 16 Dec 2016 10:08:35 -0800 (PST)
+Received: by mail-wm0-f41.google.com with SMTP id t79so44839833wmt.0 for
+ <modules@perl.org>; Fri, 16 Dec 2016 10:08:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:mime-version:subject:message-id:date :cc:to;
+ bh=E/g4jFKa8rHQECS5I+vo4RlrMT6OceKIt0oNOrnC1v8=;
+ b=pZm3/dAjBtuvPY/lQ/5ZvOTNMBeyO2Os4Y5PDlYv6Xm7Q9iY/+Jm2DMZGcVW4N4RO6
+ cxcADIYYK9OyjiSnQfPtnw3zqS3/7VDe84gKXm9fLAs78qpVYoBo7rxSBYrYZ9CV5LGu
+ x4uAqG/dpS63aAEFYtbo8ejlk1mlGz6MZwEFXkY9O1u+jdKwNJb0QxSBWpaSVTZC4mDq
+ o4/N5Xlqs+Z4ZA77ujEC/U3WCeaB7IzHjojjvBCL+089j8QbZvSPhi/IDCOuiXHqWj+z
+ DWFB55Nk/yMktDaGv9ZyNTcz715qipYgGsXBspTqcAyrb65Ok4Oiqw1le5IIb0aOl4iz rifA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025; h=x-gm-message-state:from:content-transfer-encoding:mime-version
+ :subject:message-id:date:cc:to;
+ bh=E/g4jFKa8rHQECS5I+vo4RlrMT6OceKIt0oNOrnC1v8=;
+ b=FTTZOVe6NCK6IbT03nOtMkjZcKBoOU0K81zOgcotbqjx2WCpL5L9spehMeacljIB6y
+ Ypu4hWOmX0PNycrMLL2MW04s6Re68z2DP4vPbCJKucBGPf51zy7cptfbdTgUxzzu9S27
+ I7S/P+wuLnbygeGNMZLkSdpozFIelMvxAwB7m6R9pXMACvnD+gUd32PSZZEJu7zbspn9
+ JW5lkZpG6L+L/fvjqUkrWNN2PPhpKSCvxMpryE+9Cu64soW0ZcgzDdi+SlboAxgvoNn0
+ d4DJKHBVvKZHZ0fkrGmim6aNBCuwYS97lTwx56VTe5M94nA2E9orlSeHLYFlpJLc4d1/ Eq9g==
+X-Gm-Message-State:
+ AIkVDXI8F+MsNCfFqyGlyI5LZUKPTmhTHFqhofva7Fm0I4CERJpUw8wxd35/QulFcVbDXw==
+X-Received: by 10.28.12.80 with SMTP id 77mr4519029wmm.106.1481911713896;
+ Fri, 16 Dec 2016 10:08:33 -0800 (PST)
+Received: from tucumcari.home
+ (host81-129-251-153.range81-129.btcentralplus.com. [81.129.251.153]) by
+ smtp.gmail.com with ESMTPSA id ua15sm7884288wjb.1.2016.12.16.10.08.32
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128); Fri, 16 Dec
+ 2016 10:08:33 -0800 (PST)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 10.1 \(3251\))
+Subject: Tidying up PAUSE permissions
+Message-ID: <64B66246-816E-48A8-8C81-3CFCC2C5172C@cogendo.com>
+Date: Fri, 16 Dec 2016 18:08:32 +0000
+Cc: "modules@perl.org" <modules@perl.org>
+To: sri@cpan.org
+X-Mailer: Apple Mail (2.3251)
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2016.12.16.175716
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' HTML_00_01 0.05,
+ HTML_00_10 0.05, MIME_LOWER_CASE 0.05, SUPERLONG_LINE 0.05,
+ BODY_SIZE_3000_3999 0, BODY_SIZE_5000_LESS 0, BODY_SIZE_7000_LESS 0,
+ DKIM_SIGNATURE 0, NO_CTA_URI_FOUND 0, NO_URI_FOUND 0, NO_URI_HTTPS 0,
+ SPF_PASS 0, WEBMAIL_SOURCE 0, __CC_NAME 0, __CT 0, __CTE 0, __CT_TEXT_PLAIN
+ 0, __DQ_NEG_HEUR 0, __DQ_NEG_IP 0, __HAS_CC_HDR 0, __HAS_FROM 0, __HAS_MSGID
+ 0, __HAS_X_MAILER 0, __HELO_GMAIL 0, __HIGHBITS 0, __MIME_TEXT_ONLY 0,
+ __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_VERSION 0, __MSGID_APPLEMAIL 0,
+ __NO_HTML_TAG_RAW 0, __RDNS_GMAIL 0, __SANE_MSGID 0, __TO_MALFORMED_2 0,
+ __TO_NO_NAME 0, __USER_AGENT_APPLEMAIL 0, __X_MAILER_APPLEMAIL 0,
+ __YOUTUBE_RCVD 0, __blackholes.mail-abuse.org_TIMEOUT ,
+ __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Sebastian,
+
+I=E2=80=99m emailing you wearing my PAUSE admin hat. I=E2=80=99m working =
+through tidying up permissions conflicts that have been caused by the =
+fact that PAUSE now consider package names case insensitively (due to =
+case-insensitive filesystems, as on Windows and MacOS X). PAUSE =
+doesn=E2=80=99t let these situations occur now, but we have some =
+historical cases. I=E2=80=99m sorting these out so that we don=E2=80=99t =
+need code in the toolchain for dealing with permissions conflicts.
+
+Mojolicious has a number of modules where you seemed to have changed a =
+naming convention at some point in the past. For example, =
+Mojolicious-7.11 includes:
+
+    Mojolicious::Command::cgi
+
+You have first-come permissions on this, and 6 people have co-maint. The =
+same people have the same permissions on
+
+    Mojolicious::Command::Cgi
+
+which is no longer used.
+
+Here=E2=80=99s the full list of permissions:
+
+    Currently using				No longer in use
+    =E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=
+=E2=80=94=E2=80=94=E2=80=94----------------			=
+=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=
+=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=
+=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=
+=E2=80=94=E2=80=94=E2=80=94
+    Mojolicious::Command::cgi			=
+Mojolicious::Command::Cgi
+    Mojolicious::Command::cpanify		=
+Mojolicious::Command::Cpanify
+    Mojolicious::Command::daemon		=
+Mojolicious::Command::Daemon
+    Mojolicious::Command::eval			=
+Mojolicious::Command::Eval
+    Mojolicious::Command::fastcgi		=
+Mojolicious::Command::Fastcgi
+    Mojolicious::Command::generate		=
+Mojolicious::Command::Generate
+    Mojolicious::Command::generate::app		=
+Mojolicious::Command::Generate::App
+    Mojolicious::Command::generate::makefile	=
+Mojolicious::Command::Generate::Makefile
+    Mojolicious::Command::generate::plugin	=
+Mojolicious::Command::Generate::Plugin
+    Mojolicious::Command::get			=
+Mojolicious::Command::Get
+    Mojolicious::Command::inflate		=
+Mojolicious::Command::Inflate
+    Mojolicious::Command::psgi			=
+Mojolicious::Command::Psgi
+    Mojolicious::Command::routes		=
+Mojolicious::Command::Routes
+    Mojolicious::Command::test			=
+Mojolicious::Command::Test
+    Mojolicious::Command::version		=
+Mojolicious::Command::Version
+    Mojolicious::Plugin::EPLRenderer		=
+Mojolicious::Plugin::EplRenderer
+    Mojolicious::Plugin::EPRenderer		=
+Mojolicious::Plugin::EpRenderer
+    Mojolicious::Plugin::I18N			=
+Mojolicious::Plugin::I18n
+    Mojolicious::Plugin::JSONConfig		=
+Mojolicious::Plugin::JsonConfig
+    Mojolicious::Plugin::PODRenderer		=
+Mojolicious::Plugin::PodRenderer
+
+For the above list, are we ok to drop all permissions on the right-hand =
+package name? (ie the one no longer in use)
+
+For the following permissions, it looks like neither is being used:
+
+    Mojolicious::Command::generate::gitignore	=
+Mojolicious::Command::Generate::Gitignore
+    Mojolicious::Command::generate::hypnotoad	=
+Mojolicious::Command::Generate::Hypnotoad
+    Mojolicious::Plugin::I18n::_Handler		=
+Mojolicious::Plugin::I18N::_Handler
+
+Which of these pairs can be dropped?
+
+Cheers,
+Neil
+
+
