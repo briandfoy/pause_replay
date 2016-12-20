@@ -1,0 +1,98 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:96619
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17815 invoked from network); 19 Dec 2016 17:39:09 -0000
+Received: from xx1.develooper.com (207.171.7.115) by x6.develooper.com with
+ SMTP; 19 Dec 2016 17:39:09 -0000
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id B0E8611EBDC for
+ <perlmail-modules@onion.perl.org>; Mon, 19 Dec 2016 09:39:06 -0800 (PST)
+Received: from mail-wm0-f43.google.com (mail-wm0-f43.google.com
+ [74.125.82.43]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ BB85311F9B1 for <modules@perl.org>; Mon, 19 Dec 2016 09:38:59 -0800 (PST)
+Received: by mail-wm0-f43.google.com with SMTP id t79so107688205wmt.0 for
+ <modules@perl.org>; Mon, 19 Dec 2016 09:38:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:mime-version:subject:message-id:date :cc:to;
+ bh=/jAhvt6dMmTY8/cVe4ULYzrdNN5cres6GLTjUZfkjRU=;
+ b=eV9N3oKIWKhNqf/W0jq6rGaZ4lyfUdnpQ5z/59KXs80rW7N+7UeUlyMa/sjjOXUoyw
+ sqbgKa7RtlCUjO4hjRN6hwJJS93z/64gRFhvf3fl04BZ+ACKHkqDg0HcuOBK7mwNZuex
+ a+v6b4wynn6u8TUTI6oRKV30xSoIV+n4oBhFWvAeYpbHJ54QfMALeRrT9z8iaPZc+vz6
+ t389VDZQPV+mOrY4+6g3PIPGftbwKxAjRtE+JKTYTNcKoLZLIhJb+RdMzGi0jr9gvPQC
+ +KyAJWkOS1RSEZr5V4aDDErsyl4ca8bcFyZununDezxHq24iP3pdLY7HrCu5G8wISWV1 dRqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025; h=x-gm-message-state:from:content-transfer-encoding:mime-version
+ :subject:message-id:date:cc:to;
+ bh=/jAhvt6dMmTY8/cVe4ULYzrdNN5cres6GLTjUZfkjRU=;
+ b=LQEJTxMJKPq309EDA5jqCMYLRUPhLLFRk+crynjRj+QOopWn0hmbcavRuUYtu325EF
+ dLbwkclKeoNgQQm+0KwVYyXeMHn5YFWlkJTa+1Kq7XjpTc4BlqDVR0/A4WRqHmKt287w
+ n3balYE0y85PW3Ik3cK3ymCCqpwEFbnOIY2IimP8e+zG22YLjTAwmpafVxFucFuDpj+j
+ toEf2+7r065h0MwUjOIKl1UMYzjWS86qBh5BmX/o0P4kZBFv279Ty7pOdnnNB1DT0n0L
+ oj5q0mDMyrI5JiUCA7OMiX6UKiKM1MLi7hqLq4Q1s68CjDb3CK8/5v3lNQ/B4HEZM9aD NTeQ==
+X-Gm-Message-State:
+ AIkVDXJCUexzMkk9YgJcsAfOpK0kOX6LBde8YDpKjexgxd5z5XJprq7pbdtjBywlxcRxRA==
+X-Received: by 10.28.157.137 with SMTP id g131mr13531509wme.29.1482169137721;
+ Mon, 19 Dec 2016 09:38:57 -0800 (PST)
+Received: from [192.168.0.31]
+ (cpc95904-rdng25-2-0-cust668.15-3.cable.virginm.net. [82.21.186.157]) by
+ smtp.gmail.com with ESMTPSA id p144sm18257611wme.23.2016.12.19.09.38.56
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128); Mon, 19 Dec
+ 2016 09:38:56 -0800 (PST)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 10.2 \(3259\))
+Subject: PAUSE permissions conflict
+Message-ID: <5874670F-50DE-4EB9-8E6A-380071014120@cogendo.com>
+Date: Mon, 19 Dec 2016 17:38:59 +0000
+Cc: vti <viacheslav.t@gmail.com>, "modules@perl.org" <modules@perl.org>
+To: madcat@cpan.org
+X-Mailer: Apple Mail (2.3259)
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2016.12.19.172716
+X-PMX-Spam: Gauge=IIIIIIIII, Probability=9%, Report=' MULTIPLE_RCPTS 0.1,
+ HTML_00_01 0.05, HTML_00_10 0.05, MIME_LOWER_CASE 0.05, SUPERLONG_LINE 0.05,
+ BODYTEXTP_SIZE_3000_LESS 0, BODY_SIZE_1100_1199 0, BODY_SIZE_2000_LESS 0,
+ BODY_SIZE_5000_LESS 0, BODY_SIZE_7000_LESS 0, DKIM_SIGNATURE 0,
+ NO_CTA_URI_FOUND 0, NO_URI_FOUND 0, NO_URI_HTTPS 0, SPF_PASS 0,
+ WEBMAIL_SOURCE 0, __CC_NAME 0, __CC_NAME_DIFF_FROM_ACC 0, __CC_REAL_NAMES 0,
+ __CT 0, __CTE 0, __CT_TEXT_PLAIN 0, __DQ_NEG_HEUR 0, __DQ_NEG_IP 0,
+ __HAS_CC_HDR 0, __HAS_FROM 0, __HAS_MSGID 0, __HAS_X_MAILER 0, __HELO_GMAIL
+ 0, __MIME_TEXT_ONLY 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_VERSION 0,
+ __MSGID_APPLEMAIL 0, __MULTIPLE_RCPTS_CC_X2 0, __NO_HTML_TAG_RAW 0,
+ __RDNS_GMAIL 0, __SANE_MSGID 0, __SUBJ_ALPHA_END 0, __TO_MALFORMED_2 0,
+ __TO_NO_NAME 0, __USER_AGENT_APPLEMAIL 0, __X_MAILER_APPLEMAIL 0,
+ __YOUTUBE_RCVD 0, __blackholes.mail-abuse.org_TIMEOUT ,
+ __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Hi Ben,
+
+I=E2=80=99m one of the PAUSE admins. I=E2=80=99m working through tidying =
+up permissions conflicts that have been caused by the fact that PAUSE =
+now consider package names case insensitively (due to case-insensitive =
+filesystems, as on Windows and MacOS X). PAUSE doesn=E2=80=99t let these =
+situations occur now, but we have some historical cases. I=E2=80=99m =
+sorting these out so that we don=E2=80=99t need code in the toolchain =
+for dealing with permissions conflicts.
+
+You have ownership of the MojoX::Session::Store::Dbi (which is released =
+as part of MojoX-Session), and also of MojoX::Session::Store::DBI, which =
+is no longer included in the dist. I=E2=80=99m guessing you switched =
+naming convention at some point. VTI has co-maint on both, so I=E2=80=99ve=
+ cc=E2=80=99d him on this email, as he did the most recent release.
+
+The same is true for MojoX::Session::Store::Dbic (in use) and =
+MojoX::Session::Store::DBIC (not in use).
+
+To resolve this I=E2=80=99d like to drop all your permissions on the =
+package names that are no longer in use. Is that ok?
+
+Cheers,
+Neil
+
