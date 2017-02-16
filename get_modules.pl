@@ -32,11 +32,11 @@ foreach my $i ( reverse $first .. $last ) {
 $nntp->quit;
 
 if( $ENV{PERL_PAUSE_COMMIT} ) {
-	system "git add perl.modules";
-	system "git commit -a -m 'Added the latest PAUSE posts'";
-	system "git push";
-	}          
-        
+	system "git add --quiet perl.modules";
+	system "git commit --quiet -a -m 'Added the latest PAUSE posts'";
+	system "git push --quiet";
+	}
+
 =head1 NAME
 
 =head1 SYNOPSIS
