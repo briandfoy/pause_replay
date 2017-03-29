@@ -1,0 +1,420 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:97192
+Return-Path: <thorstenhirsch@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 22068 invoked from network); 27 Mar 2017 09:27:10 -0000
+Received: from xx1.develooper.com (207.171.7.115) by x6.develooper.com with
+ SMTP; 27 Mar 2017 09:27:10 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id A110711D402 for <perlmail-modules@onion.perl.org>;
+ Mon, 27 Mar 2017 02:27:10 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.4 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,FREEMAIL_FROM,HTML_MESSAGE,RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_SPAM
+ autolearn=no version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id CCEA411DDBF for
+ <perlmail-modules@onion.perl.org>; Mon, 27 Mar 2017 02:27:07 -0700 (PDT)
+Received: from mail-yw0-f173.google.com (mail-yw0-f173.google.com
+ [209.85.161.173]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ A88CB11D415 for <modules@perl.org>; Mon, 27 Mar 2017 02:27:01 -0700 (PDT)
+Received: by mail-yw0-f173.google.com with SMTP id v76so26945134ywg.0 for
+ <modules@perl.org>; Mon, 27 Mar 2017 02:27:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com;
+ s=20161025; h=mime-version:sender:in-reply-to:references:from:date:message-id
+ :subject:to:cc; bh=8bj3eoQyfeULmHhSD9xtF1GEL7eLgie0obKfeBLQ5M4=;
+ b=WKeSUCf/Z4UK51G9DXvWGHDGEPWBjqogvhFLBlghIzd4erZjjdZMiqzmNaLb6QarYw
+ boVIKu6wjS4CnB3kEQPNqUVAv7LcNWf1AvoJJ2U3eGTrywA953KliTPH71R63GH2OCgB
+ dlsBhTiAavYeoi2TI6E1UKkb25ShqYC/ApzaJISeWcnZXBNyy3tIfwmMxD41hANQUYS8
+ 6mN3n/YHdgz27371t83fmEtkD/QhjEG8xohAlMCrgz8D3f4OVns7MqID2uZNfXSiOaAk
+ 9CtQXcmrhxZ8jWgimRy3HfhHhXqzi5O9DY+rxffiO33OOpZYVI5ZWNAp1jnL0EYMGXNJ Ky5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025;
+ h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+ :date:message-id:subject:to:cc;
+ bh=8bj3eoQyfeULmHhSD9xtF1GEL7eLgie0obKfeBLQ5M4=;
+ b=Quxwj9Ra3ho0KDMWc9oteCe8IWhtvaaGorir1Dw2sVKjpBBd1HegnbYUeg2SV7nAsC
+ f7TXohPgjo7LKGaJmZugDQq0bOIEBbqQ5iS0y1ktEsKXqUMx9rKXz2OHZMz34CMB/X3C
+ f7gULpMNUt/M3lBTca5qfxmAS81O2p3liVutXXL5jaH2k1mBdkWC7aZ36WMaG+gvz1lg
+ lKQMrb0PWwKA/+URTHbWVN9qXmOzLLLojsGw5EtK0LfOu+wtKAeZD3lf0K6odBKMGaRl
+ vP3x/xMCEwgoWKTHH+KoEjbCGfxeambVV7fI1AJy6oYEX4iDBcsXXSgLZbI/xs+ujfwe s3WQ==
+X-Gm-Message-State:
+ AFeK/H1VV1kdIOL1mYv3sQY3qOHWLCHcJnNmeDmO1B44bfYi6ISuJyfL3g43MVH6peZZsmY36T8q4H62jcmIfQ==
+X-Received: by 10.37.85.70 with SMTP id j67mr15634666ybb.192.1490606820096;
+ Mon, 27 Mar 2017 02:27:00 -0700 (PDT)
+MIME-Version: 1.0
+Sender: thorstenhirsch@gmail.com
+Received: by 10.129.181.9 with HTTP; Mon, 27 Mar 2017 02:26:39 -0700 (PDT)
+In-Reply-To:
+ <CADNid51a1Mr=OBUXRahymtouVy90KfYL5BNCPuAcW+FmhLoXEA@mail.gmail.com>
+References:
+ <CAH+WbHyM02HmaapZMqQ0ucxvCNRR4Q5fHM8kqn1iWfCCYrAp4g@mail.gmail.com>
+ <18F83AEE-4F02-49B2-A032-47073C5F43A2@cogendo.com>
+ <CAJY0+QAVOPp5zuWQ-=NpFdaq4LFr=X5zvUNteYqU2yb-5O+vcQ@mail.gmail.com>
+ <CADNid51a1Mr=OBUXRahymtouVy90KfYL5BNCPuAcW+FmhLoXEA@mail.gmail.com>
+Date: Mon, 27 Mar 2017 11:26:39 +0200
+X-Google-Sender-Auth: LclA6ZWkH7IXRtyiUjG6xhmUwOM
+Message-ID:
+ <CAH+WbHxeEkssLcrdWVcaKD_sO8+urScQeOteP2jojFpL0jVr+w@mail.gmail.com>
+Subject: Re: MQSeries
+To: Hildo Biersma <hildo.biersma@gmail.com>
+Cc: Phillip Moore <w.phillip.moore@gmail.com>, Neil Bowers
+ <neil.bowers@cogendo.com>,  PAUSE Admins <modules@perl.org>
+Content-Type: multipart/alternative; boundary=001a113ff858030512054bb2f28b
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2017.3.27.91817
+X-PMX-Spam: Gauge=X, Probability=10%, Report=' WEBMAIL_REPLYTO_NOT_FROM 0.5,
+ HTML_NO_HTTP 0.1, MULTIPLE_RCPTS 0.1, BODYTEXTH_SIZE_10000_LESS 0,
+ BODYTEXTH_SIZE_3000_MORE 0, BODY_SIZE_10000_PLUS 0, CTYPE_MULTIPART_NO_QUOTE
+ 0, DKIM_SIGNATURE 0, IN_REP_TO 0, LEGITIMATE_SIGNS 0, MSG_THREAD 0,
+ NO_URI_HTTPS 0, REFERENCES 0, SPF_PASS 0, WEBMAIL_SOURCE 0, __ANY_URI 0,
+ __BOUNCE_CHALLENGE_SUBJ 0, __BOUNCE_NDR_SUBJ_EXEMPT 0, __CC_NAME 0,
+ __CC_NAME_DIFF_FROM_ACC 0, __CC_REAL_NAMES 0, __CP_AGE_BODY 0, __CT 0,
+ __CTYPE_HAS_BOUNDARY 0, __CTYPE_MULTIPART 0, __CTYPE_MULTIPART_ALT 0,
+ __DQ_NEG_HEUR 0, __DQ_NEG_IP 0, __FORWARDED_MSG 0, __FRAUD_BODY_WEBMAIL 0,
+ __FRAUD_WEBMAIL 0, __FRAUD_WEBMAIL_SENDER 0, __HAS_CC_HDR 0, __HAS_FROM 0,
+ __HAS_HTML 0, __HAS_MSGID 0, __HELO_GMAIL 0, __HTML_AHREF_TAG 0,
+ __HTML_TAG_DIV 0, __IN_REP_TO 0, __MIME_HTML 0, __MIME_TEXT_H 0,
+ __MIME_TEXT_H1 0, __MIME_TEXT_H2 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0,
+ __MIME_TEXT_P2 0, __MIME_VERSION 0, __MULTIPLE_RCPTS_CC_X2 0,
+ __PHISH_SPEAR_HTTP_RECEIVED 0, __PHISH_SPEAR_STRUCTURE_1 0, __RDNS_GMAIL 0,
+ __REFERENCES 0, __SANE_MSGID 0, __SUBJ_ALPHA_END 0, __SUBJ_ALPHA_NEGATE 0,
+ __TO_MALFORMED_2 0, __TO_NAME 0, __TO_NAME_DIFF_FROM_ACC 0, __TO_REAL_NAMES
+ 0, __URI_NO_WWW 0, __URI_NS , __YOUTUBE_RCVD 0, __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: t.hirsch@web.de (Thorsten Hirsch)
+
+--001a113ff858030512054bb2f28b
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi Phillip, hi Hildo,
+
+even though I applied for the ownership alone, there are some people who
+will help me maintaining it. I work at DZ Bank in Germany and we're a team
+of 3 (maybe 4) developers with ~20% perl development as part of our regular
+job. We do application integration and the MQSeries module has been used at
+the core of our runtime environment for 12 years. Currently we're revamping
+the complete EAI platform. IIB will take over the role of the perl runtime
+component, but for the toolset we decided to migrate all the shell scripts
+as well as some old in-house developed C applications onto our perl stack.
+So the MQSeries module will not only keep playing an important role, we
+will even widen its use. We just started to work with the command interface
+and soon it will be part of our deployment toolchain.
+
+Last, but not least, we have Max Maischein (corion) at DZ Bank. He's not
+only an experienced perl developer, but also a very active cpan
+contributor. He's been very helpful already for all questions regarding
+cpan releases and the perl community.
+
+Alright... this was my "pitch". ;-)
+
+You might wonder why the DZ Bank team hasn't officially asked for module
+ownership. Well, my managers are very conservative when it comes to open
+source software ("we're not a software company", "we don't need to
+contribute to open source, be thankful that we allow to use it", "we need
+an analysis from legal department for the involved risks ...oh, and by the
+way: there's no-one in the legal department who has a clue about software
+licensing", "we don't care that you studied law as a minor for 6 terms
+yourself, we only care for approval by our legal department"), sometimes I
+feel stuck in the '90s.
+
+Cheers,
+Thorsten
+
+P.S.: Actually I wonder how you succeeded in convincing your managers at
+Morgan Stanley of the open source commitment. It was more than 15 years
+ago, right?! Most of them must have had the same reservations against open
+source as my managers.
+
+2017-03-26 17:37 GMT+02:00 Hildo Biersma <hildo.biersma@gmail.com>:
+
+> I don't know the current situation at Morgan Stanley (I have been at
+> Google since 2009), but I concur with Phil's assessment, and would be
+> happy to sign off on a maintainer change.
+>
+> The module contains a lot of effort by Phil and me, and it'd be a
+> terrible waste to let it rot.
+>
+> Hildo
+>
+> On Sun, Mar 26, 2017 at 11:00 AM, Phillip Moore
+> <w.phillip.moore@gmail.com> wrote:
+> > <sigh>
+> >
+> > This is very sad, and as the original author of the code, I would like =
+to
+> > apologize on behalf of those who have inherited in from me.   Except
+> that I
+> > have *NO* idea who that is.   I wrote and owned this code from 1998 to
+> 2002.
+> > Hildo also left the project and Morgan Stanley a few years later, and t=
+he
+> > engineering team that manages the MQSeries infrastructure Hildo and I
+> > designed and deployed are the ones responsible for the CPAN distro now.
+> > That team *was* pretty good, but they entire team quit or changed
+> projects
+> > in 2012, which explains the final release date.
+> >
+> > Now, I am going to be characteristically blunt here: all the good
+> engineers
+> > are gone from that team, and I don't think they are giving ANY priority
+> to
+> > maintaining the CPAN distribution, because none of them have any clue
+> how.
+> > If you have the skills and the interest in taking this over, I would be
+> more
+> > than happy to help broker getting the ownership transferred.
+> >
+> > If push comes to shove, I am pretty sure that if Hildo and I endorsed i=
+t,
+> > the CPAN maintainers would make the change.   I have followed the DBIC
+> > ownership debacle from a distance, and I think that was handled extreme=
+ly
+> > professionally by David Golden, for example.   Now, I honestly think th=
+at
+> > the team in question is so deep underwater with everything we created
+> (that
+> > infrastructure and the management application we built are perhaps the
+> most
+> > successful work of my career, and they still use it), that they will mo=
+st
+> > likely be thrilled to give this up.
+> >
+> > Anyway, if it is not obvious, please keep this discussion entirely
+> > confidential for now.  I am putting the priorities of the open source
+> > community before those of my employers here, and so taking a bit of
+> > political risk by doing so.    I am, for lack of clearly better judgmen=
+t,
+> > working at MS again right now, so I would appreciate you NOT sharing th=
+is
+> > discussion publicly until it is appropriate to do so.   This is also wh=
+y
+> I
+> > am in the perfect spot to broker the ownership change.
+> >
+> > I am going to proactively reach out to Golden, and inquire about the
+> process
+> > here, as I don't think you will ever see another release if we don't, s=
+o
+> I
+> > will bring him into this discussion as well.   Please give me about a
+> week
+> > to get the internal feedback on this.
+> >
+> >
+> > On Sun, Mar 26, 2017 at 10:17 AM, Neil Bowers <neil.bowers@cogendo.com>
+> > wrote:
+> >>
+> >> Hi Thorsten,
+> >>
+> >> I'd like to adopt the MQSeries module.
+> >>
+> >> A year ago I've uploaded a patch (bug id 113894), but nothing happened=
+.
+> >> Then I've sent a mail to mqseries@cpan.org, but received a bounce mail
+> (user
+> >> unknown) from Morgan Stanley's mail server. Now I have found another
+> issue
+> >> and sent a mail to this address again, but still the same bounce mail.
+> The
+> >> module has open bug reports that are 8 years old. And the last release
+> was
+> >> built in 2012.
+> >>
+> >> Now I have requested a PAUSE account and forked the read-only repo
+> mirror
+> >> on github (gitpan/MQSeries) into my own account
+> (thorstenhirsch/MQSeries) in
+> >> order to continue development.
+> >>
+> >> What are the next steps?
+> >>
+> >>
+> >> The README for the distribution lists Hildo Biersma and W Phillip Moor=
+e,
+> >> so they may know how you can get in touch with the current maintainer,
+> or
+> >> get co-maint permission. They=E2=80=99ve both got PAUSE accounts, so I=
+=E2=80=99ve copied
+> >> them on this email.
+> >>
+> >> Hildo & Phillip, do you know the status of this module, and who is the
+> >> right person to decide if Thorsten can have co-maint?
+> >>
+> >> Cheers,
+> >> Neil
+> >>
+> >
+>
+
+--001a113ff858030512054bb2f28b
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi Phillip, hi Hildo,<div><br></div><div>even though I app=
+lied for the ownership alone, there are some people who will help me mainta=
+ining it. I work at DZ Bank in Germany and we&#39;re a team of 3 (maybe 4) =
+developers with ~20% perl development as part of our regular job. We do app=
+lication integration and the MQSeries module has been used at the core of o=
+ur runtime environment for 12 years. Currently we&#39;re revamping the comp=
+lete EAI platform. IIB will take over the role of the perl runtime componen=
+t, but for the toolset we decided to migrate all the shell scripts as well =
+as some old in-house developed C applications onto our perl stack. So the M=
+QSeries module will not only keep playing an important role, we will even w=
+iden its use. We just started to work with the command interface and soon i=
+t will be part of our deployment toolchain.</div><div><br></div><div>Last, =
+but not least, we have Max Maischein (corion) at DZ Bank. He&#39;s not only=
+ an experienced perl developer, but also a very active cpan contributor. He=
+&#39;s been very helpful already for all questions regarding cpan releases =
+and the perl community.<br><div><br></div><div>Alright... this was my &quot=
+;pitch&quot;. ;-)</div><div><br></div><div>You might wonder why the DZ Bank=
+ team hasn&#39;t officially asked for module ownership. Well, my managers a=
+re very conservative when it comes to open source software (&quot;we&#39;re=
+ not a software company&quot;, &quot;we don&#39;t need to contribute to ope=
+n source, be thankful that we allow to use it&quot;, &quot;we need an analy=
+sis from legal department for the involved risks ...oh, and by the way: the=
+re&#39;s no-one in the legal department who has a clue about software licen=
+sing&quot;, &quot;we don&#39;t care that you studied law as a minor for 6 t=
+erms yourself, we only care for approval by our legal department&quot;), so=
+metimes I feel stuck in the &#39;90s.</div></div><div><br></div><div>Cheers=
+,</div><div>Thorsten</div><div><br></div><div>P.S.: Actually I wonder how y=
+ou succeeded in convincing your managers at Morgan Stanley of the open sour=
+ce commitment. It was more than 15 years ago, right?! Most of them must hav=
+e had the same reservations against open source as my managers.</div></div>=
+<div class=3D"gmail_extra"><br><div class=3D"gmail_quote">2017-03-26 17:37 =
+GMT+02:00 Hildo Biersma <span dir=3D"ltr">&lt;<a href=3D"mailto:hildo.biers=
+ma@gmail.com" target=3D"_blank">hildo.biersma@gmail.com</a>&gt;</span>:<br>=
+<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
+x #ccc solid;padding-left:1ex">I don&#39;t know the current situation at Mo=
+rgan Stanley (I have been at<br>
+Google since 2009), but I concur with Phil&#39;s assessment, and would be<b=
+r>
+happy to sign off on a maintainer change.<br>
+<br>
+The module contains a lot of effort by Phil and me, and it&#39;d be a<br>
+terrible waste to let it rot.<br>
+<span class=3D"HOEnZb"><font color=3D"#888888"><br>
+Hildo<br>
+</font></span><div class=3D"HOEnZb"><div class=3D"h5"><br>
+On Sun, Mar 26, 2017 at 11:00 AM, Phillip Moore<br>
+&lt;<a href=3D"mailto:w.phillip.moore@gmail.com">w.phillip.moore@gmail.com<=
+/a>&gt; wrote:<br>
+&gt; &lt;sigh&gt;<br>
+&gt;<br>
+&gt; This is very sad, and as the original author of the code, I would like=
+ to<br>
+&gt; apologize on behalf of those who have inherited in from me.=C2=A0 =C2=
+=A0Except that I<br>
+&gt; have *NO* idea who that is.=C2=A0 =C2=A0I wrote and owned this code fr=
+om 1998 to 2002.<br>
+&gt; Hildo also left the project and Morgan Stanley a few years later, and =
+the<br>
+&gt; engineering team that manages the MQSeries infrastructure Hildo and I<=
+br>
+&gt; designed and deployed are the ones responsible for the CPAN distro now=
+.<br>
+&gt; That team *was* pretty good, but they entire team quit or changed proj=
+ects<br>
+&gt; in 2012, which explains the final release date.<br>
+&gt;<br>
+&gt; Now, I am going to be characteristically blunt here: all the good engi=
+neers<br>
+&gt; are gone from that team, and I don&#39;t think they are giving ANY pri=
+ority to<br>
+&gt; maintaining the CPAN distribution, because none of them have any clue =
+how.<br>
+&gt; If you have the skills and the interest in taking this over, I would b=
+e more<br>
+&gt; than happy to help broker getting the ownership transferred.<br>
+&gt;<br>
+&gt; If push comes to shove, I am pretty sure that if Hildo and I endorsed =
+it,<br>
+&gt; the CPAN maintainers would make the change.=C2=A0 =C2=A0I have followe=
+d the DBIC<br>
+&gt; ownership debacle from a distance, and I think that was handled extrem=
+ely<br>
+&gt; professionally by David Golden, for example.=C2=A0 =C2=A0Now, I honest=
+ly think that<br>
+&gt; the team in question is so deep underwater with everything we created =
+(that<br>
+&gt; infrastructure and the management application we built are perhaps the=
+ most<br>
+&gt; successful work of my career, and they still use it), that they will m=
+ost<br>
+&gt; likely be thrilled to give this up.<br>
+&gt;<br>
+&gt; Anyway, if it is not obvious, please keep this discussion entirely<br>
+&gt; confidential for now.=C2=A0 I am putting the priorities of the open so=
+urce<br>
+&gt; community before those of my employers here, and so taking a bit of<br=
+>
+&gt; political risk by doing so.=C2=A0 =C2=A0 I am, for lack of clearly bet=
+ter judgment,<br>
+&gt; working at MS again right now, so I would appreciate you NOT sharing t=
+his<br>
+&gt; discussion publicly until it is appropriate to do so.=C2=A0 =C2=A0This=
+ is also why I<br>
+&gt; am in the perfect spot to broker the ownership change.<br>
+&gt;<br>
+&gt; I am going to proactively reach out to Golden, and inquire about the p=
+rocess<br>
+&gt; here, as I don&#39;t think you will ever see another release if we don=
+&#39;t, so I<br>
+&gt; will bring him into this discussion as well.=C2=A0 =C2=A0Please give m=
+e about a week<br>
+&gt; to get the internal feedback on this.<br>
+&gt;<br>
+&gt;<br>
+&gt; On Sun, Mar 26, 2017 at 10:17 AM, Neil Bowers &lt;<a href=3D"mailto:ne=
+il.bowers@cogendo.com">neil.bowers@cogendo.com</a>&gt;<br>
+&gt; wrote:<br>
+&gt;&gt;<br>
+&gt;&gt; Hi Thorsten,<br>
+&gt;&gt;<br>
+&gt;&gt; I&#39;d like to adopt the MQSeries module.<br>
+&gt;&gt;<br>
+&gt;&gt; A year ago I&#39;ve uploaded a patch (bug id 113894), but nothing =
+happened.<br>
+&gt;&gt; Then I&#39;ve sent a mail to <a href=3D"mailto:mqseries@cpan.org">=
+mqseries@cpan.org</a>, but received a bounce mail (user<br>
+&gt;&gt; unknown) from Morgan Stanley&#39;s mail server. Now I have found a=
+nother issue<br>
+&gt;&gt; and sent a mail to this address again, but still the same bounce m=
+ail. The<br>
+&gt;&gt; module has open bug reports that are 8 years old. And the last rel=
+ease was<br>
+&gt;&gt; built in 2012.<br>
+&gt;&gt;<br>
+&gt;&gt; Now I have requested a PAUSE account and forked the read-only repo=
+ mirror<br>
+&gt;&gt; on github (gitpan/MQSeries) into my own account (thorstenhirsch/MQ=
+Series) in<br>
+&gt;&gt; order to continue development.<br>
+&gt;&gt;<br>
+&gt;&gt; What are the next steps?<br>
+&gt;&gt;<br>
+&gt;&gt;<br>
+&gt;&gt; The README for the distribution lists Hildo Biersma and W Phillip =
+Moore,<br>
+&gt;&gt; so they may know how you can get in touch with the current maintai=
+ner, or<br>
+&gt;&gt; get co-maint permission. They=E2=80=99ve both got PAUSE accounts, =
+so I=E2=80=99ve copied<br>
+&gt;&gt; them on this email.<br>
+&gt;&gt;<br>
+&gt;&gt; Hildo &amp; Phillip, do you know the status of this module, and wh=
+o is the<br>
+&gt;&gt; right person to decide if Thorsten can have co-maint?<br>
+&gt;&gt;<br>
+&gt;&gt; Cheers,<br>
+&gt;&gt; Neil<br>
+&gt;&gt;<br>
+&gt;<br>
+</div></div></blockquote></div><br></div>
+
+--001a113ff858030512054bb2f28b--
