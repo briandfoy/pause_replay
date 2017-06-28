@@ -1,0 +1,190 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:97650
+Return-Path: <thomas@orgis.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 23179 invoked from network); 26 Jun 2017 07:50:56 -0000
+Received: from xx1.develooper.com (207.171.7.115) by x6.develooper.com with
+ SMTP; 26 Jun 2017 07:50:56 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 6337111F146 for <perlmail-modules@onion.perl.org>;
+ Mon, 26 Jun 2017 00:50:56 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.9 required=6.0 tests=BAYES_00 autolearn=ham
+ version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 4230511F15E for
+ <perlmail-modules@onion.perl.org>; Mon, 26 Jun 2017 00:50:53 -0700 (PDT)
+Received: from nemato.nesselzelle.de (nemato.nesselzelle.de [176.9.85.107])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits)) (No client
+ certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ 5698011F146 for <modules@perl.org>; Mon, 26 Jun 2017 00:50:30 -0700 (PDT)
+Received: from sturbolzen ([127.0.0.1]:42835) by localhost.localdomain with
+ [XMail 1.27 ESMTP Server] id <S3C445> for <modules@perl.org> from
+ <thomas@orgis.org>; Mon, 26 Jun 2017 09:50:25 +0200
+Date: Mon, 26 Jun 2017 09:49:33 +0200
+To: Andreas Koenig <andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Cc: modules@perl.org, fawaka@gmail.com
+Subject: Re: Failed: PAUSE indexer report
+ THORGIS/Text-NumericData-2.003001.tar.gz
+Message-ID: <20170626094933.2a1b58ae@sturbolzen>
+In-Reply-To: <87vank1c6y.fsf@k85.linux.bogus>
+References: <20170624160640.92F981400@pause.perl.org>
+ <20170624201144.277810c5@sturbolzen> <87vank1c6y.fsf@k85.linux.bogus>
+X-Mailer: Claws Mail 3.15.0-dirty (GTK+ 2.24.31; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1; boundary="Sig_/nxiSmmpp8UTwjny0J62n/xx"; protocol="application/pgp-signature"
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2017.4.23.31816
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' MULTIPLE_RCPTS 0.1,
+ HTML_00_01 0.05, HTML_00_10 0.05, BODY_SIZE_5000_5999 0, BODY_SIZE_7000_LESS
+ 0, INVALID_MSGID_NO_FQDN 0, IN_REP_TO 0, LEGITIMATE_SIGNS 0, MSG_THREAD 0,
+ MULTIPLE_REAL_RCPTS 0, REFERENCES 0, SPF_PASS 0, __ANY_URI 0,
+ __ATTACHMENT_SIZE_0_10K 0, __BOUNCE_CHALLENGE_SUBJ 0,
+ __BOUNCE_NDR_SUBJ_EXEMPT 0, __CP_URI_IN_BODY 0, __CT 0, __CTYPE_HAS_BOUNDARY
+ 0, __CTYPE_MULTIPART 0, __FORWARDED_MSG 0, __FRAUD_MONEY_CURRENCY 0,
+ __FRAUD_MONEY_CURRENCY_DOLLAR 0, __HAS_ATTACHMENT 0, __HAS_ATTACHMENT2 0,
+ __HAS_CC_HDR 0, __HAS_FROM 0, __HAS_MSGID 0, __HAS_X_MAILER 0, __HTTPS_URI 0,
+ __IN_REP_TO 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_TEXT_P2 0,
+ __MIME_VERSION 0, __MULTIPLE_RCPTS_CC_X2 0, __MULTIPLE_URI_TEXT 0,
+ __NO_HTML_TAG_RAW 0, __REFERENCES 0, __SANE_MSGID 0, __SUBJ_ALPHA_NEGATE 0,
+ __TO_MALFORMED_2 0, __TO_NAME 0, __TO_NAME_DIFF_FROM_ACC 0, __TO_REAL_NAMES
+ 0, __URI_IN_BODY 0, __URI_NOT_IMG 0, __URI_NS , __URI_WITHOUT_PATH 0,
+ __URI_WITH_PATH 0, __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: thomas@orgis.org (Thomas Orgis)
+
+--Sig_/nxiSmmpp8UTwjny0J62n/xx
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Am Sun, 25 Jun 2017 14:31:01 +0200
+schrieb Andreas Koenig <andreas.koenig.7os6VVqR@franz.ak.mind.de>:=20
+
+> Debugging this sort of thing is not easy. The key is always to go back
+> to the mentioned release and look around. I found this:
+>=20
+> https://metacpan.org/source/THORGIS/Text-NumericData-2.001000/META.yml#L23
+>=20
+> So in this release the META.yml declared that version number is "0".
+> This sticks.
+
+Thanks for pointing that out! I realise now that I had some confusion
+with the build system. It's been such a long time with no release that
+I forgot. Observe:
+
+$ grep generated_by */META.yml
+Text-NumericData-2.000000/META.yml:generated_by: 'Module::Build version 0.3=
+901, CPAN::Meta::Converter version 2.120630'
+Text-NumericData-2.000001/META.yml:generated_by: 'Module::Build version 0.3=
+901, CPAN::Meta::Converter version 2.120630'
+Text-NumericData-2.000002/META.yml:generated_by: 'Module::Build version 0.3=
+901, CPAN::Meta::Converter version 2.120630'
+Text-NumericData-2.000004/META.yml:generated_by: 'Module::Build version 0.3=
+901, CPAN::Meta::Converter version 2.120630'
+Text-NumericData-2.001000/META.yml:generated_by: 'Module::Build version 0.3=
+901, CPAN::Meta::Converter version 2.120630'
+Text-NumericData-2.001001/META.yml:generated_by: 'Module::Build version 0.4=
+214, CPAN::Meta::Converter version 2.150001'
+Text-NumericData-2.002000/META.yml:generated_by: 'Module::Build version 0.4=
+214, CPAN::Meta::Converter version 2.150001'
+Text-NumericData-2.003000/META.yml:generated_by: 'ExtUtils::MakeMaker versi=
+on 7.1001, CPAN::Meta::Converter version 2.150005'
+Text-NumericData-2.003001/META.yml:generated_by: 'ExtUtils::MakeMaker versi=
+on 7.1001, CPAN::Meta::Converter version 2.150005'
+
+But then =E2=80=A6
+
+$ grep -A 1 txdcalc.pm */META.yml
+Text-NumericData-2.000000/META.yml:    file: lib/Text/NumericData/App/txdca=
+lc.pm
+Text-NumericData-2.000000/META.yml-    version: 0
+--
+Text-NumericData-2.000001/META.yml:    file: lib/Text/NumericData/App/txdca=
+lc.pm
+Text-NumericData-2.000001/META.yml-    version: 0
+--
+Text-NumericData-2.000002/META.yml:    file: lib/Text/NumericData/App/txdca=
+lc.pm
+Text-NumericData-2.000002/META.yml-    version: 0
+--
+Text-NumericData-2.000004/META.yml:    file: lib/Text/NumericData/App/txdca=
+lc.pm
+Text-NumericData-2.000004/META.yml-    version: 0
+--
+Text-NumericData-2.001000/META.yml:    file: lib/Text/NumericData/App/txdca=
+lc.pm
+Text-NumericData-2.001000/META.yml-    version: 0
+--
+Text-NumericData-2.001001/META.yml:    file: lib/Text/NumericData/App/txdca=
+lc.pm
+Text-NumericData-2.001001/META.yml-  Text::NumericData::App::txdcolumns:
+--
+Text-NumericData-2.002000/META.yml:    file: lib/Text/NumericData/App/txdca=
+lc.pm
+Text-NumericData-2.002000/META.yml-  Text::NumericData::App::txdcolumns:
+
+So my use of ExtUtils::MakeMaker instead of Module::Build wasn't the
+trigger, but the upgrade of Module::Build past 0.3901. Before, it would
+just write version 0 in there and be happy. Now it omits the version
+number. And here we go, in
+https://metacpan.org/changes/distribution/Module-Build:
+
+0.39_02 - Thu Feb 17 00:33:18 MET 2012
+
+  [BUG FIXES]
+
+  - Fixed bug where modules without $VERSION might have a version of '0'
+    listed in 'provides' metadata, which will be rejected by PAUSE
+    [David Golden, reported by Christopher Fields]
+
+So this bug of inserting version 0 got fixed and _this_ broke my
+releases for PAUSE. Bummer. So I guess I have to add at least version 0
+now to all files because of the broken history:-(
+
+
+Alrighty then,
+
+Thomas
+
+PS:
+
+>   > Alrighty then, =20
+>=20
+> Hmmm. Probably not allright for you now. Let us know if you need more
+> help.
+
+Yeah, that is just my standard closing line in informal contexts.
+People usually ignore it or maybe get a chuckle out of it if they
+recognise the quote;-)
+
+--=20
+Thomas Orgis - Source Mage GNU/Linux Developer (http://www.sourcemage.org)
+OrgisNetzOrganisation ---)=3D- http://orgis.org
+GPG public key 60D5CAFE: http://thomas.orgis.org/public_key
+Fingerprint: D021 FF8E CF4B E097 19D6  1A27 231C 4CBC 60D5 CAFE
+
+--Sig_/nxiSmmpp8UTwjny0J62n/xx
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBAgAGBQJZULyNAAoJECMcTLxg1cr+rSYQAL4XVWyeY0sDsnwY42EDzwIg
+MWvxbuLQ7ngo11aPphfkoxSLe13RACg66/NSMIo2wL65me3urc4SLNhO2qBIUJma
+fZ0QeP315R4MqOrEEzxsYf+DSF5V6v093UVRVT0RXFPrTVdcvmIqZr92aEqqkfcO
+CgamnXGwD+C56MpKCtM17II+7+Ll9tPLcm1vMPJiWUoL1iXhBsqxmU3n0hsWpTE7
+JUw3Dr+Kkk34WKk5pv6yQhS6Hx9DoxBQF8RokzdTU4R1t0hnlegbu1xF450IaOKd
+osahNpo0dFcRjINJqkqE6vqADBDxthS7AfdTF6Lbwqpv4B3Z0vjtG/9WFkRjZnNv
+5zXvwlEFFp8msA1lOO1owBjKhYzi0HOoUffiIoxMF/ggHl4KTfw/NGi6CuZCirYE
+81RkWuVKZSG+kolLIdII3MmA7TgpH92MygdyMHCK5tyxddtxfGRst7dv8j3hMUyC
+j8SWxdHdkO++6bcTSzlh6zhfG5Lh9RaTN2AHWWtjkWaIn2yPntr9II0rXyQ8rn/3
+fba7APBkFfLc3s7VBax3sDDcyu4VEXbMh/dfoa8F7vpw/4oL0vo1+bslTzzNhgev
+gRhh1lzAhdxl/q6GxkroCvt9yrBA0I0VUtEtCyjKvKhuI6H2XbknB2gIpWxYL6Kb
+SkBHjejD0UBX5um+99iU
+=MotP
+-----END PGP SIGNATURE-----
+
+--Sig_/nxiSmmpp8UTwjny0J62n/xx--
