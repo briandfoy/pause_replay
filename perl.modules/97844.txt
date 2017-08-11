@@ -1,0 +1,575 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:97844
+Return-Path: <byrne@majordojo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 1017 invoked from network); 10 Aug 2017 12:46:37 -0000
+Received: from xx1.develooper.com (207.171.7.115) by x6.develooper.com with
+ SMTP; 10 Aug 2017 12:46:37 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 4D4DD120187 for <perlmail-modules@onion.perl.org>;
+ Thu, 10 Aug 2017 05:46:37 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.4 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,HTML_MESSAGE,RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_SPAM autolearn=no
+ version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 932E2120179 for
+ <perlmail-modules@onion.perl.org>; Thu, 10 Aug 2017 05:46:33 -0700 (PDT)
+Received: from mail-oi0-f45.google.com (mail-oi0-f45.google.com
+ [209.85.218.45]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ F1E16120177 for <modules@perl.org>; Thu, 10 Aug 2017 05:45:58 -0700 (PDT)
+Received: by mail-oi0-f45.google.com with SMTP id e124so5490671oig.2 for
+ <modules@perl.org>; Thu, 10 Aug 2017 05:45:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=majordojo-com.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:message-id:in-reply-to:references:subject :mime-version;
+ bh=ZM8V+sbsXBBfcWaxqtmWThFkMLuDAbn86f6uiJ2uh4w=;
+ b=KHHxrtDQ6icMPvQAp90a2e9q5+q6f/MnXXuuNTH1ocDmwzwNgyYIhhDtOsMjsrxXpL
+ F66fIg2fVHCwso0i0Nu6XbD5oOCFLwBwBD+kFTahEax5NJA/w76BAzs/Xo4zVQWDJ9AJ
+ IyaMwyCl3gCNZDi3uavzes2JPOX+El6kZ9u+Cy1+W28dyrsQ+7OTgtiEHnCvmPRJkrHo
+ rnx4M58q4MI2pdmWbp5Mhz/aPHBWfl4kz/R7tp10zyzoNsbllY//kfzstg0Dsqyxtmbs
+ rCnFJXDACJ9cWJ04qhcVjPnF7tRn0ZMMvgMgw4TC7wVxXV1vnEiAff1EE/FG+0KE+9zV dvWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025; h=x-gm-message-state:date:from:to:cc:message-id:in-reply-to
+ :references:subject:mime-version;
+ bh=ZM8V+sbsXBBfcWaxqtmWThFkMLuDAbn86f6uiJ2uh4w=;
+ b=Oj/SMd/mCbN2vtBqQB1Fg8VI8fTeBQGuUIMd5BnKtWBUhjAawoYBDJWxijLpJugJsX
+ HHmRDZjZmkI8dsEEFzN5UkYjew50z96zhnySDk4VrGDOIBvOLU5sP5ZZ/JhIF37amCaX
+ jBtaPfqXtgCAP5NTwZ5ru59uLONpVwT0B9o+GE1jSlfMAIZUC5MqJc2arpvlHw6pBf2H
+ +y2AQJ4HJJHJ2AcXnCtpI7Q1Gq6frl3yaG06u+mXC3thnXGaepoGJBEXHQe5UmGf9fbS
+ 09M724tH2l6ICqwbf7YV25WgwO6BT+tvKMPDOS8UsNdNUkinBdFeZB55H1Qd+Jqfv74b HdKw==
+X-Gm-Message-State: AHYfb5iTcOj0gkiecdfNwrSR7Rn12RSZmX+D7w9HWP+HdTx71LAB5Lyt
+ oME+dGnLxTU8UGU8
+X-Received: by 10.202.79.13 with SMTP id d13mr7430975oib.229.1502369157861;
+ Thu, 10 Aug 2017 05:45:57 -0700 (PDT)
+Received: from [10.0.0.13] (65-36-116-208.dyn.grandenetworks.net.
+ [65.36.116.208]) by smtp.gmail.com with ESMTPSA id
+ w134sm6934021oif.32.2017.08.10.05.45.56 (version=TLS1_2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128); Thu, 10 Aug 2017 05:45:57
+ -0700 (PDT)
+Date: Thu, 10 Aug 2017 07:45:46 -0500
+To: Fred Moyer <fred@redhotpenguin.com>, Jan Seidl <janseidl@volny.cz>
+Cc: Paul K <paulclinger@gmail.com>, kutterma@users.sourceforge.net, 
+ modules@perl.org
+Message-ID: <82f16488-421a-44e1-a99e-4da93ed02187@Spark>
+In-Reply-To:
+ <CAJEmbh9Msw6YCN5Qej7T-kvOre=vVAGDV=fqD5Cfe-2bsg2YTQ@mail.gmail.com>
+References:
+ <CAJEmbh9Jtn-yYKz9DizH+HFKtFZBv2ktAr07aAJhq53usck0bQ@mail.gmail.com>
+ <294aa212-f40c-4eb2-986f-ca79f2ddbef7@Spark>
+ <CAJEmbh_8vWR8EZ8dyP-mH8fK61aUSKbDGR15Odj_4e2ks1dQ8w@mail.gmail.com>
+ <64f6c5f5-319f-4518-b21c-d45e5f09da4f@Spark>
+ <CAJEmbh8n2Cn4Q4Oa-KDTpNA0Q3AfbgPQt5CcQLjNJhneDDVxLA@mail.gmail.com>
+ <225e358f-7c17-463e-aeaf-866d3d7e71f1@Spark>
+ <CADUw5q233PPtCVjYiSEdvF=yTe0bKC7R5cyCNEaau4hC1oj5SA@mail.gmail.com>
+ <CAJEmbh_6hbdkVKSftVi=VHmR=rQOwHn6uz0jEvyRJhBwEiupxQ@mail.gmail.com>
+ <CAJEmbh-v_3SjpL24Y0hsa6QMqYbB5Q26Q=d3SgRsG=L0qGJLrQ@mail.gmail.com>
+ <CAJEmbh-_iTG-LOnEyaKdoZ3cDseoxaQuE3PNRQ9Y0D0xsBPwCA@mail.gmail.com>
+ <CAJEmbh8Dhf90dwMjn6PuTdwcCWKKkM1EkDp3pqPvD2JJ0geRdQ@mail.gmail.com>
+ <CAHrynWADEpoDTQQSeDQ1TTUEBEmSxRgq2xqC4BfO3KxtkfJfkA@mail.gmail.com>
+ <CAJEmbh-7tHMUREXEyBWwfAMW-hHoq91sz+tSmUveb6eh__G-uA@mail.gmail.com>
+ <CAJEmbh9Msw6YCN5Qej7T-kvOre=vVAGDV=fqD5Cfe-2bsg2YTQ@mail.gmail.com>
+Subject: Re: rights to URI::tcp
+X-Readdle-Message-ID: 82f16488-421a-44e1-a99e-4da93ed02187@Spark
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="598c5583_8edbdab_17be3"
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2017.8.10.123616
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' HTML_50_70 0.1,
+ MULTIPLE_RCPTS 0.1, BODYTEXTH_SIZE_3000_MORE 0, BODY_SIZE_10000_PLUS 0,
+ DATE_TZ_NA 0, DKIM_SIGNATURE 0, INVALID_MSGID_NO_FQDN 0, IN_REP_TO 0,
+ LEGITIMATE_SIGNS 0, MSG_THREAD 0, REFERENCES 0, SPF_NONE 0, WEBMAIL_SOURCE 0,
+ __ANY_URI 0, __BOUNCE_CHALLENGE_SUBJ 0, __BOUNCE_NDR_SUBJ_EXEMPT 0, __CC_NAME
+ 0, __CC_NAME_DIFF_FROM_ACC 0, __CC_REAL_NAMES 0, __CP_URI_IN_BODY 0, __CT 0,
+ __CTYPE_HAS_BOUNDARY 0, __CTYPE_MULTIPART 0, __CTYPE_MULTIPART_ALT 0,
+ __DQ_NEG_HEUR 0, __DQ_NEG_IP 0, __FORWARDED_MSG 0, __FRAUD_BODY_WEBMAIL 0,
+ __FRAUD_WEBMAIL 0, __HAS_CC_HDR 0, __HAS_FROM 0, __HAS_HTML 0, __HAS_MSGID 0,
+ __HELO_GMAIL 0, __HTML_AHREF_TAG 0, __HTML_TAG_DIV 0, __HTTPS_URI 0,
+ __IN_REP_TO 0, __MIME_HTML 0, __MIME_TEXT_H 0, __MIME_TEXT_H1 0,
+ __MIME_TEXT_H2 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_TEXT_P2 0,
+ __MIME_VERSION 0, __MULTIPLE_RCPTS_CC_X2 0, __MULTIPLE_URI_HTML 0,
+ __MULTIPLE_URI_TEXT 0, __RDNS_GMAIL 0, __REFERENCES 0, __SANE_MSGID 0,
+ __SUBJ_ALPHA_NEGATE 0, __TAG_EXISTS_HTML 0, __TO_MALFORMED_2 0, __TO_NAME 0,
+ __TO_NAME_DIFF_FROM_ACC 0, __TO_REAL_NAMES 0, __URI_IN_BODY 0, __URI_NOT_IMG
+ 0, __URI_NO_WWW 0, __URI_NS , __URI_WITHOUT_PATH 0, __URI_WITH_PATH 0,
+ __YOUTUBE_RCVD 0, __blackholes.mail-abuse.org_TIMEOUT ,
+ __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: byrne@majordojo.com (Byrne Reese)
+
+--598c5583_8edbdab_17be3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+=46WIW - I tried to make the changes, but lack permission myself.
+
+On Aug 9, 2017, 7:16 AM -0500, Jan Seidl <janseidl=40volny.cz>, wrote:
+> Hello,
+> =C2=A0 some progress please=3F
+>
+> thanks
+> JaSei
+>
+> > 2017-07-10 10:13 GMT+02:00 Jan Seidl <janseidl=40volny.cz>:
+> > > Hello,
+> > > =C2=A0 =C2=A0 something new with my PR and/or rights for me=3F
+> > > This is same change as=C2=A0https://github.com/redhotpenguin/soapli=
+te/pull/30/files for example...
+> > >
+> > > thank you
+> > >
+> > > best regards
+> > > JaSei
+> > >
+> > > > 2017-06-26 15:55 GMT+02:00 =46red Moyer <fred=40redhotpenguin.com=
+>:
+> > > > > Working on it here, please be patient
+> > > > >
+> > > > > > On Mon, Jun 26, 2017, 12:49 AM Jan Seidl <janseidl=40volny.cz=
+> wrote:
+> > > > > > > Hello,
+> > > > > > > =C2=A0 =C2=A0 something new with my PR and/or rights for me=
+=3F
+> > > > > > >
+> > > > > > > thank you
+> > > > > > >
+> > > > > > > best regards
+> > > > > > > JaSei
+> > > > > > >
+> > > > > > > > 2017-06-20 10:00 GMT+02:00 Jan Seidl <janseidl=40volny.cz=
+>:
+> > > > > > > > > after merge PR and release SOAP::Lite will be possible =
+give me rights to URI::tcp via=C2=A0https://pause.perl.org/pause/authenqu=
+ery=3FACTION=3Dshare=5Fperms =3F
+> > > > > > > > >
+> > > > > > > > > thanks
+> > > > > > > > > JaSei
+> > > > > > > > >
+> > > > > > > > > > 2017-06-19 14:06 GMT+02:00 Jan Seidl <janseidl=40voln=
+y.cz>:
+> > > > > > > > > > > Hello,
+> > > > > > > > > > > =C2=A0 =C2=A0I create PR which should be fixed inde=
+xing of URI::tcp
+> > > > > > > > > > >
+> > > > > > > > > > > https://github.com/redhotpenguin/soaplite/pull/31
+> > > > > > > > > > >
+> > > > > > > > > > > best regards
+> > > > > > > > > > > JaSei
+> > > > > > > > > > >
+> > > > > > > > > > > > 2017-06-16 9:50 GMT+02:00 Jan Seidl <janseidl=40v=
+olny.cz>:
+> > > > > > > > > > > > > Second variant is delete URI::tcp package from =
+SOAP::lite and set URI::tcp as prerequisite. =46irst URI::tcp must be rel=
+eased....
+> > > > > > > > > > > > >
+> > > > > > > > > > > > >
+> > > > > > > > > > > > >
+> > > > > > > > > > > > > > 2017-06-15 17:17 GMT+02:00 Paul K <paulclinge=
+r=40gmail.com>:
+> > > > > > > > > > > > > > > I think the easiest way is to follow the su=
+ggestion in the ticket and
+> > > > > > > > > > > > > > > split =22package URI::tcp=22 into two lines=
+, which should prevent it from
+> > > > > > > > > > > > > > > being indexed.
+> > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > I'm not the current maintainer, but =46red =
+should be able to do this.
+> > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > Paul.
+> > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > On Thu, Jun 15, 2017 at 7:51 AM, Byrne Rees=
+e <byrne=40majordojo.com> wrote:
+> > > > > > > > > > > > > > > > Paul is the owner of URI::tcp, but I am n=
+ot sure he actively maintains it,
+> > > > > > > > > > > > > > > > or even if this email is still current fo=
+r him. I cannot help you with that
+> > > > > > > > > > > > > > > > module.
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > > If Paul can=E2=80=99t help, I am sure the=
+re is a procedure for you being granted
+> > > > > > > > > > > > > > > > rights by CPAN. If you don=E2=80=99t hear=
+ back, pursue that.
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > > On Jun 15, 2017, 1:09 AM -0700, Jan Seidl=
+ <janseidl=40volny.cz>, wrote:
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > > Ok, sorry for my mistake, but I see in pa=
+use
+> > > > > > > > > > > > > > > > (https://pause.perl.org/pause/authenquery=
+) owner of URI::tcp module are
+> > > > > > > > > > > > > > > > KULCHENKO. You have rights to give me rig=
+ths to publish URI::tcp module=3F
+> > > > > > > > > > > > > > > > Give you sense to do it=3F
+> > > > > > > > > > > > > > > > Dan Book advised me (https://github.com/a=
+vast/URI-tcp/issues/1) for try
+> > > > > > > > > > > > > > > > author contact...
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > > I will like use URI::tcp module. I think =
+it's pretty useful module and on
+> > > > > > > > > > > > > > > > cpan now doesn't exists. But I cannot pub=
+lish him, because was in past used
+> > > > > > > > > > > > > > > > in SOAP::Lite module.. This is reason why=
+ I need this rights...
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > > best regards
+> > > > > > > > > > > > > > > > JaSei
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > > > > > 2017-06-14 16:54 GMT+02:00 Byrne Reese <b=
+yrne=40majordojo.com>:
+> > > > > > > > > > > > > > > >>
+> > > > > > > > > > > > > > > >> You are corresponding with the owners no=
+w. What information do you need=3F
+> > > > > > > > > > > > > > > >>
+> > > > > > > > > > > > > > > >> On Jun 14, 2017, 6:41 AM -0700, Jan Seid=
+l <janseidl=40volny.cz>, wrote:
+> > > > > > > > > > > > > > > >>
+> > > > > > > > > > > > > > > >> Hello,
+> > > > > > > > > > > > > > > >>=C2=A0 this module (=60URI::tcp=60) doesn=
+'t exists in SOAP::Lite now... And about
+> > > > > > > > > > > > > > > >> your proposal - pushing my URI::tcp to S=
+OAP::Lite doesn't make sense - I
+> > > > > > > > > > > > > > > >> don't have rights to push SOAP::Lite and=
+ I expect a user doesn't want to
+> > > > > > > > > > > > > > > >> install whole SOAP::Lite if they only ne=
+ed URI::tcp (really tiny module)....
+> > > > > > > > > > > > > > > >>
+> > > > > > > > > > > > > > > >> Have you some information about owner SO=
+AP::Lite=3F
+> > > > > > > > > > > > > > > >>
+> > > > > > > > > > > > > > > >> thanks
+> > > > > > > > > > > > > > > >> JaSei
+> > > > > > > > > > > > > > > >>
+> > > > > > > > > > > > > > > >> 2017-06-09 20:23 GMT+02:00 Byrne Reese <=
+byrne=40majordojo.com>:
+> > > > > > > > > > > > > > > >>>
+> > > > > > > > > > > > > > > >>> I would just break the module out on yo=
+ur own, and leave it bundled with
+> > > > > > > > > > > > > > > >>> SOAP::Lite. No one actively maintains S=
+OAP::Lite anymore to the best of my
+> > > > > > > > > > > > > > > >>> knowledge.
+> > > > > > > > > > > > > > > >>>
+> > > > > > > > > > > > > > > >>> On Jun 9, 2017, 12:08 AM -0700, Jan Sei=
+dl <janseidl=40volny.cz>, wrote:
+> > > > > > > > > > > > > > > >>>
+> > > > > > > > > > > > > > > >>> Hello,
+> > > > > > > > > > > > > > > >>>
+> > > > > > > > > > > > > > > >>>=C2=A0 =C2=A0 I created module URI::tcp =
+(because this or similar module isn't on
+> > > > > > > > > > > > > > > >>> metacpan), but after release I gave rep=
+ort about rights..
+> > > > > > > > > > > > > > > >>>
+> > > > > > > > > > > > > > > >>> Well, will be possible give me rights t=
+o URI::tcp module=3F I see in module
+> > > > > > > > > > > > > > > >>> SOAP::Lite this module don't exists now=
+...
+> > > > > > > > > > > > > > > >>>
+> > > > > > > > > > > > > > > >>> Thank you
+> > > > > > > > > > > > > > > >>> Best regards
+> > > > > > > > > > > > > > > >>> JaSei
+> > > > > > > > > > > > > > > >>
+> > > > > > > > > > > > > > > >>
+> > > > > > > > > > > > > > > >
+> > > > > > > > > > > > >
+> > > > > > > > > > >
+> > > > > > > > >
+> > > > > > >
+> > >
+>
+
+--598c5583_8edbdab_17be3
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+<html xmlns=3D=22http://www.w3.org/1999/xhtml=22>
+<head>
+<title></title>
+</head>
+<body>
+<div name=3D=22messageBodySection=22 style=3D=22font-size: 14px; font-fam=
+ily: -apple-system, BlinkMacSystem=46ont, sans-serif;=22>=46WIW - I tried=
+ to make the changes, but lack permission myself.&=23160;</div>
+<div name=3D=22messageReplySection=22 style=3D=22font-size: 14px; font-fa=
+mily: -apple-system, BlinkMacSystem=46ont, sans-serif;=22><br />
+On Aug 9, 2017, 7:16 AM -0500, Jan Seidl &lt;janseidl=40volny.cz&gt;, wro=
+te:<br />
+<blockquote type=3D=22cite=22 style=3D=22margin: 5px 5px; padding-left: 1=
+0px; border-left: thin solid =231abc9c;=22>
+<div dir=3D=22ltr=22>Hello,
+<div>&=23160; some progress please=3F</div>
+<div><br /></div>
+<div>thanks</div>
+<div>JaSei</div>
+</div>
+<div class=3D=22gmail=5Fextra=22><br />
+<div class=3D=22gmail=5Fquote=22>2017-07-10 10:13 GMT+02:00 Jan Seidl <sp=
+an dir=3D=22ltr=22>&lt;<a href=3D=22mailto:janseidl=40volny.cz=22 target=3D=
+=22=5Fblank=22>janseidl=40volny.cz</a>&gt;</span>:<br />
+<blockquote class=3D=22gmail=5Fquote=22 style=3D=22margin: 5px 5px; paddi=
+ng-left: 10px; border-left: thin solid =23e67e22;=22>
+<div dir=3D=22ltr=22><span class=3D=22=22><span style=3D=22font-size:12.8=
+px=22>Hello,</span></span>
+<div style=3D=22font-size:12.8px=22>&=23160; &=23160; something new with =
+my PR and/or rights for me=3F</div>
+<div style=3D=22font-size:12.8px=22>This is same change as&=23160;<a href=
+=3D=22https://github.com/redhotpenguin/soaplite/pull/30/files=22 target=3D=
+=22=5Fblank=22>https://github.com/<wbr />redhotpenguin/soaplite/pull/<wbr=
+ />30/files</a> for example...</div>
+<span class=3D=22=22></span>
+<div style=3D=22font-size:12.8px=22><span class=3D=22=22><br /></span></d=
+iv>
+<div style=3D=22font-size:12.8px=22><span class=3D=22=22>thank you</span>=
+</div>
+<div style=3D=22font-size:12.8px=22><span class=3D=22=22><br /></span></d=
+iv>
+<div style=3D=22font-size:12.8px=22><span class=3D=22=22>best regards</sp=
+an></div>
+<div style=3D=22font-size:12.8px=22><span class=3D=22=22>JaSei</span></di=
+v>
+</div>
+<div class=3D=22HOEnZb=22>
+<div class=3D=22h5=22>
+<div class=3D=22gmail=5Fextra=22><br />
+<div class=3D=22gmail=5Fquote=22>2017-06-26 15:55 GMT+02:00 =46red Moyer =
+<span dir=3D=22ltr=22>&lt;<a href=3D=22mailto:fred=40redhotpenguin.com=22=
+ target=3D=22=5Fblank=22>fred=40redhotpenguin.com</a>&gt;</span>:<br />
+<blockquote class=3D=22gmail=5Fquote=22 style=3D=22margin: 5px 5px; paddi=
+ng-left: 10px; border-left: thin solid =233498db;=22>
+<p dir=3D=22ltr=22>Working on it here, please be patient</p>
+<div class=3D=22m=5F-7289121332066203253HOEnZb=22>
+<div class=3D=22m=5F-7289121332066203253h5=22><br />
+<div class=3D=22gmail=5Fquote=22>
+<div dir=3D=22ltr=22>On Mon, Jun 26, 2017, 12:49 AM Jan Seidl &lt;<a href=
+=3D=22mailto:janseidl=40volny.cz=22 target=3D=22=5Fblank=22>janseidl=40vo=
+lny.cz</a>&gt; wrote:<br /></div>
+<blockquote class=3D=22gmail=5Fquote=22 style=3D=22margin: 5px 5px; paddi=
+ng-left: 10px; border-left: thin solid =23d35400;=22>
+<div dir=3D=22ltr=22>Hello,
+<div>&=23160; &=23160; something new with my PR and/or rights for me=3F</=
+div>
+<div><br /></div>
+<div>thank you</div>
+<div><br /></div>
+<div>best regards</div>
+<div>JaSei</div>
+</div>
+<div class=3D=22gmail=5Fextra=22><br />
+<div class=3D=22gmail=5Fquote=22>2017-06-20 10:00 GMT+02:00 Jan Seidl <sp=
+an dir=3D=22ltr=22>&lt;<a href=3D=22mailto:janseidl=40volny.cz=22 target=3D=
+=22=5Fblank=22>janseidl=40volny.cz</a>&gt;</span>:<br />
+<blockquote class=3D=22gmail=5Fquote=22 style=3D=22margin: 5px 5px; paddi=
+ng-left: 10px; border-left: thin solid =2334495e;=22>
+<div dir=3D=22ltr=22>after merge PR and release SOAP::Lite will be possib=
+le give me rights to URI::tcp via&=23160;<a href=3D=22https://pause.perl.=
+org/pause/authenquery=3FACTION=3Dshare=5Fperms=22 target=3D=22=5Fblank=22=
+>https://pause.perl.org/pau<wbr />se/authenquery=3FACTION=3Dshare=5F<wbr =
+/>perms</a> =3F
+<div><br /></div>
+<div>thanks</div>
+<div>JaSei</div>
+</div>
+<div class=3D=22m=5F-7289121332066203253m=5F3432471736754373132m=5F-35240=
+83518448655577HOEnZb=22>
+<div class=3D=22m=5F-7289121332066203253m=5F3432471736754373132m=5F-35240=
+83518448655577h5=22>
+<div class=3D=22gmail=5Fextra=22><br />
+<div class=3D=22gmail=5Fquote=22>2017-06-19 14:06 GMT+02:00 Jan Seidl <sp=
+an dir=3D=22ltr=22>&lt;<a href=3D=22mailto:janseidl=40volny.cz=22 target=3D=
+=22=5Fblank=22>janseidl=40volny.cz</a>&gt;</span>:<br />
+<blockquote class=3D=22gmail=5Fquote=22 style=3D=22margin: 5px 5px; paddi=
+ng-left: 10px; border-left: thin solid =232ecc71;=22>
+<div dir=3D=22ltr=22>Hello,
+<div>&=23160; &=23160;I create PR which should be fixed indexing of URI::=
+tcp</div>
+<div><br /></div>
+<div><a href=3D=22https://github.com/redhotpenguin/soaplite/pull/31=22 ta=
+rget=3D=22=5Fblank=22>https://github.com/redhotpengu<wbr />in/soaplite/pu=
+ll/31</a><br /></div>
+<div><br /></div>
+<div>best regards</div>
+<div>JaSei</div>
+</div>
+<div class=3D=22m=5F-7289121332066203253m=5F3432471736754373132m=5F-35240=
+83518448655577m=5F8706431946481385732HOEnZb=22>
+<div class=3D=22m=5F-7289121332066203253m=5F3432471736754373132m=5F-35240=
+83518448655577m=5F8706431946481385732h5=22>
+<div class=3D=22gmail=5Fextra=22><br />
+<div class=3D=22gmail=5Fquote=22>2017-06-16 9:50 GMT+02:00 Jan Seidl <spa=
+n dir=3D=22ltr=22>&lt;<a href=3D=22mailto:janseidl=40volny.cz=22 target=3D=
+=22=5Fblank=22>janseidl=40volny.cz</a>&gt;</span>:<br />
+<blockquote class=3D=22gmail=5Fquote=22 style=3D=22margin: 5px 5px; paddi=
+ng-left: 10px; border-left: thin solid =239b59b6;=22>
+<div dir=3D=22ltr=22>Second variant is delete URI::tcp package from SOAP:=
+:lite and set URI::tcp as prerequisite. =46irst URI::tcp must be released=
+....
+<div><br /></div>
+<div><br /></div>
+</div>
+<div class=3D=22m=5F-7289121332066203253m=5F3432471736754373132m=5F-35240=
+83518448655577m=5F8706431946481385732m=5F-2859947173003896203HOEnZb=22>
+<div class=3D=22m=5F-7289121332066203253m=5F3432471736754373132m=5F-35240=
+83518448655577m=5F8706431946481385732m=5F-2859947173003896203h5=22>
+<div class=3D=22gmail=5Fextra=22><br />
+<div class=3D=22gmail=5Fquote=22>2017-06-15 17:17 GMT+02:00 Paul K <span =
+dir=3D=22ltr=22>&lt;<a href=3D=22mailto:paulclinger=40gmail.com=22 target=
+=3D=22=5Fblank=22>paulclinger=40gmail.com</a>&gt;</span>:<br />
+<blockquote class=3D=22gmail=5Fquote=22 style=3D=22margin: 5px 5px; paddi=
+ng-left: 10px; border-left: thin solid =23e74c3c;=22>I think the easiest =
+way is to follow the suggestion in the ticket and<br />
+split =22package URI::tcp=22 into two lines, which should prevent it from=
+<br />
+being indexed.<br />
+<br />
+I'm not the current maintainer, but =46red should be able to do this.<br =
+/>
+<span class=3D=22m=5F-7289121332066203253m=5F3432471736754373132m=5F-3524=
+083518448655577m=5F8706431946481385732m=5F-2859947173003896203m=5F6977793=
+362081450353HOEnZb=22><font color=3D=22=23888888=22><br />
+Paul.<br /></font></span>
+<div class=3D=22m=5F-7289121332066203253m=5F3432471736754373132m=5F-35240=
+83518448655577m=5F8706431946481385732m=5F-2859947173003896203m=5F69777933=
+62081450353HOEnZb=22>
+<div class=3D=22m=5F-7289121332066203253m=5F3432471736754373132m=5F-35240=
+83518448655577m=5F8706431946481385732m=5F-2859947173003896203m=5F69777933=
+62081450353h5=22><br />
+On Thu, Jun 15, 2017 at 7:51 AM, Byrne Reese &lt;<a href=3D=22mailto:byrn=
+e=40majordojo.com=22 target=3D=22=5Fblank=22>byrne=40majordojo.com</a>&gt=
+; wrote:<br />
+&gt; Paul is the owner of URI::tcp, but I am not sure he actively maintai=
+ns it,<br />
+&gt; or even if this email is still current for him. I cannot help you wi=
+th that<br />
+&gt; module.<br />
+&gt;<br />
+&gt; If Paul can=E2=80=99t help, I am sure there is a procedure for you b=
+eing granted<br />
+&gt; rights by CPAN. If you don=E2=80=99t hear back, pursue that.<br />
+&gt;<br />
+&gt; On Jun 15, 2017, 1:09 AM -0700, Jan Seidl &lt;<a href=3D=22mailto:ja=
+nseidl=40volny.cz=22 target=3D=22=5Fblank=22>janseidl=40volny.cz</a>&gt;,=
+ wrote:<br />
+&gt;<br />
+&gt; Ok, sorry for my mistake, but I see in pause<br />
+&gt; (<a href=3D=22https://pause.perl.org/pause/authenquery=22 rel=3D=22n=
+oreferrer=22 target=3D=22=5Fblank=22>https://pause.perl.org/pause/<wbr />=
+authenquery</a>) owner of URI::tcp module are<br />
+&gt; KULCHENKO. You have rights to give me rigths to publish URI::tcp mod=
+ule=3F<br />
+&gt; Give you sense to do it=3F<br />
+&gt; Dan Book advised me (<a href=3D=22https://github.com/avast/URI-tcp/i=
+ssues/1=22 rel=3D=22noreferrer=22 target=3D=22=5Fblank=22>https://github.=
+com/avast/URI-<wbr />tcp/issues/1</a>) for try<br />
+&gt; author contact...<br />
+&gt;<br />
+&gt; I will like use URI::tcp module. I think it's pretty useful module a=
+nd on<br />
+&gt; cpan now doesn't exists. But I cannot publish him, because was in pa=
+st used<br />
+&gt; in SOAP::Lite module.. This is reason why I need this rights...<br /=
+>
+&gt;<br />
+&gt; best regards<br />
+&gt; JaSei<br />
+&gt;<br />
+&gt;<br />
+&gt; 2017-06-14 16:54 GMT+02:00 Byrne Reese &lt;<a href=3D=22mailto:byrne=
+=40majordojo.com=22 target=3D=22=5Fblank=22>byrne=40majordojo.com</a>&gt;=
+:<br />
+&gt;&gt;<br />
+&gt;&gt; You are corresponding with the owners now. What information do y=
+ou need=3F<br />
+&gt;&gt;<br />
+&gt;&gt; On Jun 14, 2017, 6:41 AM -0700, Jan Seidl &lt;<a href=3D=22mailt=
+o:janseidl=40volny.cz=22 target=3D=22=5Fblank=22>janseidl=40volny.cz</a>&=
+gt;, wrote:<br />
+&gt;&gt;<br />
+&gt;&gt; Hello,<br />
+&gt;&gt;&=23160; this module (=60URI::tcp=60) doesn't exists in SOAP::Lit=
+e now... And about<br />
+&gt;&gt; your proposal - pushing my URI::tcp to SOAP::Lite doesn't make s=
+ense - I<br />
+&gt;&gt; don't have rights to push SOAP::Lite and I expect a user doesn't=
+ want to<br />
+&gt;&gt; install whole SOAP::Lite if they only need URI::tcp (really tiny=
+ module)....<br />
+&gt;&gt;<br />
+&gt;&gt; Have you some information about owner SOAP::Lite=3F<br />
+&gt;&gt;<br />
+&gt;&gt; thanks<br />
+&gt;&gt; JaSei<br />
+&gt;&gt;<br />
+&gt;&gt; 2017-06-09 20:23 GMT+02:00 Byrne Reese &lt;<a href=3D=22mailto:b=
+yrne=40majordojo.com=22 target=3D=22=5Fblank=22>byrne=40majordojo.com</a>=
+&gt;:<br />
+&gt;&gt;&gt;<br />
+&gt;&gt;&gt; I would just break the module out on your own, and leave it =
+bundled with<br />
+&gt;&gt;&gt; SOAP::Lite. No one actively maintains SOAP::Lite anymore to =
+the best of my<br />
+&gt;&gt;&gt; knowledge.<br />
+&gt;&gt;&gt;<br />
+&gt;&gt;&gt; On Jun 9, 2017, 12:08 AM -0700, Jan Seidl &lt;<a href=3D=22m=
+ailto:janseidl=40volny.cz=22 target=3D=22=5Fblank=22>janseidl=40volny.cz<=
+/a>&gt;, wrote:<br />
+&gt;&gt;&gt;<br />
+&gt;&gt;&gt; Hello,<br />
+&gt;&gt;&gt;<br />
+&gt;&gt;&gt;&=23160; &=23160; I created module URI::tcp (because this or =
+similar module isn't on<br />
+&gt;&gt;&gt; metacpan), but after release I gave report about rights..<br=
+ />
+&gt;&gt;&gt;<br />
+&gt;&gt;&gt; Well, will be possible give me rights to URI::tcp module=3F =
+I see in module<br />
+&gt;&gt;&gt; SOAP::Lite this module don't exists now...<br />
+&gt;&gt;&gt;<br />
+&gt;&gt;&gt; Thank you<br />
+&gt;&gt;&gt; Best regards<br />
+&gt;&gt;&gt; JaSei<br />
+&gt;&gt;<br />
+&gt;&gt;<br />
+&gt;<br /></div>
+</div>
+</blockquote>
+</div>
+<br /></div>
+</div>
+</div>
+</blockquote>
+</div>
+<br /></div>
+</div>
+</div>
+</blockquote>
+</div>
+<br /></div>
+</div>
+</div>
+</blockquote>
+</div>
+<br /></div>
+</blockquote>
+</div>
+</div>
+</div>
+</blockquote>
+</div>
+<br /></div>
+</div>
+</div>
+</blockquote>
+</div>
+<br /></div>
+</blockquote>
+<div></div>
+</div>
+</body>
+</html>
+
+--598c5583_8edbdab_17be3--
