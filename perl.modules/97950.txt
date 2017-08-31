@@ -1,0 +1,95 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:246083 perl.modules:97950
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 32567 invoked from network); 30 Aug 2017 20:53:28 -0000
+Received: from xx1.develooper.com (207.171.7.115) by x6.develooper.com with
+ SMTP; 30 Aug 2017 20:53:28 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 0261211FED1 for <perlmail-modules@onion.perl.org>;
+ Wed, 30 Aug 2017 13:53:27 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.4 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_SPAM autolearn=no version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 4CD4711FF0D for
+ <perlmail-modules@onion.perl.org>; Wed, 30 Aug 2017 13:53:22 -0700 (PDT)
+Received: from mail-wr0-f193.google.com (mail-wr0-f193.google.com
+ [209.85.128.193]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ A97F812019F for <modules@perl.org>; Wed, 30 Aug 2017 13:53:12 -0700 (PDT)
+Received: by mail-wr0-f193.google.com with SMTP id 40so4606815wrv.3 for
+ <modules@perl.org>; Wed, 30 Aug 2017 13:53:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:content-transfer-encoding:mime-version:subject:message-id:date :cc:to;
+ bh=H/d84g2y1p4Ro496jK4w0IUPMxgv9H2TuTDKuCSkgo8=;
+ b=h6W6v6vpTazwlZOCKNUU9v41AFqORLnQy4n1zo6hhruRkPdWyxUFgMAJTg7SpiHsi3
+ E76pVzSHud1CkFgAa3oDlTfnjtYcU3xyqb8xTfivJKU0hFfpWVF1WuRklY9caylHWfB7
+ SIRZbKXTqjVyWQB8sof0mQ3lSwYp8UXKAn45I4g9mU8k+UiLEsed5RB0FrKdRryhsIOS
+ uDKnKcmnyKSkxbb532ZU5ZfCQe893S9SaCQaoMnReE+5371P1QbR86SSaDhYqU4ABZ0u
+ p7gAjY+0fj8iiFQ445MeXm0JqA/aVfr6f8s2/KAmdYK3830MZ54tRzI6SNCB/EOjeVZc Gmtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025; h=x-gm-message-state:from:content-transfer-encoding:mime-version
+ :subject:message-id:date:cc:to;
+ bh=H/d84g2y1p4Ro496jK4w0IUPMxgv9H2TuTDKuCSkgo8=;
+ b=kWPCll7Wo8CLNfqixh5iBUpNQE0Y1WPOJbnEEjiOBws9z5dl4jSPhrNvS2HZo86D/g
+ UuECU/FMI7zC1DeE9U6p2bBfy5F0Tu6qIJmxS7mT4mbWNhNb9uDRYB/BAXTbtQDBoaVE
+ bZ2XZZSGpEVP6Eer1T5JEPaIT6OZIVHeSF1x1sR0ZDlXljF0+msmPeud2wzYN9fvPV5l
+ 699MHmZSWzx5Aznh6YqHsSDd8YxIcWIIOTxKBV/vxwzgOXjMooZpMBpmB7cwJyW5t63l
+ vAAeWYF9MGlkEuz4xX+mP8G0PI6z0O0cOn1lu2hKuM6KYP9bCa0XaAo1koKl0m56gWq7 V1Jw==
+X-Gm-Message-State: AHYfb5gggv68q/HRPUvXh8itxVj7xvd1gcGnXSrd3HYfxPKVa6k74QKE
+ 16gTI8msLYk47bXY
+X-Received: by 10.223.166.175 with SMTP id t44mr2163551wrc.265.1504126391330;
+ Wed, 30 Aug 2017 13:53:11 -0700 (PDT)
+Received: from [192.168.1.116]
+ (host86-156-202-128.range86-156.btcentralplus.com. [86.156.202.128]) by
+ smtp.gmail.com with ESMTPSA id b72sm2734707wmd.0.2017.08.30.13.53.08
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128); Wed, 30 Aug
+ 2017 13:53:09 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 10.3 \(3273\))
+Subject: Dropped permissions on VMS::stdio
+Message-ID: <E18EF93F-2E10-4EC9-BD65-915036FDE332@cogendo.com>
+Date: Wed, 30 Aug 2017 21:53:07 +0100
+Cc: "modules@perl.org" <modules@perl.org>, Perl5 Porters
+ <perl5-porters@perl.org>
+To: rjbs@cpan.org, shay@cpan.org, Sawyer X <xsawyerx@cpan.org>,
+ gsar@cpan.org, bmorrow@cpan.org
+X-Mailer: Apple Mail (2.3273)
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2017.8.30.204517
+X-PMX-Spam: Gauge=IIIIIIIII, Probability=9%, Report=' MULTIPLE_RCPTS 0.1,
+ HTML_00_01 0.05, HTML_00_10 0.05, MIME_LOWER_CASE 0.05, SUPERLONG_LINE 0.05,
+ BODYTEXTP_SIZE_3000_LESS 0, BODY_SIZE_1000_LESS 0, BODY_SIZE_2000_LESS 0,
+ BODY_SIZE_400_499 0, BODY_SIZE_5000_LESS 0, BODY_SIZE_7000_LESS 0,
+ DKIM_SIGNATURE 0, NO_CTA_URI_FOUND 0, NO_URI_FOUND 0, NO_URI_HTTPS 0,
+ SPF_PASS 0, WEBMAIL_SOURCE 0, __CC_NAME 0, __CC_NAME_DIFF_FROM_ACC 0,
+ __CC_REAL_NAMES 0, __CT 0, __CTE 0, __CT_TEXT_PLAIN 0, __DQ_NEG_HEUR 0,
+ __DQ_NEG_IP 0, __FRAUD_MONEY_DENOMINATION 0, __HAS_CC_HDR 0, __HAS_FROM 0,
+ __HAS_MSGID 0, __HAS_X_MAILER 0, __HELO_GMAIL 0, __MIME_TEXT_ONLY 0,
+ __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_VERSION 0, __MSGID_APPLEMAIL 0,
+ __MULTIPLE_RCPTS_CC_X2 0, __MULTIPLE_RCPTS_TO_X5 0, __NO_HTML_TAG_RAW 0,
+ __RDNS_GMAIL 0, __SANE_MSGID 0, __TO_MALFORMED_2 0, __TO_NAME 0,
+ __TO_NAME_DIFF_FROM_ACC 0, __TO_NO_NAME 0, __TO_REAL_NAMES 0,
+ __USER_AGENT_APPLEMAIL 0, __X_MAILER_APPLEMAIL 0, __YOUTUBE_RCVD 0,
+ __blackholes.mail-abuse.org_TIMEOUT , __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+Dear RJBS,  SHAY, XSAWYERX, GSAR, and BMORROW,
+
+I=E2=80=99m writing to you as a PAUSE admin. This is to let you know =
+that I=E2=80=99ve dropped your indexing permissions on VMS::stdio; you =
+still retain your permissions on VMS::Stdio. VMS::stdio was a =
+compatibility shim that had been in place since 5.002 and is now being =
+dropped.
+
+Dropping these permissions resolves a conflict: P5P had first-come on =
+VMS::Stdio, but RJBS had first-come on VMS::stdio.
+
+Cheers,
+Neil
