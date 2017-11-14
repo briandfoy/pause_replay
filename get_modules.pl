@@ -20,6 +20,7 @@ my $dir = $group;
 mkdir $dir, 0755 unless -d $dir;
 
 foreach my $i ( reverse $first .. $last ) {
+	last if $i < 53_000;
 	my $file = catfile( $dir, "$i.txt" );
 	next if -s $file;
 	open my $fh, '>', $file;
@@ -51,10 +52,6 @@ brian d foy C<< <brian.d.foy@gmail.com> >>
 
 =head1 COPYRIGHT
 
-Copyright 2012-2013, brian d foy C<< <brian.d.foy@gmail.com> >>
+Copyright 2012-2017, brian d foy C<< <brian.d.foy@gmail.com> >>
 
 =cut
-
-
-
-
