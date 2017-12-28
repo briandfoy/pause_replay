@@ -1,0 +1,385 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:98416
+Return-Path: <nick@nicktonkin.net>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 17465 invoked from network); 27 Dec 2017 14:22:57 -0000
+Received: from xx1.develooper.com (207.171.7.115) by x6.develooper.com with
+ SMTP; 27 Dec 2017 14:22:57 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 8F05711F91E for <perlmail-modules@onion.perl.org>;
+ Wed, 27 Dec 2017 06:22:57 -0800 (PST)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.9 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,HTML_MESSAGE,RCVD_IN_DNSWL_NONE,URIBL_BLOCKED autolearn=ham
+ version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 6B90911F928 for
+ <perlmail-modules@onion.perl.org>; Wed, 27 Dec 2017 06:22:49 -0800 (PST)
+X-CPAN.org: This message routed through the cpan.org mail forwarding service.
+  Please use PAUSE pause.perl.org to configure your delivery settings.
+Received: from mail-wm0-f43.google.com (mail-wm0-f43.google.com
+ [74.125.82.43]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ B831D11F926 for <modules@cpan.org>; Wed, 27 Dec 2017 06:22:36 -0800 (PST)
+Received: by mail-wm0-f43.google.com with SMTP id y82so39583895wmg.1 for
+ <modules@cpan.org>; Wed, 27 Dec 2017 06:22:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=nicktonkin-net.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:in-reply-to:references:from:date:message-id:subject:to;
+ bh=gw9kYp+DbeZweQm/17gdTmmxfvWhM/7tygEqrvMs8mw=;
+ b=rA8Ebb0DcxYBcD0LPi33zR5Az0+e1qdMsqQDY+Va4o4kIUEukYVobFyBlbOUZRM7Rl
+ slezAOipWP9KBy4cma3an9mfEyqJPMlm/upE52to3pZ4W7PPwDWXv/NqTKkAr5nanoEc
+ ZcprVSwI8XLS13yomN9VqT0E6LRwb02v5tPEw/bDdYuEuWA/I/zmvG11lalpvrRFcW40
+ fcPSH6GRUC9Y9rFcEHki/3VlQZU/XWFOl5On9vS6kN52bn1Z28MolfIXQJOM2ZIau0+K
+ gWPtuWLijwSXn1qtcdQBWR7CaCJCUnRt57QDB2lgc4NouK/nfVP0Ro88+9NBJbP7toxH n9RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025;
+ h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+ :message-id:subject:to; bh=gw9kYp+DbeZweQm/17gdTmmxfvWhM/7tygEqrvMs8mw=;
+ b=g8poolxhpQex0Sir8fz40FX1CzmJ1YGj0lrXn7TaXbyQO1mY8+buhEsThE0YCFGXTz
+ FAVPn5uuU2UDYu8dIhKut8cJ3iEXTOfYtFpDlk5vjCYnxCz+j0GMlYXb63MybFUzSb6x
+ RdGm5f3WwvU6/Tiu/vOFJu9gdPJodrsdxeO8S/lw8nk5pXAati1B/eFpMLyMt4C7GNwQ
+ Crgk7/TS2nHkG5m1nQBQX7mwCSDbD5HNNdd58hUEOlrM3K2hHCvxqJZi3rfYYMGONz3+
+ UAgi1UJloPZxrIoQH+dp6F8kvaH1F1ORFC1zpHINzBG8f8tmB6Qm9HdR1msIT9tw9d/k mP/Q==
+X-Gm-Message-State: AKGB3mJmq36TrZ51ZfR5I2JfYeiHmvFUHGLyTKA6cp+GSiLAv4B7TyAV
+ E7IGbmI7nOcCoTHu9t70HN4tA4LnZzgqyczomoMXE4ir
+X-Google-Smtp-Source:
+ ACJfBotE9IwXikISAf2Lm/9jsDGtNrRD3XlJ2+WNGwXTEzCuZrkL40Iwa6VijskZqampi2it+lyxvUZbOiLnCb5+dQk=
+X-Received: by 10.28.69.197 with SMTP id l66mr23976123wmi.67.1514384554640;
+ Wed, 27 Dec 2017 06:22:34 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.223.156.203 with HTTP; Wed, 27 Dec 2017 06:22:13 -0800 (PST)
+In-Reply-To: <5a43ab93.04c0df0a.269f0.b03f.GMRIR@mx.google.com>
+References:
+ <CAEqhxnBZ2wqRkkMYgJjuvbK69292rNCp1Mar3585e=d3RY6Jog@mail.gmail.com>
+ <CAEqhxnBT=+E4Gb+hsr9+pQGkrE5cDh2LQ0_rkKf01W-Jm07OwQ@mail.gmail.com>
+ <CAEqhxnBT=+E4Gb+hsr9+pQGkrE5cDh2LQ0_rkKf01W-Jm07OwQ@mail.gmail.com>
+ <5a43ab93.04c0df0a.269f0.b03f.GMRIR@mx.google.com>
+Date: Wed, 27 Dec 2017 09:22:13 -0500
+Message-ID:
+ <CAEqhxnDAq=L6hgC7U62QG4Rjo-imuhZxfCR5DWPUn-DGSqgDmw@mail.gmail.com>
+Subject: Fwd: Delivery Status Notification (Failure)
+To: modules@cpan.org
+Content-Type: multipart/mixed; boundary="001a114d1d6c6f66700561532130"
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2017.7.26.42117
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' HTML_50_70 0.1,
+ BODYTEXTH_SIZE_10000_LESS 0, BODYTEXTH_SIZE_3000_MORE 0,
+ BODYTEXTP_SIZE_3000_LESS 0, BODY_SIZE_10000_PLUS 0, DATE_TZ_NA 0,
+ DKIM_SIGNATURE 0, IN_REP_TO 0, LEGITIMATE_SIGNS 0, LINK_TO_IMAGE 0,
+ MSG_THREAD 0, NO_URI_HTTPS 0, REFERENCES 0, SPF_NONE 0, WEBMAIL_SOURCE 0,
+ __ANY_URI 0, __BOUNCE_NDR_BODY_HIGH 0, __BOUNCE_NDR_SUBJECT_CONTAINS 0,
+ __BOUNCE_NDR_SUBJ_EXEMPT 0, __CP_MEDIA_BODY 0, __CT 0, __CTYPE_HAS_BOUNDARY
+ 0, __CTYPE_MULTIPART 0, __CTYPE_MULTIPART_MIXED 0, __DQ_NEG_HEUR 0,
+ __DQ_NEG_IP 0, __EMBEDDED_IMG 0, __FRAUD_BODY_WEBMAIL 0, __FRAUD_SUBJ_A 0,
+ __FRAUD_WEBMAIL 0, __HAS_ATTACHMENT 0, __HAS_ATTACHMENT1 0, __HAS_ATTACHMENT2
+ 0, __HAS_FROM 0, __HAS_HTML 0, __HAS_MSGID 0, __HELO_GMAIL 0,
+ __HEX28_LC_BOUNDARY 0, __HTML_AHREF_TAG 0, __HTML_BOLD 0, __HTML_TAG_DIV 0,
+ __HTML_TAG_TABLE 0, __IMG_ATTACHED 0, __IN_REP_TO 0, __MIME_HTML 0,
+ __MIME_TEXT_H 0, __MIME_TEXT_H1 0, __MIME_TEXT_H2 0, __MIME_TEXT_P 0,
+ __MIME_TEXT_P1 0, __MIME_TEXT_P2 0, __MIME_VERSION 0, __MULTIPLE_URI_HTML 0,
+ __MULTIPLE_URI_TEXT 0, __PHISH_SPEAR_HTTP_RECEIVED 0, __PNG_HEIGHT_100 0,
+ __PNG_WIDTH_100 0, __RDNS_GMAIL 0, __REFERENCES 0, __SANE_MSGID 0,
+ __SUBJ_ALPHA_NEGATE 0, __TO_MALFORMED_2 0, __TO_NO_NAME 0, __URI_IN_BODY 0,
+ __URI_NOT_IMG 0, __URI_NO_PATH 0, __URI_NO_WWW 0, __URI_NS ,
+ __URI_WITHOUT_PATH 0, __YOUTUBE_RCVD 0, __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: nick@nicktonkin.net (Nick Tonkin)
+
+--001a114d1d6c6f66700561532130
+Content-Type: multipart/related; boundary="001a114d1d6c6f666e056153212f"
+
+--001a114d1d6c6f666e056153212f
+Content-Type: multipart/alternative; boundary="001a114d1d6c6f666b056153212e"
+
+--001a114d1d6c6f666b056153212e
+Content-Type: text/plain; charset="UTF-8"
+
+Hi there, I don;t know how to report this: the cpan email server seems to
+be having problems...
+
+
+---------- Forwarded message ----------
+From: Mail Delivery Subsystem <mailer-daemon@googlemail.com>
+Date: Wed, Dec 27, 2017 at 9:17 AM
+Subject: Delivery Status Notification (Failure)
+To: nick@nicktonkin.net
+
+
+[image: Error Icon]
+Message not delivered
+Your message couldn't be delivered to *byterock@cpan.org* because the
+remote server is misconfigured. See technical details below for more
+information.
+The response from the remote server was:
+
+554 5.7.1 <byterock@cpan.org>: Recipient address rejected: Access denied
+
+Final-Recipient: rfc822; byterock@cpan.org
+Action: failed
+Status: 5.7.1
+Remote-MTA: dns; cpan.mx.develooper.com. (207.171.7.115, the server for the
+ domain cpan.org.)
+Diagnostic-Code: smtp; 554 5.7.1 <byterock@cpan.org>: Recipient address
+rejected: Access denied
+Last-Attempt-Date: Wed, 27 Dec 2017 06:17:55 -0800 (PST)
+
+
+---------- Forwarded message ----------
+From: Nick Tonkin <nick@nicktonkin.net>
+To: byterock@cpan.org
+Cc:
+Bcc:
+Date: Wed, 27 Dec 2017 09:17:31 -0500
+Subject: Fwd: Moose pic for your Perl blog
+
+---------- Forwarded message ----------
+From: Nick Tonkin <nick@nicktonkin.net>
+Date: Mon, Dec 25, 2017 at 8:14 PM
+Subject: Moose pic for your Perl blog
+To: byterock@hotmail.com
+
+
+Hey there Byterock,
+
+I've been enjoying your musings as you experiment with Moose. I use Moo
+myself. But I've learned something anyway!
+
+I particularly enjoy the Moose imagery that you put a lot of diligence into
+keeping fresh. So I am sending you this pic of part of one of my Xmas
+gifts, a Lego backwoods cabin. So here's your Lego Moose! Feel free to use
+the pic if you like.
+
+Cheers,
+
+Nick
+
+--001a114d1d6c6f666b056153212e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi there, I don;t know how to report this: the cpan email =
+server seems to be having problems...<div><br></div><div><br><div class=3D"=
+gmail_quote">---------- Forwarded message ----------<br>From: <b class=3D"g=
+mail_sendername">Mail Delivery Subsystem</b> <span dir=3D"ltr">&lt;<a href=
+=3D"mailto:mailer-daemon@googlemail.com">mailer-daemon@googlemail.com</a>&g=
+t;</span><br>Date: Wed, Dec 27, 2017 at 9:17 AM<br>Subject: Delivery Status=
+ Notification (Failure)<br>To: <a href=3D"mailto:nick@nicktonkin.net">nick@=
+nicktonkin.net</a><br><br><br>
+
+
+
+
+<div>
+<table cellpadding=3D"0" cellspacing=3D"0" class=3D"m_82525428255315984emai=
+l-wrapper" style=3D"padding-top:32px;background-color:#ffffff"><tbody>
+<tr><td>
+<table cellpadding=3D"0" cellspacing=3D"0"><tbody>
+<tr><td style=3D"max-width:560px;padding:24px 24px 32px;background-color:#f=
+afafa;border:1px solid #e0e0e0;border-radius:2px">
+<img style=3D"padding:0 24px 16px 0;float:left" width=3D"72" height=3D"72" =
+alt=3D"Error Icon" src=3D"cid:icon.png">
+<table style=3D"min-width:272px;padding-top:8px"><tbody>
+<tr><td><h2 style=3D"font-size:20px;color:#212121;font-weight:bold;margin:0=
+">
+Message not delivered
+</h2></td></tr>
+<tr><td style=3D"padding-top:20px;color:#757575;font-size:16px;font-weight:=
+normal;text-align:left">
+Your message couldn&#39;t be delivered to <a style=3D"color:#212121;text-de=
+coration:none"><b>byterock@cpan.org</b></a> because the remote server is mi=
+sconfigured. See technical details below for more information.
+</td></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+</td></tr>
+<tr style=3D"border:none;background-color:#fff;font-size:12.8px;width:90%">
+<td align=3D"left" style=3D"padding:48px 10px">
+The response from the remote server was:<br>
+<p style=3D"font-family:monospace">
+554 5.7.1 &lt;<a href=3D"mailto:byterock@cpan.org" target=3D"_blank">bytero=
+ck@cpan.org</a>&gt;: Recipient address rejected: Access denied
+</p>
+</td>
+</tr>
+</tbody></table>
+</div>
+
+<br>Final-Recipient: rfc822; <a href=3D"mailto:byterock@cpan.org">byterock@=
+cpan.org</a><br>
+Action: failed<br>
+Status: 5.7.1<br>
+Remote-MTA: dns; <a href=3D"http://cpan.mx.develooper.com" rel=3D"noreferre=
+r" target=3D"_blank">cpan.mx.develooper.com</a>. (207.171.7.115, the server=
+ for the<br>
+=C2=A0domain <a href=3D"http://cpan.org" rel=3D"noreferrer" target=3D"_blan=
+k">cpan.org</a>.)<br>
+Diagnostic-Code: smtp; 554 5.7.1 &lt;<a href=3D"mailto:byterock@cpan.org">b=
+yterock@cpan.org</a>&gt;: Recipient address rejected: Access denied<br>
+Last-Attempt-Date: Wed, 27 Dec 2017 06:17:55 -0800 (PST)<br>
+<br><br>---------- Forwarded message ----------<br>From:=C2=A0Nick Tonkin &=
+lt;<a href=3D"mailto:nick@nicktonkin.net">nick@nicktonkin.net</a>&gt;<br>To=
+:=C2=A0<a href=3D"mailto:byterock@cpan.org">byterock@cpan.org</a><br>Cc:=C2=
+=A0<br>Bcc:=C2=A0<br>Date:=C2=A0Wed, 27 Dec 2017 09:17:31 -0500<br>Subject:=
+=C2=A0Fwd: Moose pic for your Perl blog<br><div dir=3D"ltr"><br><div class=
+=3D"gmail_quote">---------- Forwarded message ----------<br>From: <b class=
+=3D"gmail_sendername">Nick Tonkin</b> <span dir=3D"ltr">&lt;<a href=3D"mail=
+to:nick@nicktonkin.net" target=3D"_blank">nick@nicktonkin.net</a>&gt;</span=
+><br>Date: Mon, Dec 25, 2017 at 8:14 PM<br>Subject: Moose pic for your Perl=
+ blog<br>To: <a href=3D"mailto:byterock@hotmail.com" target=3D"_blank">byte=
+rock@hotmail.com</a><br><br><br><div dir=3D"ltr">Hey there Byterock,<div><b=
+r></div><div>I&#39;ve been enjoying your musings as you experiment with Moo=
+se. I use Moo myself. But I&#39;ve learned something anyway!</div><div><br>=
+</div><div>I particularly enjoy the Moose imagery that you put a lot of dil=
+igence into keeping fresh. So I am sending you this pic of part of one of m=
+y Xmas gifts, a Lego backwoods cabin. So here&#39;s your Lego Moose! Feel f=
+ree to use the pic if you like.</div><div><br></div><div>Cheers,</div><div>=
+<br></div><div>Nick</div></div>
+</div><br></div>
+<br></div><br></div></div>
+
+--001a114d1d6c6f666b056153212e--
+--001a114d1d6c6f666e056153212f
+Content-Type: image/png; name="icon.png"
+Content-Disposition: inline; filename="icon.png"
+Content-Transfer-Encoding: base64
+Content-ID: <icon.png>
+X-Attachment-Id: 2833b2689e92ae5d_0.0.1
+
+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
+--001a114d1d6c6f666e056153212f--
+--001a114d1d6c6f66700561532130
+Content-Type: image/jpeg; name="IMG_20171225_192139772.jpg"
+Content-Disposition: attachment; filename="IMG_20171225_192139772.jpg"
+Content-Transfer-Encoding: base64
+X-Attachment-Id: f_jbmxupmf0
+
+/9j/4TsARXhpZgAATU0AKgAAAAgACQEPAAIAAAAJAAAAegEQAAIAAAAMAAAAhAEaAAUAAAABAAAA
+kAEbAAUAAAABAAAAmAEoAAMAAAABAAIAAAEyAAIAAAAUAAAAoAITAAMAAAABAAEAAIdpAAQAAAAB
+AAAAtIglAAQAAAABAAANpAAADqJNb3Rvcm9sYQAATW90byBHIFBsYXkAAAAASAAAAAEAAABIAAAA
+ATIwMTc6MTI6MjUgMTk6MjE6MzkAACGCmgAFAAAAAQAAAkaCnQAFAAAAAQAAAk6IIgADAAAAAQAC
+AACIJwADAAAAAQD6AACQAAAHAAAABDAyMjCQAwACAAAAFAAAAlaQBAACAAAAFAAAAmqRAQAHAAAA
+BAECAwCSAQAKAAAAAQAAAn6SAgAFAAAAAQAAAoaSAwAKAAAAAQAAAo6SBAAKAAAAAQAAApaSBQAF
+AAAAAQAAAp6SBwADAAAAAQACAACSCQADAAAAAQAYAACSCgAFAAAAAQAAAqaSfAAHAAAKtwAAAq6S
+kAACAAAABwAADWaSkQACAAAABwAADW6SkgACAAAABwAADXagAAAHAAAABDAxMDCgAQADAAAAAQAB
+AACgAgAEAAAAAQAADMCgAwAEAAAAAQAAByygBQAEAAAAAQAADYajAQAHAAAAAQEAAACkAQADAAAA
+AQAAAACkAgADAAAAAQAAAACkAwADAAAAAQAAAACkBAAFAAAAAQAADX6kCAADAAAAAQAAAACkCQAD
+AAAAAQAAAACkCgADAAAAAQABAAAAAAAAAAANBQABhqAAAw1AAAGGoDIwMTc6MTI6MjUgMTk6MjE6
+MzkAMjAxNzoxMjoyNSAxOToyMTozOQAAAAHqAAAAZAADDUAAAYag/////wAAAAEAAAAAAAAAAQAD
+DUAAAYagAAAOBgAAA+hNT1QAAQEBAQByVQAAAgAAABMAAAVmVQEAAgAAAAsAAAV5cQAAAgAAAAQw
+LTMAcQEAAgAAAAQwLTMAcQIAAgAAAAEAAAAAcQMAAgAAACMAAAWEcQQAAgAAACMAAAWnVQIAAQAA
+AAE6AAAAVQMAAQAAAAEYAAAAVRAAAQAAAAEBAAAAVYAACQAAAAEAADqYVZAACQAAAAEAAHUwVaAA
+CQAAAAEAAAUAVbAACQAAAAEAAALQVcAACQAAAAEAAAAeVdAAAgAAAAkAAAXKZAAAAgAAAAUAAAXT
+VREABAAAAAEAAAS2ZBAAAgAAAANOTwAAZDAACwAAAAEAAAAAZDEAAQAAAAEBAAAAZDIAAQAAAAFk
+AAAAZDMAAQAAAAEAAAAAZDQAAQAAAAEAAAAAZDUAAQAAAAEYAAAAZDYAAQAAAAE8AAAAZDcAAQAA
+AAEoAAAAZDgAAQAAAAEYAAAAZDkAAQAAAAEPAAAAZDoAAQAAAAEAAAAAZEAAAQAAABgAAAXYZEEA
+AQAAABgAAAXwZEIAAQAAABgAAAYIZEMAAQAAABgAAAYgZTAACQAAAAEAAAEiZTEACQAAAAEAAAAM
+ZTIACQAAAAEAAAABZTMACQAAAAEAAAAAZTQACQAAAAEAAAAAZVAACQAAAAH///4pZTUACQAAAAEA
+EXmBcAAAAQAAAAEAAAAAcAEACAAAAAEAAAAAcAIACAAAAAEAAAAAcAMAAwAAAAEAAAAAcAQAAwAA
+AAEAAAAAVRIABAAAAAEAAAAAVSAACAAAAAEAAQAAVTAAAgAAABMAAAY4VUAAAQAAAAFfAAAAVVAA
+AQAAAAFVAAAAVWAAAgAAAAUAAAZLVXAAAgAAAAkAAAZQZQAAAQAAAAEBAAAAZQEAAgAAABIAAAZZ
+ZQIAAgAAAAEAAAAAZQMAAQAAAAEAAAAAZQQACQAAAAGSwDDBZv8ACAAAAAEABAAAVeAA
+--001a114d1d6c6f66700561532130--
