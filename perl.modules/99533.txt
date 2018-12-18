@@ -1,0 +1,97 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:99533
+Return-Path: <felipe@felipegasper.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 22314 invoked from network); 17 Nov 2018 02:16:21 -0000
+Received: from xx1.develooper.com (207.171.7.115) by x6.develooper.com with
+ SMTP; 17 Nov 2018 02:16:21 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 6D86B122783 for <perlmail-modules@onion.perl.org>;
+ Fri, 16 Nov 2018 18:16:21 -0800 (PST)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-2.0 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,URIBL_BLOCKED autolearn=ham
+ version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 35BC81227D4 for
+ <perlmail-modules@onion.perl.org>; Fri, 16 Nov 2018 18:16:19 -0800 (PST)
+X-Greylist: delayed 2105 seconds by postgrey-1.34 at xx1.develooper.com; Fri,
+ 16 Nov 2018 18:16:18 PST
+Received: from web1.siteocity.com (web1.siteocity.com [67.227.147.204])
+ (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits)) (No client
+ certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ 36AF2122783 for <modules@perl.org>; Fri, 16 Nov 2018 18:16:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=felipegasper.com; s=default; h=To:Date:Message-Id:Subject:Mime-Version:
+ Content-Transfer-Encoding:Content-Type:From:Sender:Reply-To:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=qTS7KbG6y5HZa8NFrAgheYMv4rq6d9TF7NEcWNVRbug=; b=A0z4BNktaO6i+kElEC/Y992qxA
+ YMkKFOn8/hqG+gJ9GQQY8g8tFfiv60a874rg44FAjkljeAs7YC04ayBzeUQHk5M2YFnVP530wGiJC
+ Del+YJtr902FbVy8BbQHUONfqQsYhUThxjUuXxbbdW8i88ZLXGHXjA0d0QVhs158v7KgJq7TGQ8yB
+ HefqTHFuOAeIuCOVMCcBJegJ4zeZuJLdeKBP35DbHNaAS0KwWs2W8ozIIvqhBCYz0ycKeRdf2b7Yp
+ l8vcK9E+oT/caHCng/4A5WXOxHy36ckB5rnXNAOXIDfeb4HU2yDKgxaZOdGZC9LnznCB/6F02fxG+
+ dXEOiLLw==;
+Received: from cpe9050cab50823-cm9050cab50820.cpe.net.cable.rogers.com
+ ([99.248.56.67]:50316 helo=[192.168.0.13]) by web1.siteocity.com with esmtpsa
+ (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256) (Exim 4.91) (envelope-from
+ <felipe@felipegasper.com>) id 1gNpbi-003mIu-Mt for modules@perl.org; Fri, 16
+ Nov 2018 19:41:11 -0600
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 12.1 \(3445.101.1\))
+Subject: take over Socket::MsgHdr?
+Message-ID: <8F7CABE4-25EB-40B2-92EE-7155E25A453F@felipegasper.com>
+Date: Fri, 16 Nov 2018 20:41:09 -0500
+To: modules@perl.org
+X-Mailer: Apple Mail (2.3445.101.1)
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any
+ abuse report
+X-AntiAbuse: Primary Hostname - web1.siteocity.com
+X-AntiAbuse: Original Domain - perl.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - felipegasper.com
+X-Get-Message-Sender-Via: web1.siteocity.com: authenticated_id:
+ fgasper/from_h
+X-Authenticated-Sender: web1.siteocity.com: felipe@felipegasper.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-From-Rewrite: unmodified, already matched
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2018.8.29.50016
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' HTML_00_01 0.05,
+ HTML_00_10 0.05, MIME_LOWER_CASE 0.05, SUPERLONG_LINE 0.05,
+ BODYTEXTP_SIZE_3000_LESS 0, BODY_SIZE_1000_LESS 0, BODY_SIZE_2000_LESS 0,
+ BODY_SIZE_5000_LESS 0, BODY_SIZE_500_599 0, BODY_SIZE_7000_LESS 0, DATE_TZ_NA
+ 0, DKIM_ALIGNS 0, DKIM_SIGNATURE 0, NO_CTA_URI_FOUND 0, NO_URI_FOUND 0,
+ NO_URI_HTTPS 0, SPF_PASS 0, __CT 0, __CTE 0, __CT_TEXT_PLAIN 0,
+ __DKIM_ALIGNS_1 0, __DKIM_ALIGNS_2 0, __FRAUD_ANTIABUSE 0, __HAS_FROM 0,
+ __HAS_MSGID 0, __HAS_X_MAILER 0, __MIME_TEXT_ONLY 0, __MIME_TEXT_P 0,
+ __MIME_TEXT_P1 0, __MIME_VERSION 0, __MSGID_APPLEMAIL 0, __NO_HTML_TAG_RAW 0,
+ __SANE_MSGID 0, __SUBJ_ALPHA_NEGATE 0, __SUBJ_ALPHA_START 0, __TO_MALFORMED_2
+ 0, __TO_NO_NAME 0, __blackholes.mail-abuse.org_ERROR ,
+ __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: felipe@felipegasper.com (Felipe Gasper)
+
+Hello,
+
+	Socket::MsgHdr appears to be unmaintained. The author has not =
+responded to my PAUSE bug report about the module=E2=80=99s inability to =
+function when loaded dynamically. I=E2=80=99ve reached out to him twice; =
+the first time he just said =E2=80=9Cthanks=E2=80=9D (literally), and =
+the second time, when I offered to take over stewardship of the module, =
+he didn=E2=80=99t respond.
+
+	I=E2=80=99d like to take over this module so that I can fix the =
+dynamic-loading bug.
+
+	Please advise. Thank you!
+
+-Felipe Gasper (FELIPE)=
