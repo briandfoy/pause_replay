@@ -1,0 +1,765 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:99922
+Return-Path: <cwhitener@gmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+Received: (qmail 21889 invoked from network); 12 Mar 2019 17:45:20 -0000
+Received: from xx1.develooper.com (207.171.7.115) by x6.develooper.com with
+ SMTP; 12 Mar 2019 17:45:20 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 9980B7C1C5 for <perlmail-modules@onion.perl.org>;
+ Tue, 12 Mar 2019 10:45:20 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-0.0 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,HTML_MESSAGE,HTTPS_HTTP_MISMATCH,
+ RCVD_IN_DNSWL_NONE,URIBL_BLOCKED autolearn=ham version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 11FE77CF6B for
+ <perlmail-modules@onion.perl.org>; Tue, 12 Mar 2019 10:45:18 -0700 (PDT)
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com
+ [209.85.222.51]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ ED0C47C1C5 for <modules@perl.org>; Tue, 12 Mar 2019 10:45:16 -0700 (PDT)
+Received: by mail-ua1-f51.google.com with SMTP id s15so1091166uap.6 for
+ <modules@perl.org>; Tue, 12 Mar 2019 10:45:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com;
+ s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+ bh=gLUDtX84R2173nrY3Yzt1hWnvjY+r3x5okASmaxdKso=;
+ b=G42VGu63DdgUuAh2YHUCIPrbdaslE9vb7J1FXnxuF28nSHkbZp4zN8uVzQoV6taQRJ
+ 1RG4u0Ob2cLwaDL1Ocyf+uEPdRZGWz5PCBseghd82I20kKelD8KLLjKW8peVnKlHxAzs
+ oyOEhMuFHliiuDrvdr5Rl14OVTlbTh766xooHGFVLkMpHP2gqDHLOjSoQzSdju8aNqcZ
+ IsLbcZX1XvZ1jLIotCGKRt9L6uzuqp560BoovERC8Juit1ntY4R+2BYXJnc+vwLK0afG
+ 2p0EXVuTW3Zo81EDUbnWDFGv4D3grZtXazcr/JmjoAnvN6UrVVh4sbMDi1H8x2M260yy VF3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to; bh=gLUDtX84R2173nrY3Yzt1hWnvjY+r3x5okASmaxdKso=;
+ b=QBYkiikCPDumcf0gbw5T6ac6BH7tJs/jK3C7LaLHnShn4TXnzXYfpHARGW3U5mSEAU
+ sPCvJHx3/WsWHz4AUCEBGky4Tr6oCxPhBCLBnv9v6PRMa9V3CZQvUW/kof0c2HmyKDhF
+ D2WBMJPe48SlFBBJ789SWKIkp7W20C3ZjvWydljR5lC8CH2dHU+aGx0BL/6fWzCUkU0y
+ hzx1Wq4NOitKLD+iWy+ApM7BvUItvrc2KRA1II3NexUC4cWMDVeszEN+1EpiRa3XYa7j
+ EtbrgbgXfE7GooZc6Ey69U8bKA/HIGl0AC6RPoL+2EX42TmZz3Uo4rQo3h+G2/xahVCj Kr2g==
+X-Gm-Message-State: APjAAAUuwB1dXSmh39cJIWfg+aTajVx1Hay/IuBwaM9DUyJKeghqpSsw
+ TYM5SbGDBQm4MY9ZYbauVH5k56ToBvFn1OFgT0I3Zg==
+X-Google-Smtp-Source:
+ APXvYqyWOYCMA4Tvzg8IRGETF26FsLV0T41v+8RtIq0PKYEMO9VUjPn5ByMC/ON+970hXeJYLF26LBiQ73b8WhGrVvo=
+X-Received: by 2002:a9f:36f1:: with SMTP id
+ p104mr20934393uap.72.1552412715051; Tue, 12 Mar 2019 10:45:15 -0700 (PDT)
+MIME-Version: 1.0
+References:
+ <CALoNeLs3YfhiqPL+-L6RUH2tLv49BjnR6EEgCco1MZ6zQCn7nw@mail.gmail.com>
+ <CABtLE0nCpQwuOTB-GQK6Y5hJLrZSz3Tp-NQpcTE6U6A2Yy1MAA@mail.gmail.com>
+ <CALoNeLuxernM8O=trE7WNyS3K4K4Ndfsac8KC2n-qHnOmCupLg@mail.gmail.com>
+ <CABtLE0nVRaBnikTNU3ig4LKxSFE-d4fQSLwp=2AeTT5L=i-OpQ@mail.gmail.com>
+ <CABtLE0=AKeveAR7NQCyRD5xtaOipP=Q9aCSi7vewvkQXG56hAg@mail.gmail.com>
+ <MWHPR2101MB0873CEBFFC666D59CCEC2BE7F8490@MWHPR2101MB0873.namprd21.prod.outlook.com> <CABtLE0kekSq5N6oPcJ2BfwpoxUfpGZXJS7snL1Z+upPP=NaTHQ@mail.gmail.com>
+In-Reply-To:
+ <CABtLE0kekSq5N6oPcJ2BfwpoxUfpGZXJS7snL1Z+upPP=NaTHQ@mail.gmail.com>
+Date: Tue, 12 Mar 2019 13:45:04 -0400
+Message-ID:
+ <CALoNeLukH_zwh_S6z=g43vkdt_9KLFu5F4HzOv1fHns+LDKScg@mail.gmail.com>
+Subject: Win32::Daemon PAUSE permissions
+To: modules@perl.org
+Content-Type: multipart/alternative; boundary="0000000000006ceeff0583e94065"
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2019.3.12.173616
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' HTML_50_70 0.1,
+ SUPERLONG_LINE 0.05, BODYTEXTH_SIZE_3000_MORE 0, BODY_SIZE_10000_PLUS 0,
+ DATE_TZ_NA 0, DKIM_ALIGNS 0, DKIM_SIGNATURE 0, IN_REP_TO 0, LEGITIMATE_SIGNS
+ 0, MSG_THREAD 0, REFERENCES 0, SPF_PASS 0, URI_WITH_PATH_ONLY 0,
+ WEBMAIL_SOURCE 0, __ANY_URI 0, __CP_URI_IN_BODY 0, __CT 0,
+ __CTYPE_HAS_BOUNDARY 0, __CTYPE_MULTIPART 0, __CTYPE_MULTIPART_ALT 0,
+ __DKIM_ALIGNS_1 0, __DKIM_ALIGNS_2 0, __DQ_NEG_HEUR 0, __DQ_NEG_IP 0,
+ __FRAUD_BODY_WEBMAIL 0, __FRAUD_COMMON 0, __FRAUD_REPLY 0, __FRAUD_WEBMAIL 0,
+ __FRAUD_WEBMAIL_FROM 0, __FROM_GMAIL 0, __FUR_RDNS_GMAIL 0, __HAS_FROM 0,
+ __HAS_HTML 0, __HAS_MSGID 0, __HELO_GMAIL 0, __HEX28_LC_BOUNDARY 0,
+ __HIGHBITS 0, __HTML_AHREF_TAG 0, __HTML_TAG_DIV 0, __HTTPS_URI 0,
+ __IN_REP_TO 0, __MIME_HTML 0, __MIME_TEXT_H 0, __MIME_TEXT_H1 0,
+ __MIME_TEXT_H2 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_TEXT_P2 0,
+ __MIME_VERSION 0, __MULTIPLE_URI_HTML 0, __MULTIPLE_URI_TEXT 0, __PHISH_FROM
+ 0, __PHISH_FROM2 0, __RATWARE_SIGNATURE_3_N1 0, __RDNS_WEBMAIL 0,
+ __REFERENCES 0, __SANE_MSGID 0, __STOCK_PHRASE_7 0, __SUBJ_ALPHA_NEGATE 0,
+ __TO_MALFORMED_2 0, __TO_NO_NAME 0, __URI_IN_BODY 0, __URI_NOT_IMG 0,
+ __URI_NO_WWW 0, __URI_NS , __URI_WITH_PATH 0, __X_GOOGLE_DKIM_SIGNATURE 0,
+ __YOUTUBE_RCVD 0, __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: cwhitener@gmail.com (Chase Whitener)
+
+--0000000000006ceeff0583e94065
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi PAUSE Admins,
+
+Would someone mind granting co-maint to XENU and CAPOEIRAB on the
+Win32::Daemon dist, please? I've forwarded along the email request to Dave
+Roth along with his response approving of the request.
+
+Thanks in advance,
+Chase
+
+---------- Forwarded message ---------
+From: Jan Dubois <jan@jandubois.com>
+Date: Tue, Mar 12, 2019 at 1:33 PM
+Subject: Fwd: Win32::Daemon PAUSE permissions
+To: Chase Whitener <cwhitener@gmail.com>
+
+
+
+Hi Chase,
+
+This time I got a reply from Dave right away. I guess making it easy for
+him helped. :)
+
+Please forward to a CPAN admin and let them make the change!
+
+Cheers,
+-Jan
+
+---------- Forwarded message ---------
+From: Dave Roth <Dave.Roth@microsoft.com>
+Date: Tue, Mar 12, 2019 at 10:19 AM
+Subject: RE: Win32::Daemon PAUSE permissions
+To: Jan Dubois <jan@jandubois.com>
+
+
+Hi Jan,
+
+Thanks for bubbling this up to the top of my mailbox.
+
+
+
+Wow, you have a good memory; I hardly remember the WM Server. =F0=9F=98=89
+
+Are you still at HP? I used to work with them on drivers when I was the PM
+Lead for the PnP team. Crazy work.
+
+
+
+It has been years since I have touched any of this code or CPAN. And I have
+yet to touch the Git repository. So=E2=80=A6
+
+
+*I am fine with granting XENU and CAPOEIRAB co-maint permissions on PAUSE.
+And I want to extend my appreciation and gratitude to them for maintaining
+the extension. Thanks, guys!*
+
+
+
+=F0=9F=98=8A
+
+
+
+I am quite pleased and proud that the Daemon extension is still being used.
+How cool is that?
+
+
+
+Thanks for following up on this, Jan.
+
+
+
+Cheers,
+
+dave
+
+
+
+*From:* Jan Dubois <jan@jandubois.com>
+*Sent:* Monday, March 11, 2019 8:20 PM
+*To:* Dave Roth <Dave.Roth@microsoft.com>
+*Subject:* Re: Win32::Daemon PAUSE permissions
+
+
+
+Hi Dave,
+
+
+
+I never got a reply to my previous email, and I see that the PAUSE
+permissions are still unchanged.
+
+
+
+If you don't want to bother with making the changes yourself, then maybe
+you could just reply to this email and say that your are fine with granting
+XENU and CAPOEIRAB co-maint permissions on PAUSE, and I can get one of the
+CPAN admins to make the change for you.
+
+
+
+Cheers,
+
+-Jan
+
+
+
+On Thu, Oct 18, 2018 at 7:59 PM Jan Dubois <jan@jandubois.com> wrote:
+
+Hi Dave,
+
+
+
+sorry for taking so long to respond; I somehow lost your LinkedIn reply in
+my mailbox...
+
+
+
+I think the last time I saw you, you were still working on Windows Media
+Server... I guess that must have been around 2001 or so.
+
+
+
+I've been transferred to HP when they bought the PaaS technology from
+ActiveState, and have since been handed down further to SUSE to work on
+Cloud Foundry and Kubernetes.
+
+
+
+Anyways, I've attached email with the details for Chase and Thomasz. You
+can see that both have been doing work on Win32::Daemon already:
+
+
+
+https://github.com/perl-libwin32/win32-daemon/commits/master
+<https://nam06.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fgithub=
+.com%2Fperl-libwin32%2Fwin32-daemon%2Fcommits%2Fmaster&data=3D02%7C01%7CDav=
+e.roth%40microsoft.com%7Cef80abf586e94621b13d08d6a699929e%7C72f988bf86f141a=
+f91ab2d7cd011db47%7C1%7C1%7C636879575872234483&sdata=3DioaGaZPbj93bP08aV7HI=
+O%2FwJRiEm5q6uQBoiU8em9p4%3D&reserved=3D0>
+
+
+
+Can you give both of them co-maint permission on your module on PAUSE, so
+they can upload newer versions to CPAN? Or you can grant me FIRST-COME
+permissions on the namespace, and then I can give out CO-MAINT permissions
+to others in the future (I'm not going to work on it myself in the
+foreseeable future).
+
+
+
+https://pause.perl.org/pause/query
+<https://nam06.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fpause.=
+perl.org%2Fpause%2Fquery&data=3D02%7C01%7CDave.roth%40microsoft.com%7Cef80a=
+bf586e94621b13d08d6a699929e%7C72f988bf86f141af91ab2d7cd011db47%7C1%7C1%7C63=
+6879575872234483&sdata=3DbJwjRsBdbojNem8Y9tzxXDJvMh%2Bc1%2FgLQm3aG8ngpKs%3D=
+&reserved=3D0>
+
+
+
+Let me know how you want to proceed!
+
+
+
+Cheers,
+
+-Jan
+
+
+
+---------- Forwarded message ---------
+From: *Chase Whitener* <cwhitener@gmail.com>
+Date: Tue, Aug 28, 2018 at 4:36 PM
+Subject: Re: Perl 5 Win32:: Dists
+To: <jan@jandubois.com>
+Cc: <me@xenu.pl>
+
+
+
+Hi Jan,
+
+
+
+Right now, both xenu and I would want to help out (I've CCed him on this).
+
+
+
+Tomasz Konojacki
+
+GitHub: xenu
+
+PAUSE: XENU
+
+
+
+Chase Whitener
+
+GitHub: genio
+
+PAUSE: CAPOEIRAB
+
+
+
+Thanks,
+Chase
+
+
+
+On Tue, Aug 28, 2018 at 7:19 PM Jan Dubois <jan@jandubois.com> wrote:
+
+Hi Chase,
+
+
+
+I've just created the perl-libwin32 org on Github (so it mirrors the
+perl-libwin32@perl.org mailing list), and will move the Win32::* modules
+there later.
+
+
+
+I'm happy to invite a couple of people and give them co-maint, as long as
+there is an understanding that the modules should stay backwards compatible
+because they are very old. I'm aware of many deficiencies, but most are
+hard to fix without breaking backwards compatibility, so I think it would
+be better to create new modules that implement the same APIs in a saner
+manner (e.g. the Unicode support is based on the Perl 5.6 way of how SvUTF8
+was supposed to work, and does not do the right thing for later versions).
+So I would like to see them keep working with newer versions of Perl and
+Windows, but don't think they should be extended with additional
+functionality.
+
+
+
+Note that I've inherited maintenance of most of the modules myself; I wrote
+maybe 50% of WIn32 and 95% of Win32::OLE, but the rest I've only done
+minimal maintenance to keep them working.
+
+
+
+Please let me know who you think would be willing to work on maintaining
+these modules? Please send me Github user names, so I can invite them to
+the org!
+
+
+
+I may have only co-maint on some of the names on PAUSE, so working out
+release permissions might involve some more people.
+
+
+
+Cheers,
+
+-Jan
+
+
+
+On Tue, Aug 28, 2018 at 3:45 PM Chase Whitener <cwhitener@gmail.com> wrote:
+
+Hi Jan,
+
+
+
+We have had a couple of recent requests to look into some issues with Win
+10 and Win32::Daemon on IRC. It looks like you are very active on GitHub.
+
+
+
+Are you still up for p5 dev work on the Win32:: dists? Would you mind maybe
+creating a GitHub organization for those dists and we can get some PAUSE
+perms spread around for releases? These are pretty high up the river for
+Windows Perl, so we'd want to be careful if that route was taken.
+
+
+
+Thanks,
+
+Chase
+
+--0000000000006ceeff0583e94065
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi PAUSE Admins,<br><br>Would someone mind granting co-mai=
+nt to XENU and CAPOEIRAB on the Win32::Daemon dist, please? I&#39;ve forwar=
+ded along the email request to Dave Roth along with his response approving =
+of the request.<div><br></div><div>Thanks in advance,</div><div>Chase<br><b=
+r><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">--------=
+-- Forwarded message ---------<br>From: <strong class=3D"gmail_sendername" =
+dir=3D"auto">Jan Dubois</strong> <span dir=3D"ltr">&lt;<a href=3D"mailto:ja=
+n@jandubois.com">jan@jandubois.com</a>&gt;</span><br>Date: Tue, Mar 12, 201=
+9 at 1:33 PM<br>Subject: Fwd: Win32::Daemon PAUSE permissions<br>To: Chase =
+Whitener &lt;<a href=3D"mailto:cwhitener@gmail.com">cwhitener@gmail.com</a>=
+&gt;<br></div><br><br><div dir=3D"ltr"><div dir=3D"ltr"><br>Hi Chase,<div><=
+br></div><div>This time I got a reply from Dave right away. I guess making =
+it easy for him helped. :)</div><div><br></div><div>Please forward to a CPA=
+N admin and let them make the change!</div><div><br></div><div><div>Cheers,=
+</div><div>-Jan</div><div><br></div><div class=3D"gmail_quote"><div dir=3D"=
+ltr" class=3D"gmail_attr">---------- Forwarded message ---------<br>From: <=
+strong class=3D"gmail_sendername" dir=3D"auto">Dave Roth</strong> <span dir=
+=3D"ltr">&lt;<a href=3D"mailto:Dave.Roth@microsoft.com" target=3D"_blank">D=
+ave.Roth@microsoft.com</a>&gt;</span><br>Date: Tue, Mar 12, 2019 at 10:19 A=
+M<br>Subject: RE: Win32::Daemon PAUSE permissions<br>To: Jan Dubois &lt;<a =
+href=3D"mailto:jan@jandubois.com" target=3D"_blank">jan@jandubois.com</a>&g=
+t;<br></div><br><br>
+
+
+
+
+
+<div lang=3D"EN-US">
+<div class=3D"m_9016684659326531512gmail-m_-7838620410553809480WordSection1=
+">
+<p class=3D"MsoNormal">Hi Jan,<u></u><u></u></p>
+<p class=3D"MsoNormal">Thanks for bubbling this up to the top of my mailbox=
+.<u></u><u></u></p>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<p class=3D"MsoNormal">Wow, you have a good memory; I hardly remember the W=
+M Server.
+<span style=3D"font-family:&quot;Segoe UI Emoji&quot;,sans-serif">=F0=9F=98=
+=89</span><u></u><u></u></p>
+<p class=3D"MsoNormal">Are you still at HP? I used to work with them on dri=
+vers when I was the PM Lead for the PnP team. Crazy work.<u></u><u></u></p>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<p class=3D"MsoNormal">It has been years since I have touched any of this c=
+ode or CPAN. And I have yet to touch the Git repository. So=E2=80=A6<u></u>=
+<u></u></p>
+<p class=3D"MsoNormal" style=3D"margin-left:0.5in"><i>I am fine with granti=
+ng XENU and CAPOEIRAB co-maint permissions on PAUSE.
+<br>
+And I want to extend my appreciation and gratitude to them for maintaining =
+the extension. Thanks, guys!<u></u><u></u></i></p>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<p class=3D"MsoNormal"><span style=3D"font-family:&quot;Segoe UI Emoji&quot=
+;,sans-serif">=F0=9F=98=8A</span><u></u><u></u></p>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<p class=3D"MsoNormal">I am quite pleased and proud that the Daemon extensi=
+on is still being used. How cool is that?<u></u><u></u></p>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<p class=3D"MsoNormal">Thanks for following up on this, Jan.<u></u><u></u><=
+/p>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<p class=3D"MsoNormal">Cheers,<u></u><u></u></p>
+<p class=3D"MsoNormal">dave<u></u><u></u></p>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<p class=3D"MsoNormal"><b>From:</b> Jan Dubois &lt;<a href=3D"mailto:jan@ja=
+ndubois.com" target=3D"_blank">jan@jandubois.com</a>&gt; <br>
+<b>Sent:</b> Monday, March 11, 2019 8:20 PM<br>
+<b>To:</b> Dave Roth &lt;<a href=3D"mailto:Dave.Roth@microsoft.com" target=
+=3D"_blank">Dave.Roth@microsoft.com</a>&gt;<br>
+<b>Subject:</b> Re: Win32::Daemon PAUSE permissions<u></u><u></u></p>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<div>
+<div>
+<p class=3D"MsoNormal">Hi Dave,<u></u><u></u></p>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">I never got a reply to my previous email, and I see =
+that the PAUSE permissions are still unchanged.<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">If you don&#39;t want to bother with making the chan=
+ges yourself, then maybe you could just reply to this email and say that yo=
+ur are fine with granting XENU and CAPOEIRAB co-maint permissions on PAUSE,=
+ and I can get one of the CPAN admins
+ to make the change for you.<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<div>
+<p class=3D"MsoNormal">Cheers,<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">-Jan<u></u><u></u></p>
+</div>
+</div>
+</div>
+</div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<div>
+<div>
+<p class=3D"MsoNormal">On Thu, Oct 18, 2018 at 7:59 PM Jan Dubois &lt;<a hr=
+ef=3D"mailto:jan@jandubois.com" target=3D"_blank">jan@jandubois.com</a>&gt;=
+ wrote:<u></u><u></u></p>
+</div>
+<blockquote style=3D"border-top:none;border-right:none;border-bottom:none;b=
+order-left:1pt solid rgb(204,204,204);padding:0in 0in 0in 6pt;margin-left:4=
+.8pt;margin-right:0in">
+<div>
+<div>
+<div>
+<div>
+<p class=3D"MsoNormal">Hi Dave,<u></u><u></u></p>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">sorry for taking so long to respond; I somehow lost =
+your LinkedIn reply in my mailbox...<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">I think the last time I saw you, you were still work=
+ing on Windows Media Server... I guess that must have been around 2001 or s=
+o.<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">I&#39;ve been transferred to HP when they bought the=
+ PaaS technology from ActiveState, and have since been handed down further =
+to SUSE to work on Cloud Foundry and Kubernetes.<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Anyways, I&#39;ve attached email with the details fo=
+r Chase and Thomasz. You can see that both have been doing work on Win32::D=
+aemon already:<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><a href=3D"https://nam06.safelinks.protection.outloo=
+k.com/?url=3Dhttps%3A%2F%2Fgithub.com%2Fperl-libwin32%2Fwin32-daemon%2Fcomm=
+its%2Fmaster&amp;data=3D02%7C01%7CDave.roth%40microsoft.com%7Cef80abf586e94=
+621b13d08d6a699929e%7C72f988bf86f141af91ab2d7cd011db47%7C1%7C1%7C6368795758=
+72234483&amp;sdata=3DioaGaZPbj93bP08aV7HIO%2FwJRiEm5q6uQBoiU8em9p4%3D&amp;r=
+eserved=3D0" target=3D"_blank">https://github.com/perl-libwin32/win32-daemo=
+n/commits/master</a><u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Can you give both of them co-maint permission on you=
+r module on PAUSE, so they can upload newer versions to CPAN? Or you can gr=
+ant me FIRST-COME permissions on the namespace, and then I can give out CO-=
+MAINT permissions to others in the
+ future (I&#39;m not going to work on it myself in the foreseeable future).=
+<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><a href=3D"https://nam06.safelinks.protection.outloo=
+k.com/?url=3Dhttps%3A%2F%2Fpause.perl.org%2Fpause%2Fquery&amp;data=3D02%7C0=
+1%7CDave.roth%40microsoft.com%7Cef80abf586e94621b13d08d6a699929e%7C72f988bf=
+86f141af91ab2d7cd011db47%7C1%7C1%7C636879575872234483&amp;sdata=3DbJwjRsBdb=
+ojNem8Y9tzxXDJvMh%2Bc1%2FgLQm3aG8ngpKs%3D&amp;reserved=3D0" target=3D"_blan=
+k">https://pause.perl.org/pause/query</a><u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Let me know how you want=C2=A0to proceed!<u></u><u><=
+/u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<div>
+<p class=3D"MsoNormal">Cheers,<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">-Jan<u></u><u></u></p>
+</div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<div>
+<div>
+<p class=3D"MsoNormal">---------- Forwarded message ---------<br>
+From: <strong><span style=3D"font-family:Calibri,sans-serif">Chase Whitener=
+</span></strong> &lt;<a href=3D"mailto:cwhitener@gmail.com" target=3D"_blan=
+k">cwhitener@gmail.com</a>&gt;<br>
+Date: Tue, Aug 28, 2018 at 4:36 PM<br>
+Subject: Re: Perl 5 Win32:: Dists<br>
+To: &lt;<a href=3D"mailto:jan@jandubois.com" target=3D"_blank">jan@janduboi=
+s.com</a>&gt;<br>
+Cc: &lt;<a href=3D"mailto:me@xenu.pl" target=3D"_blank">me@xenu.pl</a>&gt;<=
+u></u><u></u></p>
+</div>
+<p class=3D"MsoNormal" style=3D"margin-bottom:12pt"><u></u>=C2=A0<u></u></p=
+>
+<div>
+<p class=3D"MsoNormal">Hi Jan,<u></u><u></u></p>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Right now, both xenu and I would want to help out (I=
+&#39;ve CCed him on this).<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Tomasz Konojacki<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">GitHub: xenu<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">PAUSE: XENU<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Chase Whitener<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">GitHub: genio<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">PAUSE: CAPOEIRAB<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Thanks,<br>
+Chase<u></u><u></u></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<div>
+<div>
+<p class=3D"MsoNormal">On Tue, Aug 28, 2018 at 7:19 PM Jan Dubois &lt;<a hr=
+ef=3D"mailto:jan@jandubois.com" target=3D"_blank">jan@jandubois.com</a>&gt;=
+ wrote:<u></u><u></u></p>
+</div>
+<blockquote style=3D"border-top:none;border-right:none;border-bottom:none;b=
+order-left:1pt solid rgb(204,204,204);padding:0in 0in 0in 6pt;margin-left:4=
+.8pt;margin-right:0in">
+<div>
+<p class=3D"MsoNormal">Hi Chase,<u></u><u></u></p>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">I&#39;ve just created the perl-libwin32 org on Githu=
+b (so it mirrors the
+<a href=3D"mailto:perl-libwin32@perl.org" target=3D"_blank">perl-libwin32@p=
+erl.org</a> mailing list), and will move the Win32::* modules there later.<=
+u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">I&#39;m happy to invite a couple of people and give =
+them co-maint, as long as there is an understanding that the modules should=
+ stay backwards compatible because they are very old. I&#39;m aware of many=
+ deficiencies, but most are hard to fix without
+ breaking backwards compatibility, so I think it would be better to create =
+new modules that implement the same APIs in a saner manner (e.g. the Unicod=
+e support is based on the Perl 5.6 way of how SvUTF8 was supposed to work, =
+and does not do the right thing
+ for later versions). So I would like to see them keep working with newer v=
+ersions of Perl and Windows, but don&#39;t think they should be extended wi=
+th additional functionality.<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Note that I&#39;ve inherited maintenance of most of =
+the modules myself; I wrote maybe 50% of WIn32 and 95% of Win32::OLE, but t=
+he rest I&#39;ve only done minimal maintenance to keep them working.<u></u>=
+<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Please let me know who you think would be willing to=
+ work on maintaining these modules? Please send me Github user names, so I =
+can invite them to the org!<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">I may have only co-maint on some of the names on PAU=
+SE, so working out release permissions might involve some more people.<u></=
+u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<div>
+<p class=3D"MsoNormal">Cheers,<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">-Jan<u></u><u></u></p>
+</div>
+</div>
+</div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<div>
+<div>
+<p class=3D"MsoNormal">On Tue, Aug 28, 2018 at 3:45 PM Chase Whitener &lt;<=
+a href=3D"mailto:cwhitener@gmail.com" target=3D"_blank">cwhitener@gmail.com=
+</a>&gt; wrote:<u></u><u></u></p>
+</div>
+<blockquote style=3D"border-top:none;border-right:none;border-bottom:none;b=
+order-left:1pt solid rgb(204,204,204);padding:0in 0in 0in 6pt;margin-left:4=
+.8pt;margin-right:0in">
+<div>
+<p class=3D"MsoNormal">Hi Jan,<u></u><u></u></p>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">We have had a couple of recent requests to look into=
+ some issues with Win 10 and Win32::Daemon on IRC. It looks like you are ve=
+ry active on GitHub.=C2=A0<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Are you still up for p5 dev work on the Win32:: dist=
+s? Would you mind maybe creating a GitHub organization for those dists and =
+we can get some PAUSE perms spread around for releases? These are pretty hi=
+gh up the river for Windows Perl,
+ so we&#39;d want to be careful if that route was taken.=C2=A0<u></u><u></u=
+></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Thanks,<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Chase<u></u><u></u></p>
+</div>
+</div>
+</blockquote>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</blockquote>
+</div>
+</div>
+</div>
+
+</div></div></div></div>
+</div></div></div>
+
+--0000000000006ceeff0583e94065--
