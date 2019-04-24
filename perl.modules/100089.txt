@@ -1,0 +1,510 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:100089
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 985 invoked from network); 23 Apr 2019 14:19:24 -0000
+Received: from xx1.develooper.com (207.171.7.115) by x6.develooper.com with
+ SMTP; 23 Apr 2019 14:19:24 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 32C297CF52 for <perlmail-modules@onion.perl.org>;
+ Tue, 23 Apr 2019 07:19:24 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.9 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,HTML_MESSAGE,RCVD_IN_DNSWL_NONE,URIBL_BLOCKED
+ autolearn=unavailable version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 78DA27CEEA for
+ <perlmail-modules@onion.perl.org>; Tue, 23 Apr 2019 07:19:22 -0700 (PDT)
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com
+ [209.85.221.53]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ 6F8257CF6D for <modules@perl.org>; Tue, 23 Apr 2019 07:19:06 -0700 (PDT)
+Received: by mail-wr1-f53.google.com with SMTP id a3so10831506wrx.0 for
+ <modules@perl.org>; Tue, 23 Apr 2019 07:19:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=from:message-id:mime-version:subject:date:in-reply-to:cc:to :references;
+ bh=x+mmfQgnuJ8johKD5OsbYTLYCEVZhk+49fqJko9f4b4=;
+ b=AY4TCid1/B5oWe/B19QRZG2t91jRG37MW6xJZPKG6zeW07gNWDQeHaepmOaONTDOe9
+ QWZ7y55wIOYJI1vmdUIHGxmWPNveWrGjIS4cQzqfJlLgDGZkjxx60d/y/VMpcl011qGc
+ 9/LZPNbPwmAiZGn5zGcOP+pehM0qGUKRUOTO5plD+jDIJvYD5JZENis4OfOVgJ/grCFP
+ Od+TYwrcF3lmeB9XXKw9RU9c1TkpkGX1tia7gE7krbvd5p7iLyb+GgllUDXir1vPnNYM
+ 5dEA4NwNZzwU6qUKG6gwYTYgLd+Ja9A4cKVq7ZEABFBY/ijRkygsXgYG0FYpgIxiXSlC c5vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025; h=x-gm-message-state:from:message-id:mime-version:subject:date
+ :in-reply-to:cc:to:references;
+ bh=x+mmfQgnuJ8johKD5OsbYTLYCEVZhk+49fqJko9f4b4=;
+ b=SENZF4ws+atUWhDOKDc5CafB2KGPjbcBZv+twRxsdhxQmA6O0xACfOYixzkLREESGc
+ nVNjHyzn8AnXMbQ+QEM07JfgqgWSovb3262oHQ/uY3GfsDjWDXDa0rPWoM5gCq5YTg82
+ sOwu7dDUPF6x0v/XeU63hxJvBZ5S9GAxw7PHeAOzxL06m3IqvcwxvKKkLOseEZumUZJF
+ CEblXXCHW0DnxpSBuGFQTVsS87HCgdTCNo6DzpooMqi7dk5hnkMrBWltGpq18ig96qB+
+ UbnJyMh/CMhQiO46y1K2JIFz3eHgdw+cIPTtrQ6hdN7iNIaPm0DtKWtaHQwNDe3TqrSE Wgbw==
+X-Gm-Message-State: APjAAAXVIo2E6kT+BFVLy2+Gd2tpU6o7lMrBjrlJPMHtJtYUKjC5Ulm2
+ 3cmU1vdVKCNR3MocRzyq9fiPMFLhunwQrQ==
+X-Google-Smtp-Source:
+ APXvYqwfHnN5qBNfpEll814IwSVCyviuTd0eZCQd1zv9kfKXv9vQwvc/dqNJyJqALpjQgHKRrDPCJQ==
+X-Received: by 2002:adf:9ccb:: with SMTP id
+ h11mr6101960wre.257.1556029145403; Tue, 23 Apr 2019 07:19:05 -0700 (PDT)
+Received: from tucumcari.lan
+ (cpc95902-rdng25-2-0-cust493.15-3.cable.virginm.net. [82.21.209.238]) by
+ smtp.gmail.com with ESMTPSA id z17sm4657643wrm.33.2019.04.23.07.19.03
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128); Tue, 23 Apr
+ 2019 07:19:03 -0700 (PDT)
+Message-ID: <8DE0A59A-B713-418A-8FC3-2AFBAE075D89@cogendo.com>
+Content-Type: multipart/alternative; boundary="Apple-Mail=_90B7FBAD-66A2-4625-AF3E-AF8418FDCE99"
+Mime-Version: 1.0 (Mac OS X Mail 12.2 \(3445.102.3\))
+Subject: Re: CPAN
+Date: Tue, 23 Apr 2019 15:19:02 +0100
+In-Reply-To:
+ <VI1PR0402MB377501312A92270AFF494E85D5230@VI1PR0402MB3775.eurprd04.prod.outlook.com>
+Cc: "modules@perl.org" <modules@perl.org>
+To: Vernon Lyon <vlyon@cpan.org>
+References:
+ <AM6PR0402MB3767847CC78B6A197B205409D56F0@AM6PR0402MB3767.eurprd04.prod.outlook.com> <44c34221-c365-42f6-8b1e-f939f33f0f70@getmailbird.com> <AM6PR0402MB3767545A7241985B15A9D7F1D5650@AM6PR0402MB3767.eurprd04.prod.outlook.com> <VI1PR0402MB377501312A92270AFF494E85D5230@VI1PR0402MB3775.eurprd04.prod.outlook.com>
+X-Mailer: Apple Mail (2.3445.102.3)
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2019.4.23.141216
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' HTML_70_90 0.1,
+ MIME_LOWER_CASE 0.05, SUPERLONG_LINE 0.05, BODYTEXTH_SIZE_3000_MORE 0,
+ BODYTEXTP_SIZE_3000_LESS 0, BODY_SIZE_10000_PLUS 0, DKIM_SIGNATURE 0,
+ HREF_LABEL_TEXT_ONLY 0, IN_REP_TO 0, KNOWN_MSGID 0, LEGITIMATE_SIGNS 0,
+ MSG_THREAD 0, REFERENCES 0, SPF_PASS 0, WEBMAIL_SOURCE 0, __ANY_URI 0,
+ __BODY_TEXT_X4 0, __BOUNCE_CHALLENGE_SUBJ 0, __BOUNCE_NDR_SUBJ_EXEMPT 0,
+ __BUSINESS_SIGNATURE 0, __CC_NAME 0, __COMPANY_FACEBOOK 0, __CP_URI_IN_BODY
+ 0, __CT 0, __CTYPE_HAS_BOUNDARY 0, __CTYPE_MULTIPART 0, __CTYPE_MULTIPART_ALT
+ 0, __DQ_NEG_HEUR 0, __DQ_NEG_IP 0, __FORWARDED_MSG 0, __FRAUD_BODY_WEBMAIL 0,
+ __FRAUD_CONTACT_NUM 0, __FRAUD_SUBJ_ALLCAPS 0, __FRAUD_WEBMAIL 0,
+ __FUR_RDNS_GMAIL 0, __HAS_CC_HDR 0, __HAS_FROM 0, __HAS_HTML 0, __HAS_MSGID
+ 0, __HAS_REFERENCES 0, __HAS_X_MAILER 0, __HELO_GMAIL 0, __HIGHBITS 0,
+ __HREF_LABEL_TEXT 0, __HREF_LABEL_URI 0, __HTML_AHREF_TAG 0, __HTML_TAG_DIV
+ 0, __HTTPS_URI 0, __IN_REP_TO 0, __LINES_OF_YELLING 0, __MIME_HTML 0,
+ __MIME_TEXT_H 0, __MIME_TEXT_H1 0, __MIME_TEXT_H2 0, __MIME_TEXT_P 0,
+ __MIME_TEXT_P1 0, __MIME_TEXT_P2 0, __MIME_VERSION 0, __MSGID_APPLEMAIL 0,
+ __MULTIPLE_URI_HTML 0, __MULTIPLE_URI_TEXT 0, __PHISH_SPEAR_ACCOUNT_1 0,
+ __RDNS_WEBMAIL 0, __REFERENCES 0, __SANE_MSGID 0, __SUBJ_ALPHA_END 0,
+ __SUBJ_ALPHA_NEGATE 0, __SUBJ_REPLY 0, __TAG_EXISTS_HTML 0, __TO_MALFORMED_2
+ 0, __TO_NAME 0, __TO_NAME_DIFF_FROM_ACC 0, __TO_REAL_NAMES 0, __URI_IN_BODY
+ 0, __URI_NOT_IMG 0, __URI_NS , __URI_WITHOUT_PATH 0, __URI_WITH_PATH 0,
+ __X_GOOGLE_DKIM_SIGNATURE 0, __YOUTUBE_RCVD 0,
+ __blackholes.mail-abuse.org_ERROR , __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+--Apple-Mail=_90B7FBAD-66A2-4625-AF3E-AF8418FDCE99
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+Hi Vernon,
+
+> Any thoughts on the request below?
+>=20
+> Is this the right place to send my request?
+
+It is!
+
+My apologies for the delay. I=E2=80=99ll deal with this in the next few =
+days, and definitely by the end of the weekend.
+
+Cheers,
+Neil
+
+>=20
+> Regards,
+> Vernon Lyon
+>=20
+> From: Vernon Lyon <vlyon@cpan.org <mailto:vlyon@cpan.org>>
+> Sent: 12 February 2019 17:08
+> To: modules@perl.org <mailto:modules@perl.org>
+> Cc: Chris.Jones@papworthbrewery.com =
+<mailto:Chris.Jones@papworthbrewery.com>
+> Subject: FW: CPAN
+> =20
+> Dear PAUSE admins,
+>=20
+> I've been contacting an old colleague of mine CJONES, about giving me =
+permissions for a new module, but he has not logged into PAUSE in a long =
+time and now no longer has access to his previous email address.
+>=20
+> As he's upgraded his career and is now brewing full time...
+>=20
+> I would like to request that you change his email address to the one =
+CC'ed and pass primary permissions to me, VLYON.
+>=20
+>=20
+> Very much appreciated,
+> Vernon Lyon
+>=20
+>=20
+> From: Christopher Jones <chris.jones@papworthbrewery.com =
+<mailto:chris.jones@papworthbrewery.com>>
+> Sent: 06 February 2019 13:08
+> To: Vernon Lyon
+> Subject: Re: CPAN
+> =20
+> That email address is now defunct, and I can't see how to actually =
+sign in with that ID - all of the sign in options are via third party =
+auth.
+>=20
+>=20
+> Chris
+>=20
+> ________________________
+> PAPWORTH BREWERY LTD
+> Unit 24 Earith Business Park
+> Meadow Drove
+> Earith
+> Cambridgeshire PE28 3QF
+>=20
+> Telephone: 01487 842442
+> Mobile: 07835 845797
+>=20
+> https://www.papworthbrewery.com <https://www.papworthbrewery.com/>
+> https://www.facebook.com/papworthbrewery =
+<https://www.facebook.com/papworthbrewery>
+>=20
+>=20
+>=20
+>> On 06/02/2019 12:29:50, Vernon Lyon <vernonlyon@hotmail.com =
+<mailto:vernonlyon@hotmail.com>> wrote:
+>> Hi Chris,
+>>=20
+>> Glad to hear you're still brewing! =F0=9F=91=8D
+>>=20
+>> Are you able to log into PAUSE?
+>> https://pause.perl.org/pause/query =
+<https://pause.perl.org/pause/query>
+>>=20
+>> Your PAUSE account is: CJONES
+>> With the email: c.jones@ucl.ac.uk <mailto:c.jones@ucl.ac.uk>
+>> https://metacpan.org/author/CJONES =
+<https://metacpan.org/author/CJONES>
+>>=20
+>> You can change the permissions on your "plate" module here:
+>> https://pause.perl.org/pause/authenquery?ACTION=3Dmove_primary =
+<https://pause.perl.org/pause/authenquery?ACTION=3Dmove_primary>
+>> My PAUSE account is: VLYON
+>>=20
+>> If you're stuck getting access, I could try to contact the PAUSE =
+admins for ya.
+>>=20
+>> Very much appreciated,
+>> Vern
+
+Cogendo
+
+T: +44 7880 741899
+W: www.cogendo.com
+M: neil.bowers@cogendo.com <mailto:neil.bowers@cogendo.com>
+
+Cogendo is the trading name of Cogendo Limited, Registered in England & =
+Wales, company no. 8944534.=20
+Registered office: 51 West Street, Marlow, Buckinghamshire. SL7 2LS.
+
+
+--Apple-Mail=_90B7FBAD-66A2-4625-AF3E-AF8418FDCE99
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; =
+charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: after-white-space;" class=3D"">Hi =
+Vernon,<div class=3D""><br class=3D""><div><blockquote type=3D"cite" =
+class=3D""><div class=3D""><div style=3D"caret-color: rgb(0, 0, 0); =
+font-size: 12pt; font-style: normal; font-variant-caps: normal; =
+font-weight: normal; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none; font-family: Calibri, Helvetica, sans-serif;" class=3D"">Any =
+thoughts on the request below?</div><div style=3D"caret-color: rgb(0, 0, =
+0); font-size: 12pt; font-style: normal; font-variant-caps: normal; =
+font-weight: normal; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none; font-family: Calibri, Helvetica, sans-serif;" class=3D""><br =
+class=3D""></div><div style=3D"caret-color: rgb(0, 0, 0); font-size: =
+12pt; font-style: normal; font-variant-caps: normal; font-weight: =
+normal; letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; font-family: =
+Calibri, Helvetica, sans-serif;" class=3D"">Is this the right place to =
+send my request?</div></div></blockquote><div><br class=3D""></div>It =
+is!</div><div><br class=3D""></div><div>My apologies for the delay. =
+I=E2=80=99ll deal with this in the next few days, and definitely by the =
+end of the weekend.</div><div><br =
+class=3D""></div><div>Cheers,</div><div>Neil</div><div><br =
+class=3D""></div><div><blockquote type=3D"cite" class=3D""><div =
+class=3D""><div style=3D"caret-color: rgb(0, 0, 0); font-size: 12pt; =
+font-style: normal; font-variant-caps: normal; font-weight: normal; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; font-family: =
+Calibri, Helvetica, sans-serif;" class=3D""><br class=3D""></div><div =
+style=3D"caret-color: rgb(0, 0, 0); font-size: 12pt; font-style: normal; =
+font-variant-caps: normal; font-weight: normal; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; font-family: Calibri, Helvetica, sans-serif;" =
+class=3D"">Regards,</div><div style=3D"caret-color: rgb(0, 0, 0); =
+font-size: 12pt; font-style: normal; font-variant-caps: normal; =
+font-weight: normal; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none; font-family: Calibri, Helvetica, sans-serif;" class=3D"">Vernon =
+Lyon</div><div style=3D"caret-color: rgb(0, 0, 0); font-family: =
+GillSans; font-size: 16px; font-style: normal; font-variant-caps: =
+normal; font-weight: normal; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;" class=3D""><div style=3D"font-family: Calibri, Helvetica, =
+sans-serif; font-size: 12pt;" class=3D""><br class=3D""></div><div =
+id=3D"appendonsend" class=3D""></div><hr tabindex=3D"-1" style=3D"display:=
+ inline-block; width: 838.875px;" class=3D""><div id=3D"divRplyFwdMsg" =
+dir=3D"ltr" class=3D""><font face=3D"Calibri, sans-serif" =
+style=3D"font-size: 11pt;" class=3D""><b class=3D"">From:</b><span =
+class=3D"Apple-converted-space">&nbsp;</span>Vernon Lyon &lt;<a =
+href=3D"mailto:vlyon@cpan.org" class=3D"">vlyon@cpan.org</a>&gt;<br =
+class=3D""><b class=3D"">Sent:</b><span =
+class=3D"Apple-converted-space">&nbsp;</span>12 February 2019 17:08<br =
+class=3D""><b class=3D"">To:</b><span =
+class=3D"Apple-converted-space">&nbsp;</span><a =
+href=3D"mailto:modules@perl.org" class=3D"">modules@perl.org</a><br =
+class=3D""><b class=3D"">Cc:</b><span =
+class=3D"Apple-converted-space">&nbsp;</span><a =
+href=3D"mailto:Chris.Jones@papworthbrewery.com" =
+class=3D"">Chris.Jones@papworthbrewery.com</a><br class=3D""><b =
+class=3D"">Subject:</b><span =
+class=3D"Apple-converted-space">&nbsp;</span>FW: CPAN</font><div =
+class=3D"">&nbsp;</div></div><div class=3D""><div style=3D"font-family: =
+Calibri, Helvetica, sans-serif; font-size: 12pt;" class=3D"">Dear PAUSE =
+admins,</div><div style=3D"font-family: Calibri, Helvetica, sans-serif; =
+font-size: 12pt;" class=3D""><br class=3D""></div><div =
+style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;" =
+class=3D"">I've been contacting an old colleague of mine CJONES, about =
+giving me permissions for a new module, but he has not logged into PAUSE =
+in a long time and now no longer has access to his previous email =
+address.</div><div style=3D"font-family: Calibri, Helvetica, sans-serif; =
+font-size: 12pt;" class=3D""><br class=3D""></div><div =
+style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;" =
+class=3D"">As he's upgraded his career and is now brewing full =
+time...</div><div style=3D"font-family: Calibri, Helvetica, sans-serif; =
+font-size: 12pt;" class=3D""><br class=3D""></div><div =
+style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;" =
+class=3D"">I would like to request that you change his email address to =
+the one CC'ed and pass primary permissions to me, VLYON.</div><div =
+style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;" =
+class=3D""><br class=3D""></div><div style=3D"font-family: Calibri, =
+Helvetica, sans-serif; font-size: 12pt;" class=3D""><br =
+class=3D""></div><div style=3D"font-family: Calibri, Helvetica, =
+sans-serif; font-size: 12pt;" class=3D""><span class=3D"">Very much =
+appreciated,<br class=3D""></span><span class=3D""></span>Vernon =
+Lyon</div><div style=3D"font-family: Calibri, Helvetica, sans-serif; =
+font-size: 12pt;" class=3D""><br class=3D""></div><div class=3D""><div =
+style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;" =
+class=3D""><br class=3D""></div><div id=3D"appendonsend" =
+class=3D""></div><hr tabindex=3D"-1" style=3D"display: inline-block; =
+width: 838.875px;" class=3D""><div id=3D"divRplyFwdMsg" dir=3D"ltr" =
+class=3D""><font face=3D"Calibri, sans-serif" style=3D"font-size: 11pt;" =
+class=3D""><b class=3D"">From:</b><span =
+class=3D"Apple-converted-space">&nbsp;</span>Christopher Jones &lt;<a =
+href=3D"mailto:chris.jones@papworthbrewery.com" =
+class=3D"">chris.jones@papworthbrewery.com</a>&gt;<br class=3D""><b =
+class=3D"">Sent:</b><span class=3D"Apple-converted-space">&nbsp;</span>06 =
+February 2019 13:08<br class=3D""><b class=3D"">To:</b><span =
+class=3D"Apple-converted-space">&nbsp;</span>Vernon Lyon<br class=3D""><b =
+class=3D"">Subject:</b><span =
+class=3D"Apple-converted-space">&nbsp;</span>Re: CPAN</font><div =
+class=3D"">&nbsp;</div></div><div class=3D""><div =
+id=3D"__MailbirdStyleContent" style=3D"font-size: 10pt; font-family: =
+Arial;" class=3D"">That email address is now defunct, and I can't see =
+how to actually sign in with that ID - all of the sign in options are =
+via third party auth.<div class=3D""><br class=3D""></div><div =
+class=3D""><br class=3D""></div><div class=3D"">Chris<br class=3D""><div =
+class=3D""><br class=3D""></div><div class=3D"mb_sig"><span =
+style=3D"color: rgb(63, 63, 63);" =
+class=3D"">________________________</span><div class=3D""><span =
+style=3D"color: rgb(192, 0, 0);" class=3D"">PAPWORTH BREWERY =
+LTD</span></div><div class=3D""><span style=3D"color: rgb(192, 0, 0);" =
+class=3D"">Unit 24 Earith Business Park</span></div><div class=3D""><span =
+style=3D"color: rgb(192, 0, 0);" class=3D"">Meadow =
+Drove</span></div><div class=3D""><span style=3D"color: rgb(192, 0, 0);" =
+class=3D"">Earith</span></div><div class=3D""><span style=3D"color: =
+rgb(192, 0, 0);" class=3D"">Cambridgeshire PE28 3QF</span></div><div =
+class=3D""><span style=3D"color: rgb(192, 0, 0);" class=3D""><br =
+class=3D""></span></div><div class=3D""><span style=3D"color: rgb(192, =
+0, 0);" class=3D"">Telephone: 01487 842442</span></div><div =
+class=3D""><span style=3D"color: rgb(192, 0, 0);" class=3D"">Mobile: =
+07835 845797</span></div><div class=3D""><span style=3D"color: rgb(192, =
+0, 0);" class=3D""><br class=3D""></span></div><div class=3D""><a =
+href=3D"https://www.papworthbrewery.com/" =
+class=3D"">https://www.papworthbrewery.com</a></div><div class=3D""><a =
+href=3D"https://www.facebook.com/papworthbrewery" =
+class=3D"">https://www.facebook.com/papworthbrewery</a></div><div =
+class=3D""><br class=3D""></div><div class=3D""><span style=3D"color: =
+rgb(192, 0, 0);" class=3D""><br class=3D""></span></div><div =
+class=3D""><br class=3D""></div></div><blockquote =
+class=3D"history_container" type=3D"cite" style=3D"border-left-style: =
+solid; border-width: 1px; margin-top: 20px; margin-left: 0px; =
+padding-left: 10px;"><p style=3D"margin-top: 10px; margin-bottom: 0px; =
+color: rgb(170, 170, 170);" class=3D"">On 06/02/2019 12:29:50, Vernon =
+Lyon &lt;<a href=3D"mailto:vernonlyon@hotmail.com" =
+class=3D"">vernonlyon@hotmail.com</a>&gt; wrote:</p><div =
+style=3D"font-family: Arial, Helvetica, sans-serif;" class=3D""><div =
+style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;" =
+class=3D"">Hi Chris,</div><div style=3D"font-family: Calibri, Helvetica, =
+sans-serif; font-size: 12pt;" class=3D""><br class=3D""></div><div =
+style=3D"font-family: EmojiFont, Calibri, Helvetica, sans-serif, =
+&quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, =
+NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, =
+EmojiSymbols; font-size: 12pt;" class=3D"">Glad to hear you're still =
+brewing!&nbsp;<span class=3D"">=F0=9F=91=8D</span></div><div =
+style=3D"font-family: EmojiFont, Calibri, Helvetica, sans-serif, =
+&quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, =
+NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, =
+EmojiSymbols; font-size: 12pt;" class=3D""><span class=3D""><br =
+class=3D""></span></div><div style=3D"font-family: EmojiFont, Calibri, =
+Helvetica, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI =
+Emoji&quot;, NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android =
+Emoji&quot;, EmojiSymbols; font-size: 12pt;" class=3D""><span =
+class=3D"">Are you able to log into PAUSE?</span></div><div =
+style=3D"font-family: EmojiFont, Calibri, Helvetica, sans-serif, =
+&quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, =
+NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, =
+EmojiSymbols; font-size: 12pt;" class=3D""><span class=3D""><a =
+href=3D"https://pause.perl.org/pause/query" =
+class=3D"">https://pause.perl.org/pause/query</a><br =
+class=3D""></span></div><div style=3D"font-family: EmojiFont, Calibri, =
+Helvetica, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI =
+Emoji&quot;, NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android =
+Emoji&quot;, EmojiSymbols; font-size: 12pt;" class=3D""><br =
+class=3D""></div><div style=3D"font-family: EmojiFont, Calibri, =
+Helvetica, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI =
+Emoji&quot;, NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android =
+Emoji&quot;, EmojiSymbols; font-size: 12pt;" class=3D"">Your PAUSE =
+account is: CJONES</div><div style=3D"font-family: EmojiFont, Calibri, =
+Helvetica, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI =
+Emoji&quot;, NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android =
+Emoji&quot;, EmojiSymbols; font-size: 12pt;" class=3D""><span =
+style=3D"font-family: EmojiFont, Calibri, Helvetica, sans-serif, =
+&quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, =
+NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, =
+EmojiSymbols; font-size: 12pt;" class=3D"">With the email:<span =
+class=3D"Apple-converted-space">&nbsp;</span><a =
+href=3D"mailto:c.jones@ucl.ac.uk" =
+class=3D"">c.jones@ucl.ac.uk</a></span></div><div style=3D"font-family: =
+EmojiFont, Calibri, Helvetica, sans-serif, &quot;Apple Color =
+Emoji&quot;, &quot;Segoe UI Emoji&quot;, NotoColorEmoji, &quot;Segoe UI =
+Symbol&quot;, &quot;Android Emoji&quot;, EmojiSymbols; font-size: 12pt;" =
+class=3D""><a href=3D"https://metacpan.org/author/CJONES" =
+class=3D"">https://metacpan.org/author/CJONES</a><br class=3D""></div><div=
+ style=3D"font-family: EmojiFont, Calibri, Helvetica, sans-serif, =
+&quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, =
+NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, =
+EmojiSymbols; font-size: 12pt;" class=3D""><br class=3D""></div><div =
+style=3D"font-family: EmojiFont, Calibri, Helvetica, sans-serif, =
+&quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, =
+NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, =
+EmojiSymbols; font-size: 12pt;" class=3D"">You can change the =
+permissions on your "plate" module here:</div><div style=3D"font-family: =
+EmojiFont, Calibri, Helvetica, sans-serif, &quot;Apple Color =
+Emoji&quot;, &quot;Segoe UI Emoji&quot;, NotoColorEmoji, &quot;Segoe UI =
+Symbol&quot;, &quot;Android Emoji&quot;, EmojiSymbols; font-size: 12pt;" =
+class=3D""><a =
+href=3D"https://pause.perl.org/pause/authenquery?ACTION=3Dmove_primary" =
+class=3D"">https://pause.perl.org/pause/authenquery?ACTION=3Dmove_primary<=
+/a></div><div style=3D"font-family: EmojiFont, Calibri, Helvetica, =
+sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, =
+NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, =
+EmojiSymbols; font-size: 12pt;" class=3D"">My PAUSE account is: =
+VLYON</div><div style=3D"font-family: EmojiFont, Calibri, Helvetica, =
+sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, =
+NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, =
+EmojiSymbols; font-size: 12pt;" class=3D""><br class=3D""></div><div =
+style=3D"font-family: EmojiFont, Calibri, Helvetica, sans-serif, =
+&quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, =
+NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, =
+EmojiSymbols; font-size: 12pt;" class=3D"">If you're stuck getting =
+access, I could try to contact the PAUSE admins for ya.</div><div =
+style=3D"font-family: EmojiFont, Calibri, Helvetica, sans-serif, =
+&quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, =
+NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, =
+EmojiSymbols; font-size: 12pt;" class=3D""><br class=3D""></div><div =
+style=3D"font-family: EmojiFont, Calibri, Helvetica, sans-serif, =
+&quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, =
+NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android Emoji&quot;, =
+EmojiSymbols; font-size: 12pt;" class=3D"">Very much =
+appreciated,</div><div style=3D"font-family: EmojiFont, Calibri, =
+Helvetica, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI =
+Emoji&quot;, NotoColorEmoji, &quot;Segoe UI Symbol&quot;, &quot;Android =
+Emoji&quot;, EmojiSymbols; font-size: 12pt;" =
+class=3D"">Vern</div></div></blockquote></div></div></div></div></div></di=
+v></div></blockquote></div><br class=3D""><div class=3D"">
+<div style=3D"color: rgb(0, 0, 0); letter-spacing: normal; text-align: =
+start; text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; word-wrap: =
+break-word; -webkit-nbsp-mode: space; -webkit-line-break: =
+after-white-space;" class=3D""><div style=3D"letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; word-wrap: =
+break-word; -webkit-nbsp-mode: space; -webkit-line-break: =
+after-white-space;" class=3D""><div style=3D"letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; word-wrap: =
+break-word; -webkit-nbsp-mode: space; -webkit-line-break: =
+after-white-space;" class=3D""><div style=3D"letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; word-wrap: =
+break-word; -webkit-nbsp-mode: space; -webkit-line-break: =
+after-white-space;" class=3D""><span class=3D"Apple-style-span" =
+style=3D"border-collapse: separate; font-variant-ligatures: normal; =
+font-variant-position: normal; font-variant-caps: normal; =
+font-variant-numeric: normal; font-variant-alternates: normal; =
+font-variant-east-asian: normal; letter-spacing: normal; line-height: =
+normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: =
+normal; widows: 2; word-spacing: 0px; border-spacing: 0px; =
+-webkit-text-decorations-in-effect: none; -webkit-text-stroke-width: =
+0px;"><div style=3D"word-wrap: break-word; -webkit-nbsp-mode: space; =
+-webkit-line-break: after-white-space;" class=3D""><span =
+class=3D"Apple-style-span" style=3D"border-collapse: separate; =
+font-variant-ligatures: normal; font-variant-position: normal; =
+font-variant-caps: normal; font-variant-numeric: normal; =
+font-variant-alternates: normal; font-variant-east-asian: normal; =
+letter-spacing: normal; line-height: normal; orphans: 2; text-indent: =
+0px; text-transform: none; white-space: normal; widows: 2; word-spacing: =
+0px; border-spacing: 0px; -webkit-text-decorations-in-effect: none; =
+-webkit-text-stroke-width: 0px;"><div style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space;" =
+class=3D""><div class=3D""><font face=3D"Helvetica" class=3D""><font =
+class=3D"Apple-style-span" style=3D"font-weight: normal; font-style: =
+normal;"><font class=3D"Apple-style-span" size=3D"3" =
+color=3D"#3f3ddc"><span class=3D"Apple-style-span" style=3D"font-size: =
+12px;">Cogendo</span></font></font><span class=3D"Apple-style-span" =
+style=3D"color: rgb(0, 0, 0); font-weight: normal; font-style: =
+normal;"><br class=3D""></span><span class=3D"Apple-style-span" =
+style=3D"color: rgb(0, 0, 0); font-weight: normal; font-style: =
+normal;"><br class=3D""></span><font class=3D"Apple-style-span" =
+style=3D"color: rgb(0, 0, 0); font-size: 12px;">T: +44 7880 741899<br =
+class=3D"">W: <a href=3D"http://www.cogendo.com" =
+class=3D"">www.cogendo.com</a><br class=3D"">M:<span =
+class=3D"Apple-converted-space">&nbsp;</span><a =
+href=3D"mailto:neil.bowers@cogendo.com" =
+class=3D"">neil.bowers@cogendo.com</a></font></font></div><div =
+style=3D"color: rgb(0, 0, 0);" class=3D""><font face=3D"Helvetica" =
+class=3D""><font class=3D"Apple-style-span" style=3D"color: rgb(0, 0, =
+0); font-size: 12px;"><br class=3D""></font></font></div><div =
+style=3D"color: rgb(0, 0, 0);" class=3D""><div class=3D"" style=3D"margin:=
+ 0px; font-size: 12px; font-family: Helvetica; color: rgb(153, 153, =
+153);"><span class=3D"" style=3D"letter-spacing: 0px;">Cogendo is the =
+trading name of Cogendo Limited, Registered in England &amp; Wales, =
+company no. 8944534.&nbsp;</span></div><div class=3D"" style=3D"margin: =
+0px; font-size: 12px; font-family: Helvetica; color: rgb(153, 153, =
+153);"><span class=3D"" style=3D"letter-spacing: 0px;">Registered =
+office:&nbsp;51 West Street,&nbsp;Marlow,&nbsp;Buckinghamshire.&nbsp;SL7 =
+2LS.</span></div></div></div></span></div></span></div></div></div></div>
+</div>
+<br class=3D""></div></body></html>=
+
+--Apple-Mail=_90B7FBAD-66A2-4625-AF3E-AF8418FDCE99--
