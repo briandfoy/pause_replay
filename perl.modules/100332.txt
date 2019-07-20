@@ -1,0 +1,183 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:100332
+Return-Path: <upload@pause.perl.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 7917 invoked from network); 19 Jul 2019 12:25:12 -0000
+Received: from unknown (HELO xx1.develooper.com) (147.75.38.233) by
+ x6.develooper.com with SMTP; 19 Jul 2019 12:25:12 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 57BBE7C1A5 for <perlmail-modules@onion.perl.org>;
+ Fri, 19 Jul 2019 05:25:12 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.9 required=6.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE
+ autolearn=ham version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 5CD4BC214E for
+ <perlmail-modules@onion.perl.org>; Fri, 19 Jul 2019 05:25:06 -0700 (PDT)
+Received: from mx-out1.ewr1.develooper.com (mx-out1.ewr1.develooper.com
+ [139.178.64.59]) by xx1.develooper.com (Postfix) with ESMTP id D097FC214C for
+ <modules@perl.org>; Fri, 19 Jul 2019 05:24:51 -0700 (PDT)
+Received: from pause.perl.org (pause.perl.org [147.75.38.228]) by
+ mx-out1.ewr1.develooper.com (Postfix) with ESMTP id CA18C6E0282 for
+ <modules@perl.org>; Fri, 19 Jul 2019 12:21:57 +0000 (UTC)
+Received: by pause.perl.org (Postfix, from userid 48) id 92CC1F78; Fri, 19
+ Jul 2019 12:21:57 +0000 (UTC)
+Subject: PAUSE ID request (SIRPSYCHO; Riccardo Marini)
+Reply-To: modules@perl.org
+To: modules@perl.org
+Date: Fri, 19 Jul 2019 12:21:57 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Message-ID: <20190719122157.92CC1F78@pause.perl.org>
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2019.7.19.121517
+X-PMX-Spam: Gauge=XXI, Probability=21%, Report=' TO_DOMAIN_IN_MSGID 2,
+ RCVD_FROM_IP_DATE 0.1, REPLYTO_FROM_DIFF_ADDY 0.1, HTML_00_01 0.05,
+ HTML_00_10 0.05, BODY_SIZE_6000_6999 0, BODY_SIZE_7000_LESS 0,
+ FROM_NAME_PHRASE 0, REPLYTO_SAME_AS_TO_DIFF_FROM 0, SPF_NEUTRAL 0,
+ URI_WITH_PATH_ONLY 0, __ANY_URI 0, __BODY_NO_MAILTO 0, __COURIER_PHRASE 0,
+ __CP_URI_IN_BODY 0, __CT 0, __CTE 0, __CT_TEXT_PLAIN 0, __FRAUD_CONTACT_NAME
+ 0, __FRAUD_MONEY_CURRENCY 0, __FRAUD_MONEY_CURRENCY_DOLLAR 0, __HAS_FROM 0,
+ __HAS_MSGID 0, __HAS_REPLYTO 0, __HTTPS_URI 0, __MIME_TEXT_ONLY 0,
+ __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_VERSION 0, __MULTIPLE_URI_TEXT 0,
+ __NO_HTML_TAG_RAW 0, __REPLYTO_SAME_AS_TO 0, __SANE_MSGID 0,
+ __SPEAR_FROM_NAME 0, __TO_DOMAIN_IN_MSGID 0, __TO_MALFORMED_2 0, __TO_NO_NAME
+ 0, __URI_IN_BODY 0, __URI_NOT_IMG 0, __URI_NO_MAILTO 0, __URI_NO_WWW 0,
+ __URI_NS , __URI_WITH_PATH 0, __blackholes.mail-abuse.org_ERROR ,
+ __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: upload@pause.perl.org ("Perl Authors Upload Server")
+
+Request to register new user
+
+fullname: Riccardo Marini
+  userid: SIRPSYCHO
+    mail: CENSORED
+homepage:=20
+     why:
+
+    I would like to publish my own TSM module. I was not satisfied with
+    DBD::TSM or TSM:: because of lack of performance in many situations
+    since doing a new session for each statement. I wrote my own that is
+    able to pack statements in a single session to boost performance in
+    case of complex reports/activities. It is the most complete perl
+    wrapper for dsmadmc. Note that even DBD implementation is not using
+    C API for TSM but still acting as a wrapper around dsmadmc. Doing
+    reports with this one is simple and fun, and fast. Does not pretend
+    to be an extension of DBD, so I would publish as "Dsmadmc" package
+    since TSM is already taken by a 2001 module. Here below a quick demo
+    client program using Dsmadmc:
+
+    -----CODE BEGIN HERE #!/usr/bin/perl use Dsmadmc; use strict; use
+    warnings;
+
+    my $stanza=3Dshift; die unless ($stanza); my $obj =3D
+    Dsmadmc->new(stanza =3D> $stanza, sep =3D> '%', validate =3D> 0, macro =
+=3D>
+    "/var/tmp/$$.$$.$$") #This will allow multiple statement in one
+    connection or die $!;
+
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FRM NODES');
+    $obj->do_query; #will silently chosse between single/macro conn.
+    #will flush statement buffer, perform queries, charge data into
+    answers
+
+    print "Usage Example one...\n"; while(my $a=3D$obj->get_next_answer){
+    my $tsm_rc=3D$obj->get_tsm_rc($a); if($tsm_rc=3D=3D0){ while(my
+    ($node,$dom)=3D$obj->get_next_row($a)){ print "node: $node\n"; print
+    "domain: $dom\n"; } }else{ print STDERR
+    "\n******************************\n"; print STDERR
+    $obj->get_error_string($a); print STDERR
+    "\n******************************\n"; } }
+
+    print "Usage Example two(inconsistent number of field within
+    queries)...\n"; $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME
+    FROM NODES'); #---> will be statement 0 $obj->add_statement('SELECT
+    VOLUME_NAME,STGPOOL_NAME,PCT_RECLAIM FROM VOLUMES'); #--> will be
+    statement 1 and so on.. $obj->do_query; #see above.
+
+    my $ans=3D$obj->get_next_answer; #get answer to statement 0 while(my
+    ($node,$dom)=3D$obj->get_next_row($a)){ print "node: $node\n"; print
+    "domain: $dom\n"; } $ans=3D$obj->get_next_answer; #get ans. to
+    statement 1.. while(my ($node,$stg,$pct)=3D$obj->get_next_row($a)){
+    print "volume: $node\n"; print "stgpool: $stg\n"; print "pctrec:
+    $pct\n"; }
+
+    print "Usage Example threee(Answers format)\n";
+    $obj->add_statement('SELECT count(*) FROM NODES');
+    $obj->add_statement('SELECT count(*) FROM VOLHISTORY');
+    $obj->add_statement('TCELES count(*) FROM VOLHISTORY'); #-->ERROR
+    $obj->do_query;
+
+    use Data::Dumper; print Dumper \$obj->{answers}; #Will produce
+    #$VAR1 =3D \[ # { # 'rc' =3D> 0, # 'statement' =3D> 'SELECT count(*) FR=
+OM
+    NODES', # 'rows' =3D> [ # '145' # ] # }, # { # 'rc' =3D> 0, #
+    'statement' =3D> 'SELECT count(*) FROM VOLHISTORY', # 'rows' =3D> [ #
+    '44' # ] # }, # { # 'rc' =3D> '2', # 'statement' =3D> 'TCELES count(*)
+    FROM VOLHISTORY', # 'error' =3D> [ # 'ANR2000E Unknown command -
+    TCELES.' # ], # 'rows' =3D> [] # } # ];
+
+    print "Version was: ". $obj->get_tsm_version."\n"; -----CODE ENDS
+    HERE
+
+    Another demo showing performance 10x gain using Dsmadmc over any
+    other implementation using single statement per session (DBD::TSM,
+    TSM)
+
+    ------CODE STARTS HERE #!/usr/bin/perl use Data::Dumper; use
+    Dsmadmc; use strict; use warnings;
+
+    my $stanza=3Dshift; my $macro=3Dshift; die unless ($stanza); my $obj;
+    if($macro){ $obj =3D Dsmadmc->new(stanza =3D> $stanza, sep =3D>
+    '%',validate =3D> 0 , macro =3D> '/var//tmp/test' ) or die $!; }else{
+    $obj =3D Dsmadmc->new(stanza =3D> $stanza, sep =3D> '%',validate =3D> 0=
+ ) or
+    die $!; }
+
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement('SELECT NODE_NAME,DOMAIN_NAME FROM NODES');
+    $obj->add_statement(q~SELECT * FROM NODES WHERE NODE_NAME =3D
+    'CICCIO'~); $obj->add_statement('SELECT * FRM NODES');
+    $obj->do_query;
+
+    while(my $a=3D$obj->get_next_answer){ my
+    $tsm_rc=3D$obj->get_tsm_rc($a); if($tsm_rc=3D=3D0){ while(my
+    ($node,$stg)=3D$obj->get_next_row($a)){ print "node: $node\n"; print
+    "Stg: $stg\n"; } }else{ print STDERR $obj->get_error_string($a); } }
+    ------CODE ENDS HERE
+
+    Execution times for both single and macro mode, showing no
+    differences in reported output:
+
+    [root@tsmmon tsm]# time ./client_M.pl AGRTSMNAS > a 2>/dev/null
+
+    real 0m5.161s user 0m3.742s sys 0m0.218s [root@tsmmon tsm]# time
+    ./client_M.pl AGRTSMNAS macro_mode > b 2>/dev/null
+
+    real 0m0.534s user 0m0.298s sys 0m0.025s [root@tsmmon tsm]# diff a
+    b [root@tsmmon tsm]#
+
+
+The following links are only valid for PAUSE maintainers:
+
+Registration form with editing capabilities:
+  https://pause.perl.org/pause/authenquery?ACTION=3Dadd_user&USERID=3D96310=
+000_a31e4a5f56c6beb5&SUBMIT_pause99_add_user_sub=3D1
+Immediate (one click) registration:
+  https://pause.perl.org/pause/authenquery?ACTION=3Dadd_user&USERID=3D96310=
+000_a31e4a5f56c6beb5&SUBMIT_pause99_add_user_Definitely=3D1
