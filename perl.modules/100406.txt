@@ -1,0 +1,317 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:100406
+Return-Path: <autarch@urth.org>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2191 invoked from network); 16 Aug 2019 12:08:20 -0000
+Received: from mx-out2.ewr1.develooper.com (147.75.199.41) by
+ x6.develooper.com with SMTP; 16 Aug 2019 12:08:20 -0000
+X-Virus-Scanned: Yes
+Received-SPF: Permerror (mailfrom) identity=mailfrom;
+ client-ip=209.85.167.171; helo=mail-oi1-f171.google.com;
+ envelope-from=autarch@urth.org; receiver=<UNKNOWN> 
+Authentication-Results: mx-out2.ewr1.develooper.com; dmarc=fail (p=none
+ dis=none) header.from=urth.org
+Authentication-Results: mx-out2.ewr1.develooper.com; dkim=pass (2048-bit key;
+ unprotected) header.d=urth-org.20150623.gappssmtp.com
+ header.i=@urth-org.20150623.gappssmtp.com header.b="tkyDM0IK";
+ dkim-atps=neutral
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com
+ [209.85.167.171]) by mx-out2.ewr1.develooper.com (Postfix) with ESMTPS id
+ ABA9B1808E9 for <modules@cpan.org>; Fri, 16 Aug 2019 12:08:15 +0000 (UTC)
+Received: by mail-oi1-f171.google.com with SMTP id o6so4594624oic.9 for
+ <modules@cpan.org>; Fri, 16 Aug 2019 05:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=urth-org.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to :cc;
+ bh=mnwnyYwW7GEp+wNT+xfgU9XtCCDvWFC7jEfMhMoUa/0=;
+ b=tkyDM0IKj6lESIff2/XZZRJs26N0rz2J8lB6X5liZXPa76AKvZ87v8FIXVoL9zEboN
+ C6byeI+xr0xJ+7Ag9mYgmRD/o/Dl/SHRhc6NBvI1+SSf6+3+bH8ht/Fz6qHSgR6KNXUw
+ hx1Savc4cCB76kXjsSJv/Rvbm6+SjHQAkQwB1hzwr3dKkU1fCkqX4DOfcw7N7BhLS2Fy
+ OFjKdNX1gLf2OAPCEcy2spRccCkS/TBxQFaxSNtpFC+RS9C13Kob8TYxsCRm6TM3LRIu
+ OtS0fy+eCcGGGmzB4XFoXCPukG4VZesDBifWihTRM9CgtCFRyqe33NgE8+VCC/DPJkgx Uajg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc; bh=mnwnyYwW7GEp+wNT+xfgU9XtCCDvWFC7jEfMhMoUa/0=;
+ b=T67Ca5WY7O0RpZhIYG7QCCGXqrIF3FuHv1/WmfrA77nyRniAYYFM74ZjyKFygADda5
+ acpol2ASVTWEvWPaRauRQhH7EZnxcfJBMz7j4VQATBnDcp9uDHIuADlkMC79HgNqJNQn
+ UMQD4U8KLC8nR8EH2mWyyVrIZHi6yLifURo6EE6WDIIe3hRT5/7U0v0SvMGbs4HeCz31
+ Oky92gXPUeOlGWyjBt529LA7831g4dM2ql7o+kEAD6DrjMDzjXpSnAbAFxA0msXY70dT
+ vrWJXvNwmkY925FE5G2izFPFBao4xULqzDD20dD/FUlCRdFXChxEzMdLQO5fIB6n5JuA imhw==
+X-Gm-Message-State: APjAAAV6P5azrbhYrhMt8FpdQ35Hokvw7+WAOCS65pEPo6d7oWRqssdN
+ MBgCV/97GwxPsb87WZm6qLA92vseAL4Ukc+lIE6swA==
+X-Google-Smtp-Source:
+ APXvYqwKDO3cG2pPpH0n8c7G9aSzi8PbIADS0kGR4b1O3gvplqI0obulPTmPL1R6gY+vXANHPwNZ0Pf8qcH095d6Seo=
+X-Received: by 2002:aca:c355:: with SMTP id t82mr5047951oif.99.1565957292741;
+ Fri, 16 Aug 2019 05:08:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <lsst-sqre/jenkins-dm-jobs/pull/189@github.com>
+ <lsst-sqre/jenkins-dm-jobs/pull/189/issue_event/1278299403@github.com>
+ <CAEqhxnDsFNbOMHukbzxbA4QsGPLS9go4GX3w26Mwo8Cq1otH-A@mail.gmail.com>
+ <963736af-db4c-14eb-88d5-40481ecffd40@hoblitt.com>
+ <CAEqhxnBHgenM44jpmiczuf6xz+6D3j98xYVyQy7xpDxMwyx5hQ@mail.gmail.com>
+ <633f3a01-37f7-9c7b-c6d3-d09335f8005b@hoblitt.com>
+In-Reply-To: <633f3a01-37f7-9c7b-c6d3-d09335f8005b@hoblitt.com>
+Date: Fri, 16 Aug 2019 20:08:01 +0800
+Message-ID:
+ <CAHKw1MLdMAoA+M_B-4i3M93GZj+6QNisY5F3EtWGAj50Xktqkg@mail.gmail.com>
+Subject: Re: [lsst-sqre/jenkins-dm-jobs] add "clean" build jobs (#189)
+To: Joshua Hoblitt <josh@hoblitt.com>
+Cc: Nick Tonkin <1nickt@gmail.com>, modules@cpan.org
+Content-Type: multipart/alternative; boundary="0000000000002aea5805903ad896"
+Approved: news@nntp.perl.org
+From: autarch@urth.org (Dave Rolsky)
+
+--0000000000002aea5805903ad896
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+The problem with deploying from Travis is going to be that PAUSE doesn't
+really have an API, so you would have to store some sort of PAUSE
+username/pw in a way Travis can access. That means the releases are still
+tied to an account. Of course, you can make a "Foo group" account and share
+the credentials, but it's a pretty gross solution. FWIW I've found that
+using Dist::Zilla has made releases easy enough to not want even think
+about automating it further.
+
+
+Cheers,
+
+Dave Rolsky
+http://blog.urth.org
+https://github.com/autarch
+
+
+On Fri, Aug 16, 2019 at 6:22 PM Joshua Hoblitt <josh@hoblitt.com> wrote:
+
+> Hi Nick,
+>
+> Clearly, I've dropped the ball on updating this module. I think it would
+> be reasonable to add Dave Rolsky as an official co-maintainer, so I am no=
+t
+> a single point of failure.  However, what I'd really like to see happen i=
+s
+> someone PR deployment to cpan via travis, upon push of a tag, from
+> https://github.com/jhoblitt/DateTime-HiRes rather than ping-ponging
+> around who can actually ship to cpan. I've just added Dave as a github
+> collaborator as well.
+>
+> Are you interested in working on getting CD setup?
+>
+> -Josh
+>
+> --
+> On 8/15/19 3:56 PM, Nick Tonkin wrote:
+>
+> Hi there Joshua,
+>
+> I'm contacting you again regarding the Perl module DateTime:HiRes which i=
+s
+> broken with newer Perls. I would be happy to become a co-maintainer or ta=
+ke
+> over the module, is that OK with you?
+>
+> Thanks,
+>
+> - nick
+>
+> On Wed, Oct 4, 2017 at 1:32 PM Joshua Hoblitt <josh@hoblitt.com> wrote:
+>
+>> Hi Nick,
+>>
+>> I'm just returning from leave. I'll be in touch shortly.
+>>
+>> -Josh
+>>
+>> --
+>> On 10/04/2017 09:29 AM, Nick Tonkin wrote:
+>> > Hi Josh,
+>> >
+>> > I see that you saw and deleted the comment I left on a recent Github
+>> > commit of yours regarding a failing DateTime::HiRes test, sorry about
+>> > that; I had tried a few times first to get you by email.
+>> >
+>> > I take that my attempts to contact you via email and via Github are
+>> > not welcome, and also that you are no longer interested in maintaining
+>> > the CPAN module. Please correct me if I've wrongly interpreted your
+>> > lack of reply. I know how things are and how things can get busy. But
+>> > if you're no longer interested in maintaining the module, please let
+>> > me know and I'll be happy to help or take over.
+>> >
+>> > Thanks,
+>> >
+>> > Nick
+>> >
+>> >
+>> >
+>> > On Wed, Oct 4, 2017 at 12:11 PM, Joshua Hoblitt
+>> > <notifications@github.com <mailto:notifications@github.com>> wrote:
+>> >
+>> >     Merged #189 <https://github.com/lsst-sqre/jenkins-dm-jobs/pull/189
+>> >.
+>> >
+>> >     =E2=80=94
+>> >     You are receiving this because you commented.
+>> >     Reply to this email directly, view it on GitHub
+>> >     <
+>> https://github.com/lsst-sqre/jenkins-dm-jobs/pull/189#event-1278299403>,
+>> >     or mute the thread
+>> >     <
+>> https://github.com/notifications/unsubscribe-auth/AMNsXfmJWKmvmEsnynL7rX=
+9_aX1YpjGyks5so64cgaJpZM4PoDhM
+>> >.
+>> >
+>> >
+>>
+>>
+>
+
+--0000000000002aea5805903ad896
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">The problem with deploying from Travis is going to be that=
+ PAUSE doesn&#39;t really have an API, so you would have to store some sort=
+ of PAUSE username/pw in a way Travis can access. That means the releases a=
+re still tied to an account. Of course, you can make a &quot;Foo group&quot=
+; account and share the credentials, but it&#39;s a pretty gross solution. =
+FWIW I&#39;ve found that using Dist::Zilla has made releases easy enough to=
+ not want even think about automating it further.<div><br clear=3D"all"><di=
+v><div dir=3D"ltr" class=3D"gmail_signature" data-smartmail=3D"gmail_signat=
+ure"><div dir=3D"ltr"><div><div dir=3D"ltr"><div><br></div><div>Cheers,</di=
+v><div><br></div><div>Dave Rolsky</div><div><a href=3D"http://blog.urth.org=
+" target=3D"_blank">http://blog.urth.org</a></div><div><a href=3D"https://g=
+ithub.com/autarch" target=3D"_blank">https://github.com/autarch</a></div></=
+div></div></div></div></div><br></div></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Fri, Aug 16, 2019 at 6:22 PM Joshu=
+a Hoblitt &lt;<a href=3D"mailto:josh@hoblitt.com">josh@hoblitt.com</a>&gt; =
+wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
+px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+ =20
+   =20
+ =20
+  <div bgcolor=3D"#FFFFFF">
+    Hi Nick,<br>
+    <br>
+    Clearly, I&#39;ve dropped the ball on updating this module. I think it
+    would be reasonable to add Dave Rolsky as an official co-maintainer,
+    so I am not a single point of failure.=C2=A0 However, what I&#39;d real=
+ly
+    like to see happen is someone PR deployment to cpan via travis, upon
+    push of a tag, from <a class=3D"gmail-m_-1040614650956063888moz-txt-lin=
+k-freetext" href=3D"https://github.com/jhoblitt/DateTime-HiRes" target=3D"_=
+blank">https://github.com/jhoblitt/DateTime-HiRes</a>
+    rather than ping-ponging around who can actually ship to cpan. I&#39;ve
+    just added Dave as a github collaborator as well.<br>
+    <br>
+    Are you interested in working on getting CD setup?<br>
+    <br>
+    -Josh<br>
+    <br>
+    --<br>
+    <div class=3D"gmail-m_-1040614650956063888moz-cite-prefix">On 8/15/19 3=
+:56 PM, Nick Tonkin wrote:<br>
+    </div>
+    <blockquote type=3D"cite">
+     =20
+      <div dir=3D"ltr">
+        <div>Hi there Joshua,</div>
+        <div><br>
+        </div>
+        <div>I&#39;m contacting you again regarding the Perl module
+          DateTime:HiRes which is broken with newer Perls. I would be
+          happy to become a co-maintainer or take over the module, is
+          that OK with you?</div>
+        <div><br>
+        </div>
+        <div>Thanks,</div>
+        <div><br>
+        </div>
+        <div>- nick<br>
+        </div>
+      </div>
+      <br>
+      <div class=3D"gmail_quote">
+        <div dir=3D"ltr" class=3D"gmail_attr">On Wed, Oct 4, 2017 at 1:32 P=
+M
+          Joshua Hoblitt &lt;<a href=3D"mailto:josh@hoblitt.com" target=3D"=
+_blank">josh@hoblitt.com</a>&gt; wrote:<br>
+        </div>
+        <blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex=
+;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hi
+          Nick,<br>
+          <br>
+          I&#39;m just returning from leave. I&#39;ll be in touch shortly.<=
+br>
+          <br>
+          -Josh<br>
+          <br>
+          --<br>
+          On 10/04/2017 09:29 AM, Nick Tonkin wrote:<br>
+          &gt; Hi Josh,<br>
+          &gt;<br>
+          &gt; I see that you saw and deleted the comment I left on a
+          recent Github<br>
+          &gt; commit of yours regarding a failing DateTime::HiRes test,
+          sorry about<br>
+          &gt; that; I had tried a few times first to get you by email.<br>
+          &gt;<br>
+          &gt; I take that my attempts to contact you via email and via
+          Github are<br>
+          &gt; not welcome, and also that you are no longer interested
+          in maintaining<br>
+          &gt; the CPAN module. Please correct me if I&#39;ve wrongly
+          interpreted your<br>
+          &gt; lack of reply. I know how things are and how things can
+          get busy. But<br>
+          &gt; if you&#39;re no longer interested in maintaining the module=
+,
+          please let<br>
+          &gt; me know and I&#39;ll be happy to help or take over.<br>
+          &gt;<br>
+          &gt; Thanks,<br>
+          &gt;<br>
+          &gt; Nick<br>
+          &gt;<br>
+          &gt;<br>
+          &gt;<br>
+          &gt; On Wed, Oct 4, 2017 at 12:11 PM, Joshua Hoblitt<br>
+          &gt; &lt;<a href=3D"mailto:notifications@github.com" target=3D"_b=
+lank">notifications@github.com</a>
+          &lt;mailto:<a href=3D"mailto:notifications@github.com" target=3D"=
+_blank">notifications@github.com</a>&gt;&gt;
+          wrote:<br>
+          &gt;<br>
+          &gt;=C2=A0 =C2=A0 =C2=A0Merged #189 &lt;<a href=3D"https://github=
+.com/lsst-sqre/jenkins-dm-jobs/pull/189" rel=3D"noreferrer" target=3D"_blan=
+k">https://github.com/lsst-sqre/jenkins-dm-jobs/pull/189</a>&gt;.<br>
+          &gt;<br>
+          &gt;=C2=A0 =C2=A0 =C2=A0=E2=80=94<br>
+          &gt;=C2=A0 =C2=A0 =C2=A0You are receiving this because you commen=
+ted.<br>
+          &gt;=C2=A0 =C2=A0 =C2=A0Reply to this email directly, view it on =
+GitHub<br>
+          &gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://github.com/lsst-sq=
+re/jenkins-dm-jobs/pull/189#event-1278299403" rel=3D"noreferrer" target=3D"=
+_blank">https://github.com/lsst-sqre/jenkins-dm-jobs/pull/189#event-1278299=
+403</a>&gt;,<br>
+          &gt;=C2=A0 =C2=A0 =C2=A0or mute the thread<br>
+          &gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://github.com/notific=
+ations/unsubscribe-auth/AMNsXfmJWKmvmEsnynL7rX9_aX1YpjGyks5so64cgaJpZM4PoDh=
+M" rel=3D"noreferrer" target=3D"_blank">https://github.com/notifications/un=
+subscribe-auth/AMNsXfmJWKmvmEsnynL7rX9_aX1YpjGyks5so64cgaJpZM4PoDhM</a>&gt;=
+.<br>
+          &gt;<br>
+          &gt;<br>
+          <br>
+        </blockquote>
+      </div>
+    </blockquote>
+    <br>
+  </div>
+
+</blockquote></div>
+
+--0000000000002aea5805903ad896--

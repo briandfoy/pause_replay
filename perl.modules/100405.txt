@@ -1,0 +1,263 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:100405
+Return-Path: <josh@hoblitt.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 15287 invoked from network); 16 Aug 2019 10:22:48 -0000
+Received: from mx-out2.ewr1.develooper.com (147.75.199.41) by
+ x6.develooper.com with SMTP; 16 Aug 2019 10:22:48 -0000
+X-Virus-Scanned: Yes
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=54.200.247.200;
+ helo=outbound1b.ore.mailhop.org; envelope-from=josh@hoblitt.com;
+ receiver=<UNKNOWN> 
+Authentication-Results: mx-out2.ewr1.develooper.com; dmarc=pass (p=none
+ dis=none) header.from=hoblitt.com
+Authentication-Results: mx-out2.ewr1.develooper.com; dkim=pass (1024-bit key;
+ unprotected) header.d=hoblitt.com header.i=@hoblitt.com header.b="39Qa9jEA";
+ dkim=pass (2048-bit key; unprotected) header.d=outbound.mailhop.org
+ header.i=@outbound.mailhop.org header.b="rq/QTSEe"; dkim-atps=neutral
+Received: from outbound1b.ore.mailhop.org (outbound1b.ore.mailhop.org
+ [54.200.247.200]) by mx-out2.ewr1.develooper.com (Postfix) with ESMTPS id
+ 106A81807EE for <modules@cpan.org>; Fri, 16 Aug 2019 10:22:43 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1565950961; cv=none; d=outbound.mailhop.org;
+ s=arc-outbound20181012;
+ b=m/BzvCu8IxztfgGooeHra3KYXYnYjAf/5plrQgi5wZzaEQS5L9p9qt4kKeraAKhLmwPJYUwTPwkVd 62AeQRSqgEQ5rN/NOSFZSaRW2A9pTT5c8iFiENE8yHPFHeU+MweO5czcs82SePF3nwiDi03Gkhn1LQ ETENOO9g0bLi3PVK8y4igwu+Nom8iX9mFbeH7vPPFjjRVWsIVrgds+U2vyEhQq2GNaWCJKLhG0CzmW xLq69KaBcpwSuZKJRxwgZ28S+n+EhvhnfD2Jo7fsyzOuHjwrVOFuqgwe3GW7nuLog4HJ7oXyebeL3W 1ZJow3GVvA6R3tATMeZszu9JGBPMUdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=outbound.mailhop.org; s=arc-outbound20181012;
+ h=content-type:in-reply-to:mime-version:date:message-id:from:references:cc:to: subject:dkim-signature:dkim-signature:from; bh=SXjQl56+KJoULsBGgfaTYvA8sha+ZErwtgiLesVE6rU=; b=p4W0+gFRW5UtAGS8cpC5wx7RI3rWzJqVBw7SE9txfCHnqL+QFfE61zNqz1vElzsmTQebF4zigghMM 2Qur3mINq0er/uUboIxDCcu9iojCySxRo7qv1d/l3pCPuFnUkUGyDSIqNTALrFRNyoT3u8Q2rUwWHl zGL7KTh5dl16XW1xJzTgfxrmsx35oMkWgmahNc/9/g2MOQn/Uwl2RYkb8l/68Qo7hRdARInWGDBalo g049mHyT0xDb6dOFDJPFq7K8Yt+Eh1HoR5auL8XOID+flM0Lmz4csgdPB+CZIK1z6WOFnRBvdWUiRU hP8vJwtXtQAF4NjmJ0FKanc3s2B7dbg==
+ARC-Authentication-Results: i=1; outbound3.ore.mailhop.org; spf=fail
+ smtp.mailfrom=hoblitt.com smtp.remote-ip=35.164.23.79; dmarc=fail
+ header.from=hoblitt.com; arc=none header.oldest-pass=0;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hoblitt.com;
+ s=duo-1554332018870-8c5c9ea6;
+ h=content-type:in-reply-to:mime-version:date:message-id:from:references:cc:to: subject:from; bh=SXjQl56+KJoULsBGgfaTYvA8sha+ZErwtgiLesVE6rU=; b=39Qa9jEA+j4Fks2m8+/GRKXGI0ZYIMO/3GHlSTJTKNPy+Qz7dKN45X2DodUqObBmjehw4/oP0ixoX De9sO579VKeX8SYDmolVk62Fu/dCj0XeFfI6pT4UU6J5/3t1qpHao7Cm4YYVGjwELzfDL343Bcn8h2 KQYhIa/1EXGuA5Pc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outbound.mailhop.org;
+ s=dkim-high;
+ h=content-type:in-reply-to:mime-version:date:message-id:from:references:cc:to: subject:from; bh=SXjQl56+KJoULsBGgfaTYvA8sha+ZErwtgiLesVE6rU=; b=rq/QTSEeONPHJOgFISYb+a9am44FByYPEYM9Fc2351A/4FsAdEO4ikilyf7s+lOPK5gIXPn8BIfXn YAuWUOJi4SCm2XAlwqLebXaq9JJ7YL3FcKFSA5zTqA+iQtzxYBppMzdSBib68reIHUwh/CBsYBGB11 qToxI+EiyNmLhABCgvXgNWJXBAdCFiNNov+ziQBwL18GBhgTbBdHZS5BXGalaBBK24tsIDcErQUcDn aKfa2C+cjaceJwxR/6IgT12IuNHd6tFFkcLFhJIU57txUShOC8k51k7TDbIXZZvaNEqjp8oq2sBavs 9vk6CzhMxiTHxPncYdnetdMLUxjlnhA==
+X-MHO-RoutePath: ZG9nbWE1MTI=
+X-MHO-User: c569cc52-c00f-11e9-b67b-cdd75d6ce7a8
+X-Report-Abuse-To:
+ https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
+X-Mail-Handler: DuoCircle Outbound SMTP
+Subject: Re: [lsst-sqre/jenkins-dm-jobs] add "clean" build jobs (#189)
+To: Nick Tonkin <1nickt@gmail.com>
+Cc: modules@cpan.org, autarch@urth.org
+References: <lsst-sqre/jenkins-dm-jobs/pull/189@github.com>
+ <lsst-sqre/jenkins-dm-jobs/pull/189/issue_event/1278299403@github.com>
+ <CAEqhxnDsFNbOMHukbzxbA4QsGPLS9go4GX3w26Mwo8Cq1otH-A@mail.gmail.com>
+ <963736af-db4c-14eb-88d5-40481ecffd40@hoblitt.com>
+ <CAEqhxnBHgenM44jpmiczuf6xz+6D3j98xYVyQy7xpDxMwyx5hQ@mail.gmail.com>
+Message-ID: <633f3a01-37f7-9c7b-c6d3-d09335f8005b@hoblitt.com>
+Date: Fri, 16 Aug 2019 03:22:36 -0700
+MIME-Version: 1.0
+In-Reply-To:
+ <CAEqhxnBHgenM44jpmiczuf6xz+6D3j98xYVyQy7xpDxMwyx5hQ@mail.gmail.com>
+Content-Type: multipart/alternative; boundary="------------96F287B9C5DB84DF208B81E0"
+Content-Language: en-US
+Approved: news@nntp.perl.org
+From: josh@hoblitt.com (Joshua Hoblitt)
+
+--------------96F287B9C5DB84DF208B81E0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+Hi Nick,
+
+Clearly, I've dropped the ball on updating this module. I think it would
+be reasonable to add Dave Rolsky as an official co-maintainer, so I am
+not a single point of failure.  However, what I'd really like to see
+happen is someone PR deployment to cpan via travis, upon push of a tag,
+from https://github.com/jhoblitt/DateTime-HiRes rather than ping-ponging
+around who can actually ship to cpan. I've just added Dave as a github
+collaborator as well.
+
+Are you interested in working on getting CD setup?
+
+-Josh
+
+--
+On 8/15/19 3:56 PM, Nick Tonkin wrote:
+> Hi there Joshua,
+>
+> I'm contacting you again regarding the Perl module DateTime:HiRes
+> which is broken with newer Perls. I would be happy to become a
+> co-maintainer or take over the module, is that OK with you?
+>
+> Thanks,
+>
+> - nick
+>
+> On Wed, Oct 4, 2017 at 1:32 PM Joshua Hoblitt <josh@hoblitt.com
+> <mailto:josh@hoblitt.com>> wrote:
+>
+>     Hi Nick,
+>
+>     I'm just returning from leave. I'll be in touch shortly.
+>
+>     -Josh
+>
+>     --
+>     On 10/04/2017 09:29 AM, Nick Tonkin wrote:
+>     > Hi Josh,
+>     >
+>     > I see that you saw and deleted the comment I left on a recent Github
+>     > commit of yours regarding a failing DateTime::HiRes test, sorry
+>     about
+>     > that; I had tried a few times first to get you by email.
+>     >
+>     > I take that my attempts to contact you via email and via Github are
+>     > not welcome, and also that you are no longer interested in
+>     maintaining
+>     > the CPAN module. Please correct me if I've wrongly interpreted your
+>     > lack of reply. I know how things are and how things can get
+>     busy. But
+>     > if you're no longer interested in maintaining the module, please let
+>     > me know and I'll be happy to help or take over.
+>     >
+>     > Thanks,
+>     >
+>     > Nick
+>     >
+>     >
+>     >
+>     > On Wed, Oct 4, 2017 at 12:11 PM, Joshua Hoblitt
+>     > <notifications@github.com <mailto:notifications@github.com>
+>     <mailto:notifications@github.com
+>     <mailto:notifications@github.com>>> wrote:
+>     >
+>     >     Merged #189
+>     <https://github.com/lsst-sqre/jenkins-dm-jobs/pull/189>.
+>     >
+>     >     —
+>     >     You are receiving this because you commented.
+>     >     Reply to this email directly, view it on GitHub
+>     >   
+>      <https://github.com/lsst-sqre/jenkins-dm-jobs/pull/189#event-1278299403>,
+>     >     or mute the thread
+>     >   
+>      <https://github.com/notifications/unsubscribe-auth/AMNsXfmJWKmvmEsnynL7rX9_aX1YpjGyks5so64cgaJpZM4PoDhM>.
+>     >
+>     >
+>
+
+
+--------------96F287B9C5DB84DF208B81E0
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    Hi Nick,<br>
+    <br>
+    Clearly, I've dropped the ball on updating this module. I think it
+    would be reasonable to add Dave Rolsky as an official co-maintainer,
+    so I am not a single point of failure.  However, what I'd really
+    like to see happen is someone PR deployment to cpan via travis, upon
+    push of a tag, from <a class="moz-txt-link-freetext" href="https://github.com/jhoblitt/DateTime-HiRes">https://github.com/jhoblitt/DateTime-HiRes</a>
+    rather than ping-ponging around who can actually ship to cpan. I've
+    just added Dave as a github collaborator as well.<br>
+    <br>
+    Are you interested in working on getting CD setup?<br>
+    <br>
+    -Josh<br>
+    <br>
+    --<br>
+    <div class="moz-cite-prefix">On 8/15/19 3:56 PM, Nick Tonkin wrote:<br>
+    </div>
+    <blockquote type="cite"
+cite="mid:CAEqhxnBHgenM44jpmiczuf6xz+6D3j98xYVyQy7xpDxMwyx5hQ@mail.gmail.com">
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <div dir="ltr">
+        <div>Hi there Joshua,</div>
+        <div><br>
+        </div>
+        <div>I'm contacting you again regarding the Perl module
+          DateTime:HiRes which is broken with newer Perls. I would be
+          happy to become a co-maintainer or take over the module, is
+          that OK with you?</div>
+        <div><br>
+        </div>
+        <div>Thanks,</div>
+        <div><br>
+        </div>
+        <div>- nick<br>
+        </div>
+      </div>
+      <br>
+      <div class="gmail_quote">
+        <div dir="ltr" class="gmail_attr">On Wed, Oct 4, 2017 at 1:32 PM
+          Joshua Hoblitt &lt;<a href="mailto:josh@hoblitt.com"
+            moz-do-not-send="true">josh@hoblitt.com</a>&gt; wrote:<br>
+        </div>
+        <blockquote class="gmail_quote" style="margin:0px 0px 0px
+          0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hi
+          Nick,<br>
+          <br>
+          I'm just returning from leave. I'll be in touch shortly.<br>
+          <br>
+          -Josh<br>
+          <br>
+          --<br>
+          On 10/04/2017 09:29 AM, Nick Tonkin wrote:<br>
+          &gt; Hi Josh,<br>
+          &gt;<br>
+          &gt; I see that you saw and deleted the comment I left on a
+          recent Github<br>
+          &gt; commit of yours regarding a failing DateTime::HiRes test,
+          sorry about<br>
+          &gt; that; I had tried a few times first to get you by email.<br>
+          &gt;<br>
+          &gt; I take that my attempts to contact you via email and via
+          Github are<br>
+          &gt; not welcome, and also that you are no longer interested
+          in maintaining<br>
+          &gt; the CPAN module. Please correct me if I've wrongly
+          interpreted your<br>
+          &gt; lack of reply. I know how things are and how things can
+          get busy. But<br>
+          &gt; if you're no longer interested in maintaining the module,
+          please let<br>
+          &gt; me know and I'll be happy to help or take over.<br>
+          &gt;<br>
+          &gt; Thanks,<br>
+          &gt;<br>
+          &gt; Nick<br>
+          &gt;<br>
+          &gt;<br>
+          &gt;<br>
+          &gt; On Wed, Oct 4, 2017 at 12:11 PM, Joshua Hoblitt<br>
+          &gt; &lt;<a href="mailto:notifications@github.com"
+            target="_blank" moz-do-not-send="true">notifications@github.com</a>
+          &lt;mailto:<a href="mailto:notifications@github.com"
+            target="_blank" moz-do-not-send="true">notifications@github.com</a>&gt;&gt;
+          wrote:<br>
+          &gt;<br>
+          &gt;     Merged #189 &lt;<a
+            href="https://github.com/lsst-sqre/jenkins-dm-jobs/pull/189"
+            rel="noreferrer" target="_blank" moz-do-not-send="true">https://github.com/lsst-sqre/jenkins-dm-jobs/pull/189</a>&gt;.<br>
+          &gt;<br>
+          &gt;     —<br>
+          &gt;     You are receiving this because you commented.<br>
+          &gt;     Reply to this email directly, view it on GitHub<br>
+          &gt;     &lt;<a
+href="https://github.com/lsst-sqre/jenkins-dm-jobs/pull/189#event-1278299403"
+            rel="noreferrer" target="_blank" moz-do-not-send="true">https://github.com/lsst-sqre/jenkins-dm-jobs/pull/189#event-1278299403</a>&gt;,<br>
+          &gt;     or mute the thread<br>
+          &gt;     &lt;<a
+href="https://github.com/notifications/unsubscribe-auth/AMNsXfmJWKmvmEsnynL7rX9_aX1YpjGyks5so64cgaJpZM4PoDhM"
+            rel="noreferrer" target="_blank" moz-do-not-send="true">https://github.com/notifications/unsubscribe-auth/AMNsXfmJWKmvmEsnynL7rX9_aX1YpjGyks5so64cgaJpZM4PoDhM</a>&gt;.<br>
+          &gt;<br>
+          &gt;<br>
+          <br>
+        </blockquote>
+      </div>
+    </blockquote>
+    <br>
+  </body>
+</html>
+
+--------------96F287B9C5DB84DF208B81E0--
