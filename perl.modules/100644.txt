@@ -1,0 +1,480 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:100644
+Return-Path: <ej_zg@hotmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2017 invoked from network); 19 Nov 2019 19:02:51 -0000
+Received: from unknown (HELO xx1.develooper.com) (147.75.38.233) by
+ x6.develooper.com with SMTP; 19 Nov 2019 19:02:51 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 6FDA4C6021 for <perlmail-modules@onion.perl.org>;
+ Tue, 19 Nov 2019 11:02:51 -0800 (PST)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-0.1 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,DKIM_VALID_AU,FORGED_HOTMAIL_RCVD2,FORGED_SPF_HELO,FREEMAIL_FROM,
+ HTML_MESSAGE,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS autolearn=no version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id D38EDDE032 for
+ <perlmail-modules@onion.perl.org>; Tue, 19 Nov 2019 11:02:48 -0800 (PST)
+Received: from EUR02-HE1-obe.outbound.protection.outlook.com
+ (mail-oln040092068083.outbound.protection.outlook.com [40.92.68.83]) (using
+ TLSv1 with cipher AES256-SHA (256/256 bits)) (No client certificate
+ requested) by xx1.develooper.com (Postfix) with ESMTPS id 07059C6021 for
+ <modules@perl.org>; Tue, 19 Nov 2019 11:02:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FB2vK73tDso67bM4JBfAkzh8pv36yhiSjxEXBCBRcaqowel+FGJT28oQI7nO3En6Ja2INCTFAMp0eRO5vCsYfyw0MYngGghcnqRfAB5Ug41dassgUVSIA/z6dsdiR7eqBpmHrZ5wwmAjYC2p9iViHD1kcBXNiqWUWL8HJPM8eFJqvXLlMDpeX/E1hQ0MKiF098jIRWsmzyzHN0YvVXralW1ZmaUikdsNqnAjWu1EJioYFJmrEp/zHTOLuOkZy9B+i2lV1NA/NTMIunCrsZ+wDOrXZG9TyEm6TpjhdEOTrQ6YoW9YfH3SyCCbbS+0AAbhcIJQ0njwoo91ADnUG743+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck; bh=uZo9XI7SfRUtGj1pyRX1oLf+bQogIoNuXGZhzZI3yRI=; b=ZXdl8snwMrBJrHy6kxWtgz50GMqZMC9EmM9Hphnvqc+gQ/O+Va6h2W0b/Sa2G1FAp3X9KkGLVuIsZwGYVykeY6rylK6bN6P1IB/IrWDjPo2HvuT7UpTZo6EspekmVyNx56dco5wysXbPei06dIvJz91ZLov7P+6v9t8sDgxL/3PpK4NxRUR7G4gZ05Dm2XWl4uPx2iYs4Vvh4NZFUfxF9/U2Yv79XUGmf9OKgmsNS44VZnVG+mL+rlzAkTDQ5UBG8sxLUBY2IXg9OsWjHA7bhaKYmz5R7j2u9TuLMjbTP/q82UTvPr05zjR66dgDOjZAE7n5tanXLla+14PnHBgjfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck; bh=uZo9XI7SfRUtGj1pyRX1oLf+bQogIoNuXGZhzZI3yRI=; b=Vw2vOEvFsdVZXe8s7hOzpQIpj1NNPD/8R3lwt4fkvwDW4gAKxGa+4Qlsd3g8IGs1cTTDxXmJtzE0FMtQr3pU2G8nPWYV/y2m46hv1kGmQxvJOXVEzx77Q4/S82uaBBywKMpNpCZz0Hk8XWUXgf0e2wD4pxC7KmindvLK7QKEjoD7BpMOb3jGsoFRsxzktnPawToCx1/6OM6Pavij5qz5OOgWxynDEFRpzw84LOnh0aZ/roznmKeXG7bAL1Gh7U3zKKXG/PDEMafVR/NWdyh9/ufSZHEJFe2n0AoM5mz++hx4nlufWz0NwAQkZrJsfw0/dAoWbJQPY7C7lqKbbhO4KQ==
+Received: from VE1EUR02FT064.eop-EUR02.prod.protection.outlook.com
+ (10.152.12.55) by VE1EUR02HT103.eop-EUR02.prod.protection.outlook.com
+ (10.152.13.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.2451.23; Tue, 19 Nov
+ 2019 19:02:36 +0000
+Received: from DB6P189MB0533.EURP189.PROD.OUTLOOK.COM (10.152.12.54) by
+ VE1EUR02FT064.mail.protection.outlook.com (10.152.13.199) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.20.2451.23 via Frontend Transport; Tue, 19 Nov 2019 19:02:36 +0000
+Received: from DB6P189MB0533.EURP189.PROD.OUTLOOK.COM
+ ([fe80::421:7c08:e171:aa78]) by DB6P189MB0533.EURP189.PROD.OUTLOOK.COM
+ ([fe80::421:7c08:e171:aa78%6]) with mapi id 15.20.2451.031; Tue, 19 Nov 2019
+ 19:02:36 +0000
+To: "modules@perl.org" <modules@perl.org>
+CC: "modules@perl.org" <modules@perl.org>
+Subject: RE: Permissions oddities on PDL::LinearAlgebra::*
+Thread-Topic: Permissions oddities on PDL::LinearAlgebra::*
+Thread-Index: AQHVmBekgr4rAwbIIUSwdCg8U86mMKeFToVagA2T7Ec=
+Date: Tue, 19 Nov 2019 19:02:36 +0000
+Message-ID:
+ <DB6P189MB05336F25BC4371C693770C1A824C0@DB6P189MB0533.EURP189.PROD.OUTLOOK.COM>
+References:
+ <DB6P189MB05335B89D72A466FD15E730C82750@DB6P189MB0533.EURP189.PROD.OUTLOOK.COM>,<87ftivxfj9.fsf@k85.linux.bogus>
+In-Reply-To: <87ftivxfj9.fsf@k85.linux.bogus>
+Accept-Language: en-US
+Content-Language: en-GB
+x-incomingtopheadermarker:
+ OriginalChecksum:53B12F33CB026244533713A98771A50845E43341D5D5F9F6032D550922309CB7;UpperCasedChecksum:B8C204CE3FE99F0D6603603600FA6735A7DD613562B353E4E2F834BD13FD56AF;SizeAsReceived:7095;Count:46
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn: [6KzJ+DnWrHOVz7Cy16pvoCbJGahKbhaarEqglwDTWqRrGxcIw4bAq60BrPi9Hc+h]
+x-ms-publictraffictype: Email
+x-incomingheadercount: 46
+x-eopattributedmessage: 0
+x-ms-office365-filtering-correlation-id: 67cf9f97-f199-4bb9-7707-08d76d230aa1
+x-ms-traffictypediagnostic: VE1EUR02HT103:
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ GjT4SSjWIXPCs4c6qPNJZtQsEokrWSq1hbgkleRAE3Cz1wb2/SRuEHmOToExyGLullgaFV4aV648O0xYerqJBSI1cZk8+EpJSTveQX6rv2n7rXP14Cp2pIwv3vVRRdeyL8betSriOpJaF55fLxs3d4/gQP6J4ztL44LdB07B0vT3Ce4U1/KsgIzIVyhLRB7K
+x-ms-exchange-transport-forked: True
+Content-Type: multipart/alternative; boundary="_000_DB6P189MB05336F25BC4371C693770C1A824C0DB6P189MB0533EURP_"
+MIME-Version: 1.0
+X-OriginatorOrg: hotmail.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+ 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id:
+ 67cf9f97-f199-4bb9-7707-08d76d230aa1
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg:
+ 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Nov 2019 19:02:36.5391
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Internet
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1EUR02HT103
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2019.11.19.185417
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' SUPERLONG_LINE 0.05,
+ BODYTEXTH_SIZE_3000_MORE 0, BODY_SIZE_10000_PLUS 0, DKIM_ALIGNS 0,
+ DKIM_SIGNATURE 0, HREF_LABEL_TEXT_ONLY 0, IN_REP_TO 0, KNOWN_MTA_TFX 0,
+ LEGITIMATE_SIGNS 0, MSG_THREAD 0, REFERENCES_INVALID 0, SPF_PASS 0,
+ SXL_IP_TFX_WM 0, URI_WITH_PATH_ONLY 0, WEBMAIL_SOURCE 0, __ANY_URI 0,
+ __BODY_TEXT_X4 0, __BOUNCE_CHALLENGE_SUBJ 0, __BOUNCE_NDR_SUBJ_EXEMPT 0,
+ __CC_NAME 0, __CP_URI_IN_BODY 0, __CT 0, __CTYPE_HAS_BOUNDARY 0,
+ __CTYPE_MULTIPART 0, __CTYPE_MULTIPART_ALT 0, __DKIM_ALIGNS_1 0,
+ __DKIM_ALIGNS_2 0, __DQ_NEG_HEUR 0, __DQ_NEG_IP 0, __FRAUD_BODY_WEBMAIL 0,
+ __FRAUD_WEBMAIL 0, __FRAUD_WEBMAIL_FROM 0, __FROM_HOTMAIL 0,
+ __FUR_RDNS_OUTLOOK 0, __HAS_CC_HDR 0, __HAS_FROM 0, __HAS_HTML 0, __HAS_MSGID
+ 0, __HAS_REFERENCES 0, __HREF_LABEL_TEXT 0, __HREF_LABEL_URI 0,
+ __HTML_AHREF_TAG 0, __HTML_FONT_BLUE 0, __HTML_TAG_DIV 0, __HTTPS_URI 0,
+ __IN_REP_TO 0, __MAIL_CHAIN 0, __MIME_HTML 0, __MIME_TEXT_H 0, __MIME_TEXT_H1
+ 0, __MIME_TEXT_H2 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_TEXT_P2 0,
+ __MIME_VERSION 0, __MULTIPLE_URI_HTML 0, __MULTIPLE_URI_TEXT 0,
+ __RDNS_WEBMAIL 0, __SANE_MSGID 0, __STOCK_PHRASE_24 0, __STYLE_RATWARE_NEG 0,
+ __STYLE_TAG 0, __SUBJ_ALPHA_NEGATE 0, __SUBJ_REPLY 0, __TAG_EXISTS_HTML 0,
+ __TO_MALFORMED_2 0, __TO_NAME 0, __TO_NO_NAME 0, __URI_IN_BODY 0,
+ __URI_IN_BODY_HTTP_X10 0, __URI_MAILTO 0, __URI_NOT_IMG 0, __URI_NO_WWW 0,
+ __URI_NS , __URI_WITH_PATH 0, __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: ej_zg@hotmail.com ("Ed .")
+
+--_000_DB6P189MB05336F25BC4371C693770C1A824C0DB6P189MB0533EURP_
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Andreas,
+
+The relevant excerpt from the linked batchpause commit is at https://github=
+.com/batchpause/PAUSE-git/commit/7915cd66c4954a7870d6b332c97572769b123586#d=
+iff-624efaeb31f29f140519a9b55cc1635bL309812
+
+It shows me being given, on Sat, 27 Jul 2019 20:17:03 GMT, first-come on:
+PDL::LinearAlgebra::Complex
+PDL::LinearAlgebra::Real
+PDL::LinearAlgebra::Trans
+
+However, NOT on:
+PDL::LinearAlgebra
+PDL::LinearAlgebra::Special
+
+As Grinnz says, his (and my) expectation would be that I would still have s=
+uch permission. However, the PAUSE email said:
+Status: No permissions for distribution name
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+     module : PDL::LinearAlgebra::Complex
+     version: 0.13
+     in file: PDL-LinearAlgebra-0.13/GENERATED/PDL/LinearAlgebra/Complex.pm
+     status : Not indexed; ETJ not authorized for this distribution name
+
+     module : PDL::LinearAlgebra::Real
+     version: 0.13
+     in file: PDL-LinearAlgebra-0.13/GENERATED/PDL/LinearAlgebra/Real.pm
+     status : Not indexed; ETJ not authorized for this distribution name
+
+     module : PDL::LinearAlgebra::Trans
+     version: 0.13
+     in file: PDL-LinearAlgebra-0.13/GENERATED/PDL/LinearAlgebra/Trans.pm
+     status : Not indexed; ETJ not authorized for this distribution name
+
+Status: Permission missing
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+
+     module : PDL::LinearAlgebra
+     version: 0.13
+     in file: PDL-LinearAlgebra-0.13/LinearAlgebra.pm
+     status : Not indexed because permission missing. Current registered
+             primary maintainer is ELLIPSE. Hint: you can always find
+             the legitimate maintainer(s) on PAUSE under "View
+             Permissions".
+
+     module : PDL::LinearAlgebra::Special
+     version: 0.13
+     in file: PDL-LinearAlgebra-0.13/Special/Special.pm
+     status : Not indexed because permission missing. Current registered
+             primary maintainer is ELLIPSE. Hint: you can always find
+             the legitimate maintainer(s) on PAUSE under "View
+             Permissions".
+
+The second part is as expected (I have no permissions on those modules) but=
+ the first part =93No permissions for distribution name / Not indexed; ETJ =
+not authorized for this distribution name=94 is not expected. Additionally,=
+ the =93peek_perms=94 (=93View Permissions per module=94) shows for PDL::Li=
+nearAlgebra::Trans, no first-come at all.
+
+Can you help me understand?
+
+Best regards,
+Ed
+
+From: Andreas Koenig<mailto:andreas.koenig.7os6VVqR@franz.ak.mind.de>
+Sent: 11 November 2019 03:23
+To: Ed .<mailto:ej_zg@hotmail.com>
+Cc: modules@perl.org<mailto:modules@perl.org>
+Subject: Re: Permissions oddities on PDL::LinearAlgebra::*
+
+>>>>> On Sun, 10 Nov 2019 22:38:59 +0000, "Ed ." <ej_zg@hotmail.com> said:
+
+  > Dear PAUSE admins,
+  > Please see below copy-paste from IRC. It seems that I had (see the
+  > PAUSE-git commit) first-come on some of the modules (though not all =96
+  > I=92ve emailed ELLIPSE separately), but I apparently don=92t now. Grinn=
+z
+  > believes (as do I) this is an error, and I gather one that needs PAUSE
+  > admins to fix.
+  > ---8<---
+  > [22:19] <Grinnz> so,
+  > https://github.com/batchpause/PAUSE-git/commit/7915cd66c4954a7870d6b332=
+c97572769b123586 is
+  > when the permissions were transferred to you, but i'm not having
+  > success so far finding where your first-come went
+  > [22:20] <Grinnz> and yes PDL::LinearAlgebra and
+  > PDL::LinearAlgebra::Special were never transferred to you
+  > [22:20] <Grinnz> because they're first-come ELLIPSE
+  > [...]
+  > [22:26] <Grinnz> oh, the version in batchpause still has your
+  > first-come, so that means it was removed sometime in the last few
+  > hours
+  > [22:26] <Grinnz> which is weird because that's not supposed to be
+  > possible anymore
+  > [22:27] <Grinnz> mohawk: you must have done something with the dist
+  > perms that resulting in removing yuor first come on those 3 modules?
+  > [22:27] <Grinnz> resulted*
+  > [...]
+  > [22:30] <Grinnz> mohawk: maybe because you don't have first-come on
+  > the main module, and something got confused?
+  > [22:31] <Grinnz> i would say report it here
+  > https://github.com/andk/pause/issues but it's probably not that useful
+  > unless you remember exactly what you did
+  > [22:32] <mohawk> Grinnz, is it possible to undo that?
+  > [22:32] <Grinnz> a pause admin has to do it
+  > [22:32] <mohawk> i didn't do anything! (srsly)
+  > [22:32] <Grinnz> mail modules@perl.org
+  > [22:34] <mohawk> wilco
+  > [22:35] <mohawk> Grinnz, are you happy for me to c+p from convo above?
+  > [22:35] <Grinnz> sure
+  > [22:35] <mohawk> ta
+  > ---8<---
+  > Best regards,
+  > Ed
+  > PAUSE ID: ETJ
+
+Context guesswork:
+
+- citations from toolchain
+- possibly talking about ETJ/PDL-LinearAlgebra-0.13.tar.gz
+- did you receive the email that pause sent to you after the upload?
+- if you got it: what is not clear in that email?
+- if you didn't get it: maybe look into your spam folder?
+- ELLIPSE has firstcome permissions on PDL::LinearAlgebra and is the
+  first authority to decide upon its fate
+- when there is further context that I'm missing, please provide
+  pointers
+
+--
+andreas
+
+
+--_000_DB6P189MB05336F25BC4371C693770C1A824C0DB6P189MB0533EURP_
+Content-Type: text/html; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:w=3D"urn:sc=
+hemas-microsoft-com:office:word" xmlns:m=3D"http://schemas.microsoft.com/of=
+fice/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
+252">
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+.MsoChpDefault
+	{mso-style-type:export-only;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style>
+</head>
+<body lang=3D"EN-GB" link=3D"blue" vlink=3D"#954F72">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal">Hi Andreas,</p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">The relevant excerpt from the linked batchpause comm=
+it is at
+<a href=3D"https://github.com/batchpause/PAUSE-git/commit/7915cd66c4954a787=
+0d6b332c97572769b123586#diff-624efaeb31f29f140519a9b55cc1635bL309812">
+https://github.com/batchpause/PAUSE-git/commit/7915cd66c4954a7870d6b332c975=
+72769b123586#diff-624efaeb31f29f140519a9b55cc1635bL309812</a><o:p></o:p></p=
+>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">It shows me being given, on Sat, 27 Jul 2019 20:17:0=
+3 GMT, first-come on:<o:p></o:p></p>
+<p class=3D"MsoNormal" style=3D"margin-left:36.0pt">PDL::LinearAlgebra::Com=
+plex<o:p></o:p></p>
+<p class=3D"MsoNormal" style=3D"margin-left:36.0pt">PDL::LinearAlgebra::Rea=
+l<o:p></o:p></p>
+<p class=3D"MsoNormal" style=3D"margin-left:36.0pt">PDL::LinearAlgebra::Tra=
+ns<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">However, NOT on:<o:p></o:p></p>
+<p class=3D"MsoNormal" style=3D"margin-left:36.0pt">PDL::LinearAlgebra<o:p>=
+</o:p></p>
+<p class=3D"MsoNormal" style=3D"margin-left:36.0pt">PDL::LinearAlgebra::Spe=
+cial</p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">As Grinnz says, his (and my) expectation would be th=
+at I would still have such permission. However, the PAUSE email said:</p>
+<p class=3D"MsoNormal" style=3D"margin-left:36.0pt">Status: No permissions =
+for distribution name<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; module : PDL::LinearAlgebra::Complex<br>
+&nbsp;&nbsp;&nbsp;&nbsp; version: 0.13<br>
+&nbsp;&nbsp;&nbsp;&nbsp; in file: PDL-LinearAlgebra-0.13/GENERATED/PDL/Line=
+arAlgebra/Complex.pm<br>
+&nbsp;&nbsp;&nbsp;&nbsp; status : Not indexed; ETJ not authorized for this =
+distribution name<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; module : PDL::LinearAlgebra::Real<br>
+&nbsp;&nbsp;&nbsp;&nbsp; version: 0.13<br>
+&nbsp;&nbsp;&nbsp;&nbsp; in file: PDL-LinearAlgebra-0.13/GENERATED/PDL/Line=
+arAlgebra/Real.pm<br>
+&nbsp;&nbsp;&nbsp;&nbsp; status : Not indexed; ETJ not authorized for this =
+distribution name<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; module : PDL::LinearAlgebra::Trans<br>
+&nbsp;&nbsp;&nbsp;&nbsp; version: 0.13<br>
+&nbsp;&nbsp;&nbsp;&nbsp; in file: PDL-LinearAlgebra-0.13/GENERATED/PDL/Line=
+arAlgebra/Trans.pm<br>
+&nbsp;&nbsp;&nbsp;&nbsp; status : Not indexed; ETJ not authorized for this =
+distribution name<br>
+<br>
+Status: Permission missing<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; module : PDL::LinearAlgebra<br>
+&nbsp;&nbsp;&nbsp;&nbsp; version: 0.13<br>
+&nbsp;&nbsp;&nbsp;&nbsp; in file: PDL-LinearAlgebra-0.13/LinearAlgebra.pm<b=
+r>
+&nbsp;&nbsp;&nbsp;&nbsp; status : Not indexed because permission missing. C=
+urrent registered<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pr=
+imary maintainer is ELLIPSE. Hint: you can always find<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; th=
+e legitimate maintainer(s) on PAUSE under &quot;View<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pe=
+rmissions&quot;.<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; module : PDL::LinearAlgebra::Special<br>
+&nbsp;&nbsp;&nbsp;&nbsp; version: 0.13<br>
+&nbsp;&nbsp;&nbsp;&nbsp; in file: PDL-LinearAlgebra-0.13/Special/Special.pm=
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; status : Not indexed because permission missing. C=
+urrent registered<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pr=
+imary maintainer is ELLIPSE. Hint: you can always find<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; th=
+e legitimate maintainer(s) on PAUSE under &quot;View<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Pe=
+rmissions&quot;.<br>
+<br>
+</p>
+<p class=3D"MsoNormal">The second part is as expected (I have no permission=
+s on those modules) but the first part =93No permissions for distribution n=
+ame / Not indexed; ETJ not authorized for this distribution name=94 is not =
+expected. Additionally, the =93peek_perms=94
+ (=93View Permissions per module=94) shows for PDL::LinearAlgebra::Trans, n=
+o first-come at all.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Can you help me understand?<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Best regards,<o:p></o:p></p>
+<p class=3D"MsoNormal">Ed<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div style=3D"mso-element:para-border-div;border:none;border-top:solid #E1E=
+1E1 1.0pt;padding:3.0pt 0cm 0cm 0cm">
+<p class=3D"MsoNormal" style=3D"border:none;padding:0cm"><b>From: </b><a hr=
+ef=3D"mailto:andreas.koenig.7os6VVqR@franz.ak.mind.de">Andreas Koenig</a><b=
+r>
+<b>Sent: </b>11 November 2019 03:23<br>
+<b>To: </b><a href=3D"mailto:ej_zg@hotmail.com">Ed .</a><br>
+<b>Cc: </b><a href=3D"mailto:modules@perl.org">modules@perl.org</a><br>
+<b>Subject: </b>Re: Permissions oddities on PDL::LinearAlgebra::*</p>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">&gt;&gt;&gt;&gt;&gt; On Sun, 10 Nov 2019 22:38:59 &#=
+43;0000, &quot;Ed .&quot; &lt;ej_zg@hotmail.com&gt; said:<br>
+<br>
+&nbsp; &gt; Dear PAUSE admins,<br>
+&nbsp; &gt; Please see below copy-paste from IRC. It seems that I had (see =
+the<br>
+&nbsp; &gt; PAUSE-git commit) first-come on some of the modules (though not=
+ all =96<br>
+&nbsp; &gt; I=92ve emailed ELLIPSE separately), but I apparently don=92t no=
+w. Grinnz<br>
+&nbsp; &gt; believes (as do I) this is an error, and I gather one that need=
+s PAUSE<br>
+&nbsp; &gt; admins to fix.<br>
+&nbsp; &gt; ---8&lt;---<br>
+&nbsp; &gt; [22:19] &lt;Grinnz&gt; so,<br>
+&nbsp; &gt; <a href=3D"https://github.com/batchpause/PAUSE-git/commit/7915c=
+d66c4954a7870d6b332c97572769b123586">
+https://github.com/batchpause/PAUSE-git/commit/7915cd66c4954a7870d6b332c975=
+72769b123586</a> is<br>
+&nbsp; &gt; when the permissions were transferred to you, but i'm not havin=
+g<br>
+&nbsp; &gt; success so far finding where your first-come went<br>
+&nbsp; &gt; [22:20] &lt;Grinnz&gt; and yes PDL::LinearAlgebra and<br>
+&nbsp; &gt; PDL::LinearAlgebra::Special were never transferred to you<br>
+&nbsp; &gt; [22:20] &lt;Grinnz&gt; because they're first-come ELLIPSE<br>
+&nbsp; &gt; [...]<br>
+&nbsp; &gt; [22:26] &lt;Grinnz&gt; oh, the version in batchpause still has =
+your<br>
+&nbsp; &gt; first-come, so that means it was removed sometime in the last f=
+ew<br>
+&nbsp; &gt; hours<br>
+&nbsp; &gt; [22:26] &lt;Grinnz&gt; which is weird because that's not suppos=
+ed to be<br>
+&nbsp; &gt; possible anymore<br>
+&nbsp; &gt; [22:27] &lt;Grinnz&gt; mohawk: you must have done something wit=
+h the dist<br>
+&nbsp; &gt; perms that resulting in removing yuor first come on those 3 mod=
+ules?<br>
+&nbsp; &gt; [22:27] &lt;Grinnz&gt; resulted*<br>
+&nbsp; &gt; [...]<br>
+&nbsp; &gt; [22:30] &lt;Grinnz&gt; mohawk: maybe because you don't have fir=
+st-come on<br>
+&nbsp; &gt; the main module, and something got confused?<br>
+&nbsp; &gt; [22:31] &lt;Grinnz&gt; i would say report it here<br>
+&nbsp; &gt; <a href=3D"https://github.com/andk/pause/issues">https://github=
+.com/andk/pause/issues</a> but it's probably not that useful<br>
+&nbsp; &gt; unless you remember exactly what you did<br>
+&nbsp; &gt; [22:32] &lt;mohawk&gt; Grinnz, is it possible to undo that?<br>
+&nbsp; &gt; [22:32] &lt;Grinnz&gt; a pause admin has to do it<br>
+&nbsp; &gt; [22:32] &lt;mohawk&gt; i didn't do anything! (srsly)<br>
+&nbsp; &gt; [22:32] &lt;Grinnz&gt; mail modules@perl.org<br>
+&nbsp; &gt; [22:34] &lt;mohawk&gt; wilco<br>
+&nbsp; &gt; [22:35] &lt;mohawk&gt; Grinnz, are you happy for me to c&#43;p =
+from convo above?<br>
+&nbsp; &gt; [22:35] &lt;Grinnz&gt; sure<br>
+&nbsp; &gt; [22:35] &lt;mohawk&gt; ta<br>
+&nbsp; &gt; ---8&lt;---<br>
+&nbsp; &gt; Best regards,<br>
+&nbsp; &gt; Ed<br>
+&nbsp; &gt; PAUSE ID: ETJ<br>
+<br>
+Context guesswork:<br>
+<br>
+- citations from toolchain<br>
+- possibly talking about ETJ/PDL-LinearAlgebra-0.13.tar.gz<br>
+- did you receive the email that pause sent to you after the upload?<br>
+- if you got it: what is not clear in that email?<br>
+- if you didn't get it: maybe look into your spam folder?<br>
+- ELLIPSE has firstcome permissions on PDL::LinearAlgebra and is the<br>
+&nbsp; first authority to decide upon its fate<br>
+- when there is further context that I'm missing, please provide<br>
+&nbsp; pointers<br>
+<br>
+-- <br>
+andreas<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</div>
+</body>
+</html>
+
+--_000_DB6P189MB05336F25BC4371C693770C1A824C0DB6P189MB0533EURP_--
