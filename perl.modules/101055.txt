@@ -1,0 +1,198 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:101055
+Return-Path: <xavier.humbert@ac-nancy-metz.fr>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Delivered-To: moderator for modules@perl.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=perl.org; h=from
+	:subject:to:message-id:date:mime-version:content-type
+	:content-transfer-encoding:reply-to; s=dr1; bh=5xnt4YYnbT//tDSSx
+	PhVx3MHSU16km+PoiGlu2On1so=; b=lf+umVI21riSnBaWnSJH7ZZoUiDI4qQes
+	T1EC3SzyHOM3pvGqP14nSDzBaPHwDe2bHJkTvWelBkz7GdTyHJp1kE1z4ueI2ngR
+	PeHt5cGDM+h/bNv96twYvWHJjalYw7PV5qcduT2+r/uuNGAQE3bXbkQocHTPV1VQ
+	mMxBAxG4JBE1UJlshNdRbR9VitMil5qizwzxAzZnedHv49jLMv3pdRiVpvYoEViP
+	2Yfh4uuJsvxAgvPzb5dQdl0zK3jH3fZKxqkgape/0osbtaY9H6vH+CoovD/ldqiy
+	JZaOtYkn5jIpu0w/sLbeUBjUM1azGlvK1l1Bl6aikq3gA6Bb2zs2A==
+Received: (qmail 1649 invoked from network); 1 May 2020 20:31:17 -0000
+Received: from xx1.develooper.com (147.75.38.233) by x6.develooper.com with
+ SMTP; 1 May 2020 20:31:17 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 534B67CF41 for <perlmail-modules@onion.perl.org>;
+ Fri,  1 May 2020 13:31:17 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-0.9 required=6.0 tests=BAYES_00,RCVD_DBL_DQ,
+ RCVD_IN_DNSWL_NONE autolearn=no version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 694407CF43 for
+ <perlmail-modules@onion.perl.org>; Fri,  1 May 2020 13:31:15 -0700 (PDT)
+X-Greylist: delayed 333 seconds by postgrey-1.34 at xx1.develooper.com; Fri,
+ 01 May 2020 13:31:14 PDT
+Received: from mx2.ac-nancy-metz.fr (mx2.ac-nancy-metz.fr [194.214.114.214])
+ (using TLSv1 with cipher ADH-AES256-SHA (256/256 bits)) (No client
+ certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ C2B577CF41 for <modules@perl.org>; Fri,  1 May 2020 13:31:14 -0700 (PDT)
+Received: from ac-msg-mur1.in.ac-nancy-metz.fr
+ (ac-msg-mur1.in.ac-nancy-metz.fr [192.168.62.177]) by mx2.ac-nancy-metz.fr
+ (Postfix) with ESMTP id A64F024FF1 for <modules@perl.org>; Fri,  1 May 2020
+ 22:25:39 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx2.ac-nancy-metz.fr A64F024FF1
+Received: from ac-msg-mur1.in.ac-nancy-metz.fr (localhost [127.0.0.1]) by
+ ac-msg-mur1.in.ac-nancy-metz.fr (Postfix) with ESMTP id A45D7300009B for
+ <modules@perl.org>; Fri,  1 May 2020 22:25:39 +0200 (CEST)
+X-Virus-Scanned: Academie de Nancy-Metz
+Received: from ac-msg-mur1.in.ac-nancy-metz.fr ([127.0.0.1]) by
+ ac-msg-mur1.in.ac-nancy-metz.fr (ac-msg-mur1.in.ac-nancy-metz.fr [127.0.0.1])
+ (amavisd-new, port 10025) with ESMTP id iWqJX5pQUWjr for <modules@perl.org>;
+ Fri,  1 May 2020 22:25:39 +0200 (CEST)
+Received: from ac-msg-smtp1.in.ac-nancy-metz.fr
+ (f5-2200-1.in.ac-nancy-metz.fr [192.168.12.185]) by
+ ac-msg-mur1.in.ac-nancy-metz.fr (Postfix) with ESMTP id 6B5B33000095 for
+ <modules@perl.org>; Fri,  1 May 2020 22:25:39 +0200 (CEST)
+Received: from [88.122.81.46][192.168.0.16] (f5-2200-1.in.ac-nancy-metz.fr
+ [192.168.12.185]) (Authenticated sender: xhumbert@ac-nancy-metz.fr) by
+ ac-msg-smtp1.in.ac-nancy-metz.fr (Postfix) with ESMTPA id 40D9C200E2 for
+ <modules@perl.org>; Fri,  1 May 2020 22:25:39 +0200 (CEST)
+Subject: Indexer incorrectly reports decreasing version number
+To: modules@perl.org
+Autocrypt: addr=xavier.humbert@ac-nancy-metz.fr; keydata=
+ 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
+Message-ID: <7e716c50-69f0-8cd7-8447-07e75e209179@ac-nancy-metz.fr>
+Date: Fri, 1 May 2020 22:25:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2019.11.28.70017
+X-PMX-Perl: Suspicious Attachment
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' HTML_00_01 0.05,
+ HTML_00_10 0.05, BODYTEXTP_SIZE_3000_LESS 0, BODY_SIZE_1000_LESS 0,
+ BODY_SIZE_2000_LESS 0, BODY_SIZE_5000_LESS 0, BODY_SIZE_7000_LESS 0,
+ BODY_SIZE_700_799 0, KNOWN_MTA_TFX 0, LEGITIMATE_SIGNS 0, MSG_THREAD 0,
+ NO_CTA_FOUND 0, NO_URI_HTTPS 0, SPF_PASS 0, SXL_IP_TFX_WM 0, __ANY_URI 0,
+ __BODY_NO_MAILTO 0, __CT 0, __CTE 0, __CT_TEXT_PLAIN 0, __FORWARDED_MSG 0,
+ __FRAUD_MONEY_DENOMINATION 0, __HAS_FROM 0, __HAS_MSGID 0, __MIME_TEXT_ONLY
+ 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_VERSION 0, __MOZILLA_USER_AGENT
+ 0, __MSGID_DOMAIN_NOT_IN_HDRS 0, __NO_HTML_TAG_RAW 0, __SANE_MSGID 0,
+ __SUBJ_ALPHA_END 0, __TO_MALFORMED_2 0, __TO_NO_NAME 0, __URI_NO_MAILTO 0,
+ __URI_NO_WWW 0, __USER_AGENT 0, __zen.spamhaus.org_ERROR '
+Original-From: Xavier Humbert <xavier.humbert@ac-nancy-metz.fr>
+Reply-To: Xavier Humbert <xavier.humbert@ac-nancy-metz.fr>
+Approved: news@nntp.perl.org
+From: modules@perl.org (Xavier Humbert via modules)
+
+[User XAVIERH]
+
+Hi,
+
+I just submitted an update to a module. Here is the version history :
+
+> RundeckAPI-1.1.001.tar.gz
+>     Scheduled for deletion (due at Mon, 04 May 2020 19:03:39 GMT)
+> RundeckAPI-1.1b2.tar.gz
+>     Scheduled for deletion (due at Mon, 04 May 2020 19:03:39 GMT)
+> RundeckAPI-1.2.1.tar.gz
+>     Fri, 01 May 2020 20:06:36 GMT
+> RundeckAPI-1.2.tar.gz
+>     Scheduled for deletion (due at Mon, 04 May 2020 19:18:28 GMT)
+>
+And indexer reports :
+
+> Status of this distro: Decreasing version number
+>
+Imho, 1.2.1 is greater than 1.2 but indexer seems to follow strict ascii
+order
+
+Regards;
+
+Xavier
+
+-- 
+Xavier Humbert
+CRT Supervision et Exploitation de Niveau 1
+Rectorat de Nancy-Metz
+03 83 86 27 39
