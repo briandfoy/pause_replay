@@ -1,0 +1,230 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:101200
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24488 invoked from network); 15 Jun 2020 12:58:02 -0000
+Received: from xx1.develooper.com (147.75.38.233) by x6.develooper.com with
+ SMTP; 15 Jun 2020 12:58:02 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 09B537C1C0 for <perlmail-modules@onion.perl.org>;
+ Mon, 15 Jun 2020 05:58:02 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.9 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,HTML_MESSAGE,RCVD_IN_DNSWL_NONE autolearn=ham version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 1B1797CEEC for
+ <perlmail-modules@onion.perl.org>; Mon, 15 Jun 2020 05:57:58 -0700 (PDT)
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
+ [209.85.128.47]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ 6843D7C1C0 for <modules@perl.org>; Mon, 15 Jun 2020 05:57:57 -0700 (PDT)
+Received: by mail-wm1-f47.google.com with SMTP id f185so14725699wmf.3 for
+ <modules@perl.org>; Mon, 15 Jun 2020 05:57:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:message-id:in-reply-to:references:subject :mime-version;
+ bh=3zPipdFBZe0a9FX2ALj31MZnkSlUYaMELiVaE1bG5Kc=;
+ b=n52CX8AUYk71aAqSBoEpBi9kh7CtlwuyO7nzFKPUJwgmk1poGMob5svvh/XBwBfSXX
+ FT/fKGXS85TZ7XW57ftK5epGUJeG0Dt8XpXRvUrVOsSpc3h8Nv3YRX/3bo0oCc5V7KNo
+ DckPc2jZf8uQHniUkXwCcI5GuAgk8grQ6/Zr9drcVjeI3pgqCxsQoHDNMnL/4u61viKn
+ f1mMctKbSuq4HovTfHyULB9LtAyBioarPzPpT/o3Fb/5L0fb8eiSowuo+0ylP7O6AHaX
+ GGwd3/RXjD/UMuggyQdGmiQU73TRJ862XIDo5BF1whQ4I9fwYanQkVaBi8LycfLBvpWZ hR8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025; h=x-gm-message-state:date:from:to:cc:message-id:in-reply-to
+ :references:subject:mime-version;
+ bh=3zPipdFBZe0a9FX2ALj31MZnkSlUYaMELiVaE1bG5Kc=;
+ b=MaxzN7/r7B0HxbxjYFF6LOv42uuDiR7vu01KfP8unbWcnmLGUBlkBEu42P11uHQAFa
+ UD98R1weSpXyzloXLODlowwP7qyIR5jywNn/iZ5OfT5UOUzBvmGOZuO4rSsTmpdCCoxO
+ WZ8gQX7nBtoAwHccKRENnhP+kPlOqXU0h4mZpGAspCVOaciWOJAWF9H+I3nkQZ1Sg2pC
+ no+tr7MRv1L6IEfz9Bv6jikdiR0nAvu376UuFudhAcbYVeRZlZFUYcUAh7t5hNt6r1Fn
+ 9mi/eqVxmreLijJlUFsz5CReSPgWl03wznHcqYghaDI+tD01y5XrTZFH/z6xXePPGS6O S17w==
+X-Gm-Message-State: AOAM531rX0jzsCIIGsBalPoD4yAEAWGEfTIMkXDWVYQtRb8WIIER7xBG
+ y/PrUThuozUTCkNgTcgiBGVNRgdxW2oICA==
+X-Google-Smtp-Source:
+ ABdhPJwf+OmebcykKxeJJBSQ0yBK/EhB8wTXG4Yz/Rf4iOo5Mgy3QHFD1LKX6kIpY4Nyl0Umb8XsqQ==
+X-Received: by 2002:a05:600c:2218:: with SMTP id
+ z24mr12602727wml.24.1592225876265; Mon, 15 Jun 2020 05:57:56 -0700 (PDT)
+Received: from [2a00:23c4:1400:e000:404a:180e:70:0]
+ ([2a00:23c4:1400:e000:84e6:5380:d08e:451d]) by smtp.gmail.com with ESMTPSA id
+ l1sm27351343wrb.31.2020.06.15.05.57.55 (version=TLS1_2
+ cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128); Mon, 15 Jun 2020 05:57:55
+ -0700 (PDT)
+Date: Mon, 15 Jun 2020 13:57:50 +0100
+To: Jerrad Pierce <belg4mit@pthbb.org>
+Cc: modules@perl.org
+Message-ID: <6e20d6b4-903f-4998-a704-e04bb0ec3cb6@Spark>
+In-Reply-To: <20200613154726.ED285C102@db.pthbb.org>
+References: <20200613154726.ED285C102@db.pthbb.org>
+Subject: Re: Failed: PAUSE indexer report JPIERCE/IO-Pager-1.03.tgz (fwd)
+X-Readdle-Message-ID: 6e20d6b4-903f-4998-a704-e04bb0ec3cb6@Spark
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="5ee77053_13dda79d_363"
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2019.11.28.70017
+X-PMX-Perl: Suspicious Attachment
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' HTML_50_70 0.1,
+ SUPERLONG_LINE 0.05, BODYTEXTH_SIZE_10000_LESS 0, BODYTEXTH_SIZE_3000_MORE 0,
+ BODYTEXTP_SIZE_3000_LESS 0, DKIM_SIGNATURE 0, HREF_LABEL_TEXT_ONLY 0,
+ INVALID_MSGID_NO_FQDN 0, IN_REP_TO 0, KNOWN_MTA_TFX 0, LEGITIMATE_SIGNS 0,
+ MSG_THREAD 0, REFERENCES 0, SINGLE_URI_IN_BODY 0, SPF_PASS 0, SXL_IP_TFX_WM
+ 0, URI_WITH_PATH_ONLY 0, WEBMAIL_SOURCE 0, __ANY_URI 0, __BODY_NO_MAILTO 0,
+ __BODY_TEXT_X4 0, __BOUNCE_CHALLENGE_SUBJ 0, __BOUNCE_NDR_SUBJ_EXEMPT 0,
+ __CP_URI_IN_BODY 0, __CT 0, __CTYPE_HAS_BOUNDARY 0, __CTYPE_MULTIPART 0,
+ __CTYPE_MULTIPART_ALT 0, __DQ_NEG_HEUR 0, __DQ_NEG_IP 0, __FUR_RDNS_GMAIL 0,
+ __HAS_CC_HDR 0, __HAS_FROM 0, __HAS_HTML 0, __HAS_MSGID 0, __HAS_REFERENCES
+ 0, __HELO_GMAIL 0, __HIGHBITS 0, __HREF_LABEL_TEXT 0, __HREF_LABEL_URI 0,
+ __HTML_AHREF_TAG 0, __HTML_TAG_DIV 0, __HTTPS_URI 0, __IN_REP_TO 0,
+ __MIME_HTML 0, __MIME_TEXT_H 0, __MIME_TEXT_H1 0, __MIME_TEXT_H2 0,
+ __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_TEXT_P2 0, __MIME_VERSION 0,
+ __MSGID_DOMAIN_NOT_IN_HDRS 0, __MULTIPLE_URI_TEXT 0,
+ __PHISH_SPEAR_SUBJ_PREDICATE 0, __RDNS_WEBMAIL 0, __REFERENCES 0,
+ __SANE_MSGID 0, __SINGLE_URI_MPART_BOTH 0, __SUBJ_ALPHA_NEGATE 0,
+ __SUBJ_REPLY 0, __TAG_EXISTS_HTML 0, __TO_MALFORMED_2 0, __TO_NAME 0,
+ __TO_NAME_DIFF_FROM_ACC 0, __TO_REAL_NAMES 0, __URI_IN_BODY 0, __URI_NOT_IMG
+ 0, __URI_NO_MAILTO 0, __URI_NO_WWW 0, __URI_NS , __URI_WITH_PATH 0,
+ __X_GOOGLE_DKIM_SIGNATURE 0, __YOUTUBE_RCVD 0, __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+--5ee77053_13dda79d_363
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+Hi Jerrad,
+
+If a module is detected with a decreasing version number, then it won=E2=80=
+=99t be indexed.
+
+Let=E2=80=99s have a look at what=E2=80=99s in the CPAN Index=5B1=5D for =
+your IO-Pager distribution right now:
+
+=C2=A0=C2=A0 =C2=A0IO::Pager=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A01.03 J/JP/JPIERCE/IO-Pager-1.03.tgz
+=C2=A0=C2=A0 =C2=A0IO::Pager::Buffered=C2=A0 =C2=A0 =C2=A01.03 J/JP/JPIER=
+CE/IO-Pager-1.03.tgz
+=C2=A0=C2=A0 =C2=A0IO::Pager::less=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A01.02 =
+J/JP/JPIERCE/IO-Pager-1.03.tgz
+=C2=A0=C2=A0 =C2=A0IO::Pager::Page=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A01.02 =
+J/JP/JPIERCE/IO-Pager-1.03.tgz
+=C2=A0=C2=A0 =C2=A0IO::Pager::Perl=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A01.03 =
+J/JP/JPIERCE/IO-Pager-1.03.tgz
+=C2=A0=C2=A0 =C2=A0IO::Pager::Unbuffered=C2=A0=C2=A010.02 J/JP/JPIERCE/IO=
+-Pager-1.02.tgz
+
+What this means is that if someone types =22cpan IO::Pager::Unbuffered=22=
+ right now, then they=E2=80=99d end up with the 1.02 release being instal=
+led, instead of the 1.03 release. If they typed =22cpan IO::Pager=22, the=
+n they=E2=80=99ll get the 1.03 release.
+
+It=E2=80=99s a good idea to have all the module versions to be the same a=
+s the version number of the release.
+
+Sadly, in this case, because you accidentally released version 10.02 of I=
+O::Pager::Unbuffered, the only way you can have consistent versioning is =
+either to bump the version to 11.00 and start afresh from there, or to re=
+name IO::Pager::Unbuffered, so the new module can have version number 1.0=
+4 (assuming that=E2=80=99s what you release next).
+
+Ok, to be fair, there=C2=A0is=C2=A0a =22Reset Version=22 feature in PAUSE=
+, which tells it to forget the version number associated with a module:
+
+=C2=A0=C2=A0 =C2=A0https://pause.perl.org/pause/authenquery=3FACTION=3Dre=
+set=5Fversion
+
+Not that the page discourages its use. I=E2=80=99m guessing =E2=80=94 bas=
+ed purely on its name =E2=80=94=C2=A0=C2=A0that IO::Pager::Unbuffered is =
+an internal class, unlikely to be used directly by people. So maybe you c=
+an get away with using Reset Version. After doing that, click on =22=46or=
+ce Reindexing=22, and select the 1.03 release to be reindexed. And then g=
+o and have a shower=21 ;-)
+
+Cheers,
+Neil
+
+
+--5ee77053_13dda79d_363
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+<html xmlns=3D=22http://www.w3.org/1999/xhtml=22>
+<head>
+<title></title>
+</head>
+<body>
+<div name=3D=22messageBodySection=22>
+<div dir=3D=22auto=22><span style=3D=22font-size: 16px=22>Hi Jerrad,</spa=
+n><span style=3D=22font-size: 16px=22><br /></span><span style=3D=22font-=
+size: 16px=22><br /></span><span style=3D=22font-size: 16px=22>If a modul=
+e is detected with a decreasing version number, then it won=E2=80=99t be =
+indexed.</span><span style=3D=22font-size: 16px=22><br /></span><span sty=
+le=3D=22font-size: 16px=22><br /></span><span style=3D=22font-size: 16px=22=
+>Let=E2=80=99s have a look at what=E2=80=99s in the CPAN Index=5B1=5D for=
+ your IO-Pager distribution right now:</span><span style=3D=22font-size: =
+16px=22><br /></span><span style=3D=22font-size: 16px=22><br /></span><sp=
+an style=3D=22font-family:Courier New;font-size: 16px=22>&=23160;&=23160;=
+ &=23160;IO::Pager&=23160; &=23160; &=23160; &=23160; &=23160; &=23160; &=
+=23160; &=23160;1.03 J/JP/JPIERCE/IO-Pager-1.03.tgz</span><span style=3D=22=
+font-size: 16px=22><br /></span><span style=3D=22font-family:Courier New;=
+font-size: 16px=22>&=23160;&=23160; &=23160;IO::Pager::Buffered&=23160; &=
+=23160; &=23160;1.03 J/JP/JPIERCE/IO-Pager-1.03.tgz</span><span style=3D=22=
+font-size: 16px=22><br /></span><span style=3D=22font-family:Courier New;=
+font-size: 16px=22>&=23160;&=23160; &=23160;IO::Pager::less&=23160; &=231=
+60; &=23160; &=23160; &=23160;1.02 J/JP/JPIERCE/IO-Pager-1.03.tgz</span><=
+span style=3D=22font-size: 16px=22><br /></span><span style=3D=22font-fam=
+ily:Courier New;font-size: 16px=22>&=23160;&=23160; &=23160;IO::Pager::Pa=
+ge&=23160; &=23160; &=23160; &=23160; &=23160;1.02 J/JP/JPIERCE/IO-Pager-=
+1.03.tgz</span><span style=3D=22font-size: 16px=22><br /></span><span sty=
+le=3D=22font-family:Courier New;font-size: 16px=22>&=23160;&=23160; &=231=
+60;IO::Pager::Perl&=23160; &=23160; &=23160; &=23160; &=23160;1.03 J/JP/J=
+PIERCE/IO-Pager-1.03.tgz</span><span style=3D=22font-size: 16px=22><br />=
+</span><span style=3D=22font-family:Courier New;font-size: 16px=22>&=2316=
+0;&=23160; &=23160;IO::Pager::Unbuffered&=23160;&=23160;10.02 J/JP/JPIERC=
+E/</span><strong style=3D=22font-family:Courier New;font-size: 16px=22>IO=
+-Pager-1.02.tgz</strong><span style=3D=22font-size: 16px=22><br /></span>=
+<span style=3D=22font-size: 16px=22><br /></span><span style=3D=22font-si=
+ze: 16px=22>What this means is that if someone types =22cpan IO::Pager::U=
+nbuffered=22 right now, then they=E2=80=99d end up with the 1.02 release =
+being installed, instead of the 1.03 release. If they typed =22cpan IO::P=
+ager=22, then they=E2=80=99ll get the 1.03 release.</span><span style=3D=22=
+font-size: 16px=22><br /></span><span style=3D=22font-size: 16px=22><br /=
+></span><span style=3D=22font-size: 16px=22>It=E2=80=99s a good idea to h=
+ave all the module versions to be the same as the version number of the r=
+elease.</span><span style=3D=22font-size: 16px=22><br /></span><span styl=
+e=3D=22font-size: 16px=22><br /></span><span style=3D=22font-size: 16px=22=
+>Sadly, in this case, because you accidentally released version 10.02 of =
+IO::Pager::Unbuffered, the only way you can have consistent versioning is=
+ either to bump the version to 11.00 and start afresh from there, or to r=
+ename IO::Pager::Unbuffered, so the new module can have version number 1.=
+04 (assuming that=E2=80=99s what you release next).</span><span style=3D=22=
+font-size: 16px=22><br /></span><span style=3D=22font-size: 16px=22><br /=
+></span><span style=3D=22font-size: 16px=22>Ok, to be fair, there&=23160;=
+</span><strong style=3D=22font-size: 16px=22><em>is</em></strong><span st=
+yle=3D=22font-size: 16px=22>&=23160;a =22Reset Version=22 feature in PAUS=
+E, which tells it to forget the version number associated with a module:<=
+/span><span style=3D=22font-size: 16px=22><br /></span><span style=3D=22f=
+ont-size: 16px=22><br /></span><span style=3D=22font-size: 16px=22>&=2316=
+0;&=23160; &=23160;</span><a style=3D=22font-size: 16px=22 href=3D=22http=
+s://pause.perl.org/pause/authenquery=3FACTION=3Dreset=5Fversion=22 target=
+=3D=22=5Fblank=22>https://pause.perl.org/pause/authenquery=3FACTION=3Dres=
+et=5Fversion</a><span style=3D=22font-size: 16px=22><br /></span><span st=
+yle=3D=22font-size: 16px=22><br /></span><span style=3D=22font-size: 16px=
+=22>Not that the page discourages its use. I=E2=80=99m guessing =E2=80=94=
+ based purely on its name =E2=80=94&=23160;&=23160;that IO::Pager::Unbuff=
+ered is an internal class, unlikely to be used directly by people. So may=
+be you can get away with using Reset Version. After doing that, click on =
+=22=46orce Reindexing=22, and select the 1.03 release to be reindexed. An=
+d then go and have a shower=21 ;-)</span><span style=3D=22font-size: 16px=
+=22><br /></span><span style=3D=22font-size: 16px=22><br /></span><span s=
+tyle=3D=22font-size: 16px=22>Cheers,</span><span style=3D=22font-size: 16=
+px=22><br /></span><span style=3D=22font-size: 16px=22>Neil</span><span s=
+tyle=3D=22font-size: 16px=22><br /></span><span style=3D=22font-size: 16p=
+x=22><br /></span></div>
+</div>
+</body>
+</html>
+
+--5ee77053_13dda79d_363--
