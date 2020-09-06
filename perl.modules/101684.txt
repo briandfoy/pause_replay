@@ -1,0 +1,194 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:258310 perl.modules:101684
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4391 invoked from network); 25 Aug 2020 22:14:36 -0000
+Received: from xx1.develooper.com (147.75.38.233) by x6.develooper.com with
+ SMTP; 25 Aug 2020 22:14:36 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 0AE607C1AC for <perlmail-modules@onion.perl.org>;
+ Tue, 25 Aug 2020 15:14:36 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.9 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,HTML_MESSAGE,RCVD_IN_DNSWL_NONE autolearn=unavailable
+ version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 102E37CF29 for
+ <perlmail-modules@onion.perl.org>; Tue, 25 Aug 2020 15:14:32 -0700 (PDT)
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
+ [209.85.221.42]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ 440E27CEED for <modules@perl.org>; Tue, 25 Aug 2020 15:14:31 -0700 (PDT)
+Received: by mail-wr1-f42.google.com with SMTP id r15so302976wrp.13 for
+ <modules@perl.org>; Tue, 25 Aug 2020 15:14:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:message-id:in-reply-to:references:subject :mime-version;
+ bh=XfGQwIM0gHh+PYuFgW7Do6i+6se2n2CMCV+mVdj//H8=;
+ b=IDuE/7AeOK6nW416rXpqtDocrJc2SqEuWzOVQsafkMfp5CRm5aM9tSklyKsdUWGcyJ
+ PPaYLfim1FS6ud1SHujEwjrr4eQWXUXT1R1mjR84TNAOPdiwhzrgSy5Y8sxn/wLjDEr1
+ jijvFsxG0K9/85p7advEEu+DqT8CbgaIpvXb+13a31qUGyjbmE0eQNuaYF4yJ0DsDvY2
+ C2SZX9Py1iKc9cZXjgJCTjPThmoKoWLQAPmJEe+tF/1mJJgctE5FfQ6xSnUckaFIohda
+ CTWyjHiFI/oACqdKK+2VVcsbakbGLFgGcdQex49g80A7S/JKdu/G+aWg8wJKwBicjab5 DePA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025; h=x-gm-message-state:date:from:to:cc:message-id:in-reply-to
+ :references:subject:mime-version;
+ bh=XfGQwIM0gHh+PYuFgW7Do6i+6se2n2CMCV+mVdj//H8=;
+ b=iBMAmQid3YA5z8qY3SyJSoWs66XUz9LchlQNm2LQ6VFbQUV535iJPGEVxjJIUzU6Vk
+ phxW+3jt1DJAORfwEho1A355/ACqaIGMhwm/pufQEtJB1iAmR9YzPvAmuOAMSEr4OfSy
+ g8wu2uMVGxMe/kHk9l+k6rHnWPUVRHDkpS2UQ6YzOYrxWleHGvrjOiYiP5FIofGO1BqZ
+ BploraqBSdvDK3TemrCueRGWQcdx9boHEa0hXTosyMM1SQITaqmiISDcATqNki217oTv
+ bnYFm7tUKJEKVssPtv/GKjgxVjQtk1DMMn6OBZsJ46XWK/CczKdw847AT88mZDlGi1oG YNOg==
+X-Gm-Message-State: AOAM532rO/wSyArQUB+aeNTH18hVUF2N/0nX6XSZIt7ej1ESoJSgDiho
+ FWolwZxVD+e48FYr11p5A0QQHg==
+X-Google-Smtp-Source:
+ ABdhPJxl2v38PJ1AXuiE/3YwnwW5kvdJVsCe1AjznZTXVunkcjnWlr2ZU64rprfOyTXGHKjTZCLp7Q==
+X-Received: by 2002:a05:6000:18a:: with SMTP id
+ p10mr11572826wrx.33.1598393669833; Tue, 25 Aug 2020 15:14:29 -0700 (PDT)
+Received: from [2a00:23c4:1400:e000:40aa:530b:70:0]
+ ([2a00:23c4:1400:e000:b0bb:abd6:783d:bdeb]) by smtp.gmail.com with ESMTPSA id
+ c6sm592496wrr.15.2020.08.25.15.14.28 (version=TLS1_2
+ cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128); Tue, 25 Aug 2020 15:14:29
+ -0700 (PDT)
+Date: Tue, 25 Aug 2020 23:14:23 +0100
+To: Peter John Acklam <pjacklam@gmail.com>
+Cc: Perl 5 Porters <perl5-porters@perl.org>, Chris Williams
+ <bingos@bingosnet.net>, modules@perl.org
+Message-ID: <01788c61-e485-4a13-bb2d-b2fc16c13d91@Spark>
+In-Reply-To:
+ <CAEvoY41QCY6b3ALUnTY5zvKhuUTsV2azaWdX-fFu5JnkOmO2Mg@mail.gmail.com>
+References: <914f530a-8c6f-48bd-bcf6-590f7826da0e@Spark>
+ <21121c95-2b7e-483f-ab5c-17db0cf88880@Spark>
+ <CAEvoY41QCY6b3ALUnTY5zvKhuUTsV2azaWdX-fFu5JnkOmO2Mg@mail.gmail.com>
+Subject: Re: PAUSE indexing permissions on dual-life distributions
+X-Readdle-Message-ID: 01788c61-e485-4a13-bb2d-b2fc16c13d91@Spark
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="5f458d44_763b8c4e_470"
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2019.11.28.70017
+X-PMX-Perl: Suspicious Attachment
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' MULTIPLE_RCPTS 0.1,
+ SUPERLONG_LINE 0.05, BODYTEXTH_SIZE_10000_LESS 0, BODYTEXTP_SIZE_3000_LESS 0,
+ BODY_SIZE_4000_4999 0, BODY_SIZE_5000_LESS 0, BODY_SIZE_7000_LESS 0,
+ DKIM_SIGNATURE 0, INVALID_MSGID_NO_FQDN 0, IN_REP_TO 0, KNOWN_MTA_TFX 0,
+ LEGITIMATE_SIGNS 0, MSG_THREAD 0, NO_URI_HTTPS 0, REFERENCES 0, SPF_PASS 0,
+ SXL_IP_TFX_WM 0, WEBMAIL_SOURCE 0, __ANY_URI 0, __BODY_NO_MAILTO 0,
+ __BODY_TEXT_X4 0, __BOUNCE_CHALLENGE_SUBJ 0, __BOUNCE_NDR_SUBJ_EXEMPT 0,
+ __CC_NAME 0, __CC_NAME_DIFF_FROM_ACC 0, __CC_REAL_NAMES 0, __CT 0,
+ __CTYPE_HAS_BOUNDARY 0, __CTYPE_MULTIPART 0, __CTYPE_MULTIPART_ALT 0,
+ __DQ_NEG_HEUR 0, __DQ_NEG_IP 0, __FUR_RDNS_GMAIL 0, __HAS_CC_HDR 0,
+ __HAS_FROM 0, __HAS_HTML 0, __HAS_MSGID 0, __HAS_REFERENCES 0, __HELO_GMAIL
+ 0, __HTML_TAG_DIV 0, __IN_REP_TO 0, __MIME_HTML 0, __MIME_TEXT_H 0,
+ __MIME_TEXT_H1 0, __MIME_TEXT_H2 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0,
+ __MIME_TEXT_P2 0, __MIME_VERSION 0, __MSGID_DOMAIN_NOT_IN_HDRS 0,
+ __MULTIPLE_RCPTS_CC_X2 0, __RDNS_WEBMAIL 0, __REFERENCES 0, __SANE_MSGID 0,
+ __SUBJ_ALPHA_NEGATE 0, __SUBJ_REPLY 0, __TAG_EXISTS_HTML 0, __TO_MALFORMED_2
+ 0, __TO_NAME 0, __TO_NAME_DIFF_FROM_ACC 0, __TO_REAL_NAMES 0, __URI_MAILTO 0,
+ __URI_NO_WWW 0, __URI_NS , __X_GOOGLE_DKIM_SIGNATURE 0, __YOUTUBE_RCVD 0,
+ __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+--5f458d44_763b8c4e_470
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+Hi Peter,
+> * Math-BigInt: I am the current maintainer of Math-BigInt distribution,=
+ but I have no strong opinion on who is first-come as long as I can relea=
+se new versions of the distribution. It was TELS who gave me the permissi=
+ons I have now.
+
+Given that, I=E2=80=99ve just transferred first-come to P5P, with you ret=
+aining co-maint on all modules in the Math-BigInt distribution.
+
+> * Math-Complex: This distribution appears to be dead. The most recent v=
+ersion was released in 2012.
+
+Interesting. When looking at these modules (where P5P has permissions), I=
+ just ran =60corelist <module>=60 and trusted what it said. Turns out tha=
+t with Math::Complex and Math::Trig, corelist lies.
+
+Looking through Perl releases, the distribution was dropped in 5.10.0 (i.=
+e. the last release containing them was 5.8.9). I=E2=80=99ve copied BinGO=
+s on this email =E2=80=94 Chris, it will no doubt be much quicker for you=
+ to update Module::CoreList than me :-)
+
+> (I have several times through the years contacted ZE=46RAM about gettin=
+g permissions to fix some of the issues with the distribution and release=
+ new versions, but I have never received a reply.)
+
+If you=E2=80=99re still open to releasing an update to the Math-Complex d=
+ist, you could email ZE=46RAM again, copying in the PAUSE admins (modules=
+=40perl.org, copied on this email). If you don=E2=80=99t get a response f=
+rom Andrew in an appropriate timeframe, we=E2=80=99d try and contact him,=
+ and then if we failed, as per the PAUSE Operating Model, we=E2=80=99d gi=
+ve you co-maint.
+
+Cheers,
+Neil
+
+
+--5f458d44_763b8c4e_470
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+<html xmlns=3D=22http://www.w3.org/1999/xhtml=22>
+<head>
+<title></title>
+</head>
+<body>
+<div name=3D=22messageBodySection=22>
+<div dir=3D=22auto=22>Hi Peter,<br /></div>
+<blockquote style=3D=22border-left-color: rgb(26, 188, 156); margin: 0px;=
+ padding-left: 10px; border-left-width: thin; border-left-style: solid; p=
+adding-bottom: 5px; padding-top: 5px;=22><span style=3D=22color:=234c0099=
+=22>* Math-BigInt: I am the current maintainer of Math-BigInt distributio=
+n, but I have no strong opinion on who is first-come as long as I can rel=
+ease new versions of the distribution. It was TELS who gave me the permis=
+sions I have now.</span></blockquote>
+<div dir=3D=22auto=22><br />
+Given that, I=E2=80=99ve just transferred first-come to P5P, with you ret=
+aining co-maint on all modules in the Math-BigInt distribution.<br />
+<br /></div>
+<blockquote style=3D=22border-left-color: rgb(26, 188, 156); margin: 0px;=
+ padding-left: 10px; border-left-width: thin; border-left-style: solid; p=
+adding-bottom: 5px; padding-top: 5px;=22><span style=3D=22color:=234c0099=
+=22>* Math-Complex: This distribution appears to be dead. The most recent=
+ version was released in 2012.</span></blockquote>
+<div dir=3D=22auto=22><br />
+Interesting. When looking at these modules (where P5P has permissions), I=
+ just ran =60corelist &lt;module&gt;=60 and trusted what it said. Turns o=
+ut that with Math::Complex and Math::Trig, corelist lies.<br />
+<br />
+Looking through Perl releases, the distribution was dropped in 5.10.0 (i.=
+e. the last release containing them was 5.8.9). I=E2=80=99ve copied BinGO=
+s on this email =E2=80=94 Chris, it will no doubt be much quicker for you=
+ to update Module::CoreList than me :-)<br />
+<br /></div>
+<blockquote style=3D=22border-left-color: rgb(26, 188, 156); margin: 0px;=
+ padding-left: 10px; border-left-width: thin; border-left-style: solid; p=
+adding-bottom: 5px; padding-top: 5px;=22><span style=3D=22color:=234c0099=
+=22>(I have several times through the years contacted ZE=46RAM about gett=
+ing permissions to fix some of the issues with the distribution and relea=
+se new versions, but I have never received a reply.)</span></blockquote>
+<div dir=3D=22auto=22><br />
+If you=E2=80=99re still open to releasing an update to the Math-Complex d=
+ist, you could email ZE=46RAM again, copying in the PAUSE admins (modules=
+=40perl.org, copied on this email). If you don=E2=80=99t get a response f=
+rom Andrew in an appropriate timeframe, we=E2=80=99d try and contact him,=
+ and then if we failed, as per the PAUSE Operating Model, we=E2=80=99d gi=
+ve you co-maint.<br />
+<br />
+Cheers,<br />
+Neil<br />
+<br /></div>
+</div>
+</body>
+</html>
+
+--5f458d44_763b8c4e_470--

@@ -1,0 +1,185 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:101621
+Return-Path: <josh@hoblitt.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 12373 invoked from network); 17 Aug 2020 16:43:33 -0000
+Received: from xx1.develooper.com (147.75.38.233) by x6.develooper.com with
+ SMTP; 17 Aug 2020 16:43:33 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 0CB1B7C193 for <perlmail-modules@onion.perl.org>;
+ Mon, 17 Aug 2020 09:43:33 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-2.6 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A autolearn=ham version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id D4E0C7CEED for
+ <perlmail-modules@onion.perl.org>; Mon, 17 Aug 2020 09:43:30 -0700 (PDT)
+X-Greylist: delayed 61 seconds by postgrey-1.34 at xx1.develooper.com; Mon,
+ 17 Aug 2020 09:43:29 PDT
+Received: from outbound2o.ore.mailhop.org (outbound2o.ore.mailhop.org
+ [54.187.213.119]) (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS
+ id D4E467C193 for <modules@perl.org>; Mon, 17 Aug 2020 09:43:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1597682548; cv=none; d=outbound.mailhop.org;
+ s=arc-outbound20181012;
+ b=Z2REi96U+U02CzqKqbrEVefgxyLSiMZfY43tN1VtowWyvAB+g0qMsFmWR6wKsNw7cnlHo5EJCtYzn l6MmUnRXnnVLjxM/Vd5GfmuuhRy3NuZZgG5/bGRfoXLKnNliIY9c/HHxsS/+CkbL5KQqeQC3DBj5IY 6EJxuFaitq31g58lfBs0hqgVJi+RgnkbfICmUScQGPYpp8mxDSPHYK7GTLnWViw6ObpRqVUqX7FHA/ k5e6scs+LIZ+boxHvQQHY1NiaJFr8Bt83DnHbBsnuOmzhqjBrQMQ1bfOK9CMAIhnmNGFGltcM2e6w+ KO8aG4PsDIH4oNG/fW87bHjLb5eqsCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=outbound.mailhop.org; s=arc-outbound20181012;
+ h=content-transfer-encoding:content-type:in-reply-to:mime-version:date:
+ message-id:from:references:cc:to:subject:dkim-signature:dkim-signature:from;
+ bh=URw6R7roRl1dv5Qu+0zcxvhOI8hQ2HFjCb5WZoVEE9Q=;
+ b=UJqR4M1nK/0mh9pXLRwg/ZSlRO9ti5whKHH0W0qpt0/4tIwlthiXfrqe/Da8sTvr78p0SVM13zY3I SgOi8YXpY00ueGIV/DC5lU3YT86dlj7a8yKFMRN7jNlgk5OvXekJRZuMJQw1eP81OpaxrV2M7cG40T nfF1l23VM/T9QNi0ACR3xTJdRkRJrHhhrtaO/jzmI/t+jrca6+VWROafkIyDvG6yGpJqAKykp8rj8i BPJWdKQk/9q6qvcioYz7CeBnSR41sYLg0RpHQqJp+jwLivrSN3zEqt5Tk0Bee1pYskd/diQ6ITCR+2 bD0Hat/V8tljFu7WtKwn93C4LI3dsMw==
+ARC-Authentication-Results: i=1; outbound4.ore.mailhop.org; spf=fail
+ smtp.mailfrom=hoblitt.com smtp.remote-ip=35.164.23.79; dmarc=fail
+ header.from=hoblitt.com; arc=none header.oldest-pass=0;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hoblitt.com;
+ s=duo-1554332018870-8c5c9ea6;
+ h=content-transfer-encoding:content-type:in-reply-to:mime-version:date:
+ message-id:from:references:cc:to:subject:from;
+ bh=URw6R7roRl1dv5Qu+0zcxvhOI8hQ2HFjCb5WZoVEE9Q=;
+ b=e7kNLPNfqfWZhD5xV3YlqViNNLjvBS62s/ca0MQPlZxdmc5gUo+zh0ymjSYtImDslWXtp0BzFTrCH tQ+/aMnJDvR4SkKJcQSHzgeyHCr4DRJRL/isBuWTlUAVCSU5LFWN4L1y47kFQja3vqGq6jeQu1n6LL NlEfs7SPEkfaQvpU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outbound.mailhop.org;
+ s=dkim-high;
+ h=content-transfer-encoding:content-type:in-reply-to:mime-version:date:
+ message-id:from:references:cc:to:subject:from;
+ bh=URw6R7roRl1dv5Qu+0zcxvhOI8hQ2HFjCb5WZoVEE9Q=;
+ b=rq4ed+EQ3B/yEEi1drC4RS5euvxZKT0Bc0yjA7h6Feti9zsxUWui/JxmN8TbNAU/9hotnNS3GZFGZ UOOKc3liBVK1qBlW/31wC8We+qVzVD65yR/UwiOX+8jehHH4Vskjfdw3zpWvPXSmetN5casZE3oUH5 3qZcf/UCl02PkNeEwA/O+O8oHLvF7Dvqh6KK3pDDOlTJjIXQ6qZSyIs6BtOrdLvRECaMqSdzXZlNLV i+bVu5UbhMRTtIj/Mvi4MOnKVCmAx1EbOjWD5W5TnG3YzD3M64JZnsmeGO4jBk0hGi8/fat2dhx6Ld Didvk57P3WueoL3QFXqtLGbnT4jORlA==
+X-MHO-RoutePath: ZG9nbWE1MTI=
+X-MHO-User: a1744f39-e0a8-11ea-b630-6b8aa7872eb8
+X-Report-Abuse-To:
+ https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
+X-Originating-IP: 35.164.23.79
+X-Mail-Handler: DuoCircle Outbound SMTP
+Received: from mail.hoblitt.com
+ (ec2-35-164-23-79.us-west-2.compute.amazonaws.com [35.164.23.79]) by
+ outbound4.ore.mailhop.org (Halon) with ESMTPSA id
+ a1744f39-e0a8-11ea-b630-6b8aa7872eb8; Mon, 17 Aug 2020 16:42:26 +0000 (UTC)
+Received: from [192.168.1.15] (unknown [64.119.41.188]) by mail.hoblitt.com
+ (Postfix) with ESMTPSA id 3D2DC10A1501; Mon, 17 Aug 2020 16:42:25 +0000 (UTC)
+Subject: Re: CPAN - consolidating PAUSE permissions on
+ DateTime-Format-ISO8601 distribution
+To: Neil Bowers <neil.bowers@cogendo.com>, jhoblitt@cpan.org
+Cc: drolsky@cpan.org, modules@perl.org
+References: <2562e2dd-fcee-4bbc-913b-1aa4116ab542@Spark>
+ <a57fe68a-c18b-4cbe-9755-6412218e4351@Spark>
+Autocrypt: addr=josh@hoblitt.com; prefer-encrypt=mutual; keydata=
+ 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
+ T/JahlC0VmsmC/0Bivu4UD0b0snxUhl3tw==
+Message-ID: <09c5a22a-7fa9-c473-7abb-89e3a442cb6a@hoblitt.com>
+Date: Mon, 17 Aug 2020 09:42:24 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <a57fe68a-c18b-4cbe-9755-6412218e4351@Spark>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2019.11.28.70017
+X-PMX-Perl: Suspicious Attachment
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' MULTIPLE_RCPTS 0.1,
+ HTML_00_01 0.05, HTML_00_10 0.05, BODYTEXTP_SIZE_3000_LESS 0,
+ BODY_SIZE_1000_1099 0, BODY_SIZE_2000_LESS 0, BODY_SIZE_5000_LESS 0,
+ BODY_SIZE_7000_LESS 0, DATE_TZ_NA 0, DKIM_ALIGNS 0, DKIM_SIGNATURE 0,
+ IN_REP_TO 0, LEGITIMATE_SIGNS 0, MSG_THREAD 0, NO_CTA_FOUND 0,
+ NO_CTA_URI_FOUND 0, NO_URI_FOUND 0, NO_URI_HTTPS 0, REFERENCES 0, SPF_PASS 0,
+ WEBMAIL_SOURCE 0, WEBMAIL_XOIP 0, WEBMAIL_X_IP_HDR 0, __ARCAUTH_DMARC_FAIL 0,
+ __ARCAUTH_SPF_FAIL 0, __BODY_NO_MAILTO 0, __BOUNCE_CHALLENGE_SUBJ 0,
+ __BOUNCE_NDR_SUBJ_EXEMPT 0, __COURIER_PHRASE 0, __CT 0, __CTE 0,
+ __CT_TEXT_PLAIN 0, __DKIM_ALIGNS_1 0, __DKIM_ALIGNS_2 0, __DQ_NEG_HEUR 0,
+ __DQ_NEG_IP 0, __FORWARDED_MSG 0, __HAS_CC_HDR 0, __HAS_FROM 0, __HAS_MSGID
+ 0, __HAS_REFERENCES 0, __IN_REP_TO 0, __MIME_TEXT_ONLY 0, __MIME_TEXT_P 0,
+ __MIME_TEXT_P1 0, __MIME_VERSION 0, __MOZILLA_USER_AGENT 0,
+ __MULTIPLE_RCPTS_CC_X2 0, __NO_HTML_TAG_RAW 0, __REFERENCES 0, __SANE_MSGID
+ 0, __SUBJ_ALPHA_NEGATE 0, __SUBJ_REPLY 0, __TO_MALFORMED_2 0, __TO_NAME 0,
+ __TO_NAME_DIFF_FROM_ACC 0, __TO_REAL_NAMES 0, __URI_NO_MAILTO 0, __USER_AGENT
+ 0, __blackholes.mail-abuse.org_ERROR , __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: josh@hoblitt.com (Joshua Hoblitt)
+
+Hi Neil,
+
+Yes, I'm OK with making the change.  Thanks for keeping me in the loop.
+
+-Josh
+
+--
+On 8/17/20 9:39 AM, Neil Bowers wrote:
+> Hi Joshua,
+>
+> I’m one of the PAUSE admins. I’m tidying up distributions that have
+> shared first-come ownership, since PAUSE tries now to not let this
+> happen — it maintains the permissions profile on the lead module,
+> regardless of who releases (in the past the releaser would get
+> first-come on newly added modules).
+>
+> The DateTime-Format-ISO8601 distribution is one of these. You have the
+> first-come permission on the lead module, DateTime::Format::ISO8601,
+> but Dave Rolsky has been doing recent releases, and has first-come on
+> DateTime::Format::ISO8601::Types, which I’m guessing he added in one
+> of his releases.
+>
+> Given Dave seems to be maintaining this now, are you happy for me to
+> transfer your first-come permission to Dave, so he has full control
+> over the distribution? You would retain co-maint on both packages.
+>
+> Cheers,
+> Neil

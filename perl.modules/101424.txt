@@ -1,0 +1,167 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:101424
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 1430 invoked from network); 25 Jul 2020 06:25:09 -0000
+Received: from xx1.develooper.com (147.75.38.233) by x6.develooper.com with
+ SMTP; 25 Jul 2020 06:25:09 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 365C57C198 for <perlmail-modules@onion.perl.org>;
+ Fri, 24 Jul 2020 23:25:09 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.9 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,HTML_MESSAGE,RCVD_IN_DNSWL_NONE autolearn=ham version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 4822F7C1B0 for
+ <perlmail-modules@onion.perl.org>; Fri, 24 Jul 2020 23:25:07 -0700 (PDT)
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
+ [209.85.221.45]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ AF1187C198 for <modules@perl.org>; Fri, 24 Jul 2020 23:25:06 -0700 (PDT)
+Received: by mail-wr1-f45.google.com with SMTP id 88so10076533wrh.3 for
+ <modules@perl.org>; Fri, 24 Jul 2020 23:25:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:message-id:in-reply-to:references:subject :mime-version;
+ bh=jbrj8GUV1XOcSmjaC8eI1aT9mM6ug+/dn6LEVPIEMA8=;
+ b=zDbjnXNXxA2TIJ9NKUMq/2eMBMMeDpaqnYfk1cw4znAcJKbxJbzrfHXJIWuI7Wmfo4
+ 7aI4tkXEaTmv6QvaIHGgxXnur3kOVAgWelXG93A7jINti2oLE7aeGAxRrnQf36lsb5TA
+ f4FoAw5DjHpqCIanpFdwTiauAPOYcEdN9VBfp0fR2T1wUEGn9D0dvkTtKhSY4AVswHlk
+ 0lRJrr6bhal0R+QPv8OmwwC6vZ9k4wdii8BAr+tWI9XyGi93Qkd1weoCKdg6qYZDBB2b
+ y5JgYQxEYCKFy1DSoCkKVAmdLSoLG4F+XJBDl5tXB+S0cJ/FkPTBrJlgsUFrIP2tTih9 wf9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025; h=x-gm-message-state:date:from:to:cc:message-id:in-reply-to
+ :references:subject:mime-version;
+ bh=jbrj8GUV1XOcSmjaC8eI1aT9mM6ug+/dn6LEVPIEMA8=;
+ b=B84Dhz0vqjj7Kcju6EfHK+QD2Dpghk6efewmWOdTo/QIPNpI7W4jFptnvgZ15U0qvP
+ oZUCBHK4++075orpAyVZmJftx2Anb+MWQduSvOGmm/ULOSibaFLKMOFmmXW7J4hAT2KX
+ MWLQEq2GDf7zeWmEAjWhd+oWjWPx08+y6Vh3ko5+30LJ2QLU1/b6MDWscVwwwzFxRO1C
+ NNLvsjAFoLlaL7EZG8qy7BdMQtv5fRqpTClBiO0//Pg6XncmVZ7w90qp+ljkvdB8ftMv
+ CsdZgFo2eLIbhWPWEJn3ozUvUXjHE2p5lIvZ6F6e0n90KZJpsQUM6+h5uXo+9FwfL913 anqw==
+X-Gm-Message-State: AOAM531SxvJ+aNe3urgYV4RsYMO7doYklgc3BnBFSgEjJAs47YoOLCKQ
+ aiYfIaIJZkBVGWb/hL9wKH4nFw==
+X-Google-Smtp-Source:
+ ABdhPJzM6JROsLzilnfs/zY8EaEp9+FArPsrPDpduJaNm3To/PqZNCfvsMrjUpAs2v8UYLR5nL4gfA==
+X-Received: by 2002:a5d:54ca:: with SMTP id x10mr4308656wrv.36.1595658304871;
+ Fri, 24 Jul 2020 23:25:04 -0700 (PDT)
+Received: from [2a00:23c4:1400:e000:405a:340c:70:0]
+ ([2a00:23c4:1400:e000:e490:aa3c:9f69:d30e]) by smtp.gmail.com with ESMTPSA id
+ b63sm9961365wme.41.2020.07.24.23.25.04 (version=TLS1_2
+ cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128); Fri, 24 Jul 2020 23:25:04
+ -0700 (PDT)
+Date: Sat, 25 Jul 2020 07:24:58 +0100
+To: smpeters@cpan.org, adamk@cpan.org, nedkonz@cpan.org, phred@cpan.org
+Cc: "PAUSE Admins (Public)" <modules@perl.org>
+Message-ID: <6d517176-9b3f-4a7e-a7d5-9a72575599b4@Spark>
+In-Reply-To: <bab902a6-97f6-48cf-b6de-51e5516afd6a@Spark>
+References: <bab902a6-97f6-48cf-b6de-51e5516afd6a@Spark>
+Subject: CPAN =?utf-8?Q?=E2=80=94_?=resolve the fractured ownership of
+ Archive-Zip
+X-Readdle-Message-ID: 6d517176-9b3f-4a7e-a7d5-9a72575599b4@Spark
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="5f1bd03f_1a9a9e69_25ee"
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2019.11.28.70017
+X-PMX-Perl: Suspicious Attachment
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' HTML_50_70 0.1,
+ SUPERLONG_LINE 0.05, BODYTEXTH_SIZE_10000_LESS 0, BODYTEXTP_SIZE_3000_LESS 0,
+ BODY_SIZE_3000_3999 0, BODY_SIZE_5000_LESS 0, BODY_SIZE_7000_LESS 0,
+ DKIM_SIGNATURE 0, HREF_LABEL_TEXT_ONLY 0, INVALID_MSGID_NO_FQDN 0, IN_REP_TO
+ 0, KNOWN_MTA_TFX 0, LEGITIMATE_SIGNS 0, MSG_THREAD 0, NO_URI_HTTPS 0,
+ REFERENCES 0, SINGLE_URI_IN_BODY 0, SPF_PASS 0, SXL_IP_TFX_WM 0,
+ URI_ENDS_IN_HTML 0, URI_WITH_PATH_ONLY 0, WEBMAIL_SOURCE 0, __ANY_URI 0,
+ __BODY_NO_MAILTO 0, __BODY_TEXT_X4 0, __CC_NAME 0, __CC_NAME_DIFF_FROM_ACC 0,
+ __CC_REAL_NAMES 0, __COURIER_PHRASE 0, __CP_URI_IN_BODY 0, __CT 0,
+ __CTYPE_HAS_BOUNDARY 0, __CTYPE_MULTIPART 0, __CTYPE_MULTIPART_ALT 0,
+ __DQ_NEG_HEUR 0, __DQ_NEG_IP 0, __FUR_RDNS_GMAIL 0, __HAS_CC_HDR 0,
+ __HAS_FROM 0, __HAS_HTML 0, __HAS_MSGID 0, __HAS_REFERENCES 0, __HELO_GMAIL
+ 0, __HREF_LABEL_TEXT 0, __HREF_LABEL_URI 0, __HTML_AHREF_TAG 0,
+ __HTML_TAG_DIV 0, __IN_REP_TO 0, __MIME_HTML 0, __MIME_TEXT_H 0,
+ __MIME_TEXT_H1 0, __MIME_TEXT_H2 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0,
+ __MIME_TEXT_P2 0, __MIME_VERSION 0, __MSGID_DOMAIN_NOT_IN_HDRS 0,
+ __MULTIPLE_URI_TEXT 0, __PHISH_SPEAR_SUBJ_SUBJECT 0, __RDNS_WEBMAIL 0,
+ __REFERENCES 0, __SANE_MSGID 0, __SINGLE_URI_MPART_BOTH 0, __SUBJ_ALPHA_END
+ 0, __SUBJ_ALPHA_END2 0, __SUBJ_HIGHBIT 0, __TAG_EXISTS_HTML 0,
+ __TO_MALFORMED_2 0, __TO_NO_NAME 0, __URI_IN_BODY 0, __URI_NOT_IMG 0,
+ __URI_NO_MAILTO 0, __URI_NO_WWW 0, __URI_NS , __URI_WITH_PATH 0,
+ __X_GOOGLE_DKIM_SIGNATURE 0, __YOUTUBE_RCVD 0, __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+--5f1bd03f_1a9a9e69_25ee
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+Dear CPAN authors SMPETERS, ADAMK, NEDKONZ, and PHRED,
+
+I=E2=80=99m one of the PAUSE admins, and I=E2=80=99m sorting out distribu=
+tions that have fractured ownership, as PAUSE tries to not let this happe=
+n now=5B1=5D.
+
+Archive-Zip is such a distribution: SMPETERS has first-come on the lead p=
+ackage, Archive::Zip; ADAMK has first-come on one package; NEDKONZ has fi=
+rst-come on the rest; but PHRED has been doing releases since 2013, inclu=
+ding one this year.
+
+So I propose that we give PHRED first-come on all packages in Archive-Zip=
+, so that should he want to give someone else co-maint in the future, he=E2=
+=80=99s actually able to do it.
+
+What say ye=3F
+
+Thanks,
+Neil
+
+PS email bounces will be interpreted as =22I don=E2=80=99t care, do what =
+you think is right=22 :-)
+
+=5B1=5D=C2=A0http://neilb.org/2020/07/24/inconsistent-permissions.html
+
+--5f1bd03f_1a9a9e69_25ee
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+<html xmlns=3D=22http://www.w3.org/1999/xhtml=22>
+<head>
+<title></title>
+</head>
+<body>
+<div name=3D=22messageBodySection=22>
+<div dir=3D=22auto=22><span style=3D=22font-size: 16px=22>Dear CPAN autho=
+rs SMPETERS, ADAMK, NEDKONZ, and PHRED,</span><span style=3D=22font-size:=
+ 16px=22><br /></span><span style=3D=22font-size: 16px=22><br /></span><s=
+pan style=3D=22font-size: 16px=22>I=E2=80=99m one of the PAUSE admins, an=
+d I=E2=80=99m sorting out distributions that have fractured ownership, as=
+ PAUSE tries to not let this happen now=5B1=5D.</span><span style=3D=22fo=
+nt-size: 16px=22><br /></span><span style=3D=22font-size: 16px=22><br /><=
+/span><span style=3D=22font-size: 16px=22>Archive-Zip is such a distribut=
+ion: SMPETERS has first-come on the lead package, Archive::Zip; ADAMK has=
+ first-come on one package; NEDKONZ has first-come on the rest; but PHRED=
+ has been doing releases since 2013, including one this year.</span><span=
+ style=3D=22font-size: 16px=22><br /></span><span style=3D=22font-size: 1=
+6px=22><br /></span><span style=3D=22font-size: 16px=22>So I propose that=
+ we give PHRED first-come on all packages in Archive-Zip, so that should =
+he want to give someone else co-maint in the future, he=E2=80=99s actuall=
+y able to do it.</span><span style=3D=22font-size: 16px=22><br /></span><=
+span style=3D=22font-size: 16px=22><br /></span><span style=3D=22font-siz=
+e: 16px=22>What say ye=3F</span><span style=3D=22font-size: 16px=22><br /=
+></span><span style=3D=22font-size: 16px=22><br /></span><span style=3D=22=
+font-size: 16px=22>Thanks,</span><span style=3D=22font-size: 16px=22><br =
+/></span><span style=3D=22font-size: 16px=22>Neil</span><span style=3D=22=
+font-size: 16px=22><br /></span><span style=3D=22font-size: 16px=22><br /=
+></span><span style=3D=22font-size: medium=22>PS email bounces will be in=
+terpreted as =22I don=E2=80=99t care, do what you think is right=22 :-)</=
+span><span style=3D=22font-size: medium=22><br /></span><span style=3D=22=
+font-size: medium=22><br /></span><span style=3D=22font-size: 16px=22>=5B=
+1=5D&=23160;</span><a href=3D=22http://neilb.org/2020/07/24/inconsistent-=
+permissions.html=22 target=3D=22=5Fblank=22>http://neilb.org/2020/07/24/i=
+nconsistent-permissions.html</a></div>
+</div>
+</body>
+</html>
+
+--5f1bd03f_1a9a9e69_25ee--
