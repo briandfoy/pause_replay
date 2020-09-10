@@ -1,0 +1,178 @@
+Newsgroups: perl.perl5.porters,perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.perl5.porters:258340 perl.modules:101746
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 22958 invoked from network); 9 Sep 2020 22:00:14 -0000
+Received: from xx1.develooper.com (147.75.38.233) by x6.develooper.com with
+ SMTP; 9 Sep 2020 22:00:14 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 0C7317C19C for <perlmail-modules@onion.perl.org>;
+ Wed,  9 Sep 2020 15:00:14 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.9 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,HTML_MESSAGE,RCVD_IN_DNSWL_NONE autolearn=unavailable
+ version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 1A1DD7C1C3 for
+ <perlmail-modules@onion.perl.org>; Wed,  9 Sep 2020 15:00:12 -0700 (PDT)
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
+ [209.85.128.44]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ 872687C19C for <modules@perl.org>; Wed,  9 Sep 2020 15:00:10 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id k18so3835912wmj.5 for
+ <modules@perl.org>; Wed, 09 Sep 2020 15:00:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:cc:message-id:in-reply-to:references:subject :mime-version;
+ bh=aJALV663grpsJqj1jcr9AQvq3LiHqgM4MLcpciDMUOY=;
+ b=JfLooKtFvaSEvfbkWUpO+meAKEXW+m2qXQR4FyvCFSDn/0EYJ/RwXo1x40glJaoqeL
+ rcke9sVwpsc/tRKzaLlk5eYlAXM6hjltpimHb7OSpADldHBpJmGPkDlB5+hnLNwd/KlR
+ iLCdf/pexZBaO4odUSByaYpKLOsXAPQ/lh/mmYVZnH+KEP8ySutCa5RcMYUYnYSid+yH
+ sdHK0n3mT6Zxu1DLDtpbLB6MnCCNL6LAqyD/36ngbJ9uLyTd9KFG2di215+0619OTT2M
+ MBS12DyMF3dVuKXCXtnZRLxRgKJ1aP1hbob8jscbmSa0YJJ7dVVkVLtFreabaDNHurRc j/vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025; h=x-gm-message-state:date:from:to:cc:message-id:in-reply-to
+ :references:subject:mime-version;
+ bh=aJALV663grpsJqj1jcr9AQvq3LiHqgM4MLcpciDMUOY=;
+ b=b+DmyuE2NqtMILSVCIoVhGuhqDA62sRsPN/St7pHscDq6+mtGTHAN587ZXJJ7Q9kBN
+ AwZ7+qv9Lu7GQ66e4vCICiyV5nELuyxlpQkTHckEhoEwhYjcs3h2HxJtJCdxhR5N0Q5u
+ l21RzEy01og/d6CGilW8+IvB+9GymNrlDj9dXHjId/wj9v6JwET98YFLQFaTlHkMYAZL
+ 11uCU8v0PtzU16eDk3JYKMO5TdYzU/jdiYgDX/yIEFRnjzFwBS574ABhZaRGsBp9gh8V
+ OrkVw8va+kZmxwJr1jXwtpL9c649HLlMqDnFmqZgDGXCVqj4AQwCo8CjvUO+1sr1BKL2 CTmg==
+X-Gm-Message-State: AOAM532eLXLcNtueNqBGQaAB5zV7k1MplGYqM0zQa1Wq64FxfimbF06i
+ 5Ckp4PrldUumLLRU7+/O45Cmrg==
+X-Google-Smtp-Source:
+ ABdhPJxsAD4KAU/J/LDoOumwGzA9cUogLn77DPKZh1MmYQTJfOiT9cXwPq5DcxNzIDZMESxiqaUNrA==
+X-Received: by 2002:a7b:c14d:: with SMTP id z13mr5285394wmi.19.1599688809262;
+ Wed, 09 Sep 2020 15:00:09 -0700 (PDT)
+Received: from [2a00:23c4:1400:e000:403a:260d:70:0]
+ ([2a00:23c4:1400:e000:5928:e64e:d779:5140]) by smtp.gmail.com with ESMTPSA id
+ o4sm5894808wrv.86.2020.09.09.15.00.08 (version=TLS1_2
+ cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128); Wed, 09 Sep 2020 15:00:08
+ -0700 (PDT)
+Date: Wed, 9 Sep 2020 23:00:02 +0100
+To: Sawyer X <xsawyerx@cpan.org>
+Cc: Perl5 Porters <perl5-porters@perl.org>, "PAUSE Admins (Public)"
+ <modules@perl.org>, cwhitener@gmail.com
+Message-ID: <e79b7905-88ed-4173-bece-b90b2797ba0a@Spark>
+In-Reply-To: <01035d55-8fc1-4d6c-a2b8-a995c0ffe562@Spark>
+References: <01035d55-8fc1-4d6c-a2b8-a995c0ffe562@Spark>
+Subject: Adoption of MIME::Base64
+X-Readdle-Message-ID: e79b7905-88ed-4173-bece-b90b2797ba0a@Spark
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="5f595067_243de0aa_16c7"
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2019.11.28.70017
+X-PMX-Perl: Suspicious Attachment
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' MULTIPLE_RCPTS 0.1,
+ SUPERLONG_LINE 0.05, BODYTEXTH_SIZE_10000_LESS 0, BODYTEXTP_SIZE_3000_LESS 0,
+ BODY_SIZE_3000_3999 0, BODY_SIZE_5000_LESS 0, BODY_SIZE_7000_LESS 0,
+ DKIM_SIGNATURE 0, HREF_LABEL_TEXT_ONLY 0, INVALID_MSGID_NO_FQDN 0, IN_REP_TO
+ 0, KNOWN_MTA_TFX 0, LEGITIMATE_SIGNS 0, MSG_THREAD 0, REFERENCES 0, SPF_PASS
+ 0, SXL_IP_TFX_WM 0, URI_WITH_PATH_ONLY 0, WEBMAIL_SOURCE 0, __ANY_URI 0,
+ __BODY_NO_MAILTO 0, __BODY_TEXT_X4 0, __CC_NAME 0, __CC_NAME_DIFF_FROM_ACC 0,
+ __CC_REAL_NAMES 0, __CP_URI_IN_BODY 0, __CT 0, __CTYPE_HAS_BOUNDARY 0,
+ __CTYPE_MULTIPART 0, __CTYPE_MULTIPART_ALT 0, __DQ_NEG_HEUR 0, __DQ_NEG_IP 0,
+ __FRAUD_MONEY_BIG_COIN 0, __FRAUD_MONEY_BIG_COIN_DIG 0, __FUR_RDNS_GMAIL 0,
+ __HAS_CC_HDR 0, __HAS_FROM 0, __HAS_HTML 0, __HAS_MSGID 0, __HAS_REFERENCES
+ 0, __HELO_GMAIL 0, __HREF_LABEL_TEXT 0, __HREF_LABEL_URI 0, __HTML_AHREF_TAG
+ 0, __HTML_TAG_DIV 0, __HTTPS_URI 0, __IN_REP_TO 0, __MIME_HTML 0,
+ __MIME_TEXT_H 0, __MIME_TEXT_H1 0, __MIME_TEXT_H2 0, __MIME_TEXT_P 0,
+ __MIME_TEXT_P1 0, __MIME_TEXT_P2 0, __MIME_VERSION 0,
+ __MSGID_DOMAIN_NOT_IN_HDRS 0, __MULTIPLE_RCPTS_CC_X2 0, __MULTIPLE_URI_HTML
+ 0, __MULTIPLE_URI_TEXT 0, __RDNS_WEBMAIL 0, __REFERENCES 0, __SANE_MSGID 0,
+ __TAG_EXISTS_HTML 0, __TO_MALFORMED_2 0, __TO_NAME 0, __TO_NAME_DIFF_FROM_ACC
+ 0, __TO_REAL_NAMES 0, __URI_IN_BODY 0, __URI_NOT_IMG 0, __URI_NO_MAILTO 0,
+ __URI_NO_WWW 0, __URI_NS , __URI_WITH_PATH 0, __X_GOOGLE_DKIM_SIGNATURE 0,
+ __YOUTUBE_RCVD 0, __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+--5f595067_243de0aa_16c7
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+Hi Sawyer,
+
+I=E2=80=99m writing this as one of the PAUSE admins.
+
+Gisle Aas has said that he will no longer be maintaining his CPAN distrib=
+utions, and that he=E2=80=99s happy for responsible adoption to take plac=
+e.
+
+Chase Whitener has asked to adopt MIME::Base64=5B1=5D, so he can merge so=
+me outstanding PRs=5B2=5D and release a new version. This is a dual life =
+distribution, and is also far up the CPAN River =E2=80=94 it has more tha=
+n 15k dependent distributions. In situations like this the PAUSE admins w=
+ill consult with the Pumpking and P5P =E2=80=94 we should try to ensure t=
+hat the best candidate takes on lynchpin modules.
+
+=46rom my perspective, Chase is a suitable CPAN author to take on such a =
+module. He already maintains three distributions that have more than 1000=
+ dependents, for example.
+
+If you=E2=80=99re happy with this, I propose that GAAS=E2=80=99s first-co=
+me permissions are transferred to P5P, and Chase gets co-maint. If there =
+are no disagreements by 2020-09-19, or clear agreement ahead of then, I=E2=
+=80=99ll make the proposed changes.
+
+What do you and P5P think=3F
+
+Neil
+
+=5B1=5D=C2=A0https://metacpan.org/release/MIME-Base64
+=5B2=5D=C2=A0https://github.com/gisle/mime-base64/pulls
+
+--5f595067_243de0aa_16c7
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+<html xmlns=3D=22http://www.w3.org/1999/xhtml=22>
+<head>
+<title></title>
+</head>
+<body>
+<div name=3D=22messageBodySection=22>
+<div dir=3D=22auto=22>Hi Sawyer,<br />
+<br />
+I=E2=80=99m writing this as one of the PAUSE admins.<br />
+<br />
+Gisle Aas has said that he will no longer be maintaining his CPAN distrib=
+utions, and that he=E2=80=99s happy for responsible adoption to take plac=
+e.<br />
+<br />
+Chase Whitener has asked to adopt MIME::Base64=5B1=5D, so he can merge so=
+me outstanding PRs=5B2=5D and release a new version. This is a dual life =
+distribution, and is also far up the CPAN River =E2=80=94 it has more tha=
+n 15k dependent distributions. In situations like this the PAUSE admins w=
+ill consult with the Pumpking and P5P =E2=80=94 we should try to ensure t=
+hat the best candidate takes on lynchpin modules.<br />
+<br />
+=46rom my perspective, Chase is a suitable CPAN author to take on such a =
+module. He already maintains three distributions that have more than 1000=
+ dependents, for example.<br />
+<br />
+If you=E2=80=99re happy with this, I propose that GAAS=E2=80=99s first-co=
+me permissions are transferred to P5P, and Chase gets co-maint. If there =
+are no disagreements by 2020-09-19, or clear agreement ahead of then, I=E2=
+=80=99ll make the proposed changes.<br />
+<br />
+What do you and P5P think=3F<br />
+<br />
+Neil<br />
+<br />
+=5B1=5D&=23160;<a href=3D=22https://metacpan.org/release/MIME-Base64=22 t=
+arget=3D=22=5Fblank=22>https://metacpan.org/release/MIME-Base64</a><br />=
+
+=5B2=5D&=23160;<a href=3D=22https://github.com/gisle/mime-base64/pulls=22=
+ target=3D=22=5Fblank=22>https://github.com/gisle/mime-base64/pulls</a></=
+div>
+</div>
+</body>
+</html>
+
+--5f595067_243de0aa_16c7--
