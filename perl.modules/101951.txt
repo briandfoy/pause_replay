@@ -1,0 +1,628 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:101951
+Return-Path: <ej_zg@hotmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 2708 invoked from network); 15 Oct 2020 00:34:32 -0000
+Received: from xx1.develooper.com (147.75.38.233) by x6.develooper.com with
+ SMTP; 15 Oct 2020 00:34:32 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id A0E367CF29 for <perlmail-modules@onion.perl.org>;
+ Wed, 14 Oct 2020 17:34:32 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-0.1 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,DKIM_VALID_AU,FORGED_HOTMAIL_RCVD2,FORGED_SPF_HELO,FREEMAIL_FROM,
+ HTML_MESSAGE,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS autolearn=no version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 161FF7C10F for
+ <perlmail-modules@onion.perl.org>; Wed, 14 Oct 2020 17:34:29 -0700 (PDT)
+Received: from EUR06-DB8-obe.outbound.protection.outlook.com
+ (mail-db8eur06olkn2053.outbound.protection.outlook.com [40.92.51.53]) (using
+ TLSv1 with cipher AES256-SHA (256/256 bits)) (No client certificate
+ requested) by xx1.develooper.com (Postfix) with ESMTPS id 3437E7CF29 for
+ <modules@perl.org>; Wed, 14 Oct 2020 17:34:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=J3urWDuraOUX+trdut8oZTjz58rG3W9hheouHMMvPcDRB+vcV7Qga67R6+0V6f9Pbb/cxEigTOkkHPnKCm5tsTGC5pGbn24qqk46h/8W4NlUAHW4hJrax5dZXvHextxG8PSWmF9bFuitDO0Fk59Bz71SUZpiIowzgN5EYwXK8yNF3oOOfts8gQB4A0s2ZvoenhcMcIoXQ5g8q/Gy/n6zdO0rFEjIuS/ZtzZocd9BtO8JAXAnHd1O3mvFYq4raeOwHKQnkBpHOzBIZXLtCa2AyfjdstpQgusE/sOwjI5uVKcjK7flS+MXDzC/O0IFuzaAI5eWf21hKjWBKuFpsyORqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck; bh=Bx+TX6BDVe/ascm94GLNeqVf9UjXPjeJdSDxBvv1pa4=; b=Rf07sKXYBHewu5Vv9bK7dP+pL47bbGm6py42e4s+3x/mDchxHHfns7XNTUt4dLRhxDuA0aKXeoeebWOPKWFU7KwXVSB9Rme2AoZuztCJYRgza35Q9tdqokne6T3ODSEg4FhSkmObS4wEttpscyxYqqvvbkjhJOf1wng5AF4mrpjVt2QuKItnHMRgHKHiR+2ArxYPEOXxPJu62CUUIWNpU15S7zAxWvnM8nBtC/PJS0KNemvLa2O/4lT1A8r0KcTgNcd6M5N90bNpZqkDZNhUSAkpXdW55VKt8exo+8XMMlwpcgIES959bkp9PcL5K2C4d2fRweeZWavsPycgZDmrxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck; bh=Bx+TX6BDVe/ascm94GLNeqVf9UjXPjeJdSDxBvv1pa4=; b=kS9R1pCtxYybByoknyCqUy+PDLwDfZ7z6TLDwtK0Nx9mQNoSxrPyB1OM2Anl6jrMOXxdxIqaPDw3As9MfNPv81y0sf13NNc7Z3Cu3zMPLNOfK/kDCx6f+EoSjzcxg8na7enrYF212xIK6VmyzXpExltqG/tD4nlzMvEwPsyAPambQ9MWzbl/BYcyVdauir5maHYvBdPcqUMA/XKeDp77c60WREkZdifBfqC5HwzHQhKLjooGQlt71GGGYC6cXXrFpOyROob5Bt6xuZk9Jr8iFveYwTKlLaHKDG1Tmpb/S5FHXNDZkoLLIPN3bu6k5kiEc3D7b92KycjG+TBxc+b4Dg==
+Received: from DB8EUR06FT064.eop-eur06.prod.protection.outlook.com
+ (2a01:111:e400:fc35::42) by
+ DB8EUR06HT088.eop-eur06.prod.protection.outlook.com (2a01:111:e400:fc35::311)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.21; Thu, 15 Oct
+ 2020 00:34:18 +0000
+Received: from DB8PR05MB6778.eurprd05.prod.outlook.com
+ (2a01:111:e400:fc35::42) by DB8EUR06FT064.mail.protection.outlook.com
+ (2a01:111:e400:fc35::413) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3477.21 via Frontend
+ Transport; Thu, 15 Oct 2020 00:34:18 +0000
+Received: from DB8PR05MB6778.eurprd05.prod.outlook.com
+ ([fe80::1c83:2a53:61f7:919e]) by DB8PR05MB6778.eurprd05.prod.outlook.com
+ ([fe80::1c83:2a53:61f7:919e%7]) with mapi id 15.20.3455.030; Thu, 15 Oct 2020
+ 00:34:18 +0000
+To: "ron@savage.net.au" <ron@savage.net.au>
+CC: "modules@perl.org" <modules@perl.org>
+Subject: RE: Copied some repos
+Thread-Topic: Copied some repos
+Thread-Index:
+ AQHWoE4mC7mNYDWIzE+LtirmDV3ZWqmUAvxHgACR/ICAAp59S4AAl2eAgAAAJ5OAAADsAIAACGTz
+Date: Thu, 15 Oct 2020 00:34:18 +0000
+Message-ID:
+ <DB8PR05MB6778C1A18890AA905963C30782020@DB8PR05MB6778.eurprd05.prod.outlook.com>
+References:
+ <DB8PR05MB677837B0BED5CEB25A9B680D82220@DB8PR05MB6778.eurprd05.prod.outlook.com> <695cc9f7c122a4c1644cc3bfaa6d55ed@savage.net.au> <DB8PR05MB67780D763DB4C4351202BB1B82200@DB8PR05MB6778.eurprd05.prod.outlook.com>,<7cad62f2a192e198c953c5317e216f5b@savage.net.au> <DB8PR05MB6778FC726B80D890D63647B4823E0@DB8PR05MB6778.eurprd05.prod.outlook.com> <86d23d2c136e38cb5220eea01dba084f@savage.net.au> <DB8PR05MB67785BF52CE52EBA41B49969823F0@DB8PR05MB6778.eurprd05.prod.outlook.com>,<814015097e719fae8260f2bc5ef2487e@savage.net.au> <DB8PR05MB67780E4DA4DD519D2466B53082370@DB8PR05MB6778.eurprd05.prod.outlook.com>,<35f4dc84b3354b7527016bac66b59864@savage.net.au> <DB8PR05MB677842073002BBB9EB823D3382340@DB8PR05MB6778.eurprd05.prod.outlook.com>,<2af16a34ec059bd435670ba49d6543f3@savage.net.au> <DB8PR05MB677842D65227AD59E70BE93782340@DB8PR05MB6778.eurprd05.prod.outlook.com>,<f51c85212a132b73d42a1f324e2520d4@savage.net.au> <DB8PR05MB6778E67C0DF36709EE96F70A82350@DB8PR05MB6778.eurprd05.prod.outlook.com>,<472371082d754dd689e44478952fe59e@savage.net.au> <DB8PR05MB677810EBBC595E6FFEDAAC5382330@DB8PR05MB6778.eurprd05.prod.outlook.com>,<4baedf5f0bf8f8d3379613b1f099ab04@savage.net.au> <DB8PR05MB67788396013CC0CA0F9A2B9D820A0@DB8PR05MB6778.eurprd05.prod.outlook.com>,<ba31a4f1b8ad53cd2cc46584fc39a55c@savage.net.au> <DB8PR05MB67785D4976E85DAF1170D26F82070@DB8PR05MB6778.eurprd05.prod.outlook.com>,<2e6e0abb5560f6e0d5bacfa62474132a@savage.net.au> <DB8PR05MB6778C11897F1EDFECA2E6B1F82050@DB8PR05MB6778.eurprd05.prod.outlook.com>,<cb21bde2edec85f4acafa891e26aa65b@savage.net.au> <DB8PR05MB6778BCDA01B723D3FC75664A82050@DB8PR05MB6778.eurprd05.prod.outlook.com>,<2c8bd6194c7d8100ce4e9e57c70b78d8@savage.net.au>
+In-Reply-To: <2c8bd6194c7d8100ce4e9e57c70b78d8@savage.net.au>
+Accept-Language: en-US
+Content-Language: en-GB
+x-incomingtopheadermarker:
+ OriginalChecksum:6D56305FBCF01B67A54047FEAACAFDAB0FEB4EF6B96CAD3DA5E98CDBCBBE97BA;UpperCasedChecksum:CE3A87071B244FBBADBCCB2B01B7F305FEB2056D5A0FBD93F86FB37046B02B02;SizeAsReceived:8662;Count:45
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn:
+ [unN/wYjruAJF3atKB3Gn5gHcOwBrb0gDg1g7Es1hz0JSEE4cMivs6/ShsmP0mXvchENt4S7lPco=]
+x-ms-publictraffictype: Email
+x-incomingheadercount: 45
+x-eopattributedmessage: 0
+x-ms-office365-filtering-correlation-id: fdf787b9-7a0e-4d88-3a44-08d870a20d9b
+x-ms-traffictypediagnostic: DB8EUR06HT088:
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ Tb0ORhiSrVN/q93Pb8BK/fFPh/zTi2prV1OUAzp+9zRVmNcmFYgtNiTzbURh+T3AQzAHcGbKvLG/SM7CtBEPWh76thOu3tHCAUmbXioEVtoTyt3xvHRwAlqFY8e04LxtIQyLKVEK7z0buprFXO7dOq+GtyUrQRyRPsP1HFzKyYYeXfJyEkzBVGy2YI2gPCAD45iHyGyXZoln8AnhHkqu4/Hd6ynwyR4hyr24UNHwAq9+SlFnDrFdK+OUylfJ1Cni
+x-ms-exchange-antispam-messagedata:
+ 4Kx7AyL57Lh31dGpIZU+FIT2tr+MPlH/NKxJd4hrHQQmPJgWQ1wGTYQz59QTsnHbTBxwH6vakpKl/eOrvaZXLmoMp9zSnE4gP8IQeezBikaHUBnSUsOQcj5TGa8rmi1I1YUATnfFrbiAELitCgBSWN0UkoJGEB3jHjVqH72S36n3PsLu0nYDFrix3zQF9FfZeQC+rzL2fZ3fjJnnm1HEbA==
+x-ms-exchange-transport-forked: True
+Content-Type: multipart/alternative; boundary="_000_DB8PR05MB6778C1A18890AA905963C30782020DB8PR05MB6778eurp_"
+MIME-Version: 1.0
+X-OriginatorOrg: hotmail.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-AuthSource:
+ DB8EUR06FT064.eop-eur06.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+ 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id:
+ fdf787b9-7a0e-4d88-3a44-08d870a20d9b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Oct 2020 00:34:18.7149
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Internet
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg:
+ 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8EUR06HT088
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2020.10.15.2417
+X-PMX-Spam: Gauge=IIIIIIII, Probability=8%, Report=' MULTIPLE_RCPTS 0.1,
+ BODYTEXTH_SIZE_3000_MORE 0, BODY_SIZE_10000_PLUS 0, DKIM_ALIGNS 0,
+ DKIM_SIGNATURE 0, HREF_LABEL_TEXT_ONLY 0, IN_REP_TO 0, KNOWN_MTA_TFX 0,
+ LEGITIMATE_SIGNS 0, MSG_THREAD 0, REFERENCES_INVALID 0, SENDER_NO_AUTH 0,
+ SPF_PASS 0, SXL_IP_TFX_WM 0, URI_WITH_PATH_ONLY 0, WEBMAIL_SOURCE 0,
+ __ANY_URI 0, __ARCAUTH_DKIM_NONE 0, __ARCAUTH_DMARC_NONE 0, __ARCAUTH_NONE 0,
+ __ARC_SEAL_MICROSOFT 0, __ARC_SIGNATURE_MICROSOFT 0, __BODY_TEXT_X4 0,
+ __BOUNCE_CHALLENGE_SUBJ 0, __BOUNCE_NDR_SUBJ_EXEMPT 0, __CC_NAME 0,
+ __CP_URI_IN_BODY 0, __CT 0, __CTYPE_HAS_BOUNDARY 0, __CTYPE_MULTIPART 0,
+ __CTYPE_MULTIPART_ALT 0, __DKIM_ALIGNS_1 0, __DKIM_ALIGNS_2 0, __DQ_NEG_HEUR
+ 0, __DQ_NEG_IP 0, __FORWARDED_MSG 0, __FRAUD_BODY_WEBMAIL 0, __FRAUD_URGENCY
+ 0, __FRAUD_WEBMAIL 0, __FRAUD_WEBMAIL_FROM 0, __FROM_HOTMAIL 0,
+ __FROM_NAME_NOT_IN_ADDR 0, __FUR_RDNS_OUTLOOK 0, __HAS_CC_HDR 0, __HAS_FROM
+ 0, __HAS_HTML 0, __HAS_MSGID 0, __HAS_REFERENCES 0, __HREF_LABEL_TEXT 0,
+ __HREF_LABEL_URI 0, __HTML_AHREF_TAG 0, __HTML_FONT_BLUE 0,
+ __HTML_HREF_TAG_X2 0, __HTML_TAG_DIV 0, __HTTPS_URI 0, __IN_REP_TO 0,
+ __MAIL_CHAIN 0, __MIME_HTML 0, __MIME_TEXT_H 0, __MIME_TEXT_H1 0,
+ __MIME_TEXT_H2 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_TEXT_P2 0,
+ __MIME_VERSION 0, __MULTIPLE_RCPTS_CC_X2 0, __MULTIPLE_RCPTS_TO_X2 0,
+ __MULTIPLE_URI_HTML 0, __MULTIPLE_URI_TEXT 0, __PHISH_PHRASE1_B 0,
+ __RATWARE_SIGNATURE_3_N1 0, __RDNS_WEBMAIL 0, __SANE_MSGID 0,
+ __STYLE_RATWARE_NEG 0, __STYLE_TAG 0, __SUBJ_ALPHA_END 0, __SUBJ_ALPHA_NEGATE
+ 0, __SUBJ_REPLY 0, __TAG_EXISTS_HTML 0, __TO_MALFORMED_2 0, __TO_NAME 0,
+ __TO_NO_NAME 0, __URI_ENDS_IN_SLASH 0, __URI_HAS_HYPHEN_USC 0, __URI_IN_BODY
+ 0, __URI_MAILTO 0, __URI_NOT_IMG 0, __URI_NO_WWW 0, __URI_NS ,
+ __URI_WITH_PATH 0, __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: ej_zg@hotmail.com ("Ed .")
+
+--_000_DB8PR05MB6778C1A18890AA905963C30782020DB8PR05MB6778eurp_
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Ron,
+
+I Cc the PAUSE admins herein in case that=92s helpful. Ironically, email to=
+ EDJ (edj@cpan.org<mailto:edj@cpan.org>) bounces.
+
+Best regards,
+Ed J
+(ETJ on PAUSE)
+
+From: ron@savage.net.au<mailto:ron@savage.net.au>
+Sent: 15 October 2020 01:01
+To: Ed .<mailto:ej_zg@hotmail.com>
+Subject: Re: Copied some repos
+
+Hi Ed
+
+Oops. Sorry. Will rectify asap.
+
+---
+Cheers
+Ron
+savage.net.au
+
+
+On 2020-10-15 07:59, Ed . wrote:
+> Hi Ron,
+>
+> I am ETJ. You=92ve given all those first-come permissions to the wrong
+> person. May I suggest reaching out to the PAUSE admins to get them to
+> change this?
+>
+> Best regards,
+>
+> Ed
+>
+> FROM: ron@savage.net.au
+> SENT: 15 October 2020 00:57
+> TO: Ed .
+> SUBJECT: Re: Copied some repos
+>
+> Hi Ed
+>
+> This is your lucky day!
+>
+>      Made EDJ primary maintainer of GraphViz2 (GraphViz2).
+>      Made EDJ primary maintainer of GraphViz2::DBI (GraphViz2).
+>      Made EDJ primary maintainer of GraphViz2::Data::Grapher
+> (GraphViz2).
+>      Made EDJ primary maintainer of GraphViz2::Parse::ISA (GraphViz2).
+>      Made EDJ primary maintainer of GraphViz2::Parse::RecDescent
+> (GraphViz2).
+>      Made EDJ primary maintainer of GraphViz2::Parse::Regexp
+> (GraphViz2).
+>      Made EDJ primary maintainer of GraphViz2::Parse::STT (GraphViz2).
+>      Made EDJ primary maintainer of GraphViz2::Parse::XML (GraphViz2).
+>      Made EDJ primary maintainer of GraphViz2::Parse::Yacc
+> (GraphViz2).
+>      Made EDJ primary maintainer of GraphViz2::Parse::Yapp
+> (GraphViz2).
+>      Made EDJ primary maintainer of GraphViz2::Marpa
+> (GraphViz2-Marpa).
+>      Made EDJ primary maintainer of GraphViz2::Marpa::Config
+> (GraphViz2-Marpa).
+>      Made EDJ primary maintainer of GraphViz2::Marpa::Demo
+> (GraphViz2-Marpa).
+>      Made EDJ primary maintainer of
+> GraphViz2::Marpa::Renderer::Graphviz
+> (GraphViz2-Marpa).
+>      Made EDJ primary maintainer of GraphViz2::Marpa::Utils
+> (GraphViz2-Marpa).
+>      Made EDJ primary maintainer of GraphViz2::Marpa::PathUtils
+> (GraphViz2-Marpa-PathUtils).
+>      Made EDJ primary maintainer of
+> GraphViz2::Marpa::PathUtils::Config
+> (GraphViz2-Marpa-PathUtils).
+>      Made EDJ primary maintainer of GraphViz2::Marpa::PathUtils::Demo
+> (GraphViz2-Marpa-PathUtils).
+>      Made EDJ primary maintainer of MarpaX::Grammar::GraphViz2
+> (MarpaX-Grammar-GraphViz2).
+>      Made EDJ primary maintainer of MarpaX::Grammar::GraphViz2::Config
+>
+> (MarpaX-Grammar-GraphViz2).
+>      Made EDJ primary maintainer of MarpaX::Grammar::GraphViz2::Filer
+> (MarpaX-Grammar-GraphViz2).
+>      Made EDJ primary maintainer of MarpaX::Grammar::GraphViz2::Utils
+> (MarpaX-Grammar-GraphViz2).
+>
+> ---
+> Cheers
+> Ron
+> savage.net.au
+>
+> On 2020-10-14 23:12, Ed . wrote:
+>> Hi Ron,
+>>
+>> I=92ve also emailed Leon asking for co-maint on GraphViz. Just to
+>> float the idea: what do you think of passing on the
+> GraphViz(including
+>> 2) torches to me in due course, ie transferring =93first-come=94 to
+>> me?
+>>
+>> If you=92re happy to transfer your various GraphViz repos over to
+>> graphviz-perl, could you please do so? :-) Anyone who looks at the
+>> current location will be automatically redirected, so there=92s not
+>> even an immediate need to update CPAN metadata.
+>>
+>> By the way, regarding having a personal website =96 unless you do
+>> server-side processing, have you considered hosting your
+> savage.net.au
+>> site entirely on GitHub Pages? That would provide an immediate
+> backup
+>> of such things as databases used to generate things, because they
+>> would live in a GH repo. I=92d known about GH Pages for years, but
+>> never actually bitten the bullet of figuring how to _actually_ use
+> it.
+>> Turns out that for at least the top-level of a *.github.io site,
+>> it=92s painless to just drop the complete contents of a =93htdocs=94
+>> in the top of the repo and push, and 30 secs later it=92s there.
+> Food
+>> for thought, I hope.
+>>
+>> Best regards,
+>>
+>> Ed
+>>
+>> FROM: ron@savage.net.au
+>> SENT: 12 October 2020 23:55
+>> TO: Ed .
+>> SUBJECT: Re: Copied some repos
+>>
+>> Hi Ed
+>>
+>> See below.
+>>
+>> ---
+>> Cheers
+>> Ron
+>> savage.net.au
+>>
+>> On 2020-10-12 22:22, Ed . wrote:
+>>> Hi Ron,
+>>>
+>>> Can I just clarify =96 you=92ve copied =3D you=92ve created new repos
+>>> there, without the issues and PRs? Can I ask why? Also, why are
+> they
+>>> private? The thinking behind asking you to transfer the repos was
+> to
+>>> retain the history of issues and PRs, and for them to be publicly
+>>> available. Creating a copy of the existing repos is a thing I could
+>>> have done myself.
+>>
+>> I just thought that was the usual way to add repos. Judging by your
+>> reaction, I was wrong, so I deleted them.
+>>
+>>> Also, I=92m quite interested in adding to the old =93GraphViz=94
+> (ie
+>>> not just GraphViz2) to also be able to read from =93Graph=94
+>> objects,
+>>> so I=92m asking for co-maint on GraphViz, please :-) (as well as
+>>
+>> I'm not the owner of GraphViz, LBROCARD is, and it's been many years
+>> since I communicated with him. I'm email him now asking for him to
+>> give
+>> me primary maint so I can then give you co-maint.
+>>
+>>> collaborator status on the repo, if for whatever reason you=92re
+> not
+>>> willing to transfer it into the graphviz-perl organisation).
+>>
+>> Happy to transfer it...
+>>
+>>> I=92ve renamed the 3 repos you=92ve created from =93*=94 to
+>>> =93*-copy-private=94, so that if you were intending to actually
+>>> transfer them, you still can without a name clash. (It=92s in
+>>> Settings, under =93Danger Zone=94)
+>>
+>> Thanx.
+>>
+>>> FROM: ron@savage.net.au
+>>> SENT: 12 October 2020 05:14
+>>> TO: Ed .
+>>> SUBJECT: Copied some repos
+>>>
+>>> Hi Ed
+>>>
+>>> I've copied the repos for:
+>>> o GraphViz
+>>> o GraphViz2-Marpa
+>>> o GraphViz2-Marpa-Utils
+>>> from https://github.com/ronsavage/* to
+>>> https://github.com/graphviz-perl/.
+>>>
+>>> ---
+>>> Cheers
+>>> Ron
+>>> savage.net.au
+
+
+--_000_DB8PR05MB6778C1A18890AA905963C30782020DB8PR05MB6778eurp_
+Content-Type: text/html; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:w=3D"urn:sc=
+hemas-microsoft-com:office:word" xmlns:m=3D"http://schemas.microsoft.com/of=
+fice/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
+252">
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+.MsoChpDefault
+	{mso-style-type:export-only;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style>
+</head>
+<body lang=3D"EN-GB" link=3D"blue" vlink=3D"#954F72">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal">Hi Ron,</p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">I Cc the PAUSE admins herein in case that=92s helpfu=
+l. Ironically, email to EDJ (<a href=3D"mailto:edj@cpan.org">edj@cpan.org</=
+a>) bounces.</p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Best regards,</p>
+<p class=3D"MsoNormal">Ed J</p>
+<p class=3D"MsoNormal">(ETJ on PAUSE)</p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div style=3D"mso-element:para-border-div;border:none;border-top:solid #E1E=
+1E1 1.0pt;padding:3.0pt 0cm 0cm 0cm">
+<p class=3D"MsoNormal" style=3D"border:none;padding:0cm"><b>From: </b><a hr=
+ef=3D"mailto:ron@savage.net.au">ron@savage.net.au</a><br>
+<b>Sent: </b>15 October 2020 01:01<br>
+<b>To: </b><a href=3D"mailto:ej_zg@hotmail.com">Ed .</a><br>
+<b>Subject: </b>Re: Copied some repos</p>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Hi Ed<br>
+<br>
+Oops. Sorry. Will rectify asap.<br>
+<br>
+---<br>
+Cheers<br>
+Ron<br>
+savage.net.au<br>
+<br>
+<br>
+On 2020-10-15 07:59, Ed . wrote:<br>
+&gt; Hi Ron,<br>
+&gt; <br>
+&gt; I am ETJ. You=92ve given all those first-come permissions to the wrong=
+<br>
+&gt; person. May I suggest reaching out to the PAUSE admins to get them to<=
+br>
+&gt; change this?<br>
+&gt; <br>
+&gt; Best regards,<br>
+&gt; <br>
+&gt; Ed<br>
+&gt; <br>
+&gt; FROM: ron@savage.net.au<br>
+&gt; SENT: 15 October 2020 00:57<br>
+&gt; TO: Ed .<br>
+&gt; SUBJECT: Re: Copied some repos<br>
+&gt; <br>
+&gt; Hi Ed<br>
+&gt; <br>
+&gt; This is your lucky day!<br>
+&gt; <br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+ (GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::DBI (GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Data::Grapher<br>
+&gt; (GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Parse::ISA (GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Parse::RecDescent<br>
+&gt; (GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Parse::Regexp<br>
+&gt; (GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Parse::STT (GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Parse::XML (GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Parse::Yacc<br>
+&gt; (GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Parse::Yapp<br>
+&gt; (GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Marpa<br>
+&gt; (GraphViz2-Marpa).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Marpa::Config<br>
+&gt; (GraphViz2-Marpa).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Marpa::Demo<br>
+&gt; (GraphViz2-Marpa).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of<br>
+&gt; GraphViz2::Marpa::Renderer::Graphviz<br>
+&gt; (GraphViz2-Marpa).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Marpa::Utils<br>
+&gt; (GraphViz2-Marpa).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Marpa::PathUtils<br>
+&gt; (GraphViz2-Marpa-PathUtils).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of<br>
+&gt; GraphViz2::Marpa::PathUtils::Config<br>
+&gt; (GraphViz2-Marpa-PathUtils).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of GraphViz2=
+::Marpa::PathUtils::Demo<br>
+&gt; (GraphViz2-Marpa-PathUtils).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of MarpaX::G=
+rammar::GraphViz2<br>
+&gt; (MarpaX-Grammar-GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of MarpaX::G=
+rammar::GraphViz2::Config<br>
+&gt; <br>
+&gt; (MarpaX-Grammar-GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of MarpaX::G=
+rammar::GraphViz2::Filer<br>
+&gt; (MarpaX-Grammar-GraphViz2).<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Made EDJ primary maintainer of MarpaX::G=
+rammar::GraphViz2::Utils<br>
+&gt; (MarpaX-Grammar-GraphViz2).<br>
+&gt; <br>
+&gt; ---<br>
+&gt; Cheers<br>
+&gt; Ron<br>
+&gt; savage.net.au<br>
+&gt; <br>
+&gt; On 2020-10-14 23:12, Ed . wrote:<br>
+&gt;&gt; Hi Ron,<br>
+&gt;&gt; <br>
+&gt;&gt; I=92ve also emailed Leon asking for co-maint on GraphViz. Just to<=
+br>
+&gt;&gt; float the idea: what do you think of passing on the<br>
+&gt; GraphViz(including<br>
+&gt;&gt; 2) torches to me in due course, ie transferring =93first-come=94 t=
+o<br>
+&gt;&gt; me?<br>
+&gt;&gt; <br>
+&gt;&gt; If you=92re happy to transfer your various GraphViz repos over to<=
+br>
+&gt;&gt; graphviz-perl, could you please do so? :-) Anyone who looks at the=
+<br>
+&gt;&gt; current location will be automatically redirected, so there=92s no=
+t<br>
+&gt;&gt; even an immediate need to update CPAN metadata.<br>
+&gt;&gt; <br>
+&gt;&gt; By the way, regarding having a personal website =96 unless you do<=
+br>
+&gt;&gt; server-side processing, have you considered hosting your<br>
+&gt; savage.net.au<br>
+&gt;&gt; site entirely on GitHub Pages? That would provide an immediate<br>
+&gt; backup<br>
+&gt;&gt; of such things as databases used to generate things, because they<=
+br>
+&gt;&gt; would live in a GH repo. I=92d known about GH Pages for years, but=
+<br>
+&gt;&gt; never actually bitten the bullet of figuring how to _actually_ use=
+<br>
+&gt; it.<br>
+&gt;&gt; Turns out that for at least the top-level of a *.github.io site,<b=
+r>
+&gt;&gt; it=92s painless to just drop the complete contents of a =93htdocs=
+=94<br>
+&gt;&gt; in the top of the repo and push, and 30 secs later it=92s there.<b=
+r>
+&gt; Food<br>
+&gt;&gt; for thought, I hope.<br>
+&gt;&gt; <br>
+&gt;&gt; Best regards,<br>
+&gt;&gt; <br>
+&gt;&gt; Ed<br>
+&gt;&gt; <br>
+&gt;&gt; FROM: ron@savage.net.au<br>
+&gt;&gt; SENT: 12 October 2020 23:55<br>
+&gt;&gt; TO: Ed .<br>
+&gt;&gt; SUBJECT: Re: Copied some repos<br>
+&gt;&gt; <br>
+&gt;&gt; Hi Ed<br>
+&gt;&gt; <br>
+&gt;&gt; See below.<br>
+&gt;&gt; <br>
+&gt;&gt; ---<br>
+&gt;&gt; Cheers<br>
+&gt;&gt; Ron<br>
+&gt;&gt; savage.net.au<br>
+&gt;&gt; <br>
+&gt;&gt; On 2020-10-12 22:22, Ed . wrote:<br>
+&gt;&gt;&gt; Hi Ron,<br>
+&gt;&gt;&gt; <br>
+&gt;&gt;&gt; Can I just clarify =96 you=92ve copied =3D you=92ve created ne=
+w repos<br>
+&gt;&gt;&gt; there, without the issues and PRs? Can I ask why? Also, why ar=
+e<br>
+&gt; they<br>
+&gt;&gt;&gt; private? The thinking behind asking you to transfer the repos =
+was<br>
+&gt; to<br>
+&gt;&gt;&gt; retain the history of issues and PRs, and for them to be publi=
+cly<br>
+&gt;&gt;&gt; available. Creating a copy of the existing repos is a thing I =
+could<br>
+&gt;&gt;&gt; have done myself.<br>
+&gt;&gt; <br>
+&gt;&gt; I just thought that was the usual way to add repos. Judging by you=
+r<br>
+&gt;&gt; reaction, I was wrong, so I deleted them.<br>
+&gt;&gt; <br>
+&gt;&gt;&gt; Also, I=92m quite interested in adding to the old =93GraphViz=
+=94<br>
+&gt; (ie<br>
+&gt;&gt;&gt; not just GraphViz2) to also be able to read from =93Graph=94<b=
+r>
+&gt;&gt; objects,<br>
+&gt;&gt;&gt; so I=92m asking for co-maint on GraphViz, please :-) (as well =
+as<br>
+&gt;&gt; <br>
+&gt;&gt; I'm not the owner of GraphViz, LBROCARD is, and it's been many yea=
+rs<br>
+&gt;&gt; since I communicated with him. I'm email him now asking for him to=
+<br>
+&gt;&gt; give<br>
+&gt;&gt; me primary maint so I can then give you co-maint.<br>
+&gt;&gt; <br>
+&gt;&gt;&gt; collaborator status on the repo, if for whatever reason you=92=
+re<br>
+&gt; not<br>
+&gt;&gt;&gt; willing to transfer it into the graphviz-perl organisation).<b=
+r>
+&gt;&gt; <br>
+&gt;&gt; Happy to transfer it...<br>
+&gt;&gt; <br>
+&gt;&gt;&gt; I=92ve renamed the 3 repos you=92ve created from =93*=94 to<br=
+>
+&gt;&gt;&gt; =93*-copy-private=94, so that if you were intending to actuall=
+y<br>
+&gt;&gt;&gt; transfer them, you still can without a name clash. (It=92s in<=
+br>
+&gt;&gt;&gt; Settings, under =93Danger Zone=94)<br>
+&gt;&gt; <br>
+&gt;&gt; Thanx.<br>
+&gt;&gt; <br>
+&gt;&gt;&gt; FROM: ron@savage.net.au<br>
+&gt;&gt;&gt; SENT: 12 October 2020 05:14<br>
+&gt;&gt;&gt; TO: Ed .<br>
+&gt;&gt;&gt; SUBJECT: Copied some repos<br>
+&gt;&gt;&gt; <br>
+&gt;&gt;&gt; Hi Ed<br>
+&gt;&gt;&gt; <br>
+&gt;&gt;&gt; I've copied the repos for:<br>
+&gt;&gt;&gt; o GraphViz<br>
+&gt;&gt;&gt; o GraphViz2-Marpa<br>
+&gt;&gt;&gt; o GraphViz2-Marpa-Utils<br>
+&gt;&gt;&gt; from <a href=3D"https://github.com/ronsavage/*">https://github=
+.com/ronsavage/*</a> to<br>
+&gt;&gt;&gt; <a href=3D"https://github.com/graphviz-perl/">https://github.c=
+om/graphviz-perl/</a>.<br>
+&gt;&gt;&gt; <br>
+&gt;&gt;&gt; ---<br>
+&gt;&gt;&gt; Cheers<br>
+&gt;&gt;&gt; Ron<br>
+&gt;&gt;&gt; savage.net.au<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</div>
+</body>
+</html>
+
+--_000_DB8PR05MB6778C1A18890AA905963C30782020DB8PR05MB6778eurp_--
