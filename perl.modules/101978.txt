@@ -1,0 +1,292 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:101978
+Return-Path: <neil.bowers@cogendo.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 24577 invoked from network); 19 Oct 2020 09:51:40 -0000
+Received: from xx1.develooper.com (147.75.38.233) by x6.develooper.com with
+ SMTP; 19 Oct 2020 09:51:40 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 06B2E7CF97 for <perlmail-modules@onion.perl.org>;
+ Mon, 19 Oct 2020 02:51:40 -0700 (PDT)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-1.9 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,HTML_MESSAGE,RCVD_IN_DNSWL_NONE autolearn=ham version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id 6F2BE7CF3B for
+ <perlmail-modules@onion.perl.org>; Mon, 19 Oct 2020 02:51:36 -0700 (PDT)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com
+ [209.85.221.54]) (using TLSv1 with cipher AES128-SHA (128/128 bits)) (No
+ client certificate requested) by xx1.develooper.com (Postfix) with ESMTPS id
+ C41CD7CF97 for <modules@perl.org>; Mon, 19 Oct 2020 02:51:24 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id t9so10605803wrq.11 for
+ <modules@perl.org>; Mon, 19 Oct 2020 02:51:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cogendo-com.20150623.gappssmtp.com; s=20150623;
+ h=date:from:to:message-id:in-reply-to:references:subject:mime-version;
+ bh=+o+Uuqb9OBbFMIv4867AXX0ADY51M1cUAX+DOEysEkI=;
+ b=GlSzHY072YzQdzcHBENJx1lTS7vgmHmBlpDBv2N3aLy44zuZhBFwbVgkhD1BQfVhSr
+ eLZTl4kilEAjFZGEVWuTtVy7ECphDdrsxlan/iTENcjU8SdIS+un4neH/o5HI14GsKss
+ nrEeIvtvetmaXV/PEWRjSCeXVg0CW5TUO2jC5ILzX94cOyvrtU0FwewesEZLXA2OAGbD
+ IQbQTSh2/OKZ/lZwJKytZaSfqhFZztJvc6+z6G5YNH1IDq2B+3LyD8WL+tBX+UBm/ESM
+ F1xFdMS0CeypdpLAvho4uGwvEeOWXqdVSDH4mEyYrfqA8woAQR6UJ+LpoLmHRlzgzLrr aVTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net;
+ s=20161025;
+ h=x-gm-message-state:date:from:to:message-id:in-reply-to:references
+ :subject:mime-version; bh=+o+Uuqb9OBbFMIv4867AXX0ADY51M1cUAX+DOEysEkI=;
+ b=hz4PmjP+0VxyHRZiOdC1RgN1WyXi7C0xkXgdxJxjGBgHPmwzlLSMkiqe92WYKvSiKT
+ iuD7wXURGgUYV1orbZxxD2UOAEDJ9Yuvnl63Gcw2r9ykWZehlO5wvk13TT3rMVMh7ogY
+ bz5zDKZVYhrS1Gbn6GTFd7tgr07YT+Fok9U1s1NnTd6KCPJQ20kAh/e1uWwvJMe6Rgtd
+ 9j38ZqHW3w7oG6GuLx/HG/MploY+1mg6mSU3Q65254LWTYrvd0c4+WoHQX+0LivzCQJ/
+ nk9tnszk5wb3oVwIF65J2ZzvaIRXe4ziZxlkyvdyMtiVTbNXQCUlqbS/HqbONEBU2AlX TOmA==
+X-Gm-Message-State: AOAM533qw8VrIiHHu3u1a54WLC3pzXdhGPSm0Ar5dLBs2ZkZ+ZdxxY+Q
+ zVFzputj/0QCdsAs/trxA1tTcOpllm1MbA==
+X-Google-Smtp-Source:
+ ABdhPJyoIR859bLM+KqWE5uy991B3SoTky7o3FhcbnIHjuev0erk0YD9I76nuudSa5KC5q5bCmWRhg==
+X-Received: by 2002:a5d:4d0d:: with SMTP id
+ z13mr18058309wrt.23.1603101083612; Mon, 19 Oct 2020 02:51:23 -0700 (PDT)
+Received: from [192.168.86.13]
+ (cpc95902-rdng25-2-0-cust493.15-3.cable.virginm.net. [82.21.209.238]) by
+ smtp.gmail.com with ESMTPSA id 71sm18138103wrm.20.2020.10.19.02.51.22
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128); Mon, 19
+ Oct 2020 02:51:23 -0700 (PDT)
+Date: Mon, 19 Oct 2020 10:51:13 +0100
+To: modules@perl.org, Shlomi Fish <shlomif@gmail.com>, Shlomi Fish
+ <shlomif@shlomifish.org>
+Message-ID: <7e42438d-6de5-4063-9780-b902bf4cfb9c@Spark>
+In-Reply-To: <20201019114409.0f33af79@telaviv1.shlomifish.org>
+References: <20201019114409.0f33af79@telaviv1.shlomifish.org>
+Subject: Re: Fw: Failed: PAUSE indexer report
+ SHLOMIF/Object-Declare-0.25.tar.gz
+X-Readdle-Message-ID: 7e42438d-6de5-4063-9780-b902bf4cfb9c@Spark
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="5f8d619a_4cfb8d32_155b8"
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2020.10.19.94217
+X-PMX-Spam: Gauge=X, Probability=10%, Report=' TO_IN_SUBJECT 0.5, IN_TLD 0.1,
+ SUPERLONG_LINE 0.05, BODYTEXTH_SIZE_10000_LESS 0, BODYTEXTH_SIZE_3000_MORE 0,
+ BODYTEXTP_SIZE_3000_LESS 0, DKIM_SIGNATURE 0, INVALID_MSGID_NO_FQDN 0,
+ IN_REP_TO 0, KNOWN_MTA_TFX 0, LEGITIMATE_SIGNS 0, MSG_THREAD 0, REFERENCES 0,
+ SENDER_NO_AUTH 0, SINGLE_URI_IN_BODY 0, SPF_PASS 0, SXL_IP_TFX_WM 0,
+ TEXT_DIRECTION 0, WEBMAIL_SOURCE 0, __ANY_URI 0, __BODY_NO_MAILTO 0,
+ __BODY_TEXT_X4 0, __BOUNCE_CHALLENGE_SUBJ 0, __BOUNCE_NDR_SUBJ_EXEMPT 0,
+ __COURIER_PHRASE 0, __CP_URI_IN_BODY 0, __CT 0, __CTYPE_HAS_BOUNDARY 0,
+ __CTYPE_MULTIPART 0, __CTYPE_MULTIPART_ALT 0, __DQ_NEG_HEUR 0, __DQ_NEG_IP 0,
+ __FORWARDED_MSG 0, __FROM_NAME_NOT_IN_BODY 0, __FUR_RDNS_GMAIL 0, __HAS_FROM
+ 0, __HAS_HTML 0, __HAS_MSGID 0, __HAS_REFERENCES 0, __HELO_GMAIL 0,
+ __HTML_ATTR_DIR 0, __HTML_TAG_DIV 0, __HTTPS_URI 0, __INVOICE_MULTILINGUAL 0,
+ __IN_REP_TO 0, __MAIL_CHAIN 0, __MIME_HTML 0, __MIME_TEXT_H 0, __MIME_TEXT_H1
+ 0, __MIME_TEXT_H2 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_TEXT_P2 0,
+ __MIME_VERSION 0, __MSGID_DOMAIN_NOT_IN_HDRS 0, __MULTIPLE_RCPTS_TO_X2 0,
+ __MULTIPLE_URI_TEXT 0, __PHISH_PHRASE_NL4 0, __PHISH_SPEAR_SUBJ_PREDICATE 0,
+ __RDNS_WEBMAIL 0, __REFERENCES 0, __SANE_MSGID 0, __SINGLE_URI_MPART_BOTH 0,
+ __SUBJ_ALPHA_NEGATE 0, __SUBJ_REPLY 0, __TAG_EXISTS_HTML 0, __TO_IN_SUBJECT
+ 0, __TO_MALFORMED_2 0, __TO_NAME 0, __TO_NAME_DIFF_FROM_ACC 0, __TO_NO_NAME
+ 0, __TO_REAL_NAMES 0, __URI_ENDS_IN_SLASH 0, __URI_IN_BODY 0, __URI_MAILTO 0,
+ __URI_NOT_IMG 0, __URI_NS , __URI_WITHOUT_PATH 0, __URI_WITH_PATH 0,
+ __X_GOOGLE_DKIM_SIGNATURE 0, __YOUTUBE_RCVD 0,
+ __blackholes.mail-abuse.org_ERROR , __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: neil.bowers@cogendo.com (Neil Bowers)
+
+--5f8d619a_4cfb8d32_155b8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+Hi Shlomi,
+
+The error was a database timeout, as the details of the email said.
+
+When this happens, the first thing to do is check whether your release go=
+t indexed anyway, for example by either checking the index directly, or e=
+asier is to go and see what version is listed on MetaCPAN as the latest. =
+In your case it=E2=80=99s showing 0.24 as the latest, not your upload.
+
+To fix this, log in to PAUSE and force a re-indexing of your tarball. Hop=
+efully this time you won=E2=80=99t get the timeout, and you=E2=80=99ll se=
+e 0.25 turn up on MetaCPAN.
+
+Cheers,
+Neil
+On 19 Oct 2020, 10:06 +0100, Shlomi =46ish <shlomif=40shlomifish.org>, wr=
+ote:
+> Hi all=21
+>
+> There seems to have been a database error. Can it be fixed=3F
+>
+> Begin forwarded message:
+>
+> Date: Sun, 18 Oct 2020 15:37:15 +0000
+> =46rom: PAUSE <upload=40pause.perl.org>
+> To: shlomif=40shlomifish.org, andreas.koenig.gmwojprw+pause=40franz.ak.=
+mind.de,
+> neil.bowers=40cogendo.com Subject: =46ailed: PAUSE indexer report
+> SHLOMI=46/Object-Declare-0.25.tar.gz
+>
+>
+> The following report has been written by the PAUSE namespace indexer.
+> Please contact modules=40perl.org if there are any open questions.
+>
+> User: SHLOMI=46 (Shlomi =46ish)
+> Distribution file: Object-Declare-0.25.tar.gz
+> Number of files: 27
+> *.pm files: 1
+> README: Object-Declare-0.25/README
+> META-=46ile: Object-Declare-0.25/META.json
+> META-Parser: Parse::CPAN::Meta 1.4414
+> META-driven index: yes
+> Timestamp of file: Sun Oct 18 15:25:16 2020 UTC
+> Time of this run: Sun Oct 18 15:37:15 2020 UTC
+>
+> Status of this distro: Database error
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+>
+> The following packages (grouped by status) have been found in the distr=
+o:
+>
+> Status: Database error
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> module : Object::Declare
+> version: undef
+> in file: lib/Object/Declare.pm
+> status : The PAUSE indexer could not store the indexing result in
+> the DB due the following error: C< Lock wait timeout
+> exceeded; try restarting transaction >. Please report the
+> case to the PAUSE admins at modules=40perl.org.
+>
+> module : Object::Declare::Katamari
+> version: undef
+> in file: lib/Object/Declare.pm
+> status : The PAUSE indexer could not store the indexing result in
+> the DB due the following error: C< Lock wait timeout
+> exceeded; try restarting transaction >. Please report the
+> case to the PAUSE admins at modules=40perl.org.
+>
+> =5F=5FEND=5F=5F
+>
+>
+> --
+>
+> Shlomi =46ish https://www.shlomifish.org/
+> List of Text Processing Tools - https://shlom.in/text-proc
+>
+> We have nothing to fear but fear itself. =46ear has nothing to fear but=
+ XSLT.
+> =E2=80=94 https://www.shlomifish.org/humour/bits/facts/XSLT/
+>
+> Please reply to list if it's a mailing list post - https://shlom.in/rep=
+ly .
+
+--5f8d619a_4cfb8d32_155b8
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+
+<html xmlns=3D=22http://www.w3.org/1999/xhtml=22>
+<head>
+<title></title>
+</head>
+<body>
+<div name=3D=22messageBodySection=22>
+<div dir=3D=22auto=22>Hi Shlomi,<br />
+<br />
+The error was a database timeout, as the details of the email said.<br />=
+
+<br />
+When this happens, the first thing to do is check whether your release go=
+t indexed anyway, for example by either checking the index directly, or e=
+asier is to go and see what version is listed on MetaCPAN as the latest. =
+In your case it=E2=80=99s showing 0.24 as the latest, not your upload.<br=
+ />
+<br />
+To fix this, log in to PAUSE and force a re-indexing of your tarball. Hop=
+efully this time you won=E2=80=99t get the timeout, and you=E2=80=99ll se=
+e 0.25 turn up on MetaCPAN.<br />
+<br />
+Cheers,<br />
+Neil<br /></div>
+</div>
+<div name=3D=22messageReplySection=22>On 19 Oct 2020, 10:06 +0100, Shlomi=
+ =46ish &lt;shlomif=40shlomifish.org&gt;, wrote:<br />
+<blockquote type=3D=22cite=22 style=3D=22border-left-color: grey; border-=
+left-width: thin; border-left-style: solid; margin: 5px 5px;padding-left:=
+ 10px;=22>Hi all=21<br />
+<br />
+There seems to have been a database error. Can it be fixed=3F<br />
+<br />
+Begin forwarded message:<br />
+<br />
+Date: Sun, 18 Oct 2020 15:37:15 +0000<br />
+=46rom: PAUSE &lt;upload=40pause.perl.org&gt;<br />
+To: shlomif=40shlomifish.org, andreas.koenig.gmwojprw+pause=40franz.ak.mi=
+nd.de,<br />
+neil.bowers=40cogendo.com Subject: =46ailed: PAUSE indexer report<br />
+SHLOMI=46/Object-Declare-0.25.tar.gz<br />
+<br />
+<br />
+The following report has been written by the PAUSE namespace indexer.<br =
+/>
+Please contact modules=40perl.org if there are any open questions.<br />
+<br />
+User: SHLOMI=46 (Shlomi =46ish)<br />
+Distribution file: Object-Declare-0.25.tar.gz<br />
+Number of files: 27<br />
+*.pm files: 1<br />
+README: Object-Declare-0.25/README<br />
+META-=46ile: Object-Declare-0.25/META.json<br />
+META-Parser: Parse::CPAN::Meta 1.4414<br />
+META-driven index: yes<br />
+Timestamp of file: Sun Oct 18 15:25:16 2020 UTC<br />
+Time of this run: Sun Oct 18 15:37:15 2020 UTC<br />
+<br />
+Status of this distro: Database error<br />
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br />
+<br />
+<br />
+The following packages (grouped by status) have been found in the distro:=
+<br />
+<br />
+Status: Database error<br />
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br />
+<br />
+module : Object::Declare<br />
+version: undef<br />
+in file: lib/Object/Declare.pm<br />
+status : The PAUSE indexer could not store the indexing result in<br />
+the DB due the following error: C&lt; Lock wait timeout<br />
+exceeded; try restarting transaction &gt;. Please report the<br />
+case to the PAUSE admins at modules=40perl.org.<br />
+<br />
+module : Object::Declare::Katamari<br />
+version: undef<br />
+in file: lib/Object/Declare.pm<br />
+status : The PAUSE indexer could not store the indexing result in<br />
+the DB due the following error: C&lt; Lock wait timeout<br />
+exceeded; try restarting transaction &gt;. Please report the<br />
+case to the PAUSE admins at modules=40perl.org.<br />
+<br />
+=5F=5FEND=5F=5F<br />
+<br />
+<br />
+--<br />
+<br />
+Shlomi =46ish https://www.shlomifish.org/<br />
+List of Text Processing Tools - https://shlom.in/text-proc<br />
+<br />
+We have nothing to fear but fear itself. =46ear has nothing to fear but X=
+SLT.<br />
+=E2=80=94 https://www.shlomifish.org/humour/bits/facts/XSLT/<br />
+<br />
+Please reply to list if it's a mailing list post - https://shlom.in/reply=
+ .<br /></blockquote>
+</div>
+</body>
+</html>
+
+--5f8d619a_4cfb8d32_155b8--
