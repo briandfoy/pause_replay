@@ -1,0 +1,392 @@
+Newsgroups: perl.modules
+Path: nntp.perl.org
+Xref: nntp.perl.org perl.modules:102138
+Return-Path: <ej_zg@hotmail.com>
+Mailing-List: contact modules-help@perl.org; run by ezmlm
+Delivered-To: mailing list modules@perl.org
+Received: (qmail 4212 invoked from network); 7 Dec 2020 19:41:11 -0000
+Received: from xx1.develooper.com (147.75.38.233) by x6.develooper.com with
+ SMTP; 7 Dec 2020 19:41:11 -0000
+Received: from localhost (xx1.develooper.com [127.0.0.1]) by localhost
+ (Postfix) with ESMTP id 91C047C192 for <perlmail-modules@onion.perl.org>;
+ Mon,  7 Dec 2020 11:41:11 -0800 (PST)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on mx3.develooper.com
+X-Spam-Status: No, score=-0.1 required=6.0 tests=BAYES_00,DKIM_SIGNED,
+ DKIM_VALID,DKIM_VALID_AU,FORGED_HOTMAIL_RCVD2,FORGED_SPF_HELO,FREEMAIL_FROM,
+ HTML_MESSAGE,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS autolearn=no version=3.3.1
+Received: from xx1.develooper.com (xx1.develooper.com [127.0.0.1]) by
+ localhost (Postfix) with SMTP id A8C227C1B8 for
+ <perlmail-modules@onion.perl.org>; Mon,  7 Dec 2020 11:41:08 -0800 (PST)
+Received: from EUR06-VI1-obe.outbound.protection.outlook.com
+ (mail-vi1eur06olkn2086.outbound.protection.outlook.com [40.92.17.86]) (using
+ TLSv1 with cipher AES256-SHA (256/256 bits)) (No client certificate
+ requested) by xx1.develooper.com (Postfix) with ESMTPS id 8E4427C192 for
+ <modules@perl.org>; Mon,  7 Dec 2020 11:41:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=j3qCGkkSqdbCIUSNclJF4oFNBcscMNDFmxV99z4d1ZA2zHkF1MEopnhDxfcBiue6HAsYt7+yaRYfSzZsOT3736+KoGhRbGXEkxjzp4BZxYbsNZXnAmMmNLqAwGxCxMuAkVUPTkWHbFYItXhLIPEXjwDDYWC5A6Yfl+Wg9miN/hWM27NHS9Si6Wcr4xh7YULCAfiCi9Qu4nTRwpMiUoIH7tLtFn3266/JIUz0yGjCTuYzcSJJVJC83AiM+PpG3cspkGAVGihSbWrCZmJXdt6vS08FQf8xIKNvTDQLmsd+aJJQoo3LBu97FgdOr5ZkGgN6M3iQwZdmOz7WVVdnB9op6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck; bh=404wdG/L9rwWsPggQOEB/de6WhL1PD/1avHSLqbRERo=; b=BjlIzxBw1rySvGadj5xDbFX4Ll1ws6Kx0fxHG7j8vf4uuGHxghQcVmtfUQWfjNwV9dAnwy1hOGEeSGMjzqDBF6f+vv0BtNwR3FlJBCPF8hWYRODCU0TP3JEVXdHlxIGA6bvw3sWtAEypNgSh3FG5zPjT6OwIdty4GvUK6hSShrbcPIA+ASOrE8h2KgnUy1POCdgKpQJa7yziktB5niRe2fyCPoKYqQoUTpE8VgtRTleI7Aqb3D8tT2sWdvTcX9VmsjFT8dzovANEpGEP5NZEIre5vgcFvR48jXO6QdFkFk5uyS3hqwUFGazypmIE9fGHBCrLFq/rHLXi76kb5ix/vg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck; bh=404wdG/L9rwWsPggQOEB/de6WhL1PD/1avHSLqbRERo=; b=cZ1B04uMy6m9Iq3pAYdh99S/H9FkZecth0ys/LL6WImEIacQkl886Yvfl37uUrmiJRLuMkHa2NeGCyVsk1B8Ncdr4XVcVBkTomW/p1z2DdK6DfS8p5uxX9rmFUCTatft5KR22krvUSAunSap0Q+/PFi0rXCzwf9NEt4vuV81UgTCKU/eyHetzlF9CYJLLFPjUuri5V4MffRKXn8+8YdJdk+I+mUKT/eaLfsD+ZjWe5ewRvWgk41Gpn0XCUJzz0yD25nK3ry9fw3EYbXNJhXhRs1HCp4/FJnBxMplF7HYzMB/wpQ8PV9jjdQKqeFxjm1Xkpa0X5j7JmvKZXQ4+7QfCA==
+Received: from DB8EUR06FT050.eop-eur06.prod.protection.outlook.com
+ (2a01:111:e400:fc35::49) by
+ DB8EUR06HT159.eop-eur06.prod.protection.outlook.com (2a01:111:e400:fc35::233)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17; Mon, 7 Dec
+ 2020 19:40:59 +0000
+Received: from DB8PR05MB6778.eurprd05.prod.outlook.com
+ (2a01:111:e400:fc35::47) by DB8EUR06FT050.mail.protection.outlook.com
+ (2a01:111:e400:fc35::195) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3632.17 via Frontend
+ Transport; Mon, 7 Dec 2020 19:40:59 +0000
+X-IncomingTopHeaderMarker:
+ OriginalChecksum:3B0D35661EDDFD12FA9ED543D7838B88BA6F18F9C2A858250B781E64DA5AAF5E;UpperCasedChecksum:1F2965A86322D4DACC86BB6EF9201D69A16CBAF1B1CBC4C6E3E6E93DD8F903A9;SizeAsReceived:8929;Count:47
+Received: from DB8PR05MB6778.eurprd05.prod.outlook.com
+ ([fe80::d1ef:7b4b:2b1b:d5bc]) by DB8PR05MB6778.eurprd05.prod.outlook.com
+ ([fe80::d1ef:7b4b:2b1b:d5bc%2]) with mapi id 15.20.3632.018; Mon, 7 Dec 2020
+ 19:40:59 +0000
+Message-ID:
+ <DB8PR05MB677857F8042F481051F5672382CE0@DB8PR05MB6778.eurprd05.prod.outlook.com>
+To: "Jeremy Slade" <jeremy@jkslade.net>
+Cc: <modules@perl.org>
+References:
+ <DB8PR05MB67781FBD10644870E840166082130@DB8PR05MB6778.eurprd05.prod.outlook.com> <240e4866-f101-dcd7-cf25-448348a7a3e9@jkslade.net> <DB8PR05MB6778F9B4536D481B24F6FFEE82130@DB8PR05MB6778.eurprd05.prod.outlook.com> <9c522cfb-2bfd-4b71-0552-7f7c97140ef3@jkslade.net>
+In-Reply-To: <9c522cfb-2bfd-4b71-0552-7f7c97140ef3@jkslade.net>
+Subject: Re: :GraphViz (and maybe Reaper) takeover?
+Date: Mon, 7 Dec 2020 19:40:56 -0000
+Content-Type: multipart/alternative; boundary="----=_NextPart_000_00D3_01D6CCD0.E1B815D0"
+X-Mailer: Microsoft Windows Live Mail 16.4.3564.1216
+X-MimeOLE: Produced By Microsoft MimeOLE V16.4.3564.1216
+X-TMN: [QP0PnM+VZ0Av6lQG4eOlbL9p3bsGO1jGuiUc++ZtmMBXdHFgnRmLGRNEMTsplho1]
+X-ClientProxiedBy: LO4P123CA0167.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18a::10) To DB8PR05MB6778.eurprd05.prod.outlook.com
+ (2603:10a6:10:136::21)
+X-Microsoft-Original-Message-ID:
+ <604360FB1E6048A89612F834EF9EEC05@CurrysTOSH>
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from CurrysTOSH (2a01:4b00:86a2:fb00:509a:1701:b7eb:bef5) by
+ LO4P123CA0167.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:18a::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.20.3632.21 via Frontend Transport; Mon, 7 Dec 2020 19:40:59 +0000
+X-MS-PublicTrafficType: Email
+X-IncomingHeaderCount: 47
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-Correlation-Id: e46f6672-4f3a-46db-5827-08d89ae805eb
+X-MS-TrafficTypeDiagnostic: DB8EUR06HT159:
+X-MS-Exchange-MinimumUrlDomainAge: github.com#4808
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+ nCB9C/+QqLSvj6k1NhknHDo+Z9KevHGfoPkXVHlT/5EKH9MWzGjDf8muI3nYtQMt52zjwbGscdIxsyZHmTbwT/HdMSTkyPgV9rOvdvQJr0ICKM3XA+Op/Y+h724SmnXZEsWf3Og/XVoAeF+ESTR4VPiZckmGnfXwpdhLIHfAWxThH4hOkuxMVVy7nlN4LNxYAD/K0DJkBaJvsXeo25g23Z+cU0I1yeMrmFdPHw3tyM3wn8iOBZt7ltZs7Lj2WPRJ
+X-MS-Exchange-AntiSpam-MessageData:
+ oP/YyAZxj8DBxrQ3oQ2EDnkA3zRTMKz+aGD+mBDkDYagdoJSgrV5hSLMIMTfh2QK/mUCNB6GAkVp6M9rPG2GEpABkyx3zChAiKlDVjpOXjYMDjCB7rU9Vk8m9d5q+4iUSzfCq5T3s9A5P5u1/D8WF2GWDUGH+fxMBbf+KQeCfhLwV+6S1gpswWZMuTNrsaVkGNRScu3HlEEV8+I27RqhEA==
+X-OriginatorOrg: hotmail.com
+X-MS-Exchange-CrossTenant-Network-Message-Id:
+ e46f6672-4f3a-46db-5827-08d89ae805eb
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Dec 2020 19:40:59.8919
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-AuthSource:
+ DB8EUR06FT050.eop-eur06.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+ 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8EUR06HT159
+X-PMX-Version: 5.6.1.2065439, Antispam-Engine: 2.7.2.376379, Antispam-Data:
+ 2020.12.7.193316
+X-PMX-Spam: Gauge=IIIIIIIII, Probability=9%, Report=' HTML_50_70 0.1,
+ HTML_NO_HTTP 0.1, FROM_NAME_ONE_WORD 0.05, SUPERLONG_LINE 0.05,
+ BODYTEXTH_SIZE_10000_LESS 0, BODYTEXTH_SIZE_3000_MORE 0,
+ BODYTEXTP_SIZE_3000_LESS 0, DKIM_ALIGNS 0, DKIM_SIGNATURE 0,
+ HREF_LABEL_TEXT_ONLY 0, IN_REP_TO 0, KNOWN_MTA_TFX 0, LEGITIMATE_SIGNS 0,
+ MSG_THREAD 0, REFERENCES 0, SENDER_NO_AUTH 0, SPF_PASS 0, SXL_IP_TFX_WM 0,
+ TEXT_DIRECTION 0, TEXT_DIR_LTR_ONLY 0, URI_WITH_PATH_ONLY 0, WEBMAIL_SOURCE
+ 0, __ANY_URI 0, __ARCAUTH_DKIM_NONE 0, __ARCAUTH_DMARC_NONE 0, __ARCAUTH_NONE
+ 0, __ARC_SEAL_MICROSOFT 0, __ARC_SIGNATURE_MICROSOFT 0, __BODY_TEXT_X4 0,
+ __BOUNCE_CHALLENGE_SUBJ 0, __BOUNCE_NDR_SUBJ_EXEMPT 0, __CP_URI_IN_BODY 0,
+ __CT 0, __CTYPE_HAS_BOUNDARY 0, __CTYPE_MULTIPART 0, __CTYPE_MULTIPART_ALT 0,
+ __DKIM_ALIGNS_1 0, __DKIM_ALIGNS_2 0, __DQ_NEG_HEUR 0, __DQ_NEG_IP 0,
+ __FRAUD_BODY_WEBMAIL 0, __FRAUD_WEBMAIL 0, __FRAUD_WEBMAIL_FROM 0,
+ __FROM_HOTMAIL 0, __FROM_NAME_NOT_IN_ADDR 0, __FUR_RDNS_OUTLOOK 0,
+ __HAS_CC_HDR 0, __HAS_FROM 0, __HAS_HTML 0, __HAS_MSGID 0, __HAS_REFERENCES
+ 0, __HAS_X_MAILER 0, __HIGHBITS 0, __HREF_LABEL_TEXT 0, __HREF_LABEL_URI 0,
+ __HTML_AHREF_TAG 0, __HTML_ATTR_DIR 0, __HTML_BAD_END 0, __HTML_DIR_LTR 0,
+ __HTML_FONT_BLUE 0, __HTML_HREF_TAG_X2 0, __HTML_TAG_DIV 0, __HTTPS_URI 0,
+ __IN_REP_TO 0, __MAIL_CHAIN 0, __MIME_HTML 0, __MIME_TEXT_H 0, __MIME_TEXT_H1
+ 0, __MIME_TEXT_H2 0, __MIME_TEXT_P 0, __MIME_TEXT_P1 0, __MIME_TEXT_P2 0,
+ __MIME_VERSION 0, __MULTIPLE_URI_HTML 0, __MULTIPLE_URI_TEXT 0,
+ __RDNS_WEBMAIL 0, __REFERENCES 0, __SANE_MSGID 0, __STYLE_RATWARE_NEG 0,
+ __STYLE_TAG 0, __SUBJ_ALPHA_NEGATE 0, __SUBJ_REPLY 0, __TAG_EXISTS_HTML 0,
+ __TEXT_DIR_LTR 0, __TO_MALFORMED_2 0, __TO_NAME 0, __TO_NAME_DIFF_FROM_ACC 0,
+ __TO_REAL_NAMES 0, __URI_IN_BODY 0, __URI_MAILTO 0, __URI_NOT_IMG 0,
+ __URI_NO_WWW 0, __URI_NS , __URI_WITH_PATH 0, __USER_AGENT_MS_GENERIC 0,
+ __zen.spamhaus.org_ERROR '
+Approved: news@nntp.perl.org
+From: ej_zg@hotmail.com ("Ed")
+
+------=_NextPart_000_00D3_01D6CCD0.E1B815D0
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Jeremy,
+
+Sorry for not replying sooner, I missed this message.
+
+Thank you! I=E2=80=99ve now released an updated version which builds =
+upon your great work, and somewhat-correctly now shows nearly all of the =
+sample DOT files in the t/graphs/directed.
+
+All the best,
+Ed J
+
+From: Jeremy Slade=20
+Sent: Monday, November 02, 2020 4:11 AM
+To: Ed .=20
+Cc: modules@perl.org=20
+Subject: Re: Tk::GraphViz (and maybe Reaper) takeover?
+
+Done
+
+On 11/1/20 9:48 AM, Ed . wrote:
+
+  Hi Jeremy,
+
+
+  I can use https://github.com/gitpan/Tk-GraphViz and =
+https://github.com/gitpan/Reaper for the history, no need to do =
+anything! If you did make any changes after the last release of either, =
+please send the whole thing zipped up and I can unpack it and figure it =
+out.
+
+
+  As for the transfer: go to https://pause.perl.org/pause/authenquery =
+and login. Then select =E2=80=9CTransfer Primary Permissions=E2=80=9D. =
+Pick any distros you want to transfer (I assume there will only be the =
+two). Then put in my ID =E2=80=9CETJ=E2=80=9D, and submit. Please be =
+careful to put my ID correctly =F0=9F=98=8A
+
+
+  Thanks,
+
+  Ed
+
+
+  From: Jeremy Slade
+  Sent: 01 November 2020 16:41
+  To: Ed .
+  Cc: modules@perl.org
+  Subject: Re: Tk::GraphViz (and maybe Reaper) takeover?
+
+
+  I'm all for it -- I haven't done anything in perl for at least 10 =
+years, I think.=20
+
+  What is actually needed for you to officially take over? I don't have =
+the source on githib, but I could put it up there if it makes it easier. =
+Or I can just send you a zip of the folder I have locally (I just =
+looked, appears I haven't touched it since 2008). I can't seem to find =
+anything related to the Reaper module.
+
+
+  Jeremy
+
+
+
+  On 11/1/20 8:28 AM, Ed . wrote:
+
+    Hi Jeremy, (Cc: the PAUSE deities)
+
+
+    Are you open to me helping you with Tk::GraphViz (and maybe also =
+Reaper)? I=E2=80=99d like to bring it up to date in order to use it with =
+GraphViz::Makefile. That currently sort of reimplements a GraphViz in =
+Tk, which seems like not the best approach.
+
+
+    I=E2=80=99d be happy with co-maint or if you=E2=80=99re content, =
+first-come (full takeover). My PAUSE ID is ETJ. My assumption is that =
+the code isn=E2=80=99t on GitHub, but if it is and you=E2=80=99d like =
+the repo to stay where it is I=E2=80=99d also need collaborator status =
+there (my GitHub handle is mohawk2).
+
+
+    Best regards,
+
+    Ed J
+
+
+
+-->
+------=_NextPart_000_00D3_01D6CCD0.E1B815D0
+Content-Type: text/html;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html XMLNS:O=3D""><head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"></=
+head>
+<body dir=3D"ltr">
+<div dir=3D"ltr">
+<div style=3D"FONT-SIZE: 12pt; FONT-FAMILY: 'Calibri'; COLOR: #000000">
+<div>Hi Jeremy,</div>
+<div>&nbsp;</div>
+<div>Sorry for not replying sooner, I missed this message.</div>
+<div>&nbsp;</div>
+<div>Thank you! I=E2=80=99ve now released an updated version which builds u=
+pon your=20
+great work, and somewhat-correctly now shows nearly all of the sample DOT f=
+iles=20
+in the t/graphs/directed.</div>
+<div>&nbsp;</div>
+<div>All the best,</div>
+<div>Ed J</div>
+<div style=3D"FONT-SIZE: small; TEXT-DECORATION: none; FONT-FAMILY: &quot;C=
+alibri&quot;; FONT-WEIGHT: normal; COLOR: #000000; FONT-STYLE: normal; DISP=
+LAY: inline">
+<div style=3D"FONT: 10pt tahoma">
+<div>&nbsp;</div>
+<div style=3D"BACKGROUND: #f5f5f5">
+<div style=3D"font-color: black"><b>From:</b> <a title=3D"jeremy@jkslade.ne=
+t" href=3D"mailto:jeremy@jkslade.net">Jeremy Slade</a> </div>
+<div><b>Sent:</b> Monday, November 02, 2020 4:11 AM</div>
+<div><b>To:</b> <a title=3D"ej_zg@hotmail.com" href=3D"mailto:ej_zg@hotmail=
+.com">Ed=20
+.</a> </div>
+<div><b>Cc:</b> <a title=3D"modules@perl.org" href=3D"mailto:modules@perl.o=
+rg">modules@perl.org</a> </div>
+<div><b>Subject:</b> Re: Tk::GraphViz (and maybe Reaper)=20
+takeover?</div></div></div>
+<div>&nbsp;</div></div>
+<div style=3D"FONT-SIZE: small; TEXT-DECORATION: none; FONT-FAMILY: &quot;C=
+alibri&quot;; FONT-WEIGHT: normal; COLOR: #000000; FONT-STYLE: normal; DISP=
+LAY: inline">
+<p>Done</p>
+<div class=3D"moz-cite-prefix">On 11/1/20 9:48 AM, Ed . wrote:<br></div>
+<blockquote cite=3D"mid:DB8PR05MB6778F9B4536D481B24F6FFEE82130@DB8PR05MB677=
+8.eurprd05.prod.outlook.com" type=3D"cite">
+  <meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered
+        medium)">
+  <style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.msonormal, li.msonormal, div.msonormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+a:link, span.msohyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+.msochpdefault
+	{mso-style-type:export-only;}size:612.0pt 792.0pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.wordsection1
+	{page:wordsection1;}</STYLE>
+
+  <DIV class=3DWordSection1>
+  <P class=3DMsoNormal>Hi Jeremy,</P>
+  <P class=3DMsoNormal><o:p></o:p></P>
+  <P class=3DMsoNormal>I can use <A href=3D"https://github.com/gitpan/Tk-Gr=
+aphViz"=20
+  moz-do-not-send=3D"true">https://github.com/gitpan/Tk-GraphViz</A> and <A=
+=20
+  href=3D"https://github.com/gitpan/Reaper"=20
+  moz-do-not-send=3D"true">https://github.com/gitpan/Reaper</A> for the his=
+tory,=20
+  no need to do anything! If you did make any changes after the last releas=
+e of=20
+  either, please send the whole thing zipped up and I can unpack it and fig=
+ure=20
+  it out.</P>
+  <P class=3DMsoNormal><o:p></o:p></P>
+  <P class=3DMsoNormal>As for the transfer: go to <A=20
+  href=3D"https://pause.perl.org/pause/authenquery"=20
+  moz-do-not-send=3D"true">https://pause.perl.org/pause/authenquery</A> and=
+ login.=20
+  Then select =E2=80=9CTransfer Primary Permissions=E2=80=9D. Pick any dist=
+ros you want to=20
+  transfer (I assume there will only be the two). Then put in my ID =E2=80=
+=9CETJ=E2=80=9D, and=20
+  submit. Please be careful to put my ID correctly <SPAN=20
+  style=3D'FONT-FAMILY: "Segoe UI&#13;&#10;            emoji",sans-serif'>=
+=F0=9F=98=8A</SPAN></P>
+  <P class=3DMsoNormal><o:p></o:p></P>
+  <P class=3DMsoNormal>Thanks,</P>
+  <P class=3DMsoNormal>Ed</P>
+  <P class=3DMsoNormal><o:p></o:p></P>
+  <DIV=20
+  style=3D"BORDER-TOP: #e1e1e1 1pt solid; BORDER-RIGHT: medium none; BORDER=
+-BOTTOM: medium none; PADDING-BOTTOM: 0cm; PADDING-TOP: 3pt; PADDING-LEFT: =
+0cm; BORDER-LEFT: medium none; PADDING-RIGHT: 0cm; mso-element: para-border=
+-div">
+  <P class=3DMsoNormal=20
+  style=3D"BORDER-TOP: medium none; BORDER-RIGHT: medium none; BORDER-BOTTO=
+M: medium none; PADDING-BOTTOM: 0cm; PADDING-TOP: 0cm; PADDING-LEFT: 0cm; B=
+ORDER-LEFT: medium none; PADDING-RIGHT: 0cm"><B>From:=20
+  </B><A href=3D"mailto:jeremy@jkslade.net" moz-do-not-send=3D"true">Jeremy=
+=20
+  Slade</A><BR><B>Sent: </B>01 November 2020 16:41<BR><B>To: </B><A=20
+  href=3D"mailto:ej_zg@hotmail.com" moz-do-not-send=3D"true">Ed .</A><BR><B=
+>Cc:=20
+  </B><A href=3D"mailto:modules@perl.org"=20
+  moz-do-not-send=3D"true">modules@perl.org</A><BR><B>Subject: </B>Re:=20
+  Tk::GraphViz (and maybe Reaper) takeover?</P></DIV>
+  <P class=3DMsoNormal><o:p></o:p></P>
+  <P class=3DMsoNormal style=3D"MARGIN-BOTTOM: 12pt">I'm all for it -- I ha=
+ven't=20
+  done anything in perl for at least 10 years, I think. <BR><BR>What is act=
+ually=20
+  needed for you to officially take over? I don't have the source on githib=
+, but=20
+  I could put it up there if it makes it easier. Or I can just send you a z=
+ip of=20
+  the folder I have locally (I just looked, appears I haven't touched it si=
+nce=20
+  2008). I can't seem to find anything related to the Reaper=20
+  module.<BR><BR><BR>Jeremy<BR><BR><o:p></o:p></P>
+  <DIV>
+  <P class=3DMsoNormal>On 11/1/20 8:28 AM, Ed . wrote:<o:p></o:p></P></DIV>
+  <BLOCKQUOTE style=3D"MARGIN-BOTTOM: 5pt; MARGIN-TOP: 5pt">
+    <P class=3DMsoNormal>Hi Jeremy, (Cc: the PAUSE deities)<o:p></o:p></P>
+    <P class=3DMsoNormal><o:p></o:p></P>
+    <P class=3DMsoNormal>Are you open to me helping you with Tk::GraphViz (=
+and=20
+    maybe also Reaper)? I=E2=80=99d like to bring it up to date in order to=
+ use it with=20
+    GraphViz::Makefile. That currently sort of reimplements a GraphViz in T=
+k,=20
+    which seems like not the best approach.<o:p></o:p></P>
+    <P class=3DMsoNormal><o:p></o:p></P>
+    <P class=3DMsoNormal>I=E2=80=99d be happy with co-maint or if you=E2=80=
+=99re content,=20
+    first-come (full takeover). My PAUSE ID is ETJ. My assumption is that t=
+he=20
+    code isn=E2=80=99t on GitHub, but if it is and you=E2=80=99d like the r=
+epo to stay where it=20
+    is I=E2=80=99d also need collaborator status there (my GitHub handle is=
+=20
+    mohawk2).<o:p></o:p></P>
+    <P class=3DMsoNormal><o:p></o:p></P>
+    <P class=3DMsoNormal>Best regards,<o:p></o:p></P>
+    <P class=3DMsoNormal>Ed J<o:p></o:p></P></BLOCKQUOTE>
+  <P class=3DMsoNormal><o:p></o:p></P>
+  <P=20
+class=3DMsoNormal><o:p></o:p></P></DIV></BLOCKQUOTE>--&gt;</DIV></DIV></DIV=
+></BODY></HTML>
+-->=
+
+------=_NextPart_000_00D3_01D6CCD0.E1B815D0--
